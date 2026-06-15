@@ -320,8 +320,8 @@ window.addEventListener('appinstalled',()=>{
 
   index = replaceExact(
     index,
-    "async function submitInquiry(){\n  let btn=document.getElementById('submitBtn');\n  if(!btn)return;",
-    "async function submitInquiry(){\n  let btn=document.getElementById('submitBtn');\n  if(!btn)return;\n  if(navigator.onLine===false){toast(pwaText('offlineSubmit'));updateNetworkState();return}",
+    "  if(!btn)return;\n  if(submittingInquiry)",
+    "  if(!btn)return;\n  if(navigator.onLine===false){toast(pwaText('offlineSubmit'));updateNetworkState();return}\n  if(submittingInquiry)",
     'offline submit guard'
   );
 
