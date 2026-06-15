@@ -140,7 +140,10 @@
   .phone{width:100vw;height:100dvh;min-height:100dvh;max-width:none;border-radius:0;box-shadow:none}
 }
 
+
+.moq-note{font-size:10px;color:#9a9ca3;font-weight:800;white-space:nowrap}.validation-note{margin-top:8px;color:#c94747;font-size:11px;line-height:1.45;font-weight:750}.verification-card{display:flex;flex-direction:column;gap:16px}.consent-check{display:flex;align-items:flex-start;gap:10px;font-size:12px;line-height:1.55;color:#666;cursor:pointer}.consent-check input{width:18px;height:18px;margin-top:1px;flex:none;accent-color:#111}.consent-check a{color:#111;font-weight:850;text-underline-offset:3px}.captcha-label{font-size:12px;font-weight:850;color:#444}.captcha-wrap{min-height:78px;display:flex;align-items:center}.captcha-status{font-size:12px;color:#8e9098}.verification-error{display:none;color:#c94747;font-size:12px;font-weight:800}.verification-error.show{display:block}.submit-consent{display:none}.archive-note{margin-top:12px;font-size:12px;line-height:1.55;color:#777;text-align:center}
 </style>
+<script src="https://js.hcaptcha.com/1/api.js?render=explicit" async defer></script>
 </head>
 <body>
 <main class="phone" id="app">
@@ -169,22 +172,30 @@ let products=[];
 let uiDict={};
 let choiceMaps={};
 let languageNames={};
+let appConfig={};
 let defaultSeries='advanced';
+const SUBMISSION_ARCHIVE_KEY='dreamlandInquiryArchiveV1';
+const LAST_SUBMISSION_KEY='dreamlandLastSubmissionV1';
+let pendingInquiryId='';
+let hcaptchaWidgetId=null;
+let submittingInquiry=false;
+let lastSubmitAttemptAt=0;
 
 function localCover(id){return`./images/products/${id}/cover.jpg`}
 function localDetails(id){return[1,2,3,4,5].map(n=>`./images/products/${id}/detail-${n}.jpg`)}
 
 async function loadCatalogData(){
-  const [seriesResponse,productsResponse,i18nResponse]=await Promise.all([
+  const [seriesResponse,productsResponse,i18nResponse,configResponse]=await Promise.all([
     fetch('./data/series.json',{cache:'no-cache'}),
     fetch('./data/products.json',{cache:'no-cache'}),
-    fetch('./data/i18n.json',{cache:'no-cache'})
+    fetch('./data/i18n.json',{cache:'no-cache'}),
+    fetch('./data/app-config.json',{cache:'no-cache'})
   ]);
-  const responses=[seriesResponse,productsResponse,i18nResponse];
+  const responses=[seriesResponse,productsResponse,i18nResponse,configResponse];
   if(responses.some(response=>!response.ok)){
     throw new Error('Catalog data request failed: '+responses.map(response=>response.status).join(','));
   }
-  const [seriesData,productsData,i18nData]=await Promise.all(responses.map(response=>response.json()));
+  const [seriesData,productsData,i18nData,configData]=await Promise.all(responses.map(response=>response.json()));
   defaultSeries=seriesData.defaultSeries||seriesData.seriesOrder?.[0]||'advanced';
   patternsBySize=seriesData.patternsBySize||{};
   sizeDims=seriesData.sizes||{};
@@ -193,6 +204,7 @@ async function loadCatalogData(){
   uiDict=i18nData.ui||{};
   choiceMaps=i18nData.choices||{};
   languageNames=i18nData.languageNames||{};
+  appConfig=configData||{};
   seriesMeta={};
   seriesTabLabels={zh:{},en:{},ko:{}};
   (seriesData.seriesOrder||Object.keys(seriesData.series||{})).forEach(key=>{
@@ -203,7 +215,8 @@ async function loadCatalogData(){
       count:Number(item.count)||products.filter(product=>product.series===key).length,
       price:Array.isArray(item.prices)?item.prices:[0,0,0],
       scents:Array.isArray(item.scents)?item.scents:[],
-      packaging:item.packaging||{options:['防震包装'],default:'防震包装',surchargesCny:{}}
+      packaging:item.packaging||{options:['防震包装'],default:'防震包装',surchargesCny:{}},
+      defaultMoq:Number(item.defaultMoq)||50
     };
     ['zh','en','ko'].forEach(lang=>{
       seriesTabLabels[lang][key]=item.labels?.[lang]||item.labels?.zh||key;
@@ -214,12 +227,11 @@ async function loadCatalogData(){
 function seriesTabLabel(key){
   return seriesTabLabels[currentLang]?.[key]||seriesTabLabels.zh?.[key]||seriesMeta[key]?.name||key;
 }
-const WEB3FORMS_ENDPOINT='https://api.web3forms.com/submit';
-const WEB3FORMS_ACCESS_KEY='你的Web3Forms Access Key';
+function web3formsAccessKey(){return String(appConfig.web3formsAccessKey||'').trim()}
+function web3formsEndpoint(){return appConfig.web3formsEndpoint||'https://api.web3forms.com/submit'}
 function web3formsReady(){
-  return WEB3FORMS_ACCESS_KEY
-    && WEB3FORMS_ACCESS_KEY.length>10
-    && !WEB3FORMS_ACCESS_KEY.includes('你的Web3Forms Access Key');
+  const key=web3formsAccessKey();
+  return key.length>10&&!key.includes('REPLACE_WITH_');
 }
 ['catalogInquiry','productManualState','manualInquiry'].forEach(k=>localStorage.removeItem(k));
 const CATALOG_BATCH_SIZE=5;
@@ -259,6 +271,37 @@ function productDesc(product){
   if(!product)return '';
   return product.descriptions?.[currentLang]||product.descriptions?.zh||product.desc||'';
 }
+function productMoq(product){
+  if(!product)return 1;
+  const own=Number(product.moq);
+  if(Number.isInteger(own)&&own>0)return own;
+  return Number(seriesMeta[product.series]?.defaultMoq)||1;
+}
+function itemMoq(item){
+  const own=Number(item?.moq);
+  if(Number.isInteger(own)&&own>0)return own;
+  const product=products.find(p=>p.id===(item?.productId||item?.id));
+  return productMoq(product||item);
+}
+function maximumQuantity(){return Math.max(1,Number(appConfig.maxQuantity)||1000000)}
+function customMoq(){return Math.max(1,Number(appConfig.customMoq)||50)}
+function normalizeQty(value,min=1){
+  let quantity=Number(value);
+  if(!Number.isFinite(quantity))quantity=min;
+  quantity=Math.trunc(quantity);
+  return Math.min(maximumQuantity(),Math.max(min,quantity));
+}
+function generateInquiryId(){
+  const now=new Date();
+  const date=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('');
+  const bytes=new Uint8Array(4);
+  if(globalThis.crypto?.getRandomValues)crypto.getRandomValues(bytes);else bytes.forEach((_,index)=>bytes[index]=Math.floor(Math.random()*256));
+  const code=[...bytes].map(value=>value.toString(36).padStart(2,'0')).join('').slice(0,6).toUpperCase();
+  return `DL-${date}-${code}`;
+}
+function ensureInquiryId(){if(!pendingInquiryId)pendingInquiryId=generateInquiryId();return pendingInquiryId}
+function privacyUrl(){return (appConfig.privacyUrl||'./privacy.html')+'#'+currentLang}
+function applyRuntimeLimits(){let el=document.getElementById('customQty');if(el){el.min=customMoq();el.max=maximumQuantity();el.placeholder=String(customMoq())+'+'}}
 function qtyUnit(){return ui('pieces')}
 function setText(sel,key){let el=document.querySelector(sel);if(el)el.textContent=ui(key)}
 function setPlaceholder(id,key){let el=document.getElementById(id);if(el)el.placeholder=ui(key)}
@@ -273,11 +316,11 @@ function applyI18n(){
   setText('[data-screen="home"] .hero-copy h1','heroTitle');setText('[data-screen="home"] .hero-copy p','heroCopy');setText('.thumb-label','startDream');setText('.unlock-hint','slideEnter');
   setText('[data-screen="catalog"] .page-title','catalogTitle');setText('[data-screen="catalog"] .page-sub','catalogSub');
   setText('[data-screen="detail"] .page-title','detailTitle');setText('[data-screen="detail"] .page-sub','detailSub');setText('[data-screen="detail"] .sticky-action .btn','addInquiry');
-  setText('[data-screen="inquiry"] .page-title','inquiryTitle');setText('[data-screen="inquiry"] .page-sub','inquirySub');setText('[data-screen="inquiry"] .header .text-btn span','clear');setText('[data-screen="inquiry"] .sticky-action .btn','submitInquiry');
+  setText('[data-screen="inquiry"] .page-title','inquiryTitle');setText('[data-screen="inquiry"] .page-sub','inquirySub');setText('[data-screen="inquiry"] .header .icon-btn span','clear');setText('[data-screen="inquiry"] .sticky-action .btn','submitInquiry');
   setText('[data-screen="custom"] .page-title','customTitle');setText('[data-screen="custom"] .page-sub','customSub');setText('[data-screen="custom"] .sticky-action .btn','addInquiry');
   setText('[data-screen="contact"] .page-title','contactTitle');setText('[data-screen="contact"] .page-sub','contactSub');setText('#contactNextBtn','contactNext');
   setText('[data-screen="preview"] .page-title','previewTitle');setText('[data-screen="preview"] .page-sub','previewSub');setText('#submitBtn','confirmSubmit');
-  setText('.success-title','successTitle');let ss=document.querySelectorAll('.success-sub');if(ss[0])ss[0].textContent=ui('successSub1');if(ss[1])ss[1].textContent=ui('successSub2');setText('.success-actions .btn','continueSelect');
+  setText('.success-title','successTitle');let ss=document.querySelector('.success-sub');if(ss)ss.innerHTML=ui('successSub1')+'<br>'+ui('successSub2');let archiveNote=document.querySelector('.archive-note');if(archiveNote)archiveNote.textContent=ui('submissionArchived');setText('.success-actions .btn','continueSelect');
   let nav=document.querySelectorAll('.nav-label');['home','products','inquiry','custom'].forEach((k,i)=>{if(nav[i])nav[i].textContent=ui(k)});
   let labels=document.querySelectorAll('[data-screen="custom"] .label');['customUseLabel','customQtyLabel','budgetLabel','customDateLabel','customSizeLabel','customScentLabel','customColorLabel','customPackLabel','customBrandingLabel','customNoteLabel'].forEach((k,i)=>{if(labels[i])labels[i].textContent=ui(k)});
   let cerr=document.querySelectorAll('[data-screen="custom"] .error');if(cerr[0])cerr[0].textContent=ui('customUseError');if(cerr[1])cerr[1].textContent=ui('customQtyError');
@@ -320,7 +363,7 @@ function openScentNotes(){openPreviewImage(scentNotesImage(),`${choiceLabel(conf
 function optionPreview(k){let p=previewData(k);return p?`<button class="option-thumb" type="button" onclick="event.stopPropagation();openPreviewImage('${p.src}','${p.label}')"><img src="${p.src}" alt="${p.label}" onerror="imgMiss(this)"><span>${ui('view')}</span></button>`:''}
 function openPreviewImage(src,label){let layer=document.getElementById('previewLayer'),img=document.getElementById('previewImg'),cap=document.getElementById('previewCaption');if(!layer||!img||!cap)return;img.classList.remove('is-missing');img.src=src;cap.textContent=label||ui('imagePreview');layer.classList.add('show')}
 function closePreviewImage(){document.getElementById('previewLayer')?.classList.remove('show')}
-function renderProductCard(p,idx,tall=false){return `<article class="product-card ${tall?'tall':''}" style="animation-delay:${Math.min(idx%CATALOG_BATCH_SIZE,4)*42}ms" onclick="openDetail('${p.id}')"><div class="product-visual"><div class="product-img ${p.color}"></div><img class="product-cover" src="${p.cover}" alt="${productDisplayName(p)}" loading="lazy" decoding="async" onerror="imgMiss(this)"></div><button class="add-mini" onclick="event.stopPropagation();quickAdd('${p.id}')">+</button><div class="product-name">${productDisplayName(p)}</div><div class="price-row"><span class="price">${money(seriesMeta[p.series].price[1])}</span></div></article>`}
+function renderProductCard(p,idx,tall=false){return `<article class="product-card ${tall?'tall':''}" style="animation-delay:${Math.min(idx%CATALOG_BATCH_SIZE,4)*42}ms" onclick="openDetail('${p.id}')"><div class="product-visual"><div class="product-img ${p.color}"></div><img class="product-cover" src="${p.cover}" alt="${productDisplayName(p)}" loading="lazy" decoding="async" onerror="imgMiss(this)"></div><button class="add-mini" onclick="event.stopPropagation();quickAdd('${p.id}')">+</button><div class="product-name">${productDisplayName(p)}</div><div class="price-row"><span class="price">${money(seriesMeta[p.series].price[1])}</span><span class="moq-note">${ui('moq')} ${productMoq(p)}</span></div></article>`}
 function cancelCatalogRender(){
   catalogRenderToken++;
   catalogList=[];
@@ -404,20 +447,37 @@ function bindCatalogLazyLoad(){
   c.dataset.lazyBound='1';
   c.addEventListener('scroll',maybeLoadMoreCatalog,{passive:true});
 }
-function openDetail(id){cancelCatalogRender();activeProduct=products.find(p=>p.id===id)||products[0];let m=seriesMeta[activeProduct.series];config={size:activeProduct.size,scent:m.scents[0],pattern:patternsBySize[activeProduct.size][0],pack:defaultPack(activeProduct.series),qty:QTY_MIN};detailSlideIndex=0;renderDetail();go('detail')}
+function openDetail(id){cancelCatalogRender();activeProduct=products.find(p=>p.id===id)||products[0];if(!activeProduct)return;let m=seriesMeta[activeProduct.series];let min=productMoq(activeProduct);config={size:activeProduct.size,scent:m.scents[0],pattern:patternsBySize[activeProduct.size][0],pack:defaultPack(activeProduct.series),qty:min};detailSlideIndex=0;renderDetail();go('detail')}
 function renderDetailMedia(){let imgs=activeProduct.images&&activeProduct.images.length?activeProduct.images:localDetails(activeProduct.id);detailMedia.className='detail-media '+activeProduct.color;detailMedia.innerHTML=`<div class="product-img ${activeProduct.color}"></div><div class="detail-slides">${imgs.map((src,i)=>`<div class="detail-slide ${i===detailSlideIndex?'active':''}"><img src="${src}" alt="${productDisplayName(activeProduct)} ${i+1}" onerror="imgMiss(this)"></div>`).join('')}</div><button class="carousel-btn prev" onclick="event.stopPropagation();changeDetailSlide(-1)"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><button class="carousel-btn next" onclick="event.stopPropagation();changeDetailSlide(1)"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button><div class="carousel-dots">${imgs.map((_,i)=>`<button class="carousel-dot ${i===detailSlideIndex?'active':''}" onclick="event.stopPropagation();setDetailSlide(${i})"></button>`).join('')}</div><div class="detail-titlebox"><h2>${productDisplayName(activeProduct)}</h2><p>${productDesc(activeProduct)}</p></div>`;startDetailCarousel()}
 function updateDetailSlide(){let slides=detailMedia.querySelectorAll('.detail-slide'),dots=detailMedia.querySelectorAll('.carousel-dot');slides.forEach((s,i)=>s.classList.toggle('active',i===detailSlideIndex));dots.forEach((d,i)=>d.classList.toggle('active',i===detailSlideIndex))}
 function setDetailSlide(i){let imgs=activeProduct.images&&activeProduct.images.length?activeProduct.images:localDetails(activeProduct.id);detailSlideIndex=(i+imgs.length)%imgs.length;updateDetailSlide();startDetailCarousel()}
 function changeDetailSlide(d,auto=false){setDetailSlide(detailSlideIndex+d);if(auto)return}
 function startDetailCarousel(){if(detailTimer)clearInterval(detailTimer);detailTimer=setInterval(()=>{let imgs=activeProduct.images&&activeProduct.images.length?activeProduct.images:localDetails(activeProduct.id);detailSlideIndex=(detailSlideIndex+1)%imgs.length;updateDetailSlide()},3200)}
 function bindHorizontalOptions(){document.querySelectorAll('.option-grid-scroll').forEach(el=>{if(el.dataset.bound==='1')return;el.dataset.bound='1';let down=false,startX=0,startScroll=0,moved=false;el.addEventListener('pointerdown',e=>{down=true;moved=false;startX=e.clientX;startScroll=el.scrollLeft;el.classList.add('dragging');el.setPointerCapture?.(e.pointerId)});el.addEventListener('pointermove',e=>{if(!down)return;let dx=e.clientX-startX;if(Math.abs(dx)>4)moved=true;el.scrollLeft=startScroll-dx});let end=e=>{if(!down)return;down=false;el.classList.remove('dragging');el.releasePointerCapture?.(e.pointerId)};el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);el.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopPropagation()}},true)})}
-function renderDetail(){renderDetailMedia();let meta=seriesMeta[activeProduct.series];configCard.innerHTML=block(ui('size'),'size',['S','M','L','XL'],ui('sizeHint'))+block(ui('scent'),'scent',meta.scents,`${seriesLabel(activeProduct.series)} ${ui('scentHint')}`)+block(ui('pattern'),'pattern',patternsBySize[config.size],ui('patternHint'))+block(ui('pack'),'pack',packOptions(activeProduct.series),packHint(activeProduct.series))+`<div class="config-block"><div class="config-title"><h3>${ui('quantity')}</h3><span>${ui('currentUnitPrice')}</span></div><div class="qty-bar"><div><div class="summary-label">${ui('currentUnitPrice')}</div><div class="amount">${money(configUnit())}</div></div><div class="qty-stepper"><button class="step" onclick="changeDetailQty(-QTY_STEP)">−</button><input class="qty qty-input" id="detailQty" type="number" min="${QTY_MIN}" step="${QTY_STEP}" value="${config.qty}" inputmode="numeric" onchange="setDetailQty(this.value)"><button class="step" onclick="changeDetailQty(QTY_STEP)">+</button></div></div></div>`;requestAnimationFrame(bindHorizontalOptions)}
+function renderDetail(){
+  renderDetailMedia();
+  let meta=seriesMeta[activeProduct.series],min=productMoq(activeProduct);
+  config.qty=normalizeQty(config.qty,min);
+  configCard.innerHTML=block(ui('size'),'size',['S','M','L','XL'],ui('sizeHint'))+block(ui('scent'),'scent',meta.scents,`${seriesLabel(activeProduct.series)} ${ui('scentHint')}`)+block(ui('pattern'),'pattern',patternsBySize[config.size],ui('patternHint'))+block(ui('pack'),'pack',packOptions(activeProduct.series),packHint(activeProduct.series))+`<div class="config-block"><div class="config-title"><h3>${ui('quantity')}</h3><span>${ui('moqHint')} ${min}</span></div><div class="qty-bar"><div><div class="summary-label">${ui('currentUnitPrice')}</div><div class="amount">${money(configUnit())}</div></div><div class="qty-stepper"><button class="step" onclick="changeDetailQty(-QTY_STEP)">−</button><input class="qty qty-input" id="detailQty" type="number" min="${min}" max="${maximumQuantity()}" step="${QTY_STEP}" value="${config.qty}" inputmode="numeric" onchange="setDetailQty(this.value)"><button class="step" onclick="changeDetailQty(QTY_STEP)">+</button></div></div></div>`;
+  requestAnimationFrame(bindHorizontalOptions)
+}
 function block(t,k,opts,h){let isScroll=(activeProduct.series==='masterpiece'||activeProduct.series==='holiday')&&k==='scent',tip=k==='size'?sizeDims[config.size]:(k==='scent'?scentTipText(isScroll,h):h),gridClass=isScroll?'option-grid option-grid-scroll':'option-grid',preview=optionPreview(k),scentRow=scentInfo(k);return`<div class="config-block"><div class="config-title"><h3>${t}</h3><div class="title-side"><div class="tip-tools"><span>${tip}</span></div></div></div><div class="config-choice-row"><div class="${gridClass}">${opts.map(o=>`<button class="option ${config[k]===o?'active':''}" onclick="setCfg('${k}','${o}')">${choiceLabel(o)}</button>`).join('')}</div>${preview}</div>${scentRow}</div>`}
-function setCfg(k,v){config[k]=v;if(k==='size')config.pattern=patternsBySize[v][0];if(k==='pack'&&!packOptions(activeProduct.series).includes(config.pack))config.pack=defaultPack(activeProduct.series);renderDetail()}function normalizeQty(v){let n=parseInt(v,10);if(!Number.isFinite(n)||n<QTY_MIN)n=QTY_MIN;return n}
-function setDetailQty(v){config.qty=normalizeQty(v);let el=document.getElementById('detailQty');if(el)el.value=config.qty;renderDetail()}
-function changeDetailQty(d){config.qty=normalizeQty(config.qty+d);renderDetail()}
-function quickAdd(id){let p=products.find(x=>x.id===id);if(!p)return;let m=seriesMeta[p.series],s=p.size;state.items.push({id:uid(),type:'product',productId:p.id,name:p.name,names:p.names,series:p.series,color:p.color,cover:p.cover,size:s,scent:m.scents[0],pattern:patternsBySize[s][0],pack:defaultPack(p.series),qty:QTY_MIN});save();toast(toastText('addedInquiry'))}
-function addConfiguredProduct(){if(!activeProduct)return;state.items.push({id:uid(),type:'product',productId:activeProduct.id,name:activeProduct.name,names:activeProduct.names,series:activeProduct.series,color:activeProduct.color,cover:activeProduct.cover,...config});save();toast(toastText('addedInquiry'));go('inquiry')}
+function setCfg(k,v){config[k]=v;if(k==='size')config.pattern=patternsBySize[v][0];if(k==='pack'&&!packOptions(activeProduct.series).includes(config.pack))config.pack=defaultPack(activeProduct.series);renderDetail()}
+function setDetailQty(v){let min=productMoq(activeProduct),raw=Number(v);if(!Number.isFinite(raw)||raw<min)toast(ui('minQtyError'));if(raw>maximumQuantity())toast(ui('quantityTooLarge'));config.qty=normalizeQty(v,min);let el=document.getElementById('detailQty');if(el)el.value=config.qty;renderDetail()}
+function changeDetailQty(d){config.qty=normalizeQty(Number(config.qty)+d,productMoq(activeProduct));renderDetail()}
+function quickAdd(id){
+  let p=products.find(x=>x.id===id);if(!p)return;
+  let m=seriesMeta[p.series],s=p.size,min=productMoq(p);
+  state.items.push({id:uid(),type:'product',productId:p.id,name:p.name,names:p.names,series:p.series,color:p.color,cover:p.cover,moq:min,size:s,scent:m.scents[0],pattern:patternsBySize[s][0],pack:defaultPack(p.series),qty:min});
+  save();toast(toastText('addedInquiry'))
+}
+function addConfiguredProduct(){
+  if(!activeProduct)return;
+  let min=productMoq(activeProduct);
+  config.qty=normalizeQty(config.qty,min);
+  state.items.push({id:uid(),type:'product',productId:activeProduct.id,name:activeProduct.name,names:activeProduct.names,series:activeProduct.series,color:activeProduct.color,cover:activeProduct.cover,moq:min,...config});
+  save();toast(toastText('addedInquiry'));go('inquiry')
+}
 function renderInquiry(){if(!state.items.length){inquiryList.innerHTML=`<div class="empty"><div class="empty-icon">◒</div><h3>${ui('emptyTitle')}</h3><p style="margin-top:8px;font-size:12px;line-height:1.5">${ui('emptyText')}</p><div class="btn-row" style="margin-top:20px;width:100%"><button class="btn btn-primary full" onclick="go('catalog')">${ui('goProducts')}</button><button class="btn btn-secondary full" onclick="go('custom')">${ui('makeCustom')}</button></div></div>`;summaryBox.innerHTML='';return}let groups={};state.items.forEach(i=>{let k=i.type==='custom'?'custom':i.series;(groups[k]??=[]).push(i)});inquiryList.innerHTML=Object.entries(groups).map(([k,items])=>`<div class="group-title"><span>${k==='custom'?ui('customInquiry'):seriesLabel(k)}</span><span>${k==='custom'?items.length+' '+ui('records'):seriesQty(k)+' '+qtyUnit()}</span></div>`+items.map(renderItem).join('')).join('');summaryBox.innerHTML=`<div class="summary"><div class="summary-row"><span class="summary-label">${ui('inquiryContent')}</span><span class="summary-value">${state.items.length} ${ui('items')}</span></div><div class="summary-row"><span class="summary-label">${ui('tierPrice')}</span><span class="summary-value">${ui('tierRule')}</span></div><div class="summary-row"><span class="summary-label">${ui('productEstimate')}</span><span class="amount">${money(total())}</span></div><p class="note">${ui('summaryNote')}</p></div>`;swipes();badge()}
 function renderItem(i){
   const trashSvg = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M5 7h14"/><path d="M8 7l1 12h6l1-12"/><path d="M10 11v5"/><path d="M14 11v5"/></svg>`;
@@ -462,7 +522,7 @@ function renderItem(i){
           <div class="qty-line">
             <div class="mini-stepper">
               <button class="step" onclick="qty('${i.id}',-QTY_STEP)">−</button>
-              <input class="qty-edit" type="number" min="${QTY_MIN}" step="${QTY_STEP}" value="${i.qty}" inputmode="numeric" onchange="setItemQty('${i.id}',this.value)" onkeydown="if(event.key==='Enter')this.blur()">
+              <input class="qty-edit" type="number" min="${itemMoq(i)}" max="${maximumQuantity()}" step="${QTY_STEP}" value="${i.qty}" inputmode="numeric" onchange="setItemQty('${i.id}',this.value)" onkeydown="if(event.key==='Enter')this.blur()">
               <button class="step" onclick="qty('${i.id}',QTY_STEP)">+</button>
             </div>
           </div>
@@ -479,34 +539,29 @@ function renderItem(i){
   </div>`;
 }
 function swipes(){}
-function qty(id,d){let i=state.items.find(x=>x.id===id);if(!i||i.type!=='product')return;i.qty=normalizeQty(i.qty+d);save();renderInquiry()}
-function setItemQty(id,v){let i=state.items.find(x=>x.id===id);if(!i||i.type!=='product')return;i.qty=normalizeQty(v);save();renderInquiry()}
+function qty(id,d){let i=state.items.find(x=>x.id===id);if(!i||i.type!=='product')return;i.qty=normalizeQty(Number(i.qty)+d,itemMoq(i));save();renderInquiry()}
+function setItemQty(id,v){let i=state.items.find(x=>x.id===id);if(!i||i.type!=='product')return;let min=itemMoq(i),raw=Number(v);if(!Number.isFinite(raw)||raw<min)toast(ui('minQtyError'));if(raw>maximumQuantity())toast(ui('quantityTooLarge'));i.qty=normalizeQty(v,min);save();renderInquiry()}
 function del(id){state.items=state.items.filter(i=>i.id!==id);save();renderInquiry();toast(toastText('removedInquiry'))}
 function confirmClearAll(){if(!state.items.length)return toast(toastText('emptyInquiry'));confirmLayer.classList.add('show')}
 function hideConfirm(){confirmLayer.classList.remove('show')}
 function clearInquiry(){state.items=[];save();hideConfirm();renderInquiry();toast(toastText('clearedInquiry'))}
 function addCustomIntent(){
   document.querySelectorAll('[data-screen="custom"] .field').forEach(f=>f.classList.remove('invalid'));
-  let use=fieldValue('customUse'),q=fieldValue('customQty'),ok=true;
-  [['customUse',use],['customQty',q]].forEach(([id,v])=>{if(!v){document.getElementById(id).closest('.field').classList.add('invalid');ok=false}});
-  if(!ok)return toast(ui('customRequired'));
+  let use=fieldValue('customUse'),rawQty=Number(fieldValue('customQty')),min=customMoq(),ok=true;
+  if(!use){document.getElementById('customUse').closest('.field').classList.add('invalid');ok=false}
+  if(!Number.isInteger(rawQty)||rawQty<min||rawQty>maximumQuantity()){
+    document.getElementById('customQty').closest('.field').classList.add('invalid');
+    toast(rawQty>maximumQuantity()?ui('quantityTooLarge'):ui('customMinQtyError'));
+    ok=false
+  }
+  if(!ok)return;
   state.items.push({
-    id:uid(),
-    type:'custom',
-    use,
-    qty:q,
-    budget:fieldValue('customBudget'),
-    date:fieldValue('customDate'),
-    sizePref:fieldValue('customSize'),
-    scent:fieldValue('customScent'),
-    color:fieldValue('customColor'),
-    pack:fieldValue('customPack'),
-    branding:fieldValue('customBranding'),
-    note:fieldValue('customNote')
+    id:uid(),type:'custom',use,qty:rawQty,moq:min,
+    budget:fieldValue('customBudget'),date:fieldValue('customDate'),sizePref:fieldValue('customSize'),
+    scent:fieldValue('customScent'),color:fieldValue('customColor'),pack:fieldValue('customPack'),
+    branding:fieldValue('customBranding'),note:fieldValue('customNote')
   });
-  save();
-  toast(toastText('addedCustom'));
-  go('inquiry')
+  save();toast(toastText('addedCustom'));go('inquiry')
 }
 function fieldValue(id){let el=document.getElementById(id);return el?el.value.trim():''}
 function collect(){return{
@@ -522,91 +577,99 @@ function collect(){return{
 function goContact(){if(!state.items.length){toast(ui('needInquiryFirst'));return go('catalog')}go('contact')}
 function goPreview(){
   document.querySelectorAll('[data-screen="contact"] .field').forEach(f=>f.classList.remove('invalid'));
-  let c=collect(),ok=true;
-  [['name',c.name],['country',c.country],['email',c.email],['phone',c.phone]].forEach(([id,v])=>{if(!v){document.getElementById(id).closest('.field').classList.add('invalid');ok=false}});
-  if(!ok)return toast(ui('contactRequired'));
-  state.contact=c;save();go('preview')
+  let c=collect(),ok=true,emailEl=document.getElementById('email');
+  if(c.name.length<2){document.getElementById('name').closest('.field').classList.add('invalid');toast(ui('invalidName'));ok=false}
+  if(!c.country){document.getElementById('country').closest('.field').classList.add('invalid');ok=false}
+  if(!emailEl||!c.email||!emailEl.checkValidity()){emailEl?.closest('.field')?.classList.add('invalid');toast(ui('invalidEmail'));ok=false}
+  if(c.phone.length<5){document.getElementById('phone').closest('.field').classList.add('invalid');toast(ui('invalidPhone'));ok=false}
+  for(const item of state.items){
+    if(item.type==='product'&&(Number(item.qty)<itemMoq(item)||Number(item.qty)>maximumQuantity())){toast(ui('minQtyError'));ok=false;break}
+    if(item.type==='custom'&&(Number(item.qty)<customMoq()||Number(item.qty)>maximumQuantity())){toast(ui('customMinQtyError'));ok=false;break}
+  }
+  if(!ok)return;
+  ensureInquiryId();state.contact=c;save();go('preview')
 }
 function kv(a,b){return`<div class="kv"><span>${a}</span><span>${b}</span></div>`}
+function renderHCaptcha(){
+  const container=document.getElementById('hcaptchaContainer');
+  if(!container||appConfig.hcaptcha?.enabled===false)return;
+  if(!window.hcaptcha){container.innerHTML=`<span class="captcha-status">${ui('captchaLoading')}</span>`;setTimeout(renderHCaptcha,350);return}
+  if(hcaptchaWidgetId!==null){try{window.hcaptcha.remove(hcaptchaWidgetId)}catch(_){}hcaptchaWidgetId=null}
+  container.innerHTML='';
+  hcaptchaWidgetId=window.hcaptcha.render(container,{sitekey:appConfig.hcaptcha?.siteKey||'50b2fe65-b00b-4b9e-ad62-3ba471098be2',theme:'light',size:'normal'});
+}
+function hcaptchaToken(){
+  if(appConfig.hcaptcha?.enabled===false)return '';
+  try{return hcaptchaWidgetId===null?'':window.hcaptcha?.getResponse(hcaptchaWidgetId)||''}catch(_){return ''}
+}
 function renderPreview(){
-  let c=state.contact||{},ps=state.items.filter(i=>i.type==='product'),cs=state.items.filter(i=>i.type==='custom');
-  previewContent.innerHTML=`<div class="preview-card"><h3>${ui('personalInfo')}</h3>${kv(ui('nameLabel').replace(' *',''),c.name)}${kv(ui('companyBrand'),c.company||ui('notProvided'))}${kv(ui('countryRegion'),c.country)}${kv(ui('cityLabel'),c.city||ui('notProvided'))}${kv(ui('emailLabel').replace(' *',''),c.email)}${kv(ui('contactMethod'),c.phone)}${kv(ui('buyerType'),choiceLabel(c.buyerType)||ui('toConfirm'))}${kv(ui('note'),c.message||ui('notProvided'))}</div><div class="preview-card"><h3>${ui('productInquiry')}</h3>${ps.length?ps.map(i=>kv(productDisplayName(i),`${i.qty} ${qtyUnit()} · ${i.size} · ${choiceLabel(i.scent)} · ${choiceLabel(i.pack||defaultPack(i.series))} · ${money(itemSubtotal(i))}`)).join(''):kv(ui('products'),ui('none'))}</div><div class="preview-card"><h3>${ui('customInquiry')}</h3>${cs.length?cs.map(i=>kv(choiceLabel(i.use)||ui('customNeed'),`${i.qty||ui('qtyPending')} ${qtyUnit()} · ${i.budget||ui('budgetPending')} · ${choiceLabel(i.sizePref)||ui('sizeRecommend')} · ${choiceLabel(i.scent)||ui('scentRecommend')} · ${i.color||ui('colorPending')} · ${choiceLabel(i.pack)||ui('packRecommend')} · ${choiceLabel(i.branding)||ui('brandingPending')} · ${i.date||ui('datePending')}`)).join(''):kv(ui('custom'),ui('none'))}</div><div class="preview-card"><h3>${ui('amountEstimate')}</h3>${kv(ui('productEstimate'),money(total()))}${kv(ui('customPart'),ui('consultantConfirm'))}${kv(ui('syncStatus'),web3formsReady()?ui('syncReady'):ui('syncPending'))}</div><div class="submit-consent">${ui('consent')}<strong>${ui('privacy')}</strong>${ui('consentTail')}</div>`
+  let c=state.contact||{},ps=state.items.filter(i=>i.type==='product'),cs=state.items.filter(i=>i.type==='custom'),inquiryId=ensureInquiryId();
+  previewContent.innerHTML=`<div class="preview-card"><h3>${ui('inquiryNumber')}</h3>${kv(ui('inquiryNumber'),inquiryId)}</div><div class="preview-card"><h3>${ui('personalInfo')}</h3>${kv(ui('nameLabel').replace(' *',''),c.name)}${kv(ui('companyBrand'),c.company||ui('notProvided'))}${kv(ui('countryRegion'),c.country)}${kv(ui('cityLabel'),c.city||ui('notProvided'))}${kv(ui('emailLabel').replace(' *',''),c.email)}${kv(ui('contactMethod'),c.phone)}${kv(ui('buyerType'),choiceLabel(c.buyerType)||ui('toConfirm'))}${kv(ui('note'),c.message||ui('notProvided'))}</div><div class="preview-card"><h3>${ui('productInquiry')}</h3>${ps.length?ps.map(i=>kv(productDisplayName(i),`${i.qty} ${qtyUnit()} · MOQ ${itemMoq(i)} · ${i.size} · ${choiceLabel(i.scent)} · ${choiceLabel(i.pack||defaultPack(i.series))} · ${money(itemSubtotal(i))}`)).join(''):kv(ui('products'),ui('none'))}</div><div class="preview-card"><h3>${ui('customInquiry')}</h3>${cs.length?cs.map(i=>kv(choiceLabel(i.use)||ui('customNeed'),`${i.qty||ui('qtyPending')} ${qtyUnit()} · ${i.budget||ui('budgetPending')} · ${choiceLabel(i.sizePref)||ui('sizeRecommend')} · ${choiceLabel(i.scent)||ui('scentRecommend')} · ${i.color||ui('colorPending')} · ${choiceLabel(i.pack)||ui('packRecommend')} · ${choiceLabel(i.branding)||ui('brandingPending')} · ${i.date||ui('datePending')}`)).join(''):kv(ui('custom'),ui('none'))}</div><div class="preview-card"><h3>${ui('amountEstimate')}</h3>${kv(ui('productEstimate'),money(total()))}${kv(ui('customPart'),ui('consultantConfirm'))}${kv(ui('syncStatus'),web3formsReady()?ui('syncReady'):ui('syncPending'))}</div><div class="preview-card verification-card"><label class="consent-check"><input id="privacyConsent" type="checkbox"><span>${ui('privacyAgreePrefix')} <a href="${privacyUrl()}" target="_blank" rel="noopener">${ui('privacyLink')}</a></span></label><div><div class="captcha-label">${ui('captchaLabel')}</div><div class="captcha-wrap" id="hcaptchaContainer"></div></div><div class="verification-error" id="verificationError"></div></div>`;
+  requestAnimationFrame(renderHCaptcha)
 }
 function itemText(i){
   if(i.type==='product')return`${productDisplayName(i)}（${seriesLabel(i.series)||i.series} / ${i.productId||''}） - ${i.qty} ${qtyUnit()}，${i.size}，${choiceLabel(i.scent)}，${choiceLabel(i.pattern)}，${choiceLabel(i.pack||defaultPack(i.series))}，${ui('productEstimate')} ${money(itemSubtotal(i))}`;
   return`${ui('customInquiry')} - ${choiceLabel(i.use)||ui('notFilled')}，${i.qty||ui('qtyPending')} ${qtyUnit()}，${i.budget||ui('budgetPending')}，${choiceLabel(i.sizePref)||ui('sizeRecommend')}，${choiceLabel(i.scent)||ui('scentRecommend')}，${i.color||ui('colorPending')}，${choiceLabel(i.pack)||ui('packRecommend')}，${choiceLabel(i.branding)||ui('brandingPending')}，${i.date||ui('datePending')}，${ui('note')}：${i.note||ui('none')}`
 }
-function buildWeb3FormsPayload(){
-  let c=state.contact||{},
-      ps=state.items.filter(i=>i.type==='product'),
-      cs=state.items.filter(i=>i.type==='custom'),
-      submittedAt=new Date().toLocaleString('zh-CN'),
-      subject=`产品电子手册意向单 - ${c.name||'未填写联系人'}`;
+function buildWeb3FormsPayload(inquiryId){
+  let c=state.contact||{},ps=state.items.filter(i=>i.type==='product'),cs=state.items.filter(i=>i.type==='custom'),submittedAt=new Date().toISOString(),subject=`[${inquiryId}] DREAMLAND 产品电子手册意向单 - ${c.name||'未填写联系人'}`;
   return{
-    access_key:WEB3FORMS_ACCESS_KEY,
-    subject,
-    from_name:c.name||'产品手册访客',
-    email:c.email||'',
-    botcheck:'',
-    submitted_at:submittedAt,
-    contact_name:c.name||'',
-    company:c.company||'',
-    country_or_region:c.country||'',
-    city:c.city||'',
-    email_address:c.email||'',
-    phone_or_wechat:c.phone||'',
-    buyer_type:c.buyerType||'',
-    message:c.message||'',
-    personal_info:JSON.stringify(c,null,2),
-    language:currentLang,
-    estimated_amount:money(total()),
-    estimated_amount_base_usd:total().toFixed(2),
-    product_count:ps.length,
-    custom_count:cs.length,
-    items_summary:state.items.map(itemText).join('\n'),
-    product_items:JSON.stringify(ps,null,2),
-    custom_items:JSON.stringify(cs,null,2)
+    access_key:web3formsAccessKey(),subject,from_name:c.name||'DREAMLAND 产品手册访客',email:c.email||'',
+    inquiry_id:inquiryId,submitted_at:submittedAt,privacy_version:appConfig.privacyVersion||'',privacy_accepted:'yes',
+    contact_name:c.name||'',company:c.company||'',country_or_region:c.country||'',city:c.city||'',email_address:c.email||'',phone_or_wechat:c.phone||'',buyer_type:c.buyerType||'',message:c.message||'',
+    personal_info:JSON.stringify(c,null,2),language:currentLang,estimated_amount:money(total()),estimated_amount_base_usd:total().toFixed(2),product_count:ps.length,custom_count:cs.length,
+    items_summary:state.items.map(itemText).join('\n'),product_items:JSON.stringify(ps,null,2),custom_items:JSON.stringify(cs,null,2)
   }
 }
-function buildWeb3FormsFormData(){
-  let payload=buildWeb3FormsPayload();
-  let formData=new FormData();
-  Object.entries(payload).forEach(([key,value])=>{
-    formData.append(key,value==null?'':String(value));
-  });
-  return formData;
+function buildWeb3FormsFormData(inquiryId){
+  let payload=buildWeb3FormsPayload(inquiryId),formData=new FormData();
+  Object.entries(payload).forEach(([key,value])=>formData.append(key,value==null?'':String(value)));
+  const captcha=hcaptchaToken();if(captcha)formData.append('h-captcha-response',captcha);
+  return formData
 }
-
+function submissionSnapshot(inquiryId){
+  return{inquiryId,submittedAt:new Date().toISOString(),language:currentLang,amountBaseUsd:total(),amountDisplay:money(total()),itemCount:state.items.length,items:state.items.map(item=>({type:item.type,productId:item.productId||'',name:productDisplayName(item),qty:Number(item.qty)||0,size:item.size||item.sizePref||'',cover:item.cover||''}))}
+}
+function archiveSubmission(snapshot){
+  let archive=[];try{archive=JSON.parse(localStorage.getItem(SUBMISSION_ARCHIVE_KEY)||'[]')}catch(_){}
+  archive.unshift(snapshot);archive=archive.slice(0,Math.max(1,Number(appConfig.archiveLimit)||20));
+  localStorage.setItem(SUBMISSION_ARCHIVE_KEY,JSON.stringify(archive));localStorage.setItem(LAST_SUBMISSION_KEY,JSON.stringify(snapshot))
+}
+function clearSubmittedInquiry(){
+  state={version:2,items:[],contact:{}};save();pendingInquiryId='';
+  ['name','company','country','city','email','phone','message','customQty','customDate','customColor','customNote'].forEach(id=>{let el=document.getElementById(id);if(el)el.value='' });
+  ['buyerType','customUse','customBudget','customSize','customScent','customPack','customBranding'].forEach(id=>{let el=document.getElementById(id);if(el)el.selectedIndex=0})
+}
 async function submitInquiry(){
-  let btn=document.getElementById('submitBtn');
+  let btn=document.getElementById('submitBtn'),error=document.getElementById('verificationError');
   if(!btn)return;
-  if(!web3formsReady()){
-    toast(ui('web3KeyMissing'));
-    return
-  }
-  btn.disabled=true;
-  btn.innerHTML='<span class="loader"></span>';
+  if(submittingInquiry){toast(ui('submissionDuplicate'));return}
+  const now=Date.now(),cooldown=Math.max(0,Number(appConfig.submitCooldownMs)||10000);
+  if(now-lastSubmitAttemptAt<cooldown){toast(ui('submissionCooldown'));return}
+  if(!web3formsReady()){toast(ui('formNotConfigured'));return}
+  const consent=document.getElementById('privacyConsent');
+  if(!consent?.checked){if(error){error.textContent=ui('privacyRequired');error.classList.add('show')}toast(ui('privacyRequired'));return}
+  if(appConfig.hcaptcha?.enabled!==false&&!hcaptchaToken()){if(error){error.textContent=ui('captchaRequired');error.classList.add('show')}toast(ui('captchaRequired'));return}
+  if(error)error.classList.remove('show');
+  const inquiryId=ensureInquiryId(),snapshot=submissionSnapshot(inquiryId);
+  submittingInquiry=true;lastSubmitAttemptAt=now;btn.disabled=true;btn.innerHTML='<span class="loader"></span>';
   try{
-    let formData=buildWeb3FormsFormData();
-    let res=await fetch(WEB3FORMS_ENDPOINT,{
-      method:'POST',
-      headers:{'Accept':'application/json'},
-      body:formData
-    });
-    let data={};
+    let res=await fetch(web3formsEndpoint(),{method:'POST',headers:{Accept:'application/json'},body:buildWeb3FormsFormData(inquiryId)}),data={};
     try{data=await res.json()}catch(_){}
     if(!res.ok||data.success===false)throw new Error(data.message||'Web3Forms submit failed');
-    btn.textContent=ui('confirmSubmit');
-    go('success')
+    archiveSubmission(snapshot);clearSubmittedInquiry();btn.textContent=ui('confirmSubmit');go('success')
   }catch(e){
-    console.error(e);
-    toast(ui('submitFailed'));
-    btn.textContent=ui('confirmSubmit')
-  }finally{
-    btn.disabled=false
-  }
+    console.error(e);toast(ui('submitFailed'));btn.textContent=ui('confirmSubmit');
+    try{if(hcaptchaWidgetId!==null)window.hcaptcha?.reset(hcaptchaWidgetId)}catch(_){}
+  }finally{submittingInquiry=false;btn.disabled=false}
 }
-function renderSuccess(){let d=new Date();successId.textContent='#YX-'+String(d.getFullYear()).slice(2)+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'-'+Math.floor(100+Math.random()*900);successDate.textContent=d.toLocaleDateString(currencyMap[currentLang].locale);successAmount.textContent=money(total())}
+function renderSuccess(){
+  let snapshot={};try{snapshot=JSON.parse(localStorage.getItem(LAST_SUBMISSION_KEY)||'{}')}catch(_){}
+  let d=snapshot.submittedAt?new Date(snapshot.submittedAt):new Date();
+  successId.textContent=snapshot.inquiryId||'—';successDate.textContent=d.toLocaleDateString(currencyMap[currentLang]?.locale||'zh-CN');successAmount.textContent=snapshot.amountDisplay||money(0);
+  let sub=document.querySelector('.success-sub');if(sub)sub.innerHTML=`${ui('successSub1')}<br>${ui('successSub2')}`;
+  let actions=document.querySelector('.success-actions');if(actions&&!actions.querySelector('.archive-note'))actions.insertAdjacentHTML('afterbegin',`<p class="archive-note">${ui('submissionArchived')}</p>`)
+}
 function inquiryBadgeCount(){
   return state.items.reduce((sum,item)=>{
     if(item.type==='product')return sum+(Number(item.qty)||0);
@@ -707,6 +770,7 @@ async function bootstrap(){
   await loadCatalogData();
   activeSeries=seriesMeta[defaultSeries]?defaultSeries:(Object.keys(seriesMeta)[0]||'advanced');
   activeProduct=products[0]||null;
+  applyRuntimeLimits();
   bindCtaReveal();
   bindCatalogLazyLoad();
   refreshBudgetOptions();

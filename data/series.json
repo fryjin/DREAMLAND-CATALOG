@@ -72,7 +72,9 @@
         "surchargesCny": {
           "礼盒包装": 40
         }
-      }
+      },
+      "defaultMoq": 50,
+      "moqStatus": "placeholder"
     },
     "masterpiece": {
       "id": "masterpiece",
@@ -106,7 +108,9 @@
         ],
         "default": "礼盒包装",
         "surchargesCny": {}
-      }
+      },
+      "defaultMoq": 50,
+      "moqStatus": "placeholder"
     },
     "holiday": {
       "id": "holiday",
@@ -139,7 +143,9 @@
           "强护包装": 10,
           "礼盒包装": 50
         }
-      }
+      },
+      "defaultMoq": 100,
+      "moqStatus": "placeholder"
     },
     "classic": {
       "id": "classic",
@@ -171,7 +177,9 @@
           "强护包装": 10,
           "礼盒包装": 50
         }
-      }
+      },
+      "defaultMoq": 100,
+      "moqStatus": "placeholder"
     }
   }
 }

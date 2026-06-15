@@ -26,7 +26,9 @@
         "./images/products/ADV001/detail-4.jpg",
         "./images/products/ADV001/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV002",
@@ -53,7 +55,9 @@
         "./images/products/ADV002/detail-4.jpg",
         "./images/products/ADV002/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV003",
@@ -80,7 +84,9 @@
         "./images/products/ADV003/detail-4.jpg",
         "./images/products/ADV003/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV004",
@@ -107,7 +113,9 @@
         "./images/products/ADV004/detail-4.jpg",
         "./images/products/ADV004/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV005",
@@ -134,7 +142,9 @@
         "./images/products/ADV005/detail-4.jpg",
         "./images/products/ADV005/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV006",
@@ -161,7 +171,9 @@
         "./images/products/ADV006/detail-4.jpg",
         "./images/products/ADV006/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV007",
@@ -188,7 +200,9 @@
         "./images/products/ADV007/detail-4.jpg",
         "./images/products/ADV007/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV008",
@@ -215,7 +229,9 @@
         "./images/products/ADV008/detail-4.jpg",
         "./images/products/ADV008/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV009",
@@ -242,7 +258,9 @@
         "./images/products/ADV009/detail-4.jpg",
         "./images/products/ADV009/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV010",
@@ -269,7 +287,9 @@
         "./images/products/ADV010/detail-4.jpg",
         "./images/products/ADV010/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV011",
@@ -296,7 +316,9 @@
         "./images/products/ADV011/detail-4.jpg",
         "./images/products/ADV011/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV012",
@@ -323,7 +345,9 @@
         "./images/products/ADV012/detail-4.jpg",
         "./images/products/ADV012/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV013",
@@ -350,7 +374,9 @@
         "./images/products/ADV013/detail-4.jpg",
         "./images/products/ADV013/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV014",
@@ -377,7 +403,9 @@
         "./images/products/ADV014/detail-4.jpg",
         "./images/products/ADV014/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV015",
@@ -404,7 +432,9 @@
         "./images/products/ADV015/detail-4.jpg",
         "./images/products/ADV015/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV016",
@@ -431,7 +461,9 @@
         "./images/products/ADV016/detail-4.jpg",
         "./images/products/ADV016/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV017",
@@ -458,7 +490,9 @@
         "./images/products/ADV017/detail-4.jpg",
         "./images/products/ADV017/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV018",
@@ -485,7 +519,9 @@
         "./images/products/ADV018/detail-4.jpg",
         "./images/products/ADV018/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "ADV019",
@@ -512,7 +548,9 @@
         "./images/products/ADV019/detail-4.jpg",
         "./images/products/ADV019/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC001",
@@ -539,7 +577,9 @@
         "./images/products/MPC001/detail-4.jpg",
         "./images/products/MPC001/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC002",
@@ -566,7 +606,9 @@
         "./images/products/MPC002/detail-4.jpg",
         "./images/products/MPC002/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC003",
@@ -593,7 +635,9 @@
         "./images/products/MPC003/detail-4.jpg",
         "./images/products/MPC003/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC004",
@@ -620,7 +664,9 @@
         "./images/products/MPC004/detail-4.jpg",
         "./images/products/MPC004/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC005",
@@ -647,7 +693,9 @@
         "./images/products/MPC005/detail-4.jpg",
         "./images/products/MPC005/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC006",
@@ -674,7 +722,9 @@
         "./images/products/MPC006/detail-4.jpg",
         "./images/products/MPC006/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC007",
@@ -701,7 +751,9 @@
         "./images/products/MPC007/detail-4.jpg",
         "./images/products/MPC007/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC008",
@@ -728,7 +780,9 @@
         "./images/products/MPC008/detail-4.jpg",
         "./images/products/MPC008/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC009",
@@ -755,7 +809,9 @@
         "./images/products/MPC009/detail-4.jpg",
         "./images/products/MPC009/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC010",
@@ -782,7 +838,9 @@
         "./images/products/MPC010/detail-4.jpg",
         "./images/products/MPC010/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC011",
@@ -809,7 +867,9 @@
         "./images/products/MPC011/detail-4.jpg",
         "./images/products/MPC011/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC012",
@@ -836,7 +896,9 @@
         "./images/products/MPC012/detail-4.jpg",
         "./images/products/MPC012/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC013",
@@ -863,7 +925,9 @@
         "./images/products/MPC013/detail-4.jpg",
         "./images/products/MPC013/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC014",
@@ -890,7 +954,9 @@
         "./images/products/MPC014/detail-4.jpg",
         "./images/products/MPC014/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC015",
@@ -917,7 +983,9 @@
         "./images/products/MPC015/detail-4.jpg",
         "./images/products/MPC015/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC016",
@@ -944,7 +1012,9 @@
         "./images/products/MPC016/detail-4.jpg",
         "./images/products/MPC016/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC017",
@@ -971,7 +1041,9 @@
         "./images/products/MPC017/detail-4.jpg",
         "./images/products/MPC017/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC018",
@@ -998,7 +1070,9 @@
         "./images/products/MPC018/detail-4.jpg",
         "./images/products/MPC018/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC019",
@@ -1025,7 +1099,9 @@
         "./images/products/MPC019/detail-4.jpg",
         "./images/products/MPC019/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC020",
@@ -1052,7 +1128,9 @@
         "./images/products/MPC020/detail-4.jpg",
         "./images/products/MPC020/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC021",
@@ -1079,7 +1157,9 @@
         "./images/products/MPC021/detail-4.jpg",
         "./images/products/MPC021/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC022",
@@ -1106,7 +1186,9 @@
         "./images/products/MPC022/detail-4.jpg",
         "./images/products/MPC022/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC023",
@@ -1133,7 +1215,9 @@
         "./images/products/MPC023/detail-4.jpg",
         "./images/products/MPC023/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC024",
@@ -1160,7 +1244,9 @@
         "./images/products/MPC024/detail-4.jpg",
         "./images/products/MPC024/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC025",
@@ -1187,7 +1273,9 @@
         "./images/products/MPC025/detail-4.jpg",
         "./images/products/MPC025/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC026",
@@ -1214,7 +1302,9 @@
         "./images/products/MPC026/detail-4.jpg",
         "./images/products/MPC026/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC027",
@@ -1241,7 +1331,9 @@
         "./images/products/MPC027/detail-4.jpg",
         "./images/products/MPC027/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC028",
@@ -1268,7 +1360,9 @@
         "./images/products/MPC028/detail-4.jpg",
         "./images/products/MPC028/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC029",
@@ -1295,7 +1389,9 @@
         "./images/products/MPC029/detail-4.jpg",
         "./images/products/MPC029/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC030",
@@ -1322,7 +1418,9 @@
         "./images/products/MPC030/detail-4.jpg",
         "./images/products/MPC030/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC031",
@@ -1349,7 +1447,9 @@
         "./images/products/MPC031/detail-4.jpg",
         "./images/products/MPC031/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC032",
@@ -1376,7 +1476,9 @@
         "./images/products/MPC032/detail-4.jpg",
         "./images/products/MPC032/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC033",
@@ -1403,7 +1505,9 @@
         "./images/products/MPC033/detail-4.jpg",
         "./images/products/MPC033/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC034",
@@ -1430,7 +1534,9 @@
         "./images/products/MPC034/detail-4.jpg",
         "./images/products/MPC034/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC035",
@@ -1457,7 +1563,9 @@
         "./images/products/MPC035/detail-4.jpg",
         "./images/products/MPC035/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC036",
@@ -1484,7 +1592,9 @@
         "./images/products/MPC036/detail-4.jpg",
         "./images/products/MPC036/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC037",
@@ -1511,7 +1621,9 @@
         "./images/products/MPC037/detail-4.jpg",
         "./images/products/MPC037/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC038",
@@ -1538,7 +1650,9 @@
         "./images/products/MPC038/detail-4.jpg",
         "./images/products/MPC038/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC039",
@@ -1565,7 +1679,9 @@
         "./images/products/MPC039/detail-4.jpg",
         "./images/products/MPC039/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC040",
@@ -1592,7 +1708,9 @@
         "./images/products/MPC040/detail-4.jpg",
         "./images/products/MPC040/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC041",
@@ -1619,7 +1737,9 @@
         "./images/products/MPC041/detail-4.jpg",
         "./images/products/MPC041/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC042",
@@ -1646,7 +1766,9 @@
         "./images/products/MPC042/detail-4.jpg",
         "./images/products/MPC042/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC043",
@@ -1673,7 +1795,9 @@
         "./images/products/MPC043/detail-4.jpg",
         "./images/products/MPC043/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC044",
@@ -1700,7 +1824,9 @@
         "./images/products/MPC044/detail-4.jpg",
         "./images/products/MPC044/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC045",
@@ -1727,7 +1853,9 @@
         "./images/products/MPC045/detail-4.jpg",
         "./images/products/MPC045/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC046",
@@ -1754,7 +1882,9 @@
         "./images/products/MPC046/detail-4.jpg",
         "./images/products/MPC046/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC047",
@@ -1781,7 +1911,9 @@
         "./images/products/MPC047/detail-4.jpg",
         "./images/products/MPC047/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC048",
@@ -1808,7 +1940,9 @@
         "./images/products/MPC048/detail-4.jpg",
         "./images/products/MPC048/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC049",
@@ -1835,7 +1969,9 @@
         "./images/products/MPC049/detail-4.jpg",
         "./images/products/MPC049/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC050",
@@ -1862,7 +1998,9 @@
         "./images/products/MPC050/detail-4.jpg",
         "./images/products/MPC050/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC051",
@@ -1889,7 +2027,9 @@
         "./images/products/MPC051/detail-4.jpg",
         "./images/products/MPC051/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC052",
@@ -1916,7 +2056,9 @@
         "./images/products/MPC052/detail-4.jpg",
         "./images/products/MPC052/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC053",
@@ -1943,7 +2085,9 @@
         "./images/products/MPC053/detail-4.jpg",
         "./images/products/MPC053/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC054",
@@ -1970,7 +2114,9 @@
         "./images/products/MPC054/detail-4.jpg",
         "./images/products/MPC054/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC055",
@@ -1997,7 +2143,9 @@
         "./images/products/MPC055/detail-4.jpg",
         "./images/products/MPC055/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC056",
@@ -2024,7 +2172,9 @@
         "./images/products/MPC056/detail-4.jpg",
         "./images/products/MPC056/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC057",
@@ -2051,7 +2201,9 @@
         "./images/products/MPC057/detail-4.jpg",
         "./images/products/MPC057/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC058",
@@ -2078,7 +2230,9 @@
         "./images/products/MPC058/detail-4.jpg",
         "./images/products/MPC058/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC059",
@@ -2105,7 +2259,9 @@
         "./images/products/MPC059/detail-4.jpg",
         "./images/products/MPC059/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC060",
@@ -2132,7 +2288,9 @@
         "./images/products/MPC060/detail-4.jpg",
         "./images/products/MPC060/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC061",
@@ -2159,7 +2317,9 @@
         "./images/products/MPC061/detail-4.jpg",
         "./images/products/MPC061/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC062",
@@ -2186,7 +2346,9 @@
         "./images/products/MPC062/detail-4.jpg",
         "./images/products/MPC062/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC063",
@@ -2213,7 +2375,9 @@
         "./images/products/MPC063/detail-4.jpg",
         "./images/products/MPC063/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC064",
@@ -2240,7 +2404,9 @@
         "./images/products/MPC064/detail-4.jpg",
         "./images/products/MPC064/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC065",
@@ -2267,7 +2433,9 @@
         "./images/products/MPC065/detail-4.jpg",
         "./images/products/MPC065/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC066",
@@ -2294,7 +2462,9 @@
         "./images/products/MPC066/detail-4.jpg",
         "./images/products/MPC066/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC067",
@@ -2321,7 +2491,9 @@
         "./images/products/MPC067/detail-4.jpg",
         "./images/products/MPC067/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC068",
@@ -2348,7 +2520,9 @@
         "./images/products/MPC068/detail-4.jpg",
         "./images/products/MPC068/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC069",
@@ -2375,7 +2549,9 @@
         "./images/products/MPC069/detail-4.jpg",
         "./images/products/MPC069/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC070",
@@ -2402,7 +2578,9 @@
         "./images/products/MPC070/detail-4.jpg",
         "./images/products/MPC070/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC071",
@@ -2429,7 +2607,9 @@
         "./images/products/MPC071/detail-4.jpg",
         "./images/products/MPC071/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "MPC072",
@@ -2456,7 +2636,9 @@
         "./images/products/MPC072/detail-4.jpg",
         "./images/products/MPC072/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 50,
+      "moqStatus": "placeholder"
     },
     {
       "id": "HOL001",
@@ -2483,7 +2665,9 @@
         "./images/products/HOL001/detail-4.jpg",
         "./images/products/HOL001/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "HOL002",
@@ -2510,7 +2694,9 @@
         "./images/products/HOL002/detail-4.jpg",
         "./images/products/HOL002/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "HOL003",
@@ -2537,7 +2723,9 @@
         "./images/products/HOL003/detail-4.jpg",
         "./images/products/HOL003/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "HOL004",
@@ -2564,7 +2752,9 @@
         "./images/products/HOL004/detail-4.jpg",
         "./images/products/HOL004/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "HOL005",
@@ -2591,7 +2781,9 @@
         "./images/products/HOL005/detail-4.jpg",
         "./images/products/HOL005/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "HOL006",
@@ -2618,7 +2810,9 @@
         "./images/products/HOL006/detail-4.jpg",
         "./images/products/HOL006/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "HOL007",
@@ -2645,7 +2839,9 @@
         "./images/products/HOL007/detail-4.jpg",
         "./images/products/HOL007/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "HOL008",
@@ -2672,7 +2868,9 @@
         "./images/products/HOL008/detail-4.jpg",
         "./images/products/HOL008/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "HOL009",
@@ -2699,7 +2897,9 @@
         "./images/products/HOL009/detail-4.jpg",
         "./images/products/HOL009/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "HOL010",
@@ -2726,7 +2926,9 @@
         "./images/products/HOL010/detail-4.jpg",
         "./images/products/HOL010/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "HOL011",
@@ -2753,7 +2955,9 @@
         "./images/products/HOL011/detail-4.jpg",
         "./images/products/HOL011/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "HOL012",
@@ -2780,7 +2984,9 @@
         "./images/products/HOL012/detail-4.jpg",
         "./images/products/HOL012/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "HOL013",
@@ -2807,7 +3013,9 @@
         "./images/products/HOL013/detail-4.jpg",
         "./images/products/HOL013/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "HOL014",
@@ -2834,7 +3042,9 @@
         "./images/products/HOL014/detail-4.jpg",
         "./images/products/HOL014/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "HOL015",
@@ -2861,7 +3071,9 @@
         "./images/products/HOL015/detail-4.jpg",
         "./images/products/HOL015/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "HOL016",
@@ -2888,7 +3100,9 @@
         "./images/products/HOL016/detail-4.jpg",
         "./images/products/HOL016/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "CLA001",
@@ -2915,7 +3129,9 @@
         "./images/products/CLA001/detail-4.jpg",
         "./images/products/CLA001/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "CLA002",
@@ -2942,7 +3158,9 @@
         "./images/products/CLA002/detail-4.jpg",
         "./images/products/CLA002/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "CLA003",
@@ -2969,7 +3187,9 @@
         "./images/products/CLA003/detail-4.jpg",
         "./images/products/CLA003/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "CLA004",
@@ -2996,7 +3216,9 @@
         "./images/products/CLA004/detail-4.jpg",
         "./images/products/CLA004/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "CLA005",
@@ -3023,7 +3245,9 @@
         "./images/products/CLA005/detail-4.jpg",
         "./images/products/CLA005/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "CLA006",
@@ -3050,7 +3274,9 @@
         "./images/products/CLA006/detail-4.jpg",
         "./images/products/CLA006/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "CLA007",
@@ -3077,7 +3303,9 @@
         "./images/products/CLA007/detail-4.jpg",
         "./images/products/CLA007/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     },
     {
       "id": "CLA008",
@@ -3104,7 +3332,9 @@
         "./images/products/CLA008/detail-4.jpg",
         "./images/products/CLA008/detail-5.jpg"
       ],
-      "status": "placeholder"
+      "status": "placeholder",
+      "moq": 100,
+      "moqStatus": "placeholder"
     }
   ]
 }
