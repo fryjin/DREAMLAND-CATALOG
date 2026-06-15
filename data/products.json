@@ -1,0 +1,3110 @@
+{
+  "schemaVersion": 1,
+  "products": [
+    {
+      "id": "ADV001",
+      "series": "advanced",
+      "name": "晨雾花瓣雕刻蜡烛",
+      "names": {
+        "zh": "晨雾花瓣雕刻蜡烛",
+        "en": "Morning Mist Petal Carved Candle",
+        "ko": "새벽 안개 꽃잎 조각 캔들"
+      },
+      "desc": "进阶系列第 1 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 1 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 1 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 1번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-1",
+      "cover": "./images/products/ADV001/cover.jpg",
+      "images": [
+        "./images/products/ADV001/detail-1.jpg",
+        "./images/products/ADV001/detail-2.jpg",
+        "./images/products/ADV001/detail-3.jpg",
+        "./images/products/ADV001/detail-4.jpg",
+        "./images/products/ADV001/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV002",
+      "series": "advanced",
+      "name": "落日珊瑚雕刻蜡烛",
+      "names": {
+        "zh": "落日珊瑚雕刻蜡烛",
+        "en": "Sunset Coral Carved Candle",
+        "ko": "선셋 코랄 조각 캔들"
+      },
+      "desc": "进阶系列第 2 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 2 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 2 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 2번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-2",
+      "cover": "./images/products/ADV002/cover.jpg",
+      "images": [
+        "./images/products/ADV002/detail-1.jpg",
+        "./images/products/ADV002/detail-2.jpg",
+        "./images/products/ADV002/detail-3.jpg",
+        "./images/products/ADV002/detail-4.jpg",
+        "./images/products/ADV002/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV003",
+      "series": "advanced",
+      "name": "海盐茉莉雕刻蜡烛",
+      "names": {
+        "zh": "海盐茉莉雕刻蜡烛",
+        "en": "Sea Salt Jasmine Carved Candle",
+        "ko": "씨솔트 자스민 조각 캔들"
+      },
+      "desc": "进阶系列第 3 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 3 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 3 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 3번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-3",
+      "cover": "./images/products/ADV003/cover.jpg",
+      "images": [
+        "./images/products/ADV003/detail-1.jpg",
+        "./images/products/ADV003/detail-2.jpg",
+        "./images/products/ADV003/detail-3.jpg",
+        "./images/products/ADV003/detail-4.jpg",
+        "./images/products/ADV003/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV004",
+      "series": "advanced",
+      "name": "天晴烟雨雕刻蜡烛",
+      "names": {
+        "zh": "天晴烟雨雕刻蜡烛",
+        "en": "Clear Sky Rain Carved Candle",
+        "ko": "맑은 하늘비 조각 캔들"
+      },
+      "desc": "进阶系列第 4 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 4 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 4 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 4번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-4",
+      "cover": "./images/products/ADV004/cover.jpg",
+      "images": [
+        "./images/products/ADV004/detail-1.jpg",
+        "./images/products/ADV004/detail-2.jpg",
+        "./images/products/ADV004/detail-3.jpg",
+        "./images/products/ADV004/detail-4.jpg",
+        "./images/products/ADV004/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV005",
+      "series": "advanced",
+      "name": "南瓜甜派雕刻蜡烛",
+      "names": {
+        "zh": "南瓜甜派雕刻蜡烛",
+        "en": "Pumpkin Pie Carved Candle",
+        "ko": "펌킨 파이 조각 캔들"
+      },
+      "desc": "进阶系列第 5 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 5 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 5 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 5번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-5",
+      "cover": "./images/products/ADV005/cover.jpg",
+      "images": [
+        "./images/products/ADV005/detail-1.jpg",
+        "./images/products/ADV005/detail-2.jpg",
+        "./images/products/ADV005/detail-3.jpg",
+        "./images/products/ADV005/detail-4.jpg",
+        "./images/products/ADV005/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV006",
+      "series": "advanced",
+      "name": "暖意雕刻蜡烛",
+      "names": {
+        "zh": "暖意雕刻蜡烛",
+        "en": "Gentle Warmth Carved Candle",
+        "ko": "따뜻한 온기 조각 캔들"
+      },
+      "desc": "进阶系列第 6 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 6 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 6 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 6번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-6",
+      "cover": "./images/products/ADV006/cover.jpg",
+      "images": [
+        "./images/products/ADV006/detail-1.jpg",
+        "./images/products/ADV006/detail-2.jpg",
+        "./images/products/ADV006/detail-3.jpg",
+        "./images/products/ADV006/detail-4.jpg",
+        "./images/products/ADV006/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV007",
+      "series": "advanced",
+      "name": "蜜桃狂想家雕刻蜡烛",
+      "names": {
+        "zh": "蜜桃狂想家雕刻蜡烛",
+        "en": "Peach Reverie Carved Candle",
+        "ko": "피치 리버리 조각 캔들"
+      },
+      "desc": "进阶系列第 7 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 7 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 7 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 7번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-1",
+      "cover": "./images/products/ADV007/cover.jpg",
+      "images": [
+        "./images/products/ADV007/detail-1.jpg",
+        "./images/products/ADV007/detail-2.jpg",
+        "./images/products/ADV007/detail-3.jpg",
+        "./images/products/ADV007/detail-4.jpg",
+        "./images/products/ADV007/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV008",
+      "series": "advanced",
+      "name": "黄绿雕刻蜡烛",
+      "names": {
+        "zh": "黄绿雕刻蜡烛",
+        "en": "Yellow Green Carved Candle",
+        "ko": "옐로 그린 조각 캔들"
+      },
+      "desc": "进阶系列第 8 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 8 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 8 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 8번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-2",
+      "cover": "./images/products/ADV008/cover.jpg",
+      "images": [
+        "./images/products/ADV008/detail-1.jpg",
+        "./images/products/ADV008/detail-2.jpg",
+        "./images/products/ADV008/detail-3.jpg",
+        "./images/products/ADV008/detail-4.jpg",
+        "./images/products/ADV008/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV009",
+      "series": "advanced",
+      "name": "喜欢你雕刻蜡烛",
+      "names": {
+        "zh": "喜欢你雕刻蜡烛",
+        "en": "Love You Carved Candle",
+        "ko": "좋아해 조각 캔들"
+      },
+      "desc": "进阶系列第 9 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 9 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 9 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 9번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-3",
+      "cover": "./images/products/ADV009/cover.jpg",
+      "images": [
+        "./images/products/ADV009/detail-1.jpg",
+        "./images/products/ADV009/detail-2.jpg",
+        "./images/products/ADV009/detail-3.jpg",
+        "./images/products/ADV009/detail-4.jpg",
+        "./images/products/ADV009/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV010",
+      "series": "advanced",
+      "name": "伊甸园雕刻蜡烛",
+      "names": {
+        "zh": "伊甸园雕刻蜡烛",
+        "en": "Eden Carved Candle",
+        "ko": "에덴 조각 캔들"
+      },
+      "desc": "进阶系列第 10 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 10 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 10 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 10번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-4",
+      "cover": "./images/products/ADV010/cover.jpg",
+      "images": [
+        "./images/products/ADV010/detail-1.jpg",
+        "./images/products/ADV010/detail-2.jpg",
+        "./images/products/ADV010/detail-3.jpg",
+        "./images/products/ADV010/detail-4.jpg",
+        "./images/products/ADV010/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV011",
+      "series": "advanced",
+      "name": "晨雾花瓣雕刻蜡烛 11",
+      "names": {
+        "zh": "晨雾花瓣雕刻蜡烛 11",
+        "en": "Morning Mist Petal Carved Candle 11",
+        "ko": "새벽 안개 꽃잎 조각 캔들 11"
+      },
+      "desc": "进阶系列第 11 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 11 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 11 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 11번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-5",
+      "cover": "./images/products/ADV011/cover.jpg",
+      "images": [
+        "./images/products/ADV011/detail-1.jpg",
+        "./images/products/ADV011/detail-2.jpg",
+        "./images/products/ADV011/detail-3.jpg",
+        "./images/products/ADV011/detail-4.jpg",
+        "./images/products/ADV011/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV012",
+      "series": "advanced",
+      "name": "落日珊瑚雕刻蜡烛 12",
+      "names": {
+        "zh": "落日珊瑚雕刻蜡烛 12",
+        "en": "Sunset Coral Carved Candle 12",
+        "ko": "선셋 코랄 조각 캔들 12"
+      },
+      "desc": "进阶系列第 12 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 12 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 12 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 12번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-6",
+      "cover": "./images/products/ADV012/cover.jpg",
+      "images": [
+        "./images/products/ADV012/detail-1.jpg",
+        "./images/products/ADV012/detail-2.jpg",
+        "./images/products/ADV012/detail-3.jpg",
+        "./images/products/ADV012/detail-4.jpg",
+        "./images/products/ADV012/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV013",
+      "series": "advanced",
+      "name": "海盐茉莉雕刻蜡烛 13",
+      "names": {
+        "zh": "海盐茉莉雕刻蜡烛 13",
+        "en": "Sea Salt Jasmine Carved Candle 13",
+        "ko": "씨솔트 자스민 조각 캔들 13"
+      },
+      "desc": "进阶系列第 13 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 13 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 13 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 13번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-1",
+      "cover": "./images/products/ADV013/cover.jpg",
+      "images": [
+        "./images/products/ADV013/detail-1.jpg",
+        "./images/products/ADV013/detail-2.jpg",
+        "./images/products/ADV013/detail-3.jpg",
+        "./images/products/ADV013/detail-4.jpg",
+        "./images/products/ADV013/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV014",
+      "series": "advanced",
+      "name": "天晴烟雨雕刻蜡烛 14",
+      "names": {
+        "zh": "天晴烟雨雕刻蜡烛 14",
+        "en": "Clear Sky Rain Carved Candle 14",
+        "ko": "맑은 하늘비 조각 캔들 14"
+      },
+      "desc": "进阶系列第 14 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 14 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 14 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 14번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-2",
+      "cover": "./images/products/ADV014/cover.jpg",
+      "images": [
+        "./images/products/ADV014/detail-1.jpg",
+        "./images/products/ADV014/detail-2.jpg",
+        "./images/products/ADV014/detail-3.jpg",
+        "./images/products/ADV014/detail-4.jpg",
+        "./images/products/ADV014/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV015",
+      "series": "advanced",
+      "name": "南瓜甜派雕刻蜡烛 15",
+      "names": {
+        "zh": "南瓜甜派雕刻蜡烛 15",
+        "en": "Pumpkin Pie Carved Candle 15",
+        "ko": "펌킨 파이 조각 캔들 15"
+      },
+      "desc": "进阶系列第 15 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 15 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 15 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 15번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-3",
+      "cover": "./images/products/ADV015/cover.jpg",
+      "images": [
+        "./images/products/ADV015/detail-1.jpg",
+        "./images/products/ADV015/detail-2.jpg",
+        "./images/products/ADV015/detail-3.jpg",
+        "./images/products/ADV015/detail-4.jpg",
+        "./images/products/ADV015/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV016",
+      "series": "advanced",
+      "name": "暖意雕刻蜡烛 16",
+      "names": {
+        "zh": "暖意雕刻蜡烛 16",
+        "en": "Gentle Warmth Carved Candle 16",
+        "ko": "따뜻한 온기 조각 캔들 16"
+      },
+      "desc": "进阶系列第 16 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 16 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 16 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 16번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-4",
+      "cover": "./images/products/ADV016/cover.jpg",
+      "images": [
+        "./images/products/ADV016/detail-1.jpg",
+        "./images/products/ADV016/detail-2.jpg",
+        "./images/products/ADV016/detail-3.jpg",
+        "./images/products/ADV016/detail-4.jpg",
+        "./images/products/ADV016/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV017",
+      "series": "advanced",
+      "name": "蜜桃狂想家雕刻蜡烛 17",
+      "names": {
+        "zh": "蜜桃狂想家雕刻蜡烛 17",
+        "en": "Peach Reverie Carved Candle 17",
+        "ko": "피치 리버리 조각 캔들 17"
+      },
+      "desc": "进阶系列第 17 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 17 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 17 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 17번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-5",
+      "cover": "./images/products/ADV017/cover.jpg",
+      "images": [
+        "./images/products/ADV017/detail-1.jpg",
+        "./images/products/ADV017/detail-2.jpg",
+        "./images/products/ADV017/detail-3.jpg",
+        "./images/products/ADV017/detail-4.jpg",
+        "./images/products/ADV017/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV018",
+      "series": "advanced",
+      "name": "黄绿雕刻蜡烛 18",
+      "names": {
+        "zh": "黄绿雕刻蜡烛 18",
+        "en": "Yellow Green Carved Candle 18",
+        "ko": "옐로 그린 조각 캔들 18"
+      },
+      "desc": "进阶系列第 18 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 18 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 18 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 18번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-6",
+      "cover": "./images/products/ADV018/cover.jpg",
+      "images": [
+        "./images/products/ADV018/detail-1.jpg",
+        "./images/products/ADV018/detail-2.jpg",
+        "./images/products/ADV018/detail-3.jpg",
+        "./images/products/ADV018/detail-4.jpg",
+        "./images/products/ADV018/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "ADV019",
+      "series": "advanced",
+      "name": "喜欢你雕刻蜡烛 19",
+      "names": {
+        "zh": "喜欢你雕刻蜡烛 19",
+        "en": "Love You Carved Candle 19",
+        "ko": "좋아해 조각 캔들 19"
+      },
+      "desc": "进阶系列第 19 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "进阶系列第 19 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 19 in Advanced. Replace it later with the final product information.",
+        "ko": "어드밴스 19번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-1",
+      "cover": "./images/products/ADV019/cover.jpg",
+      "images": [
+        "./images/products/ADV019/detail-1.jpg",
+        "./images/products/ADV019/detail-2.jpg",
+        "./images/products/ADV019/detail-3.jpg",
+        "./images/products/ADV019/detail-4.jpg",
+        "./images/products/ADV019/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC001",
+      "series": "masterpiece",
+      "name": "森潮雕刻蜡烛",
+      "names": {
+        "zh": "森潮雕刻蜡烛",
+        "en": "Forest Tide Carved Candle",
+        "ko": "포레스트 타이드 조각 캔들"
+      },
+      "desc": "匠作系列第 1 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 1 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 1 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 1번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-1",
+      "cover": "./images/products/MPC001/cover.jpg",
+      "images": [
+        "./images/products/MPC001/detail-1.jpg",
+        "./images/products/MPC001/detail-2.jpg",
+        "./images/products/MPC001/detail-3.jpg",
+        "./images/products/MPC001/detail-4.jpg",
+        "./images/products/MPC001/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC002",
+      "series": "masterpiece",
+      "name": "宇宙摩卡雕刻蜡烛",
+      "names": {
+        "zh": "宇宙摩卡雕刻蜡烛",
+        "en": "Cosmic Mocha Carved Candle",
+        "ko": "코스믹 모카 조각 캔들"
+      },
+      "desc": "匠作系列第 2 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 2 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 2 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 2번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-2",
+      "cover": "./images/products/MPC002/cover.jpg",
+      "images": [
+        "./images/products/MPC002/detail-1.jpg",
+        "./images/products/MPC002/detail-2.jpg",
+        "./images/products/MPC002/detail-3.jpg",
+        "./images/products/MPC002/detail-4.jpg",
+        "./images/products/MPC002/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC003",
+      "series": "masterpiece",
+      "name": "只此青绿雕刻蜡烛",
+      "names": {
+        "zh": "只此青绿雕刻蜡烛",
+        "en": "Celadon Green Carved Candle",
+        "ko": "청록의 순간 조각 캔들"
+      },
+      "desc": "匠作系列第 3 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 3 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 3 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 3번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-3",
+      "cover": "./images/products/MPC003/cover.jpg",
+      "images": [
+        "./images/products/MPC003/detail-1.jpg",
+        "./images/products/MPC003/detail-2.jpg",
+        "./images/products/MPC003/detail-3.jpg",
+        "./images/products/MPC003/detail-4.jpg",
+        "./images/products/MPC003/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC004",
+      "series": "masterpiece",
+      "name": "阿尔的海洋雕刻蜡烛",
+      "names": {
+        "zh": "阿尔的海洋雕刻蜡烛",
+        "en": "Arles Ocean Carved Candle",
+        "ko": "아를의 바다 조각 캔들"
+      },
+      "desc": "匠作系列第 4 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 4 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 4 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 4번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-4",
+      "cover": "./images/products/MPC004/cover.jpg",
+      "images": [
+        "./images/products/MPC004/detail-1.jpg",
+        "./images/products/MPC004/detail-2.jpg",
+        "./images/products/MPC004/detail-3.jpg",
+        "./images/products/MPC004/detail-4.jpg",
+        "./images/products/MPC004/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC005",
+      "series": "masterpiece",
+      "name": "暗黑彩虹雕刻蜡烛",
+      "names": {
+        "zh": "暗黑彩虹雕刻蜡烛",
+        "en": "Noir Rainbow Carved Candle",
+        "ko": "누아르 레인보우 조각 캔들"
+      },
+      "desc": "匠作系列第 5 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 5 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 5 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 5번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-5",
+      "cover": "./images/products/MPC005/cover.jpg",
+      "images": [
+        "./images/products/MPC005/detail-1.jpg",
+        "./images/products/MPC005/detail-2.jpg",
+        "./images/products/MPC005/detail-3.jpg",
+        "./images/products/MPC005/detail-4.jpg",
+        "./images/products/MPC005/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC006",
+      "series": "masterpiece",
+      "name": "苍葭雕刻蜡烛",
+      "names": {
+        "zh": "苍葭雕刻蜡烛",
+        "en": "Misty Reeds Carved Candle",
+        "ko": "안개 갈대 조각 캔들"
+      },
+      "desc": "匠作系列第 6 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 6 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 6 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 6번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-6",
+      "cover": "./images/products/MPC006/cover.jpg",
+      "images": [
+        "./images/products/MPC006/detail-1.jpg",
+        "./images/products/MPC006/detail-2.jpg",
+        "./images/products/MPC006/detail-3.jpg",
+        "./images/products/MPC006/detail-4.jpg",
+        "./images/products/MPC006/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC007",
+      "series": "masterpiece",
+      "name": "弗洛伊德雕刻蜡烛",
+      "names": {
+        "zh": "弗洛伊德雕刻蜡烛",
+        "en": "Freud Carved Candle",
+        "ko": "프로이트 조각 캔들"
+      },
+      "desc": "匠作系列第 7 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 7 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 7 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 7번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-1",
+      "cover": "./images/products/MPC007/cover.jpg",
+      "images": [
+        "./images/products/MPC007/detail-1.jpg",
+        "./images/products/MPC007/detail-2.jpg",
+        "./images/products/MPC007/detail-3.jpg",
+        "./images/products/MPC007/detail-4.jpg",
+        "./images/products/MPC007/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC008",
+      "series": "masterpiece",
+      "name": "黄金海岸雕刻蜡烛",
+      "names": {
+        "zh": "黄金海岸雕刻蜡烛",
+        "en": "Golden Coast Carved Candle",
+        "ko": "골든 코스트 조각 캔들"
+      },
+      "desc": "匠作系列第 8 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 8 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 8 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 8번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-2",
+      "cover": "./images/products/MPC008/cover.jpg",
+      "images": [
+        "./images/products/MPC008/detail-1.jpg",
+        "./images/products/MPC008/detail-2.jpg",
+        "./images/products/MPC008/detail-3.jpg",
+        "./images/products/MPC008/detail-4.jpg",
+        "./images/products/MPC008/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC009",
+      "series": "masterpiece",
+      "name": "苍烟落照雕刻蜡烛",
+      "names": {
+        "zh": "苍烟落照雕刻蜡烛",
+        "en": "Dusky Afterglow Carved Candle",
+        "ko": "더스키 애프터글로우 조각 캔들"
+      },
+      "desc": "匠作系列第 9 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 9 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 9 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 9번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-3",
+      "cover": "./images/products/MPC009/cover.jpg",
+      "images": [
+        "./images/products/MPC009/detail-1.jpg",
+        "./images/products/MPC009/detail-2.jpg",
+        "./images/products/MPC009/detail-3.jpg",
+        "./images/products/MPC009/detail-4.jpg",
+        "./images/products/MPC009/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC010",
+      "series": "masterpiece",
+      "name": "候鸟遗岛雕刻蜡烛",
+      "names": {
+        "zh": "候鸟遗岛雕刻蜡烛",
+        "en": "Migratory Isle Carved Candle",
+        "ko": "철새의 섬 조각 캔들"
+      },
+      "desc": "匠作系列第 10 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 10 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 10 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 10번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-4",
+      "cover": "./images/products/MPC010/cover.jpg",
+      "images": [
+        "./images/products/MPC010/detail-1.jpg",
+        "./images/products/MPC010/detail-2.jpg",
+        "./images/products/MPC010/detail-3.jpg",
+        "./images/products/MPC010/detail-4.jpg",
+        "./images/products/MPC010/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC011",
+      "series": "masterpiece",
+      "name": "加州之梦雕刻蜡烛",
+      "names": {
+        "zh": "加州之梦雕刻蜡烛",
+        "en": "California Dream Carved Candle",
+        "ko": "캘리포니아 드림 조각 캔들"
+      },
+      "desc": "匠作系列第 11 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 11 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 11 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 11번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-5",
+      "cover": "./images/products/MPC011/cover.jpg",
+      "images": [
+        "./images/products/MPC011/detail-1.jpg",
+        "./images/products/MPC011/detail-2.jpg",
+        "./images/products/MPC011/detail-3.jpg",
+        "./images/products/MPC011/detail-4.jpg",
+        "./images/products/MPC011/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC012",
+      "series": "masterpiece",
+      "name": "月光宝盒雕刻蜡烛",
+      "names": {
+        "zh": "月光宝盒雕刻蜡烛",
+        "en": "Moonlit Treasure Carved Candle",
+        "ko": "문릿 트레저 조각 캔들"
+      },
+      "desc": "匠作系列第 12 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 12 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 12 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 12번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-6",
+      "cover": "./images/products/MPC012/cover.jpg",
+      "images": [
+        "./images/products/MPC012/detail-1.jpg",
+        "./images/products/MPC012/detail-2.jpg",
+        "./images/products/MPC012/detail-3.jpg",
+        "./images/products/MPC012/detail-4.jpg",
+        "./images/products/MPC012/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC013",
+      "series": "masterpiece",
+      "name": "小天狼星雕刻蜡烛",
+      "names": {
+        "zh": "小天狼星雕刻蜡烛",
+        "en": "Sirius Carved Candle",
+        "ko": "시리우스 조각 캔들"
+      },
+      "desc": "匠作系列第 13 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 13 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 13 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 13번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-1",
+      "cover": "./images/products/MPC013/cover.jpg",
+      "images": [
+        "./images/products/MPC013/detail-1.jpg",
+        "./images/products/MPC013/detail-2.jpg",
+        "./images/products/MPC013/detail-3.jpg",
+        "./images/products/MPC013/detail-4.jpg",
+        "./images/products/MPC013/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC014",
+      "series": "masterpiece",
+      "name": "星黛露雕刻蜡烛",
+      "names": {
+        "zh": "星黛露雕刻蜡烛",
+        "en": "Stella Lou Carved Candle",
+        "ko": "스텔라루 조각 캔들"
+      },
+      "desc": "匠作系列第 14 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 14 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 14 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 14번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-2",
+      "cover": "./images/products/MPC014/cover.jpg",
+      "images": [
+        "./images/products/MPC014/detail-1.jpg",
+        "./images/products/MPC014/detail-2.jpg",
+        "./images/products/MPC014/detail-3.jpg",
+        "./images/products/MPC014/detail-4.jpg",
+        "./images/products/MPC014/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC015",
+      "series": "masterpiece",
+      "name": "浓情蔓越莓雕刻蜡烛",
+      "names": {
+        "zh": "浓情蔓越莓雕刻蜡烛",
+        "en": "Cranberry Rouge Carved Candle",
+        "ko": "크랜베리 루즈 조각 캔들"
+      },
+      "desc": "匠作系列第 15 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 15 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 15 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 15번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-3",
+      "cover": "./images/products/MPC015/cover.jpg",
+      "images": [
+        "./images/products/MPC015/detail-1.jpg",
+        "./images/products/MPC015/detail-2.jpg",
+        "./images/products/MPC015/detail-3.jpg",
+        "./images/products/MPC015/detail-4.jpg",
+        "./images/products/MPC015/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC016",
+      "series": "masterpiece",
+      "name": "圣诞炉边雕刻蜡烛",
+      "names": {
+        "zh": "圣诞炉边雕刻蜡烛",
+        "en": "Fireside Christmas Carved Candle",
+        "ko": "파이어사이드 크리스마스 조각 캔들"
+      },
+      "desc": "匠作系列第 16 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 16 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 16 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 16번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-4",
+      "cover": "./images/products/MPC016/cover.jpg",
+      "images": [
+        "./images/products/MPC016/detail-1.jpg",
+        "./images/products/MPC016/detail-2.jpg",
+        "./images/products/MPC016/detail-3.jpg",
+        "./images/products/MPC016/detail-4.jpg",
+        "./images/products/MPC016/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC017",
+      "series": "masterpiece",
+      "name": "森潮雕刻蜡烛 17",
+      "names": {
+        "zh": "森潮雕刻蜡烛 17",
+        "en": "Forest Tide Carved Candle 17",
+        "ko": "포레스트 타이드 조각 캔들 17"
+      },
+      "desc": "匠作系列第 17 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 17 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 17 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 17번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-5",
+      "cover": "./images/products/MPC017/cover.jpg",
+      "images": [
+        "./images/products/MPC017/detail-1.jpg",
+        "./images/products/MPC017/detail-2.jpg",
+        "./images/products/MPC017/detail-3.jpg",
+        "./images/products/MPC017/detail-4.jpg",
+        "./images/products/MPC017/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC018",
+      "series": "masterpiece",
+      "name": "宇宙摩卡雕刻蜡烛 18",
+      "names": {
+        "zh": "宇宙摩卡雕刻蜡烛 18",
+        "en": "Cosmic Mocha Carved Candle 18",
+        "ko": "코스믹 모카 조각 캔들 18"
+      },
+      "desc": "匠作系列第 18 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 18 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 18 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 18번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-6",
+      "cover": "./images/products/MPC018/cover.jpg",
+      "images": [
+        "./images/products/MPC018/detail-1.jpg",
+        "./images/products/MPC018/detail-2.jpg",
+        "./images/products/MPC018/detail-3.jpg",
+        "./images/products/MPC018/detail-4.jpg",
+        "./images/products/MPC018/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC019",
+      "series": "masterpiece",
+      "name": "只此青绿雕刻蜡烛 19",
+      "names": {
+        "zh": "只此青绿雕刻蜡烛 19",
+        "en": "Celadon Green Carved Candle 19",
+        "ko": "청록의 순간 조각 캔들 19"
+      },
+      "desc": "匠作系列第 19 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 19 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 19 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 19번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-1",
+      "cover": "./images/products/MPC019/cover.jpg",
+      "images": [
+        "./images/products/MPC019/detail-1.jpg",
+        "./images/products/MPC019/detail-2.jpg",
+        "./images/products/MPC019/detail-3.jpg",
+        "./images/products/MPC019/detail-4.jpg",
+        "./images/products/MPC019/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC020",
+      "series": "masterpiece",
+      "name": "阿尔的海洋雕刻蜡烛 20",
+      "names": {
+        "zh": "阿尔的海洋雕刻蜡烛 20",
+        "en": "Arles Ocean Carved Candle 20",
+        "ko": "아를의 바다 조각 캔들 20"
+      },
+      "desc": "匠作系列第 20 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 20 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 20 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 20번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-2",
+      "cover": "./images/products/MPC020/cover.jpg",
+      "images": [
+        "./images/products/MPC020/detail-1.jpg",
+        "./images/products/MPC020/detail-2.jpg",
+        "./images/products/MPC020/detail-3.jpg",
+        "./images/products/MPC020/detail-4.jpg",
+        "./images/products/MPC020/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC021",
+      "series": "masterpiece",
+      "name": "暗黑彩虹雕刻蜡烛 21",
+      "names": {
+        "zh": "暗黑彩虹雕刻蜡烛 21",
+        "en": "Noir Rainbow Carved Candle 21",
+        "ko": "누아르 레인보우 조각 캔들 21"
+      },
+      "desc": "匠作系列第 21 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 21 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 21 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 21번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-3",
+      "cover": "./images/products/MPC021/cover.jpg",
+      "images": [
+        "./images/products/MPC021/detail-1.jpg",
+        "./images/products/MPC021/detail-2.jpg",
+        "./images/products/MPC021/detail-3.jpg",
+        "./images/products/MPC021/detail-4.jpg",
+        "./images/products/MPC021/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC022",
+      "series": "masterpiece",
+      "name": "苍葭雕刻蜡烛 22",
+      "names": {
+        "zh": "苍葭雕刻蜡烛 22",
+        "en": "Misty Reeds Carved Candle 22",
+        "ko": "안개 갈대 조각 캔들 22"
+      },
+      "desc": "匠作系列第 22 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 22 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 22 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 22번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-4",
+      "cover": "./images/products/MPC022/cover.jpg",
+      "images": [
+        "./images/products/MPC022/detail-1.jpg",
+        "./images/products/MPC022/detail-2.jpg",
+        "./images/products/MPC022/detail-3.jpg",
+        "./images/products/MPC022/detail-4.jpg",
+        "./images/products/MPC022/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC023",
+      "series": "masterpiece",
+      "name": "弗洛伊德雕刻蜡烛 23",
+      "names": {
+        "zh": "弗洛伊德雕刻蜡烛 23",
+        "en": "Freud Carved Candle 23",
+        "ko": "프로이트 조각 캔들 23"
+      },
+      "desc": "匠作系列第 23 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 23 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 23 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 23번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-5",
+      "cover": "./images/products/MPC023/cover.jpg",
+      "images": [
+        "./images/products/MPC023/detail-1.jpg",
+        "./images/products/MPC023/detail-2.jpg",
+        "./images/products/MPC023/detail-3.jpg",
+        "./images/products/MPC023/detail-4.jpg",
+        "./images/products/MPC023/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC024",
+      "series": "masterpiece",
+      "name": "黄金海岸雕刻蜡烛 24",
+      "names": {
+        "zh": "黄金海岸雕刻蜡烛 24",
+        "en": "Golden Coast Carved Candle 24",
+        "ko": "골든 코스트 조각 캔들 24"
+      },
+      "desc": "匠作系列第 24 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 24 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 24 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 24번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-6",
+      "cover": "./images/products/MPC024/cover.jpg",
+      "images": [
+        "./images/products/MPC024/detail-1.jpg",
+        "./images/products/MPC024/detail-2.jpg",
+        "./images/products/MPC024/detail-3.jpg",
+        "./images/products/MPC024/detail-4.jpg",
+        "./images/products/MPC024/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC025",
+      "series": "masterpiece",
+      "name": "苍烟落照雕刻蜡烛 25",
+      "names": {
+        "zh": "苍烟落照雕刻蜡烛 25",
+        "en": "Dusky Afterglow Carved Candle 25",
+        "ko": "더스키 애프터글로우 조각 캔들 25"
+      },
+      "desc": "匠作系列第 25 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 25 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 25 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 25번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-1",
+      "cover": "./images/products/MPC025/cover.jpg",
+      "images": [
+        "./images/products/MPC025/detail-1.jpg",
+        "./images/products/MPC025/detail-2.jpg",
+        "./images/products/MPC025/detail-3.jpg",
+        "./images/products/MPC025/detail-4.jpg",
+        "./images/products/MPC025/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC026",
+      "series": "masterpiece",
+      "name": "候鸟遗岛雕刻蜡烛 26",
+      "names": {
+        "zh": "候鸟遗岛雕刻蜡烛 26",
+        "en": "Migratory Isle Carved Candle 26",
+        "ko": "철새의 섬 조각 캔들 26"
+      },
+      "desc": "匠作系列第 26 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 26 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 26 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 26번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-2",
+      "cover": "./images/products/MPC026/cover.jpg",
+      "images": [
+        "./images/products/MPC026/detail-1.jpg",
+        "./images/products/MPC026/detail-2.jpg",
+        "./images/products/MPC026/detail-3.jpg",
+        "./images/products/MPC026/detail-4.jpg",
+        "./images/products/MPC026/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC027",
+      "series": "masterpiece",
+      "name": "加州之梦雕刻蜡烛 27",
+      "names": {
+        "zh": "加州之梦雕刻蜡烛 27",
+        "en": "California Dream Carved Candle 27",
+        "ko": "캘리포니아 드림 조각 캔들 27"
+      },
+      "desc": "匠作系列第 27 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 27 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 27 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 27번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-3",
+      "cover": "./images/products/MPC027/cover.jpg",
+      "images": [
+        "./images/products/MPC027/detail-1.jpg",
+        "./images/products/MPC027/detail-2.jpg",
+        "./images/products/MPC027/detail-3.jpg",
+        "./images/products/MPC027/detail-4.jpg",
+        "./images/products/MPC027/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC028",
+      "series": "masterpiece",
+      "name": "月光宝盒雕刻蜡烛 28",
+      "names": {
+        "zh": "月光宝盒雕刻蜡烛 28",
+        "en": "Moonlit Treasure Carved Candle 28",
+        "ko": "문릿 트레저 조각 캔들 28"
+      },
+      "desc": "匠作系列第 28 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 28 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 28 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 28번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-4",
+      "cover": "./images/products/MPC028/cover.jpg",
+      "images": [
+        "./images/products/MPC028/detail-1.jpg",
+        "./images/products/MPC028/detail-2.jpg",
+        "./images/products/MPC028/detail-3.jpg",
+        "./images/products/MPC028/detail-4.jpg",
+        "./images/products/MPC028/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC029",
+      "series": "masterpiece",
+      "name": "小天狼星雕刻蜡烛 29",
+      "names": {
+        "zh": "小天狼星雕刻蜡烛 29",
+        "en": "Sirius Carved Candle 29",
+        "ko": "시리우스 조각 캔들 29"
+      },
+      "desc": "匠作系列第 29 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 29 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 29 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 29번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-5",
+      "cover": "./images/products/MPC029/cover.jpg",
+      "images": [
+        "./images/products/MPC029/detail-1.jpg",
+        "./images/products/MPC029/detail-2.jpg",
+        "./images/products/MPC029/detail-3.jpg",
+        "./images/products/MPC029/detail-4.jpg",
+        "./images/products/MPC029/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC030",
+      "series": "masterpiece",
+      "name": "星黛露雕刻蜡烛 30",
+      "names": {
+        "zh": "星黛露雕刻蜡烛 30",
+        "en": "Stella Lou Carved Candle 30",
+        "ko": "스텔라루 조각 캔들 30"
+      },
+      "desc": "匠作系列第 30 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 30 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 30 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 30번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-6",
+      "cover": "./images/products/MPC030/cover.jpg",
+      "images": [
+        "./images/products/MPC030/detail-1.jpg",
+        "./images/products/MPC030/detail-2.jpg",
+        "./images/products/MPC030/detail-3.jpg",
+        "./images/products/MPC030/detail-4.jpg",
+        "./images/products/MPC030/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC031",
+      "series": "masterpiece",
+      "name": "浓情蔓越莓雕刻蜡烛 31",
+      "names": {
+        "zh": "浓情蔓越莓雕刻蜡烛 31",
+        "en": "Cranberry Rouge Carved Candle 31",
+        "ko": "크랜베리 루즈 조각 캔들 31"
+      },
+      "desc": "匠作系列第 31 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 31 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 31 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 31번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-1",
+      "cover": "./images/products/MPC031/cover.jpg",
+      "images": [
+        "./images/products/MPC031/detail-1.jpg",
+        "./images/products/MPC031/detail-2.jpg",
+        "./images/products/MPC031/detail-3.jpg",
+        "./images/products/MPC031/detail-4.jpg",
+        "./images/products/MPC031/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC032",
+      "series": "masterpiece",
+      "name": "圣诞炉边雕刻蜡烛 32",
+      "names": {
+        "zh": "圣诞炉边雕刻蜡烛 32",
+        "en": "Fireside Christmas Carved Candle 32",
+        "ko": "파이어사이드 크리스마스 조각 캔들 32"
+      },
+      "desc": "匠作系列第 32 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 32 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 32 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 32번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-2",
+      "cover": "./images/products/MPC032/cover.jpg",
+      "images": [
+        "./images/products/MPC032/detail-1.jpg",
+        "./images/products/MPC032/detail-2.jpg",
+        "./images/products/MPC032/detail-3.jpg",
+        "./images/products/MPC032/detail-4.jpg",
+        "./images/products/MPC032/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC033",
+      "series": "masterpiece",
+      "name": "森潮雕刻蜡烛 33",
+      "names": {
+        "zh": "森潮雕刻蜡烛 33",
+        "en": "Forest Tide Carved Candle 33",
+        "ko": "포레스트 타이드 조각 캔들 33"
+      },
+      "desc": "匠作系列第 33 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 33 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 33 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 33번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-3",
+      "cover": "./images/products/MPC033/cover.jpg",
+      "images": [
+        "./images/products/MPC033/detail-1.jpg",
+        "./images/products/MPC033/detail-2.jpg",
+        "./images/products/MPC033/detail-3.jpg",
+        "./images/products/MPC033/detail-4.jpg",
+        "./images/products/MPC033/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC034",
+      "series": "masterpiece",
+      "name": "宇宙摩卡雕刻蜡烛 34",
+      "names": {
+        "zh": "宇宙摩卡雕刻蜡烛 34",
+        "en": "Cosmic Mocha Carved Candle 34",
+        "ko": "코스믹 모카 조각 캔들 34"
+      },
+      "desc": "匠作系列第 34 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 34 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 34 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 34번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-4",
+      "cover": "./images/products/MPC034/cover.jpg",
+      "images": [
+        "./images/products/MPC034/detail-1.jpg",
+        "./images/products/MPC034/detail-2.jpg",
+        "./images/products/MPC034/detail-3.jpg",
+        "./images/products/MPC034/detail-4.jpg",
+        "./images/products/MPC034/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC035",
+      "series": "masterpiece",
+      "name": "只此青绿雕刻蜡烛 35",
+      "names": {
+        "zh": "只此青绿雕刻蜡烛 35",
+        "en": "Celadon Green Carved Candle 35",
+        "ko": "청록의 순간 조각 캔들 35"
+      },
+      "desc": "匠作系列第 35 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 35 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 35 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 35번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-5",
+      "cover": "./images/products/MPC035/cover.jpg",
+      "images": [
+        "./images/products/MPC035/detail-1.jpg",
+        "./images/products/MPC035/detail-2.jpg",
+        "./images/products/MPC035/detail-3.jpg",
+        "./images/products/MPC035/detail-4.jpg",
+        "./images/products/MPC035/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC036",
+      "series": "masterpiece",
+      "name": "阿尔的海洋雕刻蜡烛 36",
+      "names": {
+        "zh": "阿尔的海洋雕刻蜡烛 36",
+        "en": "Arles Ocean Carved Candle 36",
+        "ko": "아를의 바다 조각 캔들 36"
+      },
+      "desc": "匠作系列第 36 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 36 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 36 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 36번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-6",
+      "cover": "./images/products/MPC036/cover.jpg",
+      "images": [
+        "./images/products/MPC036/detail-1.jpg",
+        "./images/products/MPC036/detail-2.jpg",
+        "./images/products/MPC036/detail-3.jpg",
+        "./images/products/MPC036/detail-4.jpg",
+        "./images/products/MPC036/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC037",
+      "series": "masterpiece",
+      "name": "暗黑彩虹雕刻蜡烛 37",
+      "names": {
+        "zh": "暗黑彩虹雕刻蜡烛 37",
+        "en": "Noir Rainbow Carved Candle 37",
+        "ko": "누아르 레인보우 조각 캔들 37"
+      },
+      "desc": "匠作系列第 37 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 37 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 37 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 37번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-1",
+      "cover": "./images/products/MPC037/cover.jpg",
+      "images": [
+        "./images/products/MPC037/detail-1.jpg",
+        "./images/products/MPC037/detail-2.jpg",
+        "./images/products/MPC037/detail-3.jpg",
+        "./images/products/MPC037/detail-4.jpg",
+        "./images/products/MPC037/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC038",
+      "series": "masterpiece",
+      "name": "苍葭雕刻蜡烛 38",
+      "names": {
+        "zh": "苍葭雕刻蜡烛 38",
+        "en": "Misty Reeds Carved Candle 38",
+        "ko": "안개 갈대 조각 캔들 38"
+      },
+      "desc": "匠作系列第 38 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 38 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 38 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 38번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-2",
+      "cover": "./images/products/MPC038/cover.jpg",
+      "images": [
+        "./images/products/MPC038/detail-1.jpg",
+        "./images/products/MPC038/detail-2.jpg",
+        "./images/products/MPC038/detail-3.jpg",
+        "./images/products/MPC038/detail-4.jpg",
+        "./images/products/MPC038/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC039",
+      "series": "masterpiece",
+      "name": "弗洛伊德雕刻蜡烛 39",
+      "names": {
+        "zh": "弗洛伊德雕刻蜡烛 39",
+        "en": "Freud Carved Candle 39",
+        "ko": "프로이트 조각 캔들 39"
+      },
+      "desc": "匠作系列第 39 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 39 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 39 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 39번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-3",
+      "cover": "./images/products/MPC039/cover.jpg",
+      "images": [
+        "./images/products/MPC039/detail-1.jpg",
+        "./images/products/MPC039/detail-2.jpg",
+        "./images/products/MPC039/detail-3.jpg",
+        "./images/products/MPC039/detail-4.jpg",
+        "./images/products/MPC039/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC040",
+      "series": "masterpiece",
+      "name": "黄金海岸雕刻蜡烛 40",
+      "names": {
+        "zh": "黄金海岸雕刻蜡烛 40",
+        "en": "Golden Coast Carved Candle 40",
+        "ko": "골든 코스트 조각 캔들 40"
+      },
+      "desc": "匠作系列第 40 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 40 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 40 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 40번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-4",
+      "cover": "./images/products/MPC040/cover.jpg",
+      "images": [
+        "./images/products/MPC040/detail-1.jpg",
+        "./images/products/MPC040/detail-2.jpg",
+        "./images/products/MPC040/detail-3.jpg",
+        "./images/products/MPC040/detail-4.jpg",
+        "./images/products/MPC040/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC041",
+      "series": "masterpiece",
+      "name": "苍烟落照雕刻蜡烛 41",
+      "names": {
+        "zh": "苍烟落照雕刻蜡烛 41",
+        "en": "Dusky Afterglow Carved Candle 41",
+        "ko": "더스키 애프터글로우 조각 캔들 41"
+      },
+      "desc": "匠作系列第 41 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 41 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 41 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 41번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-5",
+      "cover": "./images/products/MPC041/cover.jpg",
+      "images": [
+        "./images/products/MPC041/detail-1.jpg",
+        "./images/products/MPC041/detail-2.jpg",
+        "./images/products/MPC041/detail-3.jpg",
+        "./images/products/MPC041/detail-4.jpg",
+        "./images/products/MPC041/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC042",
+      "series": "masterpiece",
+      "name": "候鸟遗岛雕刻蜡烛 42",
+      "names": {
+        "zh": "候鸟遗岛雕刻蜡烛 42",
+        "en": "Migratory Isle Carved Candle 42",
+        "ko": "철새의 섬 조각 캔들 42"
+      },
+      "desc": "匠作系列第 42 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 42 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 42 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 42번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-6",
+      "cover": "./images/products/MPC042/cover.jpg",
+      "images": [
+        "./images/products/MPC042/detail-1.jpg",
+        "./images/products/MPC042/detail-2.jpg",
+        "./images/products/MPC042/detail-3.jpg",
+        "./images/products/MPC042/detail-4.jpg",
+        "./images/products/MPC042/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC043",
+      "series": "masterpiece",
+      "name": "加州之梦雕刻蜡烛 43",
+      "names": {
+        "zh": "加州之梦雕刻蜡烛 43",
+        "en": "California Dream Carved Candle 43",
+        "ko": "캘리포니아 드림 조각 캔들 43"
+      },
+      "desc": "匠作系列第 43 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 43 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 43 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 43번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-1",
+      "cover": "./images/products/MPC043/cover.jpg",
+      "images": [
+        "./images/products/MPC043/detail-1.jpg",
+        "./images/products/MPC043/detail-2.jpg",
+        "./images/products/MPC043/detail-3.jpg",
+        "./images/products/MPC043/detail-4.jpg",
+        "./images/products/MPC043/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC044",
+      "series": "masterpiece",
+      "name": "月光宝盒雕刻蜡烛 44",
+      "names": {
+        "zh": "月光宝盒雕刻蜡烛 44",
+        "en": "Moonlit Treasure Carved Candle 44",
+        "ko": "문릿 트레저 조각 캔들 44"
+      },
+      "desc": "匠作系列第 44 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 44 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 44 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 44번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-2",
+      "cover": "./images/products/MPC044/cover.jpg",
+      "images": [
+        "./images/products/MPC044/detail-1.jpg",
+        "./images/products/MPC044/detail-2.jpg",
+        "./images/products/MPC044/detail-3.jpg",
+        "./images/products/MPC044/detail-4.jpg",
+        "./images/products/MPC044/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC045",
+      "series": "masterpiece",
+      "name": "小天狼星雕刻蜡烛 45",
+      "names": {
+        "zh": "小天狼星雕刻蜡烛 45",
+        "en": "Sirius Carved Candle 45",
+        "ko": "시리우스 조각 캔들 45"
+      },
+      "desc": "匠作系列第 45 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 45 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 45 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 45번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-3",
+      "cover": "./images/products/MPC045/cover.jpg",
+      "images": [
+        "./images/products/MPC045/detail-1.jpg",
+        "./images/products/MPC045/detail-2.jpg",
+        "./images/products/MPC045/detail-3.jpg",
+        "./images/products/MPC045/detail-4.jpg",
+        "./images/products/MPC045/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC046",
+      "series": "masterpiece",
+      "name": "星黛露雕刻蜡烛 46",
+      "names": {
+        "zh": "星黛露雕刻蜡烛 46",
+        "en": "Stella Lou Carved Candle 46",
+        "ko": "스텔라루 조각 캔들 46"
+      },
+      "desc": "匠作系列第 46 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 46 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 46 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 46번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-4",
+      "cover": "./images/products/MPC046/cover.jpg",
+      "images": [
+        "./images/products/MPC046/detail-1.jpg",
+        "./images/products/MPC046/detail-2.jpg",
+        "./images/products/MPC046/detail-3.jpg",
+        "./images/products/MPC046/detail-4.jpg",
+        "./images/products/MPC046/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC047",
+      "series": "masterpiece",
+      "name": "浓情蔓越莓雕刻蜡烛 47",
+      "names": {
+        "zh": "浓情蔓越莓雕刻蜡烛 47",
+        "en": "Cranberry Rouge Carved Candle 47",
+        "ko": "크랜베리 루즈 조각 캔들 47"
+      },
+      "desc": "匠作系列第 47 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 47 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 47 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 47번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-5",
+      "cover": "./images/products/MPC047/cover.jpg",
+      "images": [
+        "./images/products/MPC047/detail-1.jpg",
+        "./images/products/MPC047/detail-2.jpg",
+        "./images/products/MPC047/detail-3.jpg",
+        "./images/products/MPC047/detail-4.jpg",
+        "./images/products/MPC047/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC048",
+      "series": "masterpiece",
+      "name": "圣诞炉边雕刻蜡烛 48",
+      "names": {
+        "zh": "圣诞炉边雕刻蜡烛 48",
+        "en": "Fireside Christmas Carved Candle 48",
+        "ko": "파이어사이드 크리스마스 조각 캔들 48"
+      },
+      "desc": "匠作系列第 48 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 48 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 48 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 48번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-6",
+      "cover": "./images/products/MPC048/cover.jpg",
+      "images": [
+        "./images/products/MPC048/detail-1.jpg",
+        "./images/products/MPC048/detail-2.jpg",
+        "./images/products/MPC048/detail-3.jpg",
+        "./images/products/MPC048/detail-4.jpg",
+        "./images/products/MPC048/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC049",
+      "series": "masterpiece",
+      "name": "森潮雕刻蜡烛 49",
+      "names": {
+        "zh": "森潮雕刻蜡烛 49",
+        "en": "Forest Tide Carved Candle 49",
+        "ko": "포레스트 타이드 조각 캔들 49"
+      },
+      "desc": "匠作系列第 49 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 49 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 49 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 49번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-1",
+      "cover": "./images/products/MPC049/cover.jpg",
+      "images": [
+        "./images/products/MPC049/detail-1.jpg",
+        "./images/products/MPC049/detail-2.jpg",
+        "./images/products/MPC049/detail-3.jpg",
+        "./images/products/MPC049/detail-4.jpg",
+        "./images/products/MPC049/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC050",
+      "series": "masterpiece",
+      "name": "宇宙摩卡雕刻蜡烛 50",
+      "names": {
+        "zh": "宇宙摩卡雕刻蜡烛 50",
+        "en": "Cosmic Mocha Carved Candle 50",
+        "ko": "코스믹 모카 조각 캔들 50"
+      },
+      "desc": "匠作系列第 50 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 50 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 50 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 50번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-2",
+      "cover": "./images/products/MPC050/cover.jpg",
+      "images": [
+        "./images/products/MPC050/detail-1.jpg",
+        "./images/products/MPC050/detail-2.jpg",
+        "./images/products/MPC050/detail-3.jpg",
+        "./images/products/MPC050/detail-4.jpg",
+        "./images/products/MPC050/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC051",
+      "series": "masterpiece",
+      "name": "只此青绿雕刻蜡烛 51",
+      "names": {
+        "zh": "只此青绿雕刻蜡烛 51",
+        "en": "Celadon Green Carved Candle 51",
+        "ko": "청록의 순간 조각 캔들 51"
+      },
+      "desc": "匠作系列第 51 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 51 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 51 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 51번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-3",
+      "cover": "./images/products/MPC051/cover.jpg",
+      "images": [
+        "./images/products/MPC051/detail-1.jpg",
+        "./images/products/MPC051/detail-2.jpg",
+        "./images/products/MPC051/detail-3.jpg",
+        "./images/products/MPC051/detail-4.jpg",
+        "./images/products/MPC051/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC052",
+      "series": "masterpiece",
+      "name": "阿尔的海洋雕刻蜡烛 52",
+      "names": {
+        "zh": "阿尔的海洋雕刻蜡烛 52",
+        "en": "Arles Ocean Carved Candle 52",
+        "ko": "아를의 바다 조각 캔들 52"
+      },
+      "desc": "匠作系列第 52 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 52 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 52 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 52번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-4",
+      "cover": "./images/products/MPC052/cover.jpg",
+      "images": [
+        "./images/products/MPC052/detail-1.jpg",
+        "./images/products/MPC052/detail-2.jpg",
+        "./images/products/MPC052/detail-3.jpg",
+        "./images/products/MPC052/detail-4.jpg",
+        "./images/products/MPC052/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC053",
+      "series": "masterpiece",
+      "name": "暗黑彩虹雕刻蜡烛 53",
+      "names": {
+        "zh": "暗黑彩虹雕刻蜡烛 53",
+        "en": "Noir Rainbow Carved Candle 53",
+        "ko": "누아르 레인보우 조각 캔들 53"
+      },
+      "desc": "匠作系列第 53 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 53 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 53 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 53번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-5",
+      "cover": "./images/products/MPC053/cover.jpg",
+      "images": [
+        "./images/products/MPC053/detail-1.jpg",
+        "./images/products/MPC053/detail-2.jpg",
+        "./images/products/MPC053/detail-3.jpg",
+        "./images/products/MPC053/detail-4.jpg",
+        "./images/products/MPC053/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC054",
+      "series": "masterpiece",
+      "name": "苍葭雕刻蜡烛 54",
+      "names": {
+        "zh": "苍葭雕刻蜡烛 54",
+        "en": "Misty Reeds Carved Candle 54",
+        "ko": "안개 갈대 조각 캔들 54"
+      },
+      "desc": "匠作系列第 54 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 54 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 54 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 54번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-6",
+      "cover": "./images/products/MPC054/cover.jpg",
+      "images": [
+        "./images/products/MPC054/detail-1.jpg",
+        "./images/products/MPC054/detail-2.jpg",
+        "./images/products/MPC054/detail-3.jpg",
+        "./images/products/MPC054/detail-4.jpg",
+        "./images/products/MPC054/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC055",
+      "series": "masterpiece",
+      "name": "弗洛伊德雕刻蜡烛 55",
+      "names": {
+        "zh": "弗洛伊德雕刻蜡烛 55",
+        "en": "Freud Carved Candle 55",
+        "ko": "프로이트 조각 캔들 55"
+      },
+      "desc": "匠作系列第 55 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 55 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 55 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 55번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-1",
+      "cover": "./images/products/MPC055/cover.jpg",
+      "images": [
+        "./images/products/MPC055/detail-1.jpg",
+        "./images/products/MPC055/detail-2.jpg",
+        "./images/products/MPC055/detail-3.jpg",
+        "./images/products/MPC055/detail-4.jpg",
+        "./images/products/MPC055/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC056",
+      "series": "masterpiece",
+      "name": "黄金海岸雕刻蜡烛 56",
+      "names": {
+        "zh": "黄金海岸雕刻蜡烛 56",
+        "en": "Golden Coast Carved Candle 56",
+        "ko": "골든 코스트 조각 캔들 56"
+      },
+      "desc": "匠作系列第 56 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 56 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 56 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 56번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-2",
+      "cover": "./images/products/MPC056/cover.jpg",
+      "images": [
+        "./images/products/MPC056/detail-1.jpg",
+        "./images/products/MPC056/detail-2.jpg",
+        "./images/products/MPC056/detail-3.jpg",
+        "./images/products/MPC056/detail-4.jpg",
+        "./images/products/MPC056/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC057",
+      "series": "masterpiece",
+      "name": "苍烟落照雕刻蜡烛 57",
+      "names": {
+        "zh": "苍烟落照雕刻蜡烛 57",
+        "en": "Dusky Afterglow Carved Candle 57",
+        "ko": "더스키 애프터글로우 조각 캔들 57"
+      },
+      "desc": "匠作系列第 57 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 57 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 57 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 57번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-3",
+      "cover": "./images/products/MPC057/cover.jpg",
+      "images": [
+        "./images/products/MPC057/detail-1.jpg",
+        "./images/products/MPC057/detail-2.jpg",
+        "./images/products/MPC057/detail-3.jpg",
+        "./images/products/MPC057/detail-4.jpg",
+        "./images/products/MPC057/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC058",
+      "series": "masterpiece",
+      "name": "候鸟遗岛雕刻蜡烛 58",
+      "names": {
+        "zh": "候鸟遗岛雕刻蜡烛 58",
+        "en": "Migratory Isle Carved Candle 58",
+        "ko": "철새의 섬 조각 캔들 58"
+      },
+      "desc": "匠作系列第 58 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 58 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 58 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 58번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-4",
+      "cover": "./images/products/MPC058/cover.jpg",
+      "images": [
+        "./images/products/MPC058/detail-1.jpg",
+        "./images/products/MPC058/detail-2.jpg",
+        "./images/products/MPC058/detail-3.jpg",
+        "./images/products/MPC058/detail-4.jpg",
+        "./images/products/MPC058/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC059",
+      "series": "masterpiece",
+      "name": "加州之梦雕刻蜡烛 59",
+      "names": {
+        "zh": "加州之梦雕刻蜡烛 59",
+        "en": "California Dream Carved Candle 59",
+        "ko": "캘리포니아 드림 조각 캔들 59"
+      },
+      "desc": "匠作系列第 59 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 59 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 59 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 59번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-5",
+      "cover": "./images/products/MPC059/cover.jpg",
+      "images": [
+        "./images/products/MPC059/detail-1.jpg",
+        "./images/products/MPC059/detail-2.jpg",
+        "./images/products/MPC059/detail-3.jpg",
+        "./images/products/MPC059/detail-4.jpg",
+        "./images/products/MPC059/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC060",
+      "series": "masterpiece",
+      "name": "月光宝盒雕刻蜡烛 60",
+      "names": {
+        "zh": "月光宝盒雕刻蜡烛 60",
+        "en": "Moonlit Treasure Carved Candle 60",
+        "ko": "문릿 트레저 조각 캔들 60"
+      },
+      "desc": "匠作系列第 60 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 60 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 60 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 60번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-6",
+      "cover": "./images/products/MPC060/cover.jpg",
+      "images": [
+        "./images/products/MPC060/detail-1.jpg",
+        "./images/products/MPC060/detail-2.jpg",
+        "./images/products/MPC060/detail-3.jpg",
+        "./images/products/MPC060/detail-4.jpg",
+        "./images/products/MPC060/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC061",
+      "series": "masterpiece",
+      "name": "小天狼星雕刻蜡烛 61",
+      "names": {
+        "zh": "小天狼星雕刻蜡烛 61",
+        "en": "Sirius Carved Candle 61",
+        "ko": "시리우스 조각 캔들 61"
+      },
+      "desc": "匠作系列第 61 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 61 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 61 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 61번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-1",
+      "cover": "./images/products/MPC061/cover.jpg",
+      "images": [
+        "./images/products/MPC061/detail-1.jpg",
+        "./images/products/MPC061/detail-2.jpg",
+        "./images/products/MPC061/detail-3.jpg",
+        "./images/products/MPC061/detail-4.jpg",
+        "./images/products/MPC061/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC062",
+      "series": "masterpiece",
+      "name": "星黛露雕刻蜡烛 62",
+      "names": {
+        "zh": "星黛露雕刻蜡烛 62",
+        "en": "Stella Lou Carved Candle 62",
+        "ko": "스텔라루 조각 캔들 62"
+      },
+      "desc": "匠作系列第 62 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 62 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 62 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 62번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-2",
+      "cover": "./images/products/MPC062/cover.jpg",
+      "images": [
+        "./images/products/MPC062/detail-1.jpg",
+        "./images/products/MPC062/detail-2.jpg",
+        "./images/products/MPC062/detail-3.jpg",
+        "./images/products/MPC062/detail-4.jpg",
+        "./images/products/MPC062/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC063",
+      "series": "masterpiece",
+      "name": "浓情蔓越莓雕刻蜡烛 63",
+      "names": {
+        "zh": "浓情蔓越莓雕刻蜡烛 63",
+        "en": "Cranberry Rouge Carved Candle 63",
+        "ko": "크랜베리 루즈 조각 캔들 63"
+      },
+      "desc": "匠作系列第 63 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 63 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 63 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 63번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-3",
+      "cover": "./images/products/MPC063/cover.jpg",
+      "images": [
+        "./images/products/MPC063/detail-1.jpg",
+        "./images/products/MPC063/detail-2.jpg",
+        "./images/products/MPC063/detail-3.jpg",
+        "./images/products/MPC063/detail-4.jpg",
+        "./images/products/MPC063/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC064",
+      "series": "masterpiece",
+      "name": "圣诞炉边雕刻蜡烛 64",
+      "names": {
+        "zh": "圣诞炉边雕刻蜡烛 64",
+        "en": "Fireside Christmas Carved Candle 64",
+        "ko": "파이어사이드 크리스마스 조각 캔들 64"
+      },
+      "desc": "匠作系列第 64 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 64 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 64 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 64번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-4",
+      "cover": "./images/products/MPC064/cover.jpg",
+      "images": [
+        "./images/products/MPC064/detail-1.jpg",
+        "./images/products/MPC064/detail-2.jpg",
+        "./images/products/MPC064/detail-3.jpg",
+        "./images/products/MPC064/detail-4.jpg",
+        "./images/products/MPC064/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC065",
+      "series": "masterpiece",
+      "name": "森潮雕刻蜡烛 65",
+      "names": {
+        "zh": "森潮雕刻蜡烛 65",
+        "en": "Forest Tide Carved Candle 65",
+        "ko": "포레스트 타이드 조각 캔들 65"
+      },
+      "desc": "匠作系列第 65 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 65 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 65 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 65번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-5",
+      "cover": "./images/products/MPC065/cover.jpg",
+      "images": [
+        "./images/products/MPC065/detail-1.jpg",
+        "./images/products/MPC065/detail-2.jpg",
+        "./images/products/MPC065/detail-3.jpg",
+        "./images/products/MPC065/detail-4.jpg",
+        "./images/products/MPC065/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC066",
+      "series": "masterpiece",
+      "name": "宇宙摩卡雕刻蜡烛 66",
+      "names": {
+        "zh": "宇宙摩卡雕刻蜡烛 66",
+        "en": "Cosmic Mocha Carved Candle 66",
+        "ko": "코스믹 모카 조각 캔들 66"
+      },
+      "desc": "匠作系列第 66 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 66 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 66 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 66번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-6",
+      "cover": "./images/products/MPC066/cover.jpg",
+      "images": [
+        "./images/products/MPC066/detail-1.jpg",
+        "./images/products/MPC066/detail-2.jpg",
+        "./images/products/MPC066/detail-3.jpg",
+        "./images/products/MPC066/detail-4.jpg",
+        "./images/products/MPC066/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC067",
+      "series": "masterpiece",
+      "name": "只此青绿雕刻蜡烛 67",
+      "names": {
+        "zh": "只此青绿雕刻蜡烛 67",
+        "en": "Celadon Green Carved Candle 67",
+        "ko": "청록의 순간 조각 캔들 67"
+      },
+      "desc": "匠作系列第 67 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 67 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 67 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 67번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-1",
+      "cover": "./images/products/MPC067/cover.jpg",
+      "images": [
+        "./images/products/MPC067/detail-1.jpg",
+        "./images/products/MPC067/detail-2.jpg",
+        "./images/products/MPC067/detail-3.jpg",
+        "./images/products/MPC067/detail-4.jpg",
+        "./images/products/MPC067/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC068",
+      "series": "masterpiece",
+      "name": "阿尔的海洋雕刻蜡烛 68",
+      "names": {
+        "zh": "阿尔的海洋雕刻蜡烛 68",
+        "en": "Arles Ocean Carved Candle 68",
+        "ko": "아를의 바다 조각 캔들 68"
+      },
+      "desc": "匠作系列第 68 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 68 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 68 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 68번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-2",
+      "cover": "./images/products/MPC068/cover.jpg",
+      "images": [
+        "./images/products/MPC068/detail-1.jpg",
+        "./images/products/MPC068/detail-2.jpg",
+        "./images/products/MPC068/detail-3.jpg",
+        "./images/products/MPC068/detail-4.jpg",
+        "./images/products/MPC068/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC069",
+      "series": "masterpiece",
+      "name": "暗黑彩虹雕刻蜡烛 69",
+      "names": {
+        "zh": "暗黑彩虹雕刻蜡烛 69",
+        "en": "Noir Rainbow Carved Candle 69",
+        "ko": "누아르 레인보우 조각 캔들 69"
+      },
+      "desc": "匠作系列第 69 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 69 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 69 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 69번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-3",
+      "cover": "./images/products/MPC069/cover.jpg",
+      "images": [
+        "./images/products/MPC069/detail-1.jpg",
+        "./images/products/MPC069/detail-2.jpg",
+        "./images/products/MPC069/detail-3.jpg",
+        "./images/products/MPC069/detail-4.jpg",
+        "./images/products/MPC069/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC070",
+      "series": "masterpiece",
+      "name": "苍葭雕刻蜡烛 70",
+      "names": {
+        "zh": "苍葭雕刻蜡烛 70",
+        "en": "Misty Reeds Carved Candle 70",
+        "ko": "안개 갈대 조각 캔들 70"
+      },
+      "desc": "匠作系列第 70 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 70 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 70 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 70번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-4",
+      "cover": "./images/products/MPC070/cover.jpg",
+      "images": [
+        "./images/products/MPC070/detail-1.jpg",
+        "./images/products/MPC070/detail-2.jpg",
+        "./images/products/MPC070/detail-3.jpg",
+        "./images/products/MPC070/detail-4.jpg",
+        "./images/products/MPC070/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC071",
+      "series": "masterpiece",
+      "name": "弗洛伊德雕刻蜡烛 71",
+      "names": {
+        "zh": "弗洛伊德雕刻蜡烛 71",
+        "en": "Freud Carved Candle 71",
+        "ko": "프로이트 조각 캔들 71"
+      },
+      "desc": "匠作系列第 71 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 71 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 71 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 71번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-5",
+      "cover": "./images/products/MPC071/cover.jpg",
+      "images": [
+        "./images/products/MPC071/detail-1.jpg",
+        "./images/products/MPC071/detail-2.jpg",
+        "./images/products/MPC071/detail-3.jpg",
+        "./images/products/MPC071/detail-4.jpg",
+        "./images/products/MPC071/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "MPC072",
+      "series": "masterpiece",
+      "name": "黄金海岸雕刻蜡烛 72",
+      "names": {
+        "zh": "黄金海岸雕刻蜡烛 72",
+        "en": "Golden Coast Carved Candle 72",
+        "ko": "골든 코스트 조각 캔들 72"
+      },
+      "desc": "匠作系列第 72 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "匠作系列第 72 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 72 in Masterpiece. Replace it later with the final product information.",
+        "ko": "마스터피스 72번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-6",
+      "cover": "./images/products/MPC072/cover.jpg",
+      "images": [
+        "./images/products/MPC072/detail-1.jpg",
+        "./images/products/MPC072/detail-2.jpg",
+        "./images/products/MPC072/detail-3.jpg",
+        "./images/products/MPC072/detail-4.jpg",
+        "./images/products/MPC072/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "HOL001",
+      "series": "holiday",
+      "name": "莓果节日雕刻蜡烛",
+      "names": {
+        "zh": "莓果节日雕刻蜡烛",
+        "en": "Berry Holiday Carved Candle",
+        "ko": "베리 홀리데이 조각 캔들"
+      },
+      "desc": "节日系列第 1 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "节日系列第 1 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 1 in Holiday. Replace it later with the final product information.",
+        "ko": "시즌 1번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-1",
+      "cover": "./images/products/HOL001/cover.jpg",
+      "images": [
+        "./images/products/HOL001/detail-1.jpg",
+        "./images/products/HOL001/detail-2.jpg",
+        "./images/products/HOL001/detail-3.jpg",
+        "./images/products/HOL001/detail-4.jpg",
+        "./images/products/HOL001/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "HOL002",
+      "series": "holiday",
+      "name": "圣诞炉边雕刻蜡烛",
+      "names": {
+        "zh": "圣诞炉边雕刻蜡烛",
+        "en": "Fireside Christmas Carved Candle",
+        "ko": "파이어사이드 크리스마스 조각 캔들"
+      },
+      "desc": "节日系列第 2 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "节日系列第 2 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 2 in Holiday. Replace it later with the final product information.",
+        "ko": "시즌 2번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-2",
+      "cover": "./images/products/HOL002/cover.jpg",
+      "images": [
+        "./images/products/HOL002/detail-1.jpg",
+        "./images/products/HOL002/detail-2.jpg",
+        "./images/products/HOL002/detail-3.jpg",
+        "./images/products/HOL002/detail-4.jpg",
+        "./images/products/HOL002/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "HOL003",
+      "series": "holiday",
+      "name": "新年暖光雕刻蜡烛",
+      "names": {
+        "zh": "新年暖光雕刻蜡烛",
+        "en": "New Year Glow Carved Candle",
+        "ko": "새해의 빛 조각 캔들"
+      },
+      "desc": "节日系列第 3 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "节日系列第 3 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 3 in Holiday. Replace it later with the final product information.",
+        "ko": "시즌 3번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-3",
+      "cover": "./images/products/HOL003/cover.jpg",
+      "images": [
+        "./images/products/HOL003/detail-1.jpg",
+        "./images/products/HOL003/detail-2.jpg",
+        "./images/products/HOL003/detail-3.jpg",
+        "./images/products/HOL003/detail-4.jpg",
+        "./images/products/HOL003/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "HOL004",
+      "series": "holiday",
+      "name": "情人节心动雕刻蜡烛",
+      "names": {
+        "zh": "情人节心动雕刻蜡烛",
+        "en": "Valentine Heartbeat Carved Candle",
+        "ko": "발렌타인 하트비트 조각 캔들"
+      },
+      "desc": "节日系列第 4 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "节日系列第 4 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 4 in Holiday. Replace it later with the final product information.",
+        "ko": "시즌 4번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-4",
+      "cover": "./images/products/HOL004/cover.jpg",
+      "images": [
+        "./images/products/HOL004/detail-1.jpg",
+        "./images/products/HOL004/detail-2.jpg",
+        "./images/products/HOL004/detail-3.jpg",
+        "./images/products/HOL004/detail-4.jpg",
+        "./images/products/HOL004/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "HOL005",
+      "series": "holiday",
+      "name": "冬日松木雕刻蜡烛",
+      "names": {
+        "zh": "冬日松木雕刻蜡烛",
+        "en": "Winter Pine Carved Candle",
+        "ko": "윈터 파인 조각 캔들"
+      },
+      "desc": "节日系列第 5 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "节日系列第 5 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 5 in Holiday. Replace it later with the final product information.",
+        "ko": "시즌 5번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-5",
+      "cover": "./images/products/HOL005/cover.jpg",
+      "images": [
+        "./images/products/HOL005/detail-1.jpg",
+        "./images/products/HOL005/detail-2.jpg",
+        "./images/products/HOL005/detail-3.jpg",
+        "./images/products/HOL005/detail-4.jpg",
+        "./images/products/HOL005/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "HOL006",
+      "series": "holiday",
+      "name": "节庆礼盒雕刻蜡烛",
+      "names": {
+        "zh": "节庆礼盒雕刻蜡烛",
+        "en": "Festive Gift Box Carved Candle",
+        "ko": "페스티브 기프트 박스 조각 캔들"
+      },
+      "desc": "节日系列第 6 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "节日系列第 6 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 6 in Holiday. Replace it later with the final product information.",
+        "ko": "시즌 6번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-6",
+      "cover": "./images/products/HOL006/cover.jpg",
+      "images": [
+        "./images/products/HOL006/detail-1.jpg",
+        "./images/products/HOL006/detail-2.jpg",
+        "./images/products/HOL006/detail-3.jpg",
+        "./images/products/HOL006/detail-4.jpg",
+        "./images/products/HOL006/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "HOL007",
+      "series": "holiday",
+      "name": "南瓜甜派雕刻蜡烛",
+      "names": {
+        "zh": "南瓜甜派雕刻蜡烛",
+        "en": "Pumpkin Pie Carved Candle",
+        "ko": "펌킨 파이 조각 캔들"
+      },
+      "desc": "节日系列第 7 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "节日系列第 7 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 7 in Holiday. Replace it later with the final product information.",
+        "ko": "시즌 7번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-1",
+      "cover": "./images/products/HOL007/cover.jpg",
+      "images": [
+        "./images/products/HOL007/detail-1.jpg",
+        "./images/products/HOL007/detail-2.jpg",
+        "./images/products/HOL007/detail-3.jpg",
+        "./images/products/HOL007/detail-4.jpg",
+        "./images/products/HOL007/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "HOL008",
+      "series": "holiday",
+      "name": "星愿礼物雕刻蜡烛",
+      "names": {
+        "zh": "星愿礼物雕刻蜡烛",
+        "en": "Star Wish Gift Carved Candle",
+        "ko": "스타 위시 기프트 조각 캔들"
+      },
+      "desc": "节日系列第 8 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "节日系列第 8 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 8 in Holiday. Replace it later with the final product information.",
+        "ko": "시즌 8번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-2",
+      "cover": "./images/products/HOL008/cover.jpg",
+      "images": [
+        "./images/products/HOL008/detail-1.jpg",
+        "./images/products/HOL008/detail-2.jpg",
+        "./images/products/HOL008/detail-3.jpg",
+        "./images/products/HOL008/detail-4.jpg",
+        "./images/products/HOL008/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "HOL009",
+      "series": "holiday",
+      "name": "莓果节日雕刻蜡烛 9",
+      "names": {
+        "zh": "莓果节日雕刻蜡烛 9",
+        "en": "Berry Holiday Carved Candle 9",
+        "ko": "베리 홀리데이 조각 캔들 9"
+      },
+      "desc": "节日系列第 9 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "节日系列第 9 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 9 in Holiday. Replace it later with the final product information.",
+        "ko": "시즌 9번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-3",
+      "cover": "./images/products/HOL009/cover.jpg",
+      "images": [
+        "./images/products/HOL009/detail-1.jpg",
+        "./images/products/HOL009/detail-2.jpg",
+        "./images/products/HOL009/detail-3.jpg",
+        "./images/products/HOL009/detail-4.jpg",
+        "./images/products/HOL009/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "HOL010",
+      "series": "holiday",
+      "name": "圣诞炉边雕刻蜡烛 10",
+      "names": {
+        "zh": "圣诞炉边雕刻蜡烛 10",
+        "en": "Fireside Christmas Carved Candle 10",
+        "ko": "파이어사이드 크리스마스 조각 캔들 10"
+      },
+      "desc": "节日系列第 10 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "节日系列第 10 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 10 in Holiday. Replace it later with the final product information.",
+        "ko": "시즌 10번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-4",
+      "cover": "./images/products/HOL010/cover.jpg",
+      "images": [
+        "./images/products/HOL010/detail-1.jpg",
+        "./images/products/HOL010/detail-2.jpg",
+        "./images/products/HOL010/detail-3.jpg",
+        "./images/products/HOL010/detail-4.jpg",
+        "./images/products/HOL010/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "HOL011",
+      "series": "holiday",
+      "name": "新年暖光雕刻蜡烛 11",
+      "names": {
+        "zh": "新年暖光雕刻蜡烛 11",
+        "en": "New Year Glow Carved Candle 11",
+        "ko": "새해의 빛 조각 캔들 11"
+      },
+      "desc": "节日系列第 11 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "节日系列第 11 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 11 in Holiday. Replace it later with the final product information.",
+        "ko": "시즌 11번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-5",
+      "cover": "./images/products/HOL011/cover.jpg",
+      "images": [
+        "./images/products/HOL011/detail-1.jpg",
+        "./images/products/HOL011/detail-2.jpg",
+        "./images/products/HOL011/detail-3.jpg",
+        "./images/products/HOL011/detail-4.jpg",
+        "./images/products/HOL011/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "HOL012",
+      "series": "holiday",
+      "name": "情人节心动雕刻蜡烛 12",
+      "names": {
+        "zh": "情人节心动雕刻蜡烛 12",
+        "en": "Valentine Heartbeat Carved Candle 12",
+        "ko": "발렌타인 하트비트 조각 캔들 12"
+      },
+      "desc": "节日系列第 12 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "节日系列第 12 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 12 in Holiday. Replace it later with the final product information.",
+        "ko": "시즌 12번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-6",
+      "cover": "./images/products/HOL012/cover.jpg",
+      "images": [
+        "./images/products/HOL012/detail-1.jpg",
+        "./images/products/HOL012/detail-2.jpg",
+        "./images/products/HOL012/detail-3.jpg",
+        "./images/products/HOL012/detail-4.jpg",
+        "./images/products/HOL012/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "HOL013",
+      "series": "holiday",
+      "name": "冬日松木雕刻蜡烛 13",
+      "names": {
+        "zh": "冬日松木雕刻蜡烛 13",
+        "en": "Winter Pine Carved Candle 13",
+        "ko": "윈터 파인 조각 캔들 13"
+      },
+      "desc": "节日系列第 13 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "节日系列第 13 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 13 in Holiday. Replace it later with the final product information.",
+        "ko": "시즌 13번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-1",
+      "cover": "./images/products/HOL013/cover.jpg",
+      "images": [
+        "./images/products/HOL013/detail-1.jpg",
+        "./images/products/HOL013/detail-2.jpg",
+        "./images/products/HOL013/detail-3.jpg",
+        "./images/products/HOL013/detail-4.jpg",
+        "./images/products/HOL013/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "HOL014",
+      "series": "holiday",
+      "name": "节庆礼盒雕刻蜡烛 14",
+      "names": {
+        "zh": "节庆礼盒雕刻蜡烛 14",
+        "en": "Festive Gift Box Carved Candle 14",
+        "ko": "페스티브 기프트 박스 조각 캔들 14"
+      },
+      "desc": "节日系列第 14 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "节日系列第 14 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 14 in Holiday. Replace it later with the final product information.",
+        "ko": "시즌 14번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-2",
+      "cover": "./images/products/HOL014/cover.jpg",
+      "images": [
+        "./images/products/HOL014/detail-1.jpg",
+        "./images/products/HOL014/detail-2.jpg",
+        "./images/products/HOL014/detail-3.jpg",
+        "./images/products/HOL014/detail-4.jpg",
+        "./images/products/HOL014/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "HOL015",
+      "series": "holiday",
+      "name": "南瓜甜派雕刻蜡烛 15",
+      "names": {
+        "zh": "南瓜甜派雕刻蜡烛 15",
+        "en": "Pumpkin Pie Carved Candle 15",
+        "ko": "펌킨 파이 조각 캔들 15"
+      },
+      "desc": "节日系列第 15 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "节日系列第 15 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 15 in Holiday. Replace it later with the final product information.",
+        "ko": "시즌 15번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-3",
+      "cover": "./images/products/HOL015/cover.jpg",
+      "images": [
+        "./images/products/HOL015/detail-1.jpg",
+        "./images/products/HOL015/detail-2.jpg",
+        "./images/products/HOL015/detail-3.jpg",
+        "./images/products/HOL015/detail-4.jpg",
+        "./images/products/HOL015/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "HOL016",
+      "series": "holiday",
+      "name": "星愿礼物雕刻蜡烛 16",
+      "names": {
+        "zh": "星愿礼物雕刻蜡烛 16",
+        "en": "Star Wish Gift Carved Candle 16",
+        "ko": "스타 위시 기프트 조각 캔들 16"
+      },
+      "desc": "节日系列第 16 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "节日系列第 16 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 16 in Holiday. Replace it later with the final product information.",
+        "ko": "시즌 16번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-4",
+      "cover": "./images/products/HOL016/cover.jpg",
+      "images": [
+        "./images/products/HOL016/detail-1.jpg",
+        "./images/products/HOL016/detail-2.jpg",
+        "./images/products/HOL016/detail-3.jpg",
+        "./images/products/HOL016/detail-4.jpg",
+        "./images/products/HOL016/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "CLA001",
+      "series": "classic",
+      "name": "经典白色雕刻蜡烛",
+      "names": {
+        "zh": "经典白色雕刻蜡烛",
+        "en": "Classic White Carved Candle",
+        "ko": "클래식 화이트 조각 캔들"
+      },
+      "desc": "经典系列第 1 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "经典系列第 1 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 1 in Classic. Replace it later with the final product information.",
+        "ko": "클래식 1번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-1",
+      "cover": "./images/products/CLA001/cover.jpg",
+      "images": [
+        "./images/products/CLA001/detail-1.jpg",
+        "./images/products/CLA001/detail-2.jpg",
+        "./images/products/CLA001/detail-3.jpg",
+        "./images/products/CLA001/detail-4.jpg",
+        "./images/products/CLA001/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "CLA002",
+      "series": "classic",
+      "name": "暖杏经典雕刻蜡烛",
+      "names": {
+        "zh": "暖杏经典雕刻蜡烛",
+        "en": "Warm Apricot Classic Carved Candle",
+        "ko": "웜 애프리콧 클래식 조각 캔들"
+      },
+      "desc": "经典系列第 2 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "经典系列第 2 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 2 in Classic. Replace it later with the final product information.",
+        "ko": "클래식 2번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-2",
+      "cover": "./images/products/CLA002/cover.jpg",
+      "images": [
+        "./images/products/CLA002/detail-1.jpg",
+        "./images/products/CLA002/detail-2.jpg",
+        "./images/products/CLA002/detail-3.jpg",
+        "./images/products/CLA002/detail-4.jpg",
+        "./images/products/CLA002/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "CLA003",
+      "series": "classic",
+      "name": "奶油白雕刻蜡烛",
+      "names": {
+        "zh": "奶油白雕刻蜡烛",
+        "en": "Cream White Carved Candle",
+        "ko": "크림 화이트 조각 캔들"
+      },
+      "desc": "经典系列第 3 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "经典系列第 3 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 3 in Classic. Replace it later with the final product information.",
+        "ko": "클래식 3번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-3",
+      "cover": "./images/products/CLA003/cover.jpg",
+      "images": [
+        "./images/products/CLA003/detail-1.jpg",
+        "./images/products/CLA003/detail-2.jpg",
+        "./images/products/CLA003/detail-3.jpg",
+        "./images/products/CLA003/detail-4.jpg",
+        "./images/products/CLA003/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "CLA004",
+      "series": "classic",
+      "name": "浅咖经典雕刻蜡烛",
+      "names": {
+        "zh": "浅咖经典雕刻蜡烛",
+        "en": "Light Mocha Classic Carved Candle",
+        "ko": "라이트 모카 클래식 조각 캔들"
+      },
+      "desc": "经典系列第 4 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "经典系列第 4 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 4 in Classic. Replace it later with the final product information.",
+        "ko": "클래식 4번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-4",
+      "cover": "./images/products/CLA004/cover.jpg",
+      "images": [
+        "./images/products/CLA004/detail-1.jpg",
+        "./images/products/CLA004/detail-2.jpg",
+        "./images/products/CLA004/detail-3.jpg",
+        "./images/products/CLA004/detail-4.jpg",
+        "./images/products/CLA004/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "CLA005",
+      "series": "classic",
+      "name": "柔粉经典雕刻蜡烛",
+      "names": {
+        "zh": "柔粉经典雕刻蜡烛",
+        "en": "Soft Pink Classic Carved Candle",
+        "ko": "소프트 핑크 클래식 조각 캔들"
+      },
+      "desc": "经典系列第 5 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "经典系列第 5 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 5 in Classic. Replace it later with the final product information.",
+        "ko": "클래식 5번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "S",
+      "color": "color-5",
+      "cover": "./images/products/CLA005/cover.jpg",
+      "images": [
+        "./images/products/CLA005/detail-1.jpg",
+        "./images/products/CLA005/detail-2.jpg",
+        "./images/products/CLA005/detail-3.jpg",
+        "./images/products/CLA005/detail-4.jpg",
+        "./images/products/CLA005/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "CLA006",
+      "series": "classic",
+      "name": "灰蓝经典雕刻蜡烛",
+      "names": {
+        "zh": "灰蓝经典雕刻蜡烛",
+        "en": "Gray Blue Classic Carved Candle",
+        "ko": "그레이 블루 클래식 조각 캔들"
+      },
+      "desc": "经典系列第 6 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "经典系列第 6 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 6 in Classic. Replace it later with the final product information.",
+        "ko": "클래식 6번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "M",
+      "color": "color-6",
+      "cover": "./images/products/CLA006/cover.jpg",
+      "images": [
+        "./images/products/CLA006/detail-1.jpg",
+        "./images/products/CLA006/detail-2.jpg",
+        "./images/products/CLA006/detail-3.jpg",
+        "./images/products/CLA006/detail-4.jpg",
+        "./images/products/CLA006/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "CLA007",
+      "series": "classic",
+      "name": "米白经典雕刻蜡烛",
+      "names": {
+        "zh": "米白经典雕刻蜡烛",
+        "en": "Rice White Classic Carved Candle",
+        "ko": "라이스 화이트 클래식 조각 캔들"
+      },
+      "desc": "经典系列第 7 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "经典系列第 7 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 7 in Classic. Replace it later with the final product information.",
+        "ko": "클래식 7번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "L",
+      "color": "color-1",
+      "cover": "./images/products/CLA007/cover.jpg",
+      "images": [
+        "./images/products/CLA007/detail-1.jpg",
+        "./images/products/CLA007/detail-2.jpg",
+        "./images/products/CLA007/detail-3.jpg",
+        "./images/products/CLA007/detail-4.jpg",
+        "./images/products/CLA007/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    },
+    {
+      "id": "CLA008",
+      "series": "classic",
+      "name": "基础礼品雕刻蜡烛",
+      "names": {
+        "zh": "基础礼品雕刻蜡烛",
+        "en": "Basic Gift Carved Candle",
+        "ko": "베이직 기프트 조각 캔들"
+      },
+      "desc": "经典系列第 8 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+      "descriptions": {
+        "zh": "经典系列第 8 款，目前为数据结构占位内容，后续可替换为正式商品信息。",
+        "en": "Placeholder product No. 8 in Classic. Replace it later with the final product information.",
+        "ko": "클래식 8번 상품입니다. 현재는 데이터 구조 확인용 자리표시자이며, 정식 상품 정보로 교체할 수 있습니다."
+      },
+      "size": "XL",
+      "color": "color-2",
+      "cover": "./images/products/CLA008/cover.jpg",
+      "images": [
+        "./images/products/CLA008/detail-1.jpg",
+        "./images/products/CLA008/detail-2.jpg",
+        "./images/products/CLA008/detail-3.jpg",
+        "./images/products/CLA008/detail-4.jpg",
+        "./images/products/CLA008/detail-5.jpg"
+      ],
+      "status": "placeholder"
+    }
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 1,
+  "defaultSeries": "advanced",
+  "seriesOrder": [
+    "advanced",
+    "masterpiece",
+    "holiday",
+    "classic"
+  ],
+  "sizes": {
+    "S": "10*13cm",
+    "M": "11*17cm",
+    "L": "14*21cm",
+    "XL": "14*16cm"
+  },
+  "patternsBySize": {
+    "S": [
+      "小花卷",
+      "细波纹",
+      "简约切线"
+    ],
+    "M": [
+      "经典花瓣",
+      "海浪卷",
+      "礼盒花型"
+    ],
+    "L": [
+      "大花瓣",
+      "层叠波纹",
+      "展陈花型"
+    ],
+    "XL": [
+      "大礼花",
+      "雕塑卷",
+      "陈列款"
+    ]
+  },
+  "colorClasses": [
+    "color-1",
+    "color-2",
+    "color-3",
+    "color-4",
+    "color-5",
+    "color-6"
+  ],
+  "series": {
+    "advanced": {
+      "id": "advanced",
+      "prefix": "ADV",
+      "count": 19,
+      "labels": {
+        "zh": "进阶系列",
+        "en": "Advanced",
+        "ko": "어드밴스"
+      },
+      "prices": [
+        4.6,
+        4.2,
+        3.9
+      ],
+      "scents": [
+        "水生麝香",
+        "东方花香",
+        "辛辣木质"
+      ],
+      "packaging": {
+        "options": [
+          "强护包装",
+          "礼盒包装"
+        ],
+        "default": "强护包装",
+        "surchargesCny": {
+          "礼盒包装": 40
+        }
+      }
+    },
+    "masterpiece": {
+      "id": "masterpiece",
+      "prefix": "MPC",
+      "count": 72,
+      "labels": {
+        "zh": "匠作系列",
+        "en": "Masterpiece",
+        "ko": "마스터피스"
+      },
+      "prices": [
+        6.8,
+        6.2,
+        5.7
+      ],
+      "scents": [
+        "玫瑰木",
+        "雪松琥珀",
+        "橙花苦橙",
+        "白茶麝香",
+        "黑莓月桂",
+        "乌木沉香",
+        "檀香豆蔻",
+        "无花果叶",
+        "海盐鼠尾草",
+        "桂花木质"
+      ],
+      "packaging": {
+        "options": [
+          "礼盒包装"
+        ],
+        "default": "礼盒包装",
+        "surchargesCny": {}
+      }
+    },
+    "holiday": {
+      "id": "holiday",
+      "prefix": "HOL",
+      "count": 16,
+      "labels": {
+        "zh": "节日系列",
+        "en": "Holiday",
+        "ko": "시즌"
+      },
+      "prices": [
+        5.9,
+        5.4,
+        5
+      ],
+      "scents": [
+        "节日甜香",
+        "松木暖香",
+        "莓果香料",
+        "可按香精品牌确认"
+      ],
+      "packaging": {
+        "options": [
+          "防震包装",
+          "强护包装",
+          "礼盒包装"
+        ],
+        "default": "防震包装",
+        "surchargesCny": {
+          "强护包装": 10,
+          "礼盒包装": 50
+        }
+      }
+    },
+    "classic": {
+      "id": "classic",
+      "prefix": "CLA",
+      "count": 8,
+      "labels": {
+        "zh": "经典系列",
+        "en": "Classic",
+        "ko": "클래식"
+      },
+      "prices": [
+        3.9,
+        3.6,
+        3.3
+      ],
+      "scents": [
+        "无香",
+        "清淡花香",
+        "基础木质香"
+      ],
+      "packaging": {
+        "options": [
+          "防震包装",
+          "强护包装",
+          "礼盒包装"
+        ],
+        "default": "防震包装",
+        "surchargesCny": {
+          "强护包装": 10,
+          "礼盒包装": 50
+        }
+      }
+    }
+  }
+}

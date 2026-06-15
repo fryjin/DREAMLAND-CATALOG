@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'dreamland-pwa-v2';
+const CACHE_VERSION = 'dreamland-pwa-v3';
 const APP_CACHE = `${CACHE_VERSION}-app`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 const IMAGE_CACHE = `${CACHE_VERSION}-images`;
@@ -8,6 +8,9 @@ const APP_SHELL = [
   './index.html',
   './manifest.webmanifest',
   './offline.html',
+  './data/products.json',
+  './data/series.json',
+  './data/i18n.json',
   './icons/favicon-32.png',
   './icons/apple-touch-icon.png',
   './icons/icon-192.png',
