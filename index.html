@@ -849,6 +849,7 @@ let pwaInitialized=false;
 let pwaReloading=false;
 let pwaNetworkWasOffline=false;
 let pwaUpdateCheckAt=0;
+let pwaInstallFallbackTimer=null;
 
 const PWA_COPY={
   zh:{
@@ -875,6 +876,9 @@ const PWA_COPY={
     genericSteps:['打开浏览器菜单。','选择“安装应用”或“添加到主屏幕”。','按照浏览器提示完成安装。'],
     copyLink:'复制链接',
     copied:'已复制',
+    manualInstallTitle:'浏览器菜单安装',
+    manualInstallCopy:'浏览器暂未提供快捷安装按钮，可从浏览器菜单安装到桌面。',
+    manualInstallAction:'查看安装方法',
     done:'知道了'
   },
   en:{
@@ -901,6 +905,9 @@ const PWA_COPY={
     genericSteps:['Open the browser menu.','Choose Install app or Add to Home screen.','Follow the browser instructions.'],
     copyLink:'Copy link',
     copied:'Copied',
+    manualInstallTitle:'Install from the browser menu',
+    manualInstallCopy:'A quick install button is not available yet. Install from the browser menu instead.',
+    manualInstallAction:'View install steps',
     done:'Done'
   },
   ko:{
@@ -927,6 +934,9 @@ const PWA_COPY={
     genericSteps:['브라우저 메뉴를 엽니다.','앱 설치 또는 홈 화면에 추가를 선택합니다.','브라우저 안내에 따라 설치합니다.'],
     copyLink:'링크 복사',
     copied:'복사됨',
+    manualInstallTitle:'브라우저 메뉴에서 설치',
+    manualInstallCopy:'빠른 설치 버튼을 사용할 수 없습니다. 브라우저 메뉴에서 홈 화면에 설치해 주세요.',
+    manualInstallAction:'설치 방법 보기',
     done:'확인'
   }
 };
@@ -1014,7 +1024,7 @@ async function updateNetworkState(){
   return reachable
 }
 function showPwaAction(type){
-  if(isPwaStandalone()&&type==='install')return;
+  if(isPwaStandalone()&&(type==='install'||type==='manual'))return;
   if(pwaActionType==='update'&&type!=='update')return;
   pwaActionType=type;
   const banner=document.getElementById('pwaActionBanner'),title=document.getElementById('pwaActionTitle'),copy=document.getElementById('pwaActionCopy'),primary=document.getElementById('pwaActionPrimary');
@@ -1022,21 +1032,42 @@ function showPwaAction(type){
   if(type==='update'){title.textContent=pwaText('updateTitle');copy.textContent=pwaText('updateCopy');primary.textContent=pwaText('updateNow')}
   else if(type==='wechat'){title.textContent=pwaText('wechatTitle');copy.textContent=pwaText('wechatCopy');primary.textContent=pwaText('installGuide')}
   else if(type==='ios'){title.textContent=pwaText('iosTitle');copy.textContent=pwaText('iosCopy');primary.textContent=pwaText('installGuide')}
+  else if(type==='manual'){title.textContent=pwaText('manualInstallTitle');copy.textContent=pwaText('manualInstallCopy');primary.textContent=pwaText('manualInstallAction')}
   else{title.textContent=pwaText('installTitle');copy.textContent=pwaText('installCopy');primary.textContent=pwaText('installNow')}
   banner.removeAttribute('hidden')
 }
 function hidePwaAction(){document.getElementById('pwaActionBanner')?.setAttribute('hidden','');pwaActionType=''}
 function dismissPwaAction(){
-  if(pwaActionType==='install'||pwaActionType==='ios'||pwaActionType==='wechat')localStorage.setItem(PWA_INSTALL_DISMISSED_KEY,String(Date.now()));
+  if(pwaActionType==='install'||pwaActionType==='manual'||pwaActionType==='ios'||pwaActionType==='wechat')localStorage.setItem(PWA_INSTALL_DISMISSED_KEY,String(Date.now()));
   if(pwaActionType==='update')sessionStorage.setItem(PWA_UPDATE_SESSION_KEY,'1');
   hidePwaAction()
+}
+function clearPwaInstallFallback(){
+  if(pwaInstallFallbackTimer){
+    clearTimeout(pwaInstallFallbackTimer);
+    pwaInstallFallbackTimer=null
+  }
+}
+function installFallbackDelayMs(){return Math.max(3000,Number(pwaConfig().installFallbackDelayMs||15000))}
+function schedulePwaInstallFallback(){
+  if(pwaInstallFallbackTimer||isPwaStandalone()||installWasDismissed()||deferredInstallPrompt||isIosDevice()||isWechatBrowser()||pwaActionType==='update')return;
+  pwaInstallFallbackTimer=setTimeout(()=>{
+    pwaInstallFallbackTimer=null;
+    if(isPwaStandalone()||installWasDismissed()||deferredInstallPrompt||isIosDevice()||isWechatBrowser()||pwaActionType==='update')return;
+    if(typeof activeScreen!=='undefined'&&activeScreen==='home'){
+      setTimeout(maybeOfferPwaInstall,3000);
+      return
+    }
+    showPwaAction('manual')
+  },installFallbackDelayMs())
 }
 function maybeOfferPwaInstall(){
   if(isPwaStandalone()||installWasDismissed()||pwaActionType==='update')return;
   if(typeof activeScreen!=='undefined'&&activeScreen==='home'){setTimeout(maybeOfferPwaInstall,3000);return}
-  if(isWechatBrowser())return showPwaAction('wechat');
-  if(deferredInstallPrompt)return showPwaAction('install');
-  if(isIosDevice())return showPwaAction('ios')
+  if(isWechatBrowser()){clearPwaInstallFallback();return showPwaAction('wechat')}
+  if(deferredInstallPrompt){clearPwaInstallFallback();return showPwaAction('install')}
+  if(isIosDevice()){clearPwaInstallFallback();return showPwaAction('ios')}
+  schedulePwaInstallFallback()
 }
 async function triggerNativeInstall(){
   if(!deferredInstallPrompt)return openPwaGuide();
@@ -1131,11 +1162,19 @@ function initPwaExperience(){
   setTimeout(maybeOfferPwaInstall,Math.max(delay,2000))
 }
 window.addEventListener('beforeinstallprompt',event=>{
-  event.preventDefault();deferredInstallPrompt=event;
-  if(pwaInitialized)setTimeout(maybeOfferPwaInstall,800)
+  event.preventDefault();
+  deferredInstallPrompt=event;
+  clearPwaInstallFallback();
+  if(pwaInitialized){
+    if(pwaActionType==='manual')showPwaAction('install');
+    else setTimeout(maybeOfferPwaInstall,800)
+  }
 });
 window.addEventListener('appinstalled',()=>{
-  deferredInstallPrompt=null;localStorage.removeItem(PWA_INSTALL_DISMISSED_KEY);hidePwaAction()
+  deferredInstallPrompt=null;
+  clearPwaInstallFallback();
+  localStorage.removeItem(PWA_INSTALL_DISMISSED_KEY);
+  hidePwaAction()
 });
 document.addEventListener('click',e=>{let w=document.getElementById('langWrap');if(w&&!w.contains(e.target))closeLangSheet()});
 async function bootstrap(){

@@ -20,6 +20,8 @@
     "productImageStrategy": "network-first",
     "connectivityProbeTimeoutMs": 4500,
     "connectivityProbeCacheMs": 12000,
-    "connectivityProbeTarget": "web3forms"
+    "connectivityProbeTarget": "web3forms",
+    "installFallbackDelayMs": 15000,
+    "installFallbackMode": "browser-menu-guide"
   }
 }
