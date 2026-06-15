@@ -1,0 +1,123 @@
+{
+  "products.json": {
+    "schemaVersion": 1,
+    "products": [
+      {
+        "id": "ADV001",
+        "series": "advanced",
+        "name": "中文占位名称",
+        "names": {
+          "zh": "中文占位名称",
+          "en": "English Placeholder Name",
+          "ko": "한국어 자리표시자 이름"
+        },
+        "desc": "中文占位描述",
+        "descriptions": {
+          "zh": "中文占位描述",
+          "en": "English placeholder description.",
+          "ko": "한국어 자리표시자 설명입니다."
+        },
+        "size": "S",
+        "color": "color-1",
+        "cover": "./images/products/ADV001/cover.jpg",
+        "images": [
+          "./images/products/ADV001/detail-1.jpg",
+          "./images/products/ADV001/detail-2.jpg",
+          "./images/products/ADV001/detail-3.jpg",
+          "./images/products/ADV001/detail-4.jpg",
+          "./images/products/ADV001/detail-5.jpg"
+        ],
+        "status": "placeholder"
+      }
+    ]
+  },
+  "series.json": {
+    "schemaVersion": 1,
+    "defaultSeries": "advanced",
+    "seriesOrder": [
+      "advanced",
+      "masterpiece",
+      "holiday",
+      "classic"
+    ],
+    "sizes": {
+      "S": "10*13cm",
+      "M": "11*17cm",
+      "L": "14*21cm",
+      "XL": "14*16cm"
+    },
+    "patternsBySize": {
+      "S": [
+        "小花卷",
+        "细波纹",
+        "简约切线"
+      ]
+    },
+    "colorClasses": [
+      "color-1",
+      "color-2",
+      "color-3",
+      "color-4",
+      "color-5",
+      "color-6"
+    ],
+    "series": {
+      "advanced": {
+        "id": "advanced",
+        "prefix": "ADV",
+        "count": 19,
+        "labels": {
+          "zh": "进阶系列",
+          "en": "Advanced",
+          "ko": "어드밴스"
+        },
+        "prices": [
+          4.6,
+          4.2,
+          3.9
+        ],
+        "scents": [
+          "水生麝香",
+          "东方花香",
+          "辛辣木质"
+        ],
+        "packaging": {
+          "options": [
+            "强护包装",
+            "礼盒包装"
+          ],
+          "default": "强护包装",
+          "surchargesCny": {
+            "礼盒包装": 40
+          }
+        }
+      }
+    }
+  },
+  "i18n.json": {
+    "schemaVersion": 1,
+    "defaultLanguage": "zh",
+    "languages": [
+      "zh",
+      "en",
+      "ko"
+    ],
+    "currencyMap": {},
+    "ui": {},
+    "choices": {},
+    "languageNames": {
+      "zh": {
+        "label": "中文",
+        "short": "CN"
+      },
+      "en": {
+        "label": "English",
+        "short": "EN"
+      },
+      "ko": {
+        "label": "한국어",
+        "short": "KR"
+      }
+    }
+  }
+}
