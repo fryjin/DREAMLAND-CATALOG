@@ -1,0 +1,45 @@
+name: Apply catalog JSON data refactor
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/apply-data-refactor.yml"
+      - "scripts/apply-data-refactor.mjs"
+
+permissions:
+  contents: write
+
+jobs:
+  refactor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Apply data refactor
+        run: node scripts/apply-data-refactor.mjs
+
+      - name: Validate generated catalog data
+        run: node scripts/validate_catalog_data.mjs
+
+      - name: Commit generated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Refactor catalog data into JSON files"
+            git push origin HEAD:main
+          fi
