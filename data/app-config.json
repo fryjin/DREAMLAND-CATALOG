@@ -11,5 +11,12 @@
   "customMoq": 50,
   "maxQuantity": 1000000,
   "archiveLimit": 20,
-  "submitCooldownMs": 10000
+  "submitCooldownMs": 10000,
+  "pwa": {
+    "offlineStrategy": "on-demand",
+    "installPromptDelayMs": 10000,
+    "installDismissDays": 7,
+    "updateCheckIntervalMs": 3600000,
+    "productImageStrategy": "network-first"
+  }
 }

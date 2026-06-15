@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'dreamland-pwa-v4';
+const CACHE_VERSION = 'dreamland-pwa-v5';
 const APP_CACHE = `${CACHE_VERSION}-app`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 const IMAGE_CACHE = `${CACHE_VERSION}-images`;
@@ -12,6 +12,7 @@ const APP_SHELL = [
   './data/products.json',
   './data/series.json',
   './data/i18n.json',
+  './data/app-config.json',
   './icons/favicon-32.png',
   './icons/apple-touch-icon.png',
   './icons/icon-192.png',
@@ -20,11 +21,7 @@ const APP_SHELL = [
 ];
 
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(APP_CACHE)
-      .then(cache => cache.addAll(APP_SHELL))
-      .then(() => self.skipWaiting())
-  );
+  event.waitUntil(caches.open(APP_CACHE).then(cache => cache.addAll(APP_SHELL)));
 });
 
 self.addEventListener('activate', event => {
@@ -39,6 +36,10 @@ self.addEventListener('activate', event => {
   );
 });
 
+self.addEventListener('message', event => {
+  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
+});
+
 async function trimCache(cacheName, maxItems) {
   const cache = await caches.open(cacheName);
   const keys = await cache.keys();
@@ -47,77 +48,80 @@ async function trimCache(cacheName, maxItems) {
   }
 }
 
-async function networkFirst(request) {
+async function networkFirst(request, fallbackPaths = [], fresh = false) {
   try {
-    const response = await fetch(request);
+    const response = await fetch(request, fresh ? { cache: 'no-store' } : undefined);
     if (response && response.ok) {
       const cache = await caches.open(RUNTIME_CACHE);
-      cache.put(request, response.clone());
+      await cache.put(request, response.clone());
     }
     return response;
   } catch {
-    return (
-      await caches.match(request) ||
-      await caches.match('./index.html') ||
-      await caches.match('./offline.html')
-    );
+    const direct = await caches.match(request);
+    if (direct) return direct;
+    for (const path of fallbackPaths) {
+      const fallback = await caches.match(path);
+      if (fallback) return fallback;
+    }
+    return new Response('Offline', { status: 503, statusText: 'Offline' });
   }
 }
 
-async function staleWhileRevalidate(request) {
-  const cache = await caches.open(RUNTIME_CACHE);
+async function staleWhileRevalidate(request, cacheName = RUNTIME_CACHE, maxItems = 200) {
+  const cache = await caches.open(cacheName);
   const cached = await cache.match(request);
   const network = fetch(request)
-    .then(response => {
+    .then(async response => {
       if (response && response.ok) {
-        cache.put(request, response.clone());
+        await cache.put(request, response.clone());
+        await trimCache(cacheName, maxItems);
       }
       return response;
     })
     .catch(() => null);
-
-  return cached || (await network) || caches.match('./offline.html');
+  return cached || (await network) || new Response('Offline', { status: 503, statusText: 'Offline' });
 }
 
-async function imageCacheFirst(request) {
+async function productImageNetworkFirst(request) {
   const cache = await caches.open(IMAGE_CACHE);
-  const cached = await cache.match(request);
-  if (cached) return cached;
-
   try {
-    const response = await fetch(request);
+    const response = await fetch(request, { cache: 'no-store' });
     if (response && response.ok) {
       await cache.put(request, response.clone());
-      trimCache(IMAGE_CACHE, 160);
+      await trimCache(IMAGE_CACHE, 240);
     }
     return response;
   } catch {
-    return new Response('', { status: 504, statusText: 'Image unavailable offline' });
+    return (await cache.match(request)) || new Response('', { status: 504, statusText: 'Image unavailable offline' });
   }
 }
 
 self.addEventListener('fetch', event => {
   const request = event.request;
-
   if (request.method !== 'GET') return;
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  if (url.pathname.endsWith('/data/app-config.json')) {
-    event.respondWith(networkFirst(request));
+  if (request.mode === 'navigate') {
+    event.respondWith(networkFirst(request, ['./index.html', './offline.html']));
     return;
   }
 
-  if (request.mode === 'navigate') {
-    event.respondWith(networkFirst(request));
+  if (url.pathname.includes('/data/') && url.pathname.endsWith('.json')) {
+    event.respondWith(networkFirst(request, [], true));
+    return;
+  }
+
+  if (request.destination === 'image' && url.pathname.includes('/images/products/')) {
+    event.respondWith(productImageNetworkFirst(request));
     return;
   }
 
   if (request.destination === 'image') {
-    event.respondWith(imageCacheFirst(request));
+    event.respondWith(staleWhileRevalidate(request, IMAGE_CACHE, 240));
     return;
   }
 
-  event.respondWith(staleWhileRevalidate(request));
+  event.respondWith(staleWhileRevalidate(request, RUNTIME_CACHE, 220));
 });
