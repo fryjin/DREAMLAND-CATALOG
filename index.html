@@ -682,7 +682,6 @@ function clearSubmittedInquiry(){
 async function submitInquiry(){
   let btn=document.getElementById('submitBtn'),error=document.getElementById('verificationError');
   if(!btn)return;
-  if(navigator.onLine===false){toast(pwaText('offlineSubmit'));updateNetworkState();return}
   if(submittingInquiry){toast(ui('submissionDuplicate'));return}
   const now=Date.now(),cooldown=Math.max(0,Number(appConfig.submitCooldownMs)||10000);
   if(now-lastSubmitAttemptAt<cooldown){toast(ui('submissionCooldown'));return}
@@ -691,17 +690,52 @@ async function submitInquiry(){
   if(!consent?.checked){if(error){error.textContent=ui('privacyRequired');error.classList.add('show')}toast(ui('privacyRequired'));return}
   if(appConfig.hcaptcha?.enabled!==false&&!hcaptchaToken()){if(error){error.textContent=ui('captchaRequired');error.classList.add('show')}toast(ui('captchaRequired'));return}
   if(error)error.classList.remove('show');
-  const inquiryId=ensureInquiryId(),snapshot=submissionSnapshot(inquiryId);
-  submittingInquiry=true;lastSubmitAttemptAt=now;btn.disabled=true;btn.innerHTML='<span class="loader"></span>';
+
+  submittingInquiry=true;
+  btn.disabled=true;
+  btn.innerHTML='<span class="loader"></span>';
+
   try{
-    let res=await fetch(web3formsEndpoint(),{method:'POST',headers:{Accept:'application/json'},body:buildWeb3FormsFormData(inquiryId)}),data={};
+    const reachable=await probeWeb3FormsReachability(true);
+    if(!reachable){
+      const offlineError=new Error('Web3Forms is unreachable');
+      offlineError.code='OFFLINE';
+      throw offlineError
+    }
+    applyPwaReachability(true,false);
+    lastSubmitAttemptAt=Date.now();
+
+    const inquiryId=ensureInquiryId(),snapshot=submissionSnapshot(inquiryId);
+    let res=await fetch(web3formsEndpoint(),{
+      method:'POST',
+      headers:{Accept:'application/json'},
+      body:buildWeb3FormsFormData(inquiryId)
+    }),data={};
+
     try{data=await res.json()}catch(_){}
-    if(!res.ok||data.success===false)throw new Error(data.message||'Web3Forms submit failed');
-    archiveSubmission(snapshot);clearSubmittedInquiry();btn.textContent=ui('confirmSubmit');go('success')
+    if(!res.ok||data.success!==true){
+      throw new Error(data.message||data.body?.message||'Web3Forms did not confirm success')
+    }
+
+    archiveSubmission(snapshot);
+    clearSubmittedInquiry();
+    btn.textContent=ui('confirmSubmit');
+    go('success')
   }catch(e){
-    console.error(e);toast(ui('submitFailed'));btn.textContent=ui('confirmSubmit');
+    console.error(e);
+    let reachable=e?.code==='OFFLINE'?false:await probeWeb3FormsReachability(true);
+    if(!reachable){
+      applyPwaReachability(false,false);
+      toast(pwaText('offlineSubmit'))
+    }else{
+      toast(ui('submitFailed'))
+    }
+    btn.textContent=ui('confirmSubmit');
     try{if(hcaptchaWidgetId!==null)window.hcaptcha?.reset(hcaptchaWidgetId)}catch(_){}
-  }finally{submittingInquiry=false;btn.disabled=false}
+  }finally{
+    submittingInquiry=false;
+    btn.disabled=false
+  }
 }
 function renderSuccess(){
   let snapshot={};try{snapshot=JSON.parse(localStorage.getItem(LAST_SUBMISSION_KEY)||'{}')}catch(_){}
@@ -901,6 +935,62 @@ function pwaText(key){
   const lang=(typeof currentLang!=='undefined'&&currentLang)||localStorage.getItem('productManualLang')||'zh';
   return PWA_COPY[lang]?.[key]??PWA_COPY.zh[key]??key;
 }
+
+let pwaConnectivityProbePromise=null;
+let pwaConnectivityCheckedAt=0;
+let pwaConnectivityLastResult=null;
+
+function connectivityProbeTimeoutMs(){return Math.max(1500,Number(pwaConfig().connectivityProbeTimeoutMs||4500))}
+function connectivityProbeCacheMs(){return Math.max(0,Number(pwaConfig().connectivityProbeCacheMs||12000))}
+function connectivityProbeUrl(){
+  const endpoint=typeof web3formsEndpoint==='function'?web3formsEndpoint():'https://api.web3forms.com/submit';
+  return endpoint+(endpoint.includes('?')?'&':'?')+'connectivity_check='+Date.now();
+}
+async function probeWeb3FormsReachability(force=false){
+  if(navigator.onLine===false){
+    pwaConnectivityLastResult=false;
+    pwaConnectivityCheckedAt=Date.now();
+    return false
+  }
+  const now=Date.now();
+  if(!force&&pwaConnectivityLastResult!==null&&now-pwaConnectivityCheckedAt<connectivityProbeCacheMs()){
+    return pwaConnectivityLastResult
+  }
+  if(pwaConnectivityProbePromise)return pwaConnectivityProbePromise;
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),connectivityProbeTimeoutMs());
+  pwaConnectivityProbePromise=fetch(connectivityProbeUrl(),{
+    method:'GET',
+    mode:'no-cors',
+    cache:'no-store',
+    credentials:'omit',
+    redirect:'follow',
+    signal:controller.signal
+  }).then(()=>true).catch(()=>false).then(result=>{
+    pwaConnectivityLastResult=result;
+    pwaConnectivityCheckedAt=Date.now();
+    return result
+  }).finally(()=>{
+    clearTimeout(timeout);
+    pwaConnectivityProbePromise=null
+  });
+  return pwaConnectivityProbePromise
+}
+function applyPwaReachability(online,announceRecovery=true){
+  if(!online){
+    pwaNetworkWasOffline=true;
+    setNetworkBanner(pwaText('offline'),true);
+    return
+  }
+  const wasOffline=pwaNetworkWasOffline;
+  pwaNetworkWasOffline=false;
+  if(wasOffline&&announceRecovery){
+    setNetworkBanner(pwaText('online'),false);
+    pwaRegistration?.update?.().catch(()=>{})
+  }else{
+    hideNetworkBanner()
+  }
+}
 function isPwaStandalone(){return window.matchMedia?.('(display-mode: standalone)').matches||window.navigator.standalone===true}
 function isIosDevice(){return /iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)}
 function isWechatBrowser(){return /MicroMessenger/i.test(navigator.userAgent)}
@@ -914,10 +1004,14 @@ function setNetworkBanner(text,persistent=false){
   copy.textContent=text;banner.removeAttribute('hidden');
   if(!persistent)setTimeout(()=>{if(navigator.onLine!==false)hideNetworkBanner()},2200)
 }
-function updateNetworkState(){
-  if(navigator.onLine===false){pwaNetworkWasOffline=true;setNetworkBanner(pwaText('offline'),true)}
-  else if(pwaNetworkWasOffline){pwaNetworkWasOffline=false;setNetworkBanner(pwaText('online'),false);pwaRegistration?.update?.().catch(()=>{})}
-  else hideNetworkBanner()
+async function updateNetworkState(){
+  if(navigator.onLine===false){
+    applyPwaReachability(false,false);
+    return false
+  }
+  const reachable=await probeWeb3FormsReachability(true);
+  applyPwaReachability(reachable,true);
+  return reachable
 }
 function showPwaAction(type){
   if(isPwaStandalone()&&type==='install')return;

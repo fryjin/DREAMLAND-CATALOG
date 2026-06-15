@@ -17,6 +17,9 @@
     "installPromptDelayMs": 10000,
     "installDismissDays": 7,
     "updateCheckIntervalMs": 3600000,
-    "productImageStrategy": "network-first"
+    "productImageStrategy": "network-first",
+    "connectivityProbeTimeoutMs": 4500,
+    "connectivityProbeCacheMs": 12000,
+    "connectivityProbeTarget": "web3forms"
   }
 }
