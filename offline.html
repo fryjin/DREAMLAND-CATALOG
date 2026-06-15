@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f3f4f8">
+<title>DREAMLAND Offline</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100dvh;display:grid;place-items:center;background:#f3f4f8;color:#111;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;padding:24px}.card{width:min(100%,360px);background:#fff;border-radius:28px;padding:34px 26px;text-align:center;box-shadow:0 14px 40px rgba(0,0,0,.08)}.mark{width:74px;height:74px;border-radius:24px;background:#111;color:#fff;display:grid;place-items:center;margin:0 auto 22px;font-size:30px;font-weight:900}h1{font-size:22px;margin:0 0 10px}p{margin:0;color:#858891;font-size:14px;line-height:1.6}button{margin-top:24px;width:100%;height:48px;border:0;border-radius:16px;background:#111;color:#fff;font-size:15px;font-weight:850}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="mark">D</div>
+  <h1 id="title">当前处于离线状态</h1>
+  <p id="copy">请检查网络后重试。已经浏览过的部分内容仍可离线使用。</p>
+  <button id="retry" onclick="location.reload()">重新加载</button>
+</div>
+<script>
+const lang=localStorage.getItem('productManualLang')||'zh';
+const text={
+  zh:['当前处于离线状态','请检查网络后重试。已经浏览过的部分内容仍可离线使用。','重新加载'],
+  en:["You're offline",'Check your connection and try again. Previously viewed content may still be available.','Reload'],
+  ko:['현재 오프라인 상태입니다','네트워크를 확인한 후 다시 시도해 주세요. 이전에 본 콘텐츠는 오프라인에서도 이용할 수 있습니다.','다시 불러오기']
+}[lang]||[];
+document.getElementById('title').textContent=text[0];
+document.getElementById('copy').textContent=text[1];
+document.getElementById('retry').textContent=text[2];
+</script>
+</body>
+</html>
