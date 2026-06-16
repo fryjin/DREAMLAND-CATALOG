@@ -207,7 +207,7 @@ request.headers.get(
 128
 );
 
-```
+
 const email = asText(
   body.payload?.email_address,
   320
@@ -264,7 +264,7 @@ result.storage = {
 };
 
 result.riskStoreRead = true;
-```
+
 
 } catch (error) {
 console.error(
@@ -272,10 +272,10 @@ console.error(
 error
 );
 
-```
+
 result.storage = null;
 result.riskStoreRead = false;
-```
+
 
 }
 
@@ -309,7 +309,7 @@ IP_WINDOW_SECONDS
 }
 ),
 
-```
+
   store.put(
     result.storage.duplicateKey,
     String(
@@ -322,7 +322,7 @@ IP_WINDOW_SECONDS
     }
   )
 ]);
-```
+
 
 const failed = writes.filter(
 (item) =>
@@ -399,7 +399,7 @@ body: form
 }
 );
 
-```
+
 const responseText =
   await response.text();
 
@@ -429,7 +429,7 @@ return {
   errors:
     data['error-codes'] || []
 };
-```
+
 
 } catch (error) {
 console.error(
@@ -437,14 +437,14 @@ console.error(
 error
 );
 
-```
+
 return {
   success: false,
   errors: [
     'siteverify-network-error'
   ]
 };
-```
+
 
 }
 }
@@ -476,7 +476,7 @@ if (key === 'access_key') {
 continue;
 }
 
-```
+
 const normalizedValue =
   value &&
   typeof value === 'object'
@@ -487,7 +487,7 @@ form.append(
   key,
   normalizedValue
 );
-```
+
 
 }
 
@@ -686,7 +686,7 @@ body.hcaptcha_token,
 10000
 );
 
-```
+
 if (!token) {
   return json(
     {
@@ -732,7 +732,7 @@ if (
     status
   );
 }
-```
+
 
 }
 
@@ -743,7 +743,7 @@ env,
 body.payload
 );
 
-```
+
 const riskRecorded =
   await recordPersistentRisk(
     env,
@@ -762,7 +762,7 @@ return json({
     riskRecorded,
   submission
 });
-```
+
 
 } catch (error) {
 console.error(
@@ -770,7 +770,7 @@ console.error(
 error
 );
 
-```
+
 return json(
   {
     success: false,
@@ -779,7 +779,7 @@ return json(
   },
   502
 );
-```
+
 
 }
 }
