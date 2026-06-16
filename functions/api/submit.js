@@ -466,3 +466,55 @@ export async function onRequestPost(context) {
       return json(
         {
           ...assessment,
+          success: false,
+          message:
+            verification.configuration_error
+              ? 'CAPTCHA server configuration is missing'
+              : 'CAPTCHA verification failed',
+          captcha_errors:
+            verification['error-codes'] ||
+            verification.error_codes ||
+            []
+        },
+        status
+      );
+    }
+  }
+
+  /**
+   * 只有Web3Forms发送失败，才返回提交失败。
+   * KV写入失败只记录日志，不影响客户提交结果。
+   */
+  try {
+    const web3forms = await forwardToWeb3Forms(
+      env,
+      body.payload
+    );
+
+    const riskRecorded =
+      await recordPersistentRisk(env, result);
+
+    return json({
+      success: true,
+      captcha_used: captchaRequired,
+      risk_score: result.score,
+      risk_store_read:
+        result.riskStoreRead ?? null,
+      risk_recorded: riskRecorded,
+      web3forms
+    });
+  } catch (error) {
+    console.error(
+      'Web3Forms submission failed:',
+      error
+    );
+
+    return json(
+      {
+        success: false,
+        message: 'Submission service failed'
+      },
+      502
+    );
+  }
+}
