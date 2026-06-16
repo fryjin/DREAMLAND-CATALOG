@@ -1,0 +1,36 @@
+name: Project quality checks
+
+on:
+push:
+branches:
+- main
+- develop
+
+pull_request:
+branches:
+- main
+
+workflow_dispatch:
+
+permissions:
+contents: read
+
+jobs:
+quality-check:
+name: quality-check
+runs-on: ubuntu-latest
+timeout-minutes: 10
+
+```
+steps:
+  - name: Checkout repository
+    uses: actions/checkout@v4
+
+  - name: Set up Node.js
+    uses: actions/setup-node@v4
+    with:
+      node-version: '22'
+
+  - name: Validate project
+    run: node scripts/validate-project.mjs
+```
