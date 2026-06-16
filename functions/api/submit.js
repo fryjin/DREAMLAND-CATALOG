@@ -179,7 +179,6 @@ request.headers.get('CF-Connecting-IP') ||
 128
 );
 
-```
 const email = asText(
   body.payload?.email_address,
   320
@@ -229,7 +228,7 @@ result.storage = {
 };
 
 result.riskStoreRead = true;
-```
+
 
 } catch (error) {
 console.error(
@@ -237,10 +236,10 @@ console.error(
 error
 );
 
-```
+
 result.storage = null;
 result.riskStoreRead = false;
-```
+
 
 }
 
@@ -267,7 +266,7 @@ expirationTtl: IP_WINDOW_SECONDS
 }
 ),
 
-```
+
 store.put(
   result.storage.duplicateKey,
   String(
@@ -278,7 +277,7 @@ store.put(
       DUPLICATE_WINDOW_SECONDS
   }
 )
-```
+
 
 ]);
 
@@ -292,9 +291,9 @@ console.error(
 failed.map((item) => item.reason)
 );
 
-```
+
 return false;
-```
+
 
 }
 
@@ -346,7 +345,7 @@ body: form
 }
 );
 
-```
+
 const responseText =
   await response.text();
 
@@ -373,7 +372,7 @@ return {
   success: data.success === true,
   errors: data['error-codes'] || []
 };
-```
+
 
 } catch (error) {
 console.error(
@@ -381,12 +380,12 @@ console.error(
 error
 );
 
-```
+
 return {
   success: false,
   errors: ['siteverify-network-error']
 };
-```
+
 
 }
 }
@@ -416,7 +415,7 @@ if (key === 'access_key') {
 continue;
 }
 
-```
+
 form.append(
   key,
   value &&
@@ -424,7 +423,7 @@ form.append(
     ? JSON.stringify(value)
     : String(value ?? '')
 );
-```
+
 
 }
 
@@ -601,7 +600,7 @@ body.hcaptcha_token,
 10000
 );
 
-```
+
 if (!token) {
   return json(
     {
@@ -637,7 +636,7 @@ if (!verification.success) {
       : 403
   );
 }
-```
+
 
 }
 
@@ -652,7 +651,7 @@ env,
 body.payload
 );
 
-```
+
 /*
  * KV属于辅助风控。
  * 即使记录失败，也不会改变提交成功结果。
