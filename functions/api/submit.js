@@ -319,19 +319,28 @@ async function forwardToWeb3Forms(env, payload) {
     body: form
   });
 
+  // 1. 如果 HTTP 状态码不是 2xx 成功状态，说明请求底层失败了，直接抛错
+  if (!response.ok) {
+    throw new Error(`Web3Forms server returned status ${response.status}`);
+  }
+
+  // 2. 先安全地以字符串形式读取响应体，防止非 JSON 格式引发崩溃
+  const responseText = await response.text();
   let data = {};
 
   try {
-    data = await response.json();
+    data = JSON.parse(responseText);
   } catch (_) {
-    data = {};
+    // 如果 Web3Forms 启用了重定向导致返回了 HTML 文本
+    // 但既然前面 response.ok 是 true，说明 Web3Forms 已经成功收妥了表单，可以直接判为成功
+    console.warn('Web3Forms response is not valid JSON, but status is OK. Assuming success.');
+    return { success: true, redirected: true };
   }
 
-if (!response.ok) {
-  throw new Error(
-    data.message || `Web3Forms Server Error: ${response.status}`
-  );
-}
+  // 3. 如果成功解析了 JSON，但 Web3Forms 明确返回 success: false，则抛出对应的错误
+  if (data.success === false) {
+    throw new Error(data.message || 'Web3Forms flagged submission as failed');
+  }
 
   return data;
 }
@@ -457,55 +466,3 @@ export async function onRequestPost(context) {
       return json(
         {
           ...assessment,
-          success: false,
-          message:
-            verification.configuration_error
-              ? 'CAPTCHA server configuration is missing'
-              : 'CAPTCHA verification failed',
-          captcha_errors:
-            verification['error-codes'] ||
-            verification.error_codes ||
-            []
-        },
-        status
-      );
-    }
-  }
-
-  /**
-   * 只有Web3Forms发送失败，才返回提交失败。
-   * KV写入失败只记录日志，不影响客户提交结果。
-   */
-  try {
-    const web3forms = await forwardToWeb3Forms(
-      env,
-      body.payload
-    );
-
-    const riskRecorded =
-      await recordPersistentRisk(env, result);
-
-    return json({
-      success: true,
-      captcha_used: captchaRequired,
-      risk_score: result.score,
-      risk_store_read:
-        result.riskStoreRead ?? null,
-      risk_recorded: riskRecorded,
-      web3forms
-    });
-  } catch (error) {
-    console.error(
-      'Web3Forms submission failed:',
-      error
-    );
-
-    return json(
-      {
-        success: false,
-        message: 'Submission service failed'
-      },
-      502
-    );
-  }
-}
