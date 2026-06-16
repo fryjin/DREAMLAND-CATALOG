@@ -39,12 +39,8 @@ dotIndex < email.length - 1
 
 function countUrls(value) {
 const content = asText(value, 50000).toLowerCase();
-
-const httpCount =
-content.split('http://').length - 1;
-
-const httpsCount =
-content.split('https://').length - 1;
+const httpCount = content.split('http://').length - 1;
+const httpsCount = content.split('https://').length - 1;
 
 return httpCount + httpsCount;
 }
@@ -68,11 +64,15 @@ if (!payload || typeof payload !== 'object') {
 return 'Missing payload';
 }
 
-if (asText(payload.contact_name, 160).length < 2) {
+if (
+asText(payload.contact_name, 160).length < 2
+) {
 return 'Invalid contact name';
 }
 
-if (!asText(payload.country_or_region, 160)) {
+if (
+!asText(payload.country_or_region, 160)
+) {
 return 'Missing country or region';
 }
 
@@ -81,7 +81,8 @@ return 'Invalid email address';
 }
 
 if (
-asText(payload.phone_or_wechat, 200).length < 5
+asText(payload.phone_or_wechat, 200)
+.length < 5
 ) {
 return 'Invalid contact method';
 }
@@ -95,7 +96,8 @@ return 'Inquiry is empty';
 }
 
 if (
-asText(payload.items_summary, 50000).length < 5
+asText(payload.items_summary, 50000)
+.length < 5
 ) {
 return 'Inquiry summary is missing';
 }
@@ -115,51 +117,61 @@ score += points;
 reasons.push(reason);
 };
 
-const origin = request.headers.get('Origin');
-const ownOrigin = new URL(request.url).origin;
+const origin =
+request.headers.get('Origin');
+
+const ownOrigin =
+new URL(request.url).origin;
 
 if (origin && origin !== ownOrigin) {
 add(5, 'origin_mismatch');
 }
 
-if (!request.headers.get('User-Agent')) {
+if (
+!request.headers.get('User-Agent')
+) {
 add(2, 'missing_user_agent');
 }
 
 if (
-asNumber(risk.session_elapsed_ms) < 15000
+asNumber(risk.session_elapsed_ms) <
+15000
 ) {
 add(2, 'very_fast_session');
 }
 
 if (
-asNumber(risk.form_elapsed_ms) < 8000
+asNumber(risk.form_elapsed_ms) <
+8000
 ) {
 add(2, 'very_fast_form');
 }
 
 if (
-asNumber(risk.interaction_count) < 3
+asNumber(risk.interaction_count) <
+3
 ) {
 add(1, 'few_interactions');
 }
 
 if (
-asNumber(risk.local_attempt_count) >= 2
+asNumber(risk.local_attempt_count) >=
+2
 ) {
 add(2, 'repeated_local_attempts');
 }
 
-if (
+const urlCount =
 countUrls(payload.message) +
-countUrls(payload.items_summary) >
-2
-) {
+countUrls(payload.items_summary);
+
+if (urlCount > 2) {
 add(2, 'many_urls');
 }
 
 if (
-JSON.stringify(payload).length > 60000
+JSON.stringify(payload).length >
+60000
 ) {
 add(2, 'oversized_payload');
 }
@@ -180,17 +192,22 @@ result
 ) {
 const store = env.RISK_STORE;
 
-if (!store || typeof store.get !== 'function') {
+if (
+!store ||
+typeof store.get !== 'function'
+) {
 return result;
 }
 
 try {
 const ip = asText(
-request.headers.get('CF-Connecting-IP') ||
-'unknown',
+request.headers.get(
+'CF-Connecting-IP'
+) || 'unknown',
 128
 );
 
+```
 const email = asText(
   body.payload?.email_address,
   320
@@ -201,28 +218,35 @@ const signature = asText(
   50000
 );
 
-const [ipHash, duplicateHash] =
-  await Promise.all([
-    sha256(ip),
-    sha256(`${email}|${signature}`)
-  ]);
+const hashes = await Promise.all([
+  sha256(ip),
+  sha256(
+    email + '|' + signature
+  )
+]);
 
-const ipKey = `ip:${ipHash}`;
-const duplicateKey = `dup:${duplicateHash}`;
+const ipKey =
+  'ip:' + hashes[0];
 
-const [ipRaw, duplicateRaw] =
-  await Promise.all([
-    store.get(ipKey),
-    store.get(duplicateKey)
-  ]);
+const duplicateKey =
+  'dup:' + hashes[1];
 
-const ipCount = asNumber(ipRaw);
+const values = await Promise.all([
+  store.get(ipKey),
+  store.get(duplicateKey)
+]);
+
+const ipCount =
+  asNumber(values[0]);
+
 const duplicateCount =
-  asNumber(duplicateRaw);
+  asNumber(values[1]);
 
 if (ipCount >= 2) {
   result.score += 3;
-  result.reasons.push('ip_rate_limit');
+  result.reasons.push(
+    'ip_rate_limit'
+  );
 }
 
 if (duplicateCount >= 1) {
@@ -240,6 +264,7 @@ result.storage = {
 };
 
 result.riskStoreRead = true;
+```
 
 } catch (error) {
 console.error(
@@ -247,15 +272,20 @@ console.error(
 error
 );
 
+```
 result.storage = null;
 result.riskStoreRead = false;
+```
 
 }
 
 return result;
 }
 
-async function recordPersistentRisk(env, result) {
+async function recordPersistentRisk(
+env,
+result
+) {
 const store = env.RISK_STORE;
 
 if (
@@ -266,39 +296,50 @@ typeof store.put !== 'function' ||
 return null;
 }
 
-const writes = await Promise.allSettled([
+const writes =
+await Promise.allSettled([
 store.put(
 result.storage.ipKey,
-String(result.storage.ipCount + 1),
+String(
+result.storage.ipCount + 1
+),
 {
-expirationTtl: IP_WINDOW_SECONDS
+expirationTtl:
+IP_WINDOW_SECONDS
 }
 ),
 
-store.put(
-  result.storage.duplicateKey,
-  String(
-    result.storage.duplicateCount + 1
-  ),
-  {
-    expirationTtl:
-      DUPLICATE_WINDOW_SECONDS
-  }
-)
-
+```
+  store.put(
+    result.storage.duplicateKey,
+    String(
+      result.storage
+        .duplicateCount + 1
+    ),
+    {
+      expirationTtl:
+        DUPLICATE_WINDOW_SECONDS
+    }
+  )
 ]);
+```
 
 const failed = writes.filter(
-(item) => item.status === 'rejected'
+(item) =>
+item.status === 'rejected'
 );
 
 if (failed.length > 0) {
 console.error(
 'RISK_STORE write failed:',
-failed.map((item) => item.reason)
+failed.map(
+(item) => item.reason
+)
 );
 
+```
 return false;
+```
 
 }
 
@@ -323,18 +364,26 @@ errors: [
 };
 }
 
-const form = new URLSearchParams({
-secret: env.HCAPTCHA_SECRET,
-response: token,
-sitekey: env.HCAPTCHA_SITE_KEY
+const form =
+new URLSearchParams({
+secret:
+env.HCAPTCHA_SECRET,
+response:
+token,
+sitekey:
+env.HCAPTCHA_SITE_KEY
 });
 
-const remoteIp = request.headers.get(
+const remoteIp =
+request.headers.get(
 'CF-Connecting-IP'
 );
 
 if (remoteIp) {
-form.set('remoteip', remoteIp);
+form.set(
+'remoteip',
+remoteIp
+);
 }
 
 try {
@@ -350,6 +399,7 @@ body: form
 }
 );
 
+```
 const responseText =
   await response.text();
 
@@ -364,17 +414,22 @@ try {
 }
 
 if (!response.ok) {
-throw new Error(
-data?.message ||
-'Web3Forms server returned status ' +
-response.status
-);
+  return {
+    success: false,
+    errors: [
+      'siteverify-http-' +
+        response.status
+    ]
+  };
 }
 
 return {
-  success: data.success === true,
-  errors: data['error-codes'] || []
+  success:
+    data.success === true,
+  errors:
+    data['error-codes'] || []
 };
+```
 
 } catch (error) {
 console.error(
@@ -382,10 +437,14 @@ console.error(
 error
 );
 
+```
 return {
   success: false,
-  errors: ['siteverify-network-error']
+  errors: [
+    'siteverify-network-error'
+  ]
 };
+```
 
 }
 }
@@ -394,7 +453,9 @@ async function forwardToWeb3Forms(
 env,
 payload
 ) {
-if (!env.WEB3FORMS_ACCESS_KEY) {
+if (
+!env.WEB3FORMS_ACCESS_KEY
+) {
 throw new Error(
 'WEB3FORMS_ACCESS_KEY is not configured'
 );
@@ -415,13 +476,18 @@ if (key === 'access_key') {
 continue;
 }
 
+```
+const normalizedValue =
+  value &&
+  typeof value === 'object'
+    ? JSON.stringify(value)
+    : String(value ?? '');
+
 form.append(
   key,
-  value &&
-    typeof value === 'object'
-    ? JSON.stringify(value)
-    : String(value ?? '')
+  normalizedValue
 );
+```
 
 }
 
@@ -443,54 +509,52 @@ let data = null;
 
 if (responseText.trim()) {
 try {
-data = JSON.parse(responseText);
+data =
+JSON.parse(responseText);
 } catch (_) {
 data = null;
 }
 }
 
-/*
-
-HTTP状态码不是2xx时，才视为上游请求失败。
-*/
 if (!response.ok) {
 throw new Error(
 data?.message ||
-Web3Forms server returned status ${response.status}
+'Web3Forms server returned status ' +
+response.status
 );
 }
 
-/*
-
-Web3Forms明确返回success时，
-才判定为业务失败。
-
-
-2xx空响应、HTML响应或不含success字段的JSON，
-均视为上游已经接收成功。
-*/
-if (data?.success === false) {
+if (
+data?.success === false
+) {
 throw new Error(
 data.message ||
 'Web3Forms flagged submission as failed'
 );
 }
 
+let responseType = 'empty';
+
+if (data) {
+responseType = 'json';
+} else if (
+responseText.trim()
+) {
+responseType = 'non-json';
+}
+
 return {
 accepted: true,
 status: response.status,
-responseType: data
-? 'json'
-: responseText.trim()
-? 'non-json'
-: 'empty'
+responseType
 };
 }
 
 export async function onRequestGet() {
 return json({
 success: true,
-service: 'dreamland-submit',
+service:
+'dreamland-submit',
 status: 'ready'
 });
 }
@@ -498,44 +562,62 @@ status: 'ready'
 export async function onRequestPost(
 context
 ) {
-const { request, env } = context;
+const { request, env } =
+context;
 
 let body;
 
 try {
-body = await request.json();
+body =
+await request.json();
 } catch (_) {
 return json(
 {
 success: false,
-message: 'Invalid JSON body'
+message:
+'Invalid JSON body'
 },
 400
 );
 }
 
+if (
+!body ||
+typeof body !== 'object'
+) {
+return json(
+{
+success: false,
+message:
+'Invalid request body'
+},
+400
+);
+}
+
+if (
+asText(body.website, 500)
+) {
+return json({
+success: true,
+filtered: true
+});
+}
+
 const validationError =
-validatePayload(body.payload);
+validatePayload(
+body.payload
+);
 
 if (validationError) {
 return json(
 {
 success: false,
-message: validationError
+message:
+validationError
 },
 400
 );
-}
-
-/*
-
-蜜罐字段被填写时，静默过滤垃圾请求。
-*/
-if (asText(body.website, 500)) {
-return json({
-success: true,
-filtered: true
-});
 }
 
 let result = evaluateRisk(
@@ -543,12 +625,8 @@ request,
 body
 );
 
-/*
-
-KV读取失败只会跳过服务器端风险记录，
-不会阻止正常询盘提交。
-*/
-result = await readPersistentRisk(
+result =
+await readPersistentRisk(
 env,
 request,
 body,
@@ -568,10 +646,14 @@ result.score >= threshold;
 
 const assessment = {
 success: true,
-captcha_required: captchaRequired,
-risk_score: result.score,
-reasons: result.reasons,
-site_key: captchaRequired
+captcha_required:
+captchaRequired,
+risk_score:
+result.score,
+reasons:
+result.reasons,
+site_key:
+captchaRequired
 ? asText(
 env.HCAPTCHA_SITE_KEY,
 200
@@ -579,15 +661,20 @@ env.HCAPTCHA_SITE_KEY,
 : ''
 };
 
-if (body.action === 'assess') {
+if (
+body.action === 'assess'
+) {
 return json(assessment);
 }
 
-if (body.action !== 'submit') {
+if (
+body.action !== 'submit'
+) {
 return json(
 {
 success: false,
-message: 'Unsupported action'
+message:
+'Unsupported action'
 },
 400
 );
@@ -599,12 +686,14 @@ body.hcaptcha_token,
 10000
 );
 
+```
 if (!token) {
   return json(
     {
       ...assessment,
       success: false,
-      message: 'CAPTCHA required'
+      message:
+        'CAPTCHA required'
     },
     428
   );
@@ -617,41 +706,44 @@ const verification =
     request
   );
 
-if (!verification.success) {
+if (
+  !verification.success
+) {
+  const message =
+    verification
+      .configurationError
+      ? 'CAPTCHA server configuration is missing'
+      : 'CAPTCHA verification failed';
+
+  const status =
+    verification
+      .configurationError
+      ? 500
+      : 403;
+
   return json(
     {
       ...assessment,
       success: false,
-      message:
-        verification.configurationError
-          ? 'CAPTCHA server configuration is missing'
-          : 'CAPTCHA verification failed',
+      message,
       captcha_errors:
         verification.errors
     },
-    verification.configurationError
-      ? 500
-      : 403
+    status
   );
 }
+```
 
 }
 
 try {
-/*
-* 只有Web3Forms真正失败时，
-* 才向客户返回提交失败。
-*/
-const web3forms =
+const submission =
 await forwardToWeb3Forms(
 env,
 body.payload
 );
 
-/*
- * KV属于辅助风控。
- * 即使记录失败，也不会改变提交成功结果。
- */
+```
 const riskRecorded =
   await recordPersistentRisk(
     env,
@@ -660,13 +752,17 @@ const riskRecorded =
 
 return json({
   success: true,
-  captcha_used: captchaRequired,
-  risk_score: result.score,
+  captcha_used:
+    captchaRequired,
+  risk_score:
+    result.score,
   risk_store_read:
     result.riskStoreRead,
-  risk_recorded: riskRecorded,
-  submission: web3forms
+  risk_recorded:
+    riskRecorded,
+  submission
 });
+```
 
 } catch (error) {
 console.error(
@@ -674,6 +770,7 @@ console.error(
 error
 );
 
+```
 return json(
   {
     success: false,
@@ -682,6 +779,7 @@ return json(
   },
   502
 );
+```
 
 }
 }
