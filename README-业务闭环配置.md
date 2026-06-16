@@ -40,4 +40,4 @@
 
 `privacy.html` 已提供中、英、韩三语版本。正式上线前请确认公司名称、联系邮箱和记录保存政策符合实际执行方式。
 
-Deployment refresh: 2026-06-16
+Deployment refresh: 2026-06-12
