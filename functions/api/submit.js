@@ -229,17 +229,14 @@ result.storage = {
 
 result.riskStoreRead = true;
 
-
 } catch (error) {
 console.error(
 'RISK_STORE read failed:',
 error
 );
 
-
 result.storage = null;
 result.riskStoreRead = false;
-
 
 }
 
@@ -266,7 +263,6 @@ expirationTtl: IP_WINDOW_SECONDS
 }
 ),
 
-
 store.put(
   result.storage.duplicateKey,
   String(
@@ -277,7 +273,6 @@ store.put(
       DUPLICATE_WINDOW_SECONDS
   }
 )
-
 
 ]);
 
@@ -291,9 +286,7 @@ console.error(
 failed.map((item) => item.reason)
 );
 
-
 return false;
-
 
 }
 
@@ -345,7 +338,6 @@ body: form
 }
 );
 
-
 const responseText =
   await response.text();
 
@@ -373,19 +365,16 @@ return {
   errors: data['error-codes'] || []
 };
 
-
 } catch (error) {
 console.error(
 'hCaptcha verification request failed:',
 error
 );
 
-
 return {
   success: false,
   errors: ['siteverify-network-error']
 };
-
 
 }
 }
@@ -415,7 +404,6 @@ if (key === 'access_key') {
 continue;
 }
 
-
 form.append(
   key,
   value &&
@@ -423,7 +411,6 @@ form.append(
     ? JSON.stringify(value)
     : String(value ?? '')
 );
-
 
 }
 
@@ -453,29 +440,30 @@ data = null;
 
 /*
 
-* HTTP状态码不是2xx时，才视为上游请求失败。
-  */
-  if (!response.ok) {
-  throw new Error(
-  data?.message ||
-  `Web3Forms server returned status ${response.status}`
-  );
-  }
+HTTP状态码不是2xx时，才视为上游请求失败。
+*/
+if (!response.ok) {
+throw new Error(
+data?.message ||
+Web3Forms server returned status ${response.status}
+);
+}
 
 /*
 
-* Web3Forms明确返回success:false时，
-* 才判定为业务失败。
-*
-* 2xx空响应、HTML响应或不含success字段的JSON，
-* 均视为上游已经接收成功。
-  */
-  if (data?.success === false) {
-  throw new Error(
-  data.message ||
-  'Web3Forms flagged submission as failed'
-  );
-  }
+Web3Forms明确返回success时，
+才判定为业务失败。
+
+
+2xx空响应、HTML响应或不含success字段的JSON，
+均视为上游已经接收成功。
+*/
+if (data?.success === false) {
+throw new Error(
+data.message ||
+'Web3Forms flagged submission as failed'
+);
+}
 
 return {
 accepted: true,
@@ -530,14 +518,14 @@ message: validationError
 
 /*
 
-* 蜜罐字段被填写时，静默过滤垃圾请求。
-  */
-  if (asText(body.website, 500)) {
-  return json({
-  success: true,
-  filtered: true
-  });
-  }
+蜜罐字段被填写时，静默过滤垃圾请求。
+*/
+if (asText(body.website, 500)) {
+return json({
+success: true,
+filtered: true
+});
+}
 
 let result = evaluateRisk(
 request,
@@ -546,15 +534,15 @@ body
 
 /*
 
-* KV读取失败只会跳过服务器端风险记录，
-* 不会阻止正常询盘提交。
-  */
-  result = await readPersistentRisk(
-  env,
-  request,
-  body,
-  result
-  );
+KV读取失败只会跳过服务器端风险记录，
+不会阻止正常询盘提交。
+*/
+result = await readPersistentRisk(
+env,
+request,
+body,
+result
+);
 
 const threshold = Math.max(
 1,
@@ -600,7 +588,6 @@ body.hcaptcha_token,
 10000
 );
 
-
 if (!token) {
   return json(
     {
@@ -637,7 +624,6 @@ if (!verification.success) {
   );
 }
 
-
 }
 
 try {
@@ -650,7 +636,6 @@ await forwardToWeb3Forms(
 env,
 body.payload
 );
-
 
 /*
  * KV属于辅助风控。
@@ -672,7 +657,6 @@ return json({
   submission: web3forms
 });
 
-
 } catch (error) {
 console.error(
 'Web3Forms submission failed:',
@@ -687,7 +671,6 @@ return json(
   },
   502
 );
-
 
 }
 }
