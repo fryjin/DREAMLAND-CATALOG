@@ -27,10 +27,7 @@ function replaceBetween(text,startMarker,endMarker,replacement,label){
 
 let index=fs.readFileSync(INDEX_PATH,'utf8');
 
-index=index.replace(
-  '<script src="https://js.hcaptcha.com/1/api.js?render=explicit" async defer></script>\n',
-  ''
-);
+index=index.replace(/<script\s+src=["']https:\/\/js\.hcaptcha\.com\/1\/api\.js\?render=explicit["'][^>]*><\/script>\s*/i,'');
 
 if(!index.includes('function assessSubmissionRisk(){')){
   const riskCss=`
@@ -303,22 +300,14 @@ async function assessSubmissionRisk(){
 }
 `;
 
-  index=insertBefore(index,'function renderHCaptcha(){',adaptiveCode,'adaptive risk code');
-
   index=replaceBetween(
     index,
     'function renderHCaptcha(){',
-    'function hcaptchaToken(){',
-    '',
-    'old hCaptcha renderer'
-  );
-  index=replaceBetween(
-    index,
-    'function hcaptchaToken(){',
     'function renderPreview(){',
     '',
-    'old hCaptcha token helper'
+    'old hCaptcha renderer and token helper'
   );
+  index=insertBefore(index,'function renderPreview(){',adaptiveCode,'adaptive risk code');
 
   const newRenderPreview=`function renderPreview(){
   let c=state.contact||{},ps=state.items.filter(i=>i.type==='product'),cs=state.items.filter(i=>i.type==='custom'),inquiryId=ensureInquiryId();
@@ -455,8 +444,8 @@ function number(value,fallback=0){
   return Number.isFinite(parsed)?parsed:fallback
 }
 function text(value,max=10000){return String(value??'').trim().slice(0,max)}
-function isEmail(value){return /^[^\\\\s@]+@[^\\\\s@]+\\\\.[^\\\\s@]+$/.test(text(value,320))}
-function countUrls(value){return (text(value,50000).match(/https?:\\\\/\\\\//gi)||[]).length}
+function isEmail(value){return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(text(value,320))}
+function countUrls(value){return (text(value,50000).match(/https?:\\/\\//gi)||[]).length}
 async function sha256(value){
   const bytes=new TextEncoder().encode(value);
   const digest=await crypto.subtle.digest('SHA-256',bytes);
@@ -640,7 +629,7 @@ if('web3formsAccessKey' in config)errors.push('Public Web3Forms access key still
 ].forEach(marker=>{if(!fn.includes(marker))errors.push('Missing function marker: '+marker)});
 if(!/const CACHE_VERSION = 'dreamland-pwa-v\\d+';/.test(sw))errors.push('Service worker version is missing');
 
-if(errors.length){console.error(errors.join('\\\\n'));process.exit(1)}
+if(errors.length){console.error(errors.join('\\n'));process.exit(1)}
 console.log('Adaptive risk control validation passed.');
 `;
 fs.writeFileSync('scripts/validate-adaptive-risk-hcaptcha.mjs',validator,'utf8');
