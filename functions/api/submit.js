@@ -672,7 +672,7 @@ return json({
   risk_recorded: riskRecorded,
   submission: web3forms
 });
-```
+
 
 } catch (error) {
 console.error(
@@ -680,7 +680,6 @@ console.error(
 error
 );
 
-```
 return json(
   {
     success: false,
@@ -689,7 +688,7 @@ return json(
   },
   502
 );
-```
+
 
 }
 }
