@@ -1,0 +1,45 @@
+name: Apply adaptive risk and hCaptcha
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/apply-adaptive-risk-hcaptcha.yml"
+      - "scripts/apply-adaptive-risk-hcaptcha.mjs"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Apply adaptive risk control
+        run: node scripts/apply-adaptive-risk-hcaptcha.mjs
+
+      - name: Validate adaptive risk control
+        run: node scripts/validate-adaptive-risk-hcaptcha.mjs
+
+      - name: Commit generated changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Add adaptive risk-based hCaptcha submission"
+            git push origin HEAD:main
+          fi
