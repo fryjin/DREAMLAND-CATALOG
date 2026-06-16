@@ -1,10 +1,11 @@
 {
   "schemaVersion": 1,
-  "web3formsEndpoint": "https://api.web3forms.com/submit",
-  "web3formsAccessKey": "ec67336f-0fce-4d78-b928-771abb0699fb",
+  "web3formsEndpoint": "./api/submit",
   "hcaptcha": {
     "enabled": true,
-    "siteKey": "50b2fe65-b00b-4b9e-ad62-3ba471098be2"
+    "mode": "adaptive-risk",
+    "loadStrategy": "contact-preload-risk-preview-render",
+    "loadTimeoutMs": 12000
   },
   "privacyUrl": "./privacy.html",
   "privacyVersion": "2026-06-15",
@@ -14,7 +15,7 @@
   "submitCooldownMs": 10000,
   "pwa": {
     "offlineStrategy": "on-demand",
-    "installPromptDelayMs": 10000,
+    "installPromptDelayMs": 5000,
     "installDismissDays": 7,
     "updateCheckIntervalMs": 3600000,
     "productImageStrategy": "network-first",
@@ -23,5 +24,17 @@
     "connectivityProbeTarget": "web3forms",
     "installFallbackDelayMs": 15000,
     "installFallbackMode": "browser-menu-guide"
+  },
+  "submissionEndpoint": "./api/submit",
+  "riskControl": {
+    "enabled": true,
+    "threshold": 3,
+    "minimumSessionMs": 15000,
+    "minimumFormMs": 8000,
+    "minimumInteractions": 3,
+    "repeatWindowMs": 600000,
+    "repeatLimit": 2,
+    "maximumUrls": 2,
+    "kvBinding": "RISK_STORE"
   }
 }
