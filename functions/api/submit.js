@@ -688,7 +688,8 @@ return json(
       'Submission service failed'
   },
   502
-)
+);
+```
 
 }
 }
