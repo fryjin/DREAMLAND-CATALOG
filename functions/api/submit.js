@@ -327,11 +327,11 @@ async function forwardToWeb3Forms(env, payload) {
     data = {};
   }
 
-  if (!response.ok || data.success !== true) {
-    throw new Error(
-      data.message || 'Web3Forms submission failed'
-    );
-  }
+if (!response.ok) {
+  throw new Error(
+    data.message || `Web3Forms Server Error: ${response.status}`
+  );
+}
 
   return data;
 }
