@@ -602,6 +602,9 @@ export async function onRequestPost(context){
 `;
 fs.writeFileSync(FUNCTION_PATH,functionSource,'utf8');
 
+const functionCheck=await import('node:child_process');
+functionCheck.execFileSync(process.execPath,['--check',FUNCTION_PATH],{stdio:'inherit'});
+
 const validator=`import fs from 'node:fs';
 
 const index=fs.readFileSync('index.html','utf8');
@@ -635,7 +638,7 @@ if('web3formsAccessKey' in config)errors.push('Public Web3Forms access key still
   'RISK_STORE',
   'captcha_required'
 ].forEach(marker=>{if(!fn.includes(marker))errors.push('Missing function marker: '+marker)});
-if(!/const CACHE_VERSION = 'dreamland-pwa-v\\\\d+';/.test(sw))errors.push('Service worker version is missing');
+if(!/const CACHE_VERSION = 'dreamland-pwa-v\\d+';/.test(sw))errors.push('Service worker version is missing');
 
 if(errors.length){console.error(errors.join('\\\\n'));process.exit(1)}
 console.log('Adaptive risk control validation passed.');
