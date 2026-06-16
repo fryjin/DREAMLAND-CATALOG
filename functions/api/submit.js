@@ -1,4 +1,3 @@
-```js
 const WEB3FORMS_URL = 'https://api.web3forms.com/submit';
 const HCAPTCHA_VERIFY_URL = 'https://api.hcaptcha.com/siteverify';
 
@@ -510,4 +509,3 @@ export async function onRequestPost(context) {
     );
   }
 }
-```
