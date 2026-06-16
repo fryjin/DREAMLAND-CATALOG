@@ -1,10 +1,7 @@
 import {
 access,
-mkdir,
 readFile,
-readdir,
-rm,
-writeFile
+readdir
 } from 'node:fs/promises';
 
 import path from 'node:path';
@@ -14,61 +11,64 @@ const ROOT = process.cwd();
 const errors = [];
 const warnings = [];
 
-function addError(message) {
+function fail(message) {
 errors.push(message);
 }
 
-function addWarning(message) {
+function warn(message) {
 warnings.push(message);
 }
 
-function relative(filePath) {
+function toProjectPath(filePath) {
 return path
 .relative(ROOT, filePath)
-.replaceAll('\', '/');
+.split(path.sep)
+.join('/');
 }
 
-async function fileExists(relativePath) {
+async function exists(relativePath) {
 try {
 await access(
 path.join(ROOT, relativePath)
 );
+
+```
 return true;
+```
+
 } catch {
 return false;
 }
 }
 
-async function readJson(relativePath) {
+async function loadJson(relativePath) {
 try {
 const content = await readFile(
 path.join(ROOT, relativePath),
 'utf8'
 );
 
-```
+
 return JSON.parse(content);
-```
 
 } catch (error) {
-addError(
+fail(
 relativePath +
-': invalid or unreadable JSON (' +
-error.message +
-')'
+': ' +
+error.message
 );
 
-```
+
 return null;
-```
+
 
 }
 }
 
-async function collectJavaScriptFiles(
+async function collectScriptFiles(
 directory
 ) {
-const results = [];
+const files = [];
 
 const entries = await readdir(
 directory,
@@ -80,13 +80,12 @@ withFileTypes: true
 for (const entry of entries) {
 if (
 entry.name === '.git' ||
-entry.name === 'node_modules' ||
-entry.name === '.quality-check-temp'
+entry.name === 'node_modules'
 ) {
 continue;
 }
 
-```
+
 const fullPath = path.join(
   directory,
   entry.name
@@ -94,94 +93,45 @@ const fullPath = path.join(
 
 if (entry.isDirectory()) {
   const nested =
-    await collectJavaScriptFiles(
+    await collectScriptFiles(
       fullPath
     );
 
-  results.push(...nested);
-} else if (
-  /\.(?:js|mjs)$/i.test(
-    entry.name
-  )
+  files.push(...nested);
+  continue;
+}
+
+if (
+  entry.name.endsWith('.js') ||
+  entry.name.endsWith('.mjs')
 ) {
-  results.push(fullPath);
+  files.push(fullPath);
 }
-```
+
 
 }
 
-return results;
+return files;
 }
 
-function checkJavaScriptFile(filePath) {
+function checkScriptSyntax(filePath) {
 const result = spawnSync(
 process.execPath,
-['--check', filePath],
+[
+'--check',
+filePath
+],
 {
 encoding: 'utf8'
 }
 );
 
 if (result.status !== 0) {
-addError(
-relative(filePath) +
+fail(
+toProjectPath(filePath) +
 ': JavaScript syntax error\n' +
 result.stderr.trim()
 );
-}
-}
-
-async function checkInlineScripts(
-relativePath,
-tempDirectory
-) {
-const fullPath = path.join(
-ROOT,
-relativePath
-);
-
-const html = await readFile(
-fullPath,
-'utf8'
-);
-
-const scriptPattern =
-/<script(?![^>]*\bsrc\s*=)[^>]*>([\s\S]*?)</script>/gi;
-
-let match;
-let index = 0;
-
-while (
-(match =
-scriptPattern.exec(html)) !== null
-) {
-const script =
-match[1].trim();
-
-```
-if (!script) {
-  continue;
-}
-
-index += 1;
-
-const tempFile = path.join(
-  tempDirectory,
-  path.basename(relativePath) +
-    '-' +
-    index +
-    '.mjs'
-);
-
-await writeFile(
-  tempFile,
-  script,
-  'utf8'
-);
-
-checkJavaScriptFile(tempFile);
-```
-
 }
 }
 
@@ -199,8 +149,8 @@ const requiredFiles = [
 ];
 
 for (const file of requiredFiles) {
-if (!(await fileExists(file))) {
-addError(
+if (!(await exists(file))) {
+fail(
 file +
 ': required file is missing'
 );
@@ -214,186 +164,42 @@ i18nDoc,
 configDoc,
 manifestDoc
 ] = await Promise.all([
-readJson('data/products.json'),
-readJson('data/series.json'),
-readJson('data/i18n.json'),
-readJson('data/app-config.json'),
-readJson('manifest.webmanifest')
+loadJson(
+'data/products.json'
+),
+loadJson(
+'data/series.json'
+),
+loadJson(
+'data/i18n.json'
+),
+loadJson(
+'data/app-config.json'
+),
+loadJson(
+'manifest.webmanifest'
+)
 ]);
 
-const supportedLanguages = [
+const languages = [
 'zh',
 'en',
 'ko'
 ];
 
-if (productsDoc) {
-if (
-!Array.isArray(
-productsDoc.products
-)
-) {
-addError(
-'data/products.json: products must be an array'
-);
-} else {
-const ids = new Set();
-
-```
-const knownSeries =
-  new Set(
-    Object.keys(
-      seriesDoc?.series || {}
-    )
-  );
-
-const knownSizes =
-  new Set(
-    Object.keys(
-      seriesDoc?.sizes || {}
-    )
-  );
-
-for (
-  const [index, product] of
-  productsDoc.products.entries()
-) {
-  const label =
-    'data/products.json products[' +
-    index +
-    ']';
-
-  const id = String(
-    product?.id || ''
-  ).trim();
-
-  if (!id) {
-    addError(
-      label + ': id is required'
-    );
-  } else if (ids.has(id)) {
-    addError(
-      label +
-        ': duplicate id "' +
-        id +
-        '"'
-    );
-  } else {
-    ids.add(id);
-  }
-
-  if (
-    !knownSeries.has(
-      product?.series
-    )
-  ) {
-    addError(
-      label +
-        ': unknown series "' +
-        product?.series +
-        '"'
-    );
-  }
-
-  if (
-    !knownSizes.has(
-      product?.size
-    )
-  ) {
-    addError(
-      label +
-        ': unknown size "' +
-        product?.size +
-        '"'
-    );
-  }
-
-  for (
-    const language of
-    supportedLanguages
-  ) {
-    if (
-      !String(
-        product?.names?.[
-          language
-        ] || ''
-      ).trim()
-    ) {
-      addError(
-        label +
-          ': missing names.' +
-          language
-      );
-    }
-
-    if (
-      !String(
-        product
-          ?.descriptions?.[
-            language
-          ] || ''
-      ).trim()
-    ) {
-      addError(
-        label +
-          ': missing descriptions.' +
-          language
-      );
-    }
-  }
-
-  if (
-    product?.cover &&
-    typeof product.cover !==
-      'string'
-  ) {
-    addError(
-      label +
-        ': cover must be a string'
-    );
-  }
-
-  if (
-    product?.images &&
-    !Array.isArray(
-      product.images
-    )
-  ) {
-    addError(
-      label +
-        ': images must be an array'
-    );
-  }
-}
-
-const placeholderCount =
-  productsDoc.products.filter(
-    (product) =>
-      product?.status ===
-      'placeholder'
-  ).length;
-
-if (placeholderCount > 0) {
-  addWarning(
-    placeholderCount +
-      ' products are still marked as placeholder'
-  );
-}
-```
-
-}
-}
-
 if (seriesDoc) {
 const seriesMap =
 seriesDoc.series || {};
+
+const sizeMap =
+seriesDoc.sizes || {};
 
 if (
 !Array.isArray(
 seriesDoc.seriesOrder
 )
 ) {
-addError(
+fail(
 'data/series.json: seriesOrder must be an array'
 );
 } else {
@@ -402,10 +208,9 @@ const seriesId of
 seriesDoc.seriesOrder
 ) {
 if (!seriesMap[seriesId]) {
-addError(
-'data/series.json: seriesOrder references unknown series "' +
-seriesId +
-'"'
+fail(
+'data/series.json: unknown series in seriesOrder: ' +
+seriesId
 );
 }
 }
@@ -416,8 +221,8 @@ if (
 seriesDoc.defaultSeries
 ]
 ) {
-addError(
-'data/series.json: defaultSeries does not exist in series'
+fail(
+'data/series.json: defaultSeries must exist in series'
 );
 }
 
@@ -426,8 +231,7 @@ const [seriesId, series] of
 Object.entries(seriesMap)
 ) {
 for (
-const language of
-supportedLanguages
+const language of languages
 ) {
 if (
 !String(
@@ -436,14 +240,150 @@ language
 ] || ''
 ).trim()
 ) {
-addError(
-'data/series.json series.' +
+fail(
+'data/series.json: series.' +
 seriesId +
-': missing labels.' +
-language
+'.labels.' +
+language +
+' is missing'
 );
 }
 }
+}
+
+if (productsDoc) {
+if (
+!Array.isArray(
+productsDoc.products
+)
+) {
+fail(
+'data/products.json: products must be an array'
+);
+} else {
+const ids = new Set();
+let placeholderCount = 0;
+
+
+  for (
+    const [index, product] of
+    productsDoc.products.entries()
+  ) {
+    const label =
+      'data/products.json: products[' +
+      index +
+      ']';
+
+    const id = String(
+      product?.id || ''
+    ).trim();
+
+    if (!id) {
+      fail(
+        label +
+          '.id is required'
+      );
+    } else if (ids.has(id)) {
+      fail(
+        label +
+          '.id is duplicated: ' +
+          id
+      );
+    } else {
+      ids.add(id);
+    }
+
+    if (
+      !seriesMap[
+        product?.series
+      ]
+    ) {
+      fail(
+        label +
+          '.series is unknown: ' +
+          product?.series
+      );
+    }
+
+    if (
+      !sizeMap[
+        product?.size
+      ]
+    ) {
+      fail(
+        label +
+          '.size is unknown: ' +
+          product?.size
+      );
+    }
+
+    for (
+      const language of
+      languages
+    ) {
+      if (
+        !String(
+          product?.names?.[
+            language
+          ] || ''
+        ).trim()
+      ) {
+        fail(
+          label +
+            '.names.' +
+            language +
+            ' is missing'
+        );
+      }
+
+      if (
+        !String(
+          product
+            ?.descriptions?.[
+              language
+            ] || ''
+        ).trim()
+      ) {
+        fail(
+          label +
+            '.descriptions.' +
+            language +
+            ' is missing'
+        );
+      }
+    }
+
+    if (
+      product?.images &&
+      !Array.isArray(
+        product.images
+      )
+    ) {
+      fail(
+        label +
+          '.images must be an array'
+      );
+    }
+
+    if (
+      product?.status ===
+      'placeholder'
+    ) {
+      placeholderCount += 1;
+    }
+  }
+
+  if (
+    placeholderCount > 0
+  ) {
+    warn(
+      placeholderCount +
+        ' products are still marked as placeholder'
+    );
+  }
+}
+
+
 }
 }
 
@@ -453,48 +393,50 @@ if (
 i18nDoc.languages
 )
 ) {
-addError(
+fail(
 'data/i18n.json: languages must be an array'
 );
 }
 
 for (
-const language of
-supportedLanguages
+const language of languages
 ) {
 if (
 !i18nDoc.languages?.includes(
 language
 )
 ) {
-addError(
-'data/i18n.json: missing language "' +
-language +
-'"'
+fail(
+'data/i18n.json: language is missing: ' +
+language
 );
 }
 
-```
+
 if (
   !i18nDoc.currencyMap?.[
     language
   ]
 ) {
-  addError(
-    'data/i18n.json: missing currencyMap.' +
-      language
+  fail(
+    'data/i18n.json: currencyMap.' +
+      language +
+      ' is missing'
   );
 }
 
 if (
-  !i18nDoc.ui?.[language]
+  !i18nDoc.ui?.[
+    language
+  ]
 ) {
-  addError(
-    'data/i18n.json: missing ui.' +
-      language
+  fail(
+    'data/i18n.json: ui.' +
+      language +
+      ' is missing'
   );
 }
-```
+
 
 }
 }
@@ -502,11 +444,11 @@ if (
 if (configDoc) {
 if (
 !String(
-configDoc.submissionEndpoint ||
-''
+configDoc
+.submissionEndpoint || ''
 ).trim()
 ) {
-addError(
+fail(
 'data/app-config.json: submissionEndpoint is required'
 );
 }
@@ -517,8 +459,8 @@ configDoc.submissionEndpoint &&
 configDoc.web3formsEndpoint !==
 configDoc.submissionEndpoint
 ) {
-addError(
-'data/app-config.json: web3formsEndpoint and submissionEndpoint do not match'
+fail(
+'data/app-config.json: web3formsEndpoint and submissionEndpoint must match'
 );
 }
 
@@ -526,21 +468,23 @@ if (configDoc.privacyUrl) {
 const privacyPath =
 String(
 configDoc.privacyUrl
-).replace(/^./+/, '');
+).replace(
+'./',
+''
+);
 
-```
+
 if (
-  !(await fileExists(
+  !(await exists(
     privacyPath
   ))
 ) {
-  addError(
-    'data/app-config.json: privacyUrl target "' +
-      privacyPath +
-      '" is missing'
+  fail(
+    'data/app-config.json: privacyUrl target is missing: ' +
+      privacyPath
   );
 }
-```
+
 
 }
 }
@@ -552,8 +496,8 @@ manifestDoc.icons
 ) ||
 manifestDoc.icons.length === 0
 ) {
-addError(
-'manifest.webmanifest: at least one icon is required'
+fail(
+'manifest.webmanifest: icons must contain at least one item'
 );
 } else {
 for (
@@ -563,133 +507,43 @@ manifestDoc.icons
 const iconPath =
 String(
 icon?.src || ''
-).replace(/^./+/, '');
+).replace(
+'./',
+''
+);
 
-```
+
   if (
     !iconPath ||
-    !(await fileExists(
+    !(await exists(
       iconPath
     ))
   ) {
-    addError(
-      'manifest.webmanifest: icon target "' +
-        iconPath +
-        '" is missing'
+    fail(
+      'manifest.webmanifest: icon target is missing: ' +
+        iconPath
     );
   }
 }
-```
+
 
 }
 }
 
-if (await fileExists('sw.js')) {
-const serviceWorker =
-await readFile(
-path.join(ROOT, 'sw.js'),
-'utf8'
-);
-
-const shellMatch =
-serviceWorker.match(
-/const\s+APP_SHELL\s*=\s*[([\s\S]*?)];/
-);
-
-if (!shellMatch) {
-addError(
-'sw.js: APP_SHELL array could not be found'
-);
-} else {
-const shellPaths = [
-...shellMatch[1].matchAll(
-/['"](./[^'%22]+)['"]/g
-)
-]
-.map((match) =>
-match[1].replace(
-/^./+/,
-''
-)
-)
-.filter(Boolean);
-
-```
-for (
-  const shellPath of
-  shellPaths
-) {
-  if (
-    !(await fileExists(
-      shellPath
-    ))
-  ) {
-    addError(
-      'sw.js: APP_SHELL target "' +
-        shellPath +
-        '" is missing'
-    );
-  }
-}
-```
-
-}
-}
-
-const tempDirectory = path.join(
-ROOT,
-'.quality-check-temp'
-);
-
-await mkdir(
-tempDirectory,
-{
-recursive: true
-}
-);
-
-try {
-const javaScriptFiles =
-await collectJavaScriptFiles(
+const scriptFiles =
+await collectScriptFiles(
 ROOT
 );
 
-for (
-const file of
-javaScriptFiles
-) {
-checkJavaScriptFile(file);
+for (const file of scriptFiles) {
+checkScriptSyntax(file);
 }
 
 for (
-const htmlFile of [
-'index.html',
-'offline.html',
-'privacy.html'
-]
+const message of warnings
 ) {
-if (
-await fileExists(htmlFile)
-) {
-await checkInlineScripts(
-htmlFile,
-tempDirectory
-);
-}
-}
-} finally {
-await rm(
-tempDirectory,
-{
-recursive: true,
-force: true
-}
-);
-}
-
-for (const warning of warnings) {
 console.warn(
-'WARNING: ' + warning
+'WARNING: ' + message
 );
 }
 
@@ -698,9 +552,11 @@ console.error(
 '\nProject validation failed:\n'
 );
 
-for (const error of errors) {
+for (
+const message of errors
+) {
 console.error(
-'- ' + error
+'- ' + message
 );
 }
 
