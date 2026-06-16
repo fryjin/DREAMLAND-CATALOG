@@ -512,7 +512,7 @@ export async function onRequestPost(context) {
     return json(
       {
         success: false,
-        message: 'Submission service failed'
+        message: `Backend Error: ${error.message}`
       },
       502
     );
