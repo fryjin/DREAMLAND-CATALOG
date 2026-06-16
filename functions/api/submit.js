@@ -26,15 +26,27 @@ return String(value ?? '').trim().slice(0, max);
 }
 
 function isEmail(value) {
-return /^[^\s@]+@[^\s@]+.[^\s@]+$/.test(
-asText(value, 320)
+const email = asText(value, 320);
+const atIndex = email.indexOf('@');
+const dotIndex = email.lastIndexOf('.');
+
+return (
+atIndex > 0 &&
+dotIndex > atIndex + 1 &&
+dotIndex < email.length - 1
 );
 }
 
 function countUrls(value) {
-return (
-asText(value, 50000).match(/https?:///gi) || []
-).length;
+const content = asText(value, 50000).toLowerCase();
+
+const httpCount =
+content.split('http://').length - 1;
+
+const httpsCount =
+content.split('https://').length - 1;
+
+return httpCount + httpsCount;
 }
 
 async function sha256(value) {
@@ -352,12 +364,11 @@ try {
 }
 
 if (!response.ok) {
-  return {
-    success: false,
-    errors: [
-      `siteverify-http-${response.status}`
-    ]
-  };
+throw new Error(
+data?.message ||
+'Web3Forms server returned status ' +
+response.status
+);
 }
 
 return {
