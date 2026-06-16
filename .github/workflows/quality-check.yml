@@ -21,6 +21,7 @@ name: quality-check
 runs-on: ubuntu-latest
 timeout-minutes: 10
 
+
 steps:
   - name: Checkout repository
     uses: actions/checkout@v4
@@ -32,3 +33,4 @@ steps:
 
   - name: Validate project
     run: node scripts/validate-project.mjs
+
