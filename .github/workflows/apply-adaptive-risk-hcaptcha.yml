@@ -12,28 +12,52 @@ on:
 permissions:
   contents: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   apply:
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: "20"
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Verify patch files
+        run: |
+          set -euxo pipefail
+          node --version
+          test -f scripts/apply-adaptive-risk-hcaptcha.mjs
+          test -f index.html
+          test -f sw.js
+          test -f data/app-config.json
+          wc -l scripts/apply-adaptive-risk-hcaptcha.mjs
 
       - name: Apply adaptive risk control
-        run: node scripts/apply-adaptive-risk-hcaptcha.mjs
+        env:
+          NODE_OPTIONS: "--trace-uncaught"
+        run: |
+          set -o pipefail
+          node scripts/apply-adaptive-risk-hcaptcha.mjs
 
       - name: Validate adaptive risk control
-        run: node scripts/validate-adaptive-risk-hcaptcha.mjs
+        env:
+          NODE_OPTIONS: "--trace-uncaught"
+        run: |
+          set -o pipefail
+          node scripts/validate-adaptive-risk-hcaptcha.mjs
 
       - name: Commit generated changes
         run: |
+          set -euxo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
