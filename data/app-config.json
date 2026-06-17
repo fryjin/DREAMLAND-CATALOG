@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
-  "web3formsEndpoint": "./api/submit",
+  "web3formsSubmitUrl": "https://api.web3forms.com/submit",
+"web3formsAccessKey": "e364fde5-21d8-44e7-b3d9-18993e0ad643",
   "hcaptcha": {
     "enabled": true,
     "mode": "adaptive-risk",
