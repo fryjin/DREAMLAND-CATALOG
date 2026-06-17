@@ -59,6 +59,34 @@ byte.toString(16).padStart(2, '0')
 .join('');
 }
 
+function buildInquiryReference(result) {
+const duplicateKey = asText(
+result?.storage?.duplicateKey,
+100
+);
+
+const hash = duplicateKey.startsWith('dup:')
+? duplicateKey.slice(4)
+: '';
+
+const date = new Date()
+.toISOString()
+.slice(0, 10)
+.replaceAll('-', '');
+
+const randomPart = crypto
+.randomUUID()
+.replaceAll('-', '')
+.slice(0, 8)
+.toUpperCase();
+
+const suffix = hash
+? hash.slice(0, 8).toUpperCase()
+: randomPart;
+
+return 'INQ-' + date + '-' + suffix;
+}
+
 function validatePayload(payload) {
 if (!payload || typeof payload !== 'object') {
 return 'Missing payload';
@@ -213,10 +241,24 @@ const email = asText(
   320
 ).toLowerCase();
 
-const signature = asText(
-  body.payload?.items_summary,
-  50000
-);
+const signature = [
+asText(
+body.payload?.items_summary,
+50000
+),
+asText(
+body.payload?.message,
+10000
+),
+asText(
+body.payload?.product_count,
+50
+),
+asText(
+body.payload?.custom_count,
+50
+)
+].join('|');
 
 const hashes = await Promise.all([
   sha256(ip),
@@ -680,6 +722,28 @@ message:
 );
 }
 
+const inquiryReference =
+buildInquiryReference(result);
+
+if (
+result.storage &&
+result.storage.duplicateCount >= 1
+) {
+return json({
+...assessment,
+success: true,
+duplicate: true,
+inquiry_reference:
+inquiryReference,
+submission: {
+accepted: true,
+status: 200,
+responseType:
+'duplicate-suppressed'
+}
+});
+}
+  
 if (captchaRequired) {
 const token = asText(
 body.hcaptcha_token,
@@ -737,12 +801,17 @@ if (
 }
 
 try {
+const submissionPayload = {
+...body.payload,
+inquiry_reference:
+inquiryReference
+};
+
 const submission =
 await forwardToWeb3Forms(
 env,
-body.payload
+submissionPayload
 );
-
 
 const riskRecorded =
   await recordPersistentRisk(
@@ -752,6 +821,9 @@ const riskRecorded =
 
 return json({
   success: true,
+  duplicate: false,
+  inquiry_reference:
+    inquiryReference,
   captcha_used:
     captchaRequired,
   risk_score:
