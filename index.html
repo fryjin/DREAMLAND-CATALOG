@@ -221,9 +221,9 @@ let choiceMaps={};
 let languageNames={};
 let appConfig={};
 let defaultSeries='advanced';
-const SUBMISSION_ARCHIVE_KEY='dreamlandInquiryArchiveV1';
 const LAST_SUBMISSION_KEY='dreamlandLastSubmissionV1';
-let pendingInquiryId='';
+const PENDING_INQUIRY_KEY='dreamlandPendingInquiryIdV1';
+let pendingInquiryId=localStorage.getItem(PENDING_INQUIRY_KEY)||'';
 let hcaptchaWidgetId=null;
 let submittingInquiry=false;
 let lastSubmitAttemptAt=0;
@@ -342,7 +342,13 @@ function generateInquiryId(){
   const code=[...bytes].map(value=>value.toString(36).padStart(2,'0')).join('').slice(0,6).toUpperCase();
   return `DL-${date}-${code}`;
 }
-function ensureInquiryId(){if(!pendingInquiryId)pendingInquiryId=generateInquiryId();return pendingInquiryId}
+function ensureInquiryId(){
+  if(!pendingInquiryId){
+    pendingInquiryId=generateInquiryId();
+    localStorage.setItem(PENDING_INQUIRY_KEY,pendingInquiryId)
+  }
+  return pendingInquiryId
+}
 function privacyUrl(){return (appConfig.privacyUrl||'./privacy.html')+'#'+currentLang}
 function applyRuntimeLimits(){let el=document.getElementById('customQty');if(el){el.min=customMoq();el.max=maximumQuantity();el.placeholder=String(customMoq())+'+'}}
 function qtyUnit(){return ui('pieces')}
@@ -588,7 +594,15 @@ function setItemQty(id,v){let i=state.items.find(x=>x.id===id);if(!i||i.type!=='
 function del(id){state.items=state.items.filter(i=>i.id!==id);save();renderInquiry();toast(toastText('removedInquiry'))}
 function confirmClearAll(){if(!state.items.length)return toast(toastText('emptyInquiry'));confirmLayer.classList.add('show')}
 function hideConfirm(){confirmLayer.classList.remove('show')}
-function clearInquiry(){state.items=[];save();hideConfirm();renderInquiry();toast(toastText('clearedInquiry'))}
+function clearInquiry(){
+  state.items=[];
+  pendingInquiryId='';
+  localStorage.removeItem(PENDING_INQUIRY_KEY);
+  save();
+  hideConfirm();
+  renderInquiry();
+  toast(toastText('clearedInquiry'))
+}
 function addCustomIntent(){
   document.querySelectorAll('[data-screen="custom"] .field').forEach(f=>f.classList.remove('invalid'));
   let use=fieldValue('customUse'),rawQty=Number(fieldValue('customQty')),min=customMoq(),ok=true;
@@ -902,7 +916,9 @@ function archiveSubmission(snapshot){
   localStorage.setItem(SUBMISSION_ARCHIVE_KEY,JSON.stringify(archive));localStorage.setItem(LAST_SUBMISSION_KEY,JSON.stringify(snapshot))
 }
 function clearSubmittedInquiry(){
-  state={version:2,items:[],contact:{}};save();pendingInquiryId='';
+  state={version:2,items:[],contact:{}};save();
+  pendingInquiryId='';
+  localStorage.removeItem(PENDING_INQUIRY_KEY);
   ['name','company','country','city','email','phone','message','customQty','customDate','customColor','customNote'].forEach(id=>{let el=document.getElementById(id);if(el)el.value='' });
   ['buyerType','customUse','customBudget','customSize','customScent','customPack','customBranding'].forEach(id=>{let el=document.getElementById(id);if(el)el.selectedIndex=0})
 }
