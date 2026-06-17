@@ -982,13 +982,29 @@ export async function onRequestPost(
       error
     );
 
-    return json(
-      {
-        success: false,
-        message:
-          'Submission service failed'
-      },
-      502
-    );
+const debugEnabled =
+asText(
+env.DEBUG_SUBMISSION_ERRORS,
+10
+).toLowerCase() === 'true';
+
+return json(
+{
+success: false,
+message:
+'Submission service failed',
+...(debugEnabled
+? {
+debug_error:
+asText(
+error?.message || error,
+500
+)
+}
+: {})
+},
+502
+);
+
   }
 }
