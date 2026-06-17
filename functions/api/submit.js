@@ -801,11 +801,23 @@ if (
 }
 
 try {
+const contactName =
+asText(
+body.payload?.contact_name,
+160
+) || 'Unknown contact';
+
 const submissionPayload = {
 ...body.payload,
 inquiry_reference:
-inquiryReference
+inquiryReference,
+subject:
+'[' +
+inquiryReference +
+'] DREAMLAND Inquiry - ' +
+contactName
 };
+
 
 const submission =
 await forwardToWeb3Forms(
