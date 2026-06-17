@@ -275,8 +275,24 @@ async function loadCatalogData(){
 function seriesTabLabel(key){
   return seriesTabLabels[currentLang]?.[key]||seriesTabLabels.zh?.[key]||seriesMeta[key]?.name||key;
 }
-function web3formsEndpoint(){return appConfig.submissionEndpoint||'./api/submit'}
-function web3formsReady(){return Boolean(web3formsEndpoint())}
+function riskAssessmentEndpoint(){
+  return appConfig.submissionEndpoint||'./api/submit'
+}
+
+function web3formsSubmitUrl(){
+  return appConfig.web3formsSubmitUrl||
+    'https://api.web3forms.com/submit'
+}
+
+function web3formsAccessKey(){
+  return String(
+    appConfig.web3formsAccessKey||''
+  ).trim()
+}
+
+function web3formsReady(){
+  return Boolean(web3formsAccessKey())
+}
 ['catalogInquiry','productManualState','manualInquiry'].forEach(k=>localStorage.removeItem(k));
 const CATALOG_BATCH_SIZE=5;
 const QTY_STEP=1;
@@ -858,7 +874,7 @@ async function assessSubmissionRisk(){
   submissionRiskReasons=[];
   try{
     const inquiryId=ensureInquiryId();
-    const response=await fetch(web3formsEndpoint(),{
+    const response=await fetch(riskAssessmentEndpoint(),{
       method:'POST',
       headers:{Accept:'application/json','Content-Type':'application/json'},
       body:JSON.stringify({
@@ -955,44 +971,47 @@ async function submitInquiry(){
     lastSubmitAttemptAt=Date.now();
     recordRiskAttempt();
 
-    const inquiryId=ensureInquiryId(),snapshot=submissionSnapshot(inquiryId);
-    const response=await fetch(web3formsEndpoint(),{
-      method:'POST',
-      headers:{Accept:'application/json','Content-Type':'application/json'},
-      body:JSON.stringify({
-        action:'submit',
-        payload:buildWeb3FormsPayload(inquiryId),
-        risk:buildRiskContext(),
-        website:riskHoneypotValue(),
-        hcaptcha_token:hcaptchaToken()
-      })
-    });
-    let data={};try{data=await response.json()}catch(_){}
+    const inquiryId=ensureInquiryId();
+const snapshot=submissionSnapshot(inquiryId);
 
-    if(data.captcha_required===true){
-      submissionRiskRequiresCaptcha=true;
-      submissionRiskScore=Number(data.risk_score)||submissionRiskScore;
-      submissionRiskReasons=Array.isArray(data.reasons)?data.reasons:submissionRiskReasons;
-      submissionRiskSiteKey=String(data.site_key||submissionRiskSiteKey);
-      setRiskStatus('risk',riskText('captcha'));
-      captchaSection(true);
-      await renderHCaptcha(submissionRiskSiteKey);
-      if(error){error.textContent=riskText('captchaRequired');error.classList.add('show')}
-      toast(riskText('captchaRequired'));
-      return
-    }
-   if(!response.ok||data.success!==true)throw new Error(data.message||'Submission failed');
+const formData=buildWeb3FormsFormData(inquiryId);
+formData.append(
+  'access_key',
+  web3formsAccessKey()
+);
 
-const finalInquiryReference=String(
-data.inquiry_reference||inquiryId
-).trim()||inquiryId;
+const response=await fetch(
+  web3formsSubmitUrl(),
+  {
+    method:'POST',
+    headers:{
+      Accept:'application/json'
+    },
+    body:formData
+  }
+);
+
+let data={};
+try{
+  data=await response.json()
+}catch(_){}
+
+if(
+  !response.ok||
+  data.success!==true
+){
+  throw new Error(
+    data.message||
+    'Submission failed'
+  )
+}
+
+const finalInquiryReference=inquiryId;
 
 snapshot.clientInquiryId=inquiryId;
 snapshot.inquiryId=finalInquiryReference;
-snapshot.duplicate=data.duplicate===true;
-snapshot.submissionResponseType=String(
-data.submission?.responseType||''
-);
+snapshot.duplicate=false;
+snapshot.submissionResponseType='web3forms-direct';
 
 archiveSubmission(snapshot);
 clearSubmittedInquiry();
