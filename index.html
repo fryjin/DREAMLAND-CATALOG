@@ -958,10 +958,22 @@ async function submitInquiry(){
       toast(riskText('captchaRequired'));
       return
     }
-    if(!response.ok||data.success!==true)throw new Error(data.message||'Submission failed');
+   if(!response.ok||data.success!==true)throw new Error(data.message||'Submission failed');
 
-    archiveSubmission(snapshot);
-    clearSubmittedInquiry();
+const finalInquiryReference=String(
+data.inquiry_reference||inquiryId
+).trim()||inquiryId;
+
+snapshot.clientInquiryId=inquiryId;
+snapshot.inquiryId=finalInquiryReference;
+snapshot.duplicate=data.duplicate===true;
+snapshot.submissionResponseType=String(
+data.submission?.responseType||''
+);
+
+archiveSubmission(snapshot);
+clearSubmittedInquiry();
+
     btn.textContent=ui('confirmSubmit');
     go('success')
   }catch(errorObject){
