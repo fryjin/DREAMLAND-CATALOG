@@ -683,7 +683,14 @@ DEFAULT_RISK_THRESHOLD
 )
 );
 
+const duplicateSubmission =
+Boolean(
+result.storage &&
+result.storage.duplicateCount >= 1
+);
+
 const captchaRequired =
+!duplicateSubmission &&
 result.score >= threshold;
 
 const assessment = {
@@ -725,10 +732,7 @@ message:
 const inquiryReference =
 buildInquiryReference(result);
 
-if (
-result.storage &&
-result.storage.duplicateCount >= 1
-) {
+if (duplicateSubmission) {
 return json({
 ...assessment,
 success: true,
