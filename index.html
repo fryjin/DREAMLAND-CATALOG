@@ -282,6 +282,12 @@ const CATALOG_BATCH_SIZE=5;
 const QTY_STEP=1;
 const QTY_MIN=1;
 let activeScreen='home',activeSeries='advanced',activeProduct=null,config={},detailSlideIndex=0,detailTimer=null,catalogRenderToken=0,catalogBatchTimer=null,catalogList=[],catalogCursor=0,catalogLoading=false;let state=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{"version":2,"items":[],"contact":{}}');if(state.version!==2)state={version:2,items:[],contact:{}};
+
+  if(!state.items.length&&pendingInquiryId){
+pendingInquiryId='';
+localStorage.removeItem(PENDING_INQUIRY_KEY)
+}
+  
 function save(){state.version=2;localStorage.setItem(STORAGE_KEY,JSON.stringify(state));badge()}function uid(){return'I'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}function money(v){let c=currencyMap[currentLang]||currencyMap.zh;let n=Number(v||0)*c.rate;return c.prefix+n.toLocaleString(c.locale,{minimumFractionDigits:c.digits,maximumFractionDigits:c.digits})}function seriesQty(s){return state.items.filter(i=>i.type==='product'&&i.series===s).reduce((a,b)=>a+b.qty,0)}function tierUnit(s,q){let p=seriesMeta[s]?.price||[4.5,4.1,3.8];return q>=3000?p[2]:q>=1000?p[1]:p[0]}
 function packOptions(s){return seriesMeta[s]?.packaging?.options||['防震包装']}
 function defaultPack(s){return seriesMeta[s]?.packaging?.default||packOptions(s)[0]||'防震包装'}
