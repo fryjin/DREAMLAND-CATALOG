@@ -32,9 +32,7 @@ await access(
 path.join(ROOT, relativePath)
 );
 
-```
 return true;
-```
 
 } catch {
 return false;
