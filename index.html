@@ -1243,12 +1243,36 @@ let pwaConnectivityProbePromise=null;
 let pwaConnectivityCheckedAt=0;
 let pwaConnectivityLastResult=null;
 
-function connectivityProbeTimeoutMs(){return Math.max(1500,Number(pwaConfig().connectivityProbeTimeoutMs||4500))}
-function connectivityProbeCacheMs(){return Math.max(0,Number(pwaConfig().connectivityProbeCacheMs||12000))}
-function connectivityProbeUrl(){
-  const endpoint=typeof web3formsEndpoint==='function'?web3formsEndpoint():'https://api.web3forms.com/submit';
-  return endpoint+(endpoint.includes('?')?'&':'?')+'connectivity_check='+Date.now();
+function connectivityProbeTimeoutMs(){
+return Math.max(
+1500,
+Number(
+pwaConfig().connectivityProbeTimeoutMs || 4500
+)
+)
 }
+
+function connectivityProbeCacheMs(){
+return Math.max(
+0,
+Number(
+pwaConfig().connectivityProbeCacheMs || 12000
+)
+)
+}
+
+function connectivityProbeUrl(){
+const endpoint =
+typeof riskAssessmentEndpoint === 'function'
+? riskAssessmentEndpoint()
+: './api/submit';
+
+return endpoint +
+(endpoint.includes('?') ? '&' : '?') +
+'connectivity_check=' +
+Date.now()
+}
+
 async function probeWeb3FormsReachability(force=false){
   if(navigator.onLine===false){
     pwaConnectivityLastResult=false;
