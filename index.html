@@ -532,66 +532,24 @@ function bindHorizontalOptions() {
 
     el.dataset.bound = '1';
 
-    let down = false;
-    let startX = 0;
-    let startScroll = 0;
-    let dragged = false;
-
-    const DRAG_THRESHOLD = 10;
-
-    el.addEventListener('pointerdown', (event) => {
-      // 触屏设备使用浏览器原生横向滚动，避免阻止按钮点击。
-      if (event.pointerType !== 'mouse') return;
-
-      down = true;
-      dragged = false;
-      startX = event.clientX;
-      startScroll = el.scrollLeft;
-
-      el.classList.add('dragging');
-      el.setPointerCapture?.(event.pointerId);
-    });
-
-    el.addEventListener('pointermove', (event) => {
-      if (!down) return;
-
-      const distance = event.clientX - startX;
-
-      if (Math.abs(distance) > DRAG_THRESHOLD) {
-        dragged = true;
-      }
-
-      if (dragged) {
-        el.scrollLeft = startScroll - distance;
-      }
-    });
-
-    const endDrag = (event) => {
-      if (!down) return;
-
-      down = false;
-      el.classList.remove('dragging');
-
-      if (el.hasPointerCapture?.(event.pointerId)) {
-        el.releasePointerCapture(event.pointerId);
-      }
-    };
-
-    el.addEventListener('pointerup', endDrag);
-    el.addEventListener('pointercancel', endDrag);
-    el.addEventListener('pointerleave', endDrag);
-
+    // 移动端由浏览器原生处理横向滑动。
+    // 桌面端将鼠标滚轮转换为横向滚动。
     el.addEventListener(
-      'click',
+      'wheel',
       (event) => {
-        // 只有真正发生鼠标拖动时才取消点击。
-        if (!dragged) return;
+        if (el.scrollWidth <= el.clientWidth) return;
 
+        const horizontalMovement =
+          Math.abs(event.deltaX) >= Math.abs(event.deltaY)
+            ? event.deltaX
+            : event.deltaY;
+
+        if (!horizontalMovement) return;
+
+        el.scrollLeft += horizontalMovement;
         event.preventDefault();
-        event.stopPropagation();
-        dragged = false;
       },
-      true
+      { passive: false }
     );
   });
 }
@@ -602,8 +560,61 @@ function bindHorizontalOptions() {
   configCard.innerHTML=block(ui('size'),'size',['S','M','L','XL'],ui('sizeHint'))+block(ui('scent'),'scent',meta.scents,`${seriesLabel(activeProduct.series)} ${ui('scentHint')}`)+block(ui('pattern'),'pattern',patternsBySize[config.size],ui('patternHint'))+block(ui('pack'),'pack',packOptions(activeProduct.series),packHint(activeProduct.series))+`<div class="config-block"><div class="config-title"><h3>${ui('quantity')}</h3><span>${ui('moqHint')} ${min}</span></div><div class="qty-bar"><div><div class="summary-label">${ui('currentUnitPrice')}</div><div class="amount">${money(configUnit())}</div></div><div class="qty-stepper"><button class="step" onclick="changeDetailQty(-QTY_STEP)">−</button><input class="qty qty-input" id="detailQty" type="number" min="${min}" max="${maximumQuantity()}" step="${QTY_STEP}" value="${config.qty}" inputmode="numeric" onchange="setDetailQty(this.value)"><button class="step" onclick="changeDetailQty(QTY_STEP)">+</button></div></div></div>`;
   requestAnimationFrame(bindHorizontalOptions)
 }
-function block(t,k,opts,h){let isScroll=(activeProduct.series==='masterpiece'||activeProduct.series==='holiday')&&k==='scent',tip=k==='size'?sizeDims[config.size]:(k==='scent'?scentTipText(isScroll,h):h),gridClass=isScroll?'option-grid option-grid-scroll':'option-grid',preview=optionPreview(k),scentRow=scentInfo(k);return`<div class="config-block"><div class="config-title"><h3>${t}</h3><div class="title-side"><div class="tip-tools"><span>${tip}</span></div></div></div><div class="config-choice-row"><div class="${gridClass}">${opts.map(o=>`<button class="option ${config[k]===o?'active':''}" onclick="setCfg('${k}','${o}')">${choiceLabel(o)}</button>`).join('')}</div>${preview}</div>${scentRow}</div>`}
-function setCfg(k,v){config[k]=v;if(k==='size')config.pattern=patternsBySize[v][0];if(k==='pack'&&!packOptions(activeProduct.series).includes(config.pack))config.pack=defaultPack(activeProduct.series);renderDetail()}
+function block(t, k, opts, h) {
+  const isScroll =
+    (activeProduct.series === 'masterpiece' ||
+      activeProduct.series === 'holiday') &&
+    k === 'scent';
+
+  const tip =
+    k === 'size'
+      ? sizeDims[config.size]
+      : k === 'scent'
+        ? scentTipText(isScroll, h)
+        : h;
+
+  const gridClass = isScroll
+    ? 'option-grid option-grid-scroll'
+    : 'option-grid';
+
+  const preview = optionPreview(k);
+  const scentRow = scentInfo(k);
+
+  return `
+    <div class="config-block">
+      <div class="config-title">
+        <h3>${t}</h3>
+        <div class="title-side">
+          <div class="tip-tools">
+            <span>${tip}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="config-choice-row">
+        <div class="${gridClass}">
+          ${opts
+            .map(
+              (o) => `
+                <button
+                  type="button"
+                  class="option ${config[k] === o ? 'active' : ''}"
+                  onclick="setCfg('${k}', '${o}')"
+                >
+                  ${choiceLabel(o)}
+                </button>
+              `
+            )
+            .join('')}
+        </div>
+
+        ${preview}
+      </div>
+
+      ${scentRow}
+    </div>
+  `;
+}function setCfg(k,v){config[k]=v;if(k==='size')config.pattern=patternsBySize[v][0];if(k==='pack'&&!packOptions(activeProduct.series).includes(config.pack))config.pack=defaultPack(activeProduct.series);renderDetail()}
 function setDetailQty(v){let min=productMoq(activeProduct),raw=Number(v);if(!Number.isFinite(raw)||raw<min)toast(ui('minQtyError'));if(raw>maximumQuantity())toast(ui('quantityTooLarge'));config.qty=normalizeQty(v,min);let el=document.getElementById('detailQty');if(el)el.value=config.qty;renderDetail()}
 function changeDetailQty(d){config.qty=normalizeQty(Number(config.qty)+d,productMoq(activeProduct));renderDetail()}
 function quickAdd(id){
