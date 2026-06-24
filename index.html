@@ -553,13 +553,23 @@ function bindHorizontalOptions() {
     );
   });
 }
-  function renderDetail(){
+  function renderDetail(scentScrollLeft = null){
   renderDetailMedia();
   let meta=seriesMeta[activeProduct.series],min=productMoq(activeProduct);
   config.qty=normalizeQty(config.qty,min);
   configCard.innerHTML=block(ui('size'),'size',['S','M','L','XL'],ui('sizeHint'))+block(ui('scent'),'scent',meta.scents,`${seriesLabel(activeProduct.series)} ${ui('scentHint')}`)+block(ui('pattern'),'pattern',patternsBySize[config.size],ui('patternHint'))+block(ui('pack'),'pack',packOptions(activeProduct.series),packHint(activeProduct.series))+`<div class="config-block"><div class="config-title"><h3>${ui('quantity')}</h3><span>${ui('moqHint')} ${min}</span></div><div class="qty-bar"><div><div class="summary-label">${ui('currentUnitPrice')}</div><div class="amount">${money(configUnit())}</div></div><div class="qty-stepper"><button class="step" onclick="changeDetailQty(-QTY_STEP)">−</button><input class="qty qty-input" id="detailQty" type="number" min="${min}" max="${maximumQuantity()}" step="${QTY_STEP}" value="${config.qty}" inputmode="numeric" onchange="setDetailQty(this.value)"><button class="step" onclick="changeDetailQty(QTY_STEP)">+</button></div></div></div>`;
-  requestAnimationFrame(bindHorizontalOptions)
-}
+ requestAnimationFrame(() => {
+  bindHorizontalOptions();
+
+  if (Number.isFinite(scentScrollLeft)) {
+    const scentScroller = configCard.querySelector('.option-grid-scroll');
+
+    if (scentScroller) {
+      scentScroller.scrollLeft = scentScrollLeft;
+    }
+  }
+});
+    
 function block(t, k, opts, h) {
   const isScroll =
     (activeProduct.series === 'masterpiece' ||
@@ -614,7 +624,32 @@ function block(t, k, opts, h) {
       ${scentRow}
     </div>
   `;
-}function setCfg(k,v){config[k]=v;if(k==='size')config.pattern=patternsBySize[v][0];if(k==='pack'&&!packOptions(activeProduct.series).includes(config.pack))config.pack=defaultPack(activeProduct.series);renderDetail()}
+}
+function setCfg(k, v) {
+  const scentScroller =
+    k === 'scent'
+      ? configCard.querySelector('.option-grid-scroll')
+      : null;
+
+  const scentScrollLeft = scentScroller
+    ? scentScroller.scrollLeft
+    : null;
+
+  config[k] = v;
+
+  if (k === 'size') {
+    config.pattern = patternsBySize[v][0];
+  }
+
+  if (
+    k === 'pack' &&
+    !packOptions(activeProduct.series).includes(config.pack)
+  ) {
+    config.pack = defaultPack(activeProduct.series);
+  }
+
+  renderDetail(scentScrollLeft);
+}
 function setDetailQty(v){let min=productMoq(activeProduct),raw=Number(v);if(!Number.isFinite(raw)||raw<min)toast(ui('minQtyError'));if(raw>maximumQuantity())toast(ui('quantityTooLarge'));config.qty=normalizeQty(v,min);let el=document.getElementById('detailQty');if(el)el.value=config.qty;renderDetail()}
 function changeDetailQty(d){config.qty=normalizeQty(Number(config.qty)+d,productMoq(activeProduct));renderDetail()}
 function quickAdd(id){
