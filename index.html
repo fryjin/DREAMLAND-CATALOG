@@ -526,8 +526,76 @@ function updateDetailSlide(){let slides=detailMedia.querySelectorAll('.detail-sl
 function setDetailSlide(i){let imgs=activeProduct.images&&activeProduct.images.length?activeProduct.images:localDetails(activeProduct.id);detailSlideIndex=(i+imgs.length)%imgs.length;updateDetailSlide();startDetailCarousel()}
 function changeDetailSlide(d,auto=false){setDetailSlide(detailSlideIndex+d);if(auto)return}
 function startDetailCarousel(){if(detailTimer)clearInterval(detailTimer);detailTimer=setInterval(()=>{let imgs=activeProduct.images&&activeProduct.images.length?activeProduct.images:localDetails(activeProduct.id);detailSlideIndex=(detailSlideIndex+1)%imgs.length;updateDetailSlide()},3200)}
-function bindHorizontalOptions(){document.querySelectorAll('.option-grid-scroll').forEach(el=>{if(el.dataset.bound==='1')return;el.dataset.bound='1';let down=false,startX=0,startScroll=0,moved=false;el.addEventListener('pointerdown',e=>{down=true;moved=false;startX=e.clientX;startScroll=el.scrollLeft;el.classList.add('dragging');el.setPointerCapture?.(e.pointerId)});el.addEventListener('pointermove',e=>{if(!down)return;let dx=e.clientX-startX;if(Math.abs(dx)>4)moved=true;el.scrollLeft=startScroll-dx});let end=e=>{if(!down)return;down=false;el.classList.remove('dragging');el.releasePointerCapture?.(e.pointerId)};el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);el.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopPropagation()}},true)})}
-function renderDetail(){
+function bindHorizontalOptions() {
+  document.querySelectorAll('.option-grid-scroll').forEach((el) => {
+    if (el.dataset.bound === '1') return;
+
+    el.dataset.bound = '1';
+
+    let down = false;
+    let startX = 0;
+    let startScroll = 0;
+    let dragged = false;
+
+    const DRAG_THRESHOLD = 10;
+
+    el.addEventListener('pointerdown', (event) => {
+      // 触屏设备使用浏览器原生横向滚动，避免阻止按钮点击。
+      if (event.pointerType !== 'mouse') return;
+
+      down = true;
+      dragged = false;
+      startX = event.clientX;
+      startScroll = el.scrollLeft;
+
+      el.classList.add('dragging');
+      el.setPointerCapture?.(event.pointerId);
+    });
+
+    el.addEventListener('pointermove', (event) => {
+      if (!down) return;
+
+      const distance = event.clientX - startX;
+
+      if (Math.abs(distance) > DRAG_THRESHOLD) {
+        dragged = true;
+      }
+
+      if (dragged) {
+        el.scrollLeft = startScroll - distance;
+      }
+    });
+
+    const endDrag = (event) => {
+      if (!down) return;
+
+      down = false;
+      el.classList.remove('dragging');
+
+      if (el.hasPointerCapture?.(event.pointerId)) {
+        el.releasePointerCapture(event.pointerId);
+      }
+    };
+
+    el.addEventListener('pointerup', endDrag);
+    el.addEventListener('pointercancel', endDrag);
+    el.addEventListener('pointerleave', endDrag);
+
+    el.addEventListener(
+      'click',
+      (event) => {
+        // 只有真正发生鼠标拖动时才取消点击。
+        if (!dragged) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+        dragged = false;
+      },
+      true
+    );
+  });
+}
+  function renderDetail(){
   renderDetailMedia();
   let meta=seriesMeta[activeProduct.series],min=productMoq(activeProduct);
   config.qty=normalizeQty(config.qty,min);
