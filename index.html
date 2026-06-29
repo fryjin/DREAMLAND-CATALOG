@@ -141,7 +141,16 @@
 }
 
 
-.moq-note{font-size:10px;color:#9a9ca3;font-weight:800;white-space:nowrap}.validation-note{margin-top:8px;color:#c94747;font-size:11px;line-height:1.45;font-weight:750}.verification-card{display:flex;flex-direction:column;gap:16px}.consent-check{display:flex;align-items:flex-start;gap:10px;font-size:12px;line-height:1.55;color:#666;cursor:pointer}.consent-check input{width:18px;height:18px;margin-top:1px;flex:none;accent-color:#111}.consent-check a{color:#111;font-weight:850;text-underline-offset:3px}.captcha-label{font-size:12px;font-weight:850;color:#444}.captcha-wrap{min-height:78px;display:flex;align-items:center}.captcha-status{font-size:12px;color:#8e9098}.verification-error{display:none;color:#c94747;font-size:12px;font-weight:800}.verification-error.show{display:block}.submit-consent{display:none}.archive-note{margin-top:12px;font-size:12px;line-height:1.55;color:#777;text-align:center}
+.moq-note{font-size:10px;color:#9a9ca3;font-weight:800;white-space:nowrap}.validation-note{margin-top:8px;color:#c94747;font-size:11px;line-height:1.45;font-weight:750}.verification-card{display:flex;flex-direction:column;gap:16px}.consent-check{display:flex;align-items:flex-start;gap:10px;font-size:12px;line-height:1.55;color:#666;cursor:pointer}.consent-check input{width:18px;height:18px;margin-top:1px;flex:none;accent-color:#111}.consent-check a{color:#111;font-weight:850;text-underline-offset:3px}.captcha-label{font-size:12px;font-weight:850;color:#444}.captcha-wrap{
+  width:100%;
+  max-width:100%;
+  min-height:78px;
+  display:flex;
+  align-items:center;
+  position:relative;
+  z-index:1;
+  touch-action:manipulation;
+}.captcha-status{font-size:12px;color:#8e9098}.verification-error{display:none;color:#c94747;font-size:12px;font-weight:800}.verification-error.show{display:block}.submit-consent{display:none}.archive-note{margin-top:12px;font-size:12px;line-height:1.55;color:#777;text-align:center}
 
 /* PWA phase 4: install, update and connectivity UI */
 .pwa-network-banner{position:absolute;left:14px;right:14px;top:calc(12px + env(safe-area-inset-top,0px));z-index:130;min-height:42px;padding:10px 13px;border-radius:16px;background:#111;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 12px 30px rgba(0,0,0,.22);font-size:11px;font-weight:800;line-height:1.4}
@@ -226,6 +235,8 @@ const LAST_SUBMISSION_KEY='dreamlandLastSubmissionV1';
 const PENDING_INQUIRY_KEY='dreamlandPendingInquiryIdV1';
 let pendingInquiryId=localStorage.getItem(PENDING_INQUIRY_KEY)||'';
 let hcaptchaWidgetId=null;
+let hcaptchaRenderedSize='';
+let hcaptchaResizeTimer=null;
 let submittingInquiry=false;
 let lastSubmitAttemptAt=0;
 
@@ -938,10 +949,50 @@ function preloadHCaptchaScript(){
   if(appConfig.hcaptcha?.enabled===false||navigator.onLine===false)return Promise.resolve(null);
   return loadHCaptchaScript().catch(error=>{console.warn('hCaptcha preload failed:',error);return null})
 }
-function retryHCaptcha(){resetHCaptchaScriptLoader();renderHCaptcha(submissionRiskSiteKey)}
+function retryHCaptcha(){
+  resetHCaptchaScriptLoader();
+  renderHCaptcha(submissionRiskSiteKey);
+}
+function preferredHCaptchaSize(container){
+  const availableWidth=container?.clientWidth||0;
+
+  return availableWidth>0&&availableWidth<320
+    ? 'compact'
+    : 'normal';
+}
+
+function refreshHCaptchaForViewport(){
+  if(!submissionRiskRequiresCaptcha)return;
+
+  if(hcaptchaResizeTimer){
+    clearTimeout(hcaptchaResizeTimer);
+  }
+
+  hcaptchaResizeTimer=setTimeout(()=>{
+    const container=document.getElementById('hcaptchaContainer');
+
+    if(
+      !container||
+      !document.body.contains(container)||
+      hcaptchaToken()
+    ){
+      return;
+    }
+
+    const nextSize=preferredHCaptchaSize(container);
+
+    if(nextSize!==hcaptchaRenderedSize){
+      renderHCaptcha(submissionRiskSiteKey);
+    }
+  },300);
+}
+
 async function renderHCaptcha(siteKey=submissionRiskSiteKey){
   const container=document.getElementById('hcaptchaContainer');
+
   if(!container||!submissionRiskRequiresCaptcha)return;
+
+  const widgetSize=preferredHCaptchaSize(container);
   if(!siteKey||siteKey.includes('REPLACE_WITH_')){
     container.innerHTML=`<div class="captcha-help">${riskText('configError')}</div>`;
     return
@@ -956,14 +1007,23 @@ async function renderHCaptcha(siteKey=submissionRiskSiteKey){
     await loadHCaptchaScript();
     clearTimeout(slowTimer);
     if(!document.body.contains(container))return;
-    if(hcaptchaWidgetId!==null){try{window.hcaptcha.remove(hcaptchaWidgetId)}catch(_){}hcaptchaWidgetId=null}
+    if(hcaptchaWidgetId!==null){
+  try{
+    window.hcaptcha.remove(hcaptchaWidgetId);
+  }catch(_){}
+
+  hcaptchaWidgetId=null;
+  hcaptchaRenderedSize='';
+}
     container.innerHTML='';
     hcaptchaWidgetId=window.hcaptcha.render(container,{
-      sitekey:siteKey,
-      theme:'light',
-      size:'normal',
-      'recaptchacompat':'off'
-    })
+  sitekey:siteKey,
+  theme:'light',
+  size:widgetSize,
+  'recaptchacompat':'off'
+});
+
+hcaptchaRenderedSize=widgetSize;
   }catch(error){
     clearTimeout(slowTimer);
     console.error('hCaptcha load failed:',error);
@@ -976,6 +1036,18 @@ function hcaptchaToken(){
   if(!submissionRiskRequiresCaptcha)return '';
   try{return hcaptchaWidgetId===null?'':window.hcaptcha?.getResponse(hcaptchaWidgetId)||''}catch(_){return ''}
 }
+window.addEventListener(
+  'resize',
+  refreshHCaptchaForViewport,
+  {passive:true}
+);
+
+window.addEventListener(
+  'orientationchange',
+  refreshHCaptchaForViewport,
+  {passive:true}
+);
+  
 async function assessSubmissionRisk(){
   if(riskAssessmentPending)return;
   const status=document.getElementById('riskStatus');
