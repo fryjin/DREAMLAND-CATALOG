@@ -155,9 +155,10 @@ window.imgMiss=function(img){
   min-height:78px;
   display:flex;
   align-items:center;
+  justify-content:flex-start;
   position:relative;
   z-index:1;
-  touch-action:manipulation;
+  overflow:visible;
 }.captcha-status{font-size:12px;color:#8e9098}.verification-error{display:none;color:#c94747;font-size:12px;font-weight:800}.verification-error.show{display:block}.submit-consent{display:none}.archive-note{margin-top:12px;font-size:12px;line-height:1.55;color:#777;text-align:center}
 
 /* PWA phase 4: install, update and connectivity UI */
@@ -961,21 +962,14 @@ function retryHCaptcha(){
   renderHCaptcha(submissionRiskSiteKey);
 }
 function preferredHCaptchaSize(container){
-  const viewportWidth=
-    window.visualViewport?.width||
-    window.innerWidth||
-    0;
-
   const availableWidth=
-    container?.getBoundingClientRect?.().width||
-    0;
+    Math.floor(
+      container?.getBoundingClientRect?.().width||0
+    );
 
-  return (
-    viewportWidth<=480||
-    (availableWidth>0&&availableWidth<320)
-  )
-    ? 'compact'
-    : 'normal';
+  return availableWidth>=303
+    ? 'normal'
+    : 'compact';
 }
 
 async function renderHCaptcha(siteKey=submissionRiskSiteKey){
@@ -1039,13 +1033,12 @@ async function renderHCaptcha(siteKey=submissionRiskSiteKey){
 
     container.innerHTML='';
 
-    hcaptchaWidgetId=window.hcaptcha.render(container,{
-      sitekey:siteKey,
-      theme:'light',
-      size:widgetSize,
-      tabindex:0,
-      'recaptchacompat':'off'
-    });
+hcaptchaWidgetId=window.hcaptcha.render(container,{
+  sitekey:siteKey,
+  theme:'light',
+  size:widgetSize,
+  'recaptchacompat':'off'
+});
   }catch(error){
     clearTimeout(slowTimer);
     console.error('hCaptcha load failed:',error);
