@@ -14,6 +14,14 @@
 <link rel="manifest" href="./manifest.webmanifest"/>
 <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png"/>
+  <script>
+window.imgMiss=function(img){
+  if(!img)return;
+
+  img.onerror=null;
+  img.classList.add('is-missing');
+};
+</script>
 <style>
 :root{--bg:#f3f4f8;--ink:#111;--muted:#8e9098;--card:#fff;--cream:#f7f1e9;--shadow:0 14px 34px rgba(20,20,20,.08);--safe:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}body{min-height:100vh;background:#202124;display:flex;align-items:center;justify-content:center;padding:24px;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,Helvetica,Arial,"PingFang SC","Microsoft YaHei",sans-serif}button,input,textarea,select{font:inherit}input,textarea,select{font-size:16px}button{border:0;cursor:pointer}.phone{width:min(100vw,390px);height:min(100vh,844px);min-height:720px;background:var(--bg);border-radius:0;overflow:hidden;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.45)}.screen{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;overflow:hidden;border-radius:0}.screen.active{display:flex;animation:screenIn .25s ease both}.status{display:none !important;height:0 !important;overflow:hidden !important;}.status-icons{display:flex;gap:5px;align-items:center}.pill-signal{width:18px;height:9px;border:2px solid #111;border-radius:3px;position:relative}.pill-signal:after{content:"";position:absolute;right:-4px;top:2px;width:2px;height:3px;background:#111;border-radius:1px}.dot-wifi{width:14px;height:10px;border-top:2px solid #111;border-radius:50%}
@@ -235,17 +243,10 @@ const LAST_SUBMISSION_KEY='dreamlandLastSubmissionV1';
 const PENDING_INQUIRY_KEY='dreamlandPendingInquiryIdV1';
 let pendingInquiryId=localStorage.getItem(PENDING_INQUIRY_KEY)||'';
 let hcaptchaWidgetId=null;
-let hcaptchaRenderedSize='';
-let hcaptchaResizeTimer=null;
+let hcaptchaRenderToken=0;
 let submittingInquiry=false;
 let lastSubmitAttemptAt=0;
-function imgMiss(img){
-  if(!img)return;
 
-  img.onerror=null;
-  img.classList.add('is-missing');
-}
-  
 function localCover(id){return`./images/products/${id}/cover.jpg`}
 function localDetails(id){return[1,2,3,4,5].map(n=>`./images/products/${id}/detail-${n}.jpg`)}
 
@@ -960,37 +961,21 @@ function retryHCaptcha(){
   renderHCaptcha(submissionRiskSiteKey);
 }
 function preferredHCaptchaSize(container){
-  const availableWidth=container?.clientWidth||0;
+  const viewportWidth=
+    window.visualViewport?.width||
+    window.innerWidth||
+    0;
 
-  return availableWidth>0&&availableWidth<320
+  const availableWidth=
+    container?.getBoundingClientRect?.().width||
+    0;
+
+  return (
+    viewportWidth<=480||
+    (availableWidth>0&&availableWidth<320)
+  )
     ? 'compact'
     : 'normal';
-}
-
-function refreshHCaptchaForViewport(){
-  if(!submissionRiskRequiresCaptcha)return;
-
-  if(hcaptchaResizeTimer){
-    clearTimeout(hcaptchaResizeTimer);
-  }
-
-  hcaptchaResizeTimer=setTimeout(()=>{
-    const container=document.getElementById('hcaptchaContainer');
-
-    if(
-      !container||
-      !document.body.contains(container)||
-      hcaptchaToken()
-    ){
-      return;
-    }
-
-    const nextSize=preferredHCaptchaSize(container);
-
-    if(nextSize!==hcaptchaRenderedSize){
-      renderHCaptcha(submissionRiskSiteKey);
-    }
-  },300);
 }
 
 async function renderHCaptcha(siteKey=submissionRiskSiteKey){
@@ -998,43 +983,91 @@ async function renderHCaptcha(siteKey=submissionRiskSiteKey){
 
   if(!container||!submissionRiskRequiresCaptcha)return;
 
+  const renderToken=++hcaptchaRenderToken;
   const widgetSize=preferredHCaptchaSize(container);
+
   if(!siteKey||siteKey.includes('REPLACE_WITH_')){
-    container.innerHTML=`<div class="captcha-help">${riskText('configError')}</div>`;
-    return
+    container.innerHTML=
+      `<div class="captcha-help">${riskText('configError')}</div>`;
+    return;
   }
-  container.innerHTML=`<span class="captcha-status">${riskText('captchaLoading')}</span>`;
+
+  container.innerHTML=
+    `<span class="captcha-status">${riskText('captchaLoading')}</span>`;
+
   const slowTimer=setTimeout(()=>{
-    if(document.getElementById('hcaptchaContainer')===container&&!window.hcaptcha){
-      container.innerHTML=`<div><div class="captcha-help">${riskText('captchaSlow')}</div><button class="captcha-retry" type="button" onclick="retryHCaptcha()">${riskText('retry')}</button></div>`
+    if(
+      renderToken===hcaptchaRenderToken&&
+      document.getElementById('hcaptchaContainer')===container&&
+      !window.hcaptcha
+    ){
+      container.innerHTML=`
+        <div>
+          <div class="captcha-help">
+            ${riskText('captchaSlow')}
+          </div>
+          <button
+            class="captcha-retry"
+            type="button"
+            onclick="retryHCaptcha()"
+          >
+            ${riskText('retry')}
+          </button>
+        </div>
+      `;
     }
   },4000);
+
   try{
     await loadHCaptchaScript();
     clearTimeout(slowTimer);
-    if(!document.body.contains(container))return;
+
+    if(
+      renderToken!==hcaptchaRenderToken||
+      !document.body.contains(container)
+    ){
+      return;
+    }
+
     if(hcaptchaWidgetId!==null){
-  try{
-    window.hcaptcha.remove(hcaptchaWidgetId);
-  }catch(_){}
+      try{
+        window.hcaptcha.remove(hcaptchaWidgetId);
+      }catch(_){}
 
-  hcaptchaWidgetId=null;
-  hcaptchaRenderedSize='';
-}
+      hcaptchaWidgetId=null;
+    }
+
     container.innerHTML='';
-    hcaptchaWidgetId=window.hcaptcha.render(container,{
-  sitekey:siteKey,
-  theme:'light',
-  size:widgetSize,
-  'recaptchacompat':'off'
-});
 
-hcaptchaRenderedSize=widgetSize;
+    hcaptchaWidgetId=window.hcaptcha.render(container,{
+      sitekey:siteKey,
+      theme:'light',
+      size:widgetSize,
+      tabindex:0,
+      'recaptchacompat':'off'
+    });
   }catch(error){
     clearTimeout(slowTimer);
     console.error('hCaptcha load failed:',error);
-    if(document.body.contains(container)){
-      container.innerHTML=`<div><div class="captcha-help">${riskText('captchaFailed')}</div><button class="captcha-retry" type="button" onclick="retryHCaptcha()">${riskText('retry')}</button></div>`
+
+    if(
+      renderToken===hcaptchaRenderToken&&
+      document.body.contains(container)
+    ){
+      container.innerHTML=`
+        <div>
+          <div class="captcha-help">
+            ${riskText('captchaFailed')}
+          </div>
+          <button
+            class="captcha-retry"
+            type="button"
+            onclick="retryHCaptcha()"
+          >
+            ${riskText('retry')}
+          </button>
+        </div>
+      `;
     }
   }
 }
@@ -1042,18 +1075,7 @@ function hcaptchaToken(){
   if(!submissionRiskRequiresCaptcha)return '';
   try{return hcaptchaWidgetId===null?'':window.hcaptcha?.getResponse(hcaptchaWidgetId)||''}catch(_){return ''}
 }
-window.addEventListener(
-  'resize',
-  refreshHCaptchaForViewport,
-  {passive:true}
-);
 
-window.addEventListener(
-  'orientationchange',
-  refreshHCaptchaForViewport,
-  {passive:true}
-);
-  
 async function assessSubmissionRisk(){
   if(riskAssessmentPending)return;
   const status=document.getElementById('riskStatus');
