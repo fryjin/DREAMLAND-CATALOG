@@ -240,13 +240,6 @@ let hcaptchaResizeTimer=null;
 let submittingInquiry=false;
 let lastSubmitAttemptAt=0;
 
-function imgMiss(img){
-  if(!img)return;
-
-  img.onerror=null;
-  img.classList.add('is-missing');
-}
-  
 function localCover(id){return`./images/products/${id}/cover.jpg`}
 function localDetails(id){return[1,2,3,4,5].map(n=>`./images/products/${id}/detail-${n}.jpg`)}
 
