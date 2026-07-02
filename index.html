@@ -193,7 +193,10 @@ window.imgMiss=function(img){
 <section class="screen" data-screen="catalog"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1v-8.5Z"/></svg></button><div><div class="page-title">商品手册</div><div class="page-sub">先选款，再确认报价</div></div><div class="lang-wrap" id="langWrap"><button class="lang-toggle" id="langToggle" onclick="toggleLangMenu(event)"><span class="globe">🌐</span><span class="lang-current">中文</span><span class="caret">▾</span></button><div class="lang-menu" id="langMenu"></div></div></div><div class="tabs" id="seriesTabs"></div><div class="series-count" id="seriesCount"></div></div><div class="content"><div class="catalog-columns" id="productGrid"></div></div></section>
 <section class="screen" data-screen="detail"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('catalog')"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">商品配置</div><div class="page-sub">选择尺寸、香型、花样与包装</div></div></div></div><div class="content no-nav with-cta"><div class="detail-media" id="detailMedia"></div><div class="config-card" id="configCard"></div></div><div class="sticky-action"><button class="btn btn-primary full" onclick="addConfiguredProduct()">加入意向单</button></div></section>
 <section class="screen" data-screen="inquiry"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('catalog')"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">意向单</div><div class="page-sub">预算预估，最终由顾问确认</div></div><button class="icon-btn" onclick="confirmClearAll()"><span style="font-size:11px;font-weight:950">清空</span></button></div></div><div class="content with-cta"><div id="inquiryList" class="inquiry-ui"></div><div id="summaryBox"></div></div><div class="sticky-action"><button class="btn btn-primary full" onclick="goContact()">提交意向单</button></div></section>
-<section class="screen" data-screen="custom"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('catalog')"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">定制信息</div><div class="page-sub">用于判断定制方案、数量、预算与交付需求</div></div></div></div><div class="content with-cta"><div class="form-card" id="customForm"><div class="field"><label class="label">定制用途 *</label><select class="select" id="customUse"><option value="">请选择定制用途</option><option>节日礼品</option><option>品牌活动</option><option>婚礼 / 派对</option><option>门店陈列</option><option>企业礼赠</option><option>其他用途</option></select><div class="error">请选择定制用途。</div></div><div class="field"><label class="label">预计数量 *</label><input class="input" id="customQty" type="number" min="1" placeholder="例如：500"><div class="error">请填写预计数量。</div></div><div class="field"><label class="label">预算范围</label><select class="select" id="customBudget"><option>待确认</option><option>USD 1,000 以下</option><option>USD 1,000 - 3,000</option><option>USD 3,000 - 10,000</option><option>USD 10,000 以上</option></select></div><div class="field"><label class="label">目标交付时间</label><input class="input" id="customDate" placeholder="例如：30 个工作日内 / 具体日期"></div><div class="field"><label class="label">尺寸偏好</label><select class="select" id="customSize"><option>待推荐</option><option>S / 10*13cm</option><option>M / 11*17cm</option><option>L / 14*21cm</option><option>XL / 14*16cm</option><option>多尺寸组合</option></select></div><div class="field"><label class="label">香型需求</label><select class="select" id="customScent"><option>待推荐</option><option>无香</option><option>花香调</option><option>木质调</option><option>水生调</option><option>节日甜香</option><option>指定香精品牌</option></select></div><div class="field"><label class="label">色系需求</label><input class="input" id="customColor" placeholder="例如：粉色系 / 绿色系 / 品牌 VI 色"></div><div class="field"><label class="label">包装需求</label><select class="select" id="customPack"><option>待推荐</option><option>防震包装</option><option>强护包装</option><option>礼盒包装</option></select></div><div class="field"><label class="label">Logo / 贺卡 / 贴纸需求</label><select class="select" id="customBranding"><option>暂不需要</option><option>需要 Logo</option><option>需要贺卡</option><option>需要贴纸</option><option>需要完整礼盒方案</option><option>待沟通确认</option></select></div><div class="field"><label class="label">详细定制说明</label><textarea class="textarea" id="customNote" placeholder="补充尺寸、配色、包装、活动场景、参考方向等要求"></textarea></div></div></div><div class="sticky-action"><button class="btn btn-primary full" onclick="addCustomIntent()">加入意向单</button></div></section><section class="screen" data-screen="contact"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('inquiry')"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">个人信息</div><div class="page-sub">用于顾问联系、报价沟通与物流判断</div></div><button class="icon-btn" onclick="go('catalog')"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div><div class="content with-cta"><div class="form-card"><div class="field"><label class="label">联系人姓名 *</label><input class="input" id="name" placeholder="请填写联系人姓名"><div class="error">请填写联系人姓名。</div></div><div class="field"><label class="label">公司 / 品牌名称</label><input class="input" id="company" placeholder="公司、品牌或机构名称"></div><div class="field"><label class="label">国家 / 地区 *</label><input class="input" id="country" placeholder="例如：中国 / 新加坡 / 美国"><div class="error">请填写国家或地区。</div></div><div class="field"><label class="label">城市</label><input class="input" id="city" placeholder="例如：广州 / Seoul / New York"></div><div class="field"><label class="label">邮箱 *</label><input class="input" id="email" type="email" placeholder="buyer@example.com"><div class="error">请填写邮箱。</div></div><div class="field"><label class="label">WhatsApp / 手机 / 微信 *</label><input class="input" id="phone" placeholder="请填写至少一种联系方式"><div class="error">请填写 WhatsApp、手机或微信。</div></div><div class="field"><label class="label">采购身份</label><select class="select" id="buyerType"><option>待确认</option><option>批发商 / 经销商</option><option>品牌方</option><option>礼品公司</option><option>活动 / 婚礼策划</option><option>零售门店</option><option>个人客户</option><option>其他</option></select></div><div class="field"><label class="label">备注</label><textarea class="textarea" id="message" placeholder="例如：希望沟通时间、采购背景、报价偏好等"></textarea></div></div></div><div class="sticky-action"><button class="btn btn-primary full" id="contactNextBtn" onclick="goPreview()">查看提交预览</button></div></section><section class="screen" data-screen="preview"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('contact')"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">提交预览</div><div class="page-sub">确认后发送给顾问</div></div><button class="icon-btn" onclick="go('catalog')"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div><div class="content with-cta" id="previewContent"></div><div class="sticky-action"><button class="btn btn-primary full" id="submitBtn" onclick="submitInquiry()">确认提交</button></div></section>
+<section class="screen" data-screen="custom"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('catalog')"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">定制信息</div><div class="page-sub">用于判断定制方案、数量、预算与交付需求</div></div></div></div><div class="content with-cta"><div class="form-card" id="customForm"><div class="field"><label class="label">定制用途 *</label><select class="select" id="customUse"><option value="">请选择定制用途</option><option>节日礼品</option><option>品牌活动</option><option>婚礼 / 派对</option><option>门店陈列</option><option>企业礼赠</option><option>其他用途</option></select><div class="error">请选择定制用途。</div></div><div class="field"><label class="label">预计数量 *</label><input class="input" id="customQty" type="number" min="1" placeholder="例如：500"><div class="error">请填写预计数量。</div></div><div class="field"><label class="label">预算范围</label><select class="select" id="customBudget"><option>待确认</option><option>USD 1,000 以下</option><option>USD 1,000 - 3,000</option><option>USD 3,000 - 10,000</option><option>USD 10,000 以上</option></select></div><div class="field"><label class="label">目标交付时间</label><input class="input" id="customDate" placeholder="例如：30 个工作日内 / 具体日期"></div><div class="field"><label class="label">尺寸偏好</label><select class="select" id="customSize"><option>待推荐</option><option>S / 10*13cm</option><option>M / 11*17cm</option><option>L / 14*21cm</option><option>XL / 14*26cm</option><option>多尺寸组合</option></select></div><div class="field"><label class="label">香型需求</label><select class="select" id="customScent"><option>待推荐</option><option>无香</option><option>花香调</option><option>木质调</option><option>水生调</option><option>节日甜香</option><option>指定香精品牌</option></select></div><div class="field"><label class="label">色系需求</label><input class="input" id="customColor" placeholder="例如：粉色系 / 绿色系 / 品牌 VI 色"></div><div class="field"><label class="label">包装需求</label><select class="select" id="customPack"><option>待推荐</option>
+<option>批发包装</option>
+<option>精品包装</option>
+<option>品牌包装</option></select></div><div class="field"><label class="label">Logo / 贺卡 / 贴纸需求</label><select class="select" id="customBranding"><option>暂不需要</option><option>需要 Logo</option><option>需要贺卡</option><option>需要贴纸</option><option>需要完整礼盒方案</option><option>待沟通确认</option></select></div><div class="field"><label class="label">详细定制说明</label><textarea class="textarea" id="customNote" placeholder="补充尺寸、配色、包装、活动场景、参考方向等要求"></textarea></div></div></div><div class="sticky-action"><button class="btn btn-primary full" onclick="addCustomIntent()">加入意向单</button></div></section><section class="screen" data-screen="contact"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('inquiry')"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">个人信息</div><div class="page-sub">用于顾问联系、报价沟通与物流判断</div></div><button class="icon-btn" onclick="go('catalog')"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div><div class="content with-cta"><div class="form-card"><div class="field"><label class="label">联系人姓名 *</label><input class="input" id="name" placeholder="请填写联系人姓名"><div class="error">请填写联系人姓名。</div></div><div class="field"><label class="label">公司 / 品牌名称</label><input class="input" id="company" placeholder="公司、品牌或机构名称"></div><div class="field"><label class="label">国家 / 地区 *</label><input class="input" id="country" placeholder="例如：中国 / 新加坡 / 美国"><div class="error">请填写国家或地区。</div></div><div class="field"><label class="label">城市</label><input class="input" id="city" placeholder="例如：广州 / Seoul / New York"></div><div class="field"><label class="label">邮箱 *</label><input class="input" id="email" type="email" placeholder="buyer@example.com"><div class="error">请填写邮箱。</div></div><div class="field"><label class="label">WhatsApp / 手机 / 微信 *</label><input class="input" id="phone" placeholder="请填写至少一种联系方式"><div class="error">请填写 WhatsApp、手机或微信。</div></div><div class="field"><label class="label">采购身份</label><select class="select" id="buyerType"><option>待确认</option><option>批发商 / 经销商</option><option>品牌方</option><option>礼品公司</option><option>活动 / 婚礼策划</option><option>零售门店</option><option>个人客户</option><option>其他</option></select></div><div class="field"><label class="label">备注</label><textarea class="textarea" id="message" placeholder="例如：希望沟通时间、采购背景、报价偏好等"></textarea></div></div></div><div class="sticky-action"><button class="btn btn-primary full" id="contactNextBtn" onclick="goPreview()">查看提交预览</button></div></section><section class="screen" data-screen="preview"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('contact')"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">提交预览</div><div class="page-sub">确认后发送给顾问</div></div><button class="icon-btn" onclick="go('catalog')"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div><div class="content with-cta" id="previewContent"></div><div class="sticky-action"><button class="btn btn-primary full" id="submitBtn" onclick="submitInquiry()">确认提交</button></div></section>
 <section class="screen" data-screen="success"><div class="success-wrap"><div class="success-close"><button class="icon-btn" onclick="go('catalog')"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div><div class="success-main"><div class="success-icon"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div><h1 class="success-title">意向已提交</h1><p class="success-sub">我们已收到你的选款信息。<br>顾问会根据数量、包装和物流确认报价。</p><div class="details-card"><div class="detail-row"><span class="detail-label">意向编号</span><span class="detail-value" id="successId">#YX-260610</span></div><div class="detail-row"><span class="detail-label">提交日期</span><span class="detail-value" id="successDate">2026-06-10</span></div><div class="detail-row"><span class="detail-label">当前状态</span><span class="detail-value">待顾问确认</span></div><div class="detail-row"><span class="detail-label">预估金额</span><span class="detail-value highlight" id="successAmount">USD 0.00</span></div></div></div><div class="success-actions"><button class="btn btn-primary full" onclick="go('catalog')">继续选款</button></div></div></section>
 <nav class="bottom-nav" id="bottomNav"><button class="nav-item" data-nav="home" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1v-8.5Z"/></svg><span class="nav-label">首页</span></button><button class="nav-item active" data-nav="catalog" onclick="go('catalog')"><svg viewBox="0 0 24 24"><path d="M5 5h6v6H5zM13 5h6v6h-6zM5 13h6v6H5zM13 13h6v6h-6z"/></svg><span class="nav-label">商品</span></button><button class="nav-item" data-nav="inquiry" onclick="go('inquiry')"><svg viewBox="0 0 24 24"><path d="M7 7h14l-2 8H8L6 4H3"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg><span class="nav-label">意向单</span><span class="badge" id="badge">0</span></button><button class="nav-item" data-nav="custom" onclick="go('custom')"><svg viewBox="0 0 24 24"><path d="M12 3 4 7l8 4 8-4-8-4Z"/><path d="M4 7v10l8 4 8-4V7"/><path d="M12 11v10"/></svg><span class="nav-label">定制</span></button></nav>
 <div class="confirm-layer" id="confirmLayer"><div class="confirm-card"><h3>清空全部意向？</h3><p>清空后，已选择的商品和定制意向都会移除。这个操作不会提交给顾问。</p><div class="btn-row"><button class="btn btn-secondary full" onclick="hideConfirm()">取消</button><button class="btn btn-primary full" onclick="clearInquiry()">清空</button></div></div></div>
@@ -292,14 +295,33 @@ async function loadCatalogData(){
   (seriesData.seriesOrder||Object.keys(seriesData.series||{})).forEach(key=>{
     const item=seriesData.series?.[key];
     if(!item)return;
-    seriesMeta[key]={
-      name:item.labels?.zh||key,
-      count:Number(item.count)||products.filter(product=>product.series===key).length,
-      price:Array.isArray(item.prices)?item.prices:[0,0,0],
-      scents:Array.isArray(item.scents)?item.scents:[],
-      packaging:item.packaging||{options:['防震包装'],default:'防震包装',surchargesCny:{}},
-      defaultMoq:Number(item.defaultMoq)||50
-    };
+seriesMeta[key]={
+  name:item.labels?.zh||key,
+  count:Number(item.count)||
+    products.filter(product=>product.series===key).length,
+
+  priceTiers:Array.isArray(item.priceTiers)
+    ? item.priceTiers
+    : [],
+
+  scents:Array.isArray(item.scents)
+    ? item.scents
+    : [],
+
+  pricingMode:item.pricingMode||'own',
+
+  scentSeriesOptions:Array.isArray(item.scentSeriesOptions)
+    ? item.scentSeriesOptions
+    : [],
+
+  packaging:item.packaging||{
+    options:['批发包装'],
+    default:'批发包装',
+    surchargesCny:{}
+  },
+
+  moqBySize:item.moqBySize||{}
+};
     ['zh','en','ko'].forEach(lang=>{
       seriesTabLabels[lang][key]=item.labels?.[lang]||item.labels?.zh||key;
     });
@@ -352,17 +374,339 @@ function save(){
   );
 
   badge();
-}function uid(){return'I'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}function money(v){let c=currencyMap[currentLang]||currencyMap.zh;let n=Number(v||0)*c.rate;return c.prefix+n.toLocaleString(c.locale,{minimumFractionDigits:c.digits,maximumFractionDigits:c.digits})}function seriesQty(s){return state.items.filter(i=>i.type==='product'&&i.series===s).reduce((a,b)=>a+b.qty,0)}function tierUnit(s,q){let p=seriesMeta[s]?.price||[4.5,4.1,3.8];return q>=3000?p[2]:q>=1000?p[1]:p[0]}
-function packOptions(s){return seriesMeta[s]?.packaging?.options||['防震包装']}
-function defaultPack(s){return seriesMeta[s]?.packaging?.default||packOptions(s)[0]||'防震包装'}
-function packSurchargeCny(s,pack){return Number(seriesMeta[s]?.packaging?.surchargesCny?.[pack]||0)}
-function packSurchargeBase(s,pack){return packSurchargeCny(s,pack)/7.2}
-function packDelta(cny){return money(cny/7.2)+currencyUnit()}
-function packHint(s){if(s==='advanced')return`${ui('packHintAdvanced')} +${packDelta(40)}`;if(s==='masterpiece')return ui('packHintMasterpiece');return`${ui('packHintOther')} +${packDelta(10)} · ${ui('giftbox')} +${packDelta(50)}`}
-function configUnit(){return tierUnit(activeProduct.series,Math.max(config.qty,seriesQty(activeProduct.series)))+packSurchargeBase(activeProduct.series,config.pack)}
-function itemUnit(i){return i.type==='product'?tierUnit(i.series,seriesQty(i.series))+packSurchargeBase(i.series,i.pack):0}
-function itemSubtotal(i){return i.type==='product'?i.qty*itemUnit(i):0}function total(){return state.items.reduce((s,i)=>s+itemSubtotal(i),0)}
-function currencyUnit(){return (currencyMap[currentLang]||currencyMap.zh).unit}
+}function uid(){
+  return 'I'+
+    Date.now().toString(36)+
+    Math.random().toString(36).slice(2,6);
+}
+
+function money(value){
+  const currency=
+    currencyMap[currentLang]||
+    currencyMap.zh;
+
+  const amount=
+    Number(value||0)*
+    currency.rate;
+
+  return currency.prefix+
+    amount.toLocaleString(
+      currency.locale,
+      {
+        minimumFractionDigits:currency.digits,
+        maximumFractionDigits:currency.digits
+      }
+    );
+}
+
+function currencyUnit(){
+  return (
+    currencyMap[currentLang]||
+    currencyMap.zh
+  ).unit;
+}
+
+function cnyToBase(cny){
+  const cnyRate=
+    Number(currencyMap.zh?.rate)||
+    7.2;
+
+  return Number(cny||0)/cnyRate;
+}
+
+function seriesQty(series){
+  return state.items
+    .filter(
+      item=>
+        item.type==='product'&&
+        item.series===series
+    )
+    .reduce(
+      (total,item)=>
+        total+(Number(item.qty)||0),
+      0
+    );
+}
+
+function pricingSeriesFor(item){
+  if(item?.series==='holiday'){
+    return (
+      item.scentSeries||
+      seriesMeta.holiday
+        ?.scentSeriesOptions?.[0]||
+      'classic'
+    );
+  }
+
+  return item?.series||'';
+}
+
+function pricingGroupKey(item){
+  if(item?.series==='holiday'){
+    return `holiday:${pricingSeriesFor(item)}`;
+  }
+
+  return item?.series||'';
+}
+
+function pricingGroupQty(item){
+  const key=pricingGroupKey(item);
+
+  return state.items
+    .filter(
+      row=>
+        row.type==='product'&&
+        pricingGroupKey(row)===key
+    )
+    .reduce(
+      (total,row)=>
+        total+(Number(row.qty)||0),
+      0
+    );
+}
+
+function tierFor(seriesKey,quantity){
+  const tiers=
+    seriesMeta[seriesKey]?.priceTiers||
+    [];
+
+  return (
+    tiers.find(tier=>{
+      const min=
+        Number(tier.minQty)||0;
+
+      const max=
+        tier.maxQty==null
+          ? Infinity
+          : Number(tier.maxQty);
+
+      return (
+        quantity>=min&&
+        quantity<=max
+      );
+    })||
+    tiers[tiers.length-1]||
+    null
+  );
+}
+
+function tierUnitCny(
+  seriesKey,
+  size,
+  quantity
+){
+  const tier=
+    tierFor(seriesKey,quantity);
+
+  return Number(
+    tier?.pricesCny?.[size]||0
+  );
+}
+
+function packOptions(series){
+  return (
+    seriesMeta[series]
+      ?.packaging
+      ?.options||
+    ['批发包装']
+  );
+}
+
+function defaultPack(series){
+  return (
+    seriesMeta[series]
+      ?.packaging
+      ?.default||
+    packOptions(series)[0]||
+    '批发包装'
+  );
+}
+
+function packSurchargeCny(
+  series,
+  pack
+){
+  return Number(
+    seriesMeta[series]
+      ?.packaging
+      ?.surchargesCny?.[pack]||
+    0
+  );
+}
+
+function packSurchargeBase(
+  series,
+  pack
+){
+  return cnyToBase(
+    packSurchargeCny(series,pack)
+  );
+}
+
+function packDelta(cny){
+  return (
+    money(cnyToBase(cny))+
+    currencyUnit()
+  );
+}
+
+function packHint(series){
+  return packOptions(series)
+    .map(pack=>{
+      const surcharge=
+        packSurchargeCny(
+          series,
+          pack
+        );
+
+      return surcharge>0
+        ? `${choiceLabel(pack)} +${packDelta(surcharge)}`
+        : choiceLabel(pack);
+    })
+    .join(' · ');
+}
+
+function configPricingItem(){
+  return {
+    series:activeProduct?.series||'',
+    scentSeries:config.scentSeries||''
+  };
+}
+
+function configPricingQty(){
+  const currentItem=
+    configPricingItem();
+
+  const key=
+    pricingGroupKey(currentItem);
+
+  const existingQty=
+    state.items
+      .filter(
+        item=>
+          item.type==='product'&&
+          pricingGroupKey(item)===key
+      )
+      .reduce(
+        (total,item)=>
+          total+(Number(item.qty)||0),
+        0
+      );
+
+  return (
+    existingQty+
+    (Number(config.qty)||0)
+  );
+}
+
+function configUnit(){
+  if(!activeProduct)return 0;
+
+  const pricingSeries=
+    pricingSeriesFor(
+      configPricingItem()
+    );
+
+  const quantity=
+    configPricingQty();
+
+  const basePriceCny=
+    tierUnitCny(
+      pricingSeries,
+      config.size,
+      quantity
+    );
+
+  const packageCny=
+    packSurchargeCny(
+      activeProduct.series,
+      config.pack
+    );
+
+  return cnyToBase(
+    basePriceCny+
+    packageCny
+  );
+}
+
+function itemUnit(item){
+  if(item?.type!=='product'){
+    return 0;
+  }
+
+  const pricingSeries=
+    pricingSeriesFor(item);
+
+  const quantity=
+    pricingGroupQty(item);
+
+  const basePriceCny=
+    tierUnitCny(
+      pricingSeries,
+      item.size,
+      quantity
+    );
+
+  const packageCny=
+    packSurchargeCny(
+      item.series,
+      item.pack
+    );
+
+  return cnyToBase(
+    basePriceCny+
+    packageCny
+  );
+}
+
+function itemSubtotal(item){
+  return item?.type==='product'
+    ? (Number(item.qty)||0)*
+      itemUnit(item)
+    : 0;
+}
+
+function total(){
+  return state.items.reduce(
+    (sum,item)=>
+      sum+itemSubtotal(item),
+    0
+  );
+}
+
+function catalogUnit(product){
+  if(!product)return 0;
+
+  const pricingSeries=
+    product.series==='holiday'
+      ? (
+          seriesMeta.holiday
+            ?.scentSeriesOptions?.[0]||
+          'classic'
+        )
+      : product.series;
+
+  const quantity=
+    productMoq(product);
+
+  const priceCny=
+    tierUnitCny(
+      pricingSeries,
+      product.size,
+      quantity
+    );
+
+  const packageCny=
+    packSurchargeCny(
+      product.series,
+      defaultPack(product.series)
+    );
+
+  return cnyToBase(
+    priceCny+
+    packageCny
+  );
+}
 function refreshBudgetOptions(){let el=document.getElementById('customBudget');if(!el)return;let previous=el.selectedIndex<0?0:el.selectedIndex;el.innerHTML=currencyMap[currentLang].budget.map(x=>`<option>${x}</option>`).join('');el.selectedIndex=Math.min(previous,el.options.length-1)}
 function updateLangButton(){let btn=document.getElementById('langToggle');if(!btn)return;let label=currencyMap[currentLang].label;let cur=btn.querySelector('.lang-current');if(cur)cur.textContent=label}
 function renderLangOptions(){let box=document.getElementById('langMenu');if(!box)return;box.innerHTML=langOrder.map(k=>{let item=languageNames[k]||{label:k,short:k.toUpperCase()};return`<button class="lang-option ${k===currentLang?'active':''}" onclick="chooseLang('${k}')"><span>${item.label}</span><small>${item.short}</small></button>`}).join('')}
@@ -385,17 +729,83 @@ function productDesc(product){
   if(!product)return '';
   return product.descriptions?.[currentLang]||product.descriptions?.zh||product.desc||'';
 }
+function moqForSeriesSize(
+  series,
+  size
+){
+  const value=
+    Number(
+      seriesMeta[series]
+        ?.moqBySize?.[size]
+    );
+
+  return (
+    Number.isInteger(value)&&
+    value>0
+  )
+    ? value
+    : 1;
+}
+
 function productMoq(product){
   if(!product)return 1;
-  const own=Number(product.moq);
-  if(Number.isInteger(own)&&own>0)return own;
-  return Number(seriesMeta[product.series]?.defaultMoq)||1;
+
+  const configured=
+    moqForSeriesSize(
+      product.series,
+      product.size
+    );
+
+  if(configured>1){
+    return configured;
+  }
+
+  const own=
+    Number(product.moq);
+
+  return (
+    Number.isInteger(own)&&
+    own>0
+  )
+    ? own
+    : 1;
 }
+
 function itemMoq(item){
-  const own=Number(item?.moq);
-  if(Number.isInteger(own)&&own>0)return own;
-  const product=products.find(p=>p.id===(item?.productId||item?.id));
-  return productMoq(product||item);
+  if(!item)return 1;
+
+  const configured=
+    moqForSeriesSize(
+      item.series,
+      item.size
+    );
+
+  if(configured>1){
+    return configured;
+  }
+
+  const product=
+    products.find(
+      row=>
+        row.id===
+        (
+          item.productId||
+          item.id
+        )
+    );
+
+  return productMoq(
+    product||
+    item
+  );
+}
+
+function configMoq(){
+  return moqForSeriesSize(
+    activeProduct?.series,
+    config.size||
+    activeProduct?.size
+  );
 }
 function maximumQuantity(){return Math.max(1,Number(appConfig.maxQuantity)||1000000)}
 function customMoq(){return Math.max(1,Number(appConfig.customMoq)||50)}
@@ -449,9 +859,17 @@ function applyI18n(){
   setPlaceholder('name','phName');setPlaceholder('company','phCompany');setPlaceholder('country','phCountry');setPlaceholder('city','phCity');setPlaceholder('email','phEmail');setPlaceholder('phone','phPhone');setPlaceholder('message','phMessage');
   setPlaceholder('customQty','phQty');setPlaceholder('customDate','phDate');setPlaceholder('customColor','phColor');setPlaceholder('customNote','phCustomNote');
   setSelectOptions('customUse',[['','chooseCustomUse'],['节日礼品'],['品牌活动'],['婚礼 / 派对'],['门店陈列'],['企业礼赠'],['其他用途']]);
-  setSelectOptions('customSize',[['待推荐'],['S / 10*13cm'],['M / 11*17cm'],['L / 14*21cm'],['XL / 14*16cm'],['多尺寸组合']]);
+  setSelectOptions('customSize',[['待推荐'],['S / 10*13cm'],['M / 11*17cm'],['L / 14*21cm'],['XL / 14*26cm'],['多尺寸组合']]);
   setSelectOptions('customScent',[['待推荐'],['无香'],['花香调'],['木质调'],['水生调'],['节日甜香'],['指定香精品牌']]);
-  setSelectOptions('customPack',[['待推荐'],['防震包装'],['强护包装'],['礼盒包装']]);
+  setSelectOptions(
+  'customPack',
+  [
+    ['待推荐'],
+    ['批发包装'],
+    ['精品包装'],
+    ['品牌包装']
+  ]
+);
   setSelectOptions('customBranding',[['暂不需要'],['需要 Logo'],['需要贺卡'],['需要贴纸'],['需要完整礼盒方案'],['待沟通确认']]);
   setSelectOptions('buyerType',[['待确认'],['批发商 / 经销商'],['品牌方'],['礼品公司'],['活动 / 婚礼策划'],['零售门店'],['个人客户'],['其他']]);
   let dc=document.querySelectorAll('.detail-label');['intentId','submitDate','currentStatus','estimatedAmount'].forEach((k,i)=>{if(dc[i])dc[i].textContent=ui(k)});let status=document.querySelector('.detail-row:nth-child(3) .detail-value');if(status)status.textContent=ui('statusPending');
@@ -479,16 +897,89 @@ function bindCtaReveal(){['detail','contact','preview','inquiry','custom'].forEa
 function renderTabs(){seriesTabs.className=`tabs lang-${currentLang}`;seriesTabs.innerHTML=Object.keys(seriesMeta).map(k=>`<button class="tab ${k===activeSeries?'active':''}" data-s="${k}">${seriesTabLabel(k)}</button>`).join('');seriesTabs.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{activeSeries=t.dataset.s;renderTabs();renderProducts()})}
 function imgMiss(el){el.classList.add('is-missing')}
 function patternThumb(v){let arr=patternsBySize[config.size]||[],idx=Math.max(0,arr.indexOf(v))+1;return`./images/patterns/${config.size}/pattern-${idx}.jpg`}
-function packThumb(v){let map={'防震包装':'shock','强护包装':'protect','礼盒包装':'giftbox','默认包装':'default'};return`./images/packages/${map[v]||'default'}.jpg`}
+function packThumb(value){
+  const map={
+    '批发包装':'shock',
+    '精品包装':'protect',
+    '品牌包装':'giftbox'
+  };
+
+  return (
+    `./images/packages/${
+      map[value]||
+      'default'
+    }.jpg`
+  );
+}
 function previewData(k){if(k==='pattern')return{src:patternThumb(config.pattern),label:choiceLabel(config.pattern)};if(k==='pack')return{src:packThumb(config.pack),label:choiceLabel(config.pack)};return null}
-function scentNotesImage(){return `./images/scents/${activeProduct.series}/${config.scent}.jpg`}
+function scentNotesImage(){
+  const scentSeries=
+    activeProduct?.series===
+    'holiday'
+      ? config.scentSeries
+      : activeProduct?.series;
+
+  return (
+    `./images/scents/${
+      scentSeries
+    }/${
+      config.scent
+    }.jpg`
+  );
+}
 function scentTipText(isScroll,h){return isScroll?ui('swipeScent'):h}
 function scentInfo(k){return k==='scent'?`<div class="scent-link-row"><button type="button" onclick="event.stopPropagation();openScentNotes()">${ui('scentNotes')}</button></div>`:''}
 function openScentNotes(){openPreviewImage(scentNotesImage(),`${choiceLabel(config.scent)} · ${ui('scentNotesSuffix')}`)}
 function optionPreview(k){let p=previewData(k);return p?`<button class="option-thumb" type="button" onclick="event.stopPropagation();openPreviewImage('${p.src}','${p.label}')"><img src="${p.src}" alt="${p.label}" onerror="imgMiss(this)"><span>${ui('view')}</span></button>`:''}
 function openPreviewImage(src,label){let layer=document.getElementById('previewLayer'),img=document.getElementById('previewImg'),cap=document.getElementById('previewCaption');if(!layer||!img||!cap)return;img.classList.remove('is-missing');img.src=src;cap.textContent=label||ui('imagePreview');layer.classList.add('show')}
 function closePreviewImage(){document.getElementById('previewLayer')?.classList.remove('show')}
-function renderProductCard(p,idx,tall=false){return `<article class="product-card ${tall?'tall':''}" style="animation-delay:${Math.min(idx%CATALOG_BATCH_SIZE,4)*42}ms" onclick="openDetail('${p.id}')"><div class="product-visual"><div class="product-img ${p.color}"></div><img class="product-cover" src="${p.cover}" alt="${productDisplayName(p)}" loading="lazy" decoding="async" onerror="imgMiss(this)"></div><button class="add-mini" onclick="event.stopPropagation();quickAdd('${p.id}')">+</button><div class="product-name">${productDisplayName(p)}</div><div class="price-row"><span class="price">${money(seriesMeta[p.series].price[1])}</span><span class="moq-note">${ui('moq')} ${productMoq(p)}</span></div></article>`}
+function renderProductCard(
+  product,
+  index,
+  tall=false
+){
+  return `
+    <article
+      class="product-card ${tall?'tall':''}"
+      style="animation-delay:${Math.min(index%CATALOG_BATCH_SIZE,4)*42}ms"
+      onclick="openDetail('${product.id}')"
+    >
+      <div class="product-visual">
+        <div class="product-img ${product.color}"></div>
+
+        <img
+          class="product-cover"
+          src="${product.cover}"
+          alt="${productDisplayName(product)}"
+          loading="lazy"
+          decoding="async"
+          onerror="imgMiss(this)"
+        >
+      </div>
+
+      <button
+        class="add-mini"
+        onclick="event.stopPropagation();quickAdd('${product.id}')"
+      >
+        +
+      </button>
+
+      <div class="product-name">
+        ${productDisplayName(product)}
+      </div>
+
+      <div class="price-row">
+        <span class="price">
+          ${money(catalogUnit(product))}
+        </span>
+
+        <span class="moq-note">
+          ${ui('moq')} ${productMoq(product)}
+        </span>
+      </div>
+    </article>
+  `;
+}
 function cancelCatalogRender(){
   catalogRenderToken++;
   catalogList=[];
@@ -572,7 +1063,114 @@ function bindCatalogLazyLoad(){
   c.dataset.lazyBound='1';
   c.addEventListener('scroll',maybeLoadMoreCatalog,{passive:true});
 }
-function openDetail(id){cancelCatalogRender();activeProduct=products.find(p=>p.id===id)||products[0];if(!activeProduct)return;let m=seriesMeta[activeProduct.series];let min=productMoq(activeProduct);config={size:activeProduct.size,scent:m.scents[0],pattern:patternsBySize[activeProduct.size][0],pack:defaultPack(activeProduct.series),qty:min};detailSlideIndex=0;renderDetail();go('detail')}
+function initialScentSeries(product){
+  if(product?.series!=='holiday'){
+    return '';
+  }
+
+  return (
+    seriesMeta.holiday
+      ?.scentSeriesOptions?.[0]||
+    'classic'
+  );
+}
+
+function scentOptionsForConfig(){
+  if(
+    activeProduct?.series===
+    'holiday'
+  ){
+    return (
+      seriesMeta[
+        config.scentSeries
+      ]?.scents||
+      []
+    );
+  }
+
+  return (
+    seriesMeta[
+      activeProduct?.series
+    ]?.scents||
+    []
+  );
+}
+
+function itemScentLabel(item){
+  const scent=
+    choiceLabel(item?.scent)||
+    ui('scentRecommend');
+
+  if(item?.series==='holiday'){
+    return (
+      `${seriesLabel(
+        pricingSeriesFor(item)
+      )} / ${scent}`
+    );
+  }
+
+  return scent;
+}
+function openDetail(id){
+  cancelCatalogRender();
+
+  activeProduct=
+    products.find(
+      product=>product.id===id
+    )||
+    products[0];
+
+  if(!activeProduct)return;
+
+  const meta=
+    seriesMeta[
+      activeProduct.series
+    ];
+
+  const size=
+    activeProduct.size;
+
+  const scentSeries=
+    initialScentSeries(
+      activeProduct
+    );
+
+  const scents=
+    activeProduct.series==='holiday'
+      ? (
+          seriesMeta[
+            scentSeries
+          ]?.scents||
+          []
+        )
+      : (
+          meta.scents||
+          []
+        );
+
+  config={
+    size,
+    scentSeries,
+    scent:scents[0]||'',
+    pattern:
+      patternsBySize[size]?.[0]||
+      '',
+    pack:
+      defaultPack(
+        activeProduct.series
+      ),
+    qty:
+      moqForSeriesSize(
+        activeProduct.series,
+        size
+      )
+  };
+
+  detailSlideIndex=0;
+
+  renderDetail();
+  go('detail');
+}
 function renderDetailMedia(){let imgs=activeProduct.images&&activeProduct.images.length?activeProduct.images:localDetails(activeProduct.id);detailMedia.className='detail-media '+activeProduct.color;detailMedia.innerHTML=`<div class="product-img ${activeProduct.color}"></div><div class="detail-slides">${imgs.map((src,i)=>`<div class="detail-slide ${i===detailSlideIndex?'active':''}"><img src="${src}" alt="${productDisplayName(activeProduct)} ${i+1}" onerror="imgMiss(this)"></div>`).join('')}</div><button class="carousel-btn prev" onclick="event.stopPropagation();changeDetailSlide(-1)"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><button class="carousel-btn next" onclick="event.stopPropagation();changeDetailSlide(1)"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button><div class="carousel-dots">${imgs.map((_,i)=>`<button class="carousel-dot ${i===detailSlideIndex?'active':''}" onclick="event.stopPropagation();setDetailSlide(${i})"></button>`).join('')}</div><div class="detail-titlebox"><h2>${productDisplayName(activeProduct)}</h2><p>${productDesc(activeProduct)}</p></div>`;startDetailCarousel()}
 function updateDetailSlide(){let slides=detailMedia.querySelectorAll('.detail-slide'),dots=detailMedia.querySelectorAll('.carousel-dot');slides.forEach((s,i)=>s.classList.toggle('active',i===detailSlideIndex));dots.forEach((d,i)=>d.classList.toggle('active',i===detailSlideIndex))}
 function setDetailSlide(i){let imgs=activeProduct.images&&activeProduct.images.length?activeProduct.images:localDetails(activeProduct.id);detailSlideIndex=(i+imgs.length)%imgs.length;updateDetailSlide();startDetailCarousel()}
@@ -605,7 +1203,139 @@ function bindHorizontalOptions() {
     );
   });
 }
-  function renderDetail(scentScrollLeft = null){
+  function renderDetail(
+  scentScrollLeft=null
+){
+  renderDetailMedia();
+
+  const meta=
+    seriesMeta[
+      activeProduct.series
+    ];
+
+  const min=
+    configMoq();
+
+  const scents=
+    scentOptionsForConfig();
+
+  config.qty=
+    normalizeQty(
+      config.qty,
+      min
+    );
+
+  const scentSeriesBlock=
+    activeProduct.series==='holiday'
+      ? block(
+          ui('scentSeries'),
+          'scentSeries',
+          meta.scentSeriesOptions,
+          ui('scentSeriesHint')
+        )
+      : '';
+
+  configCard.innerHTML=
+    block(
+      ui('size'),
+      'size',
+      ['S','M','L','XL'],
+      ui('sizeHint')
+    )+
+    scentSeriesBlock+
+    block(
+      ui('scent'),
+      'scent',
+      scents,
+      `${
+        activeProduct.series==='holiday'
+          ? seriesLabel(config.scentSeries)
+          : seriesLabel(activeProduct.series)
+      } ${ui('scentHint')}`
+    )+
+    block(
+      ui('pattern'),
+      'pattern',
+      patternsBySize[config.size]||[],
+      ui('patternHint')
+    )+
+    block(
+      ui('pack'),
+      'pack',
+      packOptions(activeProduct.series),
+      packHint(activeProduct.series)
+    )+
+    `
+      <div class="config-block">
+        <div class="config-title">
+          <h3>${ui('quantity')}</h3>
+          <span>
+            ${ui('moqHint')} ${min}
+          </span>
+        </div>
+
+        <div class="qty-bar">
+          <div>
+            <div class="summary-label">
+              ${ui('currentUnitPrice')}
+            </div>
+
+            <div class="amount">
+              ${money(configUnit())}
+            </div>
+          </div>
+
+          <div class="qty-stepper">
+            <button
+              class="step"
+              onclick="changeDetailQty(-QTY_STEP)"
+            >
+              −
+            </button>
+
+            <input
+              class="qty qty-input"
+              id="detailQty"
+              type="number"
+              min="${min}"
+              max="${maximumQuantity()}"
+              step="${QTY_STEP}"
+              value="${config.qty}"
+              inputmode="numeric"
+              onchange="setDetailQty(this.value)"
+            >
+
+            <button
+              class="step"
+              onclick="changeDetailQty(QTY_STEP)"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+  requestAnimationFrame(()=>{
+    bindHorizontalOptions();
+
+    if(
+      Number.isFinite(
+        scentScrollLeft
+      )
+    ){
+      const scentScroller=
+        configCard.querySelector(
+          '.option-grid-scroll'
+        );
+
+      if(scentScroller){
+        scentScroller.scrollLeft=
+          scentScrollLeft;
+      }
+    }
+  });
+}
   renderDetailMedia();
   let meta=seriesMeta[activeProduct.series],min=productMoq(activeProduct);
   config.qty=normalizeQty(config.qty,min);
@@ -623,10 +1353,9 @@ function bindHorizontalOptions() {
 });}
     
 function block(t, k, opts, h) {
-  const isScroll =
-    (activeProduct.series === 'masterpiece' ||
-      activeProduct.series === 'holiday') &&
-    k === 'scent';
+  const isScroll=
+  k==='scent'&&
+  opts.length>4;
 
   const tip =
     k === 'size'
@@ -663,7 +1392,11 @@ function block(t, k, opts, h) {
                   class="option ${config[k] === o ? 'active' : ''}"
                   onclick="setCfg('${k}', '${o}')"
                 >
-                  ${choiceLabel(o)}
+                  ${
+  k==='scentSeries'
+    ? seriesLabel(o)
+    : choiceLabel(o)
+}
                 </button>
               `
             )
@@ -677,45 +1410,208 @@ function block(t, k, opts, h) {
     </div>
   `;
 }
-function setCfg(k, v) {
-  const scentScroller =
-    k === 'scent'
-      ? configCard.querySelector('.option-grid-scroll')
+function setCfg(key,value){
+  const scentScroller=
+    key==='scent'
+      ? configCard.querySelector(
+          '.option-grid-scroll'
+        )
       : null;
 
-  const scentScrollLeft = scentScroller
-    ? scentScroller.scrollLeft
-    : null;
+  const scentScrollLeft=
+    scentScroller
+      ? scentScroller.scrollLeft
+      : null;
 
-  config[k] = v;
+  config[key]=value;
 
-  if (k === 'size') {
-    config.pattern = patternsBySize[v][0];
+  if(key==='scentSeries'){
+    config.scent=
+      seriesMeta[value]
+        ?.scents?.[0]||
+      '';
   }
 
-  if (
-    k === 'pack' &&
-    !packOptions(activeProduct.series).includes(config.pack)
-  ) {
-    config.pack = defaultPack(activeProduct.series);
+  if(key==='size'){
+    config.pattern=
+      patternsBySize[value]?.[0]||
+      '';
+
+    config.qty=
+      normalizeQty(
+        config.qty,
+        configMoq()
+      );
   }
 
-  renderDetail(scentScrollLeft);
+  if(
+    key==='pack'&&
+    !packOptions(
+      activeProduct.series
+    ).includes(config.pack)
+  ){
+    config.pack=
+      defaultPack(
+        activeProduct.series
+      );
+  }
+
+  renderDetail(
+    scentScrollLeft
+  );
 }
-function setDetailQty(v){let min=productMoq(activeProduct),raw=Number(v);if(!Number.isFinite(raw)||raw<min)toast(ui('minQtyError'));if(raw>maximumQuantity())toast(ui('quantityTooLarge'));config.qty=normalizeQty(v,min);let el=document.getElementById('detailQty');if(el)el.value=config.qty;renderDetail()}
-function changeDetailQty(d){config.qty=normalizeQty(Number(config.qty)+d,productMoq(activeProduct));renderDetail()}
+function setDetailQty(value){
+  const min=configMoq();
+  const raw=Number(value);
+
+  if(
+    !Number.isFinite(raw)||
+    raw<min
+  ){
+    toast(
+      ui('minQtyError')
+    );
+  }
+
+  if(raw>maximumQuantity()){
+    toast(
+      ui('quantityTooLarge')
+    );
+  }
+
+  config.qty=
+    normalizeQty(
+      value,
+      min
+    );
+
+  const input=
+    document.getElementById(
+      'detailQty'
+    );
+
+  if(input){
+    input.value=config.qty;
+  }
+
+  renderDetail();
+}
+
+function changeDetailQty(delta){
+  config.qty=
+    normalizeQty(
+      Number(config.qty)+delta,
+      configMoq()
+    );
+
+  renderDetail();
+}
 function quickAdd(id){
-  let p=products.find(x=>x.id===id);if(!p)return;
-  let m=seriesMeta[p.series],s=p.size,min=productMoq(p);
-  state.items.push({id:uid(),type:'product',productId:p.id,name:p.name,names:p.names,series:p.series,color:p.color,cover:p.cover,moq:min,size:s,scent:m.scents[0],pattern:patternsBySize[s][0],pack:defaultPack(p.series),qty:min});
-  save();toast(toastText('addedInquiry'))
+  const product=
+    products.find(
+      row=>row.id===id
+    );
+
+  if(!product)return;
+
+  const size=
+    product.size;
+
+  const min=
+    productMoq(product);
+
+  const scentSeries=
+    initialScentSeries(product);
+
+  const scents=
+    product.series==='holiday'
+      ? (
+          seriesMeta[
+            scentSeries
+          ]?.scents||
+          []
+        )
+      : (
+          seriesMeta[
+            product.series
+          ]?.scents||
+          []
+        );
+
+  const item={
+    id:uid(),
+    type:'product',
+    productId:product.id,
+    name:product.name,
+    names:product.names,
+    series:product.series,
+    color:product.color,
+    cover:product.cover,
+    moq:min,
+    size,
+    scent:scents[0]||'',
+    pattern:
+      patternsBySize[size]?.[0]||
+      '',
+    pack:
+      defaultPack(
+        product.series
+      ),
+    qty:min
+  };
+
+  if(product.series==='holiday'){
+    item.scentSeries=
+      scentSeries;
+  }
+
+  state.items.push(item);
+
+  save();
+  toast(
+    toastText('addedInquiry')
+  );
 }
 function addConfiguredProduct(){
   if(!activeProduct)return;
-  let min=productMoq(activeProduct);
-  config.qty=normalizeQty(config.qty,min);
-  state.items.push({id:uid(),type:'product',productId:activeProduct.id,name:activeProduct.name,names:activeProduct.names,series:activeProduct.series,color:activeProduct.color,cover:activeProduct.cover,moq:min,...config});
-  save();toast(toastText('addedInquiry'));go('inquiry')
+
+  const min=
+    configMoq();
+
+  config.qty=
+    normalizeQty(
+      config.qty,
+      min
+    );
+
+  const item={
+    id:uid(),
+    type:'product',
+    productId:activeProduct.id,
+    name:activeProduct.name,
+    names:activeProduct.names,
+    series:activeProduct.series,
+    color:activeProduct.color,
+    cover:activeProduct.cover,
+    moq:min,
+    ...config
+  };
+
+  if(
+    activeProduct.series!==
+    'holiday'
+  ){
+    delete item.scentSeries;
+  }
+
+  state.items.push(item);
+
+  save();
+  toast(
+    toastText('addedInquiry')
+  );
+
+  go('inquiry');
 }
 function renderInquiry(){if(!state.items.length){inquiryList.innerHTML=`<div class="empty"><div class="empty-icon">◒</div><h3>${ui('emptyTitle')}</h3><p style="margin-top:8px;font-size:12px;line-height:1.5">${ui('emptyText')}</p><div class="btn-row" style="margin-top:20px;width:100%"><button class="btn btn-primary full" onclick="go('catalog')">${ui('goProducts')}</button><button class="btn btn-secondary full" onclick="go('custom')">${ui('makeCustom')}</button></div></div>`;summaryBox.innerHTML='';return}let groups={};state.items.forEach(i=>{let k=i.type==='custom'?'custom':i.series;(groups[k]??=[]).push(i)});inquiryList.innerHTML=Object.entries(groups).map(([k,items])=>`<div class="group-title"><span>${k==='custom'?ui('customInquiry'):seriesLabel(k)}</span><span>${k==='custom'?items.length+' '+ui('records'):seriesQty(k)+' '+qtyUnit()}</span></div>`+items.map(renderItem).join('')).join('');summaryBox.innerHTML=`<div class="summary"><div class="summary-row"><span class="summary-label">${ui('inquiryContent')}</span><span class="summary-value">${state.items.length} ${ui('items')}</span></div><div class="summary-row"><span class="summary-label">${ui('tierPrice')}</span><span class="summary-value">${ui('tierRule')}</span></div><div class="summary-row"><span class="summary-label">${ui('productEstimate')}</span><span class="amount">${money(total())}</span></div><p class="note">${ui('summaryNote')}</p></div>`;swipes();badge()}
 function renderItem(i){
@@ -748,7 +1644,18 @@ function renderItem(i){
   }
   let u = itemUnit(i);
   const media = i.cover ? `<img src="${i.cover}" alt="${i.name || ''}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="product-img ${i.color||'color-1'}" style="display:none"></div>` : `<div class="product-img ${i.color||'color-1'}"></div>`;
-  const line1 = `${seriesLabel(i.series)||i.series||ui('toConfirm')} · ${i.size || i.sizeCode || ui('toConfirm')} · ${choiceLabel(i.scent)||ui('scentRecommend')}`;
+  const line1=
+  `${
+    seriesLabel(i.series)||
+    i.series||
+    ui('toConfirm')
+  } · ${
+    i.size||
+    i.sizeCode||
+    ui('toConfirm')
+  } · ${
+    itemScentLabel(i)
+  }`;
   const line2 = `${choiceLabel(i.pattern)||ui('toConfirm')} · ${choiceLabel(i.pack)||ui('toConfirm')}`;
   return `<div class="swipe-shell" data-id="${i.id}">
     <div class="swipe-card">
@@ -1266,12 +2173,12 @@ async function assessSubmissionRisk(){
 }
 function renderPreview(){
   let c=state.contact||{},ps=state.items.filter(i=>i.type==='product'),cs=state.items.filter(i=>i.type==='custom'),inquiryId=ensureInquiryId();
-  previewContent.innerHTML=`<div class="preview-card"><h3>${ui('inquiryNumber')}</h3>${kv(ui('inquiryNumber'),inquiryId)}</div><div class="preview-card"><h3>${ui('personalInfo')}</h3>${kv(ui('nameLabel').replace(' *',''),c.name)}${kv(ui('companyBrand'),c.company||ui('notProvided'))}${kv(ui('countryRegion'),c.country)}${kv(ui('cityLabel'),c.city||ui('notProvided'))}${kv(ui('emailLabel').replace(' *',''),c.email)}${kv(ui('contactMethod'),c.phone)}${kv(ui('buyerType'),choiceLabel(c.buyerType)||ui('toConfirm'))}${kv(ui('note'),c.message||ui('notProvided'))}</div><div class="preview-card"><h3>${ui('productInquiry')}</h3>${ps.length?ps.map(i=>kv(productDisplayName(i),`${i.qty} ${qtyUnit()} · MOQ ${itemMoq(i)} · ${i.size} · ${choiceLabel(i.scent)} · ${choiceLabel(i.pack||defaultPack(i.series))} · ${money(itemSubtotal(i))}`)).join(''):kv(ui('products'),ui('none'))}</div><div class="preview-card"><h3>${ui('customInquiry')}</h3>${cs.length?cs.map(i=>kv(choiceLabel(i.use)||ui('customNeed'),`${i.qty||ui('qtyPending')} ${qtyUnit()} · ${i.budget||ui('budgetPending')} · ${choiceLabel(i.sizePref)||ui('sizeRecommend')} · ${choiceLabel(i.scent)||ui('scentRecommend')} · ${i.color||ui('colorPending')} · ${choiceLabel(i.pack)||ui('packRecommend')} · ${choiceLabel(i.branding)||ui('brandingPending')} · ${i.date||ui('datePending')}`)).join(''):kv(ui('custom'),ui('none'))}</div><div class="preview-card"><h3>${ui('amountEstimate')}</h3>${kv(ui('productEstimate'),money(total()))}${kv(ui('customPart'),ui('consultantConfirm'))}${kv(ui('syncStatus'),web3formsReady()?ui('syncReady'):ui('syncPending'))}</div><div class="preview-card verification-card"><label class="consent-check"><input id="privacyConsent" type="checkbox"><span>${ui('privacyAgreePrefix')} <a href="${privacyUrl()}" target="_blank" rel="noopener">${ui('privacyLink')}</a></span></label><div class="risk-status" id="riskStatus">${riskText('checking')}</div><div class="captcha-section" id="captchaSection" hidden><div class="captcha-label">${ui('captchaLabel')}</div><div class="captcha-wrap" id="hcaptchaContainer"></div></div><div class="verification-error" id="verificationError"></div></div>`;
+  previewContent.innerHTML=`<div class="preview-card"><h3>${ui('inquiryNumber')}</h3>${kv(ui('inquiryNumber'),inquiryId)}</div><div class="preview-card"><h3>${ui('personalInfo')}</h3>${kv(ui('nameLabel').replace(' *',''),c.name)}${kv(ui('companyBrand'),c.company||ui('notProvided'))}${kv(ui('countryRegion'),c.country)}${kv(ui('cityLabel'),c.city||ui('notProvided'))}${kv(ui('emailLabel').replace(' *',''),c.email)}${kv(ui('contactMethod'),c.phone)}${kv(ui('buyerType'),choiceLabel(c.buyerType)||ui('toConfirm'))}${kv(ui('note'),c.message||ui('notProvided'))}</div><div class="preview-card"><h3>${ui('productInquiry')}</h3>${ps.length?ps.map(i=>kv(productDisplayName(i),`${i.qty} ${qtyUnit()} · MOQ ${itemMoq(i)} · ${i.size} · ${itemScentLabel(i)} · ${choiceLabel(i.pack||defaultPack(i.series))} · ${money(itemSubtotal(i))}`)).join(''):kv(ui('products'),ui('none'))}</div><div class="preview-card"><h3>${ui('customInquiry')}</h3>${cs.length?cs.map(i=>kv(choiceLabel(i.use)||ui('customNeed'),`${i.qty||ui('qtyPending')} ${qtyUnit()} · ${i.budget||ui('budgetPending')} · ${choiceLabel(i.sizePref)||ui('sizeRecommend')} · ${itemScentLabel(i)}||ui('scentRecommend')} · ${i.color||ui('colorPending')} · ${choiceLabel(i.pack)||ui('packRecommend')} · ${choiceLabel(i.branding)||ui('brandingPending')} · ${i.date||ui('datePending')}`)).join(''):kv(ui('custom'),ui('none'))}</div><div class="preview-card"><h3>${ui('amountEstimate')}</h3>${kv(ui('productEstimate'),money(total()))}${kv(ui('customPart'),ui('consultantConfirm'))}${kv(ui('syncStatus'),web3formsReady()?ui('syncReady'):ui('syncPending'))}</div><div class="preview-card verification-card"><label class="consent-check"><input id="privacyConsent" type="checkbox"><span>${ui('privacyAgreePrefix')} <a href="${privacyUrl()}" target="_blank" rel="noopener">${ui('privacyLink')}</a></span></label><div class="risk-status" id="riskStatus">${riskText('checking')}</div><div class="captcha-section" id="captchaSection" hidden><div class="captcha-label">${ui('captchaLabel')}</div><div class="captcha-wrap" id="hcaptchaContainer"></div></div><div class="verification-error" id="verificationError"></div></div>`;
   requestAnimationFrame(assessSubmissionRisk)
 }
 function itemText(i){
-  if(i.type==='product')return`${productDisplayName(i)}（${seriesLabel(i.series)||i.series} / ${i.productId||''}） - ${i.qty} ${qtyUnit()}，${i.size}，${choiceLabel(i.scent)}，${choiceLabel(i.pattern)}，${choiceLabel(i.pack||defaultPack(i.series))}，${ui('productEstimate')} ${money(itemSubtotal(i))}`;
-  return`${ui('customInquiry')} - ${choiceLabel(i.use)||ui('notFilled')}，${i.qty||ui('qtyPending')} ${qtyUnit()}，${i.budget||ui('budgetPending')}，${choiceLabel(i.sizePref)||ui('sizeRecommend')}，${choiceLabel(i.scent)||ui('scentRecommend')}，${i.color||ui('colorPending')}，${choiceLabel(i.pack)||ui('packRecommend')}，${choiceLabel(i.branding)||ui('brandingPending')}，${i.date||ui('datePending')}，${ui('note')}：${i.note||ui('none')}`
+  if(i.type==='product')return`${productDisplayName(i)}（${seriesLabel(i.series)||i.series} / ${i.productId||''}） - ${i.qty} ${qtyUnit()}，${i.size}，${itemScentLabel(i)}，${choiceLabel(i.pattern)}，${choiceLabel(i.pack||defaultPack(i.series))}，${ui('productEstimate')} ${money(itemSubtotal(i))}`;
+  return`${ui('customInquiry')} - ${choiceLabel(i.use)||ui('notFilled')}，${i.qty||ui('qtyPending')} ${qtyUnit()}，${i.budget||ui('budgetPending')}，${choiceLabel(i.sizePref)||ui('sizeRecommend')}，${itemScentLabel(i)}||ui('scentRecommend')}，${i.color||ui('colorPending')}，${choiceLabel(i.pack)||ui('packRecommend')}，${choiceLabel(i.branding)||ui('brandingPending')}，${i.date||ui('datePending')}，${ui('note')}：${i.note||ui('none')}`
 }
 function buildWeb3FormsPayload(inquiryId){
   let c=state.contact||{},ps=state.items.filter(i=>i.type==='product'),cs=state.items.filter(i=>i.type==='custom'),submittedAt=new Date().toISOString(),subject=`[${inquiryId}] DREAMLAND 产品电子手册意向单 - ${c.name||'未填写联系人'}`;
