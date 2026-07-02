@@ -242,6 +242,21 @@ let defaultSeries='advanced';
 const SUBMISSION_ARCHIVE_KEY='dreamlandInquiryArchiveV1';
 const LAST_SUBMISSION_KEY='dreamlandLastSubmissionV1';
 const PENDING_INQUIRY_KEY='dreamlandPendingInquiryIdV1';
+const CONTACT_DRAFT_KEY='dreamlandContactDraftV1';
+const CONTACT_DRAFT_TTL_MS=24*60*60*1000;
+
+const CONTACT_FIELD_IDS=[
+  'name',
+  'company',
+  'country',
+  'city',
+  'email',
+  'phone',
+  'buyerType',
+  'message'
+];
+
+let contactDraftTimer=null;
 let pendingInquiryId=localStorage.getItem(PENDING_INQUIRY_KEY)||'';
 let hcaptchaWidgetId=null;
 let hcaptchaRenderToken=0;
@@ -323,7 +338,21 @@ pendingInquiryId='';
 localStorage.removeItem(PENDING_INQUIRY_KEY)
 }
   
-function save(){state.version=2;localStorage.setItem(STORAGE_KEY,JSON.stringify(state));badge()}function uid(){return'I'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}function money(v){let c=currencyMap[currentLang]||currencyMap.zh;let n=Number(v||0)*c.rate;return c.prefix+n.toLocaleString(c.locale,{minimumFractionDigits:c.digits,maximumFractionDigits:c.digits})}function seriesQty(s){return state.items.filter(i=>i.type==='product'&&i.series===s).reduce((a,b)=>a+b.qty,0)}function tierUnit(s,q){let p=seriesMeta[s]?.price||[4.5,4.1,3.8];return q>=3000?p[2]:q>=1000?p[1]:p[0]}
+function save(){
+  state.version=2;
+
+  const persistedState={
+    ...state,
+    contact:{}
+  };
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(persistedState)
+  );
+
+  badge();
+}function uid(){return'I'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}function money(v){let c=currencyMap[currentLang]||currencyMap.zh;let n=Number(v||0)*c.rate;return c.prefix+n.toLocaleString(c.locale,{minimumFractionDigits:c.digits,maximumFractionDigits:c.digits})}function seriesQty(s){return state.items.filter(i=>i.type==='product'&&i.series===s).reduce((a,b)=>a+b.qty,0)}function tierUnit(s,q){let p=seriesMeta[s]?.price||[4.5,4.1,3.8];return q>=3000?p[2]:q>=1000?p[1]:p[0]}
 function packOptions(s){return seriesMeta[s]?.packaging?.options||['防震包装']}
 function defaultPack(s){return seriesMeta[s]?.packaging?.default||packOptions(s)[0]||'防震包装'}
 function packSurchargeCny(s,pack){return Number(seriesMeta[s]?.packaging?.surchargesCny?.[pack]||0)}
@@ -440,7 +469,11 @@ function toastText(key){return ui(key)}
 
 function chooseLang(lang){closeLangSheet();if(lang!==currentLang)setLang(lang)}
 function toggleLang(){openLangSheet()}
-function go(n){closePreviewImage();if(n!=='catalog')cancelCatalogRender();if(n!=='detail'&&detailTimer){clearInterval(detailTimer);detailTimer=null}activeScreen=n;document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.dataset.screen===n));document.querySelectorAll('.screen').forEach(s=>s.classList.remove('cta-revealed'));document.getElementById('bottomNav').classList.toggle('is-visible',['catalog','inquiry','custom'].includes(n));updateLangButton();document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.nav===n||(n==='detail'&&x.dataset.nav==='catalog')));if(n==='catalog')renderProducts();if(n==='inquiry')renderInquiry();if(n==='contact'){markRiskFormStart();preloadHCaptchaScript()}if(n==='preview')renderPreview();if(n==='success')renderSuccess();applyI18n();requestAnimationFrame(()=>updateCtaReveal(n))}
+function go(n){closePreviewImage();if(n!=='catalog')cancelCatalogRender();if(n!=='detail'&&detailTimer){clearInterval(detailTimer);detailTimer=null}activeScreen=n;document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.dataset.screen===n));document.querySelectorAll('.screen').forEach(s=>s.classList.remove('cta-revealed'));document.getElementById('bottomNav').classList.toggle('is-visible',['catalog','inquiry','custom'].includes(n));updateLangButton();document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.nav===n||(n==='detail'&&x.dataset.nav==='catalog')));if(n==='catalog')renderProducts();if(n==='inquiry')renderInquiry();if(n==='contact'){
+  restoreContactDraft();
+  markRiskFormStart();
+  preloadHCaptchaScript();
+}if(n==='preview')renderPreview();if(n==='success')renderSuccess();applyI18n();requestAnimationFrame(()=>updateCtaReveal(n))}
 function updateCtaReveal(n){if(!['detail','contact','preview','inquiry','custom'].includes(n))return;let screen=document.querySelector(`.screen[data-screen="${n}"]`),c=screen?.querySelector('.content.with-cta');if(!screen||!c)return;let nearBottom=c.scrollHeight-c.scrollTop-c.clientHeight<28;screen.classList.toggle('cta-revealed',nearBottom)}
 function bindCtaReveal(){['detail','contact','preview','inquiry','custom'].forEach(n=>{let s=document.querySelector(`.screen[data-screen="${n}"]`),c=s?.querySelector('.content.with-cta');if(!c)return;c.addEventListener('scroll',()=>updateCtaReveal(n),{passive:true})})}
 function renderTabs(){seriesTabs.className=`tabs lang-${currentLang}`;seriesTabs.innerHTML=Object.keys(seriesMeta).map(k=>`<button class="tab ${k===activeSeries?'active':''}" data-s="${k}">${seriesTabLabel(k)}</button>`).join('');seriesTabs.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{activeSeries=t.dataset.s;renderTabs();renderProducts()})}
@@ -788,6 +821,122 @@ function collect(){return{
   buyerType:fieldValue('buyerType'),
   message:fieldValue('message')
 }}
+function readContactDraft(){
+  try{
+    const draft=JSON.parse(
+      localStorage.getItem(CONTACT_DRAFT_KEY)||'null'
+    );
+
+    const savedAt=Number(draft?.savedAt)||0;
+
+    if(
+      !draft?.contact||
+      !savedAt||
+      Date.now()-savedAt>CONTACT_DRAFT_TTL_MS
+    ){
+      localStorage.removeItem(CONTACT_DRAFT_KEY);
+      return {};
+    }
+
+    return draft.contact;
+  }catch(_){
+    localStorage.removeItem(CONTACT_DRAFT_KEY);
+    return {};
+  }
+}
+
+function saveContactDraftNow(){
+  const contact=collect();
+
+  state.contact=contact;
+
+  localStorage.setItem(
+    CONTACT_DRAFT_KEY,
+    JSON.stringify({
+      savedAt:Date.now(),
+      contact
+    })
+  );
+}
+
+function scheduleContactDraftSave(){
+  if(contactDraftTimer){
+    clearTimeout(contactDraftTimer);
+  }
+
+  contactDraftTimer=setTimeout(()=>{
+    contactDraftTimer=null;
+    saveContactDraftNow();
+  },250);
+}
+
+function restoreContactDraft(){
+  const contact=readContactDraft();
+
+  state.contact=contact;
+
+  CONTACT_FIELD_IDS.forEach(id=>{
+    const element=document.getElementById(id);
+
+    if(!element)return;
+
+    const value=contact[id];
+
+    element.value=value==null
+      ? ''
+      : String(value);
+  });
+}
+
+function bindContactDraft(){
+  CONTACT_FIELD_IDS.forEach(id=>{
+    const element=document.getElementById(id);
+
+    if(
+      !element||
+      element.dataset.contactDraftBound==='1'
+    ){
+      return;
+    }
+
+    element.dataset.contactDraftBound='1';
+
+    element.addEventListener(
+      'input',
+      scheduleContactDraftSave
+    );
+
+    element.addEventListener(
+      'change',
+      scheduleContactDraftSave
+    );
+  });
+
+  window.addEventListener('pagehide',()=>{
+    if(activeScreen==='contact'){
+      saveContactDraftNow();
+    }
+  });
+
+  document.addEventListener('visibilitychange',()=>{
+    if(
+      document.visibilityState==='hidden'&&
+      activeScreen==='contact'
+    ){
+      saveContactDraftNow();
+    }
+  });
+}
+
+function clearContactDraft(){
+  if(contactDraftTimer){
+    clearTimeout(contactDraftTimer);
+    contactDraftTimer=null;
+  }
+
+  localStorage.removeItem(CONTACT_DRAFT_KEY);
+}
+  
 function goContact(){if(!state.items.length){toast(ui('needInquiryFirst'));return go('catalog')}go('contact')}
 function goPreview(){
   document.querySelectorAll('[data-screen="contact"] .field').forEach(f=>f.classList.remove('invalid'));
@@ -801,7 +950,10 @@ function goPreview(){
     if(item.type==='custom'&&(Number(item.qty)<customMoq()||Number(item.qty)>maximumQuantity())){toast(ui('customMinQtyError'));ok=false;break}
   }
   if(!ok)return;
-  ensureInquiryId();state.contact=c;save();go('preview')
+  ensureInquiryId();
+state.contact=c;
+saveContactDraftNow();
+go('preview');
 }
 function kv(a,b){return`<div class="kv"><span>${a}</span><span>${b}</span></div>`}
 
@@ -1147,6 +1299,7 @@ function archiveSubmission(snapshot){
 }
 function clearSubmittedInquiry(){
   state={version:2,items:[],contact:{}};save();
+  clearContactDraft();
   pendingInquiryId='';
   localStorage.removeItem(PENDING_INQUIRY_KEY);
   ['name','company','country','city','email','phone','message','customQty','customDate','customColor','customNote'].forEach(id=>{let el=document.getElementById(id);if(el)el.value='' });
@@ -1707,6 +1860,7 @@ async function bootstrap(){
   activeProduct=products[0]||null;
   applyRuntimeLimits();
   bindCtaReveal();
+  bindContactDraft();
   bindCatalogLazyLoad();
   refreshBudgetOptions();
   updateLangButton();
