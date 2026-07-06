@@ -56,9 +56,26 @@ window.imgMiss=function(img){
 .add-mini{position:absolute;right:12px;bottom:12px;width:32px;height:32px;border-radius:50%;border:0;background:#111;color:#fff;box-shadow:0 10px 18px rgba(0,0,0,.18);font-size:20px;line-height:1;z-index:2}
 .product-name{padding-right:4px;font-size:13px;font-weight:900;letter-spacing:-.025em;line-height:1.25;min-height:32px}
 .meta{margin-top:6px;color:#9b9b9f;font-size:10px;font-weight:700;line-height:1.35}
-.price-row{display:flex;align-items:flex-end;justify-content:space-between;margin-top:10px;padding-right:38px}
-.price{font-weight:950;font-size:14px}
-.moq{color:#b5b5bb;font-size:10px;font-weight:800}
+.price-row{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:3px;
+  margin-top:8px;
+  padding-right:38px;
+}
+.price{
+  font-weight:950;
+  font-size:14px;
+  line-height:1.1;
+}
+.moq,
+.moq-note{
+  color:#9b9b9f;
+  font-size:10px;
+  font-weight:800;
+  line-height:1.2;
+}
 .detail-media{aspect-ratio:3/4;height:auto;min-height:472px;border-radius:30px;position:relative;overflow:hidden;box-shadow:var(--shadow);animation:slideUp .4s ease both;margin-top:4px;background:var(--cream)}
 .detail-media:before{content:"";position:absolute;inset:-80px -80px auto auto;width:230px;height:340px;border-radius:120px;border:1px solid rgba(255,255,255,.24);transform:rotate(30deg);z-index:0}
 .detail-media:after{content:"";position:absolute;left:0;right:0;bottom:0;height:54%;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.48));z-index:2;pointer-events:none}
@@ -399,6 +416,14 @@ function money(value){
     );
 }
 
+function fromPrice(value){
+  const amount=money(value);
+
+  return currentLang==='en'
+    ? `${ui('priceFrom')} ${amount}`
+    : `${amount} ${ui('priceFrom')}`;
+} 
+  
 function currencyUnit(){
   return (
     currencyMap[currentLang]||
@@ -969,13 +994,13 @@ function renderProductCard(
       </div>
 
       <div class="price-row">
-        <span class="price">
-          ${money(catalogUnit(product))}
-        </span>
+<span class="price">
+  ${fromPrice(catalogUnit(product))}
+</span>
 
-        <span class="moq-note">
-          ${ui('moq')} ${productMoq(product)}
-        </span>
+<span class="moq-note">
+  ${ui('seriesMoq')} ${productMoq(product)}
+</span>
       </div>
     </article>
   `;
@@ -1159,11 +1184,7 @@ function openDetail(id){
       defaultPack(
         activeProduct.series
       ),
-    qty:
-      moqForSeriesSize(
-        activeProduct.series,
-        size
-      )
+    qty:QTY_MIN
   };
 
   detailSlideIndex=0;
@@ -1213,8 +1234,11 @@ function bindHorizontalOptions() {
       activeProduct.series
     ];
 
-  const min=
+  const seriesMoq=
     configMoq();
+
+  const inputMin=
+    QTY_MIN;
 
   const scents=
     scentOptionsForConfig();
@@ -1222,7 +1246,7 @@ function bindHorizontalOptions() {
   config.qty=
     normalizeQty(
       config.qty,
-      min
+      inputMin
     );
 
   const scentSeriesBlock=
@@ -1270,7 +1294,7 @@ function bindHorizontalOptions() {
         <div class="config-title">
           <h3>${ui('quantity')}</h3>
           <span>
-            ${ui('moqHint')} ${min}
+            ${ui('seriesMoq')} ${seriesMoq}
           </span>
         </div>
 
@@ -1297,7 +1321,7 @@ function bindHorizontalOptions() {
               class="qty qty-input"
               id="detailQty"
               type="number"
-              min="${min}"
+              min="${inputMin}"
               max="${maximumQuantity()}"
               step="${QTY_STEP}"
               value="${config.qty}"
@@ -1447,7 +1471,7 @@ function setCfg(key,value){
   );
 }
 function setDetailQty(value){
-  const min=configMoq();
+  const min=QTY_MIN;
   const raw=Number(value);
 
   if(
@@ -1487,7 +1511,7 @@ function changeDetailQty(delta){
   config.qty=
     normalizeQty(
       Number(config.qty)+delta,
-      configMoq()
+      QTY_MIN
     );
 
   renderDetail();
@@ -1543,7 +1567,7 @@ function quickAdd(id){
       defaultPack(
         product.series
       ),
-    qty:min
+    qty:QTY_MIN
   };
 
   if(product.series==='holiday'){
@@ -1561,13 +1585,13 @@ function quickAdd(id){
 function addConfiguredProduct(){
   if(!activeProduct)return;
 
-  const min=
+ const min=
     configMoq();
 
   config.qty=
     normalizeQty(
       config.qty,
-      min
+      QTY_MIN
     );
 
   const item={
@@ -1654,7 +1678,7 @@ function renderItem(i){
           <div class="qty-line">
             <div class="mini-stepper">
               <button class="step" onclick="qty('${i.id}',-QTY_STEP)">−</button>
-              <input class="qty-edit" type="number" min="${itemMoq(i)}" max="${maximumQuantity()}" step="${QTY_STEP}" value="${i.qty}" inputmode="numeric" onchange="setItemQty('${i.id}',this.value)" onkeydown="if(event.key==='Enter')this.blur()">
+              <input class="qty-edit" type="number" min="${QTY_MIN}" max="${maximumQuantity()}" step="${QTY_STEP}" value="${i.qty}" inputmode="numeric" onchange="setItemQty('${i.id}',this.value)" onkeydown="if(event.key==='Enter')this.blur()">
               <button class="step" onclick="qty('${i.id}',QTY_STEP)">+</button>
             </div>
           </div>
@@ -1671,8 +1695,67 @@ function renderItem(i){
   </div>`;
 }
 function swipes(){}
-function qty(id,d){let i=state.items.find(x=>x.id===id);if(!i||i.type!=='product')return;i.qty=normalizeQty(Number(i.qty)+d,itemMoq(i));save();renderInquiry()}
-function setItemQty(id,v){let i=state.items.find(x=>x.id===id);if(!i||i.type!=='product')return;let min=itemMoq(i),raw=Number(v);if(!Number.isFinite(raw)||raw<min)toast(ui('minQtyError'));if(raw>maximumQuantity())toast(ui('quantityTooLarge'));i.qty=normalizeQty(v,min);save();renderInquiry()}
+function qty(id,delta){
+  const item=
+    state.items.find(
+      row=>row.id===id
+    );
+
+  if(
+    !item||
+    item.type!=='product'
+  ){
+    return;
+  }
+
+  item.qty=
+    normalizeQty(
+      Number(item.qty)+delta,
+      QTY_MIN
+    );
+
+  save();
+  renderInquiry();
+}
+function setItemQty(id,value){
+  const item=
+    state.items.find(
+      row=>row.id===id
+    );
+
+  if(
+    !item||
+    item.type!=='product'
+  ){
+    return;
+  }
+
+  const raw=Number(value);
+
+  if(
+    !Number.isFinite(raw)||
+    raw<QTY_MIN
+  ){
+    toast(
+      ui('minQtyError')
+    );
+  }
+
+  if(raw>maximumQuantity()){
+    toast(
+      ui('quantityTooLarge')
+    );
+  }
+
+  item.qty=
+    normalizeQty(
+      value,
+      QTY_MIN
+    );
+
+  save();
+  renderInquiry();
+}
 function del(id){state.items=state.items.filter(i=>i.id!==id);save();renderInquiry();toast(toastText('removedInquiry'))}
 function confirmClearAll(){if(!state.items.length)return toast(toastText('emptyInquiry'));confirmLayer.classList.add('show')}
 function hideConfirm(){confirmLayer.classList.remove('show')}
@@ -1829,8 +1912,103 @@ function clearContactDraft(){
 
   localStorage.removeItem(CONTACT_DRAFT_KEY);
 }
+
+function moqGroupKey(item){
+  if(item?.type!=='product'){
+    return '';
+  }
+
+  return [
+    item.series||'',
+    item.size||''
+  ].join(':');
+}
+
+function moqGroupLabel(group){
+  return `${
+    seriesLabel(group.series)||
+    group.series||
+    ui('toConfirm')
+  } · ${
+    group.size||
+    ui('toConfirm')
+  }`;
+}
+
+function productMoqGroups(){
+  const groups={};
+
+  state.items.forEach(item=>{
+    if(item.type!=='product'){
+      return;
+    }
+
+    const key=
+      moqGroupKey(item);
+
+    if(!groups[key]){
+      groups[key]={
+        series:item.series,
+        size:item.size,
+        qty:0,
+        moq:itemMoq(item)
+      };
+    }
+
+    groups[key].qty+=
+      Number(item.qty)||0;
+
+    groups[key].moq=
+      Math.max(
+        groups[key].moq,
+        itemMoq(item)
+      );
+  });
+
+  return Object.values(groups);
+}
+
+function firstUnmetProductMoqGroup(){
+  return productMoqGroups()
+    .find(
+      group=>
+        group.qty<group.moq
+    )||
+    null;
+}
+
+function validateProductMoqGroups(){
+  const group=
+    firstUnmetProductMoqGroup();
+
+  if(!group){
+    return true;
+  }
+
+  toast(
+    `${moqGroupLabel(group)} ${ui('moqNotMet')}：${group.qty}/${group.moq}`
+  );
+
+  return false;
+}
   
-function goContact(){if(!state.items.length){toast(ui('needInquiryFirst'));return go('catalog')}go('contact')}
+function goContact(){
+  if(!state.items.length){
+    toast(
+      ui('needInquiryFirst')
+    );
+
+    return go('catalog');
+  }
+
+  if(
+    !validateProductMoqGroups()
+  ){
+    return;
+  }
+
+  go('contact');
+}
 function goPreview(){
   document.querySelectorAll('[data-screen="contact"] .field').forEach(f=>f.classList.remove('invalid'));
   let c=collect(),ok=true,emailEl=document.getElementById('email');
@@ -1838,10 +2016,40 @@ function goPreview(){
   if(!c.country){document.getElementById('country').closest('.field').classList.add('invalid');ok=false}
   if(!emailEl||!c.email||!emailEl.checkValidity()){emailEl?.closest('.field')?.classList.add('invalid');toast(ui('invalidEmail'));ok=false}
   if(c.phone.length<5){document.getElementById('phone').closest('.field').classList.add('invalid');toast(ui('invalidPhone'));ok=false}
-  for(const item of state.items){
-    if(item.type==='product'&&(Number(item.qty)<itemMoq(item)||Number(item.qty)>maximumQuantity())){toast(ui('minQtyError'));ok=false;break}
-    if(item.type==='custom'&&(Number(item.qty)<customMoq()||Number(item.qty)>maximumQuantity())){toast(ui('customMinQtyError'));ok=false;break}
+if(
+  !validateProductMoqGroups()
+){
+  ok=false;
+}
+
+for(const item of state.items){
+  if(
+    item.type==='product'&&
+    Number(item.qty)>maximumQuantity()
+  ){
+    toast(
+      ui('quantityTooLarge')
+    );
+
+    ok=false;
+    break;
   }
+
+  if(
+    item.type==='custom'&&
+    (
+      Number(item.qty)<customMoq()||
+      Number(item.qty)>maximumQuantity()
+    )
+  ){
+    toast(
+      ui('customMinQtyError')
+    );
+
+    ok=false;
+    break;
+  }
+}
   if(!ok)return;
   ensureInquiryId();
 state.contact=c;
