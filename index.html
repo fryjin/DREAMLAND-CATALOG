@@ -1336,21 +1336,7 @@ function bindHorizontalOptions() {
     }
   });
 }
-  renderDetailMedia();
-  let meta=seriesMeta[activeProduct.series],min=productMoq(activeProduct);
-  config.qty=normalizeQty(config.qty,min);
-  configCard.innerHTML=block(ui('size'),'size',['S','M','L','XL'],ui('sizeHint'))+block(ui('scent'),'scent',meta.scents,`${seriesLabel(activeProduct.series)} ${ui('scentHint')}`)+block(ui('pattern'),'pattern',patternsBySize[config.size],ui('patternHint'))+block(ui('pack'),'pack',packOptions(activeProduct.series),packHint(activeProduct.series))+`<div class="config-block"><div class="config-title"><h3>${ui('quantity')}</h3><span>${ui('moqHint')} ${min}</span></div><div class="qty-bar"><div><div class="summary-label">${ui('currentUnitPrice')}</div><div class="amount">${money(configUnit())}</div></div><div class="qty-stepper"><button class="step" onclick="changeDetailQty(-QTY_STEP)">−</button><input class="qty qty-input" id="detailQty" type="number" min="${min}" max="${maximumQuantity()}" step="${QTY_STEP}" value="${config.qty}" inputmode="numeric" onchange="setDetailQty(this.value)"><button class="step" onclick="changeDetailQty(QTY_STEP)">+</button></div></div></div>`;
- requestAnimationFrame(() => {
-  bindHorizontalOptions();
-
-  if (Number.isFinite(scentScrollLeft)) {
-    const scentScroller = configCard.querySelector('.option-grid-scroll');
-
-    if (scentScroller) {
-      scentScroller.scrollLeft = scentScrollLeft;
-    }
-  }
-});}
+ 
     
 function block(t, k, opts, h) {
   const isScroll=
