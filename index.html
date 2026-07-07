@@ -60,21 +60,20 @@ window.imgMiss=function(img){
   display:flex;
   flex-direction:column;
   align-items:flex-start;
-  gap:3px;
+  gap:2px;
   margin-top:8px;
   padding-right:38px;
 }
+
 .price{
   font-weight:950;
   font-size:14px;
   line-height:1.1;
 }
+
 .moq,
 .moq-note{
-  color:#9b9b9f;
-  font-size:10px;
-  font-weight:800;
-  line-height:1.2;
+  display:none;
 }
 .detail-media{aspect-ratio:3/4;height:auto;min-height:472px;border-radius:30px;position:relative;overflow:hidden;box-shadow:var(--shadow);animation:slideUp .4s ease both;margin-top:4px;background:var(--cream)}
 .detail-media:before{content:"";position:absolute;inset:-80px -80px auto auto;width:230px;height:340px;border-radius:120px;border:1px solid rgba(255,255,255,.24);transform:rotate(30deg);z-index:0}
@@ -202,6 +201,139 @@ window.imgMiss=function(img){
 .captcha-section[hidden]{display:none!important}
 .captcha-retry{margin-top:9px;height:36px;padding:0 14px;border-radius:999px;background:#111;color:#fff;font-size:11px;font-weight:850}
 .captcha-help{font-size:11px;line-height:1.55;color:#8e9098}
+.tier-layer{
+  position:absolute;
+  inset:0;
+  z-index:80;
+  background:rgba(0,0,0,.36);
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  padding:18px;
+}
+
+.tier-layer.show{
+  display:flex;
+}
+
+.tier-sheet{
+  width:100%;
+  max-height:78vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:28px;
+  padding:18px;
+  box-shadow:0 -18px 46px rgba(0,0,0,.18);
+}
+
+.tier-sheet-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.tier-sheet h3{
+  font-size:18px;
+  font-weight:950;
+  line-height:1.2;
+  letter-spacing:-.03em;
+}
+
+.tier-sheet p{
+  margin-top:4px;
+  color:#8e9098;
+  font-size:11px;
+  line-height:1.45;
+  font-weight:750;
+}
+
+.tier-close{
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  background:#f2f2f4;
+  font-size:18px;
+  font-weight:900;
+}
+
+.tier-table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  overflow:hidden;
+  border-radius:16px;
+  background:#f6f6f8;
+  font-size:11px;
+}
+
+.tier-table th,
+.tier-table td{
+  padding:10px 8px;
+  text-align:center;
+  font-weight:800;
+  border-bottom:1px solid rgba(0,0,0,.05);
+}
+
+.tier-table th{
+  color:#777982;
+  background:#eeeeF2;
+}
+
+.tier-table td:first-child,
+.tier-table th:first-child{
+  text-align:left;
+}
+
+.tier-table tr:last-child td{
+  border-bottom:0;
+}
+
+.tier-current{
+  background:#111;
+  color:#fff;
+}
+
+.tier-current td{
+  color:#fff;
+}
+
+.tier-tip{
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:16px;
+  background:#fff7e8;
+  color:#8a5b11;
+  font-size:11px;
+  line-height:1.45;
+  font-weight:850;
+}
+
+.tier-tools{
+  margin-top:8px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.tier-next{
+  color:#8e9098;
+  font-size:11px;
+  line-height:1.45;
+  font-weight:800;
+}
+
+.tier-link{
+  height:30px;
+  padding:0 12px;
+  border-radius:999px;
+  background:#111;
+  color:#fff;
+  font-size:11px;
+  font-weight:900;
+}
 </style>
 </head>
 <body>
@@ -514,7 +646,214 @@ function tierFor(seriesKey,quantity){
     null
   );
 }
+function tierRangeLabel(tier){
+  const min=Number(tier?.minQty)||1;
+  const max=tier?.maxQty;
 
+  if(max==null){
+    return `${min}+`;
+  }
+
+  return `${min}-${max}`;
+}
+
+function currentTierIndex(
+  seriesKey,
+  quantity
+){
+  const tiers=
+    seriesMeta[seriesKey]
+      ?.priceTiers||
+    [];
+
+  return Math.max(
+    0,
+    tiers.findIndex(tier=>{
+      const min=
+        Number(tier.minQty)||0;
+
+      const max=
+        tier.maxQty==null
+          ? Infinity
+          : Number(tier.maxQty);
+
+      return (
+        quantity>=min&&
+        quantity<=max
+      );
+    })
+  );
+}
+
+function nextTierFor(
+  seriesKey,
+  quantity
+){
+  const tiers=
+    seriesMeta[seriesKey]
+      ?.priceTiers||
+    [];
+
+  return tiers.find(
+    tier=>
+      Number(tier.minQty)>quantity
+  )||null;
+}
+
+function configPricingSeries(){
+  return pricingSeriesFor(
+    configPricingItem()
+  );
+}
+
+function tierMarketingText(){
+  if(!activeProduct){
+    return '';
+  }
+
+  const seriesKey=
+    configPricingSeries();
+
+  const quantity=
+    configPricingQty();
+
+  const nextTier=
+    nextTierFor(
+      seriesKey,
+      quantity
+    );
+
+  if(!nextTier){
+    return ui('bestTierReached');
+  }
+
+  const needMore=
+    Number(nextTier.minQty)-
+    quantity;
+
+  if(needMore<=0){
+    return ui('bestTierReached');
+  }
+
+  const nextPrice=
+    tierUnitCny(
+      seriesKey,
+      config.size,
+      Number(nextTier.minQty)
+    );
+
+  return `${ui('buyMorePrefix')} ${needMore} ${qtyUnit()}，${ui('buyMoreSuffix')} ${money(cnyToBase(nextPrice))}${currencyUnit()}`;
+}
+
+function tierSheetTitle(){
+  if(
+    activeProduct?.series==='holiday'
+  ){
+    return `${seriesLabel(activeProduct.series)} · ${seriesLabel(config.scentSeries)}`;
+  }
+
+  return seriesLabel(
+    activeProduct?.series
+  );
+}
+
+function tierTableHtml(){
+  const seriesKey=
+    configPricingSeries();
+
+  const tiers=
+    seriesMeta[seriesKey]
+      ?.priceTiers||
+    [];
+
+  const quantity=
+    configPricingQty();
+
+  const currentIndex=
+    currentTierIndex(
+      seriesKey,
+      quantity
+    );
+
+  if(!tiers.length){
+    return `<p>${ui('tierUnavailable')}</p>`;
+  }
+
+  return `
+    <table class="tier-table">
+      <thead>
+        <tr>
+          <th>${ui('tierQty')}</th>
+          <th>S</th>
+          <th>M</th>
+          <th>L</th>
+          <th>XL</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        ${tiers.map((tier,index)=>`
+          <tr class="${index===currentIndex?'tier-current':''}">
+            <td>${tierRangeLabel(tier)}</td>
+            ${['S','M','L','XL'].map(size=>`
+              <td>
+                ${money(cnyToBase(Number(tier.pricesCny?.[size]||0)))}
+              </td>
+            `).join('')}
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function openTierSheet(){
+  const layer=
+    document.getElementById(
+      'tierLayer'
+    );
+
+  const sheet=
+    document.getElementById(
+      'tierSheet'
+    );
+
+  if(!layer||!sheet){
+    return;
+  }
+
+  sheet.innerHTML=`
+    <div class="tier-sheet-head">
+      <div>
+        <h3>${ui('tierPriceTable')}</h3>
+        <p>${tierSheetTitle()} · ${ui('tierPriceDesc')}</p>
+      </div>
+
+      <button
+        class="tier-close"
+        type="button"
+        onclick="closeTierSheet()"
+      >
+        ×
+      </button>
+    </div>
+
+    ${tierTableHtml()}
+
+    <div class="tier-tip">
+      ${tierMarketingText()}
+    </div>
+  `;
+
+  layer.classList.add('show');
+}
+
+function closeTierSheet(){
+  document
+    .getElementById('tierLayer')
+    ?.classList
+    .remove('show');
+}
 function tierUnitCny(
   seriesKey,
   size,
@@ -711,13 +1050,19 @@ function catalogUnit(product){
         )
       : product.series;
 
+ const size=
+    defaultProductSize(product);
+
   const quantity=
-    productMoq(product);
+    moqForSeriesSize(
+      product.series,
+      size
+    );
 
   const priceCny=
     tierUnitCny(
       pricingSeries,
-      product.size,
+      size,
       quantity
     );
 
@@ -772,6 +1117,10 @@ function moqForSeriesSize(
     : 1;
 }
 
+function defaultProductSize(product){
+  return product?.defaultSize||'S';
+}
+  
 function productMoq(product){
   if(!product)return 1;
 
@@ -957,7 +1306,14 @@ function scentInfo(k){return k==='scent'?`<div class="scent-link-row"><button ty
 function openScentNotes(){openPreviewImage(scentNotesImage(),`${choiceLabel(config.scent)} · ${ui('scentNotesSuffix')}`)}
 function optionPreview(k){let p=previewData(k);return p?`<button class="option-thumb" type="button" onclick="event.stopPropagation();openPreviewImage('${p.src}','${p.label}')"><img src="${p.src}" alt="${p.label}" onerror="imgMiss(this)"><span>${ui('view')}</span></button>`:''}
 function openPreviewImage(src,label){let layer=document.getElementById('previewLayer'),img=document.getElementById('previewImg'),cap=document.getElementById('previewCaption');if(!layer||!img||!cap)return;img.classList.remove('is-missing');img.src=src;cap.textContent=label||ui('imagePreview');layer.classList.add('show')}
-function closePreviewImage(){document.getElementById('previewLayer')?.classList.remove('show')}
+function closePreviewImage(){
+  document
+    .getElementById('previewLayer')
+    ?.classList
+    .remove('show');
+
+  closeTierSheet();
+}
 function renderProductCard(
   product,
   index,
@@ -998,9 +1354,6 @@ function renderProductCard(
   ${fromPrice(catalogUnit(product))}
 </span>
 
-<span class="moq-note">
-  ${ui('seriesMoq')} ${productMoq(product)}
-</span>
       </div>
     </article>
   `;
@@ -1153,7 +1506,7 @@ function openDetail(id){
     ];
 
   const size=
-    activeProduct.size;
+    defaultProductSize(activeProduct);
 
   const scentSeries=
     initialScentSeries(
@@ -1261,7 +1614,12 @@ function bindHorizontalOptions() {
 
   configCard.innerHTML=
     block(
-      ui('size'),
+     block(
+  ui('size'),
+  'size',
+  ['S','M','L','XL'],
+  `${ui('currentSizeMoq')} ${seriesMoq}`
+)
       'size',
       ['S','M','L','XL'],
       ui('sizeHint')
@@ -1291,22 +1649,35 @@ function bindHorizontalOptions() {
     )+
     `
       <div class="config-block">
-        <div class="config-title">
-          <h3>${ui('quantity')}</h3>
-          <span>
-            ${ui('seriesMoq')} ${seriesMoq}
-          </span>
-        </div>
-
+       <div class="config-title">
+  <h3>${ui('quantity')}</h3>
+  <span>
+    ${ui('submitMoqCheck')}
+  </span>
+</div>
         <div class="qty-bar">
           <div>
             <div class="summary-label">
               ${ui('currentUnitPrice')}
             </div>
 
-            <div class="amount">
-              ${money(configUnit())}
-            </div>
+           <div class="amount">
+  ${money(configUnit())}
+</div>
+
+<div class="tier-tools">
+  <div class="tier-next">
+    ${tierMarketingText()}
+  </div>
+
+  <button
+    class="tier-link"
+    type="button"
+    onclick="openTierSheet()"
+  >
+    ${ui('viewTierPrice')}
+  </button>
+</div>
           </div>
 
           <div class="qty-stepper">
@@ -1321,6 +1692,7 @@ function bindHorizontalOptions() {
               class="qty qty-input"
               id="detailQty"
               type="number"
+              const inputMin=QTY_MIN;
               min="${inputMin}"
               max="${maximumQuantity()}"
               step="${QTY_STEP}"
@@ -1524,8 +1896,8 @@ function quickAdd(id){
 
   if(!product)return;
 
-  const size=
-    product.size;
+const size=
+    defaultProductSize(product);
 
   const min=
     productMoq(product);
@@ -2984,5 +3356,7 @@ bootstrap().catch(error=>{
 <script>
 window.addEventListener('load',registerPwaServiceWorker);
 </script>
-
+<div class="tier-layer" id="tierLayer" onclick="if(event.target===this)closeTierSheet()">
+  <div class="tier-sheet" id="tierSheet"></div>
+</div>
 </body></html>
