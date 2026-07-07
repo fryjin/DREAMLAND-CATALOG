@@ -1614,15 +1614,10 @@ function bindHorizontalOptions() {
 
   configCard.innerHTML=
     block(
-     block(
-  ui('size'),
-  'size',
-  ['S','M','L','XL'],
-  `${ui('currentSizeMoq')} ${seriesMoq}`
-)
+      ui('size'),
       'size',
       ['S','M','L','XL'],
-      ui('sizeHint')
+      `${ui('currentSizeMoq')} ${seriesMoq}`
     )+
     scentSeriesBlock+
     block(
@@ -1649,35 +1644,34 @@ function bindHorizontalOptions() {
     )+
     `
       <div class="config-block">
-       <div class="config-title">
-  <h3>${ui('quantity')}</h3>
-  <span>
-    ${ui('submitMoqCheck')}
-  </span>
-</div>
+        <div class="config-title">
+          <h3>${ui('quantity')}</h3>
+          <span>${ui('submitMoqCheck')}</span>
+        </div>
+
         <div class="qty-bar">
           <div>
             <div class="summary-label">
               ${ui('currentUnitPrice')}
             </div>
 
-           <div class="amount">
-  ${money(configUnit())}
-</div>
+            <div class="amount">
+              ${money(configUnit())}
+            </div>
 
-<div class="tier-tools">
-  <div class="tier-next">
-    ${tierMarketingText()}
-  </div>
+            <div class="tier-tools">
+              <div class="tier-next">
+                ${tierMarketingText()}
+              </div>
 
-  <button
-    class="tier-link"
-    type="button"
-    onclick="openTierSheet()"
-  >
-    ${ui('viewTierPrice')}
-  </button>
-</div>
+              <button
+                class="tier-link"
+                type="button"
+                onclick="openTierSheet()"
+              >
+                ${ui('viewTierPrice')}
+              </button>
+            </div>
           </div>
 
           <div class="qty-stepper">
@@ -1692,7 +1686,6 @@ function bindHorizontalOptions() {
               class="qty qty-input"
               id="detailQty"
               type="number"
-              const inputMin=QTY_MIN;
               min="${inputMin}"
               max="${maximumQuantity()}"
               step="${QTY_STEP}"
@@ -1732,7 +1725,6 @@ function bindHorizontalOptions() {
     }
   });
 }
- 
     
 function block(t, k, opts, h) {
   const isScroll=
