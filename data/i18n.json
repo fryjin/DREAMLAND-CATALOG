@@ -360,7 +360,7 @@
       "buyMorePrefix": "Add",
       "buyMoreSuffix": "to unlock",
       "bestTierReached": "Best tier price already unlocked",
-      "tierUnavailable": "No tier prices available"
+      "tierUnavailable": "No tier prices available",
       "seriesMoq": "Series MOQ",
       "moqNotMet": "has not reached the series MOQ. Submission is blocked",
       "sizeHint": "Different sizes affect available patterns",
@@ -558,7 +558,7 @@
       "buyMorePrefix": "추가",
       "buyMoreSuffix": "구매 시 단가",
       "bestTierReached": "현재 최고 할인 구간이 적용되었습니다",
-      "tierUnavailable": "단계별 가격이 없습니다"
+      "tierUnavailable": "단계별 가격이 없습니다",
       "seriesMoq": "시리즈 MOQ",
       "moqNotMet": "시리즈 최소 주문 수량에 도달하지 않아 제출할 수 없습니다",
       "sizeHint": "사이즈에 따라 선택 가능한 패턴이 달라집니다",
