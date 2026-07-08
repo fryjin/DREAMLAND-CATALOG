@@ -290,12 +290,8 @@ window.imgMiss=function(img){
   border-bottom:0;
 }
 
-.tier-current{
-  background:#111;
-  color:#fff;
-}
-
 .tier-current td{
+  background:#111;
   color:#fff;
 }
 
@@ -318,6 +314,69 @@ window.imgMiss=function(img){
   flex-wrap:wrap;
 }
 
+.amount-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:2px;
+}
+
+.pack-note{
+  margin-top:6px;
+  color:#8e9098;
+  font-size:11px;
+  line-height:1.4;
+  font-weight:800;
+}
+
+.tier-link-soft{
+  background:#f1f2f6;
+  color:#111;
+  box-shadow:none;
+}
+
+.tier-link-soft:active{
+  transform:scale(.98);
+}
+
+.tier-table-wrap{
+  width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:4px;
+  margin-top:6px;
+}
+
+.tier-table-wrap::-webkit-scrollbar{
+  height:6px;
+}
+
+.tier-table-wrap::-webkit-scrollbar-thumb{
+  background:rgba(0,0,0,.14);
+  border-radius:999px;
+}
+
+.tier-table{
+  min-width:520px;
+  width:max-content;
+  border-collapse:separate;
+  border-spacing:0;
+  overflow:hidden;
+  border-radius:16px;
+  background:#f6f6f8;
+  font-size:11px;
+}
+
+.tier-swipe-hint{
+  margin-top:8px;
+  color:#8e9098;
+  font-size:10px;
+  line-height:1.4;
+  font-weight:800;
+}
+  
 .tier-next{
   color:#8e9098;
   font-size:11px;
@@ -779,7 +838,8 @@ function tierTableHtml(){
     return `<p>${ui('tierUnavailable')}</p>`;
   }
 
-  return `
+ return `
+  <div class="tier-table-wrap">
     <table class="tier-table">
       <thead>
         <tr>
@@ -804,8 +864,12 @@ function tierTableHtml(){
         `).join('')}
       </tbody>
     </table>
-  `;
-}
+  </div>
+
+  <div class="tier-swipe-hint">
+    左右滑动查看完整阶梯价格
+  </div>
+`;
 
 function openTierSheet(){
   const layer=
@@ -929,7 +993,24 @@ function packHint(series){
     })
     .join(' · ');
 }
+function currentPackDeltaCny(){
+  if(!activeProduct)return 0;
 
+  return packSurchargeCny(
+    activeProduct.series,
+    config.pack
+  );
+}
+
+function currentPackNotice(){
+  const delta=currentPackDeltaCny();
+
+  if(delta>0){
+    return `已含${choiceLabel(config.pack)} + ${money(cnyToBase(delta))}/${qtyUnit()}`;
+  }
+
+  return `已含${choiceLabel(config.pack)}`;
+}
 function configPricingItem(){
   return {
     series:activeProduct?.series||'',
@@ -1637,11 +1718,11 @@ function bindHorizontalOptions() {
       ui('patternHint')
     )+
     block(
-      ui('pack'),
-      'pack',
-      packOptions(activeProduct.series),
-      packHint(activeProduct.series)
-    )+
+  ui('pack'),
+  'pack',
+  packOptions(activeProduct.series),
+  ''
+)+
     `
       <div class="config-block">
         <div class="config-title">
@@ -1651,27 +1732,27 @@ function bindHorizontalOptions() {
 
         <div class="qty-bar">
           <div>
-            <div class="summary-label">
-              ${ui('currentUnitPrice')}
-            </div>
+           <div class="summary-label">
+  ${ui('currentUnitPrice')}
+</div>
 
-            <div class="amount">
-              ${money(configUnit())}
-            </div>
+<div class="amount-row">
+  <div class="amount">
+    ${money(configUnit())}
+  </div>
 
-            <div class="tier-tools">
-              <div class="tier-next">
-                ${tierMarketingText()}
-              </div>
+  <button
+    class="tier-link tier-link-soft"
+    type="button"
+    onclick="openTierSheet()"
+  >
+    ${ui('viewTierPrice')}
+  </button>
+</div>
 
-              <button
-                class="tier-link"
-                type="button"
-                onclick="openTierSheet()"
-              >
-                ${ui('viewTierPrice')}
-              </button>
-            </div>
+<div class="pack-note">
+  ${currentPackNotice()}
+</div>
           </div>
 
           <div class="qty-stepper">
