@@ -249,6 +249,29 @@ window.imgMiss=function(img){
   transform:scale(.98);
 }
   
+.item-actions{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-top:7px;
+  flex-wrap:wrap;
+}
+
+.item-action{
+  height:24px;
+  padding:0 9px;
+  border-radius:999px;
+  background:#f1f2f6;
+  color:#111;
+  font-size:10px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.item-action:active{
+  transform:scale(.98);
+}
+  
 .tier-title-link{
   height:26px;
   padding:0 10px;
@@ -2359,8 +2382,27 @@ function renderItem(i){
         <div class="inquiry-main">
           <div class="inquiry-title">${productDisplayName(i)||ui('notFilled')}</div>
           <div class="inquiry-attr">${line1}</div>
-          <div class="inquiry-attr">${line2}</div>
-          <div class="qty-line">
+         <div class="inquiry-attr">${line2}</div>
+
+<div class="item-actions">
+  <button
+    class="item-action"
+    type="button"
+    onclick="openEditProductItem('${i.id}')"
+  >
+    ${ui('editConfig')}
+  </button>
+
+  <button
+    class="item-action"
+    type="button"
+    onclick="openItemTierSheet('${i.id}')"
+  >
+    ${ui('viewTierPrice')}
+  </button>
+</div>
+
+<div class="qty-line">
             <div class="mini-stepper">
               <button class="step" onclick="qty('${i.id}',-QTY_STEP)">−</button>
               <input class="qty-edit" type="number" min="${QTY_MIN}" max="${maximumQuantity()}" step="${QTY_STEP}" value="${i.qty}" inputmode="numeric" onchange="setItemQty('${i.id}',this.value)" onkeydown="if(event.key==='Enter')this.blur()">
