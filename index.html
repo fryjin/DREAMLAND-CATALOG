@@ -3402,9 +3402,19 @@ window.addEventListener('appinstalled',()=>{
 });
 document.addEventListener('click',e=>{let w=document.getElementById('langWrap');if(w&&!w.contains(e.target))closeLangSheet()});
 async function bootstrap(){
+  initUnlock();
+
   await loadCatalogData();
-  activeSeries=seriesMeta[defaultSeries]?defaultSeries:(Object.keys(seriesMeta)[0]||'advanced');
+
+  activeSeries=seriesMeta[defaultSeries]
+    ? defaultSeries
+    : (
+        Object.keys(seriesMeta)[0]||
+        'advanced'
+      );
+
   activeProduct=products[0]||null;
+
   applyRuntimeLimits();
   bindCtaReveal();
   bindContactDraft();
@@ -3416,7 +3426,6 @@ async function bootstrap(){
   renderProducts();
   applyI18n();
   badge();
-  initUnlock();
   initPwaExperience();
 }
 bootstrap().catch(error=>{
