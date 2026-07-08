@@ -226,6 +226,29 @@ window.imgMiss=function(img){
   box-shadow:0 -18px 46px rgba(0,0,0,.18);
 }
 
+.item-actions{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-top:7px;
+  flex-wrap:wrap;
+}
+
+.item-action{
+  height:24px;
+  padding:0 9px;
+  border-radius:999px;
+  background:#f1f2f6;
+  color:#111;
+  font-size:10px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.item-action:active{
+  transform:scale(.98);
+}
+  
 .tier-title-link{
   height:26px;
   padding:0 10px;
@@ -539,7 +562,7 @@ function web3formsReady(){
 const CATALOG_BATCH_SIZE=5;
 const QTY_STEP=1;
 const QTY_MIN=1;
-let activeScreen='home',activeSeries='advanced',activeProduct=null,config={},detailSlideIndex=0,detailTimer=null,catalogRenderToken=0,catalogBatchTimer=null,catalogList=[],catalogCursor=0,catalogLoading=false;let state=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{"version":2,"items":[],"contact":{}}');if(state.version!==2)state={version:2,items:[],contact:{}};
+let activeScreen='home',activeSeries='advanced',activeProduct=null,config={},detailSlideIndex=0,detailTimer=null,catalogRenderToken=0,catalogBatchTimer=null,catalogList=[],catalogCursor=0,catalogLoading=false,editingItemId='';let state=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{"version":2,"items":[],"contact":{}}');if(state.version!==2)state={version:2,items:[],contact:{}};
 
   if(!state.items.length&&pendingInquiryId){
 pendingInquiryId='';
@@ -743,16 +766,14 @@ function configPricingSeries(){
   );
 }
 
-function tierMarketingText(){
-  if(!activeProduct){
+function tierMarketingText(
+  seriesKey=configPricingSeries(),
+  size=config.size,
+  quantity=configPricingQty()
+){
+  if(!seriesKey){
     return '';
   }
-
-  const seriesKey=
-    configPricingSeries();
-
-  const quantity=
-    configPricingQty();
 
   const nextTier=
     nextTierFor(
@@ -775,7 +796,7 @@ function tierMarketingText(){
   const nextPrice=
     tierUnitCny(
       seriesKey,
-      config.size,
+      size,
       Number(nextTier.minQty)
     );
 
@@ -794,17 +815,18 @@ function tierSheetTitle(){
   );
 }
 
-function tierTableHtml(){
-  const seriesKey=
-    configPricingSeries();
+function tierTableHtml(
+  seriesKey=configPricingSeries(),
+  quantity=configPricingQty()
+){
+  
 
   const tiers=
     seriesMeta[seriesKey]
       ?.priceTiers||
     [];
 
-  const quantity=
-    configPricingQty();
+
 
   const currentIndex=
     currentTierIndex(
@@ -885,6 +907,77 @@ function openTierSheet(){
   layer.classList.add('show');
 }
 
+function itemTierSheetTitle(item){
+  if(item?.series==='holiday'){
+    return `${seriesLabel(item.series)} · ${seriesLabel(pricingSeriesFor(item))}`;
+  }
+
+  return seriesLabel(item?.series);
+}
+
+function openItemTierSheet(id){
+  const item=
+    state.items.find(
+      row=>
+        row.id===id&&
+        row.type==='product'
+    );
+
+  if(!item)return;
+
+  const layer=
+    document.getElementById(
+      'tierLayer'
+    );
+
+  const sheet=
+    document.getElementById(
+      'tierSheet'
+    );
+
+  if(!layer||!sheet){
+    return;
+  }
+
+  const seriesKey=
+    pricingSeriesFor(item);
+
+  const quantity=
+    pricingGroupQty(item);
+
+  sheet.innerHTML=`
+    <div class="tier-sheet-head">
+      <div>
+        <h3>${ui('tierPriceTable')}</h3>
+        <p>${itemTierSheetTitle(item)} · ${item.size} · ${ui('tierPriceDesc')}</p>
+      </div>
+
+      <button
+        class="tier-close"
+        type="button"
+        onclick="closeTierSheet()"
+      >
+        ×
+      </button>
+    </div>
+
+    ${tierTableHtml(
+      seriesKey,
+      quantity
+    )}
+
+    <div class="tier-tip">
+      ${tierMarketingText(
+        seriesKey,
+        item.size,
+        quantity
+      )}
+    </div>
+  `;
+
+  layer.classList.add('show');
+}
+  
 function closeTierSheet(){
   document
     .getElementById('tierLayer')
@@ -992,28 +1085,9 @@ function configPricingItem(){
 }
 
 function configPricingQty(){
-  const currentItem=
-    configPricingItem();
-
-  const key=
-    pricingGroupKey(currentItem);
-
-  const existingQty=
-    state.items
-      .filter(
-        item=>
-          item.type==='product'&&
-          pricingGroupKey(item)===key
-      )
-      .reduce(
-        (total,item)=>
-          total+(Number(item.qty)||0),
-        0
-      );
-
-  return (
-    existingQty+
-    (Number(config.qty)||0)
+  return normalizeQty(
+    Number(config.qty)||QTY_MIN,
+    QTY_MIN
   );
 }
 
@@ -1544,6 +1618,7 @@ function itemScentLabel(item){
   return scent;
 }
 function openDetail(id){
+  editingItemId='';
   cancelCatalogRender();
 
   activeProduct=
@@ -1932,6 +2007,77 @@ function changeDetailQty(delta){
 
   renderDetail();
 }
+
+function productIdentityKey(item){
+  return [
+    item.type||'product',
+    item.productId||'',
+    item.series||'',
+    item.scentSeries||'',
+    item.size||'',
+    item.scent||'',
+    item.pattern||'',
+    item.pack||''
+  ].join('|');
+}
+
+function addOrMergeProductItem(item){
+  const key=
+    productIdentityKey(item);
+
+  const existing=
+    state.items.find(row=>
+      row.type==='product'&&
+      productIdentityKey(row)===key
+    );
+
+  if(existing){
+    existing.qty=
+      normalizeQty(
+        (Number(existing.qty)||0)+
+        (Number(item.qty)||0),
+        QTY_MIN
+      );
+
+    return existing;
+  }
+
+  state.items.push(item);
+
+  return item;
+}
+
+function mergeDuplicateProductItems(){
+  const map={};
+  const merged=[];
+
+  state.items.forEach(item=>{
+    if(item.type!=='product'){
+      merged.push(item);
+      return;
+    }
+
+    const key=
+      productIdentityKey(item);
+
+    if(map[key]){
+      map[key].qty=
+        normalizeQty(
+          (Number(map[key].qty)||0)+
+          (Number(item.qty)||0),
+          QTY_MIN
+        );
+
+      return;
+    }
+
+    map[key]=item;
+    merged.push(item);
+  });
+
+  state.items=merged;
+}
+  
 function quickAdd(id){
   const product=
     products.find(
@@ -1991,7 +2137,7 @@ const size=
       scentSeries;
   }
 
-  state.items.push(item);
+  addOrMergeProductItem(item);
 
   save();
   toast(
@@ -2001,7 +2147,7 @@ const size=
 function addConfiguredProduct(){
   if(!activeProduct)return;
 
- const min=
+  const min=
     configMoq();
 
   config.qty=
@@ -2030,16 +2176,120 @@ function addConfiguredProduct(){
     delete item.scentSeries;
   }
 
-  state.items.push(item);
+  if(editingItemId){
+    const target=
+      state.items.find(
+        row=>row.id===editingItemId
+      );
 
+    if(target){
+      Object.assign(
+        target,
+        item,
+        {
+          id:editingItemId
+        }
+      );
+
+      editingItemId='';
+
+      mergeDuplicateProductItems();
+      save();
+      toast(ui('updatedInquiry'));
+      go('inquiry');
+
+      return;
+    }
+  }
+
+  addOrMergeProductItem(item);
+  mergeDuplicateProductItems();
   save();
+
   toast(
     toastText('addedInquiry')
   );
-
-  go('inquiry');
 }
-function renderInquiry(){if(!state.items.length){inquiryList.innerHTML=`<div class="empty"><div class="empty-icon">◒</div><h3>${ui('emptyTitle')}</h3><p style="margin-top:8px;font-size:12px;line-height:1.5">${ui('emptyText')}</p><div class="btn-row" style="margin-top:20px;width:100%"><button class="btn btn-primary full" onclick="go('catalog')">${ui('goProducts')}</button><button class="btn btn-secondary full" onclick="go('custom')">${ui('makeCustom')}</button></div></div>`;summaryBox.innerHTML='';return}let groups={};state.items.forEach(i=>{let k=i.type==='custom'?'custom':i.series;(groups[k]??=[]).push(i)});inquiryList.innerHTML=Object.entries(groups).map(([k,items])=>`<div class="group-title"><span>${k==='custom'?ui('customInquiry'):seriesLabel(k)}</span><span>${k==='custom'?items.length+' '+ui('records'):seriesQty(k)+' '+qtyUnit()}</span></div>`+items.map(renderItem).join('')).join('');summaryBox.innerHTML=`<div class="summary"><div class="summary-row"><span class="summary-label">${ui('inquiryContent')}</span><span class="summary-value">${state.items.length} ${ui('items')}</span></div><div class="summary-row"><span class="summary-label">${ui('tierPrice')}</span><span class="summary-value">${ui('tierRule')}</span></div><div class="summary-row"><span class="summary-label">${ui('productEstimate')}</span><span class="amount">${money(total())}</span></div><p class="note">${ui('summaryNote')}</p></div>`;swipes();badge()}
+
+function openEditProductItem(id){
+  const item=
+    state.items.find(
+      row=>
+        row.id===id&&
+        row.type==='product'
+    );
+
+  if(!item)return;
+
+  const product=
+    products.find(
+      row=>row.id===item.productId
+    );
+
+  if(!product)return;
+
+  activeProduct=product;
+  editingItemId=id;
+
+  config={
+    size:
+      item.size||
+      defaultProductSize(product),
+
+    scentSeries:
+      item.scentSeries||
+      initialScentSeries(product),
+
+    scent:
+      item.scent||'',
+
+    pattern:
+      item.pattern||
+      patternsBySize[
+        item.size||
+        defaultProductSize(product)
+      ]?.[0]||
+      '',
+
+    pack:
+      item.pack||
+      defaultPack(product.series),
+
+    qty:
+      normalizeQty(
+        item.qty,
+        QTY_MIN
+      )
+  };
+
+  if(!config.scent){
+    const scents=
+      product.series==='holiday'
+        ? (
+            seriesMeta[
+              config.scentSeries
+            ]?.scents||
+            []
+          )
+        : (
+            seriesMeta[
+              product.series
+            ]?.scents||
+            []
+          );
+
+    config.scent=
+      scents[0]||
+      '';
+  }
+
+  detailSlideIndex=0;
+
+  renderDetail();
+  go('detail');
+}
+  
+function renderInquiry(){mergeDuplicateProductItems();save();if(!state.items.length){inquiryList.innerHTML=`<div class="empty"><div class="empty-icon">◒</div><h3>${ui('emptyTitle')}</h3><p style="margin-top:8px;font-size:12px;line-height:1.5">${ui('emptyText')}</p><div class="btn-row" style="margin-top:20px;width:100%"><button class="btn btn-primary full" onclick="go('catalog')">${ui('goProducts')}</button><button class="btn btn-secondary full" onclick="go('custom')">${ui('makeCustom')}</button></div></div>`;summaryBox.innerHTML='';return}let groups={};state.items.forEach(i=>{let k=i.type==='custom'?'custom':i.series;(groups[k]??=[]).push(i)});inquiryList.innerHTML=Object.entries(groups).map(([k,items])=>`<div class="group-title"><span>${k==='custom'?ui('customInquiry'):seriesLabel(k)}</span><span>${k==='custom'?items.length+' '+ui('records'):seriesQty(k)+' '+qtyUnit()}</span></div>`+items.map(renderItem).join('')).join('');summaryBox.innerHTML=`<div class="summary"><div class="summary-row"><span class="summary-label">${ui('inquiryContent')}</span><span class="summary-value">${state.items.length} ${ui('items')}</span></div><div class="summary-row"><span class="summary-label">${ui('tierPrice')}</span><span class="summary-value">${ui('tierRule')}</span></div><div class="summary-row"><span class="summary-label">${ui('productEstimate')}</span><span class="amount">${money(total())}</span></div><p class="note">${ui('summaryNote')}</p></div>`;swipes();badge()}
 function renderItem(i){
   const trashSvg = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M5 7h14"/><path d="M8 7l1 12h6l1-12"/><path d="M10 11v5"/><path d="M14 11v5"/></svg>`;
   const delBtn = `<button class="delete-action" type="button" aria-label="删除" onclick="del('${i.id}')">${trashSvg}</button>`;
@@ -2055,7 +2305,26 @@ function renderItem(i){
             <div class="inquiry-title">${title}</div>
             <div class="inquiry-attr">${line1}</div>
             <div class="inquiry-attr">${line2}</div>
-            <div class="qty-line"><div class="inquiry-attr">${ui('quantity')}：${i.qty || ui('toConfirm')} ${qtyUnit()}</div></div>
+
+<div class="item-actions">
+  <button
+    class="item-action"
+    type="button"
+    onclick="openEditProductItem('${i.id}')"
+  >
+    ${ui('editConfig')}
+  </button>
+
+  <button
+    class="item-action"
+    type="button"
+    onclick="openItemTierSheet('${i.id}')"
+  >
+    ${ui('viewTierPrice')}
+  </button>
+</div>
+
+<div class="qty-line"><div class="inquiry-attr">${ui('quantity')}：${i.qty || ui('toConfirm')} ${qtyUnit()}</div></div>
           </div>
           <div class="inquiry-side">
             ${delBtn}
