@@ -229,18 +229,22 @@ window.imgMiss=function(img){
 .item-actions{
   display:flex;
   align-items:center;
-  gap:6px;
-  margin-top:7px;
+  gap:5px;
   flex-wrap:wrap;
 }
 
+.item-actions-side{
+  justify-content:flex-end;
+  margin-top:6px;
+}
+
 .item-action{
-  height:24px;
-  padding:0 9px;
+  height:22px;
+  padding:0 8px;
   border-radius:999px;
-  background:#f1f2f6;
-  color:#111;
-  font-size:10px;
+  background:#f3f3f5;
+  color:#666a73;
+  font-size:9px;
   font-weight:900;
   white-space:nowrap;
 }
@@ -248,29 +252,7 @@ window.imgMiss=function(img){
 .item-action:active{
   transform:scale(.98);
 }
-  
-.item-actions{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  margin-top:7px;
-  flex-wrap:wrap;
-}
 
-.item-action{
-  height:24px;
-  padding:0 9px;
-  border-radius:999px;
-  background:#f1f2f6;
-  color:#111;
-  font-size:10px;
-  font-weight:900;
-  white-space:nowrap;
-}
-
-.item-action:active{
-  transform:scale(.98);
-}
   
 .tier-title-link{
   height:26px;
@@ -2329,32 +2311,34 @@ function renderItem(i){
             <div class="inquiry-attr">${line1}</div>
             <div class="inquiry-attr">${line2}</div>
 
-<div class="item-actions">
-  <button
-    class="item-action"
-    type="button"
-    onclick="openEditProductItem('${i.id}')"
-  >
-    ${ui('editConfig')}
-  </button>
 
-  <button
-    class="item-action"
-    type="button"
-    onclick="openItemTierSheet('${i.id}')"
-  >
-    ${ui('viewTierPrice')}
-  </button>
-</div>
 
 <div class="qty-line"><div class="inquiry-attr">${ui('quantity')}：${i.qty || ui('toConfirm')} ${qtyUnit()}</div></div>
           </div>
           <div class="inquiry-side">
             ${delBtn}
             <div class="price-stack">
-              <div class="price-unit">${i.budget || ui('budgetPending')}</div>
-              <div class="price-total">${ui('quotePending')}</div>
-            </div>
+  <div class="price-unit">${money(u)}${currencyUnit()}</div>
+  <div class="price-total">${money(itemSubtotal(i))}</div>
+
+  <div class="item-actions item-actions-side">
+    <button
+      class="item-action"
+      type="button"
+      onclick="openEditProductItem('${i.id}')"
+    >
+      ${ui('editConfig')}
+    </button>
+
+    <button
+      class="item-action"
+      type="button"
+      onclick="openItemTierSheet('${i.id}')"
+    >
+      ${ui('tierShort')}
+    </button>
+  </div>
+</div>
           </div>
         </div>
       </div>
