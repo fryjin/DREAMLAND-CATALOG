@@ -226,6 +226,17 @@ window.imgMiss=function(img){
   box-shadow:0 -18px 46px rgba(0,0,0,.18);
 }
 
+.tier-title-link{
+  height:26px;
+  padding:0 10px;
+  border-radius:999px;
+  background:#f1f2f6;
+  color:#111;
+  font-size:10px;
+  font-weight:900;
+  white-space:nowrap;
+}
+  
 .tier-sheet-head{
   display:flex;
   align-items:flex-start;
@@ -260,20 +271,22 @@ window.imgMiss=function(img){
 
 .tier-table{
   width:100%;
+  table-layout:fixed;
   border-collapse:separate;
   border-spacing:0;
   overflow:hidden;
   border-radius:16px;
   background:#f6f6f8;
-  font-size:11px;
+  font-size:10px;
 }
 
 .tier-table th,
 .tier-table td{
-  padding:10px 8px;
+  padding:9px 5px;
   text-align:center;
   font-weight:800;
   border-bottom:1px solid rgba(0,0,0,.05);
+  white-space:nowrap;
 }
 
 .tier-table th{
@@ -281,9 +294,11 @@ window.imgMiss=function(img){
   background:#eeeeF2;
 }
 
+
 .tier-table td:first-child,
 .tier-table th:first-child{
   text-align:left;
+  width:26%;
 }
 
 .tier-table tr:last-child td{
@@ -838,8 +853,7 @@ function tierTableHtml(){
     return `<p>${ui('tierUnavailable')}</p>`;
   }
 
- return `
-  <div class="tier-table-wrap">
+  return `
     <table class="tier-table">
       <thead>
         <tr>
@@ -864,12 +878,7 @@ function tierTableHtml(){
         `).join('')}
       </tbody>
     </table>
-  </div>
-
-   <div class="tier-swipe-hint">
-    左右滑动查看完整阶梯价格
-  </div>
-`;
+  `;
 }
 
 function openTierSheet(){
@@ -1728,9 +1737,16 @@ function bindHorizontalOptions() {
     `
       <div class="config-block">
         <div class="config-title">
-          <h3>${ui('quantity')}</h3>
-          <span>${ui('submitMoqCheck')}</span>
-        </div>
+  <h3>${ui('quantity')}</h3>
+
+  <button
+    class="tier-title-link"
+    type="button"
+    onclick="openTierSheet()"
+  >
+    ${ui('viewTierPrice')}
+  </button>
+</div>
 
         <div class="qty-bar">
           <div>
@@ -1738,18 +1754,8 @@ function bindHorizontalOptions() {
   ${ui('currentUnitPrice')}
 </div>
 
-<div class="amount-row">
-  <div class="amount">
-    ${money(configUnit())}
-  </div>
-
-  <button
-    class="tier-link tier-link-soft"
-    type="button"
-    onclick="openTierSheet()"
-  >
-    ${ui('viewTierPrice')}
-  </button>
+<div class="amount">
+  ${money(configUnit())}
 </div>
 
 <div class="pack-note">
@@ -1889,17 +1895,17 @@ function setCfg(key,value){
       '';
   }
 
-  if(key==='size'){
-    config.pattern=
-      patternsBySize[value]?.[0]||
-      '';
+ if(key==='size'){
+  config.pattern=
+    patternsBySize[value]?.[0]||
+    '';
 
-    config.qty=
-      normalizeQty(
-        config.qty,
-        configMoq()
-      );
-  }
+  config.qty=
+    normalizeQty(
+      config.qty,
+      QTY_MIN
+    );
+}
 
   if(
     key==='pack'&&
