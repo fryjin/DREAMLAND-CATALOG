@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "web3formsSubmitUrl": "https://api.web3forms.com/submit",
-"web3formsAccessKey": "e364fde5-21d8-44e7-b3d9-18993e0ad643",
+  "web3formsAccessKey": "e364fde5-21d8-44e7-b3d9-18993e0ad643",
   "hcaptcha": {
     "enabled": true,
     "mode": "adaptive-risk",
@@ -22,7 +22,7 @@
     "productImageStrategy": "network-first",
     "connectivityProbeTimeoutMs": 4500,
     "connectivityProbeCacheMs": 12000,
-    "connectivityProbeTarget": "web3forms",
+    "connectivityProbeTarget": "risk-assessment",
     "installFallbackDelayMs": 15000,
     "installFallbackMode": "browser-menu-guide"
   },
