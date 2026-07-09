@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "defaultSeries": "advanced",
   "seriesOrder": [
     "advanced",
@@ -11,7 +11,7 @@
     "S": "10*13cm",
     "M": "11*17cm",
     "L": "14*21cm",
-    "XL": "14*16cm"
+    "XL": "14*26cm"
   },
   "patternsBySize": {
     "S": [
@@ -53,28 +53,82 @@
         "en": "Advanced",
         "ko": "어드밴스"
       },
-      "prices": [
-        4.6,
-        4.2,
-        3.9
+      "moqBySize": {
+        "S": 36,
+        "M": 24,
+        "L": 18,
+        "XL": 18
+      },
+      "priceTiers": [
+        {
+          "minQty": 1,
+          "maxQty": 99,
+          "pricesCny": {
+            "S": 158,
+            "M": 188,
+            "L": 208,
+            "XL": 228
+          }
+        },
+        {
+          "minQty": 100,
+          "maxQty": 299,
+          "pricesCny": {
+            "S": 148,
+            "M": 178,
+            "L": 198,
+            "XL": 218
+          }
+        },
+        {
+          "minQty": 300,
+          "maxQty": 499,
+          "pricesCny": {
+            "S": 138,
+            "M": 168,
+            "L": 188,
+            "XL": 208
+          }
+        },
+        {
+          "minQty": 500,
+          "maxQty": 999,
+          "pricesCny": {
+            "S": 128,
+            "M": 158,
+            "L": 178,
+            "XL": 198
+          }
+        },
+        {
+          "minQty": 1000,
+          "maxQty": null,
+          "pricesCny": {
+            "S": 118,
+            "M": 148,
+            "L": 168,
+            "XL": 188
+          }
+        }
       ],
       "scents": [
         "水生麝香",
         "东方花香",
         "辛辣木质"
       ],
-      "packaging": {
-        "options": [
-          "强护包装",
-          "礼盒包装"
-        ],
-        "default": "强护包装",
-        "surchargesCny": {
-          "礼盒包装": 40
-        }
-      },
-      "defaultMoq": 50,
-      "moqStatus": "placeholder"
+     "packaging": {
+  "options": [
+    "批发包装",
+    "精品包装",
+    "品牌包装"
+  ],
+  "default": "批发包装",
+  "surchargesCny": {
+    "批发包装": 0,
+    "精品包装": 10,
+    "品牌包装": 50
+  }
+}
     },
     "masterpiece": {
       "id": "masterpiece",
@@ -85,10 +139,63 @@
         "en": "Masterpiece",
         "ko": "마스터피스"
       },
-      "prices": [
-        6.8,
-        6.2,
-        5.7
+      "moqBySize": {
+        "S": 36,
+        "M": 24,
+        "L": 18,
+        "XL": 18
+      },
+      "priceTiers": [
+        {
+          "minQty": 1,
+          "maxQty": 99,
+          "pricesCny": {
+            "S": 258,
+            "M": 338,
+            "L": 468,
+            "XL": 548
+          }
+        },
+        {
+          "minQty": 100,
+          "maxQty": 299,
+          "pricesCny": {
+            "S": 248,
+            "M": 328,
+            "L": 448,
+            "XL": 518
+          }
+        },
+        {
+          "minQty": 300,
+          "maxQty": 499,
+          "pricesCny": {
+            "S": 238,
+            "M": 308,
+            "L": 428,
+            "XL": 498
+          }
+        },
+        {
+          "minQty": 500,
+          "maxQty": 999,
+          "pricesCny": {
+            "S": 228,
+            "M": 298,
+            "L": 408,
+            "XL": 468
+          }
+        },
+        {
+          "minQty": 1000,
+          "maxQty": null,
+          "pricesCny": {
+            "S": 218,
+            "M": 288,
+            "L": 388,
+            "XL": 448
+          }
+        }
       ],
       "scents": [
         "玫瑰木",
@@ -102,15 +209,19 @@
         "海盐鼠尾草",
         "桂花木质"
       ],
-      "packaging": {
-        "options": [
-          "礼盒包装"
-        ],
-        "default": "礼盒包装",
-        "surchargesCny": {}
-      },
-      "defaultMoq": 50,
-      "moqStatus": "placeholder"
+     "packaging": {
+  "options": [
+    "批发包装",
+    "精品包装",
+    "品牌包装"
+  ],
+  "default": "批发包装",
+  "surchargesCny": {
+    "批发包装": 0,
+    "精品包装": 10,
+    "品牌包装": 50
+  }
+}
     },
     "holiday": {
       "id": "holiday",
@@ -121,31 +232,31 @@
         "en": "Holiday",
         "ko": "시즌"
       },
-      "prices": [
-        5.9,
-        5.4,
-        5
+      "pricingMode": "selectedScentSeries",
+      "scentSeriesOptions": [
+        "classic",
+        "advanced",
+        "masterpiece"
       ],
-      "scents": [
-        "节日甜香",
-        "松木暖香",
-        "莓果香料",
-        "可按香精品牌确认"
-      ],
-      "packaging": {
-        "options": [
-          "防震包装",
-          "强护包装",
-          "礼盒包装"
-        ],
-        "default": "防震包装",
-        "surchargesCny": {
-          "强护包装": 10,
-          "礼盒包装": 50
-        }
+      "moqBySize": {
+        "S": 36,
+        "M": 24,
+        "L": 18,
+        "XL": 18
       },
-      "defaultMoq": 100,
-      "moqStatus": "placeholder"
+     "packaging": {
+  "options": [
+    "批发包装",
+    "精品包装",
+    "品牌包装"
+  ],
+  "default": "批发包装",
+  "surchargesCny": {
+    "批发包装": 0,
+    "精品包装": 10,
+    "品牌包装": 50
+  }
+}
     },
     "classic": {
       "id": "classic",
@@ -156,10 +267,23 @@
         "en": "Classic",
         "ko": "클래식"
       },
-      "prices": [
-        3.9,
-        3.6,
-        3.3
+      "moqBySize": {
+        "S": 36,
+        "M": 24,
+        "L": 18,
+        "XL": 18
+      },
+      "priceTiers": [
+        {
+          "minQty": 1,
+          "maxQty": null,
+          "pricesCny": {
+            "S": 50,
+            "M": 70,
+            "L": 90,
+            "XL": 110
+          }
+        }
       ],
       "scents": [
         "无香",
@@ -167,19 +291,18 @@
         "基础木质香"
       ],
       "packaging": {
-        "options": [
-          "防震包装",
-          "强护包装",
-          "礼盒包装"
-        ],
-        "default": "防震包装",
-        "surchargesCny": {
-          "强护包装": 10,
-          "礼盒包装": 50
-        }
-      },
-      "defaultMoq": 100,
-      "moqStatus": "placeholder"
+  "options": [
+    "批发包装",
+    "精品包装",
+    "品牌包装"
+  ],
+  "default": "批发包装",
+  "surchargesCny": {
+    "批发包装": 0,
+    "精品包装": 10,
+    "品牌包装": 50
+  }
+}
     }
   }
 }
