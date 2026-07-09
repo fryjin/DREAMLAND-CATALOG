@@ -112,6 +112,46 @@ window.imgMiss=function(img){
 .config-choice-row{display:flex;align-items:center;gap:10px;min-height:59px}
 .config-choice-row .option-grid{flex:1;min-width:0}
 .config-choice-row .option-thumb{margin-top:0}
+  .config-choice-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-height:59px;
+  overflow:hidden;
+}
+
+.config-choice-row .option-grid{
+  flex:1 1 auto;
+  min-width:0;
+}
+
+.option-grid-scroll{
+  flex-wrap:nowrap!important;
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  justify-content:flex-start;
+  align-items:center;
+  align-content:center;
+  min-height:59px;
+  padding-bottom:0;
+}
+
+.option-grid-scroll::-webkit-scrollbar{
+  display:none;
+}
+
+.option-grid-scroll .option{
+  flex:0 0 auto;
+  white-space:nowrap;
+}
+
+body[data-lang="en"] .option-grid-scroll .option,
+body[data-lang="ko"] .option-grid-scroll .option{
+  font-size:11px;
+  padding:0 12px;
+}
 .option-thumb{width:44px;height:59px;border:0;border-radius:13px;background:#f1f1f4;overflow:hidden;position:relative;box-shadow:0 8px 18px rgba(23,23,23,.07);flex:0 0 auto}
 .option-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .option-thumb img.is-missing{display:none}
@@ -1362,6 +1402,8 @@ function setSelectOptions(id,entries){
   if([...el.options].some(o=>o.value===old))el.value=old;
 }
 function applyI18n(){
+  document.body.dataset.lang=currentLang;
+  document.documentElement.lang=currentLang;
   document.title=ui('docTitle');
   setText('[data-screen="home"] .hero-copy h1','heroTitle');setText('[data-screen="home"] .hero-copy p','heroCopy');setText('.thumb-label','startDream');setText('.unlock-hint','slideEnter');
   setText('[data-screen="catalog"] .page-title','catalogTitle');setText('[data-screen="catalog"] .page-sub','catalogSub');
@@ -1726,7 +1768,7 @@ function bindHorizontalOptions() {
 }
 
   function renderDetail(
-  scentScrollLeft=null
+  scrollState=null
 ){
   renderDetailMedia();
 
@@ -1854,44 +1896,56 @@ function bindHorizontalOptions() {
     bindHorizontalOptions();
 
     if(
-      Number.isFinite(
-        scentScrollLeft
-      )
-    ){
-      const scentScroller=
-        configCard.querySelector(
-          '.option-grid-scroll'
-        );
+  scrollState&&
+  typeof scrollState==='object'&&
+  Number.isFinite(scrollState.left)
+){
+  const scroller=
+    configCard.querySelector(
+      `[data-config-key="${scrollState.key}"] .option-grid-scroll`
+    );
 
-      if(scentScroller){
-        scentScroller.scrollLeft=
-          scentScrollLeft;
-      }
-    }
+  if(scroller){
+    scroller.scrollLeft=
+      scrollState.left;
+  }
+}
   });
 }
     
 function block(t, k, opts, h) {
-  const isScroll=
-  k==='scent'&&
-  opts.length>4;
+ const optionLabel=(value)=>
+  k==='scentSeries'
+    ? seriesLabel(value)
+    : choiceLabel(value);
+
+const shouldScroll=
+  k!=='size'&&
+  (
+    opts.length>3||
+    currentLang!=='zh'||
+    opts.some(
+      value=>
+        String(optionLabel(value)).length>=7
+    )
+  );
 
   const tip =
-    k === 'size'
-      ? sizeDims[config.size]
-      : k === 'scent'
-        ? scentTipText(isScroll, h)
-        : h;
+  k === 'size'
+    ? sizeDims[config.size]
+    : k === 'scent'
+      ? scentTipText(shouldScroll, h)
+      : h;
 
-  const gridClass = isScroll
-    ? 'option-grid option-grid-scroll'
-    : 'option-grid';
+  const gridClass = shouldScroll
+  ? 'option-grid option-grid-scroll'
+  : 'option-grid';
 
   const preview = optionPreview(k);
   const scentRow = scentInfo(k);
 
   return `
-    <div class="config-block">
+   <div class="config-block" data-config-key="${k}">
       <div class="config-title">
         <h3>${t}</h3>
         <div class="title-side">
@@ -1930,17 +1984,18 @@ function block(t, k, opts, h) {
   `;
 }
 function setCfg(key,value){
-  const scentScroller=
-    key==='scent'
-      ? configCard.querySelector(
-          '.option-grid-scroll'
-        )
-      : null;
+ const optionScroller=
+  configCard.querySelector(
+    `[data-config-key="${key}"] .option-grid-scroll`
+  );
 
-  const scentScrollLeft=
-    scentScroller
-      ? scentScroller.scrollLeft
-      : null;
+const optionScrollState=
+  optionScroller
+    ? {
+        key,
+        left:optionScroller.scrollLeft
+      }
+    : null;
 
   config[key]=value;
 
@@ -1975,9 +2030,9 @@ function setCfg(key,value){
       );
   }
 
-  renderDetail(
-    scentScrollLeft
-  );
+ renderDetail(
+  optionScrollState
+);
 }
 function setDetailQty(value){
   const min=QTY_MIN;
