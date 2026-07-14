@@ -533,8 +533,92 @@ let hcaptchaRenderToken=0;
 let submittingInquiry=false;
 let lastSubmitAttemptAt=0;
 
-function localCover(id){return`./images/products/${id}/cover.jpg`}
-function localDetails(id){return[1,2,3,4,5].map(n=>`./images/products/${id}/detail-${n}.jpg`)}
+const DETAIL_IMAGE_FIELDS = [
+  'angle_image',
+  'detail_image',
+  'size_s_image',
+  'size_m_image',
+  'size_l_image',
+  'size_xl_image',
+  'packaging_image',
+  'scene_image_1',
+  'scene_image_2',
+  'scene_image_3',
+  'scene_image_4'
+];
+
+function cleanImagePath(value){
+  return String(value || '').trim();
+}
+
+function uniqueImages(list){
+  const seen = new Set();
+
+  return list
+    .map(cleanImagePath)
+    .filter(src => {
+      if(!src || seen.has(src)) return false;
+      seen.add(src);
+      return true;
+    });
+}
+
+function localCover(id){
+  return `./images/products/${id}/cover.webp`;
+}
+
+function localDetailImages(id){
+  return [
+    `./images/products/${id}/angle.webp`,
+    `./images/products/${id}/detail.webp`,
+    `./images/products/${id}/size-s.webp`,
+    `./images/products/${id}/size-m.webp`,
+    `./images/products/${id}/size-l.webp`,
+    `./images/products/${id}/size-xl.webp`,
+    `./images/products/${id}/packaging.webp`,
+    `./images/products/${id}/scene-1.webp`,
+    `./images/products/${id}/scene-2.webp`,
+    `./images/products/${id}/scene-3.webp`,
+    `./images/products/${id}/scene-4.webp`
+  ];
+}
+
+function productCover(product){
+  if(!product) return '';
+
+  return cleanImagePath(
+    product.cover_image ||
+    product.coverImage ||
+    product.cover
+  ) || localCover(product.id);
+}
+
+function productDetailImages(product){
+  if(!product) return [];
+
+  const newDetailImages = DETAIL_IMAGE_FIELDS.map(
+    field => product[field]
+  );
+
+  const legacyImages = Array.isArray(product.images)
+    ? product.images
+    : [];
+
+  return uniqueImages([
+    ...newDetailImages,
+    ...legacyImages
+  ]);
+}
+
+function productCarouselImages(product){
+  if(!product) return [];
+
+  return uniqueImages([
+    productCover(product),
+    ...productDetailImages(product),
+    ...localDetailImages(product.id)
+  ]);
+}
 
 async function loadCatalogData(){
   const [seriesResponse,productsResponse,i18nResponse,configResponse]=await Promise.all([
@@ -1518,7 +1602,7 @@ function renderProductCard(
 
         <img
           class="product-cover"
-          src="${product.cover}"
+          src="${productCover(product)}"
           alt="${productDisplayName(product)}"
           loading="lazy"
           decoding="async"
@@ -1734,11 +1818,11 @@ function openDetail(id){
   renderDetail();
   go('detail');
 }
-function renderDetailMedia(){let imgs=activeProduct.images&&activeProduct.images.length?activeProduct.images:localDetails(activeProduct.id);detailMedia.className='detail-media '+activeProduct.color;detailMedia.innerHTML=`<div class="product-img ${activeProduct.color}"></div><div class="detail-slides">${imgs.map((src,i)=>`<div class="detail-slide ${i===detailSlideIndex?'active':''}"><img src="${src}" alt="${productDisplayName(activeProduct)} ${i+1}" onerror="imgMiss(this)"></div>`).join('')}</div><button class="carousel-btn prev" onclick="event.stopPropagation();changeDetailSlide(-1)"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><button class="carousel-btn next" onclick="event.stopPropagation();changeDetailSlide(1)"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button><div class="carousel-dots">${imgs.map((_,i)=>`<button class="carousel-dot ${i===detailSlideIndex?'active':''}" onclick="event.stopPropagation();setDetailSlide(${i})"></button>`).join('')}</div><div class="detail-titlebox"><h2>${productDisplayName(activeProduct)}</h2><p>${productDesc(activeProduct)}</p></div>`;startDetailCarousel()}
+function renderDetailMedia(){let imgs=productCarouselImages(activeProduct);detailMedia.className='detail-media '+activeProduct.color;detailMedia.innerHTML=`<div class="product-img ${activeProduct.color}"></div><div class="detail-slides">${imgs.map((src,i)=>`<div class="detail-slide ${i===detailSlideIndex?'active':''}"><img src="${src}" alt="${productDisplayName(activeProduct)} ${i+1}" onerror="imgMiss(this)"></div>`).join('')}</div><button class="carousel-btn prev" onclick="event.stopPropagation();changeDetailSlide(-1)"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><button class="carousel-btn next" onclick="event.stopPropagation();changeDetailSlide(1)"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button><div class="carousel-dots">${imgs.map((_,i)=>`<button class="carousel-dot ${i===detailSlideIndex?'active':''}" onclick="event.stopPropagation();setDetailSlide(${i})"></button>`).join('')}</div><div class="detail-titlebox"><h2>${productDisplayName(activeProduct)}</h2><p>${productDesc(activeProduct)}</p></div>`;startDetailCarousel()}
 function updateDetailSlide(){let slides=detailMedia.querySelectorAll('.detail-slide'),dots=detailMedia.querySelectorAll('.carousel-dot');slides.forEach((s,i)=>s.classList.toggle('active',i===detailSlideIndex));dots.forEach((d,i)=>d.classList.toggle('active',i===detailSlideIndex))}
-function setDetailSlide(i){let imgs=activeProduct.images&&activeProduct.images.length?activeProduct.images:localDetails(activeProduct.id);detailSlideIndex=(i+imgs.length)%imgs.length;updateDetailSlide();startDetailCarousel()}
+function setDetailSlide(i){let imgs=productCarouselImages(activeProduct);detailSlideIndex=(i+imgs.length)%imgs.length;updateDetailSlide();startDetailCarousel()}
 function changeDetailSlide(d,auto=false){setDetailSlide(detailSlideIndex+d);if(auto)return}
-function startDetailCarousel(){if(detailTimer)clearInterval(detailTimer);detailTimer=setInterval(()=>{let imgs=activeProduct.images&&activeProduct.images.length?activeProduct.images:localDetails(activeProduct.id);detailSlideIndex=(detailSlideIndex+1)%imgs.length;updateDetailSlide()},3200)}
+function startDetailCarousel(){if(detailTimer)clearInterval(detailTimer);detailTimer=setInterval(()=>{let imgs=productCarouselImages(activeProduct);detailSlideIndex=(detailSlideIndex+1)%imgs.length;updateDetailSlide()},3200)}
 function bindHorizontalOptions() {
   document.querySelectorAll('.option-grid-scroll').forEach((el) => {
     if (el.dataset.bound === '1') return;
@@ -2191,7 +2275,7 @@ const size=
     names:product.names,
     series:product.series,
     color:product.color,
-    cover:product.cover,
+    cover:productCover(product),
     moq:min,
     size,
     scent:scents[0]||'',
@@ -2237,7 +2321,7 @@ function addConfiguredProduct(){
     names:activeProduct.names,
     series:activeProduct.series,
     color:activeProduct.color,
-    cover:activeProduct.cover,
+    cover:productCover(activeProduct),
     moq:min,
     ...config
   };
