@@ -1851,6 +1851,74 @@ function bindHorizontalOptions() {
   });
 }
 
+function captureDetailOptionScrollState(){
+  if(!configCard){
+    return [];
+  }
+
+  return [...configCard.querySelectorAll('[data-config-key] .option-grid-scroll')]
+    .map(scroller=>{
+      const block=scroller.closest('[data-config-key]');
+
+      if(!block){
+        return null;
+      }
+
+      return {
+        key:block.dataset.configKey,
+        left:scroller.scrollLeft
+      };
+    })
+    .filter(Boolean);
+}
+
+function restoreDetailOptionScrollState(scrollState){
+  const states=Array.isArray(scrollState)
+    ? scrollState
+    : scrollState
+      ? [scrollState]
+      : [];
+
+  states.forEach(state=>{
+    if(!state||!state.key||!Number.isFinite(state.left)){
+      return;
+    }
+
+    const scroller=configCard.querySelector(
+      `[data-config-key="${state.key}"] .option-grid-scroll`
+    );
+
+    if(scroller){
+      scroller.scrollLeft=state.left;
+    }
+  });
+}
+
+function scrollActiveOptionsIntoView(){
+  if(!configCard){
+    return;
+  }
+
+  configCard
+    .querySelectorAll('[data-config-key] .option-grid-scroll')
+    .forEach(scroller=>{
+      const active=scroller.querySelector('.option.active');
+
+      if(!active){
+        return;
+      }
+
+      const scrollerLeft=scroller.scrollLeft;
+      const scrollerRight=scrollerLeft+scroller.clientWidth;
+      const optionLeft=active.offsetLeft;
+      const optionRight=optionLeft+active.offsetWidth;
+
+      if(optionLeft<scrollerLeft||optionRight>scrollerRight){
+        scroller.scrollLeft=Math.max(0,optionLeft-12);
+      }
+    });
+}
+  
   function renderDetail(
   scrollState=null
 ){
@@ -1976,25 +2044,19 @@ function bindHorizontalOptions() {
       </div>
     `;
 
-  requestAnimationFrame(()=>{
-    bindHorizontalOptions();
+ requestAnimationFrame(()=>{
+  bindHorizontalOptions();
 
-    if(
-  scrollState&&
-  typeof scrollState==='object'&&
-  Number.isFinite(scrollState.left)
-){
-  const scroller=
-    configCard.querySelector(
-      `[data-config-key="${scrollState.key}"] .option-grid-scroll`
-    );
+  const hasScrollState=Array.isArray(scrollState)
+    ? scrollState.length>0
+    : Boolean(scrollState);
 
-  if(scroller){
-    scroller.scrollLeft=
-      scrollState.left;
+  restoreDetailOptionScrollState(scrollState);
+
+  if(!hasScrollState){
+    scrollActiveOptionsIntoView();
   }
-}
-  });
+});
 }
     
 function block(t, k, opts, h) {
@@ -2068,18 +2130,7 @@ const shouldScroll=
   `;
 }
 function setCfg(key,value){
- const optionScroller=
-  configCard.querySelector(
-    `[data-config-key="${key}"] .option-grid-scroll`
-  );
-
-const optionScrollState=
-  optionScroller
-    ? {
-        key,
-        left:optionScroller.scrollLeft
-      }
-    : null;
+const optionScrollState=captureDetailOptionScrollState();
 
   config[key]=value;
 
@@ -2119,6 +2170,7 @@ const optionScrollState=
 );
 }
 function setDetailQty(value){
+  const optionScrollState=captureDetailOptionScrollState();
   const min=QTY_MIN;
   const raw=Number(value);
 
@@ -2156,13 +2208,15 @@ function setDetailQty(value){
 }
 
 function changeDetailQty(delta){
+  const optionScrollState=captureDetailOptionScrollState();
+
   config.qty=
     normalizeQty(
       Number(config.qty)+delta,
       QTY_MIN
     );
 
-  renderDetail();
+  renderDetail(optionScrollState);
 }
 
 function productIdentityKey(item){
