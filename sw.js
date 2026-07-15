@@ -1,6 +1,4 @@
-
-
-const CACHE_VERSION = 'dreamland-pwa-v28';
+const CACHE_VERSION = 'dreamland-pwa-v29';
 
 const APP_CACHE = `${CACHE_VERSION}-app`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
@@ -9,9 +7,11 @@ const IMAGE_CACHE = `${CACHE_VERSION}-images`;
 const APP_SHELL = [
   './',
   './index.html',
+  './catalog-data.js',
   './manifest.webmanifest',
   './offline.html',
   './privacy.html',
+  './data/products.csv',
   './data/products.json',
   './data/series.json',
   './data/i18n.json',
@@ -111,7 +111,10 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  if (url.pathname.includes('/data/') && url.pathname.endsWith('.json')) {
+  if (
+    url.pathname.includes('/data/') &&
+    (url.pathname.endsWith('.json') || url.pathname.endsWith('.csv'))
+  ) {
     event.respondWith(networkFirst(request, [], true));
     return;
   }
