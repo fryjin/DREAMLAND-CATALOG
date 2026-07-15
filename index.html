@@ -538,6 +538,7 @@ body[data-lang="ko"] .option-grid-scroll .option{
   </div>
 </div>
 </main>
+<script src="./catalog-data.js"></script>
 <script>
 const STORAGE_KEY='productManualV2State';
 const LANG_KEY='productManualLang';
@@ -663,61 +664,98 @@ function productCarouselImages(product){
   ]);
 }
 
+
 async function loadCatalogData(){
-  const [seriesResponse,productsResponse,i18nResponse,configResponse]=await Promise.all([
+  const [
+    seriesResponse,
+    i18nResponse,
+    configResponse,
+    loadedProducts
+  ]=await Promise.all([
     fetch('./data/series.json',{cache:'no-cache'}),
-    fetch('./data/products.json',{cache:'no-cache'}),
     fetch('./data/i18n.json',{cache:'no-cache'}),
-    fetch('./data/app-config.json',{cache:'no-cache'})
+    fetch('./data/app-config.json',{cache:'no-cache'}),
+    DreamlandCatalogData.loadProductsWithFallback()
   ]);
-  const responses=[seriesResponse,productsResponse,i18nResponse,configResponse];
+
+  const responses=[
+    seriesResponse,
+    i18nResponse,
+    configResponse
+  ];
+
   if(responses.some(response=>!response.ok)){
-    throw new Error('Catalog data request failed: '+responses.map(response=>response.status).join(','));
+    throw new Error(
+      'Catalog data request failed: '+
+      responses.map(response=>response.status).join(',')
+    );
   }
-  const [seriesData,productsData,i18nData,configData]=await Promise.all(responses.map(response=>response.json()));
-  defaultSeries=seriesData.defaultSeries||seriesData.seriesOrder?.[0]||'advanced';
+
+  const [
+    seriesData,
+    i18nData,
+    configData
+  ]=await Promise.all(
+    responses.map(response=>response.json())
+  );
+
+  defaultSeries=
+    seriesData.defaultSeries||
+    seriesData.seriesOrder?.[0]||
+    'advanced';
+
   patternsBySize=seriesData.patternsBySize||{};
   sizeDims=seriesData.sizes||{};
-  products=Array.isArray(productsData.products)?productsData.products:[];
+  products=Array.isArray(loadedProducts)
+    ? loadedProducts
+    : [];
+
   currencyMap=i18nData.currencyMap||{};
   uiDict=i18nData.ui||{};
   choiceMaps=i18nData.choices||{};
   languageNames=i18nData.languageNames||{};
   appConfig=configData||{};
+
   seriesMeta={};
   seriesTabLabels={zh:{},en:{},ko:{}};
-  (seriesData.seriesOrder||Object.keys(seriesData.series||{})).forEach(key=>{
+
+  (
+    seriesData.seriesOrder||
+    Object.keys(seriesData.series||{})
+  ).forEach(key=>{
     const item=seriesData.series?.[key];
     if(!item)return;
-seriesMeta[key]={
-  name:item.labels?.zh||key,
-  count:Number(item.count)||
-    products.filter(product=>product.series===key).length,
 
-  priceTiers:Array.isArray(item.priceTiers)
-    ? item.priceTiers
-    : [],
+    seriesMeta[key]={
+      name:item.labels?.zh||key,
+      count:products.filter(
+        product=>product.series===key
+      ).length,
+      priceTiers:Array.isArray(item.priceTiers)
+        ? item.priceTiers
+        : [],
+      scents:Array.isArray(item.scents)
+        ? item.scents
+        : [],
+      pricingMode:item.pricingMode||'own',
+      scentSeriesOptions:Array.isArray(
+        item.scentSeriesOptions
+      )
+        ? item.scentSeriesOptions
+        : [],
+      packaging:item.packaging||{
+        options:['批发包装'],
+        default:'批发包装',
+        surchargesCny:{}
+      },
+      moqBySize:item.moqBySize||{}
+    };
 
-  scents:Array.isArray(item.scents)
-    ? item.scents
-    : [],
-
-  pricingMode:item.pricingMode||'own',
-
-  scentSeriesOptions:Array.isArray(item.scentSeriesOptions)
-    ? item.scentSeriesOptions
-    : [],
-
-  packaging:item.packaging||{
-    options:['批发包装'],
-    default:'批发包装',
-    surchargesCny:{}
-  },
-
-  moqBySize:item.moqBySize||{}
-};
     ['zh','en','ko'].forEach(lang=>{
-      seriesTabLabels[lang][key]=item.labels?.[lang]||item.labels?.zh||key;
+      seriesTabLabels[lang][key]=
+        item.labels?.[lang]||
+        item.labels?.zh||
+        key;
     });
   });
 }
@@ -1687,10 +1725,19 @@ function cancelCatalogRender(){
 function catalogContentEl(){return document.querySelector('.screen[data-screen="catalog"] .content')}
 function renderProducts(){
   cancelCatalogRender();
-  let token=catalogRenderToken,
-      list=products.filter(p=>p.series===activeSeries),
-      displayCount=seriesMeta[activeSeries].count||list.length,
-      content=catalogContentEl();
+let token=catalogRenderToken,
+    list=products
+      .filter(product=>product.series===activeSeries)
+      .sort((a,b)=>{
+        const sortDiff=
+          (Number(b.listSort)||Number(b.sortOrder)||0)-
+          (Number(a.listSort)||Number(a.sortOrder)||0);
+
+        return sortDiff||
+          String(a.id).localeCompare(String(b.id));
+      }),
+    displayCount=list.length,
+    content=catalogContentEl();
   catalogList=list;
   catalogCursor=0;
   seriesCount.innerHTML=`<span>${seriesLabel(activeSeries)}</span><span>${ui('total')} ${displayCount} ${ui('models')}</span>`;
