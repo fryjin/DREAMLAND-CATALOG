@@ -1825,10 +1825,51 @@ function openDetail(id){
   renderDetail();
   go('detail');
 }
-function renderDetailMedia(){let imgs=productCarouselImages(activeProduct);detailMedia.className='detail-media '+activeProduct.color;detailMedia.innerHTML=`<div class="product-img ${activeProduct.color}"></div><div class="detail-slides">${imgs.map((src,i)=>`<div class="detail-slide ${i===detailSlideIndex?'active':''}"><img src="${src}" alt="${productDisplayName(activeProduct)} ${i+1}" onerror="imgMiss(this)"></div>`).join('')}</div><button class="carousel-btn prev" onclick="event.stopPropagation();changeDetailSlide(-1)"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><button class="carousel-btn next" onclick="event.stopPropagation();changeDetailSlide(1)"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button><div class="carousel-dots">${imgs.map((_,i)=>`<button class="carousel-dot ${i===detailSlideIndex?'active':''}" onclick="event.stopPropagation();setDetailSlide(${i})"></button>`).join('')}</div><div class="detail-titlebox"><h2>${productDisplayName(activeProduct)}</h2><p>${productDesc(activeProduct)}</p></div>`;... </div>`;
+function renderDetailMedia(){
+  let imgs=productCarouselImages(activeProduct);
 
-bindDetailSwipe();
-startDetailCarousel();
+  detailMedia.className='detail-media '+activeProduct.color;
+
+  detailMedia.innerHTML=`
+    <div class="product-img ${activeProduct.color}"></div>
+
+    <div class="detail-slides">
+      ${imgs.map((src,i)=>`
+        <div class="detail-slide ${i===detailSlideIndex?'active':''}">
+          <img
+            src="${src}"
+            alt="${productDisplayName(activeProduct)} ${i+1}"
+            onerror="imgMiss(this)"
+          >
+        </div>
+      `).join('')}
+    </div>
+
+    <button class="carousel-btn prev" onclick="event.stopPropagation();changeDetailSlide(-1)">
+      <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+
+    <button class="carousel-btn next" onclick="event.stopPropagation();changeDetailSlide(1)">
+      <svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
+    </button>
+
+    <div class="carousel-dots">
+      ${imgs.map((_,i)=>`
+        <button
+          class="carousel-dot ${i===detailSlideIndex?'active':''}"
+          onclick="event.stopPropagation();setDetailSlide(${i})"
+        ></button>
+      `).join('')}
+    </div>
+
+    <div class="detail-titlebox">
+      <h2>${productDisplayName(activeProduct)}</h2>
+      <p>${productDesc(activeProduct)}</p>
+    </div>
+  `;
+
+  bindDetailSwipe();
+  startDetailCarousel();
 }
 function updateDetailSlide(){let slides=detailMedia.querySelectorAll('.detail-slide'),dots=detailMedia.querySelectorAll('.carousel-dot');slides.forEach((s,i)=>s.classList.toggle('active',i===detailSlideIndex));dots.forEach((d,i)=>d.classList.toggle('active',i===detailSlideIndex))}
 function setDetailSlide(i){let imgs=productCarouselImages(activeProduct);detailSlideIndex=(i+imgs.length)%imgs.length;updateDetailSlide();startDetailCarousel()}
