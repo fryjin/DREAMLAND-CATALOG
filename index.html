@@ -579,7 +579,6 @@ let submittingInquiry=false;
 let lastSubmitAttemptAt=0;
 
 
-
 const DETAIL_IMAGE_FIELDS = [
   'angle_image',
   'detail_image',
@@ -614,13 +613,16 @@ function localCover(id){
   return `./images/products/${id}/cover.webp`;
 }
 
+
 function productCoverSource(product){
+
   if(!product) return '';
 
   return cleanImagePath(
     product.cover_image ||
     product.coverImage ||
     product.cover
+
   );
 }
 
@@ -633,6 +635,7 @@ function productCover(product){
 function productDetailImages(product){
   if(!product) return [];
 
+
   const fieldImages = DETAIL_IMAGE_FIELDS.map(
     field => product[field]
   );
@@ -642,7 +645,9 @@ function productDetailImages(product){
     : [];
 
   return uniqueImages([
+
     ...fieldImages,
+
     ...legacyImages
   ]);
 }
@@ -651,8 +656,10 @@ function productCarouselImages(product){
   if(!product) return [];
 
   return uniqueImages([
+
     productCoverSource(product),
     ...productDetailImages(product)
+
   ]);
 }
 
@@ -1854,6 +1861,7 @@ function openDetail(id){
   renderDetail();
   go('detail');
 }
+
 function renderDetailMedia(){
   const imgs=productCarouselImages(activeProduct);
 
@@ -2080,6 +2088,7 @@ function resetDetailSwipe(){
   detailSwipeStartX=0;
   detailSwipeStartY=0;
 }
+
 function bindHorizontalOptions() {
   document.querySelectorAll('.option-grid-scroll').forEach((el) => {
     if (el.dataset.bound === '1') return;
@@ -2308,7 +2317,9 @@ function scrollActiveOptionsIntoView(){
     ? scrollState.length>0
     : Boolean(scrollState);
 
+
   restoreDetailOptionScrollState(scrollState);
+
 
   if(!hasScrollState){
     scrollActiveOptionsIntoView();
