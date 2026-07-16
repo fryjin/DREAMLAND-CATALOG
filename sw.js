@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'dreamland-pwa-v29';
+const CACHE_VERSION = 'dreamland-pwa-v30';
 
 const APP_CACHE = `${CACHE_VERSION}-app`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
@@ -85,20 +85,6 @@ async function staleWhileRevalidate(request, cacheName = RUNTIME_CACHE, maxItems
   return cached || (await network) || new Response('Offline', { status: 503, statusText: 'Offline' });
 }
 
-async function productImageNetworkFirst(request) {
-  const cache = await caches.open(IMAGE_CACHE);
-  try {
-    const response = await fetch(request, { cache: 'no-store' });
-    if (response && response.ok) {
-      await cache.put(request, response.clone());
-      await trimCache(IMAGE_CACHE, 240);
-    }
-    return response;
-  } catch {
-    return (await cache.match(request)) || new Response('', { status: 504, statusText: 'Image unavailable offline' });
-  }
-}
-
 self.addEventListener('fetch', event => {
   const request = event.request;
   if (request.method !== 'GET') return;
@@ -120,12 +106,12 @@ self.addEventListener('fetch', event => {
   }
 
   if (request.destination === 'image' && url.pathname.includes('/images/products/')) {
-    event.respondWith(productImageNetworkFirst(request));
+    event.respondWith(staleWhileRevalidate(request, IMAGE_CACHE, 420));
     return;
   }
 
   if (request.destination === 'image') {
-    event.respondWith(staleWhileRevalidate(request, IMAGE_CACHE, 240));
+    event.respondWith(staleWhileRevalidate(request, IMAGE_CACHE, 420));
     return;
   }
 
