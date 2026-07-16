@@ -1,3 +1,4 @@
+/* DREAMLAND catalog data + media loader v31 */
 (function(){
   'use strict';
 
@@ -268,8 +269,13 @@
 
       .product-cover,
       .inquiry-media img{
-        opacity:0;
+        opacity:1;
         transition:opacity .14s ease;
+      }
+
+      .product-visual.media-loading .product-cover,
+      .inquiry-media.media-loading img{
+        opacity:0;
       }
 
       .inquiry-media img{
@@ -394,6 +400,24 @@
     }
   }
 
+  function settleImageState(img,attempt=0){
+    if(!img)return;
+
+    if(img.complete&&img.naturalWidth>0){
+      markMediaLoaded(img);
+      return;
+    }
+
+    if(img.complete&&img.getAttribute('src')&&img.naturalWidth===0){
+      markMediaFailed(img);
+      return;
+    }
+
+    if(attempt<12){
+      setTimeout(()=>settleImageState(img,attempt+1),80);
+    }
+  }
+
   function bindImageState(img){
     if(!img||img.dataset.mediaStateBound==='1')return;
     img.dataset.mediaStateBound='1';
@@ -401,15 +425,14 @@
     img.addEventListener('load',()=>markMediaLoaded(img));
     img.addEventListener('error',()=>markMediaFailed(img));
 
-    if(img.complete){
-      if(img.naturalWidth>0)markMediaLoaded(img);
-      else if(img.getAttribute('src'))markMediaFailed(img);
-    }
+    queueMicrotask(()=>settleImageState(img));
+    requestAnimationFrame(()=>settleImageState(img));
   }
 
   function beginImageLoad(img,priority='auto'){
-    if(!img||img.dataset.srcAssigned==='1')return;
-    const src=img.dataset.src;
+    if(!img)return;
+
+    const src=img.dataset.src||img.getAttribute('src')||'';
     if(!src)return;
 
     const container=img.closest('.product-visual,.detail-slide,.inquiry-media');
@@ -417,15 +440,22 @@
     container?.classList.add('media-loading');
     bindImageState(img);
 
-    img.fetchPriority=priority;
-    img.loading=priority==='high'?'eager':'lazy';
-    img.decoding='async';
-    img.dataset.srcAssigned='1';
-    img.src=src;
+    if(img.dataset.srcAssigned!=='1'){
+      img.fetchPriority=priority;
+      img.loading=priority==='high'?'eager':'lazy';
+      img.decoding='async';
+      img.dataset.srcAssigned='1';
 
-    if(loadedUrls.has(src)&&img.complete&&img.naturalWidth>0){
-      markMediaLoaded(img);
+      if(!img.getAttribute('src')){
+        img.src=src;
+      }
     }
+
+    if(typeof img.decode==='function'){
+      img.decode().then(()=>markMediaLoaded(img)).catch(()=>settleImageState(img));
+    }
+
+    settleImageState(img);
   }
 
   function catalogRoot(){
@@ -446,7 +476,7 @@
       });
     },{
       root:catalogRoot(),
-      rootMargin:'360px 0px 520px 0px',
+      rootMargin:'120px 0px 260px 0px',
       threshold:0.01
     });
 
@@ -456,10 +486,21 @@
   function prepareCatalogImage(img){
     if(!img||img.dataset.catalogObserved==='1')return;
     img.dataset.catalogObserved='1';
+
+    const existingSrc=img.getAttribute('src')||'';
+    if(!img.dataset.src&&existingSrc){
+      img.dataset.src=existingSrc;
+    }
+
     const container=img.closest('.product-visual');
     ensureSkeleton(container);
     container?.classList.add('media-loading');
     bindImageState(img);
+
+    if(img.complete&&img.naturalWidth>0){
+      markMediaLoaded(img);
+      return;
+    }
 
     const observer=getCatalogObserver();
     if(observer){
@@ -480,7 +521,7 @@
   }
 
   function scanMedia(root=document){
-    root.querySelectorAll?.('.product-cover[data-src]').forEach(prepareCatalogImage);
+    root.querySelectorAll?.('.product-cover').forEach(prepareCatalogImage);
     root.querySelectorAll?.('.inquiry-media img').forEach(prepareDirectImage);
   }
 
@@ -490,7 +531,7 @@
       mutations.forEach(mutation=>{
         mutation.addedNodes.forEach(node=>{
           if(node.nodeType!==1)return;
-          if(node.matches?.('.product-cover[data-src]'))prepareCatalogImage(node);
+          if(node.matches?.('.product-cover'))prepareCatalogImage(node);
           if(node.matches?.('.inquiry-media img'))prepareDirectImage(node);
           scanMedia(node);
         });
@@ -521,7 +562,8 @@
             height="1800"
             loading="lazy"
             decoding="async"
-            onerror="imgMiss(this)"
+            onload="DreamlandMediaLoaded(this)"
+            onerror="DreamlandMediaFailed(this)"
           >
         </div>
 
@@ -601,7 +643,8 @@
                 height="1800"
                 loading="lazy"
                 decoding="async"
-                onerror="imgMiss(this)"
+                onload="DreamlandMediaLoaded(this)"
+                onerror="DreamlandMediaFailed(this)"
               >
             </div>
           `).join('')}
@@ -666,6 +709,24 @@
   function installEnhancements(){
     if(enhancementsInstalled)return;
     enhancementsInstalled=true;
+
+    window.DreamlandMediaLoaded=markMediaLoaded;
+    window.DreamlandMediaFailed=markMediaFailed;
+
+    document.addEventListener('load',event=>{
+      const img=event.target;
+      if(img instanceof HTMLImageElement&&img.matches('.product-cover,.detail-slide img,.inquiry-media img')){
+        markMediaLoaded(img);
+      }
+    },true);
+
+    document.addEventListener('error',event=>{
+      const img=event.target;
+      if(img instanceof HTMLImageElement&&img.matches('.product-cover,.detail-slide img,.inquiry-media img')){
+        markMediaFailed(img);
+      }
+    },true);
+
     installMediaStyles();
     installFunctionOverrides();
     installMutationObserver();
