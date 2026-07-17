@@ -13,6 +13,7 @@ const APP_SHELL = [
   './offline.html',
   './privacy.html',
   './data/products.csv',
+  './data/shared-assets.csv',
   './data/products.json',
   './data/series.json',
   './data/i18n.json',
