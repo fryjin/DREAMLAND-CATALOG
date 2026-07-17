@@ -574,7 +574,19 @@ body[data-lang="ko"] .option-grid-scroll .option{
 </head>
 <body>
 <main class="phone" id="app">
-<section class="screen active" data-screen="home"><div class="hero"><div class="hero-product"><img class="hero-product-img" src="./images/home/hero-product.png" alt="首页主图" onerror="imgMiss(this)"></div><div class="hero-big">PRO<br>DUCT<br>BOOK</div><div class="hero-copy"><h1>把选款这件事，变轻一点。</h1><p>浏览商品，加入意向单，先做金额预估，再由顾问确认报价与定制细节。</p></div><div class="hero-cta"><div class="unlock-slider" id="unlockSlider"><div class="unlock-fill" id="unlockFill"></div><button class="unlock-thumb" id="unlockThumb" type="button"><span class="thumb-label">开始入梦</span></button><div class="unlock-hint">右滑进入产品手册</div><div class="unlock-dock"><span class="arrow"></span><span class="arrow"></span><span class="arrow"></span></div></div></div></div></section>
+<section class="screen active" data-screen="home"><div class="hero"><div class="hero-product media-frame">
+  <span class="media-skeleton" aria-hidden="true"></span>
+
+  <img
+    class="hero-product-img"
+    data-shared-category="home"
+    data-shared-key="hero"
+    data-shared-size=""
+    data-fallback-src="./images/home/hero-product.png"
+    data-priority="high"
+    alt="首页主图"
+  >
+</div><div class="hero-big">PRO<br>DUCT<br>BOOK</div><div class="hero-copy"><h1>把选款这件事，变轻一点。</h1><p>浏览商品，加入意向单，先做金额预估，再由顾问确认报价与定制细节。</p></div><div class="hero-cta"><div class="unlock-slider" id="unlockSlider"><div class="unlock-fill" id="unlockFill"></div><button class="unlock-thumb" id="unlockThumb" type="button"><span class="thumb-label">开始入梦</span></button><div class="unlock-hint">右滑进入产品手册</div><div class="unlock-dock"><span class="arrow"></span><span class="arrow"></span><span class="arrow"></span></div></div></div></div></section>
 <section class="screen" data-screen="catalog"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1v-8.5Z"/></svg></button><div><div class="page-title">商品手册</div><div class="page-sub">先选款，再确认报价</div></div><div class="lang-wrap" id="langWrap"><button class="lang-toggle" id="langToggle" onclick="toggleLangMenu(event)"><span class="globe">🌐</span><span class="lang-current">中文</span><span class="caret">▾</span></button><div class="lang-menu" id="langMenu"></div></div></div><div class="tabs" id="seriesTabs"></div><div class="series-count" id="seriesCount"></div></div><div class="content"><div class="catalog-columns" id="productGrid"></div></div></section>
 <section class="screen" data-screen="detail"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="detailBack()"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">商品配置</div><div class="page-sub">选择尺寸、香型、花样与包装</div></div></div></div><div class="content no-nav with-cta"><div class="detail-media" id="detailMedia"></div><div class="config-card" id="configCard"></div></div><div class="sticky-action"><button class="btn btn-primary full" onclick="addConfiguredProduct()">加入意向单</button></div></section>
 <section class="screen" data-screen="inquiry"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('catalog')"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">意向单</div><div class="page-sub">预算预估，最终由顾问确认</div></div><button class="icon-btn" onclick="confirmClearAll()"><span style="font-size:11px;font-weight:950">清空</span></button></div></div><div class="content with-cta"><div id="inquiryList" class="inquiry-ui"></div><div id="summaryBox"></div></div><div class="sticky-action"><button class="btn btn-primary full" onclick="goContact()">提交意向单</button></div></section>
@@ -623,6 +635,8 @@ let seriesTabLabels={};
 let patternsBySize={};
 let sizeDims={};
 let products=[];
+let sharedAssets=[];
+let sharedAssetMap=new Map();
 let uiDict={};
 let choiceMaps={};
 let languageNames={};
@@ -683,6 +697,165 @@ function uniqueImages(list){
     });
 }
 
+function sharedAssetMapKey(
+  category,
+  lookupKey,
+  size=''
+){
+  return [
+    String(category||'').trim().toLowerCase(),
+    String(size||'').trim().toUpperCase(),
+    String(lookupKey||'').trim()
+  ].join('|');
+}
+
+function indexSharedAssets(records){
+  sharedAssetMap=new Map();
+
+  (
+    Array.isArray(records)
+      ? records
+      : []
+  ).forEach(record=>{
+    sharedAssetMap.set(
+      sharedAssetMapKey(
+        record.category,
+        record.lookupKey,
+        record.size
+      ),
+      record
+    );
+  });
+}
+
+function sharedAssetRecord(
+  category,
+  lookupKey,
+  size=''
+){
+  return (
+    sharedAssetMap.get(
+      sharedAssetMapKey(
+        category,
+        lookupKey,
+        size
+      )
+    )||
+    sharedAssetMap.get(
+      sharedAssetMapKey(
+        category,
+        lookupKey,
+        ''
+      )
+    )||
+    null
+  );
+}
+
+function sharedAssetCandidates(
+  category,
+  lookupKey,
+  size='',
+  fallback=''
+){
+  const record=
+    sharedAssetRecord(
+      category,
+      lookupKey,
+      size
+    );
+
+  return uniqueImages([
+    record?.imagePath,
+    record?.fallbackPath,
+    fallback
+  ]);
+}
+
+function htmlAttr(value){
+  return String(value??'')
+    .replace(/&/g,'&amp;')
+    .replace(/"/g,'&quot;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+}
+
+async function nativeLoadImage(
+  img,
+  src
+){
+  return new Promise(resolve=>{
+    img.onload=()=>resolve(true);
+    img.onerror=()=>resolve(false);
+    img.src=src;
+  });
+}
+
+async function loadSharedImage(
+  img,
+  candidates,
+  priority='auto'
+){
+  if(!img)return false;
+
+  const sources=
+    uniqueImages(candidates);
+
+  const frame=
+    img.closest('.media-frame');
+
+  for(const src of sources){
+    img.classList.remove('is-missing');
+    img.removeAttribute('src');
+    img.dataset.src=src;
+
+    frame?.classList.remove(
+      'is-loaded',
+      'is-loading',
+      'is-error'
+    );
+
+    const success=
+      window.ImageManager?.load
+        ? await window.ImageManager.load(
+            img,
+            {priority}
+          )
+        : await nativeLoadImage(
+            img,
+            src
+          );
+
+    if(success){
+      return true;
+    }
+  }
+
+  imgMiss(img);
+  return false;
+}
+
+function mountSharedAssetImages(
+  container=document
+){
+  container
+    .querySelectorAll?.(
+      'img[data-shared-category]'
+    )
+    .forEach(img=>{
+      loadSharedImage(
+        img,
+        sharedAssetCandidates(
+          img.dataset.sharedCategory,
+          img.dataset.sharedKey,
+          img.dataset.sharedSize,
+          img.dataset.fallbackSrc
+        ),
+        img.dataset.priority||'auto'
+      );
+    });
+}
+  
 function localCover(id){
   return `./images/products/${id}/cover.webp`;
 }
@@ -739,16 +912,18 @@ function productCarouselImages(product){
 
 
 async function loadCatalogData(){
-  const [
-    seriesResponse,
-    i18nResponse,
-    configResponse,
-    loadedProducts
-  ]=await Promise.all([
+const [
+  seriesResponse,
+  i18nResponse,
+  configResponse,
+  loadedProducts,
+  loadedSharedAssets
+]=await Promise.all([
     fetch('./data/series.json',{cache:'no-cache'}),
     fetch('./data/i18n.json',{cache:'no-cache'}),
     fetch('./data/app-config.json',{cache:'no-cache'}),
-    DreamlandCatalogData.loadProductsWithFallback()
+    DreamlandCatalogData.loadProductsWithFallback(),
+DreamlandCatalogData.loadSharedAssetsFromCsv()
   ]);
 
   const responses=[
@@ -782,6 +957,12 @@ async function loadCatalogData(){
   products=Array.isArray(loadedProducts)
     ? loadedProducts
     : [];
+  sharedAssets=
+  Array.isArray(loadedSharedAssets)
+    ? loadedSharedAssets
+    : [];
+
+indexSharedAssets(sharedAssets);
 
   currencyMap=i18nData.currencyMap||{};
   uiDict=i18nData.ui||{};
@@ -831,6 +1012,9 @@ async function loadCatalogData(){
         key;
     });
   });
+  requestAnimationFrame(()=>{
+  mountSharedAssetImages(document);
+});
 }
 
 function seriesTabLabel(key){
@@ -1696,8 +1880,28 @@ function updateCtaReveal(n){if(!['detail','contact','preview','inquiry','custom'
 function bindCtaReveal(){['detail','contact','preview','inquiry','custom'].forEach(n=>{let s=document.querySelector(`.screen[data-screen="${n}"]`),c=s?.querySelector('.content.with-cta');if(!c)return;c.addEventListener('scroll',()=>updateCtaReveal(n),{passive:true})})}
 function renderTabs(){seriesTabs.className=`tabs lang-${currentLang}`;seriesTabs.innerHTML=Object.keys(seriesMeta).map(k=>`<button class="tab ${k===activeSeries?'active':''}" data-s="${k}">${seriesTabLabel(k)}</button>`).join('');seriesTabs.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{activeSeries=t.dataset.s;renderTabs();renderProducts()})}
 function imgMiss(el){el.classList.add('is-missing')}
-function patternThumb(v){let arr=patternsBySize[config.size]||[],idx=Math.max(0,arr.indexOf(v))+1;return`./images/patterns/${config.size}/pattern-${idx}.jpg`}
-function packThumb(value){
+function legacyPatternThumb(value){
+  const list=
+    patternsBySize[
+      config.size
+    ]||[];
+
+  const index=
+    Math.max(
+      0,
+      list.indexOf(value)
+    )+1;
+
+  return (
+    `./images/patterns/${
+      config.size
+    }/pattern-${
+      index
+    }.jpg`
+  );
+}
+
+function legacyPackThumb(value){
   const map={
     '批发包装':'shock',
     '精品包装':'protect',
@@ -1711,7 +1915,66 @@ function packThumb(value){
     }.jpg`
   );
 }
-function previewData(k){if(k==='pattern')return{src:patternThumb(config.pattern),label:choiceLabel(config.pattern)};if(k==='pack')return{src:packThumb(config.pack),label:choiceLabel(config.pack)};return null}
+
+function patternThumb(value){
+  return (
+    sharedAssetCandidates(
+      'pattern',
+      value,
+      config.size,
+      legacyPatternThumb(value)
+    )[0]||
+    legacyPatternThumb(value)
+  );
+}
+
+function packThumb(value){
+  return (
+    sharedAssetCandidates(
+      'package',
+      value,
+      '',
+      legacyPackThumb(value)
+    )[0]||
+    legacyPackThumb(value)
+  );
+}
+
+function previewData(key){
+  if(key==='pattern'){
+    return {
+      category:'pattern',
+      lookupKey:config.pattern,
+      size:config.size,
+      fallback:
+        legacyPatternThumb(
+          config.pattern
+        ),
+      label:
+        choiceLabel(
+          config.pattern
+        )
+    };
+  }
+
+  if(key==='pack'){
+    return {
+      category:'package',
+      lookupKey:config.pack,
+      size:'',
+      fallback:
+        legacyPackThumb(
+          config.pack
+        ),
+      label:
+        choiceLabel(
+          config.pack
+        )
+    };
+  }
+
+  return null;
+}
 function scentNotesImage(){
   const scentSeries=
     activeProduct?.series===
@@ -1730,7 +1993,100 @@ function scentNotesImage(){
 function scentTipText(isScroll,h){return isScroll?ui('swipeScent'):h}
 function scentInfo(k){return k==='scent'?`<div class="scent-link-row"><button type="button" onclick="event.stopPropagation();openScentNotes()">${ui('scentNotes')}</button></div>`:''}
 function openScentNotes(){openPreviewImage(scentNotesImage(),`${choiceLabel(config.scent)} · ${ui('scentNotesSuffix')}`)}
-function optionPreview(k){let p=previewData(k);return p?`<button class="option-thumb" type="button" onclick="event.stopPropagation();openPreviewImage('${p.src}','${p.label}')"><img src="${p.src}" alt="${p.label}" onerror="imgMiss(this)"><span>${ui('view')}</span></button>`:''}
+function optionPreview(key){
+  const preview=
+    previewData(key);
+
+  if(!preview){
+    return '';
+  }
+
+  return `
+    <button
+      class="option-thumb media-frame"
+      type="button"
+      data-shared-category="${htmlAttr(preview.category)}"
+      data-shared-key="${htmlAttr(preview.lookupKey)}"
+      data-shared-size="${htmlAttr(preview.size)}"
+      data-fallback-src="${htmlAttr(preview.fallback)}"
+      data-preview-label="${htmlAttr(preview.label)}"
+      onclick="event.stopPropagation();openSharedPreviewFromButton(this)"
+    >
+      <span
+        class="media-skeleton"
+        aria-hidden="true"
+      ></span>
+
+      <img
+        data-shared-category="${htmlAttr(preview.category)}"
+        data-shared-key="${htmlAttr(preview.lookupKey)}"
+        data-shared-size="${htmlAttr(preview.size)}"
+        data-fallback-src="${htmlAttr(preview.fallback)}"
+        alt="${htmlAttr(preview.label)}"
+        loading="lazy"
+        decoding="async"
+      >
+
+      <span>${ui('view')}</span>
+    </button>
+  `;
+}
+
+async function openSharedPreviewFromButton(
+  button
+){
+  const layer=
+    document.getElementById(
+      'previewLayer'
+    );
+
+  const img=
+    document.getElementById(
+      'previewImg'
+    );
+
+  const caption=
+    document.getElementById(
+      'previewCaption'
+    );
+
+  if(!layer||!img||!caption){
+    return;
+  }
+
+  const candidates=
+    sharedAssetCandidates(
+      button.dataset.sharedCategory,
+      button.dataset.sharedKey,
+      button.dataset.sharedSize,
+      button.dataset.fallbackSrc
+    );
+
+  caption.textContent=
+    button.dataset.previewLabel||
+    ui('imagePreview');
+
+  layer.classList.add('show');
+
+  for(const src of candidates){
+    img.classList.remove(
+      'is-missing'
+    );
+
+    const success=
+      await nativeLoadImage(
+        img,
+        src
+      );
+
+    if(success){
+      return;
+    }
+  }
+
+  imgMiss(img);
+}
+  
 function openPreviewImage(src,label){let layer=document.getElementById('previewLayer'),img=document.getElementById('previewImg'),cap=document.getElementById('previewCaption');if(!layer||!img||!cap)return;img.classList.remove('is-missing');img.src=src;cap.textContent=label||ui('imagePreview');layer.classList.add('show')}
 function closePreviewImage(){
   document
@@ -2430,7 +2786,11 @@ function scrollActiveOptionsIntoView(){
       </div>
     `;
 
- requestAnimationFrame(()=>{
+requestAnimationFrame(()=>{
+  mountSharedAssetImages(
+    configCard
+  );
+
   bindHorizontalOptions();
 
   const hasScrollState=Array.isArray(scrollState)
