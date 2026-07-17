@@ -257,12 +257,203 @@
     });
   }
 
-  function mountInquiry(container=document){
-    container.querySelectorAll?.('.inquiry-media img').forEach(img=>{
-      const frame=frameFor(img);
-      ensureFrame(frame);
-      load(img,{priority:'auto'});
+  function inquiryItemForMedia(media){
+    const itemId=
+      media
+        ?.closest('.swipe-shell[data-id]')
+        ?.dataset.id||
+      '';
+
+    if(
+      !itemId||
+      typeof state==='undefined'||
+      !Array.isArray(state.items)
+    ){
+      return null;
+    }
+
+    return (
+      state.items.find(item=>item.id===itemId)||
+      null
+    );
+  }
+
+  function currentInquiryProduct(item){
+    if(
+      !item?.productId||
+      typeof products==='undefined'||
+      !Array.isArray(products)
+    ){
+      return null;
+    }
+
+    return (
+      products.find(
+        product=>product.id===item.productId
+      )||
+      null
+    );
+  }
+
+  function inquiryImageCandidates(item){
+    const candidates=[];
+    const currentProduct=
+      currentInquiryProduct(item);
+
+    if(
+      currentProduct&&
+      typeof productCover==='function'
+    ){
+      candidates.push(
+        productCover(currentProduct)
+      );
+    }
+
+    if(item?.productId){
+      candidates.push(
+        `./images/products/${item.productId}/cover.webp`
+      );
+    }
+
+    if(item?.cover){
+      candidates.push(item.cover);
+    }
+
+    return [
+      ...new Set(
+        candidates
+          .map(value=>String(value||'').trim())
+          .filter(Boolean)
+      )
+    ];
+  }
+
+  function syncActiveInquiryCovers(){
+    if(
+      typeof state==='undefined'||
+      !Array.isArray(state.items)||
+      typeof products==='undefined'||
+      !Array.isArray(products)
+    ){
+      return;
+    }
+
+    let changed=false;
+
+    state.items.forEach(item=>{
+      if(item.type!=='product')return;
+
+      const currentProduct=
+        currentInquiryProduct(item);
+
+      if(
+        !currentProduct||
+        typeof productCover!=='function'
+      ){
+        return;
+      }
+
+      const currentCover=
+        productCover(currentProduct);
+
+      if(
+        currentCover&&
+        item.cover!==currentCover
+      ){
+        item.cover=currentCover;
+        changed=true;
+      }
     });
+
+    if(
+      changed&&
+      typeof save==='function'
+    ){
+      save();
+    }
+  }
+
+  function createInquiryImage(media,item){
+    media
+      .querySelectorAll(':scope > img, :scope > .product-img')
+      .forEach(node=>node.remove());
+
+    ensureFrame(media);
+
+    const img=document.createElement('img');
+    img.alt=
+      typeof productDisplayName==='function'
+        ? productDisplayName(item)
+        : String(item?.name||'');
+    img.width=1200;
+    img.height=1800;
+    img.loading='lazy';
+    img.decoding='async';
+
+    media.appendChild(img);
+
+    return img;
+  }
+
+  async function loadInquiryImage(media,item){
+    const img=createInquiryImage(media,item);
+    const candidates=
+      inquiryImageCandidates(item);
+
+    if(!candidates.length){
+      markError(img);
+      return;
+    }
+
+    for(const src of candidates){
+      states.delete(img);
+
+      img.classList.remove('is-missing');
+      img.style.display='';
+      img.removeAttribute('src');
+      img.dataset.src=src;
+
+      const frame=frameFor(img);
+      frame?.classList.remove(
+        'is-loaded',
+        'is-loading',
+        'is-error'
+      );
+
+      const success=await load(
+        img,
+        {priority:'auto'}
+      );
+
+      if(success){
+        if(item.cover!==src){
+          item.cover=src;
+
+          if(typeof save==='function'){
+            save();
+          }
+        }
+
+        return;
+      }
+    }
+
+    markError(img);
+  }
+
+  function mountInquiry(container=document){
+    container
+      .querySelectorAll?.('.inquiry-media')
+      .forEach(media=>{
+        const item=
+          inquiryItemForMedia(media);
+
+        if(!item||item.type!=='product'){
+          return;
+        }
+
+        loadInquiryImage(media,item);
+      });
   }
 
   function detailSlide(container,index){
@@ -450,11 +641,25 @@
     if(typeof renderInquiry==='function'){
       const originalRenderInquiry=renderInquiry;
       renderInquiry=function(){
-        const result=originalRenderInquiry.apply(this,arguments);
+        syncActiveInquiryCovers();
+
+        const result=
+          originalRenderInquiry.apply(
+            this,
+            arguments
+          );
+
         requestAnimationFrame(()=>{
-          const list=document.getElementById('inquiryList');
-          if(list)mountInquiry(list);
+          const list=
+            document.getElementById(
+              'inquiryList'
+            );
+
+          if(list){
+            mountInquiry(list);
+          }
         });
+
         return result;
       };
     }
