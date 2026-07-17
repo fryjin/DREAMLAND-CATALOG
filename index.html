@@ -826,13 +826,25 @@ async function loadSharedImage(
             src
           );
 
-    if(success){
-      return true;
-    }
+   if(success){
+  frame?.classList.add('is-loaded');
+  frame?.classList.remove(
+    'is-loading',
+    'is-error'
+  );
+
+  return true;
+}
   }
 
-  imgMiss(img);
-  return false;
+ frame?.classList.add('is-error');
+frame?.classList.remove(
+  'is-loading',
+  'is-loaded'
+);
+
+imgMiss(img);
+return false;
 }
 
 function mountSharedAssetImages(
