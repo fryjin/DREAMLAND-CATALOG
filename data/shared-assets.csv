@@ -1,0 +1,17 @@
+﻿asset_id,category,lookup_key,size,label_zh,label_en,label_ko,image_path,fallback_path,status,sort_order,updated_at
+HOME001,home,hero,,首页主图,Home Hero,홈 메인 이미지,./images/shared/home/HOME001/cover.webp,./images/home/hero-product.png,active,10,2026-07-17
+PKG001,package,批发包装,,批发包装,Wholesale Packaging,도매 포장,./images/shared/packages/PKG001/cover.webp,./images/packages/shock.jpg,active,20,2026-07-17
+PKG002,package,精品包装,,精品包装,Premium Packaging,프리미엄 포장,./images/shared/packages/PKG002/cover.webp,./images/packages/protect.jpg,active,30,2026-07-17
+PKG003,package,品牌包装,,品牌包装,Branded Packaging,브랜드 포장,./images/shared/packages/PKG003/cover.webp,./images/packages/giftbox.jpg,active,40,2026-07-17
+PATS01,pattern,小花卷,S,小花卷,Small Floral Curl,스몰 플라워 컬,./images/shared/patterns/PATS01/cover.webp,./images/patterns/S/pattern-1.jpg,active,101,2026-07-17
+PATS02,pattern,细波纹,S,细波纹,Fine Wave,파인 웨이브,./images/shared/patterns/PATS02/cover.webp,./images/patterns/S/pattern-2.jpg,active,102,2026-07-17
+PATS03,pattern,简约切线,S,简约切线,Minimal Cut Lines,미니멀 컷 라인,./images/shared/patterns/PATS03/cover.webp,./images/patterns/S/pattern-3.jpg,active,103,2026-07-17
+PATM01,pattern,经典花瓣,M,经典花瓣,Classic Petal,클래식 페탈,./images/shared/patterns/PATM01/cover.webp,./images/patterns/M/pattern-1.jpg,active,201,2026-07-17
+PATM02,pattern,海浪卷,M,海浪卷,Ocean Wave Curl,오션 웨이브 컬,./images/shared/patterns/PATM02/cover.webp,./images/patterns/M/pattern-2.jpg,active,202,2026-07-17
+PATM03,pattern,礼盒花型,M,礼盒花型,Gift Box Floral,기프트 플라워,./images/shared/patterns/PATM03/cover.webp,./images/patterns/M/pattern-3.jpg,active,203,2026-07-17
+PATL01,pattern,大花瓣,L,大花瓣,Large Petal,라지 페탈,./images/shared/patterns/PATL01/cover.webp,./images/patterns/L/pattern-1.jpg,active,301,2026-07-17
+PATL02,pattern,层叠波纹,L,层叠波纹,Layered Wave,레이어드 웨이브,./images/shared/patterns/PATL02/cover.webp,./images/patterns/L/pattern-2.jpg,active,302,2026-07-17
+PATL03,pattern,展陈花型,L,展陈花型,Display Floral,디스플레이 플라워,./images/shared/patterns/PATL03/cover.webp,./images/patterns/L/pattern-3.jpg,active,303,2026-07-17
+PATX01,pattern,大礼花,XL,大礼花,Grand Floral,그랜드 플라워,./images/shared/patterns/PATX01/cover.webp,./images/patterns/XL/pattern-1.jpg,active,401,2026-07-17
+PATX02,pattern,雕塑卷,XL,雕塑卷,Sculptural Curl,스컬프처 컬,./images/shared/patterns/PATX02/cover.webp,./images/patterns/XL/pattern-2.jpg,active,402,2026-07-17
+PATX03,pattern,陈列款,XL,陈列款,Display Style,디스플레이 스타일,./images/shared/patterns/PATX03/cover.webp,./images/patterns/XL/pattern-3.jpg,active,403,2026-07-17
