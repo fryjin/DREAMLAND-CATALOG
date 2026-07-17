@@ -155,6 +155,59 @@
     return product;
   }
 
+function mapCsvSharedAsset(row){
+  return {
+    assetId:text(row.asset_id),
+    category:text(row.category).toLowerCase(),
+    lookupKey:text(row.lookup_key),
+    size:text(row.size).toUpperCase(),
+    labels:{
+      zh:text(row.label_zh),
+      en:text(row.label_en),
+      ko:text(row.label_ko)
+    },
+    imagePath:text(row.image_path),
+    fallbackPath:text(row.fallback_path),
+    status:text(row.status).toLowerCase()||'hidden',
+    sortOrder:number(row.sort_order),
+    updatedAt:text(row.updated_at)
+  };
+}
+
+async function loadSharedAssetsFromCsv(){
+  try{
+    const response=await fetch(
+      './data/shared-assets.csv',
+      {cache:'no-cache'}
+    );
+
+    if(!response.ok){
+      throw new Error(
+        `shared-assets.csv request failed: ${response.status}`
+      );
+    }
+
+    return parseCsv(await response.text())
+      .map(mapCsvSharedAsset)
+      .filter(
+        item=>
+          item.assetId&&
+          item.status==='active'
+      )
+      .sort(
+        (a,b)=>
+          a.sortOrder-b.sortOrder
+      );
+  }catch(error){
+    console.warn(
+      '[catalog] Shared assets load failed; using legacy image paths.',
+      error
+    );
+
+    return [];
+  }
+}
+  
   function assertValidProducts(products){
     const ids=new Set();
 
@@ -203,12 +256,14 @@
     }
   }
 
-  window.DreamlandCatalogData={
-    parseCsv,
-    mapCsvProduct,
-    loadProductsFromCsv,
-    loadProductsWithFallback
-  };
+window.DreamlandCatalogData={
+  parseCsv,
+  mapCsvProduct,
+  mapCsvSharedAsset,
+  loadProductsFromCsv,
+  loadProductsWithFallback,
+  loadSharedAssetsFromCsv
+};
 })();
 
 /* Load the dedicated image manager after the main page script is ready. */
