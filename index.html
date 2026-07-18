@@ -621,6 +621,45 @@ body[data-lang="ko"] .option-grid-scroll .option{
   font-size:11px;
   font-weight:900;
 }
+
+ /* Mobile full-screen homepage */
+@media (max-width:600px){
+  html,
+  body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+  }
+
+  body{
+    min-height:100%;
+    padding:0;
+    display:block;
+    background:var(--bg);
+  }
+
+  .phone{
+    width:100vw;
+    max-width:none;
+    height:100vh;
+    height:100dvh;
+    min-height:0;
+    border-radius:0;
+    box-shadow:none;
+  }
+
+  .hero-copy{
+    bottom:120px;
+  }
+
+  .hero-copy h1{
+    margin-bottom:0;
+  }
+
+  .hero-copy p{
+    display:none;
+  }
+} 
 </style>
 </head>
 <body>
