@@ -869,6 +869,26 @@ body[data-lang="ko"] .option-grid-scroll .option{
   line-height:1.55;
   font-weight:850;
 }
+
+.config-choice-row .option-grid-scroll{
+  flex:1 1 0;
+  width:auto;
+  max-width:none;
+  min-width:0;
+
+  overflow-x:auto;
+  overflow-y:hidden;
+  flex-wrap:nowrap!important;
+
+  scroll-behavior:smooth;
+  scroll-padding-inline:12px;
+}
+
+.config-choice-row .option-grid-scroll .option{
+  flex:0 0 auto;
+  width:auto;
+  white-space:nowrap;
+}  
 </style>
 </head>
 <body>
@@ -3235,6 +3255,57 @@ function scrollActiveOptionsIntoView(){
     });
 }
 
+function centerSelectedOption(
+  key,
+  behavior='smooth'
+){
+  if(!configCard||!key){
+    return;
+  }
+
+  const scroller=
+    configCard.querySelector(
+      `[data-config-key="${key}"] .option-grid-scroll`
+    );
+
+  const active=
+    scroller?.querySelector(
+      '.option.active'
+    );
+
+  if(!scroller||!active){
+    return;
+  }
+
+  const targetLeft=
+    active.offsetLeft-
+    (
+      scroller.clientWidth-
+      active.offsetWidth
+    )/2;
+
+  const maxLeft=
+    Math.max(
+      0,
+      scroller.scrollWidth-
+      scroller.clientWidth
+    );
+
+  const nextLeft=
+    Math.max(
+      0,
+      Math.min(
+        maxLeft,
+        targetLeft
+      )
+    );
+
+  scroller.scrollTo({
+    left:nextLeft,
+    behavior
+  });
+}
+  
 function scentDisplayText(value){
   if(!value)return '';
 
@@ -3361,9 +3432,10 @@ function setScent(scentId){
       scent.series;
   }
 
-  renderDetail(
-    optionScrollState
-  );
+renderDetail(
+  optionScrollState,
+  'scent'
+);
 }
 
 function scentBlock(){
@@ -3431,7 +3503,8 @@ function scentBlock(){
 }
   
   function renderDetail(
-  scrollState=null
+  scrollState=null,
+  focusKey=''
 ){
   renderDetailMedia();
 
@@ -3550,15 +3623,24 @@ requestAnimationFrame(()=>{
 
   bindHorizontalOptions();
 
-  const hasScrollState=Array.isArray(scrollState)
-    ? scrollState.length>0
-    : Boolean(scrollState);
+  const hasScrollState=
+    Array.isArray(scrollState)
+      ? scrollState.length>0
+      : Boolean(scrollState);
 
+  restoreDetailOptionScrollState(
+    scrollState
+  );
 
-  restoreDetailOptionScrollState(scrollState);
-
-
-  if(!hasScrollState){
+  if(focusKey){
+    /*
+     * 只有用户主动选择选项时，
+     * 才将对应胶囊移动到视觉中心。
+     */
+    centerSelectedOption(
+      focusKey
+    );
+  }else if(!hasScrollState){
     scrollActiveOptionsIntoView();
   }
 });
@@ -3668,8 +3750,9 @@ const optionScrollState=captureDetailOptionScrollState();
       );
   }
 
- renderDetail(
-  optionScrollState
+renderDetail(
+  optionScrollState,
+  key
 );
 }
 function setDetailQty(value){
