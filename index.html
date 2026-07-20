@@ -3959,6 +3959,9 @@ function quickAdd(id){
 function addConfiguredProduct(){
   if(!activeProduct)return;
 
+  const wasEditing=
+    Boolean(editingItemId);
+
   const scentData=
     scentSnapshot(
       config.scentId,
@@ -4019,7 +4022,7 @@ function addConfiguredProduct(){
       )
   };
 
-  if(editingItemId){
+  if(wasEditing){
     const index=
       state.items.findIndex(
         row=>row.id===editingItemId
@@ -4038,11 +4041,17 @@ function addConfiguredProduct(){
 
   save();
 
-  toast(
-    toastText('addedInquiry')
-  );
+toast(
+  toastText(
+    wasEditing
+      ? 'updatedInquiry'
+      : 'addedInquiry'
+  )
+);
 
+if(wasEditing){
   go('inquiry');
+}
 }
 
 function openEditProductItem(id){
@@ -4117,8 +4126,255 @@ function detailBack(){
   return go('catalog');
 }
   
-function renderInquiry(){mergeDuplicateProductItems();save();if(!state.items.length){inquiryList.innerHTML=`<div class="empty"><div class="empty-icon">◒</div><h3>${ui('emptyTitle')}</h3><p style="margin-top:8px;font-size:12px;line-height:1.5">${ui('emptyText')}</p><div class="btn-row" style="margin-top:20px;width:100%"><button class="btn btn-primary full" onclick="go('catalog')">${ui('goProducts')}</button><button class="btn btn-secondary full" onclick="go('custom')">${ui('makeCustom')}</button></div></div>`;summaryBox.innerHTML='';return}let groups={};state.items.forEach(i=>{let k=i.type==='custom'?'custom':i.series;(groups[k]??=[]).push(i)});inquiryList.innerHTML=Object.entries(groups).map(([k,items])=>`<div class="group-title"><span>${k==='custom'?ui('customInquiry'):seriesLabel(k)}</span><span>${k==='custom'?items.length+' '+ui('records'):seriesQty(k)+' '+qtyUnit()}</span></div>`+items.map(renderItem).join('')).join('');summaryBox.innerHTML=`<div class="summary"><div class="summary-row"><span class="summary-label">${ui('inquiryContent')}</span><span class="summary-value">${state.items.length} ${ui('items')}</span></div><div class="summary-row"><span class="summary-label">${ui('tierPrice')}</span><span class="summary-value">${ui('tierRule')}</span></div><div class="summary-row"><span class="summary-label">${ui('productEstimate')}</span><span class="amount">${money(total())}</span></div><p class="note">${ui('summaryNote')}</p></div>`;swipes();badge()}
-function renderItem(i){
+function renderInquiry(){
+  mergeDuplicateProductItems();
+  save();
+
+  if(!state.items.length){
+    inquiryList.innerHTML=`
+      <div class="empty">
+        <div class="empty-icon">◒</div>
+
+        <h3>${ui('emptyTitle')}</h3>
+
+        <p style="margin-top:8px;font-size:12px;line-height:1.5">
+          ${ui('emptyText')}
+        </p>
+
+        <div
+          class="btn-row"
+          style="margin-top:20px;width:100%"
+        >
+          <button
+            class="btn btn-primary full"
+            onclick="go('catalog')"
+          >
+            ${ui('goProducts')}
+          </button>
+
+          <button
+            class="btn btn-secondary full"
+            onclick="go('custom')"
+          >
+            ${ui('makeCustom')}
+          </button>
+        </div>
+      </div>
+    `;
+
+    summaryBox.innerHTML='';
+    return;
+  }
+
+  const groups={};
+
+  state.items.forEach(item=>{
+    const key=
+      item.type==='custom'
+        ? 'custom'
+        : item.series;
+
+    if(!groups[key]){
+      groups[key]=[];
+    }
+
+    groups[key].push(item);
+  });
+
+  inquiryList.innerHTML=
+    Object.entries(groups)
+      .map(([key,items])=>{
+        const title=
+          key==='custom'
+            ? ui('customInquiry')
+            : seriesLabel(key);
+
+        const countText=
+          key==='custom'
+            ? `${items.length} ${ui('records')}`
+            : `${seriesQty(key)} ${qtyUnit()}`;
+
+        return `
+          <div
+            class="group-title"
+            data-group-key="${htmlAttr(key)}"
+          >
+            <span>${title}</span>
+
+            <span data-group-total>
+              ${countText}
+            </span>
+          </div>
+
+          ${items.map(renderItem).join('')}
+        `;
+      })
+      .join('');
+
+  summaryBox.innerHTML=`
+    <div class="summary">
+      <div class="summary-row">
+        <span class="summary-label">
+          ${ui('inquiryContent')}
+        </span>
+
+        <span
+          class="summary-value"
+          id="inquiryItemCount"
+        >
+          ${state.items.length} ${ui('items')}
+        </span>
+      </div>
+
+      <div class="summary-row">
+        <span class="summary-label">
+          ${ui('tierPrice')}
+        </span>
+
+        <span class="summary-value">
+          ${ui('tierRule')}
+        </span>
+      </div>
+
+      <div class="summary-row">
+        <span class="summary-label">
+          ${ui('productEstimate')}
+        </span>
+
+        <span
+          class="amount"
+          id="inquiryEstimateTotal"
+        >
+          ${money(total())}
+        </span>
+      </div>
+
+      <p class="note">
+        ${ui('summaryNote')}
+      </p>
+    </div>
+  `;
+
+  swipes();
+  badge();
+}
+  
+function updateInquiryDynamicUi(){
+  /*
+   * 一个商品数量改变后，可能触发同价格组的阶梯价变化，
+   * 因此需要更新所有商品的单价和小计，
+   * 但不重新创建商品卡片和缩略图。
+   */
+  state.items.forEach(item=>{
+    if(item.type!=='product'){
+      return;
+    }
+
+    const shell=
+      inquiryList.querySelector(
+        `.swipe-shell[data-id="${item.id}"]`
+      );
+
+    if(!shell){
+      return;
+    }
+
+    const qtyInput=
+      shell.querySelector(
+        '.qty-edit'
+      );
+
+    const unitPrice=
+      shell.querySelector(
+        '.price-unit'
+      );
+
+    const subtotal=
+      shell.querySelector(
+        '.price-total'
+      );
+
+    if(qtyInput){
+      qtyInput.value=
+        normalizeQty(
+          item.qty,
+          QTY_MIN
+        );
+    }
+
+    if(unitPrice){
+      unitPrice.textContent=
+        `${money(itemUnit(item))}${currencyUnit()}`;
+    }
+
+    if(subtotal){
+      subtotal.textContent=
+        money(
+          itemSubtotal(item)
+        );
+    }
+  });
+
+  /*
+   * 更新各系列的数量。
+   */
+  inquiryList
+    .querySelectorAll(
+      '.group-title[data-group-key]'
+    )
+    .forEach(group=>{
+      const key=
+        group.dataset.groupKey;
+
+      const totalElement=
+        group.querySelector(
+          '[data-group-total]'
+        );
+
+      if(!totalElement){
+        return;
+      }
+
+      if(key==='custom'){
+        const customCount=
+          state.items.filter(
+            item=>item.type==='custom'
+          ).length;
+
+        totalElement.textContent=
+          `${customCount} ${ui('records')}`;
+
+        return;
+      }
+
+      totalElement.textContent=
+        `${seriesQty(key)} ${qtyUnit()}`;
+    });
+
+  const itemCount=
+    document.getElementById(
+      'inquiryItemCount'
+    );
+
+  if(itemCount){
+    itemCount.textContent=
+      `${state.items.length} ${ui('items')}`;
+  }
+
+  const estimateTotal=
+    document.getElementById(
+      'inquiryEstimateTotal'
+    );
+
+  if(estimateTotal){
+    estimateTotal.textContent=
+      money(total());
+  }
+
+  badge();
+}
+  
+  function renderItem(i){
   const trashSvg = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M5 7h14"/><path d="M8 7l1 12h6l1-12"/><path d="M10 11v5"/><path d="M14 11v5"/></svg>`;
   const delBtn = `<button class="delete-action" type="button" aria-label="删除" onclick="del('${i.id}')">${trashSvg}</button>`;
   if(i.type==='custom'){
@@ -4232,7 +4488,7 @@ function qty(id,delta){
     );
 
   save();
-  renderInquiry();
+updateInquiryDynamicUi();
 }
 function setItemQty(id,value){
   const item=
@@ -4271,7 +4527,7 @@ function setItemQty(id,value){
     );
 
   save();
-  renderInquiry();
+updateInquiryDynamicUi();
 }
 function del(id){state.items=state.items.filter(i=>i.id!==id);save();renderInquiry();toast(toastText('removedInquiry'))}
 function confirmClearAll(){if(!state.items.length)return toast(toastText('emptyInquiry'));confirmLayer.classList.add('show')}
