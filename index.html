@@ -755,6 +755,9 @@ let patternsBySize={};
 let sizeDims={};
 let products=[];
 let sharedAssets=[];
+let scents = [];
+const scentMap = new Map();
+const scentsBySeries = new Map();
 let sharedAssetMap=new Map();
 let uiDict={};
 let choiceMaps={};
@@ -828,6 +831,78 @@ function sharedAssetMapKey(
   ].join('|');
 }
 
+function scentLocalizedText(value) {
+  if (!value) return '';
+
+  return (
+    value[currentLang] ||
+    value.en ||
+    value.zh ||
+    ''
+  );
+}
+
+function indexScents(items) {
+  scentMap.clear();
+  scentsBySeries.clear();
+
+  items.forEach(scent => {
+    scentMap.set(scent.id, scent);
+
+    if (!scentsBySeries.has(scent.series)) {
+      scentsBySeries.set(scent.series, []);
+    }
+
+    scentsBySeries.get(scent.series).push(scent);
+  });
+}
+
+function productScentSeries(product) {
+  const value = product?.availableScentSeries;
+
+  if (Array.isArray(value)) {
+    return value.filter(Boolean);
+  }
+
+  return String(value || product?.series || '')
+    .split(',')
+    .map(item => item.trim())
+    .filter(Boolean);
+}
+
+function availableScentsForProduct(product) {
+  const allowedSeries = productScentSeries(product);
+  const result = [];
+  const used = new Set();
+
+  allowedSeries.forEach(series => {
+    const seriesScents = scentsBySeries.get(series) || [];
+
+    seriesScents.forEach(scent => {
+      if (used.has(scent.id)) return;
+
+      used.add(scent.id);
+      result.push(scent);
+    });
+  });
+
+  return result;
+}  
+
+function selectedScent() {
+  return scentMap.get(config.scent) || null;
+}
+
+function selectedScentName() {
+  const scent = selectedScent();
+
+  return scent
+    ? scentLocalizedText(scent.name)
+    : '';
+}
+
+async function loadCatalogData()
+  
 function indexSharedAssets(records){
   sharedAssetMap=new Map();
 
@@ -1048,15 +1123,19 @@ const [
   i18nResponse,
   configResponse,
   loadedProducts,
-  loadedSharedAssets
+  loadedSharedAssets,
+  loadedScents
 ]=await Promise.all([
-    fetch('./data/series.json',{cache:'no-cache'}),
-    fetch('./data/i18n.json',{cache:'no-cache'}),
-    fetch('./data/app-config.json',{cache:'no-cache'}),
-    DreamlandCatalogData.loadProductsWithFallback(),
-DreamlandCatalogData.loadSharedAssetsFromCsv()
-  ]);
-
+  fetch('./data/series.json',{cache:'no-cache'}),
+  fetch('./data/i18n.json',{cache:'no-cache'}),
+  fetch('./data/app-config.json',{cache:'no-cache'}),
+  DreamlandCatalogData.loadProductsWithFallback(),
+  DreamlandCatalogData.loadSharedAssetsFromCsv(),
+  DreamlandCatalogData.loadScentsFromCsv()
+]);
+  
+scents = loadedScents;
+indexScents(scents);
   const responses=[
     seriesResponse,
     i18nResponse,
@@ -1095,6 +1174,13 @@ DreamlandCatalogData.loadSharedAssetsFromCsv()
 
 indexSharedAssets(sharedAssets);
 
+scents=
+  Array.isArray(loadedScents)
+    ? loadedScents
+    : [];
+
+indexScents(scents);
+  
   currencyMap=i18nData.currencyMap||{};
   uiDict=i18nData.ui||{};
   choiceMaps=i18nData.choices||{};
@@ -2791,6 +2877,171 @@ function scrollActiveOptionsIntoView(){
       }
     });
 }
+
+function scentDisplayText(value){
+  if(!value)return '';
+
+  return (
+    value[currentLang]||
+    value.en||
+    value.zh||
+    ''
+  );
+}
+
+function scentSafeText(value){
+  return String(value??'')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
+function productScentSeries(product){
+  const value=
+    product?.availableScentSeries||
+    product?.series||
+    '';
+
+  if(Array.isArray(value)){
+    return value.filter(Boolean);
+  }
+
+  return String(value)
+    .split(',')
+    .map(item=>item.trim())
+    .filter(Boolean);
+}
+
+function availableScentsForProduct(product){
+  const result=[];
+  const used=new Set();
+
+  productScentSeries(product).forEach(series=>{
+    const seriesScents=
+      scentsBySeries.get(series)||
+      [];
+
+    seriesScents.forEach(scent=>{
+      if(used.has(scent.id))return;
+
+      used.add(scent.id);
+      result.push(scent);
+    });
+  });
+
+  return result;
+}
+
+function ensureCurrentScent(options){
+  let selected=
+    options.find(
+      scent=>scent.id===config.scentId
+    );
+
+  /*
+   * 兼容原来 config.scent 保存中文名称的旧数据。
+   */
+  if(!selected&&config.scent){
+    selected=options.find(scent=>
+      Object.values(scent.name||{})
+        .includes(config.scent)
+    );
+  }
+
+  if(!selected){
+    selected=options[0]||null;
+  }
+
+  config.scentId=
+    selected?.id||
+    '';
+
+  /*
+   * config.scent 暂时继续保存显示名称，
+   * 避免意向单等旧代码立即失效。
+   */
+  config.scent=
+    selected
+      ? scentDisplayText(selected.name)
+      : '';
+
+  return selected;
+}
+
+function setScent(scentId){
+  const scent=
+    scentMap.get(scentId);
+
+  if(!scent)return;
+
+  config.scentId=scent.id;
+  config.scent=
+    scentDisplayText(scent.name);
+
+  renderDetail();
+}
+
+function scentBlock(){
+  const options=
+    availableScentsForProduct(
+      activeProduct
+    );
+
+  ensureCurrentScent(options);
+
+  const isScroll=
+    options.length>4;
+
+  const gridClass=
+    isScroll
+      ? 'option-grid option-grid-scroll'
+      : 'option-grid';
+
+  const buttons=options.map(scent=>{
+    const active=
+      config.scentId===scent.id;
+
+    const name=
+      scentDisplayText(scent.name);
+
+    return `
+      <button
+        class="option ${active?'active':''}"
+        type="button"
+        onclick="setScent('${scent.id}')"
+      >
+        ${scentSafeText(name)}
+      </button>
+    `;
+  }).join('');
+
+  return `
+    <div class="config-block">
+      <div class="config-title">
+        <h3>${ui('scent')}</h3>
+
+        <div class="title-side">
+          <div class="tip-tools">
+            <span>
+              ${options.length}
+              ${ui('scentHint')}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="config-choice-row">
+        <div class="${gridClass}">
+          ${buttons}
+        </div>
+      </div>
+
+      ${scentInfo('scent')}
+    </div>
+  `;
+}
   
   function renderDetail(
   scrollState=null
@@ -2834,17 +3085,7 @@ function scrollActiveOptionsIntoView(){
       ['S','M','L','XL'],
       `${ui('currentSizeMoq')} ${seriesMoq}`
     )+
-    scentSeriesBlock+
-    block(
-      ui('scent'),
-      'scent',
-      scents,
-      `${
-        activeProduct.series==='holiday'
-          ? seriesLabel(config.scentSeries)
-          : seriesLabel(activeProduct.series)
-      } ${ui('scentHint')}`
-    )+
+    scentSeriesBlock+scentBlock()+
     block(
       ui('pattern'),
       'pattern',
