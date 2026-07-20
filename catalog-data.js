@@ -155,6 +155,50 @@
     return product;
   }
 
+function mapCsvScent(row) {
+  const text = value => String(value || '').trim();
+
+  return {
+    id: text(row.scent_id),
+    series: text(row.series),
+    status: text(row.status),
+    sortOrder: Number(row.sort_order || 999),
+
+    name: {
+      zh: text(row.name_zh),
+      en: text(row.name_en),
+      ko: text(row.name_ko)
+    },
+
+    notes: {
+      top: {
+        zh: text(row.top_zh),
+        en: text(row.top_en),
+        ko: text(row.top_ko)
+      },
+      heart: {
+        zh: text(row.heart_zh),
+        en: text(row.heart_en),
+        ko: text(row.heart_ko)
+      },
+      base: {
+        zh: text(row.base_zh),
+        en: text(row.base_en),
+        ko: text(row.base_ko)
+      }
+    },
+
+    supplier: {
+      zh: text(row.supplier_zh),
+      en: text(row.supplier_en),
+      ko: text(row.supplier_ko)
+    },
+
+    fragranceRatio: text(row.fragrance_ratio),
+    updatedAt: text(row.updated_at)
+  };
+}
+  
 function mapCsvSharedAsset(row){
   return {
     assetId:text(row.asset_id),
@@ -201,6 +245,41 @@ async function loadSharedAssetsFromCsv(){
   }catch(error){
     console.warn(
       '[catalog] Shared assets load failed; using legacy image paths.',
+      error
+    );
+
+    return [];
+  }
+}
+
+async function loadScentsFromCsv() {
+  try {
+    const response = await fetch('./data/scents.csv', {
+      cache: 'no-cache'
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to load scents.csv: ${response.status}`
+      );
+    }
+
+    const text = await response.text();
+    const rows = parseCsv(text);
+
+    return rows
+      .map(mapCsvScent)
+      .filter(item => item.id && item.status === 'active')
+      .sort((a, b) => {
+        if (a.series !== b.series) {
+          return a.series.localeCompare(b.series);
+        }
+
+        return a.sortOrder - b.sortOrder;
+      });
+  } catch (error) {
+    console.warn(
+      '[DREAMLAND] scents.csv load failed.',
       error
     );
 
@@ -262,6 +341,8 @@ window.DreamlandCatalogData={
   mapCsvSharedAsset,
   loadProductsFromCsv,
   loadProductsWithFallback,
+  mapCsvScent,
+  loadScentsFromCsv,
   loadSharedAssetsFromCsv
 };
 })();
