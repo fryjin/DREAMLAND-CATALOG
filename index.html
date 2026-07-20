@@ -1176,8 +1176,6 @@ const [
   DreamlandCatalogData.loadScentsFromCsv()
 ]);
   
-scents = loadedScents;
-indexScents(scents);
   const responses=[
     seriesResponse,
     i18nResponse,
@@ -2455,6 +2453,11 @@ async function openSharedPreviewFromButton(
       'previewCaption'
     );
 
+  const content=
+    document.getElementById(
+      'scentDetailContent'
+    );
+
   if(!layer||!img||!caption){
     return;
   }
@@ -2467,27 +2470,22 @@ async function openSharedPreviewFromButton(
       button.dataset.fallbackSrc
     );
 
+  layer.classList.remove(
+    'scent-mode'
+  );
+
+  if(content){
+    content.hidden=true;
+    content.innerHTML='';
+  }
+
+  img.hidden=false;
+  caption.hidden=false;
+
   caption.textContent=
     button.dataset.previewLabel||
     ui('imagePreview');
 
-  layer.classList.remove(
-  'scent-mode'
-);
-
-if(content){
-  content.hidden=true;
-  content.innerHTML='';
-}
-
-img.hidden=false;
-caption.hidden=false;
-  
-const content=
-  document.getElementById(
-    'scentDetailContent'
-  );
-  
   layer.classList.add('show');
 
   for(const src of candidates){
@@ -2743,26 +2741,6 @@ function initialScentSeries(product){
   );
 }
 
-function scentOptionsForConfig(){
-  if(
-    activeProduct?.series===
-    'holiday'
-  ){
-    return (
-      seriesMeta[
-        config.scentSeries
-      ]?.scents||
-      []
-    );
-  }
-
-  return (
-    seriesMeta[
-      activeProduct?.series
-    ]?.scents||
-    []
-  );
-}
 
 function itemScentLabel(item){
   const scent=
@@ -2792,11 +2770,6 @@ function openDetail(id){
 
   if(!activeProduct)return;
 
-  const meta=
-    seriesMeta[
-      activeProduct.series
-    ];
-
   const size=
     defaultProductSize(activeProduct);
 
@@ -2805,32 +2778,20 @@ function openDetail(id){
       activeProduct
     );
 
-  const scents=
-    activeProduct.series==='holiday'
-      ? (
-          seriesMeta[
-            scentSeries
-          ]?.scents||
-          []
-        )
-      : (
-          meta.scents||
-          []
-        );
-
   config={
-    size,
-    scentSeries,
-    scent:scents[0]||'',
-    pattern:
-      patternsBySize[size]?.[0]||
-      '',
-    pack:
-      defaultPack(
-        activeProduct.series
-      ),
-    qty:QTY_MIN
-  };
+  size,
+  scentSeries,
+  scentId:'',
+  scent:'',
+  pattern:
+    patternsBySize[size]?.[0]||
+    '',
+  pack:
+    defaultPack(
+      activeProduct.series
+    ),
+  qty:QTY_MIN
+};
 
   detailSlideIndex=0;
 
@@ -3197,17 +3158,27 @@ function productScentSeries(product){
     .filter(Boolean);
 }
 
-function availableScentsForProduct(product){
+function availableScentsForProduct(
+  product,
+  seriesOverride=''
+){
+  const allowedSeries=
+    seriesOverride
+      ? [seriesOverride]
+      : productScentSeries(product);
+
   const result=[];
   const used=new Set();
 
-  productScentSeries(product).forEach(series=>{
+  allowedSeries.forEach(series=>{
     const seriesScents=
       scentsBySeries.get(series)||
       [];
 
     seriesScents.forEach(scent=>{
-      if(used.has(scent.id))return;
+      if(used.has(scent.id)){
+        return;
+      }
 
       used.add(scent.id);
       result.push(scent);
@@ -3364,8 +3335,6 @@ function scentBlock(){
   const inputMin=
     QTY_MIN;
 
-  const scents=
-    scentOptionsForConfig();
 
   config.qty=
     normalizeQty(
@@ -3627,7 +3596,9 @@ function setDetailQty(value){
     input.value=config.qty;
   }
 
-  renderDetail();
+  renderDetail(
+  optionScrollState
+);
 }
 
 function changeDetailQty(delta){
@@ -3811,10 +3782,13 @@ function quickAdd(id){
       ? initialScentSeries(product)
       : product.series;
 
-  const scentOptions=
-    availableScentsForProduct(
-      product
-    );
+ const scentOptions=
+  availableScentsForProduct(
+    product,
+    product.series==='holiday'
+      ? fallbackSeries
+      : ''
+  );
 
   const firstScent=
     scentOptions[0]||
@@ -4028,27 +4002,6 @@ config={
       QTY_MIN
     )
 };
-
-  if(!config.scent){
-    const scents=
-      product.series==='holiday'
-        ? (
-            seriesMeta[
-              config.scentSeries
-            ]?.scents||
-            []
-          )
-        : (
-            seriesMeta[
-              product.series
-            ]?.scents||
-            []
-          );
-
-    config.scent=
-      scents[0]||
-      '';
-  }
 
   detailSlideIndex=0;
 
