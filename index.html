@@ -880,7 +880,7 @@ body[data-lang="ko"] .option-grid-scroll .option{
   overflow-y:hidden;
   flex-wrap:nowrap!important;
 
-  scroll-behavior:smooth;
+  scroll-behavior:auto;
   scroll-padding-inline:12px;
 }
 
@@ -3208,25 +3208,44 @@ function captureDetailOptionScrollState(){
     .filter(Boolean);
 }
 
-function restoreDetailOptionScrollState(scrollState){
-  const states=Array.isArray(scrollState)
-    ? scrollState
-    : scrollState
-      ? [scrollState]
-      : [];
+function restoreDetailOptionScrollState(
+  scrollState,
+  excludeKey=''
+){
+  const states=
+    Array.isArray(scrollState)
+      ? scrollState
+      : scrollState
+        ? [scrollState]
+        : [];
 
   states.forEach(state=>{
-    if(!state||!state.key||!Number.isFinite(state.left)){
+    if(
+      !state||
+      !state.key||
+      !Number.isFinite(state.left)||
+      state.key===excludeKey
+    ){
       return;
     }
 
-    const scroller=configCard.querySelector(
-      `[data-config-key="${state.key}"] .option-grid-scroll`
-    );
+    const scroller=
+      configCard.querySelector(
+        `[data-config-key="${state.key}"] .option-grid-scroll`
+      );
 
-    if(scroller){
-      scroller.scrollLeft=state.left;
+    if(!scroller){
+      return;
     }
+
+    /*
+     * 未被操作的列表只瞬间恢复，
+     * 不产生横向移动动画。
+     */
+    scroller.scrollTo({
+      left:state.left,
+      behavior:'auto'
+    });
   });
 }
 
@@ -3629,20 +3648,18 @@ requestAnimationFrame(()=>{
       : Boolean(scrollState);
 
   restoreDetailOptionScrollState(
-    scrollState
-  );
+  scrollState,
+  focusKey
+);
 
-  if(focusKey){
-    /*
-     * 只有用户主动选择选项时，
-     * 才将对应胶囊移动到视觉中心。
-     */
-    centerSelectedOption(
-      focusKey
-    );
-  }else if(!hasScrollState){
-    scrollActiveOptionsIntoView();
-  }
+if(focusKey){
+  centerSelectedOption(
+    focusKey,
+    'smooth'
+  );
+}else if(!hasScrollState){
+  scrollActiveOptionsIntoView();
+}
 });
 }
     
