@@ -889,6 +889,126 @@ body[data-lang="ko"] .option-grid-scroll .option{
   width:auto;
   white-space:nowrap;
 }  
+
+/* =========================
+   Homepage visual refinement
+   ========================= */
+
+@media (max-width:600px){
+
+  /*
+   * 主标题 WHOLESALE CATALOG
+   * 位置保持不变，只增强浅色背景上的可读性。
+   */
+  .hero-big{
+    color:rgba(255,255,255,.98);
+
+    text-shadow:
+      0 3px 18px rgba(0,0,0,.16),
+      0 1px 3px rgba(0,0,0,.12);
+  }
+
+  /*
+   * 首页品牌文案
+   */
+  .hero-copy{
+    left:24px;
+    right:24px;
+
+    /*
+     * 当前滑块顶部大约距离页面底部 104px。
+     * 文案 bottom 设置为 136px，
+     * 可获得约 32px 的呼吸空间。
+     */
+    bottom:136px;
+
+    max-width:340px;
+  }
+
+  .hero-copy h1{
+    margin:0;
+
+    color:rgba(255,255,255,.97);
+
+    font-size:clamp(
+      24px,
+      6.5vw,
+      27px
+    );
+
+    line-height:1.12;
+    font-weight:900;
+    letter-spacing:-.02em;
+
+    text-shadow:
+      0 2px 12px rgba(0,0,0,.25),
+      0 1px 2px rgba(0,0,0,.18);
+  }
+
+  /*
+   * 英文通常更长，略微收小并压紧字距。
+   */
+  body[data-lang="en"] .hero-copy h1{
+    max-width:320px;
+
+    font-size:clamp(
+      22px,
+      6vw,
+      25px
+    );
+
+    line-height:1.08;
+    letter-spacing:-.035em;
+  }
+
+  /*
+   * 韩文比中文更容易产生两行，
+   * 字号稍微控制，但不要压得太紧。
+   */
+  body[data-lang="ko"] .hero-copy h1{
+    max-width:325px;
+
+    font-size:clamp(
+      22px,
+      6vw,
+      25px
+    );
+
+    line-height:1.12;
+    letter-spacing:-.015em;
+  }
+
+  /*
+   * 提高黑色滑块中间提示文字的可读性。
+   */
+  .unlock-hint{
+    color:rgba(255,255,255,.52);
+    font-weight:800;
+    letter-spacing:.01em;
+  }
+
+  /*
+   * 白色滑块按钮里的文字不要太淡。
+   */
+  .unlock-thumb{
+    color:#72747c;
+  }
+}
+
+/*
+ * 处理 iPhone SE 等短屏设备。
+ * 文案稍微下移、字号缩小，避免压住产品。
+ */
+@media (max-width:600px) and (max-height:720px){
+  .hero-copy{
+    bottom:124px;
+  }
+
+  .hero-copy h1{
+    font-size:23px;
+  }
+}
+  
 </style>
 </head>
 <body>
@@ -908,7 +1028,8 @@ body[data-lang="ko"] .option-grid-scroll .option{
 </div><div class="hero-big" aria-hidden="true">
   <span>WHOLESALE</span>
   <span>CATALOG</span>
-</div><div class="hero-copy"><h1>把选款这件事，变轻一点。</h1><p>浏览商品，加入意向单，先做金额预估，再由顾问确认报价与定制细节。</p></div><div class="hero-cta"><div class="unlock-slider" id="unlockSlider"><div class="unlock-fill" id="unlockFill"></div><button class="unlock-thumb" id="unlockThumb" type="button"><span class="thumb-label">开始入梦</span></button><div class="unlock-hint">右滑进入产品手册</div><div class="unlock-dock"><span class="arrow"></span><span class="arrow"></span><span class="arrow"></span></div></div></div></div></section>
+</div><div class="hero-copy">
+  <h1>从作梦开始，让好礼发生。</h1><p>浏览商品，加入意向单，先做金额预估，再由顾问确认报价与定制细节。</p></div><div class="hero-cta"><div class="unlock-slider" id="unlockSlider"><div class="unlock-fill" id="unlockFill"></div><button class="unlock-thumb" id="unlockThumb" type="button"><span class="thumb-label">开始入梦</span></button><div class="unlock-hint">右滑进入产品手册</div><div class="unlock-dock"><span class="arrow"></span><span class="arrow"></span><span class="arrow"></span></div></div></div></div></section>
 <section class="screen" data-screen="catalog"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1v-8.5Z"/></svg></button><div><div class="page-title">商品手册</div><div class="page-sub">先选款，再确认报价</div></div><div class="lang-wrap" id="langWrap"><button class="lang-toggle" id="langToggle" onclick="toggleLangMenu(event)"><span class="globe">🌐</span><span class="lang-current">中文</span><span class="caret">▾</span></button><div class="lang-menu" id="langMenu"></div></div></div><div class="tabs" id="seriesTabs"></div><div class="series-count" id="seriesCount"></div></div><div class="content"><div class="catalog-columns" id="productGrid"></div></div></section>
 <section class="screen" data-screen="detail"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="detailBack()"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">商品配置</div><div class="page-sub">选择尺寸、香型、花样与包装</div></div></div></div><div class="content no-nav with-cta"><div class="detail-media" id="detailMedia"></div><div class="config-card" id="configCard"></div></div><div class="sticky-action"><button class="btn btn-primary full" onclick="addConfiguredProduct()">加入意向单</button></div></section>
 <section class="screen" data-screen="inquiry"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('catalog')"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">意向单</div><div class="page-sub">预算预估，最终由顾问确认</div></div><button class="icon-btn" onclick="confirmClearAll()"><span style="font-size:11px;font-weight:950">清空</span></button></div></div><div class="content with-cta"><div id="inquiryList" class="inquiry-ui"></div><div id="summaryBox"></div></div><div class="sticky-action"><button class="btn btn-primary full" onclick="goContact()">提交意向单</button></div></section>
