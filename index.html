@@ -3209,9 +3209,42 @@ function captureDetailOptionScrollState(){
 }
 
 function restoreDetailOptionScrollState(
-  scrollState,
-  excludeKey=''
+  scrollState
 ){
+  const states=
+    Array.isArray(scrollState)
+      ? scrollState
+      : scrollState
+        ? [scrollState]
+        : [];
+
+  states.forEach(state=>{
+    if(
+      !state||
+      !state.key||
+      !Number.isFinite(state.left)
+    ){
+      return;
+    }
+
+    const scroller=
+      configCard.querySelector(
+        `[data-config-key="${state.key}"] .option-grid-scroll`
+      );
+
+    if(!scroller){
+      return;
+    }
+
+    /*
+     * DOM 重新生成后，先无动画恢复到用户操作前的位置。
+     */
+    scroller.scrollTo({
+      left:state.left,
+      behavior:'auto'
+    });
+  });
+}
   const states=
     Array.isArray(scrollState)
       ? scrollState
@@ -3647,16 +3680,26 @@ requestAnimationFrame(()=>{
       ? scrollState.length>0
       : Boolean(scrollState);
 
-  restoreDetailOptionScrollState(
-  scrollState,
-  focusKey
+  /*
+ * 第一阶段：所有横向列表先恢复到重绘前的位置。
+ * 该操作发生在浏览器绘制前，不应被用户看到。
+ */
+restoreDetailOptionScrollState(
+  scrollState
 );
 
 if(focusKey){
-  centerSelectedOption(
-    focusKey,
-    'smooth'
-  );
+  /*
+   * 第二阶段：下一帧只让当前选中的列表轻微居中。
+   * 此时动画从用户原来的滚动位置开始，
+   * 而不是从最左侧开始。
+   */
+  requestAnimationFrame(()=>{
+    centerSelectedOption(
+      focusKey,
+      'smooth'
+    );
+  });
 }else if(!hasScrollState){
   scrollActiveOptionsIntoView();
 }
