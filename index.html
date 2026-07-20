@@ -3728,6 +3728,79 @@ function mergeDuplicateProductItems(){
 
   state.items=merged;
 }
+
+function itemConfigData(item){
+  return (
+    item?.config||
+    item||
+    {}
+  );
+}
+
+function scentSnapshot(
+  scentId,
+  fallbackSeries,
+  fallbackName=''
+){
+  const scent=
+    scentMap.get(scentId);
+
+  return {
+    scentId:
+      scent?.id||
+      scentId||
+      '',
+
+    scent:
+      scent
+        ?scentDisplayText(
+          scent.name
+        )
+        :fallbackName,
+
+    scentSeries:
+      scent?.series||
+      fallbackSeries||
+      ''
+  };
+}
+
+function itemScentKey(item){
+  const itemConfig=
+    itemConfigData(item);
+
+  return (
+    itemConfig.scentId||
+    itemConfig.scent||
+    ''
+  );
+}
+
+function itemScentText(item){
+  const itemConfig=
+    itemConfigData(item);
+
+  const scent=
+    scentMap.get(
+      itemConfig.scentId
+    );
+
+  return scent
+    ?scentDisplayText(
+      scent.name
+    )
+    :(itemConfig.scent||'');
+}
+
+function itemPricingSeries(item){
+  const itemConfig=
+    itemConfigData(item);
+
+  return (
+    itemConfig.scentSeries||
+    item.series
+  );
+}
   
 function quickAdd(id){
   const product=
@@ -3760,7 +3833,18 @@ const size=
           ]?.scents||
           []
         );
+const scentOptions=
+  availableScentsForProduct(p);
 
+const firstScent=
+  scentOptions[0]||
+  null;
+
+const scentData=
+  scentSnapshot(
+    firstScent?.id,
+    p.series
+  );
   const item={
     id:uid(),
     type:'product',
@@ -3772,7 +3856,9 @@ const size=
     cover:productCover(product),
     moq:min,
     size,
-    scent:scents[0]||'',
+   scentId:scentData.scentId,
+scent:scentData.scent,
+scentSeries:scentData.scentSeries,,
     pattern:
       patternsBySize[size]?.[0]||
       '',
@@ -3796,70 +3882,42 @@ const size=
   );
 }
 function addConfiguredProduct(){
-  if(!activeProduct)return;
-
-  const min=
-    configMoq();
-
-  config.qty=
-    normalizeQty(
-      config.qty,
-      QTY_MIN
+  const scentData=
+    scentSnapshot(
+      config.scentId,
+      activeProduct.series,
+      config.scent
     );
 
-  const item={
-    id:uid(),
-    type:'product',
-    productId:activeProduct.id,
-    name:activeProduct.name,
-    names:activeProduct.names,
-    series:activeProduct.series,
-    color:activeProduct.color,
-    cover:productCover(activeProduct),
-    moq:min,
-    ...config
+  const savedConfig={
+    ...config,
+    ...scentData
   };
 
-  if(
-    activeProduct.series!==
-    'holiday'
-  ){
-    delete item.scentSeries;
-  }
+  state.items.push({
+    id:uid(),
+    type:'product',
+    productId:
+      activeProduct.id,
 
-  if(editingItemId){
-    const target=
-      state.items.find(
-        row=>row.id===editingItemId
-      );
+    name:
+      activeProduct.name,
 
-    if(target){
-      Object.assign(
-        target,
-        item,
-        {
-          id:editingItemId
-        }
-      );
+    series:
+      activeProduct.series,
 
-      editingItemId='';
+    color:
+      activeProduct.color,
 
-      mergeDuplicateProductItems();
-      save();
-      toast(ui('updatedInquiry'));
-      go('inquiry');
+    config:
+      savedConfig
+  });
 
-      return;
-    }
-  }
-
-  addOrMergeProductItem(item);
-  mergeDuplicateProductItems();
   save();
-
   toast(
-    toastText('addedInquiry')
+    ui('addedToInquiry')
   );
+  go('inquiry');
 }
 
 function openEditProductItem(id){
