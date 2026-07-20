@@ -1078,7 +1078,7 @@ body[data-lang="ko"] .option-grid-scroll .option{
   data-shared-category="home"
   data-shared-key="hero"
   data-shared-size=""
-  data-fallback-src="./images/shared/home/HOME001/cover.webp"
+ data-fallback-src="./images/home/hero-product.png"
   data-priority="high"
 
   fetchpriority="high"
@@ -1326,7 +1326,9 @@ async function loadSharedImage(
   candidates,
   priority='auto'
 ){
-  if(!img)return false;
+  if(!img){
+    return false;
+  }
 
   const sources=
     uniqueImages(candidates);
@@ -1335,75 +1337,43 @@ async function loadSharedImage(
     img.closest('.media-frame');
 
   for(const src of sources){
-  img.classList.remove(
-    'is-missing'
-  );
-
-  const candidateUrl=
-    new URL(
-      src,
-      document.baseURI
-    ).href;
-
-  const currentUrl=
-    img.currentSrc||
-    img.src||
-    '';
-
-  /*
-   * 首页等关键图片已经由 HTML 提前加载完成时，
-   * 不再移除并重复加载同一个地址。
-   */
-  if(
-    currentUrl===candidateUrl&&
-    img.complete&&
-    img.naturalWidth>0
-  ){
-    frame?.classList.add(
-      'is-loaded'
+    img.classList.remove(
+      'is-missing'
     );
 
-    frame?.classList.remove(
-      'is-loading',
-      'is-error'
-    );
+    const candidateUrl=
+      new URL(
+        src,
+        document.baseURI
+      ).href;
 
-    return true;
-  }
+    const currentUrl=
+      img.currentSrc||
+      img.src||
+      '';
 
-  img.removeAttribute('src');
-  img.dataset.src=src;
+    /*
+     * 图片已由 HTML 提前加载完成时，
+     * 直接标记为完成，避免重复请求。
+     */
+    if(
+      currentUrl===candidateUrl&&
+      img.complete&&
+      img.naturalWidth>0
+    ){
+      frame?.classList.add(
+        'is-loaded'
+      );
 
-  frame?.classList.remove(
-    'is-loaded',
-    'is-loading',
-    'is-error'
-  );
+      frame?.classList.remove(
+        'is-loading',
+        'is-error'
+      );
 
-  const success=
-    window.ImageManager?.load
-      ? await window.ImageManager.load(
-          img,
-          {priority}
-        )
-      : await nativeLoadImage(
-          img,
-          src
-        );
+      return true;
+    }
 
-  if(success){
-    frame?.classList.add(
-      'is-loaded'
-    );
-
-    frame?.classList.remove(
-      'is-loading',
-      'is-error'
-    );
-
-    return true;
-  }
-}
+    img.removeAttribute('src');
     img.dataset.src=src;
 
     frame?.classList.remove(
@@ -1423,25 +1393,32 @@ async function loadSharedImage(
             src
           );
 
-   if(success){
-  frame?.classList.add('is-loaded');
-  frame?.classList.remove(
-    'is-loading',
+    if(success){
+      frame?.classList.add(
+        'is-loaded'
+      );
+
+      frame?.classList.remove(
+        'is-loading',
+        'is-error'
+      );
+
+      return true;
+    }
+  }
+
+  frame?.classList.add(
     'is-error'
   );
 
-  return true;
-}
-  }
+  frame?.classList.remove(
+    'is-loading',
+    'is-loaded'
+  );
 
- frame?.classList.add('is-error');
-frame?.classList.remove(
-  'is-loading',
-  'is-loaded'
-);
+  imgMiss(img);
 
-imgMiss(img);
-return false;
+  return false;
 }
 
 function mountSharedAssetImages(
@@ -5663,6 +5640,69 @@ function toast(t){
   void el.offsetWidth;
   el.classList.add('show');
 }
+
+function initHeroImage(){
+  const img=
+    document.querySelector(
+      '[data-screen="home"] .hero-product-img'
+    );
+
+  const frame=
+    img?.closest(
+      '.hero-product'
+    );
+
+  if(!img||!frame){
+    return;
+  }
+
+  const markLoaded=()=>{
+    frame.classList.add(
+      'is-loaded'
+    );
+
+    frame.classList.remove(
+      'is-loading',
+      'is-error'
+    );
+  };
+
+  const markError=()=>{
+    frame.classList.add(
+      'is-error'
+    );
+
+    frame.classList.remove(
+      'is-loading',
+      'is-loaded'
+    );
+  };
+
+  if(
+    img.complete&&
+    img.naturalWidth>0
+  ){
+    markLoaded();
+    return;
+  }
+
+  frame.classList.add(
+    'is-loading'
+  );
+
+  img.addEventListener(
+    'load',
+    markLoaded,
+    {once:true}
+  );
+
+  img.addEventListener(
+    'error',
+    markError,
+    {once:true}
+  );
+}
+  
 function initUnlock(){
   const slider=document.getElementById('unlockSlider');
   const thumb=document.getElementById('unlockThumb');
