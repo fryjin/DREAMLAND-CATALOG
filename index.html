@@ -2829,6 +2829,31 @@ function itemScentLabel(item){
 
   return scent;
 }
+
+function resetDetailScroll(){
+  const detailContent=
+    document.querySelector(
+      '.screen[data-screen="detail"] .content'
+    );
+
+  if(!detailContent){
+    return;
+  }
+
+  const reset=()=>{
+    detailContent.scrollTop=0;
+  };
+
+  reset();
+
+  requestAnimationFrame(()=>{
+    reset();
+
+    requestAnimationFrame(()=>{
+      reset();
+    });
+  });
+}
   
 function openDetail(id){
   editingItemId='';
@@ -2865,10 +2890,11 @@ function openDetail(id){
   qty:QTY_MIN
 };
 
-  detailSlideIndex=0;
+detailSlideIndex=0;
 
-  renderDetail();
-  go('detail');
+renderDetail();
+go('detail');
+resetDetailScroll();
 }
 
 function renderDetailMedia(){
@@ -4075,10 +4101,11 @@ config={
     )
 };
 
-  detailSlideIndex=0;
+detailSlideIndex=0;
 
-  renderDetail();
-  go('detail');
+renderDetail();
+go('detail');
+resetDetailScroll();
 }
 
 function detailBack(){
