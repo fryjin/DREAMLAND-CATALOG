@@ -928,16 +928,6 @@ function sharedAssetMapKey(
   ].join('|');
 }
 
-function scentLocalizedText(value) {
-  if (!value) return '';
-
-  return (
-    value[currentLang] ||
-    value.en ||
-    value.zh ||
-    ''
-  );
-}
 
 function indexScents(items) {
   scentMap.clear();
@@ -954,51 +944,6 @@ function indexScents(items) {
   });
 }
 
-function productScentSeries(product) {
-  const value = product?.availableScentSeries;
-
-  if (Array.isArray(value)) {
-    return value.filter(Boolean);
-  }
-
-  return String(value || product?.series || '')
-    .split(',')
-    .map(item => item.trim())
-    .filter(Boolean);
-}
-
-function availableScentsForProduct(product) {
-  const allowedSeries = productScentSeries(product);
-  const result = [];
-  const used = new Set();
-
-  allowedSeries.forEach(series => {
-    const seriesScents = scentsBySeries.get(series) || [];
-
-    seriesScents.forEach(scent => {
-      if (used.has(scent.id)) return;
-
-      used.add(scent.id);
-      result.push(scent);
-    });
-  });
-
-  return result;
-}  
-
-function selectedScent() {
-  return scentMap.get(config.scent) || null;
-}
-
-function selectedScentName() {
-  const scent = selectedScent();
-
-  return scent
-    ? scentLocalizedText(scent.name)
-    : '';
-}
-
-async function loadCatalogData()
   
 function indexSharedAssets(records){
   sharedAssetMap=new Map();
@@ -2526,6 +2471,23 @@ async function openSharedPreviewFromButton(
     button.dataset.previewLabel||
     ui('imagePreview');
 
+  layer.classList.remove(
+  'scent-mode'
+);
+
+if(content){
+  content.hidden=true;
+  content.innerHTML='';
+}
+
+img.hidden=false;
+caption.hidden=false;
+  
+const content=
+  document.getElementById(
+    'scentDetailContent'
+  );
+  
   layer.classList.add('show');
 
   for(const src of candidates){
@@ -2804,7 +2766,7 @@ function scentOptionsForConfig(){
 
 function itemScentLabel(item){
   const scent=
-    choiceLabel(item?.scent)||
+    itemScentText(item)||
     ui('scentRecommend');
 
   if(item?.series==='holiday'){
@@ -2817,6 +2779,7 @@ function itemScentLabel(item){
 
   return scent;
 }
+  
 function openDetail(id){
   editingItemId='';
   cancelCatalogRender();
@@ -3291,23 +3254,42 @@ function ensureCurrentScent(options){
 }
 
 function setScent(scentId){
+  const optionScrollState=
+    captureDetailOptionScrollState();
+
   const scent=
     scentMap.get(scentId);
 
   if(!scent)return;
 
-  config.scentId=scent.id;
-  config.scent=
-    scentDisplayText(scent.name);
+  config.scentId=
+    scent.id;
 
-  renderDetail();
+  config.scent=
+    scentDisplayText(
+      scent.name
+    );
+
+  if(
+    activeProduct?.series==='holiday'
+  ){
+    config.scentSeries=
+      scent.series;
+  }
+
+  renderDetail(
+    optionScrollState
+  );
 }
 
 function scentBlock(){
-  const options=
-    availableScentsForProduct(
-      activeProduct
-    );
+ const options=
+  availableScentsForProduct(
+    activeProduct,
+    activeProduct?.series==='holiday'
+      ? config.scentSeries
+      : ''
+  );
 
   ensureCurrentScent(options);
 
@@ -3337,8 +3319,11 @@ function scentBlock(){
     `;
   }).join('');
 
-  return `
-    <div class="config-block">
+ return `
+  <div
+    class="config-block"
+    data-config-key="scent"
+  >
       <div class="config-title">
         <h3>${ui('scent')}</h3>
 
@@ -3575,11 +3560,9 @@ const optionScrollState=captureDetailOptionScrollState();
   config[key]=value;
 
   if(key==='scentSeries'){
-    config.scent=
-      seriesMeta[value]
-        ?.scents?.[0]||
-      '';
-  }
+  config.scentId='';
+  config.scent='';
+}
 
  if(key==='size'){
   config.pattern=
@@ -3660,15 +3643,31 @@ function changeDetailQty(delta){
 }
 
 function productIdentityKey(item){
+  const itemConfig=
+    itemConfigData(item);
+
   return [
     item.type||'product',
     item.productId||'',
     item.series||'',
-    item.scentSeries||'',
-    item.size||'',
-    item.scent||'',
-    item.pattern||'',
-    item.pack||''
+
+    itemConfig.scentSeries||
+      item.scentSeries||
+      '',
+
+    itemConfig.size||
+      item.size||
+      '',
+
+    itemScentKey(item),
+
+    itemConfig.pattern||
+      item.pattern||
+      '',
+
+    itemConfig.pack||
+      item.pack||
+      ''
   ].join('|');
 }
 
@@ -3792,15 +3791,6 @@ function itemScentText(item){
     :(itemConfig.scent||'');
 }
 
-function itemPricingSeries(item){
-  const itemConfig=
-    itemConfigData(item);
-
-  return (
-    itemConfig.scentSeries||
-    item.series
-  );
-}
   
 function quickAdd(id){
   const product=
@@ -3810,78 +3800,93 @@ function quickAdd(id){
 
   if(!product)return;
 
-const size=
+  const size=
     defaultProductSize(product);
 
   const min=
     productMoq(product);
 
-  const scentSeries=
-    initialScentSeries(product);
-
-  const scents=
+  const fallbackSeries=
     product.series==='holiday'
-      ? (
-          seriesMeta[
-            scentSeries
-          ]?.scents||
-          []
-        )
-      : (
-          seriesMeta[
-            product.series
-          ]?.scents||
-          []
-        );
-const scentOptions=
-  availableScentsForProduct(p);
+      ? initialScentSeries(product)
+      : product.series;
 
-const firstScent=
-  scentOptions[0]||
-  null;
+  const scentOptions=
+    availableScentsForProduct(
+      product
+    );
 
-const scentData=
-  scentSnapshot(
-    firstScent?.id,
-    p.series
-  );
+  const firstScent=
+    scentOptions[0]||
+    null;
+
+  const scentData=
+    scentSnapshot(
+      firstScent?.id,
+      fallbackSeries
+    );
+
   const item={
     id:uid(),
     type:'product',
-    productId:product.id,
-    name:product.name,
-    names:product.names,
-    series:product.series,
-    color:product.color,
-    cover:productCover(product),
-    moq:min,
+
+    productId:
+      product.id,
+
+    name:
+      product.name,
+
+    names:
+      product.names,
+
+    series:
+      product.series,
+
+    color:
+      product.color,
+
+    cover:
+      productCover(product),
+
+    moq:
+      min,
+
     size,
-   scentId:scentData.scentId,
-scent:scentData.scent,
-scentSeries:scentData.scentSeries,,
+
+    scentId:
+      scentData.scentId,
+
+    scent:
+      scentData.scent,
+
+    scentSeries:
+      scentData.scentSeries,
+
     pattern:
       patternsBySize[size]?.[0]||
       '',
+
     pack:
       defaultPack(
         product.series
       ),
-    qty:QTY_MIN
-  };
 
-  if(product.series==='holiday'){
-    item.scentSeries=
-      scentSeries;
-  }
+    qty:
+      QTY_MIN
+  };
 
   addOrMergeProductItem(item);
 
   save();
+
   toast(
     toastText('addedInquiry')
   );
 }
+  
 function addConfiguredProduct(){
+  if(!activeProduct)return;
+
   const scentData=
     scentSnapshot(
       config.scentId,
@@ -3889,19 +3894,21 @@ function addConfiguredProduct(){
       config.scent
     );
 
-  const savedConfig={
-    ...config,
-    ...scentData
-  };
+  const item={
+    id:
+      editingItemId||
+      uid(),
 
-  state.items.push({
-    id:uid(),
     type:'product',
+
     productId:
       activeProduct.id,
 
     name:
       activeProduct.name,
+
+    names:
+      activeProduct.names,
 
     series:
       activeProduct.series,
@@ -3909,14 +3916,60 @@ function addConfiguredProduct(){
     color:
       activeProduct.color,
 
-    config:
-      savedConfig
-  });
+    cover:
+      productCover(activeProduct),
+
+    moq:
+      productMoq(activeProduct),
+
+    size:
+      config.size,
+
+    scentId:
+      scentData.scentId,
+
+    scent:
+      scentData.scent,
+
+    scentSeries:
+      scentData.scentSeries,
+
+    pattern:
+      config.pattern,
+
+    pack:
+      config.pack,
+
+    qty:
+      normalizeQty(
+        config.qty,
+        QTY_MIN
+      )
+  };
+
+  if(editingItemId){
+    const index=
+      state.items.findIndex(
+        row=>row.id===editingItemId
+      );
+
+    if(index>=0){
+      state.items[index]=item;
+    }
+
+    editingItemId='';
+
+    mergeDuplicateProductItems();
+  }else{
+    addOrMergeProductItem(item);
+  }
 
   save();
+
   toast(
-    ui('addedToInquiry')
+    toastText('addedInquiry')
   );
+
   go('inquiry');
 }
 
@@ -3940,36 +3993,41 @@ function openEditProductItem(id){
   activeProduct=product;
   editingItemId=id;
 
-  config={
-    size:
+config={
+  size:
+    item.size||
+    defaultProductSize(product),
+
+  scentId:
+    item.scentId||
+    '',
+
+  scentSeries:
+    item.scentSeries||
+    initialScentSeries(product),
+
+  scent:
+    item.scent||
+    '',
+
+  pattern:
+    item.pattern||
+    patternsBySize[
       item.size||
-      defaultProductSize(product),
+      defaultProductSize(product)
+    ]?.[0]||
+    '',
 
-    scentSeries:
-      item.scentSeries||
-      initialScentSeries(product),
+  pack:
+    item.pack||
+    defaultPack(product.series),
 
-    scent:
-      item.scent||'',
-
-    pattern:
-      item.pattern||
-      patternsBySize[
-        item.size||
-        defaultProductSize(product)
-      ]?.[0]||
-      '',
-
-    pack:
-      item.pack||
-      defaultPack(product.series),
-
-    qty:
-      normalizeQty(
-        item.qty,
-        QTY_MIN
-      )
-  };
+  qty:
+    normalizeQty(
+      item.qty,
+      QTY_MIN
+    )
+};
 
   if(!config.scent){
     const scents=
