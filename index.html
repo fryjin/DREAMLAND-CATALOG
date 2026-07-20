@@ -3245,42 +3245,6 @@ function restoreDetailOptionScrollState(
     });
   });
 }
-  const states=
-    Array.isArray(scrollState)
-      ? scrollState
-      : scrollState
-        ? [scrollState]
-        : [];
-
-  states.forEach(state=>{
-    if(
-      !state||
-      !state.key||
-      !Number.isFinite(state.left)||
-      state.key===excludeKey
-    ){
-      return;
-    }
-
-    const scroller=
-      configCard.querySelector(
-        `[data-config-key="${state.key}"] .option-grid-scroll`
-      );
-
-    if(!scroller){
-      return;
-    }
-
-    /*
-     * 未被操作的列表只瞬间恢复，
-     * 不产生横向移动动画。
-     */
-    scroller.scrollTo({
-      left:state.left,
-      behavior:'auto'
-    });
-  });
-}
 
 function scrollActiveOptionsIntoView(){
   if(!configCard){
