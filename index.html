@@ -217,6 +217,21 @@ user-select:none;
   white-space:nowrap;
 }
 
+.config-block[data-config-key="scent"]
+.option-grid-scroll{
+  display:flex;
+  flex-wrap:nowrap!important;
+  overflow-x:auto;
+  overflow-y:hidden;
+}
+
+.config-block[data-config-key="scent"]
+.option-grid-scroll .option{
+  flex:0 0 auto;
+  width:auto;
+  white-space:nowrap;
+}
+  
 body[data-lang="en"] .option-grid-scroll .option,
 body[data-lang="ko"] .option-grid-scroll .option{
   font-size:11px;
@@ -3352,47 +3367,45 @@ function setScent(scentId){
 }
 
 function scentBlock(){
- const options=
-  availableScentsForProduct(
-    activeProduct,
-    activeProduct?.series==='holiday'
-      ? config.scentSeries
-      : ''
-  );
+  const options=
+    availableScentsForProduct(
+      activeProduct,
+      activeProduct?.series==='holiday'
+        ? config.scentSeries
+        : ''
+    );
 
   ensureCurrentScent(options);
 
-  const isScroll=
-    options.length>4;
-
   const gridClass=
-    isScroll
-      ? 'option-grid option-grid-scroll'
-      : 'option-grid';
+    'option-grid option-grid-scroll';
 
-  const buttons=options.map(scent=>{
-    const active=
-      config.scentId===scent.id;
+  const buttons=
+    options.map(scent=>{
+      const active=
+        config.scentId===scent.id;
 
-    const name=
-      scentDisplayText(scent.name);
+      const name=
+        scentDisplayText(
+          scent.name
+        );
 
-    return `
-      <button
-        class="option ${active?'active':''}"
-        type="button"
-        onclick="setScent('${scent.id}')"
-      >
-        ${scentSafeText(name)}
-      </button>
-    `;
-  }).join('');
+      return `
+        <button
+          class="option ${active?'active':''}"
+          type="button"
+          onclick="setScent('${scent.id}')"
+        >
+          ${scentSafeText(name)}
+        </button>
+      `;
+    }).join('');
 
- return `
-  <div
-    class="config-block"
-    data-config-key="scent"
-  >
+  return `
+    <div
+      class="config-block"
+      data-config-key="scent"
+    >
       <div class="config-title">
         <h3>${ui('scent')}</h3>
 
