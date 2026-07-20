@@ -2162,7 +2162,7 @@ function applyI18n(){
   document.title=ui('docTitle');
   setText('[data-screen="home"] .hero-copy h1','heroTitle');setText('[data-screen="home"] .hero-copy p','heroCopy');setText('.thumb-label','startDream');setText('.unlock-hint','slideEnter');
   setText('[data-screen="catalog"] .page-title','catalogTitle');setText('[data-screen="catalog"] .page-sub','catalogSub');
-  setText('[data-screen="detail"] .page-title','detailTitle');setText('[data-screen="detail"] .page-sub','detailSub');setText('[data-screen="detail"] .sticky-action .btn','addInquiry');
+  setText('[data-screen="detail"] .page-title','detailTitle');setText('[data-screen="detail"] .page-sub','detailSub');setText('[data-screen="detail"] .sticky-action .btn',editingItemId?'saveChanges':'addInquiry');
   setText('[data-screen="inquiry"] .page-title','inquiryTitle');setText('[data-screen="inquiry"] .page-sub','inquirySub');setText('[data-screen="inquiry"] .header .icon-btn span','clear');setText('[data-screen="inquiry"] .sticky-action .btn','submitInquiry');
   setText('[data-screen="custom"] .page-title','customTitle');setText('[data-screen="custom"] .page-sub','customSub');setText('[data-screen="custom"] .sticky-action .btn','addInquiry');
   setText('[data-screen="contact"] .page-title','contactTitle');setText('[data-screen="contact"] .page-sub','contactSub');setText('#contactNextBtn','contactNext');
