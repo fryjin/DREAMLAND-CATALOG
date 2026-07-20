@@ -2356,23 +2356,17 @@ function openScentNotes(){
       scent.supplier
     );
 
-  const seriesName=
-    seriesLabel(
-      scent.series
-    );
-
   const ratioText=
     scent.fragranceRatio
       ?`${ui('fragranceRatio')} ${scent.fragranceRatio}`
       :'';
 
-  const metaText=[
-    seriesName,
-    supplier,
-    ratioText
-  ]
-    .filter(Boolean)
-    .join(' · ');
+ const metaText=[
+  supplier,
+  ratioText
+]
+  .filter(Boolean)
+  .join(' · ');
 
   const topNotes=
     scentDisplayText(
