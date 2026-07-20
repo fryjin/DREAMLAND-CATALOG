@@ -14,6 +14,12 @@
 <link rel="manifest" href="./manifest.webmanifest"/>
 <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png"/>
+<link
+  rel="preload"
+  as="image"
+  href="./images/home/hero-product.png"
+  fetchpriority="high"
+>
   <script>
 window.imgMiss=function(img){
   if(!img)return;
@@ -1008,7 +1014,54 @@ body[data-lang="ko"] .option-grid-scroll .option{
     font-size:23px;
   }
 }
-  
+
+.hero-product-img{
+  color:transparent;
+  font-size:0;
+} 
+
+ /*
+ * 首页低清占位图。
+ * 在高清图下载前，用户先看到完整但模糊的构图。
+ */
+.screen[data-screen="home"]
+.hero-product{
+  background:
+    #d2d3d8
+    url("./images/home/hero-product-placeholder.webp")
+    center center /
+    cover
+    no-repeat;
+}
+
+/*
+ * 首页不再使用普通灰色骨架动画，
+ * 由低清占位图承担加载过渡。
+ */
+.screen[data-screen="home"]
+.hero-product .media-skeleton{
+  display:none;
+}
+
+/*
+ * 高清图默认透明。
+ */
+.screen[data-screen="home"]
+.hero-product-img{
+  opacity:0;
+
+  transition:
+    opacity .28s ease;
+}
+
+/*
+ * 高清图加载完成后淡入。
+ */
+.screen[data-screen="home"]
+.hero-product.is-loaded
+.hero-product-img{
+  opacity:1;
+} 
 </style>
 </head>
 <body>
@@ -1017,14 +1070,22 @@ body[data-lang="ko"] .option-grid-scroll .option{
   <span class="media-skeleton" aria-hidden="true"></span>
 
   <img
-    class="hero-product-img"
-    data-shared-category="home"
-    data-shared-key="hero"
-    data-shared-size=""
-    data-fallback-src="./images/home/hero-product.png"
-    data-priority="high"
-    alt="首页主图"
-  >
+  class="hero-product-img"
+
+  src="./images/home/hero-product.png"
+
+  data-shared-category="home"
+  data-shared-key="hero"
+  data-shared-size=""
+  data-fallback-src="./images/home/hero-product.png"
+  data-priority="high"
+
+  fetchpriority="high"
+  loading="eager"
+  decoding="async"
+
+  alt=""
+>
 </div><div class="hero-big" aria-hidden="true">
   <span>WHOLESALE</span>
   <span>CATALOG</span>
@@ -1273,8 +1334,75 @@ async function loadSharedImage(
     img.closest('.media-frame');
 
   for(const src of sources){
-    img.classList.remove('is-missing');
-    img.removeAttribute('src');
+  img.classList.remove(
+    'is-missing'
+  );
+
+  const candidateUrl=
+    new URL(
+      src,
+      document.baseURI
+    ).href;
+
+  const currentUrl=
+    img.currentSrc||
+    img.src||
+    '';
+
+  /*
+   * 首页等关键图片已经由 HTML 提前加载完成时，
+   * 不再移除并重复加载同一个地址。
+   */
+  if(
+    currentUrl===candidateUrl&&
+    img.complete&&
+    img.naturalWidth>0
+  ){
+    frame?.classList.add(
+      'is-loaded'
+    );
+
+    frame?.classList.remove(
+      'is-loading',
+      'is-error'
+    );
+
+    return true;
+  }
+
+  img.removeAttribute('src');
+  img.dataset.src=src;
+
+  frame?.classList.remove(
+    'is-loaded',
+    'is-loading',
+    'is-error'
+  );
+
+  const success=
+    window.ImageManager?.load
+      ? await window.ImageManager.load(
+          img,
+          {priority}
+        )
+      : await nativeLoadImage(
+          img,
+          src
+        );
+
+  if(success){
+    frame?.classList.add(
+      'is-loaded'
+    );
+
+    frame?.classList.remove(
+      'is-loading',
+      'is-error'
+    );
+
+    return true;
+  }
+}
     img.dataset.src=src;
 
     frame?.classList.remove(
@@ -5980,6 +6108,7 @@ window.addEventListener('appinstalled',()=>{
 });
 document.addEventListener('click',e=>{let w=document.getElementById('langWrap');if(w&&!w.contains(e.target))closeLangSheet()});
 async function bootstrap(){
+  initHeroImage();
   initUnlock();
 
   await loadCatalogData();
