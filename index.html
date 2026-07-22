@@ -1070,7 +1070,18 @@ body[data-lang="ko"] .option-grid-scroll .option{
 }
 
 .captcha-section{
-  padding-top:2px;
+  height:0;
+  min-height:0;
+  padding:0;
+  margin:0;
+  overflow:visible;
+}
+
+.captcha-wrap{
+  width:0;
+  height:0;
+  min-height:0;
+  overflow:visible;
 }
 </style>
 </head>
@@ -1185,6 +1196,8 @@ let contactDraftTimer=null;
 let pendingInquiryId=localStorage.getItem(PENDING_INQUIRY_KEY)||'';
 let hcaptchaWidgetId=null;
 let hcaptchaRenderToken=0;
+let hcaptchaResponseToken='';
+let hcaptchaExecutionPromise=null;
 let submittingInquiry=false;
 let lastSubmitAttemptAt=0;
 
@@ -5203,7 +5216,10 @@ const RISK_COPY={
   zh:{
     checking:'正在进行无感安全检查…',
     safe:'安全检查通过，本次提交无需验证码。',
-    captcha:'检测到需要额外验证，请完成下方验证码。',
+    captcha:'本次提交需要额外安全验证，勾选隐私说明后将自动开始。',
+    captchaVerifying:'正在进行安全验证…',
+    captchaRetry:'安全验证未完成，点击确认提交可重新验证。'
+    captchaVerified:'安全验证已完成，可以确认提交。',
     unavailable:'安全检查暂时无法完成，请检查网络后重试。',
     captchaLoading:'正在加载安全验证…',
     captchaSlow:'验证码加载较慢，请稍候或点击重试。',
@@ -5215,7 +5231,10 @@ const RISK_COPY={
   en:{
     checking:'Running a background security check…',
     safe:'Security check passed. No CAPTCHA is required for this submission.',
-    captcha:'Additional verification is required. Complete the CAPTCHA below.',
+    captcha:'Additional security verification is required. It will start after you accept the privacy notice.',
+    captchaVerifying:'Running security verification…',
+    captchaVerified:'Security verification completed. You may now submit.',
+    captchaRetry:'Verification was not completed. Click submit to try again.'
     unavailable:'The security check is temporarily unavailable. Check your connection and retry.',
     captchaLoading:'Loading security verification…',
     captchaSlow:'Verification is taking longer than expected. Please wait or retry.',
@@ -5227,7 +5246,10 @@ const RISK_COPY={
   ko:{
     checking:'백그라운드 보안 검사를 진행하고 있습니다…',
     safe:'보안 검사를 통과했습니다. 이번 제출에는 인증이 필요하지 않습니다.',
-    captcha:'추가 인증이 필요합니다. 아래 인증을 완료해 주세요.',
+    captcha:'추가 보안 인증이 필요합니다. 개인정보 안내에 동의하면 자동으로 시작됩니다.',
+    captchaVerifying:'보안 인증을 진행하고 있습니다…',
+    captchaVerified:'보안 인증이 완료되었습니다. 제출할 수 있습니다.',
+    captchaRetry:'인증이 완료되지 않았습니다. 제출 버튼을 눌러 다시 시도해 주세요.'
     unavailable:'보안 검사를 완료할 수 없습니다. 네트워크를 확인한 후 다시 시도해 주세요.',
     captchaLoading:'보안 인증을 불러오는 중입니다…',
     captchaSlow:'인증 로딩이 지연되고 있습니다. 잠시 기다리거나 다시 시도해 주세요.',
@@ -5536,6 +5558,92 @@ async function executeHCaptchaChallenge(){
 
   return hcaptchaResponseToken;
 }
+
+async function ensureHCaptchaVerification(){
+  if(!submissionRiskRequiresCaptcha){
+    return '';
+  }
+
+  const existingToken=
+    hcaptchaToken();
+
+  if(existingToken){
+    return existingToken;
+  }
+
+  if(hcaptchaExecutionPromise){
+    return hcaptchaExecutionPromise;
+  }
+
+  setRiskStatus(
+    'risk',
+    riskText('captchaVerifying')
+  );
+
+  hcaptchaExecutionPromise=
+    executeHCaptchaChallenge()
+      .then(token=>{
+        setRiskStatus(
+          'safe',
+          riskText('captchaVerified')
+        );
+
+        return token;
+      })
+      .catch(error=>{
+        setRiskStatus(
+          'error',
+          riskText('captchaRetry')
+        );
+
+        throw error;
+      })
+      .finally(()=>{
+        hcaptchaExecutionPromise=null;
+      });
+
+  return hcaptchaExecutionPromise;
+}
+
+async function handlePrivacyConsentChange(
+  checkbox
+){
+  const error=
+    document.getElementById(
+      'verificationError'
+    );
+
+  error?.classList.remove('show');
+
+  if(!checkbox?.checked){
+    return;
+  }
+
+  /*
+   * 风险评估仍未结束时暂不执行。
+   * 评估完成后会再次检查复选框状态。
+   */
+  if(riskAssessmentPending){
+    return;
+  }
+
+  if(!submissionRiskRequiresCaptcha){
+    return;
+  }
+
+  try{
+    await ensureHCaptchaVerification();
+  }catch(errorObject){
+    console.error(
+      'Automatic hCaptcha failed:',
+      errorObject
+    );
+
+    toast(
+      riskText('captchaRetry')
+    );
+  }
+}
   
 async function assessSubmissionRisk(){
   if(riskAssessmentPending)return;
@@ -5566,10 +5674,33 @@ submissionRiskRequiresCaptcha=data.captcha_required===true;
     submissionRiskReasons=Array.isArray(data.reasons)?data.reasons:[];
     submissionRiskSiteKey=String(data.site_key||'');
     if(submissionRiskRequiresCaptcha){
-      setRiskStatus('risk',riskText('captcha'));
-      captchaSection(true);
-      renderHCaptcha(submissionRiskSiteKey)
-    }else{
+  setRiskStatus(
+    'risk',
+    riskText('captcha')
+  );
+
+  captchaSection(true);
+
+  await renderHCaptcha(
+    submissionRiskSiteKey
+  );
+
+  const consent=
+    document.getElementById(
+      'privacyConsent'
+    );
+
+  if(consent?.checked){
+    try{
+      await ensureHCaptchaVerification();
+    }catch(errorObject){
+      console.error(
+        'Automatic hCaptcha failed:',
+        errorObject
+      );
+    }
+  }
+}else{
       setRiskStatus('safe',riskText('safe'));
       captchaSection(false)
     }
@@ -5582,7 +5713,11 @@ submissionRiskRequiresCaptcha=data.captcha_required===true;
 }
 function renderPreview(){
   let c=state.contact||{},ps=state.items.filter(i=>i.type==='product'),cs=state.items.filter(i=>i.type==='custom'),inquiryId=ensureInquiryId();
-  previewContent.innerHTML=`<div class="preview-card"><h3>${ui('inquiryNumber')}</h3>${kv(ui('inquiryNumber'),inquiryId)}</div><div class="preview-card"><h3>${ui('personalInfo')}</h3>${kv(ui('nameLabel').replace(' *',''),c.name)}${kv(ui('companyBrand'),c.company||ui('notProvided'))}${kv(ui('countryRegion'),c.country)}${kv(ui('cityLabel'),c.city||ui('notProvided'))}${kv(ui('emailLabel').replace(' *',''),c.email)}${kv(ui('contactMethod'),c.phone)}${kv(ui('buyerType'),choiceLabel(c.buyerType)||ui('toConfirm'))}${kv(ui('note'),c.message||ui('notProvided'))}</div><div class="preview-card"><h3>${ui('productInquiry')}</h3>${ps.length?ps.map(i=>kv(productDisplayName(i),`${i.qty} ${qtyUnit()} · MOQ ${itemMoq(i)} · ${i.size} · ${itemScentLabel(i)} · ${choiceLabel(i.pack||defaultPack(i.series))} · ${money(itemSubtotal(i))}`)).join(''):kv(ui('products'),ui('none'))}</div><div class="preview-card"><h3>${ui('customInquiry')}</h3>${cs.length?cs.map(i=>kv(choiceLabel(i.use)||ui('customNeed'),`${i.qty||ui('qtyPending')} ${qtyUnit()} · ${i.budget||ui('budgetPending')} · ${choiceLabel(i.sizePref)||ui('sizeRecommend')} · ${itemScentLabel(i)}||ui('scentRecommend')} · ${i.color||ui('colorPending')} · ${choiceLabel(i.pack)||ui('packRecommend')} · ${choiceLabel(i.branding)||ui('brandingPending')} · ${i.date||ui('datePending')}`)).join(''):kv(ui('custom'),ui('none'))}</div><div class="preview-card"><h3>${ui('amountEstimate')}</h3>${kv(ui('productEstimate'),money(total()))}${kv(ui('customPart'),ui('consultantConfirm'))}${kv(ui('syncStatus'),web3formsReady()?ui('syncReady'):ui('syncPending'))}</div><div class="preview-card verification-card"><label class="consent-check"><input id="privacyConsent" type="checkbox"><span>${ui('privacyAgreePrefix')} <a href="${privacyUrl()}" target="_blank" rel="noopener">${ui('privacyLink')}</a></span></label><div class="risk-status" id="riskStatus">${riskText('checking')}</div><div class="captcha-section" id="captchaSection" hidden><div class="captcha-label">${ui('captchaLabel')}</div><div class="captcha-wrap" id="hcaptchaContainer"></div></div><div class="verification-error" id="verificationError"></div></div>`;
+  previewContent.innerHTML=`<div class="preview-card"><h3>${ui('inquiryNumber')}</h3>${kv(ui('inquiryNumber'),inquiryId)}</div><div class="preview-card"><h3>${ui('personalInfo')}</h3>${kv(ui('nameLabel').replace(' *',''),c.name)}${kv(ui('companyBrand'),c.company||ui('notProvided'))}${kv(ui('countryRegion'),c.country)}${kv(ui('cityLabel'),c.city||ui('notProvided'))}${kv(ui('emailLabel').replace(' *',''),c.email)}${kv(ui('contactMethod'),c.phone)}${kv(ui('buyerType'),choiceLabel(c.buyerType)||ui('toConfirm'))}${kv(ui('note'),c.message||ui('notProvided'))}</div><div class="preview-card"><h3>${ui('productInquiry')}</h3>${ps.length?ps.map(i=>kv(productDisplayName(i),`${i.qty} ${qtyUnit()} · MOQ ${itemMoq(i)} · ${i.size} · ${itemScentLabel(i)} · ${choiceLabel(i.pack||defaultPack(i.series))} · ${money(itemSubtotal(i))}`)).join(''):kv(ui('products'),ui('none'))}</div><div class="preview-card"><h3>${ui('customInquiry')}</h3>${cs.length?cs.map(i=>kv(choiceLabel(i.use)||ui('customNeed'),`${i.qty||ui('qtyPending')} ${qtyUnit()} · ${i.budget||ui('budgetPending')} · ${choiceLabel(i.sizePref)||ui('sizeRecommend')} · ${itemScentLabel(i)}||ui('scentRecommend')} · ${i.color||ui('colorPending')} · ${choiceLabel(i.pack)||ui('packRecommend')} · ${choiceLabel(i.branding)||ui('brandingPending')} · ${i.date||ui('datePending')}`)).join(''):kv(ui('custom'),ui('none'))}</div><div class="preview-card"><h3>${ui('amountEstimate')}</h3>${kv(ui('productEstimate'),money(total()))}${kv(ui('customPart'),ui('consultantConfirm'))}${kv(ui('syncStatus'),web3formsReady()?ui('syncReady'):ui('syncPending'))}</div><div class="preview-card verification-card"><label class="consent-check"><input
+  id="privacyConsent"
+  type="checkbox"
+  onchange="handlePrivacyConsentChange(this)"
+><span>${ui('privacyAgreePrefix')} <a href="${privacyUrl()}" target="_blank" rel="noopener">${ui('privacyLink')}</a></span></label><div class="risk-status" id="riskStatus">${riskText('checking')}</div><div class="captcha-section" id="captchaSection" hidden><div class="captcha-wrap" id="hcaptchaContainer"></div></div><div class="verification-error" id="verificationError"></div></div>`;
   requestAnimationFrame(assessSubmissionRisk)
 }
 function itemText(i){
@@ -5637,12 +5772,14 @@ async function submitInquiry(){
 ){
   try{
     btn.disabled=true;
+
     btn.innerHTML=
       '<span class="loader"></span>';
 
-    await executeHCaptchaChallenge();
+    await ensureHCaptchaVerification();
 
     btn.disabled=false;
+
     btn.textContent=
       ui('confirmSubmit');
   }catch(captchaError){
@@ -5653,18 +5790,17 @@ async function submitInquiry(){
 
     if(error){
       error.textContent=
-        riskText('captchaRequired');
+        riskText('captchaRetry');
 
-      error.classList.add(
-        'show'
-      );
+      error.classList.add('show');
     }
 
     toast(
-      riskText('captchaRequired')
+      riskText('captchaRetry')
     );
 
     btn.disabled=false;
+
     btn.textContent=
       ui('confirmSubmit');
 
