@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'dreamland-pwa-v43';
+const CACHE_VERSION = 'dreamland-pwa-v44';
 
 const APP_CACHE = `${CACHE_VERSION}-app`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
@@ -14,6 +14,7 @@ const APP_SHELL = [
   './privacy.html',
   './data/products.csv',
   './data/shared-assets.csv',
+  './data/scents.csv',
   './data/products.json',
   './data/series.json',
   './data/i18n.json',
