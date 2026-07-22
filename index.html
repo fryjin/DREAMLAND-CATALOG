@@ -1063,6 +1063,15 @@ body[data-lang="ko"] .option-grid-scroll .option{
 .hero-product-img{
   opacity:1;
 } 
+
+  .captcha-wrap{
+  min-height:0;
+  height:0;
+}
+
+.captcha-section{
+  padding-top:2px;
+}
 </style>
 </head>
 <body>
@@ -1176,6 +1185,7 @@ let contactDraftTimer=null;
 let pendingInquiryId=localStorage.getItem(PENDING_INQUIRY_KEY)||'';
 let hcaptchaWidgetId=null;
 let hcaptchaRenderToken=0;
+let hcaptchaWidgetId=null;
 let submittingInquiry=false;
 let lastSubmitAttemptAt=0;
 
@@ -5406,12 +5416,35 @@ async function renderHCaptcha(siteKey=submissionRiskSiteKey){
 
     container.innerHTML='';
 
-hcaptchaWidgetId=window.hcaptcha.render(container,{
-  sitekey:siteKey,
-  theme:'light',
-  size:widgetSize,
-  'recaptchacompat':'off'
-});
+hcaptchaResponseToken='';
+
+hcaptchaWidgetId=window.hcaptcha.render(
+  container,
+  {
+    sitekey:siteKey,
+    theme:'light',
+    size:'invisible',
+    'recaptchacompat':'off',
+
+    callback(token){
+      hcaptchaResponseToken=
+        String(token||'');
+    },
+
+    'expired-callback'(){
+      hcaptchaResponseToken='';
+    },
+
+    'error-callback'(error){
+      hcaptchaResponseToken='';
+
+      console.error(
+        'hCaptcha error:',
+        error
+      );
+    }
+  }
+);
   }catch(error){
     clearTimeout(slowTimer);
     console.error('hCaptcha load failed:',error);
@@ -5438,10 +5471,73 @@ hcaptchaWidgetId=window.hcaptcha.render(container,{
   }
 }
 function hcaptchaToken(){
-  if(!submissionRiskRequiresCaptcha)return '';
-  try{return hcaptchaWidgetId===null?'':window.hcaptcha?.getResponse(hcaptchaWidgetId)||''}catch(_){return ''}
+  if(!submissionRiskRequiresCaptcha){
+    return '';
+  }
+
+  if(hcaptchaResponseToken){
+    return hcaptchaResponseToken;
+  }
+
+  try{
+    return hcaptchaWidgetId===null
+      ? ''
+      : window.hcaptcha
+          ?.getResponse(
+            hcaptchaWidgetId
+          )||'';
+  }catch(_){
+    return '';
+  }
 }
 
+async function executeHCaptchaChallenge(){
+  if(!submissionRiskRequiresCaptcha){
+    return '';
+  }
+
+  const existingToken=
+    hcaptchaToken();
+
+  if(existingToken){
+    return existingToken;
+  }
+
+  if(
+    hcaptchaWidgetId===null||
+    !window.hcaptcha
+  ){
+    throw new Error(
+      'hCaptcha is not ready'
+    );
+  }
+
+  const result=
+    await window.hcaptcha.execute(
+      hcaptchaWidgetId,
+      {
+        async:true
+      }
+    );
+
+  hcaptchaResponseToken=
+    String(
+      result?.response||
+      window.hcaptcha.getResponse(
+        hcaptchaWidgetId
+      )||
+      ''
+    );
+
+  if(!hcaptchaResponseToken){
+    throw new Error(
+      'No hCaptcha response'
+    );
+  }
+
+  return hcaptchaResponseToken;
+}
+  
 async function assessSubmissionRisk(){
   if(riskAssessmentPending)return;
   const status=document.getElementById('riskStatus');
@@ -5536,10 +5632,46 @@ async function submitInquiry(){
  
   const consent=document.getElementById('privacyConsent');
   if(!consent?.checked){if(error){error.textContent=ui('privacyRequired');error.classList.add('show')}toast(ui('privacyRequired'));return}
-  if(submissionRiskRequiresCaptcha&&!hcaptchaToken()){
-    if(error){error.textContent=riskText('captchaRequired');error.classList.add('show')}
-    toast(riskText('captchaRequired'));return
+  if(
+  submissionRiskRequiresCaptcha&&
+  !hcaptchaToken()
+){
+  try{
+    btn.disabled=true;
+    btn.innerHTML=
+      '<span class="loader"></span>';
+
+    await executeHCaptchaChallenge();
+
+    btn.disabled=false;
+    btn.textContent=
+      ui('confirmSubmit');
+  }catch(captchaError){
+    console.error(
+      'hCaptcha challenge failed:',
+      captchaError
+    );
+
+    if(error){
+      error.textContent=
+        riskText('captchaRequired');
+
+      error.classList.add(
+        'show'
+      );
+    }
+
+    toast(
+      riskText('captchaRequired')
+    );
+
+    btn.disabled=false;
+    btn.textContent=
+      ui('confirmSubmit');
+
+    return;
   }
+}
   if(error)error.classList.remove('show');
 
   submittingInquiry=true;
@@ -5606,7 +5738,15 @@ clearSubmittedInquiry();
     if(!reachable){applyPwaReachability(false,false);toast(pwaText('offlineSubmit'))}
     else{toast(ui('submitFailed'))}
     btn.textContent=ui('confirmSubmit');
-    try{if(hcaptchaWidgetId!==null)window.hcaptcha?.reset(hcaptchaWidgetId)}catch(_){}
+    hcaptchaResponseToken='';
+
+try{
+  if(hcaptchaWidgetId!==null){
+    window.hcaptcha?.reset(
+      hcaptchaWidgetId
+    );
+  }
+}catch(_){}
   }finally{
     submittingInquiry=false;
     btn.disabled=false
