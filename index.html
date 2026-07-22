@@ -5184,6 +5184,7 @@ let riskFormStartedAt=0;
 let riskInteractionCount=0;
 let riskAssessmentPending=false;
 let submissionRiskRequiresCaptcha=false;
+let submissionRiskFiltered=false;
 let submissionRiskScore=0;
 let submissionRiskReasons=[];
 let submissionRiskSiteKey='';
@@ -5201,7 +5202,8 @@ const RISK_COPY={
     captchaFailed:'验证码暂时无法加载，请检查网络后重试。',
     retry:'重新加载验证码',
     captchaRequired:'请先完成安全验证。',
-    configError:'验证码尚未完成配置，请联系管理员。'
+    configError:'验证码尚未完成配置，请联系管理员。',
+    blocked:'本次提交未通过安全检查，请刷新页面后重试。'
   },
   en:{
     checking:'Running a background security check…',
@@ -5213,7 +5215,8 @@ const RISK_COPY={
     captchaFailed:'Verification could not be loaded. Check your connection and retry.',
     retry:'Reload verification',
     captchaRequired:'Complete the security verification first.',
-    configError:'CAPTCHA has not been configured. Contact the administrator.'
+    configError:'CAPTCHA has not been configured. Contact the administrator.',
+    blocked:'This submission did not pass the security check. Refresh the page and try again.'
   },
   ko:{
     checking:'백그라운드 보안 검사를 진행하고 있습니다…',
@@ -5225,7 +5228,8 @@ const RISK_COPY={
     captchaFailed:'인증을 불러올 수 없습니다. 네트워크를 확인한 후 다시 시도해 주세요.',
     retry:'인증 다시 불러오기',
     captchaRequired:'먼저 보안 인증을 완료해 주세요.',
-    configError:'CAPTCHA 설정이 완료되지 않았습니다. 관리자에게 문의해 주세요.'
+    configError:'CAPTCHA 설정이 완료되지 않았습니다. 관리자에게 문의해 주세요.',
+    blocked:'보안 검사를 통과하지 못했습니다. 페이지를 새로고침한 후 다시 시도해 주세요.'
   }
 };
 function riskText(key){return RISK_COPY[currentLang]?.[key]||RISK_COPY.zh[key]||key}
@@ -5450,6 +5454,7 @@ async function assessSubmissionRisk(){
   setRiskStatus('',riskText('checking'));
   captchaSection(false);
   submissionRiskRequiresCaptcha=false;
+  submissionRiskFiltered=false;
   submissionRiskScore=0;
   submissionRiskReasons=[];
   try{
@@ -5465,8 +5470,41 @@ async function assessSubmissionRisk(){
       })
     });
     const data=await response.json();
-    if(!response.ok)throw new Error(data.message||'Risk assessment failed');
-    submissionRiskRequiresCaptcha=data.captcha_required===true;
+
+if(!response.ok){
+  throw new Error(
+    data.message||
+    'Risk assessment failed'
+  );
+}
+
+submissionRiskFiltered=
+  data.filtered===true;
+
+if(submissionRiskFiltered){
+  submissionRiskRequiresCaptcha=false;
+  submissionRiskScore=
+    Number(data.risk_score)||0;
+
+  submissionRiskReasons=
+    Array.isArray(data.reasons)
+      ?data.reasons
+      :[];
+
+  submissionRiskSiteKey='';
+
+  setRiskStatus(
+    'error',
+    riskText('blocked')
+  );
+
+  captchaSection(false);
+
+  return;
+}
+
+submissionRiskRequiresCaptcha=
+  data.captcha_required===true;
     submissionRiskScore=Number(data.risk_score)||0;
     submissionRiskReasons=Array.isArray(data.reasons)?data.reasons:[];
     submissionRiskSiteKey=String(data.site_key||'');
@@ -5533,6 +5571,29 @@ async function submitInquiry(){
   const now=Date.now(),cooldown=Math.max(0,Number(appConfig.submitCooldownMs)||10000);
   if(now-lastSubmitAttemptAt<cooldown){toast(ui('submissionCooldown'));return}
   if(!web3formsReady()){toast(ui('formNotConfigured'));return}
+  if(riskAssessmentPending){
+  toast(
+    riskText('checking')
+  );
+  return;
+}
+
+if(submissionRiskFiltered){
+  if(error){
+    error.textContent=
+      riskText('blocked');
+
+    error.classList.add(
+      'show'
+    );
+  }
+
+  toast(
+    riskText('blocked')
+  );
+
+  return;
+}
   const consent=document.getElementById('privacyConsent');
   if(!consent?.checked){if(error){error.textContent=ui('privacyRequired');error.classList.add('show')}toast(ui('privacyRequired'));return}
   if(submissionRiskRequiresCaptcha&&!hcaptchaToken()){
