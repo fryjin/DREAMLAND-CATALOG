@@ -30,15 +30,7 @@ const IMAGE_FIELDS = [
   'scene_image_3',
   'scene_image_4'
 ];
-const CORE_IMAGE_FIELDS = [
-  'cover_image',
-  'angle_image',
-  'detail_image',
-  'size_s_image',
-  'size_m_image',
-  'size_l_image',
-  'size_xl_image'
-];
+
 const FORBIDDEN_TIER_TERMS = [
   '中端款',
   '低端款',
@@ -415,7 +407,7 @@ for (const [index, product] of products.entries()) {
     }
   }
 
-  if (status === 'active') {
+  
     activeProducts.push(product);
 
     for (const field of [
@@ -431,25 +423,24 @@ for (const [index, product] of products.entries()) {
       }
     }
 
-    for (const field of CORE_IMAGE_FIELDS) {
-      const imagePath = normalizePath(product[field]);
+   const productImages = IMAGE_FIELDS
+  .map(field => ({
+    field,
+    path: normalizePath(product[field])
+  }))
+  .filter(image => image.path);
 
-      if (!imagePath) {
-        fail(`${label}: active product ${field} is required`);
-      } else if (!(await exists(imagePath))) {
-        fail(`${label}: missing active product image: ${imagePath}`);
-      }
-    }
+if (!productImages.length) {
+  fail(`${label}: active product requires at least one product image`);
+}
 
-    for (const field of IMAGE_FIELDS.filter(
-      name => !CORE_IMAGE_FIELDS.includes(name)
-    )) {
-      const imagePath = normalizePath(product[field]);
-
-      if (imagePath && !(await exists(imagePath))) {
-        fail(`${label}: missing referenced image: ${imagePath}`);
-      }
-    }
+for (const image of productImages) {
+  if (!(await exists(image.path))) {
+    fail(
+      `${label}: missing referenced image in ${image.field}: ${image.path}`
+    );
+  }
+}
   }
 }
 
