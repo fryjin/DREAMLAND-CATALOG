@@ -15,12 +15,9 @@
     startX:0,
     startY:0,
     startTime:0,
-    lastX:0,
-    lastTime:0,
     dragX:0,
     horizontal:false,
     settling:false,
-    geometry:null,
     requestToken:0
   };
 
@@ -58,6 +55,7 @@
       }
 
       .pattern-preview-viewport{
+        position:relative;
         width:100%;
         min-width:0;
         overflow:hidden;
@@ -71,14 +69,22 @@
         cursor:grabbing;
       }
 
+      /*
+       * 固定三槽轨道：上一张 / 当前张 / 下一张。
+       * 当前张始终位于中间 1/3，不再依赖首帧 JS 宽度计算。
+       */
       .pattern-preview-track{
+        --pattern-drag-x:0px;
         display:flex;
         align-items:center;
-        gap:12px;
-        width:100%;
+        width:300%;
         opacity:0;
+        transform:translate3d(
+          calc(-33.333333% + var(--pattern-drag-x)),
+          0,
+          0
+        );
         will-change:transform;
-        transform:translate3d(0,0,0);
         transition:opacity .12s ease;
       }
 
@@ -87,16 +93,27 @@
       }
 
       .pattern-preview-track.is-settling{
-        transition:transform ${SETTLE_MS}ms cubic-bezier(.22,.8,.22,1);
+        transition:
+          transform ${SETTLE_MS}ms cubic-bezier(.22,.8,.22,1),
+          opacity .12s ease;
       }
 
       .pattern-preview-track.is-returning{
-        transition:transform ${RETURN_MS}ms cubic-bezier(.22,.8,.22,1);
+        transition:
+          transform ${RETURN_MS}ms cubic-bezier(.22,.8,.22,1),
+          opacity .12s ease;
       }
 
       .pattern-preview-slide{
+        flex:0 0 33.333333%;
+        min-width:0;
+        box-sizing:border-box;
+        padding:0 6px;
+      }
+
+      .pattern-preview-card{
         position:relative;
-        flex:0 0 calc(100% - 42px);
+        width:100%;
         aspect-ratio:1/1;
         overflow:hidden;
         border-radius:22px;
@@ -107,27 +124,29 @@
         transition:transform .16s ease,opacity .16s ease;
       }
 
-      .pattern-preview-slide[data-relative="0"]{
+      .pattern-preview-slide[data-relative="0"]
+      .pattern-preview-card{
         transform:scale(1);
         opacity:1;
       }
 
-      .pattern-preview-slide img{
+      .pattern-preview-card img{
         width:100%;
         height:100%;
         display:block;
         object-fit:contain;
         object-position:center;
+        background:#f1f2f4;
         pointer-events:none;
         -webkit-user-drag:none;
       }
 
       .pattern-preview-slide.is-boundary{
         visibility:hidden;
-        box-shadow:none;
+        pointer-events:none;
       }
 
-      .pattern-preview-slide.is-loading::after{
+      .pattern-preview-card.is-loading::after{
         content:"";
         position:absolute;
         inset:0;
@@ -239,12 +258,12 @@
 
       @media (prefers-reduced-motion:reduce){
         .pattern-preview-track,
-        .pattern-preview-slide,
+        .pattern-preview-card,
         .pattern-preview-label{
           transition:none!important;
         }
 
-        .pattern-preview-slide.is-loading::after{
+        .pattern-preview-card.is-loading::after{
           animation:none;
         }
       }
@@ -286,6 +305,7 @@
     const {view,img}=elements();
     if(!view||!img)return null;
 
+    /* 清理旧版本曾经创建的左右按钮。 */
     view.querySelectorAll('.pattern-preview-nav').forEach(node=>node.remove());
 
     let shell=view.querySelector('.pattern-preview-shell');
@@ -368,17 +388,13 @@
   }
 
   function buildItems(size){
-    return patternValues(size).map((value,index)=>({
-      value,
-      label:labelFor(value),
-      candidates:candidatesFor(value,size,index)
-    }));
-  }
-
-  function clampIndex(index){
-    const count=state.items.length;
-    if(!count)return 0;
-    return Math.max(0,Math.min(count-1,index));
+    return patternValues(size).map((value,index)=>(
+      {
+        value,
+        label:labelFor(value),
+        candidates:candidatesFor(value,size,index)
+      }
+    ));
   }
 
   function canMove(direction){
@@ -392,6 +408,23 @@
 
   function currentItem(){
     return state.items[state.index]||null;
+  }
+
+  function escapeAttribute(value){
+    return String(value??'')
+      .replace(/&/g,'&amp;')
+      .replace(/"/g,'&quot;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;');
+  }
+
+  function escapeHtml(value){
+    return String(value??'')
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#39;');
   }
 
   function loadImageCandidates(img,candidates,token){
@@ -446,113 +479,30 @@
     });
   }
 
-  function renderTrack(){
+  function setTrackOffset(offset,mode=''){
     const {track}=elements();
-    if(!track||!state.items.length)return;
-
-    const token=++state.requestToken;
-
-    track.classList.remove('is-settling','is-returning','is-ready');
-    track.innerHTML=relativeIndexes().map(({relative,index,valid})=>{
-      if(!valid){
-        return `
-          <div
-            class="pattern-preview-slide is-boundary"
-            data-relative="${relative}"
-            aria-hidden="true"
-          ></div>
-        `;
-      }
-
-      const item=state.items[index];
-      return `
-        <div
-          class="pattern-preview-slide is-loading"
-          data-relative="${relative}"
-          data-item-index="${index}"
-        >
-          <img alt="${escapeAttribute(item.label)}" decoding="async">
-        </div>
-      `;
-    }).join('');
-
-    track
-      .querySelectorAll('.pattern-preview-slide:not(.is-boundary)')
-      .forEach(slide=>{
-        const itemIndex=Number(slide.dataset.itemIndex);
-        const item=state.items[itemIndex];
-        const img=slide.querySelector('img');
-
-        loadImageCandidates(img,item?.candidates,token).then(success=>{
-          if(token!==state.requestToken)return;
-          slide.classList.remove('is-loading');
-          if(!success)slide.classList.add('is-error');
-        });
-      });
-
-    requestAnimationFrame(()=>{
-      requestAnimationFrame(()=>{
-        if(token!==state.requestToken)return;
-        state.geometry=null;
-        measureGeometry();
-        setTrackPosition(0,false);
-        applyDragEffects(0);
-        track.classList.add('is-ready');
-      });
-    });
-  }
-
-  function escapeAttribute(value){
-    return String(value??'')
-      .replace(/&/g,'&amp;')
-      .replace(/"/g,'&quot;')
-      .replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;');
-  }
-
-  function measureGeometry(){
-    const {viewport,track}=elements();
-    const slide=track?.querySelector('.pattern-preview-slide');
-    if(!viewport||!track||!slide)return null;
-
-    const viewportWidth=viewport.clientWidth;
-    const slideWidth=slide.getBoundingClientRect().width;
-    const styles=getComputedStyle(track);
-    const gap=parseFloat(styles.columnGap||styles.gap)||12;
-    const peek=Math.max(0,(viewportWidth-slideWidth)/2);
-    const step=slideWidth+gap;
-    const base=peek-step;
-
-    state.geometry={viewportWidth,slideWidth,gap,peek,step,base};
-    return state.geometry;
-  }
-
-  function geometry(){
-    return state.geometry||measureGeometry();
-  }
-
-  function setTrackPosition(offset,animateMode=false){
-    const {track}=elements();
-    const metrics=geometry();
-    if(!track||!metrics)return;
+    if(!track)return;
 
     track.classList.remove('is-settling','is-returning');
-    if(animateMode==='settle')track.classList.add('is-settling');
-    if(animateMode==='return')track.classList.add('is-returning');
+    if(mode==='settle')track.classList.add('is-settling');
+    if(mode==='return')track.classList.add('is-returning');
 
-    track.style.transform=`translate3d(${metrics.base+offset}px,0,0)`;
+    track.style.setProperty('--pattern-drag-x',`${offset}px`);
   }
 
   function applyDragEffects(dx){
-    const {track}=elements();
-    const metrics=geometry();
-    if(!track||!metrics)return;
+    const {track,viewport}=elements();
+    if(!track||!viewport)return;
 
-    const progress=Math.min(1,Math.abs(dx)/Math.max(1,metrics.step));
+    const width=Math.max(1,viewport.clientWidth);
+    const progress=Math.min(1,Math.abs(dx)/width);
     const targetRelative=dx<0?1:-1;
 
     track.querySelectorAll('.pattern-preview-slide').forEach(slide=>{
       const relative=Number(slide.dataset.relative);
+      const card=slide.querySelector('.pattern-preview-card');
+      if(!card)return;
+
       let scale=.965;
       let opacity=.78;
 
@@ -567,28 +517,84 @@
         opacity=.78+progress*.22;
       }
 
-      slide.style.transform=`scale(${scale})`;
-      slide.style.opacity=String(opacity);
+      card.style.transform=`scale(${scale})`;
+      card.style.opacity=String(opacity);
     });
   }
 
-  function updateMeta(direction=0){
+  function renderTrack(){
+    const {track}=elements();
+    if(!track||!state.items.length)return;
+
+    const token=++state.requestToken;
+
+    track.classList.remove('is-settling','is-returning','is-ready');
+    track.style.setProperty('--pattern-drag-x','0px');
+
+    track.innerHTML=relativeIndexes().map(({relative,index,valid})=>{
+      if(!valid){
+        return `
+          <div
+            class="pattern-preview-slide is-boundary"
+            data-relative="${relative}"
+            aria-hidden="true"
+          >
+            <div class="pattern-preview-card"></div>
+          </div>
+        `;
+      }
+
+      const item=state.items[index];
+      return `
+        <div
+          class="pattern-preview-slide"
+          data-relative="${relative}"
+          data-item-index="${index}"
+        >
+          <div class="pattern-preview-card is-loading">
+            <img
+              alt="${escapeAttribute(item.label)}"
+              decoding="async"
+            >
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    track
+      .querySelectorAll('.pattern-preview-slide:not(.is-boundary)')
+      .forEach(slide=>{
+        const itemIndex=Number(slide.dataset.itemIndex);
+        const item=state.items[itemIndex];
+        const card=slide.querySelector('.pattern-preview-card');
+        const img=slide.querySelector('img');
+
+        loadImageCandidates(img,item?.candidates,token).then(success=>{
+          if(token!==state.requestToken)return;
+          card?.classList.remove('is-loading');
+          if(!success)card?.classList.add('is-error');
+        });
+      });
+
+    /*
+     * 初始定位完全由 CSS 的 -33.333% 完成。
+     * 下一帧只负责显示，不再进行容易失败的首帧宽度计算。
+     */
+    requestAnimationFrame(()=>{
+      if(token!==state.requestToken)return;
+      applyDragEffects(0);
+      track.classList.add('is-ready');
+    });
+  }
+
+  function updateMeta(){
     const {name,sub,count,labels}=elements();
     const item=currentItem();
     if(!item)return;
 
-    if(name){
-      name.textContent=item.label;
-      name.dataset.direction=direction>0?'next':direction<0?'prev':'';
-    }
-
-    if(sub){
-      sub.textContent=`${state.size} 尺寸花样`;
-    }
-
-    if(count){
-      count.textContent=`${state.index+1} / ${state.items.length}`;
-    }
+    if(name)name.textContent=item.label;
+    if(sub)sub.textContent=`${state.size} 尺寸花样`;
+    if(count)count.textContent=`${state.index+1} / ${state.items.length}`;
 
     if(labels){
       labels.innerHTML=state.items.map((entry,index)=>`
@@ -599,22 +605,13 @@
     }
   }
 
-  function escapeHtml(value){
-    return String(value??'')
-      .replace(/&/g,'&amp;')
-      .replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;')
-      .replace(/"/g,'&quot;')
-      .replace(/'/g,'&#39;');
-  }
-
   function commitIndex(direction){
     if(!canMove(direction)){
       returnToCurrent();
       return;
     }
 
-    state.index=clampIndex(state.index+direction);
+    state.index+=direction;
     const item=currentItem();
 
     if(typeof config!=='undefined'&&config&&item){
@@ -622,7 +619,7 @@
       state.changed=config.pattern!==state.initialValue;
     }
 
-    updateMeta(direction);
+    updateMeta();
     renderTrack();
   }
 
@@ -636,12 +633,16 @@
       return;
     }
 
-    const metrics=geometry();
-    if(!metrics)return;
+    const {viewport}=elements();
+    const width=viewport?.clientWidth||0;
+    if(!width){
+      returnToCurrent();
+      return;
+    }
 
     state.settling=true;
-    setTrackPosition(-direction*metrics.step,'settle');
-    applyDragEffects(-direction*metrics.step);
+    setTrackOffset(-direction*width,'settle');
+    applyDragEffects(-direction*width);
 
     window.setTimeout(()=>{
       if(!state.active)return;
@@ -654,7 +655,7 @@
     if(state.settling)return;
 
     state.settling=true;
-    setTrackPosition(0,'return');
+    setTrackOffset(0,'return');
     applyDragEffects(0);
 
     window.setTimeout(()=>{
@@ -669,8 +670,6 @@
     state.startX=0;
     state.startY=0;
     state.startTime=0;
-    state.lastX=0;
-    state.lastTime=0;
     state.dragX=0;
     state.horizontal=false;
 
@@ -686,8 +685,6 @@
     state.startX=event.clientX;
     state.startY=event.clientY;
     state.startTime=performance.now();
-    state.lastX=event.clientX;
-    state.lastTime=state.startTime;
     state.dragX=0;
     state.horizontal=false;
 
@@ -719,10 +716,7 @@
       : dx*.22;
 
     state.dragX=effectiveDx;
-    state.lastX=event.clientX;
-    state.lastTime=performance.now();
-
-    setTrackPosition(effectiveDx,false);
+    setTrackOffset(effectiveDx);
     applyDragEffects(effectiveDx);
   }
 
@@ -733,14 +727,15 @@
     const dy=event.clientY-state.startY;
     const elapsed=Math.max(1,performance.now()-state.startTime);
     const velocity=dx/elapsed;
-    const metrics=geometry();
+    const {viewport}=elements();
+    const width=Math.max(1,viewport?.clientWidth||1);
+
     const horizontal=
       state.horizontal&&
       Math.abs(dx)>Math.abs(dy)*DIRECTION_RATIO;
 
     const distancePassed=
-      metrics&&
-      Math.abs(dx)>=metrics.viewportWidth*DISTANCE_RATIO;
+      Math.abs(dx)>=width*DISTANCE_RATIO;
 
     const flingPassed=
       Math.abs(dx)>=MIN_FLING_X&&
@@ -784,11 +779,10 @@
     state.changed=false;
     state.scrollState=null;
     state.settling=false;
-    state.geometry=null;
     state.requestToken+=1;
     resetPointerState();
 
-    if(shell)hiddenShell(shell);
+    if(shell)shell.hidden=true;
     if(track){
       track.innerHTML='';
       track.removeAttribute('style');
@@ -796,10 +790,6 @@
     }
 
     layer?.classList.remove('pattern-mode');
-  }
-
-  function hiddenShell(shell){
-    shell.hidden=true;
   }
 
   function syncConfigUi(){
@@ -837,7 +827,6 @@
       typeof captureDetailOptionScrollState==='function'
         ? captureDetailOptionScrollState()
         : null;
-    state.geometry=null;
     state.settling=false;
 
     const selectedValue=String(
@@ -862,7 +851,7 @@
     caption.hidden=false;
     shell.hidden=false;
 
-    updateMeta(0);
+    updateMeta();
     renderTrack();
     return true;
   }
@@ -916,6 +905,7 @@
       };
     }
 
+    /* 仅保留 Escape 关闭，不提供键盘方向键切换。 */
     document.addEventListener('keydown',event=>{
       if(!state.active)return;
       if(event.key==='Escape'){
@@ -926,11 +916,8 @@
 
     window.addEventListener('resize',()=>{
       if(!state.active)return;
-      state.geometry=null;
-      requestAnimationFrame(()=>{
-        measureGeometry();
-        setTrackPosition(0,false);
-      });
+      setTrackOffset(0);
+      applyDragEffects(0);
     },{passive:true});
   }
 
