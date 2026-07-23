@@ -5,6 +5,8 @@
 
   const state={
     active:false,
+    category:'',
+    configKey:'',
     size:'',
     items:[],
     index:0,
@@ -366,20 +368,67 @@
     return patternsBySize[size].filter(Boolean);
   }
 
+  function packageValues(){
+    if(
+      typeof packOptions==='function'&&
+      typeof activeProduct!=='undefined'&&
+      activeProduct
+    ){
+      const options=packOptions(activeProduct.series);
+      if(Array.isArray(options))return options.filter(Boolean);
+    }
+
+    const series=
+      typeof activeProduct!=='undefined'
+        ? activeProduct?.series
+        : '';
+
+    const options=
+      typeof seriesMeta!=='undefined'
+        ? seriesMeta?.[series]?.packaging?.options
+        : null;
+
+    return Array.isArray(options)
+      ? options.filter(Boolean)
+      : [];
+  }
+
   function labelFor(value){
     return typeof choiceLabel==='function'
       ? choiceLabel(value)
       : String(value||'');
   }
 
-  function candidatesFor(value,size,index){
-    const fallback=`./images/patterns/${size}/pattern-${index+1}.jpg`;
+  function legacyPackageThumb(value){
+    if(typeof legacyPackThumb==='function'){
+      return legacyPackThumb(value);
+    }
+
+    const map={
+      '批发包装':'shock',
+      '精品包装':'protect',
+      '品牌包装':'giftbox'
+    };
+
+    return `./images/packages/${map[value]||'default'}.jpg`;
+  }
+
+  function optionValues(category,size){
+    if(category==='pattern')return patternValues(size);
+    if(category==='package')return packageValues();
+    return [];
+  }
+
+  function candidatesFor(category,value,size,index){
+    const fallback=category==='pattern'
+      ? `./images/patterns/${size}/pattern-${index+1}.jpg`
+      : legacyPackageThumb(value);
 
     if(typeof sharedAssetCandidates==='function'){
       return sharedAssetCandidates(
-        'pattern',
+        category,
         value,
-        size,
+        category==='pattern'?size:'',
         fallback
       );
     }
@@ -387,14 +436,24 @@
     return [fallback];
   }
 
-  function buildItems(size){
-    return patternValues(size).map((value,index)=>(
+  function buildItems(category,size){
+    return optionValues(category,size).map((value,index)=>(
       {
         value,
         label:labelFor(value),
-        candidates:candidatesFor(value,size,index)
+        candidates:candidatesFor(category,value,size,index)
       }
     ));
+  }
+
+  function configKeyFor(category){
+    if(category==='pattern')return 'pattern';
+    if(category==='package')return 'pack';
+    return '';
+  }
+
+  function nounFor(category){
+    return category==='package'?'包装':'花样';
   }
 
   function canMove(direction){
@@ -588,12 +647,25 @@
   }
 
   function updateMeta(){
-    const {name,sub,count,labels}=elements();
+    const {viewport,name,sub,count,labels,shell}=elements();
     const item=currentItem();
     if(!item)return;
 
+    const noun=nounFor(state.category);
+
+    if(viewport){
+      viewport.setAttribute(
+        'aria-label',
+        `${noun}大图，左右滑动切换`
+      );
+    }
+
     if(name)name.textContent=item.label;
-    if(sub)sub.textContent=`${state.size} 尺寸花样`;
+    if(sub){
+      sub.textContent=state.category==='pattern'
+        ? `${state.size} 尺寸花样`
+        : '包装方案';
+    }
     if(count)count.textContent=`${state.index+1} / ${state.items.length}`;
 
     if(labels){
@@ -603,6 +675,9 @@
         </span>
       `).join('');
     }
+
+    const hint=shell?.querySelector('.pattern-preview-hint');
+    if(hint)hint.textContent=`左右滑动切换${noun}`;
   }
 
   function commitIndex(direction){
@@ -614,9 +689,15 @@
     state.index+=direction;
     const item=currentItem();
 
-    if(typeof config!=='undefined'&&config&&item){
-      config.pattern=item.value;
-      state.changed=config.pattern!==state.initialValue;
+    if(
+      typeof config!=='undefined'&&
+      config&&
+      item&&
+      state.configKey
+    ){
+      config[state.configKey]=item.value;
+      state.changed=
+        String(config[state.configKey]||'')!==state.initialValue;
     }
 
     updateMeta();
@@ -772,6 +853,8 @@
     const {layer,shell,track}=elements();
 
     state.active=false;
+    state.category='';
+    state.configKey='';
     state.size='';
     state.items=[];
     state.index=0;
@@ -797,30 +880,39 @@
     if(typeof renderDetail!=='function')return;
 
     const scrollState=state.scrollState;
+    const focusKey=state.configKey;
+
     requestAnimationFrame(()=>{
-      renderDetail(scrollState,'pattern');
+      renderDetail(scrollState,focusKey);
     });
   }
 
-  async function openPatternPreview(button){
+  async function openSharedOptionPreview(button,category){
     const shell=ensureShell();
     const {layer,img,caption,content}=elements();
     if(!shell||!layer||!img||!caption)return false;
 
-    const size=String(
-      button?.dataset?.sharedSize||
-      currentSize()
-    ).trim().toUpperCase();
+    const configKey=configKeyFor(category);
+    if(!configKey)return false;
 
-    const items=buildItems(size);
+    const size=category==='pattern'
+      ? String(
+          button?.dataset?.sharedSize||
+          currentSize()
+        ).trim().toUpperCase()
+      : '';
+
+    const items=buildItems(category,size);
     if(!items.length)return false;
 
     state.active=true;
+    state.category=category;
+    state.configKey=configKey;
     state.size=size;
     state.items=items;
     state.initialValue=
       typeof config!=='undefined'&&config
-        ? String(config.pattern||'')
+        ? String(config[configKey]||'')
         : String(button?.dataset?.sharedKey||'');
     state.changed=false;
     state.scrollState=
@@ -856,6 +948,14 @@
     return true;
   }
 
+  function openPatternPreview(button){
+    return openSharedOptionPreview(button,'pattern');
+  }
+
+  function openPackagePreview(button){
+    return openSharedOptionPreview(button,'package');
+  }
+
   function installHooks(){
     const originalOpenShared=window.openSharedPreviewFromButton;
     const originalClose=window.closePreviewImage;
@@ -868,8 +968,8 @@
           button?.dataset?.sharedCategory||''
         ).toLowerCase();
 
-        if(category==='pattern'){
-          const opened=await openPatternPreview(button);
+        if(category==='pattern'||category==='package'){
+          const opened=await openSharedOptionPreview(button,category);
           if(opened)return;
         }
 
@@ -926,6 +1026,8 @@
   installHooks();
 
   window.PatternPreviewSwipe={
-    openPatternPreview
+    openSharedOptionPreview,
+    openPatternPreview,
+    openPackagePreview
   };
 })();
