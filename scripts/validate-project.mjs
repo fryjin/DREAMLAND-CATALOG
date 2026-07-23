@@ -407,7 +407,7 @@ for (const [index, product] of products.entries()) {
     }
   }
 
-  
+if (status === 'active') {  
     activeProducts.push(product);
 
     for (const field of [
