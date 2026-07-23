@@ -76,8 +76,14 @@
         align-items:center;
         gap:12px;
         width:100%;
+        opacity:0;
         will-change:transform;
         transform:translate3d(0,0,0);
+        transition:opacity .12s ease;
+      }
+
+      .pattern-preview-track.is-ready{
+        opacity:1;
       }
 
       .pattern-preview-track.is-settling{
@@ -110,9 +116,15 @@
         width:100%;
         height:100%;
         display:block;
-        object-fit:cover;
+        object-fit:contain;
+        object-position:center;
         pointer-events:none;
         -webkit-user-drag:none;
+      }
+
+      .pattern-preview-slide.is-boundary{
+        visibility:hidden;
+        box-shadow:none;
       }
 
       .pattern-preview-slide.is-loading::after{
@@ -363,14 +375,23 @@
     }));
   }
 
-  function normalizeIndex(index){
+  function clampIndex(index){
     const count=state.items.length;
     if(!count)return 0;
-    return (index%count+count)%count;
+    return Math.max(0,Math.min(count-1,index));
+  }
+
+  function canMove(direction){
+    const nextIndex=state.index+direction;
+    return (
+      direction!==0&&
+      nextIndex>=0&&
+      nextIndex<state.items.length
+    );
   }
 
   function currentItem(){
-    return state.items[normalizeIndex(state.index)]||null;
+    return state.items[state.index]||null;
   }
 
   function loadImageCandidates(img,candidates,token){
@@ -413,10 +434,16 @@
   }
 
   function relativeIndexes(){
-    return [-1,0,1].map(relative=>({
-      relative,
-      index:normalizeIndex(state.index+relative)
-    }));
+    return [-1,0,1].map(relative=>{
+      const index=state.index+relative;
+      const valid=index>=0&&index<state.items.length;
+
+      return {
+        relative,
+        index:valid?index:null,
+        valid
+      };
+    });
   }
 
   function renderTrack(){
@@ -425,8 +452,18 @@
 
     const token=++state.requestToken;
 
-    track.classList.remove('is-settling','is-returning');
-    track.innerHTML=relativeIndexes().map(({relative,index})=>{
+    track.classList.remove('is-settling','is-returning','is-ready');
+    track.innerHTML=relativeIndexes().map(({relative,index,valid})=>{
+      if(!valid){
+        return `
+          <div
+            class="pattern-preview-slide is-boundary"
+            data-relative="${relative}"
+            aria-hidden="true"
+          ></div>
+        `;
+      }
+
       const item=state.items[index];
       return `
         <div
@@ -439,22 +476,29 @@
       `;
     }).join('');
 
-    track.querySelectorAll('.pattern-preview-slide').forEach(slide=>{
-      const itemIndex=Number(slide.dataset.itemIndex);
-      const item=state.items[itemIndex];
-      const img=slide.querySelector('img');
+    track
+      .querySelectorAll('.pattern-preview-slide:not(.is-boundary)')
+      .forEach(slide=>{
+        const itemIndex=Number(slide.dataset.itemIndex);
+        const item=state.items[itemIndex];
+        const img=slide.querySelector('img');
 
-      loadImageCandidates(img,item?.candidates,token).then(success=>{
-        if(token!==state.requestToken)return;
-        slide.classList.remove('is-loading');
-        if(!success)slide.classList.add('is-error');
+        loadImageCandidates(img,item?.candidates,token).then(success=>{
+          if(token!==state.requestToken)return;
+          slide.classList.remove('is-loading');
+          if(!success)slide.classList.add('is-error');
+        });
       });
-    });
 
     requestAnimationFrame(()=>{
-      measureGeometry();
-      setTrackPosition(0,false);
-      applyDragEffects(0);
+      requestAnimationFrame(()=>{
+        if(token!==state.requestToken)return;
+        state.geometry=null;
+        measureGeometry();
+        setTrackPosition(0,false);
+        applyDragEffects(0);
+        track.classList.add('is-ready');
+      });
     });
   }
 
@@ -515,7 +559,10 @@
       if(relative===0){
         scale=1-progress*.03;
         opacity=1-progress*.18;
-      }else if(relative===targetRelative){
+      }else if(
+        relative===targetRelative&&
+        canMove(targetRelative)
+      ){
         scale=.965+progress*.035;
         opacity=.78+progress*.22;
       }
@@ -562,7 +609,12 @@
   }
 
   function commitIndex(direction){
-    state.index=normalizeIndex(state.index+direction);
+    if(!canMove(direction)){
+      returnToCurrent();
+      return;
+    }
+
+    state.index=clampIndex(state.index+direction);
     const item=currentItem();
 
     if(typeof config!=='undefined'&&config&&item){
@@ -575,7 +627,14 @@
   }
 
   function settleTo(direction){
-    if(state.settling||state.items.length<2)return;
+    if(
+      state.settling||
+      state.items.length<2||
+      !canMove(direction)
+    ){
+      returnToCurrent();
+      return;
+    }
 
     const metrics=geometry();
     if(!metrics)return;
@@ -653,12 +712,18 @@
     if(!state.horizontal)return;
 
     event.preventDefault();
-    state.dragX=dx;
+
+    const direction=dx<0?1:-1;
+    const effectiveDx=canMove(direction)
+      ? dx
+      : dx*.22;
+
+    state.dragX=effectiveDx;
     state.lastX=event.clientX;
     state.lastTime=performance.now();
 
-    setTrackPosition(dx,false);
-    applyDragEffects(dx);
+    setTrackPosition(effectiveDx,false);
+    applyDragEffects(effectiveDx);
   }
 
   function onPointerEnd(event){
@@ -681,10 +746,17 @@
       Math.abs(dx)>=MIN_FLING_X&&
       Math.abs(velocity)>=FLING_VELOCITY;
 
+    const direction=dx<0?1:-1;
+    const movable=canMove(direction);
+
     resetPointerState();
 
-    if(horizontal&&(distancePassed||flingPassed)){
-      settleTo(dx<0?1:-1);
+    if(
+      movable&&
+      horizontal&&
+      (distancePassed||flingPassed)
+    ){
+      settleTo(direction);
     }else{
       returnToCurrent();
     }
@@ -720,7 +792,7 @@
     if(track){
       track.innerHTML='';
       track.removeAttribute('style');
-      track.classList.remove('is-settling','is-returning');
+      track.classList.remove('is-settling','is-returning','is-ready');
     }
 
     layer?.classList.remove('pattern-mode');
