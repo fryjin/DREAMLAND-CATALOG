@@ -1,8 +1,7 @@
 ﻿asset_id,category,lookup_key,size,label_zh,label_en,label_ko,image_path,fallback_path,status,sort_order,updated_at
 HOME001,home,hero,,首页主图,Home Hero,홈 메인 이미지,./images/shared/home/HOME001/cover.webp,./images/home/hero-product.png,active,10,2026-07-17
-PKG001,package,批发包装,,批发包装,Wholesale Packaging,도매 포장,./images/shared/packages/PKG001/cover.webp,./images/packages/shock.jpg,active,20,2026-07-17
-PKG002,package,精品包装,,精品包装,Premium Packaging,프리미엄 포장,./images/shared/packages/PKG002/cover.webp,./images/packages/protect.jpg,active,30,2026-07-17
-PKG003,package,品牌包装,,品牌包装,Branded Packaging,브랜드 포장,./images/shared/packages/PKG003/cover.webp,./images/packages/giftbox.jpg,active,40,2026-07-17
+PKG001,package,默认包装,,默认包装,Standard Packaging,기본 포장,./images/shared/packages/PKG001/cover.webp,./images/packages/shock.jpg,active,20,2026-07-24
+PKG002,package,礼品包装,,礼品包装,Gift Packaging,선물 포장,./images/shared/packages/PKG002/cover.webp,./images/packages/giftbox.jpg,active,30,2026-07-24
 PATS01,pattern,小花卷,S,小花卷,Small Floral Curl,스몰 플라워 컬,./images/shared/patterns/PATS01/cover.webp,./images/patterns/S/pattern-1.jpg,active,101,2026-07-17
 PATS02,pattern,细波纹,S,细波纹,Fine Wave,파인 웨이브,./images/shared/patterns/PATS02/cover.webp,./images/patterns/S/pattern-2.jpg,active,102,2026-07-17
 PATS03,pattern,简约切线,S,简约切线,Minimal Cut Lines,미니멀 컷 라인,./images/shared/patterns/PATS03/cover.webp,./images/patterns/S/pattern-3.jpg,active,103,2026-07-17
