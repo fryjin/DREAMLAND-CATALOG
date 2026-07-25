@@ -30,6 +30,132 @@
   const SETTLE_MS=220;
   const RETURN_MS=170;
 
+
+  const PACKAGING_VALUES=[
+    '默认包装',
+    '礼品包装'
+  ];
+
+  const PACKAGING_ALIASES={
+    '批发包装':'默认包装',
+    '精品包装':'礼品包装',
+    '品牌包装':'礼品包装'
+  };
+
+  const PACKAGING_LABELS={
+    zh:{
+      '默认包装':'默认包装',
+      '礼品包装':'礼品包装'
+    },
+    en:{
+      '默认包装':'Standard Packaging',
+      '礼品包装':'Gift Packaging'
+    },
+    ko:{
+      '默认包装':'기본 포장',
+      '礼品包装':'선물 포장'
+    }
+  };
+
+  function normalizePackagingValue(value){
+    const text=String(value||'').trim();
+    return PACKAGING_ALIASES[text]||text;
+  }
+
+  function currentLanguage(){
+    return (
+      typeof currentLang!=='undefined'&&
+      ['zh','en','ko'].includes(currentLang)
+    )
+      ? currentLang
+      : document.body?.dataset?.lang||'zh';
+  }
+
+  function packagingDisplayLabel(value){
+    const normalized=normalizePackagingValue(value);
+    const language=currentLanguage();
+
+    return (
+      PACKAGING_LABELS[language]?.[normalized]||
+      PACKAGING_LABELS.zh[normalized]||
+      normalized
+    );
+  }
+
+  function installPackagingChoiceAliases(){
+    if(typeof choiceMaps==='undefined'||!choiceMaps){
+      return;
+    }
+
+    choiceMaps.en=choiceMaps.en||{};
+    choiceMaps.ko=choiceMaps.ko||{};
+
+    choiceMaps.en['默认包装']='Standard Packaging';
+    choiceMaps.en['礼品包装']='Gift Packaging';
+    choiceMaps.ko['默认包装']='기본 포장';
+    choiceMaps.ko['礼品包装']='선물 포장';
+  }
+
+  function normalizeCurrentPackagingConfig(){
+    if(
+      typeof config!=='undefined'&&
+      config&&
+      config.pack
+    ){
+      config.pack=normalizePackagingValue(config.pack);
+    }
+  }
+
+  function normalizeCustomPackSelect(){
+    const select=document.getElementById('customPack');
+    if(!select)return;
+
+    const previous=normalizePackagingValue(select.value);
+    const recommendLabel=
+      typeof choiceLabel==='function'
+        ? choiceLabel('待推荐')
+        : '待推荐';
+
+    select.innerHTML=`
+      <option value="待推荐">${escapeHtml(recommendLabel)}</option>
+      ${PACKAGING_VALUES.map(value=>`
+        <option value="${escapeAttribute(value)}">
+          ${escapeHtml(packagingDisplayLabel(value))}
+        </option>
+      `).join('')}
+    `;
+
+    select.value=
+      PACKAGING_VALUES.includes(previous)||
+      previous==='待推荐'
+        ? previous
+        : '待推荐';
+  }
+
+  function installPackagingUiSync(){
+    const sync=()=>{
+      installPackagingChoiceAliases();
+      normalizeCurrentPackagingConfig();
+      normalizeCustomPackSelect();
+    };
+
+    sync();
+    requestAnimationFrame(sync);
+    window.setTimeout(sync,500);
+    window.setTimeout(sync,1500);
+
+    if(document.body&&'MutationObserver' in window){
+      const observer=new MutationObserver(sync);
+      observer.observe(
+        document.body,
+        {
+          attributes:true,
+          attributeFilter:['data-lang']
+        }
+      );
+    }
+  }
+
   function installStyles(){
     if(document.getElementById('dreamlandPatternPreviewStyles'))return;
 
@@ -394,6 +520,12 @@
   }
 
   function labelFor(value){
+    const normalized=normalizePackagingValue(value);
+
+    if(PACKAGING_VALUES.includes(normalized)){
+      return packagingDisplayLabel(normalized);
+    }
+
     return typeof choiceLabel==='function'
       ? choiceLabel(value)
       : String(value||'');
@@ -404,13 +536,16 @@
       return legacyPackThumb(value);
     }
 
+    const normalized=normalizePackagingValue(value);
     const map={
+      '默认包装':'shock',
+      '礼品包装':'giftbox',
       '批发包装':'shock',
-      '精品包装':'protect',
+      '精品包装':'giftbox',
       '品牌包装':'giftbox'
     };
 
-    return `./images/packages/${map[value]||'default'}.jpg`;
+    return `./images/packages/${map[normalized]||'default'}.jpg`;
   }
 
   function optionValues(category,size){
@@ -888,6 +1023,10 @@
   }
 
   async function openSharedOptionPreview(button,category){
+    installPackagingChoiceAliases();
+    normalizeCurrentPackagingConfig();
+    normalizeCustomPackSelect();
+
     const shell=ensureShell();
     const {layer,img,caption,content}=elements();
     if(!shell||!layer||!img||!caption)return false;
@@ -1021,6 +1160,7 @@
     },{passive:true});
   }
 
+  installPackagingUiSync();
   installStyles();
   ensureShell();
   installHooks();
