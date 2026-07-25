@@ -347,20 +347,49 @@ window.DreamlandCatalogData={
 };
 })();
 
-/* Load the dedicated image manager after the main page script is ready. */
+/* Load image and pattern-preview infrastructure after the page script is ready. */
 (function(){
-  function loadImageManager(){
-    if(document.querySelector('script[data-dreamland-image-manager]'))return;
+  function loadScript(src,marker){
+    return new Promise(resolve=>{
+      const selector=`script[${marker}]`;
+      const existing=document.querySelector(selector);
 
-    const script=document.createElement('script');
-    script.src='./image-manager.js';
-    script.dataset.dreamlandImageManager='1';
-    document.head.appendChild(script);
+      if(existing){
+        resolve(existing);
+        return;
+      }
+
+      const script=document.createElement('script');
+      script.src=src;
+      script.setAttribute(marker,'1');
+      script.onload=()=>resolve(script);
+      script.onerror=()=>{
+        console.warn(`[catalog] Failed to load ${src}`);
+        resolve(script);
+      };
+      document.head.appendChild(script);
+    });
+  }
+
+  async function loadImageInfrastructure(){
+    await loadScript(
+      './image-manager.js',
+      'data-dreamland-image-manager'
+    );
+
+    await loadScript(
+      './pattern-preview-swipe.js',
+      'data-dreamland-pattern-preview-swipe'
+    );
   }
 
   if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',loadImageManager,{once:true});
+    document.addEventListener(
+      'DOMContentLoaded',
+      loadImageInfrastructure,
+      {once:true}
+    );
   }else{
-    setTimeout(loadImageManager,0);
+    setTimeout(loadImageInfrastructure,0);
   }
 })();
