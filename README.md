@@ -1,100 +1,54 @@
-# DREAMLAND v1.2.1
+# DREAMLAND v1.2.2：详情轮播渐进加载优化
 
-本次更新包含：
+## 问题定位
 
-1. 节日系列前两款显示名称改成 `C01`、`C02`；
-2. 保留 v1.2.0 已验收的定制多香型与经典系列价格；
-3. 增加真正减少图片下载体积的响应式图片资源体系；
-4. 使用 GitHub Actions + Sharp 自动生成 WebP 图片，不依赖付费图片服务。
+现有生成脚本只为商品封面生成 480px 图片，角度图、细节图和尺寸图只有 960px。
+详情轮播必须等待 960px 请求完成才显示，因此即使文件已经压缩，大陆跨境首请求仍会留下明显骨架屏等待。
 
-## 一、上传文件
+## 本次方案
 
-将压缩包内文件按原目录上传到当前测试分支：
+- 所有商品轮播图片同时生成 480px 与 960px WebP。
+- 详情页先显示 480px 预览图。
+- 960px 图片在后台加载和解码后无闪烁替换。
+- 弱网或开启省流量模式时保留 480px，不强制升级高清。
+- 相邻轮播图只预加载 480px：下一张约 650ms 后，上一张约 1350ms 后。
+- 用户切换到某张图片时，再把该张升级为 960px。
+- 原始图片继续作为最终兜底，不影响现有素材兼容性。
 
-- `catalog-data.js`
-- `image-variants.js`
-- `custom-scent-multi.js`
-- `data/series.json`
-- `scripts/apply-data-fixes.mjs`
-- `scripts/generate-responsive-images.mjs`
-- `.github/workflows/optimize-responsive-images.yml`
-- `_headers`
-- `sw.js`
+## 上传文件
 
-`sw.js` 最后上传，缓存版本为 `dreamland-pwa-v54`。
+上传到 develop 分支：
 
-## 二、图片优化的实际工作方式
+1. `detail-progressive.js`
+2. `catalog-data.js`
+3. `scripts/generate-responsive-images.mjs`
+4. `sw.js`
 
-### 商品列表
+`sw.js` 缓存版本为 `dreamland-pwa-v55`。
 
-- 不再下载详情原图；
-- 优先使用自动生成的 `480px WebP`；
-- 前两张商品图高优先级加载；
-- 其他图片进入视口附近才加载；
-- 生成图缺失时自动回退到现有原图，不会出现永久空白。
+## Actions
 
-### 商品详情
+现有 `Optimize responsive images` 会被 `scripts/generate-responsive-images.mjs` 的修改自动触发。
+成功后将为非封面轮播图新增：
 
-- 当前图片使用 `960px WebP`；
-- 相邻图片在空闲时间预加载；
-- 弱网或开启省流量模式时自动降为 `480px WebP`；
-- 仍保留原图回退。
-
-### 花样和包装图片
-
-- 自动优先使用 `960px WebP`；
-- 失败后回退现有图片；
-- 首页主视觉不重复切换资源，避免首屏二次下载。
-
-## 三、GitHub Actions
-
-上传后进入 GitHub：
-
-`Actions → Optimize responsive images`
-
-工作流会自动：
-
-1. 把 `HOL001`、`HOL002` 的中英韩名称同步为 `C01`、`C02`；
-2. 扫描 `images/products`、`images/shared`、`images/patterns`、`images/packages`；
-3. 使用 Sharp 生成响应式 WebP；
-4. 写入 `images/generated/`；
-5. 生成 `data/image-optimization-report.json`；
-6. 自动提交生成结果到当前分支。
-
-完成后 Cloudflare Pages 会收到一次新的提交并重新部署。
-
-若工作流提示没有写入权限，在仓库设置中打开：
-
-`Settings → Actions → General → Workflow permissions → Read and write permissions`
-
-## 四、本地手动执行
-
-```bash
-npm install --no-save sharp@0.35.3
-node scripts/apply-data-fixes.mjs
-node scripts/generate-responsive-images.mjs
+```text
+images/generated/products/ADV001/angle-480.webp
+images/generated/products/ADV001/detail-480.webp
+images/generated/products/ADV001/size-s-480.webp
 ```
 
-然后提交：
+并更新 `data/image-optimization-report.json`。
 
-- `data/products.csv`
-- `data/products.json`
-- `data/image-optimization-report.json`
-- `images/generated/`
+## 验收
 
-## 五、验收
+1. 等待 Optimize responsive images 完成自动提交。
+2. 等待 Cloudflare Pages 完成该机器人提交的部署。
+3. 微信内关闭旧页面并重新打开。
+4. 首次打开商品详情时，应先快速看到清晰度稍低的图片，而不是长时间骨架屏。
+5. 约数百毫秒后图片应在原位置自动变清晰，不闪白、不改变轮播位置。
+6. 快速滑动到下一张时，应先立即显示 480px 预览，再后台升级。
+7. Network 中应先看到 `-480.webp`，随后当前活动图出现 `-960.webp`。
 
-1. 节日系列前两款名称显示为 `C01`、`C02`；
-2. 列表首屏图片明显更快出现；
-3. 浏览器 Network 中商品列表图片路径优先为 `/images/generated/...-480.webp`；
-4. 商品详情图片路径优先为 `/images/generated/...-960.webp`；
-5. 删除某张生成图后仍能回退原图；
-6. 花样、包装、定制多香型、经典价格没有回归。
+## 说明
 
-## 六、效果判断
-
-实际节省比例以工作流生成的：
-
-`data/image-optimization-report.json`
-
-为准。该报告记录每张原图、生成图、文件体积和节省比例，不预先假设压缩收益。
+本次优化重点是“首个可见画面时间”，不是继续无上限降低图片质量。现有 960px 图片多数已经只有约 30–85KB，继续压缩的边际收益较小；渐进显示能更直接消除用户感知上的等待。

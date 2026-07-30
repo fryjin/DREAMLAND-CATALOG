@@ -38,9 +38,13 @@ async function walk(directory){
 }
 
 function targetWidths(file){
-  const base=path.basename(file,path.extname(file)).toLowerCase();
   if(file.startsWith(`images${path.sep}products${path.sep}`)){
-    return base==='cover'?[480,960]:[960];
+    /*
+     * Every product carousel image receives a lightweight 480px preview.
+     * Detail pages show this preview immediately, then replace it with the
+     * 960px version after the high-resolution request finishes.
+     */
+    return [480,960];
   }
   return [960];
 }

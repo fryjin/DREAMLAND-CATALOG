@@ -405,6 +405,11 @@
     );
 
     await loadScript(
+      './detail-progressive.js',
+      'data-dreamland-detail-progressive'
+    );
+
+    await loadScript(
       './pattern-preview-swipe.js',
       'data-dreamland-pattern-preview-swipe'
     );
