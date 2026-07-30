@@ -3124,11 +3124,11 @@
       "status": "active",
       "sortOrder": 10,
       "listSort": 160,
-      "name": "无白色雪花淋面圣诞",
+      "name": "C01",
       "names": {
-        "zh": "无白色雪花淋面圣诞",
-        "en": "Christmas Carved Candle - No White Snowflake Drizzle",
-        "ko": "화이트 눈꽃 드리즐 없는 크리스마스"
+        "zh": "C01",
+        "en": "C01",
+        "ko": "C01"
       },
       "desc": "节日系列 C01，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -3177,7 +3177,7 @@
       },
       "featured": false,
       "launchDate": "",
-      "updatedAt": "2026-07-23",
+      "updatedAt": "2026-07-30",
       "colorCode": "C01",
       "pdfSeriesLabel": "节日系列",
       "pdfSourcePage": 4,
@@ -3201,11 +3201,11 @@
       "status": "active",
       "sortOrder": 20,
       "listSort": 150,
-      "name": "无白色雪花淋面圣诞",
+      "name": "C02",
       "names": {
-        "zh": "无白色雪花淋面圣诞",
-        "en": "Christmas Carved Candle - No White Snowflake Drizzle",
-        "ko": "화이트 눈꽃 드리즐 없는 크리스마스"
+        "zh": "C02",
+        "en": "C02",
+        "ko": "C02"
       },
       "desc": "节日系列 C02，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -3254,7 +3254,7 @@
       },
       "featured": false,
       "launchDate": "",
-      "updatedAt": "2026-07-23",
+      "updatedAt": "2026-07-30",
       "colorCode": "C02",
       "pdfSeriesLabel": "节日系列",
       "pdfSourcePage": 4,

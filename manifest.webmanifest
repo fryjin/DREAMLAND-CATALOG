@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "DREAMLAND 产品电子手册",
+  "name": "DREAMLAND 产品手册",
   "short_name": "DREAMLAND",
-  "description": "手工雕刻香薰蜡烛产品浏览、选款与询盘工具",
+  "description": "查看手工雕刻香薰蜡烛，整理选款并提交意向。",
   "lang": "zh-CN",
   "start_url": "./",
   "scope": "./",

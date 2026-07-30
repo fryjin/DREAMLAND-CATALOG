@@ -1,0 +1,2 @@
+/images/generated/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=2592000
