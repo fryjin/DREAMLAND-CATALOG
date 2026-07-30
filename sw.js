@@ -1,8 +1,10 @@
-const CACHE_VERSION = 'dreamland-pwa-v57';
+const CACHE_VERSION = 'dreamland-pwa-v58';
 
 const APP_CACHE = `${CACHE_VERSION}-app`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
-const IMAGE_CACHE = `${CACHE_VERSION}-images`;
+const PREVIEW_IMAGE_CACHE = `${CACHE_VERSION}-preview-images`;
+const FULL_IMAGE_CACHE = `${CACHE_VERSION}-full-images`;
+const OTHER_IMAGE_CACHE = `${CACHE_VERSION}-other-images`;
 
 const APP_SHELL = [
   './',
@@ -39,11 +41,19 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
+  const activeCaches=[
+    APP_CACHE,
+    RUNTIME_CACHE,
+    PREVIEW_IMAGE_CACHE,
+    FULL_IMAGE_CACHE,
+    OTHER_IMAGE_CACHE
+  ];
+
   event.waitUntil(
     caches.keys()
       .then(keys => Promise.all(
         keys
-          .filter(key => ![APP_CACHE,RUNTIME_CACHE,IMAGE_CACHE].includes(key))
+          .filter(key => !activeCaches.includes(key))
           .map(key => caches.delete(key))
       ))
       .then(() => self.clients.claim())
@@ -92,6 +102,50 @@ async function networkFirst(request,fallbackPaths=[],fresh=false){
       statusText:'Offline'
     });
   }
+}
+
+function cacheFirst(
+  request,
+  cacheName,
+  maxItems,
+  event
+){
+  const work=caches.open(cacheName).then(async cache=>{
+    const cached=await cache.match(request);
+    if(cached){
+      return {
+        response:cached,
+        background:Promise.resolve()
+      };
+    }
+
+    try{
+      const response=await fetch(request);
+      const background=response&&response.ok
+        ? cache
+            .put(request,response.clone())
+            .then(()=>trimCache(cacheName,maxItems))
+        : Promise.resolve();
+
+      return {response,background};
+    }catch{
+      return {
+        response:new Response('Offline',{
+          status:503,
+          statusText:'Offline'
+        }),
+        background:Promise.resolve()
+      };
+    }
+  });
+
+  event.waitUntil(
+    work
+      .then(result=>result.background)
+      .catch(()=>{})
+  );
+
+  return work.then(result=>result.response);
 }
 
 async function staleWhileRevalidate(
@@ -153,16 +207,18 @@ self.addEventListener('fetch', event => {
 
   if(
     request.destination==='image'&&
-    (
-      url.pathname.includes('/images/products/')||
-      url.pathname.includes('/images/generated/')
-    )
+    url.pathname.includes('/images/generated/')
   ){
+    const isPreview=/-480\.webp$/i.test(url.pathname);
+
     event.respondWith(
-      staleWhileRevalidate(
+      cacheFirst(
         request,
-        IMAGE_CACHE,
-        480
+        isPreview
+          ? PREVIEW_IMAGE_CACHE
+          : FULL_IMAGE_CACHE,
+        isPreview?900:360,
+        event
       )
     );
     return;
@@ -172,8 +228,8 @@ self.addEventListener('fetch', event => {
     event.respondWith(
       staleWhileRevalidate(
         request,
-        IMAGE_CACHE,
-        260
+        OTHER_IMAGE_CACHE,
+        300
       )
     );
     return;
