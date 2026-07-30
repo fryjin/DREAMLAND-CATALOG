@@ -107,7 +107,7 @@
       consentTail:'使用以上信息，用于回复意向、确认需求和评估运输方式。',
 
       processTitle:'提交说明',
-      processNote:'提交意向单不代表正式下单。确认好需求和报价后，双方在线下签约并完成付款，我们再安排生产。'
+      processNote:'提交意向单不代表正式下单，我们会尽快与您联系，确认需求并推进签约。'
     },
     en:{
       docTitle:'DREAMLAND Product Catalog',
@@ -211,7 +211,7 @@
       captchaLoading:'Loading verification…',
 
       processTitle:'Before You Submit',
-      processNote:'Submitting an inquiry does not place an order. Once the details and quote are confirmed, both sides will sign the agreement and complete payment offline before production begins.'
+      processNote:'Submitting an inquiry does not place an order. We’ll contact you shortly to confirm the details and proceed with the agreement.'
     },
     ko:{
       docTitle:'DREAMLAND 제품 카탈로그',
@@ -315,7 +315,7 @@
       captchaLoading:'보안 확인을 불러오는 중…',
 
       processTitle:'제출 전 안내',
-      processNote:'문의서를 제출해도 주문이 확정되지는 않아요. 요청 사항과 견적을 확인한 뒤 오프라인으로 계약과 결제를 진행하고 생산을 시작해요.'
+      processNote:'문의서를 제출해도 주문이 확정되지는 않아요. 빠르게 연락드려 요청 사항을 확인하고 계약을 진행할게요.'
     }
   };
 
@@ -403,11 +403,11 @@
   const RISK_PATCH={
     zh:{
       checking:'正在检查提交信息…',
-      safe:'可以提交了。',
+      safe:'安全检查已完成，可提交。',
       captcha:'请同意隐私说明并完成安全验证。',
       captchaVerifying:'正在验证…',
       captchaRetry:'验证没有完成，请重试。',
-      captchaVerified:'验证完成，可以提交。',
+      captchaVerified:'安全验证已完成，可提交。',
       unavailable:'暂时无法验证，请检查网络后重试。',
       captchaLoading:'正在加载验证…',
       captchaSlow:'加载较慢，请稍等或重试。',
@@ -418,11 +418,11 @@
     },
     en:{
       checking:'Checking your submission…',
-      safe:'Ready to submit.',
+      safe:'Security check complete. You may submit.',
       captcha:'Please accept the Privacy Notice and complete the security check.',
       captchaVerifying:'Checking…',
       captchaRetry:'The check was not completed. Please try again.',
-      captchaVerified:'Check complete. You can submit now.',
+      captchaVerified:'Security verification complete. You may submit.',
       unavailable:'We can’t complete the check right now. Check your connection and try again.',
       captchaLoading:'Loading verification…',
       captchaSlow:'This is taking longer than usual. Please wait or try again.',
@@ -433,11 +433,11 @@
     },
     ko:{
       checking:'제출 내용을 확인하고 있어요…',
-      safe:'이제 제출할 수 있어요.',
+      safe:'보안 확인이 완료됐어요. 제출할 수 있어요.',
       captcha:'개인정보 안내에 동의하고 보안 확인을 완료해 주세요.',
       captchaVerifying:'확인 중…',
       captchaRetry:'확인을 완료하지 못했어요. 다시 시도해 주세요.',
-      captchaVerified:'확인을 마쳤어요. 이제 제출할 수 있어요.',
+      captchaVerified:'보안 확인이 완료됐어요. 제출할 수 있어요.',
       unavailable:'지금은 확인할 수 없어요. 네트워크를 확인한 뒤 다시 시도해 주세요.',
       captchaLoading:'보안 확인을 불러오는 중…',
       captchaSlow:'불러오는 데 시간이 걸려요. 잠시 기다리거나 다시 시도해 주세요.',
