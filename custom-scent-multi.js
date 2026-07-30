@@ -11,30 +11,30 @@
   const COPY={
     zh:{
       seriesLabel:'香薰系列 *',
-      seriesHint:'先选择香薰系列',
-      scentLabel:'具体香型 *',
-      scentHint:'可选择多种香型进行组合',
+      seriesHint:'选择一个香薰系列',
+      scentLabel:'选择香型 *',
+      scentHint:'同一系列可多选',
       selected:'已选 {count} 种',
-      required:'请选择至少一种具体香型。',
+      required:'请至少选择一种香型。',
       empty:'当前系列暂无可选香型'
     },
     en:{
-      seriesLabel:'Fragrance series *',
-      seriesHint:'Select a fragrance series first',
-      scentLabel:'Scents *',
-      scentHint:'Select multiple scents for a combination',
+      seriesLabel:'Fragrance Series *',
+      seriesHint:'Choose a fragrance series',
+      scentLabel:'Select Scents *',
+      scentHint:'Select more than one within the same series',
       selected:'{count} selected',
       required:'Select at least one scent.',
       empty:'No scents are available in this series'
     },
     ko:{
       seriesLabel:'향 시리즈 *',
-      seriesHint:'향 시리즈를 먼저 선택해 주세요',
-      scentLabel:'세부 향 *',
-      scentHint:'여러 향을 조합해 선택할 수 있습니다',
-      selected:'{count}개 선택됨',
-      required:'세부 향을 하나 이상 선택해 주세요.',
-      empty:'현재 시리즈에 선택 가능한 향이 없습니다'
+      seriesHint:'향 시리즈를 선택해 주세요',
+      scentLabel:'향 선택 *',
+      scentHint:'같은 시리즈에서 여러 향을 선택할 수 있어요',
+      selected:'{count}개 선택',
+      required:'향을 하나 이상 선택해 주세요.',
+      empty:'선택할 수 있는 향이 아직 없어요'
     }
   };
 
@@ -588,9 +588,9 @@
         previewContainer.innerHTML=`
           <div class="preview-card"><h3>${ui('inquiryNumber')}</h3>${kv(ui('inquiryNumber'),inquiryId)}</div>
           <div class="preview-card"><h3>${ui('personalInfo')}</h3>${kv(ui('nameLabel').replace(' *',''),contact.name)}${kv(ui('companyBrand'),contact.company||ui('notProvided'))}${kv(ui('countryRegion'),contact.country)}${kv(ui('cityLabel'),contact.city||ui('notProvided'))}${kv(ui('emailLabel').replace(' *',''),contact.email)}${kv(ui('contactMethod'),contact.phone)}${kv(ui('buyerType'),choiceLabel(contact.buyerType)||ui('toConfirm'))}${kv(ui('note'),contact.message||ui('notProvided'))}</div>
-          <div class="preview-card"><h3>${ui('productInquiry')}</h3>${productsSelected.length?productsSelected.map(item=>kv(productDisplayName(item),`${item.qty} ${qtyUnit()} · MOQ ${itemMoq(item)} · ${item.size} · ${itemScentLabel(item)} · ${choiceLabel(item.pack||defaultPack(item.series))} · ${money(itemSubtotal(item))}`)).join(''):kv(ui('products'),ui('none'))}</div>
+          <div class="preview-card"><h3>${ui('productInquiry')}</h3>${productsSelected.length?productsSelected.map(item=>kv(productDisplayName(item),`${item.qty} ${qtyUnit()} · ${ui('moq')} ${itemMoq(item)} · ${item.size} · ${itemScentLabel(item)} · ${choiceLabel(item.pack||defaultPack(item.series))} · ${money(itemSubtotal(item))}`)).join(''):kv(ui('products'),ui('none'))}</div>
           <div class="preview-card"><h3>${ui('customInquiry')}</h3>${customSelected.length?customSelected.map(item=>kv(choiceLabel(item.use)||ui('customNeed'),`${item.qty||ui('qtyPending')} ${qtyUnit()} · ${item.budget||ui('budgetPending')} · ${choiceLabel(item.sizePref)||ui('sizeRecommend')} · ${customScentLabel(item)||ui('scentRecommend')} · ${item.color||ui('colorPending')} · ${choiceLabel(item.pack)||ui('packRecommend')} · ${choiceLabel(item.branding)||ui('brandingPending')} · ${item.date||ui('datePending')}`)).join(''):kv(ui('custom'),ui('none'))}</div>
-          <div class="preview-card"><h3>${ui('amountEstimate')}</h3>${kv(ui('productEstimate'),money(total()))}${kv(ui('customPart'),ui('consultantConfirm'))}${kv(ui('syncStatus'),web3formsReady()?ui('syncReady'):ui('syncPending'))}</div>
+          <div class="preview-card"><h3>${ui('amountEstimate')}</h3>${kv(ui('productEstimate'),money(total()))}${kv(ui('customPart'),ui('consultantConfirm'))}</div>
           <div class="preview-card verification-card">
             <label class="consent-check"><input id="privacyConsent" type="checkbox" onchange="handlePrivacyConsentChange(this)"><span>${ui('privacyAgreePrefix')} <a href="${privacyUrl()}" target="_blank" rel="noopener">${ui('privacyLink')}</a></span></label>
             <div class="risk-status" id="riskStatus">${riskText('checking')}</div>

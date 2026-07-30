@@ -9,7 +9,7 @@
     "loadTimeoutMs": 12000
   },
   "privacyUrl": "./privacy.html",
-  "privacyVersion": "2026-06-15",
+  "privacyVersion": "2026-07-30",
   "customMoq": 50,
   "maxQuantity": 1000000,
   "archiveLimit": 20,

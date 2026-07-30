@@ -394,6 +394,11 @@
       'data-dreamland-custom-scent-multi'
     );
 
+    const copyPolishReady=customScentReady.then(()=>loadScript(
+      './copy-polish.js',
+      'data-dreamland-copy-polish'
+    ));
+
     await loadScript(
       './image-manager.js',
       'data-dreamland-image-manager'
@@ -415,6 +420,7 @@
     );
 
     await customScentReady;
+    await copyPolishReady;
   }
 
   if(document.readyState==='loading'){
