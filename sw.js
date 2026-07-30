@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'dreamland-pwa-v52';
+const CACHE_VERSION = 'dreamland-pwa-v53';
 
 const APP_CACHE = `${CACHE_VERSION}-app`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
@@ -10,6 +10,7 @@ const APP_SHELL = [
   './catalog-data.js',
   './image-manager.js',
   './pattern-preview-swipe.js',
+  './custom-scent-multi.js',
   './manifest.webmanifest',
   './offline.html',
   './privacy.html',

@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  const IMAGE_FIELDS = [
+  const IMAGE_FIELDS=[
     'cover_image',
     'angle_image',
     'detail_image',
@@ -17,7 +17,7 @@
   ];
 
   function text(value){
-    return String(value ?? '').trim();
+    return String(value??'').trim();
   }
 
   function number(value,fallback=0){
@@ -26,7 +26,8 @@
   }
 
   function boolean(value){
-    return ['1','true','yes','y','是'].includes(text(value).toLowerCase());
+    return ['1','true','yes','y','是']
+      .includes(text(value).toLowerCase());
   }
 
   function splitList(value,separator=','){
@@ -155,138 +156,113 @@
     return product;
   }
 
-function mapCsvScent(row) {
-  const text = value => String(value || '').trim();
-
-  return {
-    id: text(row.scent_id),
-    series: text(row.series),
-    status: text(row.status),
-    sortOrder: Number(row.sort_order || 999),
-
-    name: {
-      zh: text(row.name_zh),
-      en: text(row.name_en),
-      ko: text(row.name_ko)
-    },
-
-    notes: {
-      top: {
-        zh: text(row.top_zh),
-        en: text(row.top_en),
-        ko: text(row.top_ko)
+  function mapCsvScent(row){
+    return {
+      id:text(row.scent_id),
+      series:text(row.series),
+      status:text(row.status).toLowerCase(),
+      sortOrder:number(row.sort_order,999),
+      name:{
+        zh:text(row.name_zh),
+        en:text(row.name_en),
+        ko:text(row.name_ko)
       },
-      heart: {
-        zh: text(row.heart_zh),
-        en: text(row.heart_en),
-        ko: text(row.heart_ko)
-      },
-      base: {
-        zh: text(row.base_zh),
-        en: text(row.base_en),
-        ko: text(row.base_ko)
-      }
-    },
-
-    supplier: {
-      zh: text(row.supplier_zh),
-      en: text(row.supplier_en),
-      ko: text(row.supplier_ko)
-    },
-
-    fragranceRatio: text(row.fragrance_ratio),
-    updatedAt: text(row.updated_at)
-  };
-}
-  
-function mapCsvSharedAsset(row){
-  return {
-    assetId:text(row.asset_id),
-    category:text(row.category).toLowerCase(),
-    lookupKey:text(row.lookup_key),
-    size:text(row.size).toUpperCase(),
-    labels:{
-      zh:text(row.label_zh),
-      en:text(row.label_en),
-      ko:text(row.label_ko)
-    },
-    imagePath:text(row.image_path),
-    fallbackPath:text(row.fallback_path),
-    status:text(row.status).toLowerCase()||'hidden',
-    sortOrder:number(row.sort_order),
-    updatedAt:text(row.updated_at)
-  };
-}
-
-async function loadSharedAssetsFromCsv(){
-  try{
-    const response=await fetch(
-      './data/shared-assets.csv',
-      {cache:'no-cache'}
-    );
-
-    if(!response.ok){
-      throw new Error(
-        `shared-assets.csv request failed: ${response.status}`
-      );
-    }
-
-    return parseCsv(await response.text())
-      .map(mapCsvSharedAsset)
-      .filter(
-        item=>
-          item.assetId&&
-          item.status==='active'
-      )
-      .sort(
-        (a,b)=>
-          a.sortOrder-b.sortOrder
-      );
-  }catch(error){
-    console.warn(
-      '[catalog] Shared assets load failed; using legacy image paths.',
-      error
-    );
-
-    return [];
-  }
-}
-
-async function loadScentsFromCsv() {
-  try {
-    const response = await fetch('./data/scents.csv', {
-      cache: 'no-cache'
-    });
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to load scents.csv: ${response.status}`
-      );
-    }
-
-    const text = await response.text();
-    const rows = parseCsv(text);
-
-    return rows
-      .map(mapCsvScent)
-      .filter(item => item.id && item.status === 'active')
-      .sort((a, b) => {
-        if (a.series !== b.series) {
-          return a.series.localeCompare(b.series);
+      notes:{
+        top:{
+          zh:text(row.top_zh),
+          en:text(row.top_en),
+          ko:text(row.top_ko)
+        },
+        heart:{
+          zh:text(row.heart_zh),
+          en:text(row.heart_en),
+          ko:text(row.heart_ko)
+        },
+        base:{
+          zh:text(row.base_zh),
+          en:text(row.base_en),
+          ko:text(row.base_ko)
         }
-
-        return a.sortOrder - b.sortOrder;
-      });
-  } catch (error) {
-    console.warn(
-      '[DREAMLAND] scents.csv load failed.',
-      error
-    );
-
-    return [];
+      },
+      supplier:{
+        zh:text(row.supplier_zh),
+        en:text(row.supplier_en),
+        ko:text(row.supplier_ko)
+      },
+      fragranceRatio:text(row.fragrance_ratio),
+      updatedAt:text(row.updated_at)
+    };
   }
-}
-  
+
+  function mapCsvSharedAsset(row){
+    return {
+      assetId:text(row.asset_id),
+      category:text(row.category).toLowerCase(),
+      lookupKey:text(row.lookup_key),
+      size:text(row.size).toUpperCase(),
+      labels:{
+        zh:text(row.label_zh),
+        en:text(row.label_en),
+        ko:text(row.label_ko)
+      },
+      imagePath:text(row.image_path),
+      fallbackPath:text(row.fallback_path),
+      status:text(row.status).toLowerCase()||'hidden',
+      sortOrder:number(row.sort_order),
+      updatedAt:text(row.updated_at)
+    };
+  }
+
+  async function fetchText(path,label){
+    const response=await fetch(path,{cache:'no-cache'});
+    if(!response.ok){
+      throw new Error(`${label} request failed: ${response.status}`);
+    }
+    return response.text();
+  }
+
+  async function loadSharedAssetsFromCsv(){
+    try{
+      return parseCsv(
+        await fetchText(
+          './data/shared-assets.csv',
+          'shared-assets.csv'
+        )
+      )
+        .map(mapCsvSharedAsset)
+        .filter(item=>item.assetId&&item.status==='active')
+        .sort((a,b)=>a.sortOrder-b.sortOrder);
+    }catch(error){
+      console.warn(
+        '[catalog] Shared assets load failed; using legacy image paths.',
+        error
+      );
+      return [];
+    }
+  }
+
+  async function loadScentsFromCsv(){
+    try{
+      return parseCsv(
+        await fetchText(
+          './data/scents.csv',
+          'scents.csv'
+        )
+      )
+        .map(mapCsvScent)
+        .filter(item=>item.id&&item.status==='active')
+        .sort((a,b)=>{
+          if(a.series!==b.series){
+            return a.series.localeCompare(b.series);
+          }
+          return a.sortOrder-b.sortOrder;
+        });
+    }catch(error){
+      console.warn('[DREAMLAND] scents.csv load failed.',error);
+      return [];
+    }
+  }
+
   function assertValidProducts(products){
     const ids=new Set();
 
@@ -302,13 +278,17 @@ async function loadScentsFromCsv() {
   }
 
   async function loadProductsFromCsv(){
-    const response=await fetch('./data/products.csv',{cache:'no-cache'});
-    if(!response.ok){
-      throw new Error(`products.csv request failed: ${response.status}`);
-    }
+    const records=parseCsv(
+      await fetchText(
+        './data/products.csv',
+        'products.csv'
+      )
+    );
 
-    const records=parseCsv(await response.text());
-    const mapped=records.map(mapCsvProduct).filter(product=>product.id);
+    const mapped=records
+      .map(mapCsvProduct)
+      .filter(product=>product.id);
+
     assertValidProducts(mapped);
 
     const active=mapped.filter(product=>product.status==='active');
@@ -323,11 +303,20 @@ async function loadScentsFromCsv() {
     try{
       return await loadProductsFromCsv();
     }catch(error){
-      console.warn('[catalog] CSV load failed; using products.json fallback.',error);
+      console.warn(
+        '[catalog] CSV load failed; using products.json fallback.',
+        error
+      );
 
-      const response=await fetch('./data/products.json',{cache:'no-cache'});
+      const response=await fetch(
+        './data/products.json',
+        {cache:'no-cache'}
+      );
+
       if(!response.ok){
-        throw new Error(`products.json fallback failed: ${response.status}`);
+        throw new Error(
+          `products.json fallback failed: ${response.status}`
+        );
       }
 
       const data=await response.json();
@@ -335,20 +324,22 @@ async function loadScentsFromCsv() {
     }
   }
 
-window.DreamlandCatalogData={
-  parseCsv,
-  mapCsvProduct,
-  mapCsvSharedAsset,
-  loadProductsFromCsv,
-  loadProductsWithFallback,
-  mapCsvScent,
-  loadScentsFromCsv,
-  loadSharedAssetsFromCsv
-};
+  window.DreamlandCatalogData={
+    parseCsv,
+    mapCsvProduct,
+    mapCsvSharedAsset,
+    loadProductsFromCsv,
+    loadProductsWithFallback,
+    mapCsvScent,
+    loadScentsFromCsv,
+    loadSharedAssetsFromCsv
+  };
 })();
 
-/* Load image and pattern-preview infrastructure after the page script is ready. */
+/* Load optional UI infrastructure after the page script is ready. */
 (function(){
+  'use strict';
+
   function loadScript(src,marker){
     return new Promise(resolve=>{
       const selector=`script[${marker}]`;
@@ -371,7 +362,13 @@ window.DreamlandCatalogData={
     });
   }
 
-  async function loadImageInfrastructure(){
+  async function loadUiInfrastructure(){
+    /* Replace the legacy custom-scent select without delaying image loading. */
+    const customScentReady=loadScript(
+      './custom-scent-multi.js',
+      'data-dreamland-custom-scent-multi'
+    );
+
     await loadScript(
       './image-manager.js',
       'data-dreamland-image-manager'
@@ -381,15 +378,17 @@ window.DreamlandCatalogData={
       './pattern-preview-swipe.js',
       'data-dreamland-pattern-preview-swipe'
     );
+
+    await customScentReady;
   }
 
   if(document.readyState==='loading'){
     document.addEventListener(
       'DOMContentLoaded',
-      loadImageInfrastructure,
+      loadUiInfrastructure,
       {once:true}
     );
   }else{
-    setTimeout(loadImageInfrastructure,0);
+    setTimeout(loadUiInfrastructure,0);
   }
 })();
