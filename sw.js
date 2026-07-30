@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'dreamland-pwa-v53';
+const CACHE_VERSION = 'dreamland-pwa-v54';
 
 const APP_CACHE = `${CACHE_VERSION}-app`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
@@ -9,6 +9,7 @@ const APP_SHELL = [
   './index.html',
   './catalog-data.js',
   './image-manager.js',
+  './image-variants.js',
   './pattern-preview-swipe.js',
   './custom-scent-multi.js',
   './manifest.webmanifest',
@@ -150,13 +151,16 @@ self.addEventListener('fetch', event => {
 
   if(
     request.destination==='image'&&
-    url.pathname.includes('/images/products/')
+    (
+      url.pathname.includes('/images/products/')||
+      url.pathname.includes('/images/generated/')
+    )
   ){
     event.respondWith(
       staleWhileRevalidate(
         request,
         IMAGE_CACHE,
-        360
+        480
       )
     );
     return;

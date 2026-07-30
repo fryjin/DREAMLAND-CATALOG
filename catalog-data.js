@@ -37,6 +37,28 @@
       .filter(Boolean);
   }
 
+  const PRODUCT_NAME_OVERRIDES={
+    HOL001:'C01',
+    HOL002:'C02'
+  };
+
+  function applyProductOverrides(product){
+    if(!product)return product;
+
+    const displayName=PRODUCT_NAME_OVERRIDES[product.id];
+    if(!displayName)return product;
+
+    product.name=displayName;
+    product.names={
+      ...(product.names||{}),
+      zh:displayName,
+      en:displayName,
+      ko:displayName
+    };
+
+    return product;
+  }
+
   function parseCsv(csvText){
     const source=String(csvText||'').replace(/^\uFEFF/,'');
     const table=[];
@@ -153,7 +175,7 @@
       product[field]=text(row[field]);
     });
 
-    return product;
+    return applyProductOverrides(product);
   }
 
   function mapCsvScent(row){
@@ -320,13 +342,16 @@
       }
 
       const data=await response.json();
-      return Array.isArray(data.products)?data.products:[];
+      return Array.isArray(data.products)
+        ? data.products.map(applyProductOverrides)
+        : [];
     }
   }
 
   window.DreamlandCatalogData={
     parseCsv,
     mapCsvProduct,
+    applyProductOverrides,
     mapCsvSharedAsset,
     loadProductsFromCsv,
     loadProductsWithFallback,
@@ -372,6 +397,11 @@
     await loadScript(
       './image-manager.js',
       'data-dreamland-image-manager'
+    );
+
+    await loadScript(
+      './image-variants.js',
+      'data-dreamland-image-variants'
     );
 
     await loadScript(

@@ -1,212 +1,100 @@
-# DREAMLAND v1.2.0 更新包
+# DREAMLAND v1.2.1
 
-## 本轮内容
+本次更新包含：
 
-### 1. 定制香型重构
+1. 节日系列前两款显示名称改为 `C01`、`C02`；
+2. 保留 v1.2.0 已验收的定制多香型与经典系列价格；
+3. 增加真正减少图片下载体积的响应式图片资源体系；
+4. 使用 GitHub Actions + Sharp 自动生成 WebP 图片，不依赖付费图片服务。
 
-定制信息页从原来的单个“香型需求”下拉框，改为：
+## 一、上传文件
 
-```text
-香薰系列（单选）
-↓
-具体香型（多选）
+将压缩包内文件按原目录上传到当前测试分支：
+
+- `catalog-data.js`
+- `image-variants.js`
+- `custom-scent-multi.js`
+- `data/series.json`
+- `scripts/apply-data-fixes.mjs`
+- `scripts/generate-responsive-images.mjs`
+- `.github/workflows/optimize-responsive-images.yml`
+- `_headers`
+- `sw.js`
+
+`sw.js` 最后上传，缓存版本为 `dreamland-pwa-v54`。
+
+## 二、图片优化的实际工作方式
+
+### 商品列表
+
+- 不再下载详情原图；
+- 优先使用自动生成的 `480px WebP`；
+- 前两张商品图高优先级加载；
+- 其他图片进入视口附近才加载；
+- 生成图缺失时自动回退到现有原图，不会出现永久空白。
+
+### 商品详情
+
+- 当前图片使用 `960px WebP`；
+- 相邻图片在空闲时间预加载；
+- 弱网或开启省流量模式时自动降为 `480px WebP`；
+- 仍保留原图回退。
+
+### 花样和包装图片
+
+- 自动优先使用 `960px WebP`；
+- 失败后回退现有图片；
+- 首页主视觉不重复切换资源，避免首屏二次下载。
+
+## 三、GitHub Actions
+
+上传后进入 GitHub：
+
+`Actions → Optimize responsive images`
+
+工作流会自动：
+
+1. 把 `HOL001`、`HOL002` 的中英韩名称同步为 `C01`、`C02`；
+2. 扫描 `images/products`、`images/shared`、`images/patterns`、`images/packages`；
+3. 使用 Sharp 生成响应式 WebP；
+4. 写入 `images/generated/`；
+5. 生成 `data/image-optimization-report.json`；
+6. 自动提交生成结果到当前分支。
+
+完成后 Cloudflare Pages 会收到一次新的提交并重新部署。
+
+若工作流提示没有写入权限，在仓库设置中打开：
+
+`Settings → Actions → General → Workflow permissions → Read and write permissions`
+
+## 四、本地手动执行
+
+```bash
+npm install --no-save sharp@0.35.3
+node scripts/apply-data-fixes.mjs
+node scripts/generate-responsive-images.mjs
 ```
 
-可选香薰系列：
+然后提交：
 
-```text
-经典系列
-进阶系列
-匠作系列
-```
+- `data/products.csv`
+- `data/products.json`
+- `data/image-optimization-report.json`
+- `images/generated/`
 
-具体香型直接读取：
+## 五、验收
 
-```text
-data/scents.csv
-```
+1. 节日系列前两款名称显示为 `C01`、`C02`；
+2. 列表首屏图片明显更快出现；
+3. 浏览器 Network 中商品列表图片路径优先为 `/images/generated/...-480.webp`；
+4. 商品详情图片路径优先为 `/images/generated/...-960.webp`；
+5. 删除某张生成图后仍能回退原图；
+6. 花样、包装、定制多香型、经典价格没有回归。
 
-规则：
+## 六、效果判断
 
-- 定制页不再提供“无香”选项。
-- 香薰系列单选。
-- 同一香薰系列下的具体香型支持多选组合。
-- 切换香薰系列会清空上一系列的已选香型。
-- 至少选择一种具体香型后才能加入定制意向。
-- 节日系列商品原有“香薰系列 → 具体香型”逻辑不受影响。
-- 经典系列普通商品中原有“无香”选项不受影响。
+实际节省比例以工作流生成的：
 
-新定制数据结构：
+`data/image-optimization-report.json`
 
-```js
-{
-  scentSeries: "advanced",
-  scentIds: ["ADS001", "ADS002"],
-  scents: ["东方花香调", "水生麝香调"],
-  scent: "东方花香调 / 水生麝香调"
-}
-```
-
-意向单、提交预览、风险检查摘要及 Web3Forms 邮件数据都会携带香薰系列和多香型信息。
-
-### 2. 经典系列价格
-
-```text
-S：¥68
-M：¥98
-L：¥128
-XL：¥158
-```
-
-只修改经典系列价格表；其他系列价格不变。
-
-### 3. 图片优化第一阶段
-
-当前项目已经具备：
-
-- 商品列表 IntersectionObserver 懒加载
-- 首屏前两张图片高优先级
-- 商品详情仅加载当前图
-- 空闲时预加载相邻两张图
-- Service Worker 图片缓存
-
-因此本轮不重复改运行时加载逻辑，也不直接覆盖全部生产图片。
-
-新增免费工具：
-
-```text
-scripts/image-optimize.py
-requirements-image-tools.txt
-```
-
-它会：
-
-- 扫描图片尺寸和体积
-- 输出 CSV 报告
-- 标记 P0/P1 大图
-- 选取最大的 20 张图片制作 360/720/960px WebP 对比样本
-- 永不覆盖原始生产图片
-
-## 上传文件
-
-按目录覆盖或新增：
-
-```text
-custom-scent-multi.js                新增
-catalog-data.js                      覆盖
-data/series.json                     覆盖
-sw.js                                覆盖
-scripts/image-optimize.py            新增，可选开发工具
-requirements-image-tools.txt         新增，可选开发工具
-```
-
-推荐上传顺序：
-
-1. `custom-scent-multi.js`
-2. `catalog-data.js`
-3. `data/series.json`
-4. `scripts/image-optimize.py`
-5. `requirements-image-tools.txt`
-6. `sw.js`（最后上传）
-
-`index.html`、`data/scents.csv` 和提交接口不需要修改。
-
-## 缓存版本
-
-```text
-dreamland-pwa-v53
-```
-
-上传后关闭微信内页面并重新进入，避免旧 Service Worker 继续控制页面。
-
-## 功能验收
-
-### 定制香型
-
-1. 进入“定制”。
-2. 页面不再出现“无香”。
-3. 选择“进阶系列”。
-4. 同时选择两种具体香型。
-5. 加入意向单。
-6. 检查意向单显示“进阶系列 · 香型A / 香型B”。
-7. 进入提交预览，确认两种香型均存在。
-8. 提交一笔测试询盘，检查邮件 JSON 中包含：
-
-```text
-scentSeries
-scentIds
-scents
-```
-
-### 价格
-
-分别切换经典系列商品的四个尺寸：
-
-```text
-S  68
-M  98
-L  128
-XL 158
-```
-
-并检查商品详情、意向单小计和提交预览金额一致。
-
-### 旧功能回归
-
-- 节日系列香薰系列选择正常。
-- 花样大图滑动正常。
-- 包装大图滑动正常。
-- 包装仍只有默认包装与礼品包装。
-- 中、英、韩切换正常。
-
-## 图片审计与样本压缩
-
-### Windows 安装依赖
-
-```powershell
-py -m pip install -r requirements-image-tools.txt
-```
-
-### 仅审计，不改图片
-
-```powershell
-py scripts/image-optimize.py
-```
-
-生成：
-
-```text
-reports/image-audit.csv
-```
-
-### 生成最大的 20 张图片的响应式对比样本
-
-```powershell
-py scripts/image-optimize.py --optimize --sample 20
-```
-
-生成目录：
-
-```text
-_image-optimization-preview/
-```
-
-默认参数：
-
-```text
-宽度：360 / 720 / 960
-WebP 质量：76
-```
-
-对比画质确认后，再决定是否把这些版本接入生产页面。本包不会直接替换现有图片路径。
-
-## 已完成的静态检查
-
-- `custom-scent-multi.js`：Node 语法检查通过
-- `catalog-data.js`：Node 语法检查通过
-- `catalog-data.js`：CSV 与香型映射单元测试通过
-- `sw.js`：Node 语法检查通过
-- `data/series.json`：JSON 解析及经典系列价格断言通过
-- `scripts/image-optimize.py`：Python 编译检查及样本生成测试通过
-
-真实微信浏览器交互仍需部署后按验收步骤测试。
+为准。该报告记录每张原图、生成图、文件体积和节省比例，不预先假设压缩收益。
