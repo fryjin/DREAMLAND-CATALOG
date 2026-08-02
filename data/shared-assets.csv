@@ -14,3 +14,5 @@ PATL03,pattern,展陈花型,L,展陈花型,Display Floral,디스플레이 플라
 PATX01,pattern,大礼花,XL,大礼花,Grand Floral,그랜드 플라워,./images/shared/patterns/PATX01/cover.webp,./images/patterns/XL/pattern-1.jpg,active,401,2026-07-17
 PATX02,pattern,雕塑卷,XL,雕塑卷,Sculptural Curl,스컬프처 컬,./images/shared/patterns/PATX02/cover.webp,./images/patterns/XL/pattern-2.jpg,active,402,2026-07-17
 PATX03,pattern,陈列款,XL,陈列款,Display Style,디스플레이 스타일,./images/shared/patterns/PATX03/cover.webp,./images/patterns/XL/pattern-3.jpg,active,403,2026-07-17
+SHARE001,share,catalog-cover,,产品手册分享封面,Catalog Share Cover,카탈로그 공유 표지,./images/shared/share/SHARE001/cover.webp,./images/shared/share/SHARE001/cover-social.jpg,active,501,2026-08-02
+POSTER001,poster,qr-poster,,产品手册二维码海报,QR Catalog Poster,QR 카탈로그 포스터,./images/shared/posters/POSTER001/cover.webp,./images/shared/posters/POSTER001/poster-original.png,active,601,2026-08-02
