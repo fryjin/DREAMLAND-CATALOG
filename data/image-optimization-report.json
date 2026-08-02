@@ -1,10 +1,10 @@
 {
   "summary": {
-    "generatedAt": "2026-07-30T07:29:27.676Z",
-    "sourceCount": 617,
-    "outputCount": 1220,
-    "uniqueSourceBytes": 103844430,
-    "generatedBytes": 34810242
+    "generatedAt": "2026-08-02T12:30:33.969Z",
+    "sourceCount": 621,
+    "outputCount": 1224,
+    "uniqueSourceBytes": 105550651,
+    "generatedBytes": 34984610
   },
   "files": [
     {
@@ -14646,6 +14646,54 @@
       "savedBytes": 19484,
       "savedPercent": 70,
       "sourceHash": "0657deaf4a85"
+    },
+    {
+      "source": "images/shared/posters/POSTER001/cover.webp",
+      "output": "images/generated/shared/posters/POSTER001/cover-960.webp",
+      "requestedWidth": 960,
+      "width": 960,
+      "height": 1200,
+      "sourceBytes": 132150,
+      "outputBytes": 43286,
+      "savedBytes": 88864,
+      "savedPercent": 67.2,
+      "sourceHash": "e9fbfaf5e654"
+    },
+    {
+      "source": "images/shared/posters/POSTER001/poster-original.png",
+      "output": "images/generated/shared/posters/POSTER001/poster-original-960.webp",
+      "requestedWidth": 960,
+      "width": 960,
+      "height": 1200,
+      "sourceBytes": 1262146,
+      "outputBytes": 48042,
+      "savedBytes": 1214104,
+      "savedPercent": 96.2,
+      "sourceHash": "c95e075143ac"
+    },
+    {
+      "source": "images/shared/share/SHARE001/cover.webp",
+      "output": "images/generated/shared/share/SHARE001/cover-960.webp",
+      "requestedWidth": 960,
+      "width": 960,
+      "height": 960,
+      "sourceBytes": 108174,
+      "outputBytes": 39298,
+      "savedBytes": 68876,
+      "savedPercent": 63.7,
+      "sourceHash": "4cd6861730f0"
+    },
+    {
+      "source": "images/shared/share/SHARE001/cover-social.jpg",
+      "output": "images/generated/shared/share/SHARE001/cover-social-960.webp",
+      "requestedWidth": 960,
+      "width": 960,
+      "height": 960,
+      "sourceBytes": 203751,
+      "outputBytes": 43742,
+      "savedBytes": 160009,
+      "savedPercent": 78.5,
+      "sourceHash": "949734c28c46"
     }
   ]
 }
