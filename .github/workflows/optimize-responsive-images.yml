@@ -1,4 +1,5 @@
 name: Optimize responsive images
+# Runs only on develop; main remains PR-only.
 
 on:
   workflow_dispatch:
