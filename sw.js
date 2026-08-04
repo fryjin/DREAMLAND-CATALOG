@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'dreamland-pwa-v61';
+const CACHE_VERSION = 'dreamland-pwa-v62';
 
 const APP_CACHE = `${CACHE_VERSION}-app`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
