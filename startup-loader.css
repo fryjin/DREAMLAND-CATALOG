@@ -64,7 +64,7 @@ html.dreamland-booting body > :not(#dreamlandStartup){
     sans-serif;
 
   opacity:0;
-  transition:opacity .28s ease;
+  transition:opacity .46s ease;
 }
 
 .dreamland-startup::before,
@@ -121,8 +121,8 @@ html.dreamland-booting body > :not(#dreamlandStartup){
   opacity:0;
 
   transition:
-    transform .52s cubic-bezier(.22,.8,.22,1),
-    opacity .38s ease;
+    transform .62s cubic-bezier(.22,.8,.22,1),
+    opacity .46s ease;
 }
 
 .dreamland-startup.is-visible .dreamland-startup__shell{
@@ -170,7 +170,7 @@ html.dreamland-booting body > :not(#dreamlandStartup){
 }
 
 .dreamland-startup__copy{
-  max-width:240px;
+  max-width:250px;
   margin-top:28px;
 
   color:#2d3037;
@@ -209,7 +209,7 @@ html.dreamland-booting body > :not(#dreamlandStartup){
     );
 
   transition:
-    width .42s cubic-bezier(.22,.8,.22,1);
+    width .56s cubic-bezier(.22,.8,.22,1);
 }
 
 .dreamland-startup__progress i::after{
@@ -229,12 +229,14 @@ html.dreamland-booting body > :not(#dreamlandStartup){
 }
 
 .dreamland-startup__status{
+  min-height:16px;
   margin-top:12px;
 
   color:var(--startup-muted);
   font-size:11px;
   line-height:1.4;
   font-weight:750;
+  font-variant-numeric:tabular-nums;
 }
 
 @media (max-width:600px){
