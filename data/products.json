@@ -4356,11 +4356,11 @@
       "status": "active",
       "sortOrder": 10,
       "listSort": 80,
-      "name": "红色",
+      "name": "东川赤霞",
       "names": {
-        "zh": "红色",
-        "en": "Red",
-        "ko": "레드"
+        "zh": "东川赤霞",
+        "en": "Dongchuan Crimson Glow",
+        "ko": "둥촨 붉은 노을"
       },
       "desc": "经典系列 C01，适用 S/M/L/XL，可混批；上海依克塞汀香薰香精，底模香薰比例5%。",
       "descriptions": {
@@ -4429,11 +4429,11 @@
       "status": "active",
       "sortOrder": 20,
       "listSort": 70,
-      "name": "橙色",
-      "names": {
-        "zh": "橙色",
-        "en": "Orange",
-        "ko": "오렌지"
+      "name": "梅里霞光",
+        "names": {
+        "zh": "梅里霞光",
+        "en": "Meili Afterglow",
+        "ko": "메이리 노을빛"
       },
       "desc": "经典系列 C02，适用 S/M/L/XL，可混批；上海依克塞汀香薰香精，底模香薰比例5%。",
       "descriptions": {
@@ -4502,11 +4502,11 @@
       "status": "active",
       "sortOrder": 30,
       "listSort": 60,
-      "name": "黄色",
+      "name": "罗平金浪",
       "names": {
-        "zh": "黄色",
-        "en": "Yellow",
-        "ko": "옐로"
+        "zh": "罗平金浪",
+        "en": "Luoping Golden Waves",
+        "ko": "뤄핑 황금 물결"
       },
       "desc": "经典系列 C03，适用 S/M/L/XL，可混批；上海依克塞汀香薰香精，底模香薰比例5%。",
       "descriptions": {
@@ -4575,11 +4575,11 @@
       "status": "active",
       "sortOrder": 40,
       "listSort": 50,
-      "name": "绿色",
-      "names": {
-        "zh": "绿色",
-        "en": "Green",
-        "ko": "그린"
+      "name": "版纳叠翠",
+        "names": {
+        "zh": "版纳叠翠",
+        "en": "Banna Verdant Layers",
+        "ko": "반나의 겹겹 초록"
       },
       "desc": "经典系列 C04，适用 S/M/L/XL，可混批；上海依克塞汀香薰香精，底模香薰比例5%。",
       "descriptions": {
@@ -4648,11 +4648,11 @@
       "status": "active",
       "sortOrder": 50,
       "listSort": 40,
-      "name": "蓝色",
+      "name": "洱海晴澜",
       "names": {
-        "zh": "蓝色",
-        "en": "Blue",
-        "ko": "블루"
+        "zh": "洱海晴澜",
+        "en": "Erhai Azure Ripples",
+        "ko": "얼하이 푸른 물결"
       },
       "desc": "经典系列 C05，适用 S/M/L/XL，可混批；上海依克塞汀香薰香精，底模香薰比例5%。",
       "descriptions": {
@@ -4721,11 +4721,11 @@
       "status": "active",
       "sortOrder": 60,
       "listSort": 30,
-      "name": "紫色",
-      "names": {
-        "zh": "紫色",
-        "en": "Purple",
-        "ko": "퍼플"
+      "name": "春城紫楹",
+        "names": {
+        "zh": "春城紫楹",
+        "en": "Spring City Jacaranda",
+        "ko": "봄의 도시 자카란다"
       },
       "desc": "经典系列 C06，适用 S/M/L/XL，可混批；上海依克塞汀香薰香精，底模香薰比例5%。",
       "descriptions": {
@@ -4794,11 +4794,11 @@
       "status": "active",
       "sortOrder": 70,
       "listSort": 20,
-      "name": "黑色",
-      "names": {
-        "zh": "黑色",
-        "en": "Black",
-        "ko": "블랙"
+      "name": "普洱墨韵",
+        "names": {
+        "zh": "普洱墨韵",
+        "en": "Pu'er Ink Elegance",
+        "ko": "푸얼 먹빛 운치"
       },
       "desc": "经典系列 C07，适用 S/M/L/XL，可混批；上海依克塞汀香薰香精，底模香薰比例5%。",
       "descriptions": {
@@ -4867,11 +4867,11 @@
       "status": "active",
       "sortOrder": 80,
       "listSort": 10,
-      "name": "彩虹色",
-      "names": {
-        "zh": "彩虹色",
-        "en": "Rainbow",
-        "ko": "레인보우"
+      "name": "云岭虹光",
+        "names": {
+        "zh": "云岭虹光",
+        "en": "Yunling Rainbow Glow",
+        "ko": "윈링 무지갯빛"
       },
       "desc": "经典系列 C08，适用 S/M/L/XL，可混批；上海依克塞汀香薰香精，底模香薰比例5%。",
       "descriptions": {
