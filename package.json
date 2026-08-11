@@ -6,7 +6,8 @@
   "scripts": {
     "data:build": "node scripts/build-data.mjs --write",
     "data:check": "node scripts/build-data.mjs --check",
-    "validate": "node scripts/validate-project.mjs",
+    "data:contract": "node scripts/validate-product-data-contract.mjs",
+    "validate": "node scripts/validate-project.mjs && npm run data:contract",
     "check": "npm run data:check && npm run validate"
   },
   "engines": {
