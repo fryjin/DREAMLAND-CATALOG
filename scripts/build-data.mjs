@@ -54,7 +54,6 @@ const REQUIRED_COLUMNS = [
   'pdf_source_page'
 ];
 
-// Keep compatibility with the current runtime mapping in catalog-data.js.
 const PRODUCT_NAME_OVERRIDES = {
   HOL001: 'C01',
   HOL002: 'C02'
@@ -157,14 +156,24 @@ function parseCsv(csvText) {
 function validateSource(headers, rows) {
   const missing = REQUIRED_COLUMNS.filter(column => !headers.includes(column));
   if (missing.length) {
-    throw new Error(`products.csv is missing required columns: ${missing.join(', ')}`);
+    throw new Error(
+      `products.csv is missing required columns: ${missing.join(', ')}`
+    );
   }
 
   const ids = new Set();
+
   rows.forEach((row, index) => {
     const id = text(row.product_id);
-    if (!id) throw new Error(`products.csv row ${index + 2} has no product_id.`);
-    if (ids.has(id)) throw new Error(`Duplicate product_id in products.csv: ${id}`);
+
+    if (!id) {
+      throw new Error(`products.csv row ${index + 2} has no product_id.`);
+    }
+
+    if (ids.has(id)) {
+      throw new Error(`Duplicate product_id in products.csv: ${id}`);
+    }
+
     ids.add(id);
   });
 }
@@ -250,14 +259,29 @@ function buildProducts(csvText) {
   const { headers, records } = parseCsv(csvText);
   validateSource(headers, records);
 
+  const mapped = records.map(mapCsvProduct);
+
+  // products.json is a browser fallback, not a complete authoring mirror.
+  // Preserve the existing project contract: fallback JSON contains ACTIVE products only.
+  const products = mapped.filter(product => product.status === 'active');
+
+  if (!products.length) {
+    throw new Error('No active products were generated for products.json.');
+  }
+
+  if (products.some(product => product.status !== 'active')) {
+    throw new Error('Generated products.json contains a non-active product.');
+  }
+
   return {
     schemaVersion: 1,
-    products: records.map(mapCsvProduct)
+    products
   };
 }
 
 function readExistingJson() {
   if (!fs.existsSync(OUTPUT_PATH)) return null;
+
   try {
     return JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf8'));
   } catch (error) {
@@ -273,14 +297,24 @@ function changedProductIds(existing, generated) {
     (generated?.products || []).map(product => [product.id, product])
   );
   const ids = new Set([...before.keys(), ...after.keys()]);
-  return [...ids].filter(id => !isDeepStrictEqual(before.get(id), after.get(id)));
+
+  return [...ids].filter(
+    id => !isDeepStrictEqual(before.get(id), after.get(id))
+  );
 }
 
 function usage() {
-  console.log(`Usage:\n  node scripts/build-data.mjs --check\n  node scripts/build-data.mjs --write\n\n--check  Verify data/products.json is exactly derivable from data/products.csv.\n--write  Regenerate data/products.json only when semantic content differs.`);
+  console.log(`Usage:
+  node scripts/build-data.mjs --check
+  node scripts/build-data.mjs --write
+
+--check  Verify data/products.json is exactly the active-only fallback
+         derivable from data/products.csv.
+--write  Regenerate the active-only fallback when semantic content differs.`);
 }
 
 const args = new Set(process.argv.slice(2));
+
 if (args.has('--help') || args.has('-h')) {
   usage();
   process.exit(0);
@@ -295,19 +329,23 @@ try {
 
   if (existing && isDeepStrictEqual(existing, generated)) {
     console.log(
-      `[build-data] OK: products.json is in sync with products.csv (${generated.products.length} products).`
+      `[build-data] OK: products.json is in sync with products.csv ` +
+      `(${generated.products.length} active fallback products).`
     );
     process.exit(0);
   }
 
   const changedIds = changedProductIds(existing, generated);
   const summary = changedIds.length
-    ? ` Changed products: ${changedIds.slice(0, 20).join(', ')}${changedIds.length > 20 ? ` (+${changedIds.length - 20} more)` : ''}.`
+    ? ` Changed products: ${changedIds.slice(0, 20).join(', ')}` +
+      `${changedIds.length > 20 ? ` (+${changedIds.length - 20} more)` : ''}.`
     : '';
 
   if (mode === 'check') {
     fail(
-      `data/products.json is not generated from the current data/products.csv.${summary} Run \"npm run data:build\" or use the GitHub sync workflow.`
+      `data/products.json is not the active-only fallback generated from ` +
+      `the current data/products.csv.${summary} ` +
+      `Run "npm run data:build" or use the GitHub sync workflow.`
     );
   } else {
     fs.writeFileSync(
@@ -315,8 +353,10 @@ try {
       `${JSON.stringify(generated, null, 2)}\n`,
       'utf8'
     );
+
     console.log(
-      `[build-data] Wrote data/products.json from data/products.csv (${generated.products.length} products).${summary}`
+      `[build-data] Wrote active-only data/products.json from products.csv ` +
+      `(${generated.products.length} products).${summary}`
     );
   }
 } catch (error) {
