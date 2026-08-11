@@ -5,9 +5,10 @@ on:
     branches-ignore:
       - main
     paths:
-      - data/products.csv
-      - scripts/build-data.mjs
-      - .github/workflows/sync-products-json.yml
+    - data/products.csv
+    - src/data/product-data-contract.js
+    - scripts/build-data.mjs
+    - .github/workflows/sync-products-json.yml
   workflow_dispatch:
 
 permissions:
