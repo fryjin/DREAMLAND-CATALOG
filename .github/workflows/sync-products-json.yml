@@ -1,0 +1,59 @@
+name: Sync generated product data
+
+on:
+  push:
+    branches-ignore:
+      - main
+    paths:
+      - data/products.csv
+      - scripts/build-data.mjs
+      - .github/workflows/sync-products-json.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-products-json-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sync-products-json:
+    name: sync-products-json
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      - name: Generate active-only products.json fallback
+        run: npm run data:build
+
+      - name: Check generated-data contract
+        run: npm run data:check
+
+      - name: Validate full project before committing generated fallback
+        run: npm run validate
+
+      - name: Commit generated fallback when changed
+        shell: bash
+        run: |
+          if git diff --quiet -- data/products.json; then
+            echo "products.json is already synchronized."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/products.json
+          git commit -m "chore(data): sync generated products.json"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
