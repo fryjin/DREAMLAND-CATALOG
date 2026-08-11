@@ -12,6 +12,8 @@ Generation contract:
 ```text
 data/products.csv
         ↓
+src/data/product-data-contract.js
+        ↓
 scripts/build-data.mjs
         ↓
 filter status === active
@@ -19,19 +21,44 @@ filter status === active
 data/products.json
 ```
 
-Important distinction:
+## Unified Product Data Contract
+
+B1-02 establishes:
+
+```text
+src/data/product-data-contract.js
+```
+
+as the single implementation for:
+
+- CSV product parsing semantics
+- product field normalization
+- product object mapping
+- compatibility name overrides
+- active-product fallback generation
+
+Both consumers use the same contract:
+
+```text
+Browser
+catalog-data.js
+      ↓
+shared product contract
+
+GitHub / Node
+scripts/build-data.mjs
+      ↓
+shared product contract
+```
+
+Do not add product mapping rules directly back into either consumer.
+
+## Data ownership distinction
 
 - `products.csv` contains the complete authoring dataset, including
   `active`, `hidden`, and `placeholder` rows.
 - `products.json` intentionally contains **active products only** because
-  it is a browser fallback, matching the existing project validation contract.
-
-The browser runtime remains unchanged in B1-01:
-
-1. `catalog-data.js` still loads `products.csv` first.
-2. `products.json` remains the fallback if CSV loading fails.
-3. The generated JSON uses the same field mapping as the existing CSV runtime mapper.
-4. Hidden/placeholder products must never enter the fallback JSON.
+  it is a browser fallback.
 
 ## Browser-only editing workflow
 
@@ -41,16 +68,13 @@ When product information changes:
 2. Commit to a non-`main` branch or `develop`.
 3. `Sync generated product data` regenerates the active-only
    `data/products.json`.
-4. The sync workflow runs `data:check` and full project validation before
-   committing the generated fallback.
-5. The `quality-check` gate verifies synchronization again on PR/main.
+4. The workflow runs generated-data checks, the shared contract check,
+   and full project validation before committing a generated fallback.
+5. PR/main quality checks verify the same contract again.
 
-If repository-level GitHub Actions permissions prevent bot writes, enable
-**Read and write permissions** for Actions. Do not return to manually editing
-`products.json` as the normal workflow.
+## Scope
 
-## Scope of B1-01
+B1-02 only unifies the **product data transformation contract**.
 
-Only product data is unified in this phase. `series.json`, `i18n.json`,
-scents and shared assets remain under their current ownership rules until
-later B1 phases.
+Scents, shared assets, `series.json`, and `i18n.json` remain under their
+current ownership rules until later architecture phases.

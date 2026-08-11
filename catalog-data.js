@@ -1,182 +1,23 @@
 (function(){
   'use strict';
 
-  const IMAGE_FIELDS=[
-    'cover_image',
-    'angle_image',
-    'detail_image',
-    'size_s_image',
-    'size_m_image',
-    'size_l_image',
-    'size_xl_image',
-    'packaging_image',
-    'scene_image_1',
-    'scene_image_2',
-    'scene_image_3',
-    'scene_image_4'
-  ];
+  const contract=
+    globalThis.DreamlandProductDataContract;
 
-  function text(value){
-    return String(value??'').trim();
+  if(!contract){
+    throw new Error(
+      'DreamlandProductDataContract must load before catalog-data.js'
+    );
   }
 
-  function number(value,fallback=0){
-    const parsed=Number(text(value));
-    return Number.isFinite(parsed)?parsed:fallback;
-  }
-
-  function boolean(value){
-    return ['1','true','yes','y','是']
-      .includes(text(value).toLowerCase());
-  }
-
-  function splitList(value,separator=','){
-    return text(value)
-      .split(separator)
-      .map(item=>item.trim())
-      .filter(Boolean);
-  }
-
-  const PRODUCT_NAME_OVERRIDES={
-    HOL001:'C01',
-    HOL002:'C02'
-  };
-
-  function applyProductOverrides(product){
-    if(!product)return product;
-
-    const displayName=PRODUCT_NAME_OVERRIDES[product.id];
-    if(!displayName)return product;
-
-    product.name=displayName;
-    product.names={
-      ...(product.names||{}),
-      zh:displayName,
-      en:displayName,
-      ko:displayName
-    };
-
-    return product;
-  }
-
-  function parseCsv(csvText){
-    const source=String(csvText||'').replace(/^\uFEFF/,'');
-    const table=[];
-    let row=[];
-    let cell='';
-    let quoted=false;
-
-    for(let index=0;index<source.length;index++){
-      const char=source[index];
-      const next=source[index+1];
-
-      if(char==='"'){
-        if(quoted&&next==='"'){
-          cell+='"';
-          index++;
-        }else{
-          quoted=!quoted;
-        }
-        continue;
-      }
-
-      if(char===','&&!quoted){
-        row.push(cell);
-        cell='';
-        continue;
-      }
-
-      if((char==='\n'||char==='\r')&&!quoted){
-        if(char==='\r'&&next==='\n')index++;
-        row.push(cell);
-        cell='';
-        if(row.some(value=>value!==''))table.push(row);
-        row=[];
-        continue;
-      }
-
-      cell+=char;
-    }
-
-    if(cell!==''||row.length){
-      row.push(cell);
-      if(row.some(value=>value!==''))table.push(row);
-    }
-
-    if(!table.length)return [];
-
-    const headers=table.shift().map(value=>text(value));
-
-    return table.map(values=>{
-      const record={};
-      headers.forEach((header,index)=>{
-        record[header]=values[index]??'';
-      });
-      return record;
-    });
-  }
-
-  function mapCsvProduct(row){
-    const id=text(row.product_id);
-    const defaultSize=text(row.default_size)||'S';
-
-    const shortDescriptions={
-      zh:text(row.short_desc_zh),
-      en:text(row.short_desc_en),
-      ko:text(row.short_desc_ko)
-    };
-
-    const detailDescriptions={
-      zh:text(row.detail_desc_zh),
-      en:text(row.detail_desc_en),
-      ko:text(row.detail_desc_ko)
-    };
-
-    const product={
-      id,
-      productId:id,
-      series:text(row.series),
-      status:text(row.status).toLowerCase()||'hidden',
-      sortOrder:number(row.sort_order),
-      listSort:number(row.list_sort,number(row.sort_order)),
-      name:text(row.name_zh)||id,
-      names:{
-        zh:text(row.name_zh)||id,
-        en:text(row.name_en)||text(row.name_zh)||id,
-        ko:text(row.name_ko)||text(row.name_zh)||id
-      },
-      desc:shortDescriptions.zh||detailDescriptions.zh,
-      descriptions:{
-        zh:shortDescriptions.zh||detailDescriptions.zh,
-        en:shortDescriptions.en||detailDescriptions.en||shortDescriptions.zh,
-        ko:shortDescriptions.ko||detailDescriptions.ko||shortDescriptions.zh
-      },
-      detailDescriptions,
-      size:defaultSize,
-      defaultSize,
-      availableSizes:splitList(row.available_sizes),
-      availablePatterns:text(row.available_patterns),
-      availableScentSeries:splitList(row.available_scent_series),
-      color:text(row.color_class)||'color-1',
-      tags:{
-        zh:splitList(row.tags_zh),
-        en:splitList(row.tags_en),
-        ko:splitList(row.tags_ko)
-      },
-      featured:boolean(row.featured),
-      launchDate:text(row.launch_date),
-      updatedAt:text(row.updated_at),
-      colorCode:text(row.color_code),
-      pdfSeriesLabel:text(row.pdf_series_label),
-      pdfSourcePage:number(row.pdf_source_page)
-    };
-
-    IMAGE_FIELDS.forEach(field=>{
-      product[field]=text(row[field]);
-    });
-
-    return applyProductOverrides(product);
-  }
+  const {
+    text,
+    number,
+    splitList,
+    parseCsv,
+    mapCsvProduct,
+    applyProductOverrides
+  }=contract;
 
   function mapCsvScent(row){
     return {
@@ -229,17 +70,26 @@
       },
       imagePath:text(row.image_path),
       fallbackPath:text(row.fallback_path),
-      status:text(row.status).toLowerCase()||'hidden',
+      status:
+        text(row.status).toLowerCase()||
+        'hidden',
       sortOrder:number(row.sort_order),
       updatedAt:text(row.updated_at)
     };
   }
 
   async function fetchText(path,label){
-    const response=await fetch(path,{cache:'no-cache'});
+    const response=await fetch(
+      path,
+      {cache:'no-cache'}
+    );
+
     if(!response.ok){
-      throw new Error(`${label} request failed: ${response.status}`);
+      throw new Error(
+        `${label} request failed: ${response.status}`
+      );
     }
+
     return response.text();
   }
 
@@ -252,13 +102,22 @@
         )
       )
         .map(mapCsvSharedAsset)
-        .filter(item=>item.assetId&&item.status==='active')
-        .sort((a,b)=>a.sortOrder-b.sortOrder);
+        .filter(
+          item=>
+            item.assetId&&
+            item.status==='active'
+        )
+        .sort(
+          (a,b)=>
+            a.sortOrder-
+            b.sortOrder
+        );
     }catch(error){
       console.warn(
         '[catalog] Shared assets load failed; using legacy image paths.',
         error
       );
+
       return [];
     }
   }
@@ -272,15 +131,29 @@
         )
       )
         .map(mapCsvScent)
-        .filter(item=>item.id&&item.status==='active')
+        .filter(
+          item=>
+            item.id&&
+            item.status==='active'
+        )
         .sort((a,b)=>{
           if(a.series!==b.series){
-            return a.series.localeCompare(b.series);
+            return a.series.localeCompare(
+              b.series
+            );
           }
-          return a.sortOrder-b.sortOrder;
+
+          return (
+            a.sortOrder-
+            b.sortOrder
+          );
         });
     }catch(error){
-      console.warn('[DREAMLAND] scents.csv load failed.',error);
+      console.warn(
+        '[DREAMLAND] scents.csv load failed.',
+        error
+      );
+
       return [];
     }
   }
@@ -290,11 +163,17 @@
 
     products.forEach(product=>{
       if(!product.id){
-        throw new Error('CSV contains a product without product_id');
+        throw new Error(
+          'CSV contains a product without product_id'
+        );
       }
+
       if(ids.has(product.id)){
-        throw new Error(`CSV contains duplicate product_id: ${product.id}`);
+        throw new Error(
+          `CSV contains duplicate product_id: ${product.id}`
+        );
       }
+
       ids.add(product.id);
     });
   }
@@ -313,9 +192,15 @@
 
     assertValidProducts(mapped);
 
-    const active=mapped.filter(product=>product.status==='active');
+    const active=mapped.filter(
+      product=>
+        product.status==='active'
+    );
+
     if(!active.length){
-      throw new Error('products.csv contains no active products');
+      throw new Error(
+        'products.csv contains no active products'
+      );
     }
 
     return active;
@@ -341,9 +226,13 @@
         );
       }
 
-      const data=await response.json();
+      const data=
+        await response.json();
+
       return Array.isArray(data.products)
-        ? data.products.map(applyProductOverrides)
+        ? data.products.map(
+            applyProductOverrides
+          )
         : [];
     }
   }
@@ -368,36 +257,62 @@
   function loadScript(src,marker){
     return new Promise(resolve=>{
       const selector=`script[${marker}]`;
-      const existing=document.querySelector(selector);
+      const existing=document.querySelector(
+        selector
+      );
 
       if(existing){
         resolve(existing);
         return;
       }
 
-      const script=document.createElement('script');
+      const script=
+        document.createElement(
+          'script'
+        );
+
       script.src=src;
-      script.setAttribute(marker,'1');
-      script.onload=()=>resolve(script);
+      script.setAttribute(
+        marker,
+        '1'
+      );
+
+      script.onload=()=>resolve(
+        script
+      );
+
       script.onerror=()=>{
-        console.warn(`[catalog] Failed to load ${src}`);
+        console.warn(
+          `[catalog] Failed to load ${src}`
+        );
+
         resolve(script);
       };
-      document.head.appendChild(script);
+
+      document.head.appendChild(
+        script
+      );
     });
   }
 
   async function loadUiInfrastructure(){
-    /* Replace the legacy custom-scent select without delaying image loading. */
-    const customScentReady=loadScript(
-      './custom-scent-multi.js',
-      'data-dreamland-custom-scent-multi'
-    );
+    /*
+     * Replace the legacy custom-scent select
+     * without delaying image loading.
+     */
+    const customScentReady=
+      loadScript(
+        './custom-scent-multi.js',
+        'data-dreamland-custom-scent-multi'
+      );
 
-    const copyPolishReady=customScentReady.then(()=>loadScript(
-      './copy-polish.js',
-      'data-dreamland-copy-polish'
-    ));
+    const copyPolishReady=
+      customScentReady.then(
+        ()=>loadScript(
+          './copy-polish.js',
+          'data-dreamland-copy-polish'
+        )
+      );
 
     await loadScript(
       './image-manager.js',
@@ -430,6 +345,9 @@
       {once:true}
     );
   }else{
-    setTimeout(loadUiInfrastructure,0);
+    setTimeout(
+      loadUiInfrastructure,
+      0
+    );
   }
 })();
