@@ -88,11 +88,23 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     [
       'image-manager.js',
       'image-variants.js',
-      'detail-progressive.js'
+      'detail-progressive.js',
+      'pattern-preview-swipe.js'
     ],
     'services',
     'media',
-    'Image loading and responsive variant behavior remain legacy-owned.'
+    'Shared variant resolution, network policy, image loading, decode and preload primitives are owned by DreamlandMedia. Legacy adapters still own catalog/detail rendering hooks, shared-asset patching, inquiry mounting and pattern swipe UI.',
+    {
+      status:'partial',
+      runtimeMigrated:false,
+      runtimeOwners:[
+        'src/services/media/runtime-media.js',
+        'image-manager.js',
+        'image-variants.js',
+        'detail-progressive.js',
+        'pattern-preview-swipe.js'
+      ]
+    }
   ),
   entry(
     'storage',

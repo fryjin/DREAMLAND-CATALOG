@@ -22,11 +22,11 @@ import {
 /*
  * Architecture metadata only.
  *
- * B2-03 adds the PWA runtime service after the storage migration.
+ * B2-04 consolidates shared media loading policy behind DreamlandMedia.
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B2-03',
+  phase:'B2-04',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',
