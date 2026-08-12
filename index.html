@@ -1158,23 +1158,23 @@ body[data-lang="ko"] .option-grid-scroll .option{
 
 <div class="pwa-network-banner" id="pwaNetworkBanner" role="status" aria-live="polite" hidden>
   <span id="pwaNetworkText"></span>
-  <button type="button" aria-label="关闭" onclick="hideNetworkBanner()">×</button>
+  <button type="button" aria-label="关闭" onclick="DreamlandPwa.hideNetworkBanner()">×</button>
 </div>
 <div class="pwa-action-banner" id="pwaActionBanner" role="status" aria-live="polite" hidden>
   <div class="pwa-action-copy"><strong id="pwaActionTitle"></strong><span id="pwaActionCopy"></span></div>
-  <button class="pwa-action-primary" id="pwaActionPrimary" type="button" onclick="handlePwaPrimaryAction()"></button>
-  <button class="pwa-action-close" type="button" aria-label="稍后" onclick="dismissPwaAction()">×</button>
+  <button class="pwa-action-primary" id="pwaActionPrimary" type="button" onclick="DreamlandPwa.handlePrimaryAction()"></button>
+  <button class="pwa-action-close" type="button" aria-label="稍后" onclick="DreamlandPwa.dismissAction()">×</button>
 </div>
-<div class="pwa-guide-layer" id="pwaGuideLayer" role="dialog" aria-modal="true" aria-labelledby="pwaGuideTitle" hidden onclick="if(event.target===this)closePwaGuide()">
+<div class="pwa-guide-layer" id="pwaGuideLayer" role="dialog" aria-modal="true" aria-labelledby="pwaGuideTitle" hidden onclick="if(event.target===this)DreamlandPwa.closeGuide()">
   <div class="pwa-guide-card">
     <div class="pwa-guide-head">
       <div><h3 id="pwaGuideTitle"></h3><p id="pwaGuideCopy"></p></div>
-      <button class="pwa-guide-close" type="button" aria-label="关闭" onclick="closePwaGuide()">×</button>
+      <button class="pwa-guide-close" type="button" aria-label="关闭" onclick="DreamlandPwa.closeGuide()">×</button>
     </div>
     <div class="pwa-guide-steps" id="pwaGuideSteps"></div>
     <div class="pwa-guide-actions">
-      <button class="copy" type="button" id="pwaCopyLinkBtn" onclick="copyPwaLink()"></button>
-      <button class="done" type="button" id="pwaGuideDoneBtn" onclick="closePwaGuide()"></button>
+      <button class="copy" type="button" id="pwaCopyLinkBtn" onclick="DreamlandPwa.copyLink()"></button>
+      <button class="done" type="button" id="pwaGuideDoneBtn" onclick="DreamlandPwa.closeGuide()"></button>
     </div>
   </div>
 </div>
@@ -1182,12 +1182,20 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./src/data/product-data-contract.js"></script>
 <script src="./catalog-data.js"></script>
 <script src="./src/services/storage/runtime-storage.js"></script>
+<script src="./src/services/pwa/runtime-pwa.js"></script>
 <script>
 const appStorage=window.DreamlandStorage;
+const pwaService=window.DreamlandPwa;
 
 if(!appStorage){
   throw new Error(
     'DreamlandStorage must load before app state initialization.'
+  );
+}
+
+if(!pwaService){
+  throw new Error(
+    'DreamlandPwa must load before app initialization.'
   );
 }
 
@@ -2517,7 +2525,7 @@ function setLang(lang){
   currentLang=lang;
   appStorage.local.setItem(LANG_KEY,lang);
   rerenderCurrent();
-  refreshPwaUi();
+  pwaService.refreshUi();
   toast(ui('switched'))
 }
 function toastText(key){return ui(key)}
@@ -5850,9 +5858,9 @@ async function submitInquiry(){
   btn.innerHTML='<span class="loader"></span>';
 
   try{
-    const reachable=await probeWeb3FormsReachability(true);
+    const reachable=await pwaService.probeReachability(true);
     if(!reachable){const offlineError=new Error('Submission service is unreachable');offlineError.code='OFFLINE';throw offlineError}
-    applyPwaReachability(true,false);
+    pwaService.applyReachability(true,false);
     lastSubmitAttemptAt=Date.now();
     recordRiskAttempt();
 
@@ -5905,8 +5913,8 @@ clearSubmittedInquiry();
     go('success')
   }catch(errorObject){
     console.error(errorObject);
-    const reachable=errorObject?.code==='OFFLINE'?false:await probeWeb3FormsReachability(true);
-    if(!reachable){applyPwaReachability(false,false);toast(pwaText('offlineSubmit'))}
+    const reachable=errorObject?.code==='OFFLINE'?false:await pwaService.probeReachability(true);
+    if(!reachable){pwaService.applyReachability(false,false);toast(pwaService.text('offlineSubmit'))}
     else{toast(ui('submitFailed'))}
     btn.textContent=ui('confirmSubmit');
     hcaptchaResponseToken='';
@@ -6099,366 +6107,18 @@ function initUnlock(){
   reset();
 }
 
-const PWA_INSTALL_DISMISSED_KEY='dreamlandPwaInstallDismissedAt';
-const PWA_UPDATE_SESSION_KEY='dreamlandPwaUpdateDeferred';
-let deferredInstallPrompt=null;
-let pwaRegistration=null;
-let pwaActionType='';
-let pwaInitialized=false;
-let pwaReloading=false;
-let pwaNetworkWasOffline=false;
-let pwaUpdateCheckAt=0;
-let pwaInstallFallbackTimer=null;
-
-const PWA_COPY={
-  zh:{
-    offline:'当前处于离线模式。已浏览内容可继续使用，联网后可提交意向。',
-    online:'网络已恢复。',
-    offlineSubmit:'当前离线，意向资料已保存在本机，请联网后再提交。',
-    updateTitle:'发现新版本',
-    updateCopy:'更新后可获得最新页面、数据和图片缓存策略。',
-    updateNow:'立即更新',
-    updating:'正在更新',
-    installTitle:'安装 DREAMLAND',
-    installCopy:'添加到桌面，下次可更快打开产品手册。',
-    installNow:'安装',
-    installGuide:'查看步骤',
-    installed:'已安装',
-    later:'稍后',
-    iosTitle:'添加到主屏幕',
-    iosCopy:'iPhone和iPad需要通过浏览器分享菜单安装。',
-    iosSteps:['点击浏览器底部或顶部的“分享”按钮。','选择“添加到主屏幕”。','确认名称后点击“添加”。'],
-    wechatTitle:'请在系统浏览器中安装',
-    wechatCopy:'微信内置浏览器不能直接安装PWA，请先在Safari或Chrome中打开。',
-    wechatIosSteps:['点击微信右上角“…”菜单。','选择“在Safari中打开”；如无该选项，可复制链接后粘贴到Safari。','在Safari中点击“分享”→“添加到主屏幕”。'],
-    wechatAndroidSteps:['点击微信右上角“…”菜单。','选择“在浏览器打开”；如无该选项，可复制链接后粘贴到Chrome。','在Chrome菜单中选择“安装应用”或“添加到主屏幕”。'],
-    genericSteps:['打开浏览器菜单。','选择“安装应用”或“添加到主屏幕”。','按照浏览器提示完成安装。'],
-    copyLink:'复制链接',
-    copied:'已复制',
-    manualInstallTitle:'浏览器菜单安装',
-    manualInstallCopy:'浏览器暂未提供快捷安装按钮，可从浏览器菜单安装到桌面。',
-    manualInstallAction:'查看安装方法',
-    done:'知道了'
-  },
-  en:{
-    offline:'You are offline. Previously viewed content remains available; submit after reconnecting.',
-    online:'Connection restored.',
-    offlineSubmit:'You are offline. Your inquiry is saved on this device; submit after reconnecting.',
-    updateTitle:'A new version is available',
-    updateCopy:'Update for the latest pages, data, and image-cache behavior.',
-    updateNow:'Update now',
-    updating:'Updating',
-    installTitle:'Install DREAMLAND',
-    installCopy:'Add it to your home screen for faster access.',
-    installNow:'Install',
-    installGuide:'View steps',
-    installed:'Installed',
-    later:'Later',
-    iosTitle:'Add to Home Screen',
-    iosCopy:'On iPhone and iPad, install through the browser Share menu.',
-    iosSteps:['Tap the Share button in the browser.','Choose “Add to Home Screen”.','Confirm the name and tap “Add”.'],
-    wechatTitle:'Open in your system browser',
-    wechatCopy:'The WeChat browser cannot install the PWA directly. Open it in Safari or Chrome first.',
-    wechatIosSteps:['Tap the “…” menu in WeChat.','Choose “Open in Safari”, or copy the link into Safari.','In Safari, tap Share → Add to Home Screen.'],
-    wechatAndroidSteps:['Tap the “…” menu in WeChat.','Choose “Open in browser”, or copy the link into Chrome.','In Chrome, choose Install app or Add to Home screen.'],
-    genericSteps:['Open the browser menu.','Choose Install app or Add to Home screen.','Follow the browser instructions.'],
-    copyLink:'Copy link',
-    copied:'Copied',
-    manualInstallTitle:'Install from the browser menu',
-    manualInstallCopy:'A quick install button is not available yet. Install from the browser menu instead.',
-    manualInstallAction:'View install steps',
-    done:'Done'
-  },
-  ko:{
-    offline:'현재 오프라인 상태입니다. 이전에 본 내용은 계속 이용할 수 있으며, 연결 후 문의를 제출할 수 있습니다.',
-    online:'네트워크가 복구되었습니다.',
-    offlineSubmit:'현재 오프라인입니다. 문의 내용은 기기에 저장되어 있으니 연결 후 제출해 주세요.',
-    updateTitle:'새 버전이 있습니다',
-    updateCopy:'최신 페이지, 데이터, 이미지 캐시 방식으로 업데이트합니다.',
-    updateNow:'지금 업데이트',
-    updating:'업데이트 중',
-    installTitle:'DREAMLAND 설치',
-    installCopy:'홈 화면에 추가하면 제품 카탈로그를 더 빠르게 열 수 있습니다.',
-    installNow:'설치',
-    installGuide:'설치 방법',
-    installed:'설치됨',
-    later:'나중에',
-    iosTitle:'홈 화면에 추가',
-    iosCopy:'iPhone과 iPad에서는 브라우저 공유 메뉴를 통해 설치합니다.',
-    iosSteps:['브라우저의 공유 버튼을 누릅니다.','“홈 화면에 추가”를 선택합니다.','이름을 확인한 뒤 “추가”를 누릅니다.'],
-    wechatTitle:'기본 브라우저에서 열어 주세요',
-    wechatCopy:'WeChat 내장 브라우저에서는 바로 설치할 수 없습니다. Safari 또는 Chrome에서 열어 주세요.',
-    wechatIosSteps:['WeChat 오른쪽 위 “…” 메뉴를 누릅니다.','“Safari에서 열기”를 선택하거나 링크를 복사해 Safari에 붙여 넣습니다.','Safari에서 공유 → 홈 화면에 추가를 선택합니다.'],
-    wechatAndroidSteps:['WeChat 오른쪽 위 “…” 메뉴를 누릅니다.','“브라우저에서 열기”를 선택하거나 링크를 복사해 Chrome에 붙여 넣습니다.','Chrome 메뉴에서 앱 설치 또는 홈 화면에 추가를 선택합니다.'],
-    genericSteps:['브라우저 메뉴를 엽니다.','앱 설치 또는 홈 화면에 추가를 선택합니다.','브라우저 안내에 따라 설치합니다.'],
-    copyLink:'링크 복사',
-    copied:'복사됨',
-    manualInstallTitle:'브라우저 메뉴에서 설치',
-    manualInstallCopy:'빠른 설치 버튼을 사용할 수 없습니다. 브라우저 메뉴에서 홈 화면에 설치해 주세요.',
-    manualInstallAction:'설치 방법 보기',
-    done:'확인'
-  }
-};
-
-function pwaText(key){
-  const lang=(typeof currentLang!=='undefined'&&currentLang)||appStorage.local.getItem('productManualLang')||'zh';
-  return PWA_COPY[lang]?.[key]??PWA_COPY.zh[key]??key;
-}
-
-let pwaConnectivityProbePromise=null;
-let pwaConnectivityCheckedAt=0;
-let pwaConnectivityLastResult=null;
-
-function connectivityProbeTimeoutMs(){
-return Math.max(
-1500,
-Number(
-pwaConfig().connectivityProbeTimeoutMs || 4500
-)
-)
-}
-
-function connectivityProbeCacheMs(){
-return Math.max(
-0,
-Number(
-pwaConfig().connectivityProbeCacheMs || 12000
-)
-)
-}
-
-function connectivityProbeUrl(){
-const endpoint =
-typeof riskAssessmentEndpoint === 'function'
-? riskAssessmentEndpoint()
-: './api/submit';
-
-return endpoint +
-(endpoint.includes('?') ? '&' : '?') +
-'connectivity_check=' +
-Date.now()
-}
-
-async function probeWeb3FormsReachability(force=false){
-  if(navigator.onLine===false){
-    pwaConnectivityLastResult=false;
-    pwaConnectivityCheckedAt=Date.now();
-    return false
-  }
-  const now=Date.now();
-  if(!force&&pwaConnectivityLastResult!==null&&now-pwaConnectivityCheckedAt<connectivityProbeCacheMs()){
-    return pwaConnectivityLastResult
-  }
-  if(pwaConnectivityProbePromise)return pwaConnectivityProbePromise;
-  const controller=new AbortController();
-  const timeout=setTimeout(()=>controller.abort(),connectivityProbeTimeoutMs());
-  pwaConnectivityProbePromise=fetch(connectivityProbeUrl(),{
-    method:'GET',
-    mode:'no-cors',
-    cache:'no-store',
-    credentials:'omit',
-    redirect:'follow',
-    signal:controller.signal
-  }).then(()=>true).catch(()=>false).then(result=>{
-    pwaConnectivityLastResult=result;
-    pwaConnectivityCheckedAt=Date.now();
-    return result
-  }).finally(()=>{
-    clearTimeout(timeout);
-    pwaConnectivityProbePromise=null
-  });
-  return pwaConnectivityProbePromise
-}
-function applyPwaReachability(online,announceRecovery=true){
-  if(!online){
-    pwaNetworkWasOffline=true;
-    setNetworkBanner(pwaText('offline'),true);
-    return
-  }
-  const wasOffline=pwaNetworkWasOffline;
-  pwaNetworkWasOffline=false;
-  if(wasOffline&&announceRecovery){
-    setNetworkBanner(pwaText('online'),false);
-    pwaRegistration?.update?.().catch(()=>{})
-  }else{
-    hideNetworkBanner()
-  }
-}
-function isPwaStandalone(){return window.matchMedia?.('(display-mode: standalone)').matches||window.navigator.standalone===true}
-function isIosDevice(){return /iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)}
-function isWechatBrowser(){return /MicroMessenger/i.test(navigator.userAgent)}
-function pwaConfig(){return appConfig?.pwa||{}}
-function installDismissMs(){return Number(pwaConfig().installDismissDays||7)*86400000}
-function installWasDismissed(){const value=Number(appStorage.local.getItem(PWA_INSTALL_DISMISSED_KEY)||0);return value>0&&Date.now()-value<installDismissMs()}
-function hideNetworkBanner(){document.getElementById('pwaNetworkBanner')?.setAttribute('hidden','')}
-function setNetworkBanner(text,persistent=false){
-  const banner=document.getElementById('pwaNetworkBanner'),copy=document.getElementById('pwaNetworkText');
-  if(!banner||!copy)return;
-  copy.textContent=text;banner.removeAttribute('hidden');
-  if(!persistent)setTimeout(()=>{if(navigator.onLine!==false)hideNetworkBanner()},2200)
-}
-async function updateNetworkState(){
-  if(navigator.onLine===false){
-    applyPwaReachability(false,false);
-    return false
-  }
-  const reachable=await probeWeb3FormsReachability(true);
-  applyPwaReachability(reachable,true);
-  return reachable
-}
-function showPwaAction(type){
-  if(isPwaStandalone()&&(type==='install'||type==='manual'))return;
-  if(pwaActionType==='update'&&type!=='update')return;
-  pwaActionType=type;
-  const banner=document.getElementById('pwaActionBanner'),title=document.getElementById('pwaActionTitle'),copy=document.getElementById('pwaActionCopy'),primary=document.getElementById('pwaActionPrimary');
-  if(!banner||!title||!copy||!primary)return;
-  if(type==='update'){title.textContent=pwaText('updateTitle');copy.textContent=pwaText('updateCopy');primary.textContent=pwaText('updateNow')}
-  else if(type==='wechat'){title.textContent=pwaText('wechatTitle');copy.textContent=pwaText('wechatCopy');primary.textContent=pwaText('installGuide')}
-  else if(type==='ios'){title.textContent=pwaText('iosTitle');copy.textContent=pwaText('iosCopy');primary.textContent=pwaText('installGuide')}
-  else if(type==='manual'){title.textContent=pwaText('manualInstallTitle');copy.textContent=pwaText('manualInstallCopy');primary.textContent=pwaText('manualInstallAction')}
-  else{title.textContent=pwaText('installTitle');copy.textContent=pwaText('installCopy');primary.textContent=pwaText('installNow')}
-  banner.removeAttribute('hidden')
-}
-function hidePwaAction(){document.getElementById('pwaActionBanner')?.setAttribute('hidden','');pwaActionType=''}
-function dismissPwaAction(){
-  if(pwaActionType==='install'||pwaActionType==='manual'||pwaActionType==='ios'||pwaActionType==='wechat')appStorage.local.setItem(PWA_INSTALL_DISMISSED_KEY,String(Date.now()));
-  if(pwaActionType==='update')appStorage.session.setItem(PWA_UPDATE_SESSION_KEY,'1');
-  hidePwaAction()
-}
-function clearPwaInstallFallback(){
-  if(pwaInstallFallbackTimer){
-    clearTimeout(pwaInstallFallbackTimer);
-    pwaInstallFallbackTimer=null
-  }
-}
-function installFallbackDelayMs(){return Math.max(3000,Number(pwaConfig().installFallbackDelayMs||15000))}
-function schedulePwaInstallFallback(){
-  if(pwaInstallFallbackTimer||isPwaStandalone()||installWasDismissed()||deferredInstallPrompt||isIosDevice()||isWechatBrowser()||pwaActionType==='update')return;
-  pwaInstallFallbackTimer=setTimeout(()=>{
-    pwaInstallFallbackTimer=null;
-    if(isPwaStandalone()||installWasDismissed()||deferredInstallPrompt||isIosDevice()||isWechatBrowser()||pwaActionType==='update')return;
-    if(typeof activeScreen!=='undefined'&&activeScreen==='home'){
-      setTimeout(maybeOfferPwaInstall,3000);
-      return
-    }
-    showPwaAction('manual')
-  },installFallbackDelayMs())
-}
-function maybeOfferPwaInstall(){
-  if(isPwaStandalone()||installWasDismissed()||pwaActionType==='update')return;
-  if(typeof activeScreen!=='undefined'&&activeScreen==='home'){setTimeout(maybeOfferPwaInstall,3000);return}
-  if(isWechatBrowser()){clearPwaInstallFallback();return showPwaAction('wechat')}
-  if(deferredInstallPrompt){clearPwaInstallFallback();return showPwaAction('install')}
-  if(isIosDevice()){clearPwaInstallFallback();return showPwaAction('ios')}
-  schedulePwaInstallFallback()
-}
-async function triggerNativeInstall(){
-  if(!deferredInstallPrompt)return openPwaGuide();
-  const prompt=deferredInstallPrompt;deferredInstallPrompt=null;
-  try{
-    await prompt.prompt();
-    const choice=await prompt.userChoice;
-    if(choice?.outcome==='accepted'){appStorage.local.removeItem(PWA_INSTALL_DISMISSED_KEY);hidePwaAction()}
-    else{appStorage.local.setItem(PWA_INSTALL_DISMISSED_KEY,String(Date.now()));hidePwaAction()}
-  }catch(error){console.error('PWA install prompt failed:',error);openPwaGuide()}
-}
-function guideSteps(){
-  if(isWechatBrowser())return isIosDevice()?pwaText('wechatIosSteps'):pwaText('wechatAndroidSteps');
-  if(isIosDevice())return pwaText('iosSteps');
-  return pwaText('genericSteps')
-}
-function openPwaGuide(){
-  const layer=document.getElementById('pwaGuideLayer'),title=document.getElementById('pwaGuideTitle'),copy=document.getElementById('pwaGuideCopy'),steps=document.getElementById('pwaGuideSteps');
-  if(!layer||!title||!copy||!steps)return;
-  const wechat=isWechatBrowser();
-  title.textContent=wechat?pwaText('wechatTitle'):(isIosDevice()?pwaText('iosTitle'):pwaText('installTitle'));
-  copy.textContent=wechat?pwaText('wechatCopy'):(isIosDevice()?pwaText('iosCopy'):pwaText('installCopy'));
-  steps.innerHTML=guideSteps().map(step=>`<div class="pwa-guide-step">${step}</div>`).join('');
-  document.getElementById('pwaCopyLinkBtn').textContent=pwaText('copyLink');
-  document.getElementById('pwaGuideDoneBtn').textContent=pwaText('done');
-  layer.removeAttribute('hidden')
-}
-function closePwaGuide(){document.getElementById('pwaGuideLayer')?.setAttribute('hidden','')}
-async function copyPwaLink(){
-  const button=document.getElementById('pwaCopyLinkBtn');
-  try{
-    if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(location.href);
-    else{
-      const area=document.createElement('textarea');area.value=location.href;area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();document.execCommand('copy');area.remove()
-    }
-    if(button){button.textContent=pwaText('copied');setTimeout(()=>button.textContent=pwaText('copyLink'),1600)}
-  }catch(error){console.error('Copy link failed:',error)}
-}
-async function applyPwaUpdate(){
-  const primary=document.getElementById('pwaActionPrimary');
-  if(primary){primary.disabled=true;primary.textContent=pwaText('updating')}
-  try{
-    if(!pwaRegistration?.waiting)await pwaRegistration?.update?.();
-    if(pwaRegistration?.waiting)pwaRegistration.waiting.postMessage({type:'SKIP_WAITING'})
-    else location.reload()
-  }catch(error){console.error('PWA update failed:',error);if(primary){primary.disabled=false;primary.textContent=pwaText('updateNow')}}
-}
-function handlePwaPrimaryAction(){
-  if(pwaActionType==='update')return applyPwaUpdate();
-  if(pwaActionType==='install')return triggerNativeInstall();
-  openPwaGuide()
-}
-function refreshPwaUi(){
-  updateNetworkState();
-  if(pwaActionType)showPwaAction(pwaActionType);
-  if(!document.getElementById('pwaGuideLayer')?.hasAttribute('hidden'))openPwaGuide()
-}
-function notifyPwaUpdate(registration){
-  pwaRegistration=registration;
-  if(appStorage.session.getItem(PWA_UPDATE_SESSION_KEY)!=='1')showPwaAction('update')
-}
-async function registerPwaServiceWorker(){
-  if(!('serviceWorker' in navigator))return;
-  try{
-    const registration=await navigator.serviceWorker.register('./sw.js',{scope:'./',updateViaCache:'none'});
-    pwaRegistration=registration;
-    if(registration.waiting&&navigator.serviceWorker.controller)notifyPwaUpdate(registration);
-    registration.addEventListener('updatefound',()=>{
-      const worker=registration.installing;
-      if(!worker)return;
-      worker.addEventListener('statechange',()=>{
-        if(worker.state==='installed'&&navigator.serviceWorker.controller)notifyPwaUpdate(registration)
-      })
-    });
-    navigator.serviceWorker.addEventListener('controllerchange',()=>{
-      if(pwaReloading)return;pwaReloading=true;location.reload()
-    });
-    const interval=Number(pwaConfig().updateCheckIntervalMs||3600000);
-    const check=()=>{const now=Date.now();if(now-pwaUpdateCheckAt<60000)return;pwaUpdateCheckAt=now;registration.update().catch(()=>{})};
-    window.addEventListener('focus',check);
-    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')check()});
-    setInterval(check,Math.max(interval,300000));
-    check()
-  }catch(error){console.error('Service worker registration failed:',error)}
-}
-function initPwaExperience(){
-  if(pwaInitialized)return;pwaInitialized=true;
-  updateNetworkState();
-  window.addEventListener('online',updateNetworkState);
-  window.addEventListener('offline',updateNetworkState);
-  const delay=Number(pwaConfig().installPromptDelayMs||10000);
-  setTimeout(maybeOfferPwaInstall,Math.max(delay,2000))
-}
-window.addEventListener('beforeinstallprompt',event=>{
-  event.preventDefault();
-  deferredInstallPrompt=event;
-  clearPwaInstallFallback();
-  if(pwaInitialized){
-    if(pwaActionType==='manual')showPwaAction('install');
-    else setTimeout(maybeOfferPwaInstall,800)
-  }
+pwaService.configure({
+  storage:appStorage,
+  getLanguage:()=>currentLang,
+  getConfig:()=>appConfig?.pwa||{},
+  getActiveScreen:()=>activeScreen,
+  getConnectivityEndpoint:()=>(
+    typeof riskAssessmentEndpoint==='function'
+      ? riskAssessmentEndpoint()
+      : './api/submit'
+  )
 });
-window.addEventListener('appinstalled',()=>{
-  deferredInstallPrompt=null;
-  clearPwaInstallFallback();
-  appStorage.local.removeItem(PWA_INSTALL_DISMISSED_KEY);
-  hidePwaAction()
-});
+
 document.addEventListener('click',e=>{let w=document.getElementById('langWrap');if(w&&!w.contains(e.target))closeLangSheet()});
 async function bootstrap(){
   initHeroImage();
@@ -6486,7 +6146,7 @@ async function bootstrap(){
   renderProducts();
   applyI18n();
   badge();
-  initPwaExperience();
+  pwaService.initExperience();
 }
 bootstrap().catch(error=>{
   console.error('Catalog data initialization failed:',error);
@@ -6495,9 +6155,6 @@ bootstrap().catch(error=>{
   if(title)title.textContent='产品数据加载失败';
   if(copy)copy.textContent='请检查网络后刷新页面。';
 });
-</script>
-<script>
-window.addEventListener('load',registerPwaServiceWorker);
 </script>
 <div class="tier-layer" id="tierLayer" onclick="if(event.target===this)closeTierSheet()">
   <div class="tier-sheet" id="tierSheet"></div>

@@ -1,8 +1,8 @@
 # DREAMLAND frontend architecture
 
-B2 establishes a progressive migration from the legacy single-page runtime to explicit frontend layers.
+B2 progressively migrates the stable legacy runtime into explicit frontend layers.
 
-## Current target layers
+## Target layers
 
 ```text
 src/
@@ -23,7 +23,7 @@ ui        → no higher-layer dependency
 data      → no higher-layer dependency
 ```
 
-## Migration status
+## Runtime migration status
 
 ### B1-02 — Product data contract
 
@@ -37,9 +37,9 @@ Owns product CSV parsing, normalization and fallback mapping.
 
 ### B2-01 — Frontend module foundation
 
-Established layer definitions, manifests, migration map and architecture validation.
+Established the layer definitions, manifests, migration map and architecture validation.
 
-### B2-02 — Storage service migration
+### B2-02 — Storage service
 
 Runtime active:
 
@@ -47,27 +47,47 @@ Runtime active:
 src/services/storage/runtime-storage.js
 ```
 
-The main application routes local/session persistence through:
+Main-app local/session persistence is routed through `DreamlandStorage`.
+`startup-loader.js` remains the explicit pre-bootstrap storage exception.
+
+### B2-03 — PWA service
+
+Runtime active:
 
 ```text
-window.DreamlandStorage.local
-window.DreamlandStorage.session
+src/services/pwa/runtime-pwa.js
 ```
 
-During this transitional phase `index.html` uses `appStorage.local` /
-`appStorage.session` as a synchronous compatibility bridge so existing state
-logic does not need to be rewritten in the same change.
+Owns:
 
-Existing storage keys and serialized payloads are preserved.
+- Service Worker registration and update checks;
+- `beforeinstallprompt` / `appinstalled`;
+- native install prompt coordination;
+- iOS / WeChat / browser-menu install guidance;
+- PWA update banner lifecycle;
+- network/offline reachability probing;
+- existing PWA-specific localized copy;
+- PWA DOM guidance surfaces.
 
-`startup-loader.js` is intentionally excluded from B2-02 because it executes
-before the main application runtime and must determine first/repeat-visit
-behavior before the storage service is loaded.
+The main application keeps only narrow integration calls:
+
+```text
+pwaService.configure(...)
+pwaService.probeReachability(...)
+pwaService.applyReachability(...)
+pwaService.text(...)
+pwaService.refreshUi()
+pwaService.initExperience()
+```
+
+The existing PWA DOM remains in `index.html`, so B2-03 changes runtime ownership without redesigning UI.
+
+`sw.js` remains the actual Service Worker implementation and is owned by the PWA service boundary.
 
 ## Runtime migration rules
 
 1. Migrate one ownership slice at a time.
-2. Preserve visible behavior and stored data contracts.
+2. Preserve visible behavior and persisted data contracts.
 3. Do not reintroduce monkey-patching.
 4. Migrated services must be represented in `SERVICE_CONTRACTS`.
 5. Migrated responsibilities must be represented in `LEGACY_FRONTEND_MAP`.

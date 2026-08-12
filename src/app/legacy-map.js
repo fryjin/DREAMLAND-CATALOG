@@ -129,6 +129,14 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'services',
     'pwa',
-    'PWA lifecycle remains legacy-owned. Only its local/session persistence calls are routed through the storage service in B2-02.'
+    'PWA browser lifecycle, install/update orchestration and network reachability are routed through DreamlandPwa. sw.js remains the service-worker implementation; startup-loader.js remains a pre-bootstrap concern.',
+    {
+      status:'migrated',
+      runtimeMigrated:true,
+      runtimeOwners:[
+        'src/services/pwa/runtime-pwa.js',
+        'sw.js'
+      ]
+    }
   )
 ]);

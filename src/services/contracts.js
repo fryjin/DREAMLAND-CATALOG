@@ -74,10 +74,16 @@ export const SERVICE_CONTRACTS=Object.freeze([
   ),
   serviceContract(
     'pwa',
-    'Encapsulate service-worker registration, install/update state and offline lifecycle.',
+    'Own service-worker registration, install/update state, network reachability and the existing PWA guidance surfaces.',
     [
       'index.html',
       'sw.js'
-    ]
+    ],
+    {
+      runtimeEnabled:true,
+      migrationStatus:'migrated',
+      runtimeOwner:
+        'src/services/pwa/runtime-pwa.js'
+    }
   )
 ]);
