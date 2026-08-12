@@ -1181,7 +1181,16 @@ body[data-lang="ko"] .option-grid-scroll .option{
 </main>
 <script src="./src/data/product-data-contract.js"></script>
 <script src="./catalog-data.js"></script>
+<script src="./src/services/storage/runtime-storage.js"></script>
 <script>
+const appStorage=window.DreamlandStorage;
+
+if(!appStorage){
+  throw new Error(
+    'DreamlandStorage must load before app state initialization.'
+  );
+}
+
 const STORAGE_KEY='productManualV2State';
 const LANG_KEY='productManualLang';
 const langOrder=['zh','en','ko'];
