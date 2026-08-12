@@ -7,7 +7,8 @@
     "data:build": "node scripts/build-data.mjs --write",
     "data:check": "node scripts/build-data.mjs --check",
     "data:contract": "node scripts/validate-product-data-contract.mjs",
-    "validate": "node scripts/validate-project.mjs && npm run data:contract",
+    "frontend:foundation": "node scripts/validate-frontend-foundation.mjs",
+    "validate": "node scripts/validate-project.mjs && npm run data:contract && npm run frontend:foundation",
     "check": "npm run data:check && npm run validate"
   },
   "engines": {
