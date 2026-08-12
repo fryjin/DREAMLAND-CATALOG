@@ -22,11 +22,11 @@ import {
 /*
  * Architecture metadata only.
  *
- * B2-02 starts progressive runtime migration with the storage service.
+ * B2-03 adds the PWA runtime service after the storage migration.
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B2-02',
+  phase:'B2-03',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',

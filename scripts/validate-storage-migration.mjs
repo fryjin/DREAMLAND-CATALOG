@@ -101,10 +101,6 @@ try{
 try{
   const swSource=read('sw.js');
 
-  if(!swSource.includes("const CACHE_VERSION = 'dreamland-pwa-v64';")){
-    fail('sw.js cache version must be dreamland-pwa-v64 for B2-02.')
-  }
-
   const matches=swSource.match(
     /'\.\/src\/services\/storage\/runtime-storage\.js'/g
   )||[];

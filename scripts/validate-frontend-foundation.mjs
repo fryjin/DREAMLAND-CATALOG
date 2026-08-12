@@ -39,7 +39,8 @@ const requiredFiles=[
   'src/features/manifest.js',
   'src/ui/contracts.js',
   'src/services/contracts.js',
-  'src/services/storage/runtime-storage.js'
+  'src/services/storage/runtime-storage.js',
+  'src/services/pwa/runtime-pwa.js'
 ];
 
 for(const file of requiredFiles){
@@ -57,7 +58,7 @@ try{
 }
 
 if(foundation){
-  if(foundation.phase!=='B2-02'){
+  if(foundation.phase!=='B2-03'){
     fail(`Unexpected frontend foundation phase: ${foundation.phase}`)
   }
 
@@ -65,7 +66,7 @@ if(foundation){
     foundation.runtimeIntegrated!==true||
     foundation.runtimeIntegration!=='partial'
   ){
-    fail('B2-02 must declare partial runtime integration.')
+    fail('B2-03 must declare partial runtime integration.')
   }
 
   const uniqueIds=(items,label)=>{
@@ -81,20 +82,27 @@ if(foundation){
   uniqueIds(foundation.services,'Service contracts');
 
   if(foundation.features.some(item=>item.runtimeEnabled!==false)){
-    fail('B2-02 does not migrate feature runtime ownership yet.')
+    fail('B2-03 does not migrate feature runtime ownership yet.')
   }
 
   if(foundation.ui.some(item=>item.runtimeEnabled!==false)){
-    fail('B2-02 does not migrate UI runtime ownership yet.')
+    fail('B2-03 does not migrate UI runtime ownership yet.')
   }
 
   const enabledServices=foundation.services
     .filter(item=>item.runtimeEnabled===true)
     .map(item=>item.id);
 
-  if(enabledServices.length!==1||enabledServices[0]!=='storage'){
+  const enabledSet=
+    new Set(enabledServices);
+
+  if(
+    enabledServices.length!==2||
+    !enabledSet.has('storage')||
+    !enabledSet.has('pwa')
+  ){
     fail(
-      `B2-02 must runtime-enable only the storage service; found: `+
+      `B2-03 must runtime-enable storage and pwa only; found: `+
       `${enabledServices.join(', ')||'none'}`
     )
   }
@@ -113,6 +121,22 @@ if(foundation){
     storageMigration?.status!=='migrated'
   ){
     fail('Legacy map does not mark storage as migrated.')
+  }
+
+  const pwaService=foundation.services.find(item=>item.id==='pwa');
+  if(
+    pwaService?.runtimeOwner!==
+    'src/services/pwa/runtime-pwa.js'
+  ){
+    fail('PWA service runtime owner is incorrect.')
+  }
+
+  const pwaMigration=foundation.legacyMap.find(item=>item.id==='pwa');
+  if(
+    pwaMigration?.runtimeMigrated!==true||
+    pwaMigration?.status!=='migrated'
+  ){
+    fail('Legacy map does not mark PWA as migrated.')
   }
 }
 
