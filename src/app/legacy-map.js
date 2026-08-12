@@ -3,8 +3,12 @@ function entry(
   legacyFiles,
   targetLayer,
   targetArea,
-  notes=''
+  notes='',
+  options={}
 ){
+  const runtimeMigrated=
+    options.runtimeMigrated===true;
+
   return Object.freeze({
     id,
     legacyFiles:Object.freeze([
@@ -12,8 +16,17 @@ function entry(
     ]),
     targetLayer,
     targetArea,
-    status:'legacy-owned',
-    runtimeMigrated:false,
+    status:
+      options.status||
+      (
+        runtimeMigrated
+          ? 'migrated'
+          : 'legacy-owned'
+      ),
+    runtimeMigrated,
+    runtimeOwners:Object.freeze([
+      ...(options.runtimeOwners||[])
+    ]),
     notes
   });
 }
@@ -48,7 +61,7 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'features',
     'detail',
-    'Detail rendering and swipe behavior are not migrated in B2-01.'
+    'Detail rendering and swipe behavior remain legacy-owned.'
   ),
   entry(
     'inquiry',
@@ -79,7 +92,23 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'services',
     'media',
-    'Image loading and responsive variant behavior remain untouched.'
+    'Image loading and responsive variant behavior remain legacy-owned.'
+  ),
+  entry(
+    'storage',
+    [
+      'index.html'
+    ],
+    'services',
+    'storage',
+    'Main-application local/session storage access is routed through DreamlandStorage. startup-loader.js remains a deliberate pre-bootstrap storage exception.',
+    {
+      status:'migrated',
+      runtimeMigrated:true,
+      runtimeOwners:[
+        'src/services/storage/runtime-storage.js'
+      ]
+    }
   ),
   entry(
     'submission',
@@ -100,6 +129,6 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'services',
     'pwa',
-    'PWA runtime and service-worker behavior remain untouched.'
+    'PWA lifecycle remains legacy-owned. Only its local/session persistence calls are routed through the storage service in B2-02.'
   )
 ]);

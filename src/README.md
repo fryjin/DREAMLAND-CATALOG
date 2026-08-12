@@ -1,92 +1,75 @@
 # DREAMLAND frontend architecture
 
-B2-01 establishes the **target module boundaries** without changing the current runtime.
+B2 establishes a progressive migration from the legacy single-page runtime to explicit frontend layers.
 
-## Current runtime
-
-The production/preview application still runs from the existing legacy entry points:
-
-```text
-index.html
-catalog-data.js
-custom-scent-multi.js
-copy-polish.js
-image-manager.js
-image-variants.js
-detail-progressive.js
-pattern-preview-swipe.js
-startup-loader.js
-sw.js
-```
-
-B2-01 does **not** load `src/app/foundation.js` in the browser.
-
-## Target layers
+## Current target layers
 
 ```text
 src/
 ├─ app/
-│  ├─ foundation.js
-│  ├─ layers.js
-│  └─ legacy-map.js
 ├─ features/
-│  └─ manifest.js
 ├─ ui/
-│  └─ contracts.js
 ├─ services/
-│  └─ contracts.js
 └─ data/
-   └─ product-data-contract.js
 ```
 
-`src/data/product-data-contract.js` was introduced in B1-02 and is already runtime-active.
-The new B2-01 files are architecture-only.
-
-## Dependency direction
+Dependency direction:
 
 ```text
-app
-├─ features
-├─ ui
-├─ services
-└─ data
-
-features
-├─ ui
-├─ services
-└─ data
-
-services
-└─ data
-
-ui
-└─ (no higher-layer dependency)
-
-data
-└─ (no higher-layer dependency)
+app       → features / ui / services / data
+features  → ui / services / data
+services  → data
+ui        → no higher-layer dependency
+data      → no higher-layer dependency
 ```
 
-Rules:
+## Migration status
 
-1. `app` orchestrates; it should not own business implementation.
-2. `features` own user-facing business flows.
-3. `ui` owns reusable presentation primitives, not business state.
-4. `services` own external/runtime capabilities such as data, media, storage, submission and PWA.
-5. `data` owns pure data contracts and normalization.
-6. New modules must not reintroduce runtime monkey-patching.
-7. Migration is incremental: one legacy responsibility is moved at a time with behavior parity tests.
+### B1-02 — Product data contract
 
-## B2-01 runtime guarantee
+Runtime active:
 
-B2-01 intentionally does not modify:
+```text
+src/data/product-data-contract.js
+```
 
-- `index.html`
-- `sw.js`
-- runtime script order
-- product data
-- PWA behavior
-- image behavior
-- inquiry behavior
-- UI/CSS
+Owns product CSV parsing, normalization and fallback mapping.
 
-The only existing file modified in this phase is `package.json`, so CI can validate the new architecture.
+### B2-01 — Frontend module foundation
+
+Established layer definitions, manifests, migration map and architecture validation.
+
+### B2-02 — Storage service migration
+
+Runtime active:
+
+```text
+src/services/storage/runtime-storage.js
+```
+
+The main application routes local/session persistence through:
+
+```text
+window.DreamlandStorage.local
+window.DreamlandStorage.session
+```
+
+During this transitional phase `index.html` uses `appStorage.local` /
+`appStorage.session` as a synchronous compatibility bridge so existing state
+logic does not need to be rewritten in the same change.
+
+Existing storage keys and serialized payloads are preserved.
+
+`startup-loader.js` is intentionally excluded from B2-02 because it executes
+before the main application runtime and must determine first/repeat-visit
+behavior before the storage service is loaded.
+
+## Runtime migration rules
+
+1. Migrate one ownership slice at a time.
+2. Preserve visible behavior and stored data contracts.
+3. Do not reintroduce monkey-patching.
+4. Migrated services must be represented in `SERVICE_CONTRACTS`.
+5. Migrated responsibilities must be represented in `LEGACY_FRONTEND_MAP`.
+6. Runtime files required offline must enter the PWA app shell.
+7. Architecture metadata modules remain outside browser runtime.

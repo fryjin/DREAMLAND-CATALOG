@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'dreamland-pwa-v63';
+const CACHE_VERSION = 'dreamland-pwa-v64';
 
 const APP_CACHE = `${CACHE_VERSION}-app`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
@@ -13,6 +13,7 @@ const APP_SHELL = [
   './startup-loader.js',
   './src/data/product-data-contract.js',
   './catalog-data.js',
+  './src/services/storage/runtime-storage.js',
   './image-manager.js',
   './image-variants.js',
   './detail-progressive.js',

@@ -1181,11 +1181,20 @@ body[data-lang="ko"] .option-grid-scroll .option{
 </main>
 <script src="./src/data/product-data-contract.js"></script>
 <script src="./catalog-data.js"></script>
+<script src="./src/services/storage/runtime-storage.js"></script>
 <script>
+const appStorage=window.DreamlandStorage;
+
+if(!appStorage){
+  throw new Error(
+    'DreamlandStorage must load before app state initialization.'
+  );
+}
+
 const STORAGE_KEY='productManualV2State';
 const LANG_KEY='productManualLang';
 const langOrder=['zh','en','ko'];
-let currentLang=localStorage.getItem(LANG_KEY)||'zh';
+let currentLang=appStorage.local.getItem(LANG_KEY)||'zh';
 let currencyMap={};
 let seriesMeta={};
 let seriesTabLabels={};
@@ -1220,7 +1229,7 @@ const CONTACT_FIELD_IDS=[
 ];
 
 let contactDraftTimer=null;
-let pendingInquiryId=localStorage.getItem(PENDING_INQUIRY_KEY)||'';
+let pendingInquiryId=appStorage.local.getItem(PENDING_INQUIRY_KEY)||'';
 let hcaptchaWidgetId=null;
 let hcaptchaRenderToken=0;
 let hcaptchaResponseToken='';
@@ -1682,15 +1691,15 @@ function web3formsAccessKey(){
 function web3formsReady(){
   return Boolean(web3formsAccessKey())
 }
-['catalogInquiry','productManualState','manualInquiry'].forEach(k=>localStorage.removeItem(k));
+['catalogInquiry','productManualState','manualInquiry'].forEach(k=>appStorage.local.removeItem(k));
 const CATALOG_BATCH_SIZE=5;
 const QTY_STEP=1;
 const QTY_MIN=1;
-let activeScreen='home',activeSeries='advanced',activeProduct=null,config={},detailSlideIndex=0,detailTimer=null,catalogRenderToken=0,catalogBatchTimer=null,catalogList=[],catalogCursor=0,catalogLoading=false,editingItemId='';let state=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{"version":2,"items":[],"contact":{}}');if(state.version!==2)state={version:2,items:[],contact:{}};
+let activeScreen='home',activeSeries='advanced',activeProduct=null,config={},detailSlideIndex=0,detailTimer=null,catalogRenderToken=0,catalogBatchTimer=null,catalogList=[],catalogCursor=0,catalogLoading=false,editingItemId='';let state=JSON.parse(appStorage.local.getItem(STORAGE_KEY)||'{"version":2,"items":[],"contact":{}}');if(state.version!==2)state={version:2,items:[],contact:{}};
 
   if(!state.items.length&&pendingInquiryId){
 pendingInquiryId='';
-localStorage.removeItem(PENDING_INQUIRY_KEY)
+appStorage.local.removeItem(PENDING_INQUIRY_KEY)
 }
   
 function save(){
@@ -1701,7 +1710,7 @@ function save(){
     contact:{}
   };
 
-  localStorage.setItem(
+  appStorage.local.setItem(
     STORAGE_KEY,
     JSON.stringify(persistedState)
   );
@@ -2452,7 +2461,7 @@ function generateInquiryId(){
 function ensureInquiryId(){
   if(!pendingInquiryId){
     pendingInquiryId=generateInquiryId();
-    localStorage.setItem(PENDING_INQUIRY_KEY,pendingInquiryId)
+    appStorage.local.setItem(PENDING_INQUIRY_KEY,pendingInquiryId)
   }
   return pendingInquiryId
 }
@@ -2506,7 +2515,7 @@ function applyI18n(){
 }
 function setLang(lang){
   currentLang=lang;
-  localStorage.setItem(LANG_KEY,lang);
+  appStorage.local.setItem(LANG_KEY,lang);
   rerenderCurrent();
   refreshPwaUi();
   toast(ui('switched'))
@@ -4931,7 +4940,7 @@ function hideConfirm(){confirmLayer.classList.remove('show')}
 function clearInquiry(){
   state.items=[];
   pendingInquiryId='';
-  localStorage.removeItem(PENDING_INQUIRY_KEY);
+  appStorage.local.removeItem(PENDING_INQUIRY_KEY);
   save();
   hideConfirm();
   renderInquiry();
@@ -4969,7 +4978,7 @@ function collect(){return{
 function readContactDraft(){
   try{
     const draft=JSON.parse(
-      localStorage.getItem(CONTACT_DRAFT_KEY)||'null'
+      appStorage.local.getItem(CONTACT_DRAFT_KEY)||'null'
     );
 
     const savedAt=Number(draft?.savedAt)||0;
@@ -4979,13 +4988,13 @@ function readContactDraft(){
       !savedAt||
       Date.now()-savedAt>CONTACT_DRAFT_TTL_MS
     ){
-      localStorage.removeItem(CONTACT_DRAFT_KEY);
+      appStorage.local.removeItem(CONTACT_DRAFT_KEY);
       return {};
     }
 
     return draft.contact;
   }catch(_){
-    localStorage.removeItem(CONTACT_DRAFT_KEY);
+    appStorage.local.removeItem(CONTACT_DRAFT_KEY);
     return {};
   }
 }
@@ -4995,7 +5004,7 @@ function saveContactDraftNow(){
 
   state.contact=contact;
 
-  localStorage.setItem(
+  appStorage.local.setItem(
     CONTACT_DRAFT_KEY,
     JSON.stringify({
       savedAt:Date.now(),
@@ -5079,7 +5088,7 @@ function clearContactDraft(){
     contactDraftTimer=null;
   }
 
-  localStorage.removeItem(CONTACT_DRAFT_KEY);
+  appStorage.local.removeItem(CONTACT_DRAFT_KEY);
 }
 
 function moqGroupKey(item){
@@ -5304,15 +5313,15 @@ function ensureRiskHoneypot(){
 function riskHoneypotValue(){return document.getElementById('riskWebsite')?.value||''}
 function recentRiskAttempts(){
   const windowMs=Math.max(60000,Number(appConfig.riskControl?.repeatWindowMs||600000));
-  let values=[];try{values=JSON.parse(localStorage.getItem(RISK_ATTEMPT_KEY)||'[]')}catch(_){}
+  let values=[];try{values=JSON.parse(appStorage.local.getItem(RISK_ATTEMPT_KEY)||'[]')}catch(_){}
   values=values.filter(value=>Number(value)>Date.now()-windowMs);
-  localStorage.setItem(RISK_ATTEMPT_KEY,JSON.stringify(values));
+  appStorage.local.setItem(RISK_ATTEMPT_KEY,JSON.stringify(values));
   return values
 }
 function recordRiskAttempt(){
   const values=recentRiskAttempts();
   values.push(Date.now());
-  localStorage.setItem(RISK_ATTEMPT_KEY,JSON.stringify(values.slice(-10)))
+  appStorage.local.setItem(RISK_ATTEMPT_KEY,JSON.stringify(values.slice(-10)))
 }
 function buildRiskContext(){
   return{
@@ -5771,15 +5780,15 @@ function submissionSnapshot(inquiryId){
   return{inquiryId,submittedAt:new Date().toISOString(),language:currentLang,amountBaseUsd:total(),amountDisplay:money(total()),itemCount:state.items.length,items:state.items.map(item=>({type:item.type,productId:item.productId||'',name:productDisplayName(item),qty:Number(item.qty)||0,size:item.size||item.sizePref||'',cover:item.cover||''}))}
 }
 function archiveSubmission(snapshot){
-  let archive=[];try{archive=JSON.parse(localStorage.getItem(SUBMISSION_ARCHIVE_KEY)||'[]')}catch(_){}
+  let archive=[];try{archive=JSON.parse(appStorage.local.getItem(SUBMISSION_ARCHIVE_KEY)||'[]')}catch(_){}
   archive.unshift(snapshot);archive=archive.slice(0,Math.max(1,Number(appConfig.archiveLimit)||20));
-  localStorage.setItem(SUBMISSION_ARCHIVE_KEY,JSON.stringify(archive));localStorage.setItem(LAST_SUBMISSION_KEY,JSON.stringify(snapshot))
+  appStorage.local.setItem(SUBMISSION_ARCHIVE_KEY,JSON.stringify(archive));appStorage.local.setItem(LAST_SUBMISSION_KEY,JSON.stringify(snapshot))
 }
 function clearSubmittedInquiry(){
   state={version:2,items:[],contact:{}};save();
   clearContactDraft();
   pendingInquiryId='';
-  localStorage.removeItem(PENDING_INQUIRY_KEY);
+  appStorage.local.removeItem(PENDING_INQUIRY_KEY);
   ['name','company','country','city','email','phone','message','customQty','customDate','customColor','customNote'].forEach(id=>{let el=document.getElementById(id);if(el)el.value='' });
   ['buyerType','customUse','customBudget','customSize','customScent','customPack','customBranding'].forEach(id=>{let el=document.getElementById(id);if(el)el.selectedIndex=0})
 }
@@ -5915,7 +5924,7 @@ try{
   }
 }
 function renderSuccess(){
-  let snapshot={};try{snapshot=JSON.parse(localStorage.getItem(LAST_SUBMISSION_KEY)||'{}')}catch(_){}
+  let snapshot={};try{snapshot=JSON.parse(appStorage.local.getItem(LAST_SUBMISSION_KEY)||'{}')}catch(_){}
   let d=snapshot.submittedAt?new Date(snapshot.submittedAt):new Date();
   successId.textContent=snapshot.inquiryId||'—';successDate.textContent=d.toLocaleDateString(currencyMap[currentLang]?.locale||'zh-CN');successAmount.textContent=snapshot.amountDisplay||money(0);
   let sub=document.querySelector('.success-sub');if(sub)sub.innerHTML=`${ui('successSub1')}<br>${ui('successSub2')}`;
@@ -6192,7 +6201,7 @@ const PWA_COPY={
 };
 
 function pwaText(key){
-  const lang=(typeof currentLang!=='undefined'&&currentLang)||localStorage.getItem('productManualLang')||'zh';
+  const lang=(typeof currentLang!=='undefined'&&currentLang)||appStorage.local.getItem('productManualLang')||'zh';
   return PWA_COPY[lang]?.[key]??PWA_COPY.zh[key]??key;
 }
 
@@ -6280,7 +6289,7 @@ function isIosDevice(){return /iPad|iPhone|iPod/.test(navigator.userAgent)||(nav
 function isWechatBrowser(){return /MicroMessenger/i.test(navigator.userAgent)}
 function pwaConfig(){return appConfig?.pwa||{}}
 function installDismissMs(){return Number(pwaConfig().installDismissDays||7)*86400000}
-function installWasDismissed(){const value=Number(localStorage.getItem(PWA_INSTALL_DISMISSED_KEY)||0);return value>0&&Date.now()-value<installDismissMs()}
+function installWasDismissed(){const value=Number(appStorage.local.getItem(PWA_INSTALL_DISMISSED_KEY)||0);return value>0&&Date.now()-value<installDismissMs()}
 function hideNetworkBanner(){document.getElementById('pwaNetworkBanner')?.setAttribute('hidden','')}
 function setNetworkBanner(text,persistent=false){
   const banner=document.getElementById('pwaNetworkBanner'),copy=document.getElementById('pwaNetworkText');
@@ -6312,8 +6321,8 @@ function showPwaAction(type){
 }
 function hidePwaAction(){document.getElementById('pwaActionBanner')?.setAttribute('hidden','');pwaActionType=''}
 function dismissPwaAction(){
-  if(pwaActionType==='install'||pwaActionType==='manual'||pwaActionType==='ios'||pwaActionType==='wechat')localStorage.setItem(PWA_INSTALL_DISMISSED_KEY,String(Date.now()));
-  if(pwaActionType==='update')sessionStorage.setItem(PWA_UPDATE_SESSION_KEY,'1');
+  if(pwaActionType==='install'||pwaActionType==='manual'||pwaActionType==='ios'||pwaActionType==='wechat')appStorage.local.setItem(PWA_INSTALL_DISMISSED_KEY,String(Date.now()));
+  if(pwaActionType==='update')appStorage.session.setItem(PWA_UPDATE_SESSION_KEY,'1');
   hidePwaAction()
 }
 function clearPwaInstallFallback(){
@@ -6349,8 +6358,8 @@ async function triggerNativeInstall(){
   try{
     await prompt.prompt();
     const choice=await prompt.userChoice;
-    if(choice?.outcome==='accepted'){localStorage.removeItem(PWA_INSTALL_DISMISSED_KEY);hidePwaAction()}
-    else{localStorage.setItem(PWA_INSTALL_DISMISSED_KEY,String(Date.now()));hidePwaAction()}
+    if(choice?.outcome==='accepted'){appStorage.local.removeItem(PWA_INSTALL_DISMISSED_KEY);hidePwaAction()}
+    else{appStorage.local.setItem(PWA_INSTALL_DISMISSED_KEY,String(Date.now()));hidePwaAction()}
   }catch(error){console.error('PWA install prompt failed:',error);openPwaGuide()}
 }
 function guideSteps(){
@@ -6401,7 +6410,7 @@ function refreshPwaUi(){
 }
 function notifyPwaUpdate(registration){
   pwaRegistration=registration;
-  if(sessionStorage.getItem(PWA_UPDATE_SESSION_KEY)!=='1')showPwaAction('update')
+  if(appStorage.session.getItem(PWA_UPDATE_SESSION_KEY)!=='1')showPwaAction('update')
 }
 async function registerPwaServiceWorker(){
   if(!('serviceWorker' in navigator))return;
@@ -6447,7 +6456,7 @@ window.addEventListener('beforeinstallprompt',event=>{
 window.addEventListener('appinstalled',()=>{
   deferredInstallPrompt=null;
   clearPwaInstallFallback();
-  localStorage.removeItem(PWA_INSTALL_DISMISSED_KEY);
+  appStorage.local.removeItem(PWA_INSTALL_DISMISSED_KEY);
   hidePwaAction()
 });
 document.addEventListener('click',e=>{let w=document.getElementById('langWrap');if(w&&!w.contains(e.target))closeLangSheet()});

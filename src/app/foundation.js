@@ -20,14 +20,15 @@ import {
 } from '../services/contracts.js';
 
 /*
- * B2-01 is intentionally architecture-only.
+ * Architecture metadata only.
  *
- * This module is NOT loaded by index.html and must not mutate browser
- * globals or DOM state. B2-02+ will migrate runtime ownership gradually.
+ * B2-02 starts progressive runtime migration with the storage service.
+ * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B2-01',
-  runtimeIntegrated:false,
+  phase:'B2-02',
+  runtimeIntegrated:true,
+  runtimeIntegration:'partial',
   strategy:'progressive-migration',
   layers:FRONTEND_LAYERS,
   allowedDependencies:ALLOWED_LAYER_DEPENDENCIES,
