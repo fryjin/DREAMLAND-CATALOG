@@ -36,12 +36,19 @@ export const SERVICE_CONTRACTS=Object.freeze([
   ),
   serviceContract(
     'media',
-    'Resolve responsive image variants, progressive loading and preloading.',
+    'Own shared responsive variant resolution, network policy, candidate loading, image-state transitions, decode and preloading primitives.',
     [
       'image-manager.js',
       'image-variants.js',
-      'detail-progressive.js'
-    ]
+      'detail-progressive.js',
+      'pattern-preview-swipe.js'
+    ],
+    {
+      runtimeEnabled:true,
+      migrationStatus:'partial',
+      runtimeOwner:
+        'src/services/media/runtime-media.js'
+    }
   ),
   serviceContract(
     'storage',

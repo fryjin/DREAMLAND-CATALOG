@@ -315,6 +315,11 @@
       );
 
     await loadScript(
+      './src/services/media/runtime-media.js',
+      'data-dreamland-media-runtime'
+    );
+
+    await loadScript(
       './image-manager.js',
       'data-dreamland-image-manager'
     );
