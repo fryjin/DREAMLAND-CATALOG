@@ -1,12 +1,23 @@
 function serviceContract(
   id,
   responsibility,
-  legacyOwners
+  legacyOwners,
+  options={}
 ){
   return Object.freeze({
     id,
     layer:'services',
-    runtimeEnabled:false,
+    runtimeEnabled:
+      options.runtimeEnabled===true,
+    migrationStatus:
+      options.migrationStatus||
+      (
+        options.runtimeEnabled
+          ? 'migrated'
+          : 'legacy-owned'
+      ),
+    runtimeOwner:
+      options.runtimeOwner||'',
     responsibility,
     legacyOwners:Object.freeze([
       ...legacyOwners
@@ -34,10 +45,16 @@ export const SERVICE_CONTRACTS=Object.freeze([
   ),
   serviceContract(
     'storage',
-    'Own persistence access such as localStorage instead of feature code reaching storage directly.',
+    'Own main-application localStorage/sessionStorage access and provide a synchronous compatibility boundary during progressive migration.',
     [
       'index.html'
-    ]
+    ],
+    {
+      runtimeEnabled:true,
+      migrationStatus:'migrated',
+      runtimeOwner:
+        'src/services/storage/runtime-storage.js'
+    }
   ),
   serviceContract(
     'submission',
