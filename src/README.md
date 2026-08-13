@@ -162,3 +162,51 @@ renderInquiry = ...
 The goal is to remove the high-risk catalog/detail renderer override chain first without mixing in
 shared-asset or inquiry ownership changes.
 
+### B3-02 — Shared Asset Hook Cleanup
+
+The shared-asset candidate pipeline now exposes one explicit slot:
+
+```text
+sharedAssets.transformCandidates
+```
+
+Core ownership remains in `index.html`:
+
+```text
+sharedAssetRecord()
+→ sharedAssetCandidates()
+→ optional DreamlandRuntimeHooks slot
+```
+
+`image-variants.js` registers the responsive candidate transformer instead of replacing
+`sharedAssetCandidates` at runtime.
+
+Behavior remains:
+
+```text
+home
+→ original shared-asset candidates only
+
+pattern / package / other shared assets
+→ responsive generated WebP candidate(s)
+→ original candidate(s)
+```
+
+Existing callers are unchanged, including:
+
+```text
+mountSharedImages
+patternThumb
+packThumb
+openPreview
+pattern-preview-swipe.js
+```
+
+After B3-02, the remaining explicitly tracked runtime monkey-patch in the media/inquiry area is:
+
+```text
+renderInquiry = ...
+```
+
+That belongs to a later Inquiry Ownership Migration and is intentionally out of scope here.
+

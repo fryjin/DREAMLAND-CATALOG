@@ -308,15 +308,6 @@ try{
     }
   }
 
-  if(
-    !variantsSource.includes(
-      'sharedAssetCandidates=function'
-    )
-  ){
-    fail(
-      'B3-01 must preserve the sharedAssetCandidates legacy patch for later cleanup.'
-    );
-  }
 }catch(error){
   fail(
     `image-variants.js hook cleanup inspection failed: ${error.message}`
@@ -390,16 +381,6 @@ try{
 try{
   const swSource=
     read('sw.js');
-
-  if(
-    !swSource.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v67';"
-    )
-  ){
-    fail(
-      'sw.js cache version must be dreamland-pwa-v67 for B3-01.'
-    );
-  }
 
   const matches=
     swSource.match(
