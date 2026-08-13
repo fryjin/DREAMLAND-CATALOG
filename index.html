@@ -1361,11 +1361,39 @@ function sharedAssetCandidates(
       size
     );
 
-  return uniqueImages([
-    record?.imagePath,
-    record?.fallbackPath,
-    fallback
-  ]);
+  const candidates=
+    uniqueImages([
+      record?.imagePath,
+      record?.fallbackPath,
+      fallback
+    ]);
+
+  const transform=
+    window.DreamlandRuntimeHooks
+      ?.get(
+        'sharedAssets.transformCandidates'
+      );
+
+  if(!transform){
+    return candidates;
+  }
+
+  const transformed=
+    transform({
+      category,
+      lookupKey,
+      size,
+      fallback,
+      candidates
+    });
+
+  return Array.isArray(
+    transformed
+  )
+    ? uniqueImages(
+        transformed
+      )
+    : candidates;
 }
 
 function htmlAttr(value){

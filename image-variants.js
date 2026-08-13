@@ -234,62 +234,54 @@
     `;
   }
 
-  function installSharedAssetVariants(){
-    if(
-      typeof sharedAssetCandidates!==
-      'function'
-    ){
-      return;
+  function transformSharedAssetCandidates(
+    payload={}
+  ){
+    const category=
+      String(
+        payload.category||
+        ''
+      ).toLowerCase();
+
+    const originals=
+      media.unique(
+        payload.candidates
+      );
+
+    if(category==='home'){
+      return originals;
     }
 
-    const originalSharedAssetCandidates=
-      sharedAssetCandidates;
+    const width=
+      media.responsiveWidth(
+        'shared'
+      );
 
-    sharedAssetCandidates=function(
-      category,
-      lookupKey,
-      size='',
-      fallback=''
-    ){
-      const originals=
-        originalSharedAssetCandidates(
-          category,
-          lookupKey,
-          size,
-          fallback
-        );
-
-      if(
-        String(
-          category||''
-        ).toLowerCase()===
-        'home'
-      ){
-        return originals;
-      }
-
-      const width=
-        media.responsiveWidth(
-          'shared'
-        );
-
-      return media.unique([
-        ...originals.map(
-          source=>
-            media.variantPath(
-              source,
-              width
-            )
-        ),
-        ...originals
-      ]);
-    };
+    return media.unique([
+      ...originals.map(
+        source=>
+          media.variantPath(
+            source,
+            width
+          )
+      ),
+      ...originals
+    ]);
   }
+
 
   function registerHooks(){
     hooks.register(
       'catalog.renderProductCard',
       enhancedProductCard,
+      {
+        owner:'image-variants'
+      }
+    );
+
+    hooks.register(
+      'sharedAssets.transformCandidates',
+      transformSharedAssetCandidates,
       {
         owner:'image-variants'
       }
@@ -321,7 +313,6 @@
     );
   }
 
-  installSharedAssetVariants();
   registerHooks();
 
   /*
@@ -351,6 +342,7 @@
         media.responsiveWidth,
       loadResponsiveImage:
         media.loadResponsiveImage,
+      transformSharedAssetCandidates,
       mountResponsiveCatalog
     });
 })();

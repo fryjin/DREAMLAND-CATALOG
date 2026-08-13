@@ -22,11 +22,11 @@ import {
 /*
  * Architecture metadata only.
  *
- * B3-01 replaces catalog/detail media monkey-patching with explicit runtime extension points.
+ * B3-02 replaces shared-asset candidate monkey-patching with an explicit runtime extension point.
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B3-01',
+  phase:'B3-02',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',
