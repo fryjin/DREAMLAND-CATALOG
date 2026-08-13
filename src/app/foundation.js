@@ -22,11 +22,11 @@ import {
 /*
  * Architecture metadata only.
  *
- * B2-04 consolidates shared media loading policy behind DreamlandMedia.
+ * B3-01 replaces catalog/detail media monkey-patching with explicit runtime extension points.
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B2-04',
+  phase:'B3-01',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',

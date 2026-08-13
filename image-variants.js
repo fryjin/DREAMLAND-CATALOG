@@ -11,9 +11,19 @@
   const media=
     window.DreamlandMedia;
 
+  const hooks=
+    window.DreamlandRuntimeHooks;
+
   if(!media){
     console.warn(
       '[catalog] Responsive images require DreamlandMedia.'
+    );
+    return;
+  }
+
+  if(!hooks){
+    console.warn(
+      '[catalog] Responsive images require DreamlandRuntimeHooks.'
     );
     return;
   }
@@ -224,213 +234,6 @@
     `;
   }
 
-  function detailSlideAt(
-    container,
-    index
-  ){
-    return (
-      container
-        ?.querySelector(
-          `.detail-slide[data-responsive-index="${index}"]`
-        )||
-      null
-    );
-  }
-
-  function loadResponsiveDetail(
-    container,
-    index,
-    priority='auto'
-  ){
-    const slide=
-      detailSlideAt(
-        container,
-        index
-      );
-
-    const img=
-      slide
-        ?.querySelector(
-          'img[data-responsive-source]'
-        );
-
-    if(!img){
-      return Promise.resolve(
-        false
-      );
-    }
-
-    return media
-      .loadResponsiveImage(
-        img,
-        img.dataset
-          .responsiveSource,
-        'detail',
-        priority
-      );
-  }
-
-  function preloadDetailNeighbors(
-    container,
-    index
-  ){
-    const slides=[
-      ...container
-        .querySelectorAll(
-          '.detail-slide[data-responsive-index]'
-        )
-    ];
-
-    const count=
-      slides.length;
-
-    if(count<=1){
-      return;
-    }
-
-    const task=()=>{
-      loadResponsiveDetail(
-        container,
-        (index+1)%count
-      );
-
-      loadResponsiveDetail(
-        container,
-        (index-1+count)%count
-      );
-    };
-
-    if(
-      'requestIdleCallback'
-      in window
-    ){
-      requestIdleCallback(
-        task,
-        {
-          timeout:800
-        }
-      );
-    }else{
-      setTimeout(
-        task,
-        180
-      );
-    }
-  }
-
-  function enhancedRenderDetailMedia(){
-    const container=
-      document.getElementById(
-        'detailMedia'
-      );
-
-    if(
-      !container||
-      !activeProduct
-    ){
-      return;
-    }
-
-    const images=
-      productCarouselImages(
-        activeProduct
-      );
-
-    if(
-      detailSlideIndex>=
-      images.length
-    ){
-      detailSlideIndex=0;
-    }
-
-    const slidesHtml=
-      images.length
-        ? `
-          <div class="detail-slides">
-            ${images.map((source,index)=>`
-              <div
-                class="detail-slide media-frame ${index===detailSlideIndex?'active':''}"
-                data-responsive-index="${index}"
-              >
-                <span class="media-skeleton" aria-hidden="true"></span>
-                <img
-                  data-responsive-source="${escapeAttr(source)}"
-                  alt="${escapeAttr(productDisplayName(activeProduct))} ${index+1}"
-                  width="960"
-                  height="1440"
-                  loading="lazy"
-                  decoding="async"
-                >
-              </div>
-            `).join('')}
-          </div>
-        `
-        : `
-          <div class="detail-slide media-frame active is-error">
-            <span class="media-skeleton" aria-hidden="true"></span>
-          </div>
-        `;
-
-    const controlsHtml=
-      images.length>1
-        ? `
-          <button
-            class="carousel-btn prev"
-            onclick="event.stopPropagation();changeDetailSlide(-1)"
-          >
-            <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
-          </button>
-
-          <button
-            class="carousel-btn next"
-            onclick="event.stopPropagation();changeDetailSlide(1)"
-          >
-            <svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
-          </button>
-
-          <div class="carousel-dots">
-            ${images.map((_,index)=>`
-              <button
-                class="carousel-dot ${index===detailSlideIndex?'active':''}"
-                onclick="event.stopPropagation();setDetailSlide(${index})"
-              ></button>
-            `).join('')}
-          </div>
-        `
-        : '';
-
-    container.className=
-      `detail-media ${activeProduct.color}`;
-
-    container.innerHTML=`
-      ${slidesHtml}
-      ${controlsHtml}
-      <div class="detail-titlebox">
-        <h2>${productDisplayName(activeProduct)}</h2>
-        <p>${productDesc(activeProduct)}</p>
-      </div>
-    `;
-
-    bindDetailSwipe();
-
-    loadResponsiveDetail(
-      container,
-      detailSlideIndex,
-      'high'
-    ).then(
-      success=>{
-        if(success){
-          preloadDetailNeighbors(
-            container,
-            detailSlideIndex
-          );
-        }
-      }
-    );
-
-    startDetailCarousel();
-  }
-
   function installSharedAssetVariants(){
     if(
       typeof sharedAssetCandidates!==
@@ -483,33 +286,22 @@
     };
   }
 
-  function installHooks(){
-    if(
-      typeof renderProductCard===
-      'function'
-    ){
-      renderProductCard=
-        enhancedProductCard;
-    }
+  function registerHooks(){
+    hooks.register(
+      'catalog.renderProductCard',
+      enhancedProductCard,
+      {
+        owner:'image-variants'
+      }
+    );
 
-    if(
-      typeof appendCatalogBatch===
-      'function'
-    ){
-      const previousAppendCatalogBatch=
-        appendCatalogBatch;
-
-      appendCatalogBatch=function(){
-        const result=
-          previousAppendCatalogBatch
-            .apply(
-              this,
-              arguments
-            );
-
+    hooks.subscribe(
+      'catalog.afterAppendBatch',
+      payload=>{
         requestAnimationFrame(
           ()=>{
             const grid=
+              payload?.grid||
               document
                 .getElementById(
                   'productGrid'
@@ -522,63 +314,34 @@
             }
           }
         );
-
-        return result;
-      };
-    }
-
-    if(
-      typeof renderDetailMedia===
-      'function'
-    ){
-      renderDetailMedia=
-        enhancedRenderDetailMedia;
-    }
-
-    if(
-      typeof updateDetailSlide===
-      'function'
-    ){
-      const previousUpdateDetailSlide=
-        updateDetailSlide;
-
-      updateDetailSlide=function(){
-        const result=
-          previousUpdateDetailSlide
-            .apply(
-              this,
-              arguments
-            );
-
-        const container=
-          document.getElementById(
-            'detailMedia'
-          );
-
-        if(container){
-          loadResponsiveDetail(
-            container,
-            detailSlideIndex,
-            'high'
-          ).then(
-            success=>{
-              if(success){
-                preloadDetailNeighbors(
-                  container,
-                  detailSlideIndex
-                );
-              }
-            }
-          );
-        }
-
-        return result;
-      };
-    }
+      },
+      {
+        owner:'image-variants'
+      }
+    );
   }
 
   installSharedAssetVariants();
-  installHooks();
+  registerHooks();
+
+  /*
+   * If catalog cards already exist when this late-loaded adapter is ready,
+   * bind any responsive markup that is already present.
+   */
+  requestAnimationFrame(
+    ()=>{
+      const grid=
+        document.getElementById(
+          'productGrid'
+        );
+
+      if(grid){
+        mountResponsiveCatalog(
+          grid
+        );
+      }
+    }
+  );
 
   window.DreamlandResponsiveImages=
     Object.freeze({
@@ -588,7 +351,6 @@
         media.responsiveWidth,
       loadResponsiveImage:
         media.loadResponsiveImage,
-      loadResponsiveDetail,
       mountResponsiveCatalog
     });
 })();

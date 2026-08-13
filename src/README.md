@@ -130,3 +130,35 @@ Notably:
 5. Migrated responsibilities must be represented in `LEGACY_FRONTEND_MAP`.
 6. Runtime files required offline must enter the PWA app shell.
 7. Architecture metadata modules remain outside browser runtime.
+
+### B3-01 — Media adapter hook cleanup
+
+Runtime active:
+
+```text
+src/app/runtime-hooks.js
+```
+
+The core page now exposes explicit extension points:
+
+```text
+catalog.renderProductCard
+catalog.afterAppendBatch
+detail.renderMedia
+detail.startCarousel
+detail.afterSlideUpdate
+```
+
+`image-variants.js` and `detail-progressive.js` register/subscribe to these points through
+`DreamlandRuntimeHooks`. They no longer replace the corresponding global functions at runtime.
+
+This phase intentionally leaves two legacy monkey-patches for later B3 work:
+
+```text
+sharedAssetCandidates = ...
+renderInquiry = ...
+```
+
+The goal is to remove the high-risk catalog/detail renderer override chain first without mixing in
+shared-asset or inquiry ownership changes.
+

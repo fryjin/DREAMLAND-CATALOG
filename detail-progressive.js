@@ -11,9 +11,19 @@
   const media=
     window.DreamlandMedia;
 
+  const hooks=
+    window.DreamlandRuntimeHooks;
+
   if(!media){
     console.warn(
       '[catalog] Progressive detail loader requires DreamlandMedia.'
+    );
+    return;
+  }
+
+  if(!hooks){
+    console.warn(
+      '[catalog] Progressive detail loader requires DreamlandRuntimeHooks.'
     );
     return;
   }
@@ -1105,39 +1115,28 @@
     startDetailCarousel();
   }
 
-  function installHooks(){
-    if(
-      typeof renderDetailMedia===
-      'function'
-    ){
-      renderDetailMedia=
-        renderProgressiveDetailMedia;
-    }
+  function registerHooks(){
+    hooks.register(
+      'detail.renderMedia',
+      renderProgressiveDetailMedia,
+      {
+        owner:'detail-progressive'
+      }
+    );
 
-    if(
-      typeof startDetailCarousel===
-      'function'
-    ){
-      startDetailCarousel=
-        scheduleAutoAdvance;
-    }
+    hooks.register(
+      'detail.startCarousel',
+      scheduleAutoAdvance,
+      {
+        owner:'detail-progressive'
+      }
+    );
 
-    if(
-      typeof updateDetailSlide===
-      'function'
-    ){
-      const previousUpdateDetailSlide=
-        updateDetailSlide;
-
-      updateDetailSlide=function(){
-        const result=
-          previousUpdateDetailSlide
-            .apply(
-              this,
-              arguments
-            );
-
+    hooks.subscribe(
+      'detail.afterSlideUpdate',
+      payload=>{
         const container=
+          payload?.container||
           document.getElementById(
             'detailMedia'
           );
@@ -1152,14 +1151,18 @@
 
           activateDetailSlide(
             container,
-            detailSlideIndex,
+            Number(
+              payload?.index??
+              detailSlideIndex
+            ),
             renderId
           );
         }
-
-        return result;
-      };
-    }
+      },
+      {
+        owner:'detail-progressive'
+      }
+    );
 
     document.addEventListener(
       'visibilitychange',
@@ -1184,7 +1187,7 @@
     );
   }
 
-  installHooks();
+  registerHooks();
 
   window.DreamlandProgressiveDetail=
     Object.freeze({

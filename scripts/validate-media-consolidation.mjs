@@ -326,16 +326,6 @@ try{
   const swSource=
     read('sw.js');
 
-  if(
-    !swSource.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v66';"
-    )
-  ){
-    fail(
-      'sw.js cache version must be dreamland-pwa-v66 for B2-04.'
-    );
-  }
-
   const matches=
     swSource.match(
       /'\.\/src\/services\/media\/runtime-media\.js'/g

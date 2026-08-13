@@ -315,6 +315,11 @@
       );
 
     await loadScript(
+      './src/app/runtime-hooks.js',
+      'data-dreamland-runtime-hooks'
+    );
+
+    await loadScript(
       './src/services/media/runtime-media.js',
       'data-dreamland-media-runtime'
     );
