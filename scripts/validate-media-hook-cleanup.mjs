@@ -243,8 +243,8 @@ try{
   }
 
   if(
-    !indexSource.includes(
-      "window.DreamlandRuntimeHooks?.get("
+    !/window\.DreamlandRuntimeHooks\s*\?\.\s*get\s*\(/.test(
+      indexSource
     )
   ){
     fail(
@@ -253,8 +253,8 @@ try{
   }
 
   if(
-    !indexSource.includes(
-      "window.DreamlandRuntimeHooks?.emit("
+    !/window\.DreamlandRuntimeHooks\s*\?\.\s*emit\s*\(/.test(
+      indexSource
     )
   ){
     fail(
