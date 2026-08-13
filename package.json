@@ -9,10 +9,11 @@
     "data:contract": "node scripts/validate-product-data-contract.mjs",
     "frontend:foundation": "node scripts/validate-frontend-foundation.mjs",
     "storage:migration": "node scripts/validate-storage-migration.mjs",
-    "validate": "node scripts/validate-project.mjs && npm run data:contract && npm run frontend:foundation && npm run storage:migration && npm run pwa:migration && npm run media:consolidation",
+    "validate": "node scripts/validate-project.mjs && npm run data:contract && npm run frontend:foundation && npm run storage:migration && npm run pwa:migration && npm run media:consolidation && npm run hooks:cleanup",
     "check": "npm run data:check && npm run validate",
     "pwa:migration": "node scripts/validate-pwa-migration.mjs",
-    "media:consolidation": "node scripts/validate-media-consolidation.mjs"
+    "media:consolidation": "node scripts/validate-media-consolidation.mjs",
+    "hooks:cleanup": "node scripts/validate-media-hook-cleanup.mjs"
   },
   "engines": {
     "node": ">=24"

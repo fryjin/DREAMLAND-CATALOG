@@ -2998,6 +2998,19 @@ function renderProductCard(
   index,
   tall=false
 ){
+  const mediaRenderer=
+    window.DreamlandRuntimeHooks
+      ?.get(
+        'catalog.renderProductCard'
+      );
+
+  if(mediaRenderer){
+    return mediaRenderer(
+      product,
+      index,
+      tall
+    );
+  }
   return `
     <article
       class="product-card ${tall?'tall':''}"
@@ -3089,6 +3102,16 @@ function appendCatalogBatch(token){
   if(leftHtml)left.insertAdjacentHTML('beforeend',leftHtml);
   if(rightHtml)right.insertAdjacentHTML('beforeend',rightHtml);
   catalogCursor=end;
+
+  window.DreamlandRuntimeHooks
+    ?.emit(
+      'catalog.afterAppendBatch',
+      {
+        grid:productGrid,
+        start,
+        end
+      }
+    );
 }
 function ensureCatalogHasScroll(token){
   if(token!==catalogRenderToken||activeScreen!=='catalog')return;
@@ -3226,6 +3249,16 @@ resetDetailScroll();
 }
 
 function renderDetailMedia(){
+  const mediaRenderer=
+    window.DreamlandRuntimeHooks
+      ?.get(
+        'detail.renderMedia'
+      );
+
+  if(mediaRenderer){
+    return mediaRenderer();
+  }
+
   const imgs=productCarouselImages(activeProduct);
 
   if(detailSlideIndex>=imgs.length){
@@ -3298,6 +3331,15 @@ function updateDetailSlide(){
   dots.forEach((dot,i)=>{
     dot.classList.toggle('active',i===detailSlideIndex);
   });
+
+  window.DreamlandRuntimeHooks
+    ?.emit(
+      'detail.afterSlideUpdate',
+      {
+        container:detailMedia,
+        index:detailSlideIndex
+      }
+    );
 }
 
 function setDetailSlide(i){
@@ -3320,6 +3362,16 @@ function changeDetailSlide(delta,auto=false){
 }
 
 function startDetailCarousel(){
+  const carouselStarter=
+    window.DreamlandRuntimeHooks
+      ?.get(
+        'detail.startCarousel'
+      );
+
+  if(carouselStarter){
+    return carouselStarter();
+  }
+
   if(detailTimer){
     clearInterval(detailTimer);
   }

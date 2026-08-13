@@ -93,7 +93,7 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'services',
     'media',
-    'Shared variant resolution, network policy, image loading, decode and preload primitives are owned by DreamlandMedia. Legacy adapters still own catalog/detail rendering hooks, shared-asset patching, inquiry mounting and pattern swipe UI.',
+    'Shared media primitives are owned by DreamlandMedia. Catalog/detail media adapters now attach through DreamlandRuntimeHooks instead of overwriting renderProductCard, appendCatalogBatch, renderDetailMedia, startDetailCarousel or updateDetailSlide. sharedAssetCandidates and renderInquiry remain explicit legacy patches for later B3 cleanup.',
     {
       status:'partial',
       runtimeMigrated:false,
