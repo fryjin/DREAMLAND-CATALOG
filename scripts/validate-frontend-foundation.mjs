@@ -60,7 +60,7 @@ try{
 }
 
 if(foundation){
-  if(foundation.phase!=='B3-02'){
+  if(foundation.phase!=='B3-03'){
     fail(`Unexpected frontend foundation phase: ${foundation.phase}`)
   }
 
@@ -68,7 +68,7 @@ if(foundation){
     foundation.runtimeIntegrated!==true||
     foundation.runtimeIntegration!=='partial'
   ){
-    fail('B3-02 must declare partial runtime integration.')
+    fail('B3-03 must declare partial runtime integration.')
   }
 
   const uniqueIds=(items,label)=>{
@@ -84,11 +84,11 @@ if(foundation){
   uniqueIds(foundation.services,'Service contracts');
 
   if(foundation.features.some(item=>item.runtimeEnabled!==false)){
-    fail('B3-02 does not migrate feature runtime ownership yet.')
+    fail('B3-03 does not migrate feature runtime ownership yet.')
   }
 
   if(foundation.ui.some(item=>item.runtimeEnabled!==false)){
-    fail('B3-02 does not migrate UI runtime ownership yet.')
+    fail('B3-03 does not migrate UI runtime ownership yet.')
   }
 
   const enabledServices=foundation.services
@@ -105,7 +105,7 @@ if(foundation){
     !enabledSet.has('media')
   ){
     fail(
-      `B3-02 must runtime-enable storage, pwa and media; found: `+
+      `B3-03 must runtime-enable storage, pwa and media; found: `+
       `${enabledServices.join(', ')||'none'}`
     )
   }

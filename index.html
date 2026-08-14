@@ -4620,6 +4620,26 @@ function detailBack(){
 }
   
 function renderInquiry(){
+  window.DreamlandRuntimeHooks
+    ?.emit(
+      'inquiry.beforeRender',
+      {
+        list:inquiryList
+      }
+    );
+
+  queueMicrotask(
+    ()=>{
+      window.DreamlandRuntimeHooks
+        ?.emit(
+          'inquiry.afterRender',
+          {
+            list:inquiryList
+          }
+        );
+    }
+  );
+
   mergeDuplicateProductItems();
   save();
 

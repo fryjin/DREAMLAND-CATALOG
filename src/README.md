@@ -210,3 +210,44 @@ renderInquiry = ...
 
 That belongs to a later Inquiry Ownership Migration and is intentionally out of scope here.
 
+### B3-03 — Inquiry Media Hook Cleanup
+
+The remaining `renderInquiry` wrapper in `image-manager.js` is removed.
+
+Core `renderInquiry()` now emits two explicit lifecycle events:
+
+```text
+inquiry.beforeRender
+inquiry.afterRender
+```
+
+The lifecycle preserves the old ordering:
+
+```text
+beforeRender
+→ syncActiveInquiryCovers()
+→ existing Inquiry DOM render
+→ afterRender (microtask)
+→ requestAnimationFrame
+→ mountInquiry()
+```
+
+`inquiry.afterRender` is queued with `queueMicrotask`, so it still runs after the synchronous
+core renderer completes even when the empty-inquiry branch returns early.
+
+`image-manager.js` retains ownership of Inquiry media concerns:
+
+```text
+inquiryImageCandidates
+syncActiveInquiryCovers
+createInquiryImage
+loadInquiryImage
+mountInquiry
+```
+
+It no longer owns or replaces the core Inquiry renderer.
+
+After B3-03, the media-side global render-function monkey patches tracked in B3-01 through
+B3-03 are removed. This does not mean the entire Inquiry feature has been modularized; broader
+Inquiry business ownership remains a later feature migration.
+

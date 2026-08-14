@@ -93,7 +93,7 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'services',
     'media',
-    'Shared media primitives are owned by DreamlandMedia. Catalog/detail media adapters and shared-asset candidate transformation now attach through DreamlandRuntimeHooks. renderInquiry remains the explicit legacy patch for a later Inquiry ownership migration.',
+    'Shared media primitives are owned by DreamlandMedia. Catalog/detail media adapters, shared-asset candidate transformation, and inquiry media lifecycle integration now attach through DreamlandRuntimeHooks. The media-side global render-function monkey-patches tracked by B3-01 through B3-03 are removed; broader Inquiry feature ownership remains a later migration.',
     {
       status:'partial',
       runtimeMigrated:false,

@@ -8,9 +8,19 @@
   const media=
     window.DreamlandMedia;
 
+  const hooks=
+    window.DreamlandRuntimeHooks;
+
   if(!media){
     console.warn(
       '[catalog] ImageManager requires DreamlandMedia.'
+    );
+    return;
+  }
+
+  if(!hooks){
+    console.warn(
+      '[catalog] ImageManager requires DreamlandRuntimeHooks.'
     );
     return;
   }
@@ -531,27 +541,24 @@
     );
   }
 
-  function installHooks(){
-    if(
-      typeof renderInquiry===
-      'function'
-    ){
-      const originalRenderInquiry=
-        renderInquiry;
-
-      renderInquiry=function(){
+  function registerHooks(){
+    hooks.subscribe(
+      'inquiry.beforeRender',
+      ()=>{
         syncActiveInquiryCovers();
+      },
+      {
+        owner:'image-manager'
+      }
+    );
 
-        const result=
-          originalRenderInquiry
-            .apply(
-              this,
-              arguments
-            );
-
+    hooks.subscribe(
+      'inquiry.afterRender',
+      payload=>{
         requestAnimationFrame(
           ()=>{
             const list=
+              payload?.list||
               document.getElementById(
                 'inquiryList'
               );
@@ -563,14 +570,15 @@
             }
           }
         );
-
-        return result;
-      };
-    }
+      },
+      {
+        owner:'image-manager'
+      }
+    );
   }
 
   installStyles();
-  installHooks();
+  registerHooks();
 
   window.ImageManager=
     Object.freeze({

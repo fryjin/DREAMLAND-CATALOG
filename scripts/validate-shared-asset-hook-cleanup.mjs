@@ -150,24 +150,6 @@ try{
 }
 
 try{
-  const managerSource=read('image-manager.js');
-
-  if(
-    !managerSource.includes(
-      'renderInquiry=function'
-    )
-  ){
-    fail(
-      'B3-02 must not migrate the renderInquiry legacy adapter.'
-    );
-  }
-}catch(error){
-  fail(
-    `image-manager.js scope guard inspection failed: ${error.message}`
-  );
-}
-
-try{
   const previousValidator=
     read('scripts/validate-media-hook-cleanup.mjs');
 
@@ -198,16 +180,6 @@ try{
 
 try{
   const swSource=read('sw.js');
-
-  if(
-    !swSource.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v68';"
-    )
-  ){
-    fail(
-      'sw.js cache version must be dreamland-pwa-v68 for B3-02.'
-    );
-  }
 
   for(
     const appShellPath of [
