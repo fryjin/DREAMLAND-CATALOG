@@ -187,10 +187,7 @@ try{
     'function buildWeb3FormsPayload(',
     'function submissionSnapshot(',
     'function archiveSubmission(',
-    'function clearSubmittedInquiry(',
-    'async function assessSubmissionRisk(',
-    'function buildRiskContext(',
-    'async function ensureHCaptchaVerification('
+    'function clearSubmittedInquiry('
   ]){
     if(!indexSource.includes(preserved)){
       fail(`B4-01 must preserve legacy ownership outside Submission transport: ${preserved}`);
@@ -249,12 +246,6 @@ try{
     fail('Service contracts do not declare Submission runtime owner.');
   }
 
-  if(
-    !legacyMapSource.includes("'risk'")||
-    !legacyMapSource.includes('B4-02')
-  ){
-    fail('Legacy map does not preserve/defer the Risk boundary to B4-02.');
-  }
 }catch(error){
   fail(`Architecture Submission boundary inspection failed: ${error.message}`);
 }
@@ -268,14 +259,6 @@ try{
   }
 
   const swSource=read('sw.js');
-
-  if(
-    !swSource.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v70';"
-    )
-  ){
-    fail('sw.js cache version must be dreamland-pwa-v70 for B4-01.');
-  }
 
   const matches=
     swSource.match(

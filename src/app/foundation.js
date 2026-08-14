@@ -22,11 +22,11 @@ import {
 /*
  * Architecture metadata only.
  *
- * B4-01 establishes a runtime Submission transport boundary while keeping Inquiry payload composition and risk/captcha orchestration legacy-owned.
+ * B4-02 establishes a client Risk/hCaptcha runtime boundary while keeping Risk UI orchestration and server-side scoring/persistence outside the service.
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B4-01',
+  phase:'B4-02',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',

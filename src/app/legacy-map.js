@@ -146,7 +146,15 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'services',
     'risk',
-    'Adaptive risk assessment, hCaptcha orchestration, honeypot handling and risk persistence remain legacy-owned and are explicitly deferred to B4-02.'
+    'Client risk context, local attempt tracking, risk-assessment transport and hCaptcha SDK lifecycle are routed through DreamlandRisk. Risk copy/status UI and honeypot DOM remain in index.html. Server-side scoring, RISK_STORE persistence and request validation remain in functions/api/submit.js for a later server-boundary phase.',
+    {
+      status:'partial',
+      runtimeMigrated:false,
+      runtimeOwners:[
+        'src/services/risk/runtime-risk.js',
+        'functions/api/submit.js'
+      ]
+    }
   ),
   entry(
     'pwa',
