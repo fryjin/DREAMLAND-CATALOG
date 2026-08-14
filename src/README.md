@@ -251,3 +251,51 @@ After B3-03, the media-side global render-function monkey patches tracked in B3-
 B3-03 are removed. This does not mean the entire Inquiry feature has been modularized; broader
 Inquiry business ownership remains a later feature migration.
 
+### B4-01 — Submission Service Boundary
+
+Runtime active:
+
+```text
+src/services/submission/runtime-submission.js
+```
+
+`DreamlandSubmission` owns the external submission transport boundary:
+
+```text
+configure
+ready
+buildFormData
+submit
+```
+
+Current flow becomes:
+
+```text
+Inquiry / Preview (index.html)
+→ buildWeb3FormsPayload()
+→ Risk / hCaptcha stays outside Submission
+→ DreamlandSubmission.submit(payload, { captchaToken })
+→ Web3Forms
+→ normalized submission result
+```
+
+B4-01 deliberately does **not** move:
+
+```text
+buildWeb3FormsPayload
+submissionSnapshot
+archiveSubmission
+clearSubmittedInquiry
+pwa reachability checks
+cooldown / duplicate-submit UI state
+risk assessment
+hCaptcha lifecycle
+```
+
+Those are separate business, persistence, connectivity or Risk responsibilities.
+
+`functions/api/submit.js` currently implements the adaptive **risk assessment** endpoint (`action: assess`);
+it is not the Web3Forms transport implementation and is therefore tracked under the Risk boundary for B4-02.
+
+Submission service status remains `partial` because the transport boundary is runtime-owned while payload composition and Inquiry orchestration are still legacy-owned.
+

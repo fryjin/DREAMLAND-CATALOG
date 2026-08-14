@@ -125,12 +125,28 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
   entry(
     'submission',
     [
+      'index.html'
+    ],
+    'services',
+    'submission',
+    'Client Web3Forms transport, FormData assembly and response normalization are routed through DreamlandSubmission. Inquiry payload composition, snapshot/archive handling, connectivity checks and UI orchestration remain in index.html.',
+    {
+      status:'partial',
+      runtimeMigrated:false,
+      runtimeOwners:[
+        'src/services/submission/runtime-submission.js'
+      ]
+    }
+  ),
+  entry(
+    'risk',
+    [
       'index.html',
       'functions/api/submit.js'
     ],
     'services',
-    'submission',
-    'Submission boundary is intentionally deferred to B4.'
+    'risk',
+    'Adaptive risk assessment, hCaptcha orchestration, honeypot handling and risk persistence remain legacy-owned and are explicitly deferred to B4-02.'
   ),
   entry(
     'pwa',
