@@ -226,15 +226,7 @@ try{
     }
   }
 
-  if(
-    !managerSource.includes(
-      'renderInquiry=function'
-    )
-  ){
-    fail(
-      'image-manager.js must preserve the inquiry-media adapter during B2-04.'
-    );
-  }
+  
 }catch(error){
   fail(
     `image-manager.js consolidation inspection failed: ${error.message}`

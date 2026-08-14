@@ -360,25 +360,6 @@ try{
 }
 
 try{
-  const managerSource=
-    read('image-manager.js');
-
-  if(
-    !managerSource.includes(
-      'renderInquiry=function'
-    )
-  ){
-    fail(
-      'B3-01 must preserve the renderInquiry legacy adapter for later cleanup.'
-    );
-  }
-}catch(error){
-  fail(
-    `image-manager.js scope guard inspection failed: ${error.message}`
-  );
-}
-
-try{
   const swSource=
     read('sw.js');
 

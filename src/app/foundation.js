@@ -22,11 +22,11 @@ import {
 /*
  * Architecture metadata only.
  *
- * B3-02 replaces shared-asset candidate monkey-patching with an explicit runtime extension point.
+ * B3-03 replaces the inquiry media render wrapper with explicit inquiry lifecycle events.
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B3-02',
+  phase:'B3-03',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',
