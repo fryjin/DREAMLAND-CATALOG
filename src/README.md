@@ -299,3 +299,60 @@ it is not the Web3Forms transport implementation and is therefore tracked under 
 
 Submission service status remains `partial` because the transport boundary is runtime-owned while payload composition and Inquiry orchestration are still legacy-owned.
 
+### B4-02 — Risk Service Boundary
+
+Runtime active:
+
+```text
+src/services/risk/runtime-risk.js
+```
+
+The client Risk boundary now owns:
+
+```text
+risk session/form timing
+trusted interaction counting
+dreamlandRiskAttempts read/write/pruning
+risk context assembly
+POST action=assess transport
+risk response normalization
+
+hCaptcha SDK loading/preload
+hCaptcha widget lifecycle
+captcha token lifecycle
+invisible challenge execution/reset
+```
+
+The core page still owns UI/business orchestration:
+
+```text
+RISK_COPY / riskText
+risk status DOM
+captcha section DOM
+honeypot DOM field
+privacy-consent flow
+when to assess
+when to ask for CAPTCHA
+Inquiry payload composition
+Submission transport call
+```
+
+The server boundary is intentionally unchanged:
+
+```text
+functions/api/submit.js
+```
+
+It still owns:
+
+```text
+payload validation
+risk scoring
+RISK_STORE read/write
+threshold decision
+captcha_required response
+```
+
+So B4-02 is a **client Risk/hCaptcha boundary**, not a rewrite of server risk policy.
+A later phase can decide whether the server implementation needs its own contract extraction.
+

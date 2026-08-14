@@ -1184,10 +1184,12 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./src/services/storage/runtime-storage.js"></script>
 <script src="./src/services/pwa/runtime-pwa.js"></script>
 <script src="./src/services/submission/runtime-submission.js"></script>
+<script src="./src/services/risk/runtime-risk.js"></script>
 <script>
 const appStorage=window.DreamlandStorage;
 const pwaService=window.DreamlandPwa;
 const submissionService=window.DreamlandSubmission;
+const riskService=window.DreamlandRisk;
 
 if(!appStorage){
   throw new Error(
@@ -1240,10 +1242,6 @@ const CONTACT_FIELD_IDS=[
 
 let contactDraftTimer=null;
 let pendingInquiryId=appStorage.local.getItem(PENDING_INQUIRY_KEY)||'';
-let hcaptchaWidgetId=null;
-let hcaptchaRenderToken=0;
-let hcaptchaResponseToken='';
-let hcaptchaExecutionPromise=null;
 let submittingInquiry=false;
 let lastSubmitAttemptAt=0;
 
@@ -1668,6 +1666,43 @@ indexScents(scents);
     accessKey:
       appConfig.web3formsAccessKey||''
   });
+
+riskService.configure({
+  endpoint:
+    appConfig.submissionEndpoint||
+    './api/submit',
+  storage:
+    appStorage.local,
+  storageKey:
+    'dreamlandRiskAttempts',
+  repeatWindowMs:
+    Math.max(
+      60000,
+      Number(
+        appConfig.riskControl
+          ?.repeatWindowMs||
+        600000
+      )
+    ),
+  hcaptcha:{
+    enabled:
+      appConfig.hcaptcha
+        ?.enabled!==false,
+    loadTimeoutMs:
+      Math.max(
+        5000,
+        Number(
+          appConfig.hcaptcha
+            ?.loadTimeoutMs||
+          12000
+        )
+      )
+  }
+});
+
+riskService.bindInteractionTracking(
+  document
+);
 
   seriesMeta={};
   seriesTabLabels={zh:{},en:{},ko:{}};
@@ -5341,17 +5376,12 @@ go('preview');
 }
 function kv(a,b){return`<div class="kv"><span>${a}</span><span>${b}</span></div>`}
 
-const RISK_ATTEMPT_KEY='dreamlandRiskAttempts';
-const riskSessionStartedAt=Date.now();
-let riskFormStartedAt=0;
-let riskInteractionCount=0;
 let riskAssessmentPending=false;
 let submissionRiskRequiresCaptcha=false;
 let submissionRiskScore=0;
 let submissionRiskReasons=[];
 let submissionRiskSiteKey='';
-let hcaptchaScriptPromise=null;
-let hcaptchaScriptTimer=null;
+let hcaptchaUiRenderToken=0;
 
 const RISK_COPY={
   zh:{
@@ -5400,220 +5430,229 @@ const RISK_COPY={
     configError:'CAPTCHA 설정이 완료되지 않았습니다. 관리자에게 문의해 주세요.'
   }
 };
-function riskText(key){return RISK_COPY[currentLang]?.[key]||RISK_COPY.zh[key]||key}
-function riskThreshold(){return Math.max(1,Number(appConfig.riskControl?.threshold||3))}
-function markRiskFormStart(){if(!riskFormStartedAt)riskFormStartedAt=Date.now();ensureRiskHoneypot()}
-function ensureRiskHoneypot(){
-  let input=document.getElementById('riskWebsite');
-  if(input)return input;
-  const card=document.querySelector('[data-screen="contact"] .form-card');
-  if(!card)return null;
-  const wrap=document.createElement('div');
-  wrap.className='risk-honeypot';
-  wrap.setAttribute('aria-hidden','true');
-  wrap.innerHTML='<label>Website<input id="riskWebsite" name="website" type="text" tabindex="-1" autocomplete="off"></label>';
-  card.appendChild(wrap);
-  return document.getElementById('riskWebsite')
+function riskText(key){
+  return RISK_COPY[currentLang]?.[key]||
+    RISK_COPY.zh[key]||
+    key
 }
-function riskHoneypotValue(){return document.getElementById('riskWebsite')?.value||''}
-function recentRiskAttempts(){
-  const windowMs=Math.max(60000,Number(appConfig.riskControl?.repeatWindowMs||600000));
-  let values=[];try{values=JSON.parse(appStorage.local.getItem(RISK_ATTEMPT_KEY)||'[]')}catch(_){}
-  values=values.filter(value=>Number(value)>Date.now()-windowMs);
-  appStorage.local.setItem(RISK_ATTEMPT_KEY,JSON.stringify(values));
-  return values
-}
-function recordRiskAttempt(){
-  const values=recentRiskAttempts();
-  values.push(Date.now());
-  appStorage.local.setItem(RISK_ATTEMPT_KEY,JSON.stringify(values.slice(-10)))
-}
-function buildRiskContext(){
-  return{
-    session_elapsed_ms:Math.max(0,Date.now()-riskSessionStartedAt),
-    form_elapsed_ms:riskFormStartedAt?Math.max(0,Date.now()-riskFormStartedAt):0,
-    interaction_count:riskInteractionCount,
-    local_attempt_count:recentRiskAttempts().length,
-    timezone_offset:new Date().getTimezoneOffset(),
-    language:currentLang,
-    viewport:[window.innerWidth||0,window.innerHeight||0].join('x')
-  }
-}
-function trackRiskInteraction(event){
-  if(!event?.isTrusted)return;
-  riskInteractionCount=Math.min(1000,riskInteractionCount+1)
-}
-['pointerdown','keydown','input','change'].forEach(type=>document.addEventListener(type,trackRiskInteraction,{passive:true,capture:true}));
 
-function setRiskStatus(type,text){
-  const el=document.getElementById('riskStatus');
-  if(!el)return;
-  el.className='risk-status'+(type?' is-'+type:'');
-  el.textContent=text
+function riskThreshold(){
+  return Math.max(
+    1,
+    Number(
+      appConfig.riskControl
+        ?.threshold||
+      3
+    )
+  )
 }
-function captchaSection(show){
-  const section=document.getElementById('captchaSection');
-  if(!section)return;
-  if(show)section.removeAttribute('hidden');else section.setAttribute('hidden','')
+
+function markRiskFormStart(){
+  riskService.markFormStart();
+  ensureRiskHoneypot()
 }
-function hcaptchaLoadTimeoutMs(){return Math.max(5000,Number(appConfig.hcaptcha?.loadTimeoutMs||12000))}
-function ensureHCaptchaConnectionHints(){
-  [['dns-prefetch','https://js.hcaptcha.com'],['preconnect','https://js.hcaptcha.com'],['preconnect','https://newassets.hcaptcha.com']].forEach(([rel,href])=>{
-    if(document.head.querySelector(`link[rel="${rel}"][href="${href}"]`))return;
-    const link=document.createElement('link');link.rel=rel;link.href=href;
-    if(rel==='preconnect')link.crossOrigin='anonymous';
-    document.head.appendChild(link)
-  })
-}
-function resetHCaptchaScriptLoader(){
-  if(hcaptchaScriptTimer){clearTimeout(hcaptchaScriptTimer);hcaptchaScriptTimer=null}
-  hcaptchaScriptPromise=null;
-  const script=document.getElementById('dreamlandHcaptchaSdk');
-  if(script&&!window.hcaptcha)script.remove()
-}
-function loadHCaptchaScript(){
-  if(appConfig.hcaptcha?.enabled===false)return Promise.resolve(null);
-  if(window.hcaptcha)return Promise.resolve(window.hcaptcha);
-  if(hcaptchaScriptPromise)return hcaptchaScriptPromise;
-  ensureHCaptchaConnectionHints();
-  hcaptchaScriptPromise=new Promise((resolve,reject)=>{
-    const callbackName='onDreamlandHCaptchaReady';
-    let settled=false;
-    const finish=error=>{
-      if(settled)return;settled=true;
-      if(hcaptchaScriptTimer){clearTimeout(hcaptchaScriptTimer);hcaptchaScriptTimer=null}
-      error?reject(error):resolve(window.hcaptcha)
-    };
-    window[callbackName]=()=>finish(window.hcaptcha?null:new Error('hCaptcha SDK unavailable'));
-    let script=document.getElementById('dreamlandHcaptchaSdk');
-    if(!script){
-      script=document.createElement('script');
-      script.id='dreamlandHcaptchaSdk';
-      script.async=true;script.defer=true;
-      script.src='https://js.hcaptcha.com/1/api.js?onload='+callbackName+'&render=explicit&recaptchacompat=off';
-      script.onerror=()=>finish(new Error('hCaptcha script failed to load'));
-      document.head.appendChild(script)
-    }
-    hcaptchaScriptTimer=setTimeout(()=>finish(new Error('hCaptcha load timeout')),hcaptchaLoadTimeoutMs())
-  }).catch(error=>{resetHCaptchaScriptLoader();throw error});
-  return hcaptchaScriptPromise
-}
-function preloadHCaptchaScript(){
-  if(appConfig.hcaptcha?.enabled===false||navigator.onLine===false)return Promise.resolve(null);
-  return loadHCaptchaScript().catch(error=>{console.warn('hCaptcha preload failed:',error);return null})
-}
-function retryHCaptcha(){
-  resetHCaptchaScriptLoader();
-  renderHCaptcha(submissionRiskSiteKey);
-}
-function preferredHCaptchaSize(container){
-  const availableWidth=
-    Math.floor(
-      container?.getBoundingClientRect?.().width||0
+
+function ensureRiskHoneypot(){
+  let input=
+    document.getElementById(
+      'riskWebsite'
     );
 
-  return availableWidth>=303
-    ? 'normal'
-    : 'compact';
+  if(input){
+    return input;
+  }
+
+  const card=
+    document.querySelector(
+      '[data-screen="contact"] .form-card'
+    );
+
+  if(!card){
+    return null;
+  }
+
+  const wrap=
+    document.createElement(
+      'div'
+    );
+
+  wrap.className=
+    'risk-honeypot';
+
+  wrap.setAttribute(
+    'aria-hidden',
+    'true'
+  );
+
+  wrap.innerHTML=
+    '<label>Website<input id="riskWebsite" name="website" type="text" tabindex="-1" autocomplete="off"></label>';
+
+  card.appendChild(
+    wrap
+  );
+
+  return document.getElementById(
+    'riskWebsite'
+  )
 }
 
-async function renderHCaptcha(siteKey=submissionRiskSiteKey){
-  const container=document.getElementById('hcaptchaContainer');
+function riskHoneypotValue(){
+  return document
+    .getElementById(
+      'riskWebsite'
+    )
+    ?.value||
+    ''
+}
 
-  if(!container||!submissionRiskRequiresCaptcha)return;
+function setRiskStatus(
+  type,
+  text
+){
+  const el=
+    document.getElementById(
+      'riskStatus'
+    );
 
-  const renderToken=++hcaptchaRenderToken;
-  const widgetSize=preferredHCaptchaSize(container);
+  if(!el){
+    return;
+  }
 
-  if(!siteKey||siteKey.includes('REPLACE_WITH_')){
+  el.className=
+    'risk-status'+
+    (
+      type
+        ? ' is-'+type
+        : ''
+    );
+
+  el.textContent=
+    text
+}
+
+function captchaSection(show){
+  const section=
+    document.getElementById(
+      'captchaSection'
+    );
+
+  if(!section){
+    return;
+  }
+
+  if(show){
+    section.removeAttribute(
+      'hidden'
+    );
+  }else{
+    section.setAttribute(
+      'hidden',
+      ''
+    )
+  }
+}
+
+function preloadHCaptchaScript(){
+  return riskService
+    .preloadCaptcha()
+}
+
+function retryHCaptcha(){
+  renderHCaptcha(
+    submissionRiskSiteKey
+  )
+}
+
+async function renderHCaptcha(
+  siteKey=submissionRiskSiteKey
+){
+  const container=
+    document.getElementById(
+      'hcaptchaContainer'
+    );
+
+  if(
+    !container||
+    !submissionRiskRequiresCaptcha
+  ){
+    return;
+  }
+
+  const renderToken=
+    ++hcaptchaUiRenderToken;
+
+  if(
+    !siteKey||
+    siteKey.includes(
+      'REPLACE_WITH_'
+    )
+  ){
     container.innerHTML=
       `<div class="captcha-help">${riskText('configError')}</div>`;
+
     return;
   }
 
   container.innerHTML=
     `<span class="captcha-status">${riskText('captchaLoading')}</span>`;
 
-  const slowTimer=setTimeout(()=>{
-    if(
-      renderToken===hcaptchaRenderToken&&
-      document.getElementById('hcaptchaContainer')===container&&
-      !window.hcaptcha
-    ){
-      container.innerHTML=`
-        <div>
-          <div class="captcha-help">
-            ${riskText('captchaSlow')}
-          </div>
-          <button
-            class="captcha-retry"
-            type="button"
-            onclick="retryHCaptcha()"
-          >
-            ${riskText('retry')}
-          </button>
-        </div>
-      `;
-    }
-  },4000);
+  const slowTimer=
+    setTimeout(
+      ()=>{
+        if(
+          renderToken===
+            hcaptchaUiRenderToken&&
+          document.body.contains(
+            container
+          )
+        ){
+          container.innerHTML=`
+            <div>
+              <div class="captcha-help">
+                ${riskText('captchaSlow')}
+              </div>
+              <button
+                class="captcha-retry"
+                type="button"
+                onclick="retryHCaptcha()"
+              >
+                ${riskText('retry')}
+              </button>
+            </div>
+          `;
+        }
+      },
+      4000
+    );
 
   try{
-    await loadHCaptchaScript();
-    clearTimeout(slowTimer);
-
-    if(
-      renderToken!==hcaptchaRenderToken||
-      !document.body.contains(container)
-    ){
-      return;
-    }
-
-    if(hcaptchaWidgetId!==null){
-      try{
-        window.hcaptcha.remove(hcaptchaWidgetId);
-      }catch(_){}
-
-      hcaptchaWidgetId=null;
-    }
-
-    container.innerHTML='';
-
-hcaptchaResponseToken='';
-
-hcaptchaWidgetId=window.hcaptcha.render(
-  container,
-  {
-    sitekey:siteKey,
-    theme:'light',
-    size:'invisible',
-    'recaptchacompat':'off',
-
-    callback(token){
-      hcaptchaResponseToken=
-        String(token||'');
-    },
-
-    'expired-callback'(){
-      hcaptchaResponseToken='';
-    },
-
-    'error-callback'(error){
-      hcaptchaResponseToken='';
-
-      console.error(
-        'hCaptcha error:',
-        error
+    await riskService
+      .renderCaptcha(
+        container,
+        {
+          siteKey
+        }
       );
-    }
-  }
-);
+
+    clearTimeout(
+      slowTimer
+    );
   }catch(error){
-    clearTimeout(slowTimer);
-    console.error('hCaptcha load failed:',error);
+    clearTimeout(
+      slowTimer
+    );
+
+    console.error(
+      'hCaptcha load failed:',
+      error
+    );
 
     if(
-      renderToken===hcaptchaRenderToken&&
-      document.body.contains(container)
+      renderToken===
+        hcaptchaUiRenderToken&&
+      document.body.contains(
+        container
+      )
     ){
       container.innerHTML=`
         <div>
@@ -5632,76 +5671,22 @@ hcaptchaWidgetId=window.hcaptcha.render(
     }
   }
 }
+
 function hcaptchaToken(){
-  if(!submissionRiskRequiresCaptcha){
-    return '';
-  }
-
-  if(hcaptchaResponseToken){
-    return hcaptchaResponseToken;
-  }
-
-  try{
-    return hcaptchaWidgetId===null
-      ? ''
-      : window.hcaptcha
-          ?.getResponse(
-            hcaptchaWidgetId
-          )||'';
-  }catch(_){
-    return '';
-  }
-}
-
-async function executeHCaptchaChallenge(){
-  if(!submissionRiskRequiresCaptcha){
-    return '';
-  }
-
-  const existingToken=
-    hcaptchaToken();
-
-  if(existingToken){
-    return existingToken;
-  }
-
   if(
-    hcaptchaWidgetId===null||
-    !window.hcaptcha
+    !submissionRiskRequiresCaptcha
   ){
-    throw new Error(
-      'hCaptcha is not ready'
-    );
+    return '';
   }
 
-  const result=
-    await window.hcaptcha.execute(
-      hcaptchaWidgetId,
-      {
-        async:true
-      }
-    );
-
-  hcaptchaResponseToken=
-    String(
-      result?.response||
-      window.hcaptcha.getResponse(
-        hcaptchaWidgetId
-      )||
-      ''
-    );
-
-  if(!hcaptchaResponseToken){
-    throw new Error(
-      'No hCaptcha response'
-    );
-  }
-
-  return hcaptchaResponseToken;
+  return riskService
+    .captchaToken()
 }
 
 async function ensureHCaptchaVerification(){
-  if(!submissionRiskRequiresCaptcha){
+  if(
+    !submissionRiskRequiresCaptcha
+  ){
     return '';
   }
 
@@ -5710,40 +5695,40 @@ async function ensureHCaptchaVerification(){
 
   if(existingToken){
     return existingToken;
-  }
-
-  if(hcaptchaExecutionPromise){
-    return hcaptchaExecutionPromise;
   }
 
   setRiskStatus(
     'risk',
-    riskText('captchaVerifying')
+    riskText(
+      'captchaVerifying'
+    )
   );
 
-  hcaptchaExecutionPromise=
-    executeHCaptchaChallenge()
-      .then(token=>{
-        setRiskStatus(
-          'safe',
-          riskText('captchaVerified')
-        );
+  try{
+    const token=
+      await riskService
+        .ensureCaptcha({
+          required:true
+        });
 
-        return token;
-      })
-      .catch(error=>{
-        setRiskStatus(
-          'error',
-          riskText('captchaRetry')
-        );
+    setRiskStatus(
+      'safe',
+      riskText(
+        'captchaVerified'
+      )
+    );
 
-        throw error;
-      })
-      .finally(()=>{
-        hcaptchaExecutionPromise=null;
-      });
+    return token;
+  }catch(error){
+    setRiskStatus(
+      'error',
+      riskText(
+        'captchaRetry'
+      )
+    );
 
-  return hcaptchaExecutionPromise;
+    throw error;
+  }
 }
 
 async function handlePrivacyConsentChange(
@@ -5798,22 +5783,31 @@ async function assessSubmissionRisk(){
   submissionRiskReasons=[];
   try{
     const inquiryId=ensureInquiryId();
-    const response=await fetch(riskAssessmentEndpoint(),{
-      method:'POST',
-      headers:{Accept:'application/json','Content-Type':'application/json'},
-      body:JSON.stringify({
-        action:'assess',
-        payload:buildWeb3FormsPayload(inquiryId),
-        risk:buildRiskContext(),
-        website:riskHoneypotValue()
-      })
-    });
-    const data=await response.json();
-if(!response.ok)throw new Error(data.message||'Risk assessment failed');
-submissionRiskRequiresCaptcha=data.captcha_required===true;
-    submissionRiskScore=Number(data.risk_score)||0;
-    submissionRiskReasons=Array.isArray(data.reasons)?data.reasons:[];
-    submissionRiskSiteKey=String(data.site_key||'');
+const assessment=
+  await riskService.assess(
+    buildWeb3FormsPayload(
+      inquiryId
+    ),
+    {
+      website:
+        riskHoneypotValue(),
+      language:
+        currentLang
+    }
+  );
+
+submissionRiskRequiresCaptcha=
+  assessment.captchaRequired;
+
+submissionRiskScore=
+  assessment.riskScore;
+
+submissionRiskReasons=[
+  ...assessment.reasons
+];
+
+submissionRiskSiteKey=
+  assessment.siteKey;
     if(submissionRiskRequiresCaptcha){
   setRiskStatus(
     'risk',
@@ -5954,7 +5948,7 @@ async function submitInquiry(){
     if(!reachable){const offlineError=new Error('Submission service is unreachable');offlineError.code='OFFLINE';throw offlineError}
     pwaService.applyReachability(true,false);
     lastSubmitAttemptAt=Date.now();
-    recordRiskAttempt();
+    riskService.recordAttempt();
 
     const inquiryId=ensureInquiryId();
 const snapshot=submissionSnapshot(inquiryId);
@@ -5992,15 +5986,7 @@ clearSubmittedInquiry();
     if(!reachable){pwaService.applyReachability(false,false);toast(pwaService.text('offlineSubmit'))}
     else{toast(ui('submitFailed'))}
     btn.textContent=ui('confirmSubmit');
-    hcaptchaResponseToken='';
-
-try{
-  if(hcaptchaWidgetId!==null){
-    window.hcaptcha?.reset(
-      hcaptchaWidgetId
-    );
-  }
-}catch(_){}
+    riskService.resetCaptcha();
   }finally{
     submittingInquiry=false;
     btn.disabled=false

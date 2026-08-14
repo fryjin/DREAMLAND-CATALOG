@@ -78,11 +78,17 @@ export const SERVICE_CONTRACTS=Object.freeze([
   ),
   serviceContract(
     'risk',
-    'Encapsulate risk evaluation and captcha coordination.',
+    'Own client risk context, local attempt tracking, risk-assessment transport and hCaptcha SDK lifecycle while leaving UI copy/status and server-side scoring/persistence outside the service.',
     [
       'index.html',
       'functions/api/submit.js'
-    ]
+    ],
+    {
+      runtimeEnabled:true,
+      migrationStatus:'partial',
+      runtimeOwner:
+        'src/services/risk/runtime-risk.js'
+    }
   ),
   serviceContract(
     'pwa',

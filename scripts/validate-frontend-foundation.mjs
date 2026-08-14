@@ -43,7 +43,8 @@ const requiredFiles=[
   'src/services/pwa/runtime-pwa.js',
   'src/services/media/runtime-media.js',
   'src/app/runtime-hooks.js',
-  'src/services/submission/runtime-submission.js'
+  'src/services/submission/runtime-submission.js',
+  'src/services/risk/runtime-risk.js'
 ];
 
 for(const file of requiredFiles){
@@ -61,7 +62,7 @@ try{
 }
 
 if(foundation){
-  if(foundation.phase!=='B4-01'){
+  if(foundation.phase!=='B4-02'){
     fail(`Unexpected frontend foundation phase: ${foundation.phase}`)
   }
 
@@ -69,7 +70,7 @@ if(foundation){
     foundation.runtimeIntegrated!==true||
     foundation.runtimeIntegration!=='partial'
   ){
-    fail('B4-01 must declare partial runtime integration.')
+    fail('B4-02 must declare partial runtime integration.')
   }
 
   const uniqueIds=(items,label)=>{
@@ -85,11 +86,11 @@ if(foundation){
   uniqueIds(foundation.services,'Service contracts');
 
   if(foundation.features.some(item=>item.runtimeEnabled!==false)){
-    fail('B4-01 does not migrate feature runtime ownership yet.')
+    fail('B4-02 does not migrate feature runtime ownership yet.')
   }
 
   if(foundation.ui.some(item=>item.runtimeEnabled!==false)){
-    fail('B4-01 does not migrate UI runtime ownership yet.')
+    fail('B4-02 does not migrate UI runtime ownership yet.')
   }
 
   const enabledServices=foundation.services
@@ -100,14 +101,15 @@ if(foundation){
     new Set(enabledServices);
 
   if(
-    enabledServices.length!==4||
+    enabledServices.length!==5||
     !enabledSet.has('storage')||
     !enabledSet.has('pwa')||
     !enabledSet.has('media')||
-    !enabledSet.has('submission')
+    !enabledSet.has('submission')||
+    !enabledSet.has('risk')
   ){
     fail(
-      `B4-01 must runtime-enable storage, pwa, media and submission; found: `+
+      `B4-02 must runtime-enable storage, pwa, media, submission and risk; found: `+
       `${enabledServices.join(', ')||'none'}`
     )
   }
@@ -184,13 +186,27 @@ if(foundation){
     fail('Legacy map does not mark Submission as a partial runtime boundary.')
   }
 
+  const riskService=foundation.services.find(item=>item.id==='risk');
+  if(
+    riskService?.runtimeOwner!==
+    'src/services/risk/runtime-risk.js'||
+    riskService?.migrationStatus!=='partial'
+  ){
+    fail('Risk service ownership/status is incorrect for B4-02.')
+  }
+
   const riskMigration=foundation.legacyMap.find(item=>item.id==='risk');
   if(
-    !riskMigration||
-    riskMigration.runtimeMigrated!==false||
-    riskMigration.status!=='legacy-owned'
+    riskMigration?.status!=='partial'||
+    riskMigration?.runtimeMigrated!==false||
+    !riskMigration?.runtimeOwners?.includes(
+      'src/services/risk/runtime-risk.js'
+    )||
+    !riskMigration?.runtimeOwners?.includes(
+      'functions/api/submit.js'
+    )
   ){
-    fail('Risk boundary must remain legacy-owned for B4-02.')
+    fail('Legacy map does not mark Risk as a partial client/server boundary.')
   }
 }
 
