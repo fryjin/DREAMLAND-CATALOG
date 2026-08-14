@@ -436,10 +436,16 @@ if(!fs.existsSync(runtimePath)){
 
 try{
   const indexSource=
-    read('index.html');
+  read('index.html');
 
-  for(
-    const marker of [
+const compactIndexSource=
+  indexSource.replace(
+    /\s+/g,
+    ''
+  );
+
+for(
+  const marker of [
       './src/services/risk/runtime-risk.js',
       'const riskService=window.DreamlandRisk',
       'riskService.configure(',
@@ -454,10 +460,13 @@ try{
     ]
   ){
     if(
-      !indexSource.includes(
-        marker
-      )
-    ){
+  !compactIndexSource.includes(
+    marker.replace(
+      /\s+/g,
+      ''
+    )
+  )
+){
       fail(
         `index.html is missing Risk boundary integration: ${marker}`
       );
@@ -545,7 +554,7 @@ try{
   }
 
   if(
-    !/riskService\.assess\s*\([\s\S]{0,360}website\s*:\s*riskHoneypotValue\s*\(\s*\)/.test(
+    !/riskService\s*\.\s*assess\s*\([\s\S]{0,360}website\s*:\s*riskHoneypotValue\s*\(\s*\)/.test(
       indexSource
     )
   ){
@@ -555,7 +564,7 @@ try{
   }
 
   if(
-    !/riskService\.ensureCaptcha\s*\(\s*\{\s*required\s*:\s*true/.test(
+    !/riskService\s*\.\s*ensureCaptcha\s*\(\s*\{\s*required\s*:\s*true/.test(
       indexSource
     )
   ){
