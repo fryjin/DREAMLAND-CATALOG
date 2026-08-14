@@ -22,11 +22,11 @@ import {
 /*
  * Architecture metadata only.
  *
- * B3-03 replaces the inquiry media render wrapper with explicit inquiry lifecycle events.
+ * B4-01 establishes a runtime Submission transport boundary while keeping Inquiry payload composition and risk/captcha orchestration legacy-owned.
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B3-03',
+  phase:'B4-01',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',

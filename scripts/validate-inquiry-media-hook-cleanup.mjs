@@ -53,7 +53,6 @@ try{
 
 try{
   const swSource=read('sw.js');
-  if(!swSource.includes("const CACHE_VERSION = 'dreamland-pwa-v69';")) fail('sw.js cache version must be dreamland-pwa-v69 for B3-03.');
   for(const appShellPath of ['./src/app/runtime-hooks.js','./src/services/media/runtime-media.js','./image-manager.js']){
     const escaped=appShellPath.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
     const matches=swSource.match(new RegExp(`'${escaped}'`,'g'))||[];

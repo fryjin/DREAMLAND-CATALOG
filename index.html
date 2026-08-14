@@ -1183,9 +1183,11 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./catalog-data.js"></script>
 <script src="./src/services/storage/runtime-storage.js"></script>
 <script src="./src/services/pwa/runtime-pwa.js"></script>
+<script src="./src/services/submission/runtime-submission.js"></script>
 <script>
 const appStorage=window.DreamlandStorage;
 const pwaService=window.DreamlandPwa;
+const submissionService=window.DreamlandSubmission;
 
 if(!appStorage){
   throw new Error(
@@ -1659,6 +1661,14 @@ indexScents(scents);
   languageNames=i18nData.languageNames||{};
   appConfig=configData||{};
 
+  submissionService.configure({
+    submitUrl:
+      appConfig.web3formsSubmitUrl||
+      'https://api.web3forms.com/submit',
+    accessKey:
+      appConfig.web3formsAccessKey||''
+  });
+
   seriesMeta={};
   seriesTabLabels={zh:{},en:{},ko:{}};
 
@@ -1713,20 +1723,7 @@ function riskAssessmentEndpoint(){
   return appConfig.submissionEndpoint||'./api/submit'
 }
 
-function web3formsSubmitUrl(){
-  return appConfig.web3formsSubmitUrl||
-    'https://api.web3forms.com/submit'
-}
 
-function web3formsAccessKey(){
-  return String(
-    appConfig.web3formsAccessKey||''
-  ).trim()
-}
-
-function web3formsReady(){
-  return Boolean(web3formsAccessKey())
-}
 ['catalogInquiry','productManualState','manualInquiry'].forEach(k=>appStorage.local.removeItem(k));
 const CATALOG_BATCH_SIZE=5;
 const QTY_STEP=1;
@@ -5857,7 +5854,7 @@ submissionRiskRequiresCaptcha=data.captcha_required===true;
 }
 function renderPreview(){
   let c=state.contact||{},ps=state.items.filter(i=>i.type==='product'),cs=state.items.filter(i=>i.type==='custom'),inquiryId=ensureInquiryId();
-  previewContent.innerHTML=`<div class="preview-card"><h3>${ui('inquiryNumber')}</h3>${kv(ui('inquiryNumber'),inquiryId)}</div><div class="preview-card"><h3>${ui('personalInfo')}</h3>${kv(ui('nameLabel').replace(' *',''),c.name)}${kv(ui('companyBrand'),c.company||ui('notProvided'))}${kv(ui('countryRegion'),c.country)}${kv(ui('cityLabel'),c.city||ui('notProvided'))}${kv(ui('emailLabel').replace(' *',''),c.email)}${kv(ui('contactMethod'),c.phone)}${kv(ui('buyerType'),choiceLabel(c.buyerType)||ui('toConfirm'))}${kv(ui('note'),c.message||ui('notProvided'))}</div><div class="preview-card"><h3>${ui('productInquiry')}</h3>${ps.length?ps.map(i=>kv(productDisplayName(i),`${i.qty} ${qtyUnit()} · MOQ ${itemMoq(i)} · ${i.size} · ${itemScentLabel(i)} · ${choiceLabel(i.pack||defaultPack(i.series))} · ${money(itemSubtotal(i))}`)).join(''):kv(ui('products'),ui('none'))}</div><div class="preview-card"><h3>${ui('customInquiry')}</h3>${cs.length?cs.map(i=>kv(choiceLabel(i.use)||ui('customNeed'),`${i.qty||ui('qtyPending')} ${qtyUnit()} · ${i.budget||ui('budgetPending')} · ${choiceLabel(i.sizePref)||ui('sizeRecommend')} · ${itemScentLabel(i)}||ui('scentRecommend')} · ${i.color||ui('colorPending')} · ${choiceLabel(i.pack)||ui('packRecommend')} · ${choiceLabel(i.branding)||ui('brandingPending')} · ${i.date||ui('datePending')}`)).join(''):kv(ui('custom'),ui('none'))}</div><div class="preview-card"><h3>${ui('amountEstimate')}</h3>${kv(ui('productEstimate'),money(total()))}${kv(ui('customPart'),ui('consultantConfirm'))}${kv(ui('syncStatus'),web3formsReady()?ui('syncReady'):ui('syncPending'))}</div><div class="preview-card verification-card"><label class="consent-check"><input
+  previewContent.innerHTML=`<div class="preview-card"><h3>${ui('inquiryNumber')}</h3>${kv(ui('inquiryNumber'),inquiryId)}</div><div class="preview-card"><h3>${ui('personalInfo')}</h3>${kv(ui('nameLabel').replace(' *',''),c.name)}${kv(ui('companyBrand'),c.company||ui('notProvided'))}${kv(ui('countryRegion'),c.country)}${kv(ui('cityLabel'),c.city||ui('notProvided'))}${kv(ui('emailLabel').replace(' *',''),c.email)}${kv(ui('contactMethod'),c.phone)}${kv(ui('buyerType'),choiceLabel(c.buyerType)||ui('toConfirm'))}${kv(ui('note'),c.message||ui('notProvided'))}</div><div class="preview-card"><h3>${ui('productInquiry')}</h3>${ps.length?ps.map(i=>kv(productDisplayName(i),`${i.qty} ${qtyUnit()} · MOQ ${itemMoq(i)} · ${i.size} · ${itemScentLabel(i)} · ${choiceLabel(i.pack||defaultPack(i.series))} · ${money(itemSubtotal(i))}`)).join(''):kv(ui('products'),ui('none'))}</div><div class="preview-card"><h3>${ui('customInquiry')}</h3>${cs.length?cs.map(i=>kv(choiceLabel(i.use)||ui('customNeed'),`${i.qty||ui('qtyPending')} ${qtyUnit()} · ${i.budget||ui('budgetPending')} · ${choiceLabel(i.sizePref)||ui('sizeRecommend')} · ${itemScentLabel(i)}||ui('scentRecommend')} · ${i.color||ui('colorPending')} · ${choiceLabel(i.pack)||ui('packRecommend')} · ${choiceLabel(i.branding)||ui('brandingPending')} · ${i.date||ui('datePending')}`)).join(''):kv(ui('custom'),ui('none'))}</div><div class="preview-card"><h3>${ui('amountEstimate')}</h3>${kv(ui('productEstimate'),money(total()))}${kv(ui('customPart'),ui('consultantConfirm'))}${kv(ui('syncStatus'),submissionService.ready()?ui('syncReady'):ui('syncPending'))}</div><div class="preview-card verification-card"><label class="consent-check"><input
   id="privacyConsent"
   type="checkbox"
   onchange="handlePrivacyConsentChange(this)"
@@ -5878,12 +5875,7 @@ function buildWeb3FormsPayload(inquiryId){
     items_summary:state.items.map(itemText).join('\n'),product_items:JSON.stringify(ps,null,2),custom_items:JSON.stringify(cs,null,2)
   }
 }
-function buildWeb3FormsFormData(inquiryId){
-  let payload=buildWeb3FormsPayload(inquiryId),formData=new FormData();
-  Object.entries(payload).forEach(([key,value])=>formData.append(key,value==null?'':String(value)));
-  const captcha=hcaptchaToken();if(captcha)formData.append('h-captcha-response',captcha);
-  return formData
-}
+
 function submissionSnapshot(inquiryId){
   return{inquiryId,submittedAt:new Date().toISOString(),language:currentLang,amountBaseUsd:total(),amountDisplay:money(total()),itemCount:state.items.length,items:state.items.map(item=>({type:item.type,productId:item.productId||'',name:productDisplayName(item),qty:Number(item.qty)||0,size:item.size||item.sizePref||'',cover:item.cover||''}))}
 }
@@ -5906,7 +5898,7 @@ async function submitInquiry(){
   if(submittingInquiry){toast(ui('submissionDuplicate'));return}
   const now=Date.now(),cooldown=Math.max(0,Number(appConfig.submitCooldownMs)||10000);
   if(now-lastSubmitAttemptAt<cooldown){toast(ui('submissionCooldown'));return}
-  if(!web3formsReady()){toast(ui('formNotConfigured'));return}
+  if(!submissionService.ready()){toast(ui('formNotConfigured'));return}
  
   const consent=document.getElementById('privacyConsent');
   if(!consent?.checked){if(error){error.textContent=ui('privacyRequired');error.classList.add('show')}toast(ui('privacyRequired'));return}
@@ -5967,44 +5959,27 @@ async function submitInquiry(){
     const inquiryId=ensureInquiryId();
 const snapshot=submissionSnapshot(inquiryId);
 
-const formData=buildWeb3FormsFormData(inquiryId);
-formData.append(
-  'access_key',
-  web3formsAccessKey()
-);
+const payload=
+  buildWeb3FormsPayload(
+    inquiryId
+  );
 
-const response=await fetch(
-  web3formsSubmitUrl(),
-  {
-    method:'POST',
-    headers:{
-      Accept:'application/json'
-    },
-    body:formData
-  }
-);
-
-let data={};
-try{
-  data=await response.json()
-}catch(_){}
-
-if(
-  !response.ok||
-  data.success!==true
-){
-  throw new Error(
-    data.message||
-    'Submission failed'
-  )
-}
+const submissionResult=
+  await submissionService.submit(
+    payload,
+    {
+      captchaToken:
+        hcaptchaToken()
+    }
+  );
 
 const finalInquiryReference=inquiryId;
 
 snapshot.clientInquiryId=inquiryId;
 snapshot.inquiryId=finalInquiryReference;
 snapshot.duplicate=false;
-snapshot.submissionResponseType='web3forms-direct';
+snapshot.submissionResponseType=
+  submissionResult.responseType;
 
 archiveSubmission(snapshot);
 clearSubmittedInquiry();

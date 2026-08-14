@@ -65,11 +65,16 @@ export const SERVICE_CONTRACTS=Object.freeze([
   ),
   serviceContract(
     'submission',
-    'Prepare and send inquiry payloads through the future server boundary.',
+    'Own configured Web3Forms transport, FormData assembly and response normalization while leaving Inquiry payload composition and risk/captcha orchestration outside the service.',
     [
-      'index.html',
-      'functions/api/submit.js'
-    ]
+      'index.html'
+    ],
+    {
+      runtimeEnabled:true,
+      migrationStatus:'partial',
+      runtimeOwner:
+        'src/services/submission/runtime-submission.js'
+    }
   ),
   serviceContract(
     'risk',

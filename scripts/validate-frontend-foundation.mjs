@@ -42,7 +42,8 @@ const requiredFiles=[
   'src/services/storage/runtime-storage.js',
   'src/services/pwa/runtime-pwa.js',
   'src/services/media/runtime-media.js',
-  'src/app/runtime-hooks.js'
+  'src/app/runtime-hooks.js',
+  'src/services/submission/runtime-submission.js'
 ];
 
 for(const file of requiredFiles){
@@ -60,7 +61,7 @@ try{
 }
 
 if(foundation){
-  if(foundation.phase!=='B3-03'){
+  if(foundation.phase!=='B4-01'){
     fail(`Unexpected frontend foundation phase: ${foundation.phase}`)
   }
 
@@ -68,7 +69,7 @@ if(foundation){
     foundation.runtimeIntegrated!==true||
     foundation.runtimeIntegration!=='partial'
   ){
-    fail('B3-03 must declare partial runtime integration.')
+    fail('B4-01 must declare partial runtime integration.')
   }
 
   const uniqueIds=(items,label)=>{
@@ -84,11 +85,11 @@ if(foundation){
   uniqueIds(foundation.services,'Service contracts');
 
   if(foundation.features.some(item=>item.runtimeEnabled!==false)){
-    fail('B3-03 does not migrate feature runtime ownership yet.')
+    fail('B4-01 does not migrate feature runtime ownership yet.')
   }
 
   if(foundation.ui.some(item=>item.runtimeEnabled!==false)){
-    fail('B3-03 does not migrate UI runtime ownership yet.')
+    fail('B4-01 does not migrate UI runtime ownership yet.')
   }
 
   const enabledServices=foundation.services
@@ -99,13 +100,14 @@ if(foundation){
     new Set(enabledServices);
 
   if(
-    enabledServices.length!==3||
+    enabledServices.length!==4||
     !enabledSet.has('storage')||
     !enabledSet.has('pwa')||
-    !enabledSet.has('media')
+    !enabledSet.has('media')||
+    !enabledSet.has('submission')
   ){
     fail(
-      `B3-03 must runtime-enable storage, pwa and media; found: `+
+      `B4-01 must runtime-enable storage, pwa, media and submission; found: `+
       `${enabledServices.join(', ')||'none'}`
     )
   }
@@ -159,6 +161,36 @@ if(foundation){
     )
   ){
     fail('Legacy map does not mark media as partially consolidated.')
+  }
+
+
+  const submissionService=foundation.services.find(item=>item.id==='submission');
+  if(
+    submissionService?.runtimeOwner!==
+    'src/services/submission/runtime-submission.js'||
+    submissionService?.migrationStatus!=='partial'
+  ){
+    fail('Submission service ownership/status is incorrect for B4-01.')
+  }
+
+  const submissionMigration=foundation.legacyMap.find(item=>item.id==='submission');
+  if(
+    submissionMigration?.status!=='partial'||
+    submissionMigration?.runtimeMigrated!==false||
+    !submissionMigration?.runtimeOwners?.includes(
+      'src/services/submission/runtime-submission.js'
+    )
+  ){
+    fail('Legacy map does not mark Submission as a partial runtime boundary.')
+  }
+
+  const riskMigration=foundation.legacyMap.find(item=>item.id==='risk');
+  if(
+    !riskMigration||
+    riskMigration.runtimeMigrated!==false||
+    riskMigration.status!=='legacy-owned'
+  ){
+    fail('Risk boundary must remain legacy-owned for B4-02.')
   }
 }
 
