@@ -4283,17 +4283,12 @@ function addOrMergeProductItem(item){
     );
 }
 
-
-  const map={};
-  const merged=[];
-
-  state.items.forEach(item=>{
-    if(item.type!=='product'){
-      merged.push(item);
-     function mergeDuplicateProductItems(){
+function mergeDuplicateProductItems(){
   inquiryFeature
     .mergeDuplicateProducts();
 }
+
+function itemConfigData(item){
 
 function itemConfigData(item){
   return (
@@ -5005,8 +5000,9 @@ function qty(id,delta){
   save();
 updateInquiryDynamicUi();
 }
+
 function setItemQty(id,value){
-  cconst item=
+  const item=
   inquiryFeature.findItem(
     id
   );
