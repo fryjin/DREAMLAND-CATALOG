@@ -323,120 +323,160 @@ try{
       'function swipes()'
     );
 
-  if(!renderSource||!dynamicSource||!itemSource){
-    fail('Inquiry renderer functions could not be isolated.');
-  }
+ if(!renderSource||!dynamicSource||!itemSource){
+  fail(
+    'Inquiry renderer functions could not be isolated.'
+  );
+}else{
   const compactRenderSource=
-  renderSource.replace(
-    /\s+/g,
-    ''
-  );
-
-const compactDynamicSource=
-  dynamicSource.replace(
-    /\s+/g,
-    ''
-  );
-
-const compactItemSource=
-  itemSource.replace(
-    /\s+/g,
-    ''
-  );
-  else{
-    for(const marker of [
-      'inquiry.beforeRender',
-      'inquiry.afterRender',
-      'mergeDuplicateProductItems();',
-      'save();',
-      'inquiryFeature.buildViewModel(',
-      'viewModel.empty',
-      'viewModel.groups',
-      'viewModel.summary.itemCount',
-      'viewModel.summary.estimatedTotal',
-      'inquiryList.innerHTML',
-      'summaryBox.innerHTML'
-    ]){
-      if(
-  !compactRenderSource.includes(
-    marker.replace(
+    renderSource.replace(
       /\s+/g,
       ''
-    )
-  )
-){
-        fail(`renderInquiry() is missing the B5-03 Renderer contract: ${marker}`);
-      }
-    }
+    );
 
-    for(const forbidden of [
-      'state.items',
-      'seriesQty(',
-      'itemUnit(',
-      'itemSubtotal(',
-      'total()'
-    ]){
-      if(
-  compactRenderSource.includes(
-    forbidden.replace(
+  const compactDynamicSource=
+    dynamicSource.replace(
       /\s+/g,
       ''
-    )
-  )
-){
-        fail(`renderInquiry() still re-derives Inquiry screen state: ${forbidden}`);
-      }
-    }
+    );
 
-    for(const marker of [
-      'inquiryFeature.buildViewModel(',
-      'viewModel.items',
-      'viewModel.groups',
-      'viewModel.summary.itemCount',
-      'viewModel.summary.estimatedTotal',
-      'querySelector(',
-      'textContent'
-    ]){
-      if(!dynamicSource.includes(marker)){
-        fail(`updateInquiryDynamicUi() is missing the B5-03 View Model contract: ${marker}`);
-      }
-    }
+  const compactItemSource=
+    itemSource.replace(
+      /\s+/g,
+      ''
+    );
 
-    for(const forbidden of [
-      'state.items',
-      'seriesQty(',
-      'itemUnit(',
-      'itemSubtotal(',
-      'total()'
-    ]){
-      if(dynamicSource.includes(forbidden)){
-        fail(`updateInquiryDynamicUi() still re-derives Inquiry screen state: ${forbidden}`);
-      }
-    }
-
-    for(const marker of [
-      'i.unitPrice',
-      'i.subtotal',
-      'onclick="del(',
-      'onclick="openEditProductItem(',
-      'onclick="openItemTierSheet('
-    ]){
-      if(!itemSource.includes(marker)){
-        fail(`renderItem() is missing the B5-03 item View Model contract: ${marker}`);
-      }
-    }
-
-    for(const forbidden of [
-      'itemUnit(',
-      'itemSubtotal('
-    ]){
-      if(itemSource.includes(forbidden)){
-        fail(`renderItem() still calculates pricing directly: ${forbidden}`);
-      }
+  for(const marker of [
+    'inquiry.beforeRender',
+    'inquiry.afterRender',
+    'mergeDuplicateProductItems();',
+    'save();',
+    'inquiryFeature.buildViewModel(',
+    'viewModel.empty',
+    'viewModel.groups',
+    'viewModel.summary.itemCount',
+    'viewModel.summary.estimatedTotal',
+    'inquiryList.innerHTML',
+    'summaryBox.innerHTML'
+  ]){
+    if(
+      !compactRenderSource.includes(
+        marker.replace(
+          /\s+/g,
+          ''
+        )
+      )
+    ){
+      fail(
+        `renderInquiry() is missing the B5-03 Renderer contract: ${marker}`
+      );
     }
   }
 
-  const compact=indexSource.replace(/\s+/g,'');
+  for(const forbidden of [
+    'state.items',
+    'seriesQty(',
+    'itemUnit(',
+    'itemSubtotal(',
+    'total()'
+  ]){
+    if(
+      compactRenderSource.includes(
+        forbidden.replace(
+          /\s+/g,
+          ''
+        )
+      )
+    ){
+      fail(
+        `renderInquiry() still re-derives Inquiry screen state: ${forbidden}`
+      );
+    }
+  }
+
+  for(const marker of [
+    'inquiryFeature.buildViewModel(',
+    'viewModel.items',
+    'viewModel.groups',
+    'viewModel.summary.itemCount',
+    'viewModel.summary.estimatedTotal',
+    'querySelector(',
+    'textContent'
+  ]){
+    if(
+      !compactDynamicSource.includes(
+        marker.replace(
+          /\s+/g,
+          ''
+        )
+      )
+    ){
+      fail(
+        `updateInquiryDynamicUi() is missing the B5-03 View Model contract: ${marker}`
+      );
+    }
+  }
+
+  for(const forbidden of [
+    'state.items',
+    'seriesQty(',
+    'itemUnit(',
+    'itemSubtotal(',
+    'total()'
+  ]){
+    if(
+      compactDynamicSource.includes(
+        forbidden.replace(
+          /\s+/g,
+          ''
+        )
+      )
+    ){
+      fail(
+        `updateInquiryDynamicUi() still re-derives Inquiry screen state: ${forbidden}`
+      );
+    }
+  }
+
+  for(const marker of [
+    'i.unitPrice',
+    'i.subtotal',
+    'onclick="del(',
+    'onclick="openEditProductItem(',
+    'onclick="openItemTierSheet('
+  ]){
+    if(
+      !compactItemSource.includes(
+        marker.replace(
+          /\s+/g,
+          ''
+        )
+      )
+    ){
+      fail(
+        `renderItem() is missing the B5-03 item View Model contract: ${marker}`
+      );
+    }
+  }
+
+  for(const forbidden of [
+    'itemUnit(',
+    'itemSubtotal('
+  ]){
+    if(
+      compactItemSource.includes(
+        forbidden.replace(
+          /\s+/g,
+          ''
+        )
+      )
+    ){
+      fail(
+        `renderItem() still calculates pricing directly: ${forbidden}`
+      );
+    }
+  }
+}
 
   for(const preserved of [
     'function seriesQty(series){return inquiryFeature.seriesQuantity(series);}',
@@ -520,14 +560,25 @@ try{
     read('scripts/validate-inquiry-pricing-boundary.mjs');
 
   for(const historical of [
-    'dreamland-pwa-v73',
-    "feature.version!=='B5-02'"
-  ]){
+  'dreamland-pwa-v73',
+  "feature.version!=='B5-02'",
+  'item-derived unit/subtotal/total pricing'
+]){
     if(previousValidator.includes(historical)){
       fail(`Historical B5-02 validator still owns B5-03 runtime/cache version: ${historical}`);
     }
   }
 
+ if(
+  !previousValidator.includes(
+    "feature.version!=='B5-01'"
+  )
+){
+  fail(
+    'B5-02 validator must retain protection against the historical B5-01 runtime version lock.'
+  );
+} 
+  
   const swSource=read('sw.js');
 
   if(
