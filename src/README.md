@@ -486,3 +486,91 @@ for the later Inquiry View Model / Renderer migration.
 Inquiry remains `partial/runtimeEnabled` because DOM rendering, shared pricing policy, localized
 currency formatting, Contact, Risk and Submission are not migrated in B5-02.
 
+### B5-03 — Inquiry View Model / Renderer Boundary
+
+`DreamlandInquiry` is extended from `B5-02` to `B5-03`.
+
+New API:
+
+```text
+buildViewModel()
+```
+
+The View Model is locale-neutral and DOM-free.
+
+Shape:
+
+```text
+{
+  empty,
+  items: [
+    {
+      ...item fields,
+      normalizedQty,
+      unitPrice,
+      subtotal
+    }
+  ],
+  groups: [
+    {
+      key,
+      type,
+      itemCount,
+      quantity,
+      items
+    }
+  ],
+  summary: {
+    itemCount,
+    productCount,
+    customCount,
+    productQuantity,
+    estimatedTotal
+  }
+}
+```
+
+Ownership after B5-03:
+
+```text
+DreamlandInquiry
+├─ state hydration / persistence
+├─ item mutation
+├─ Inquiry pricing derivation
+└─ Inquiry View Model
+
+index.html
+├─ localized labels / money formatting
+├─ HTML templates
+├─ DOM updates
+├─ click/input handlers
+└─ render lifecycle hooks
+```
+
+`renderInquiry()` and `updateInquiryDynamicUi()` both consume a fresh
+`DreamlandInquiry.buildViewModel()` snapshot.
+
+This removes the previous duplication where full rendering and dynamic quantity updates each
+re-derived group counts, item prices and summary totals independently.
+
+The following compatibility pricing wrappers remain in `index.html` because Preview / payload
+composition still use them:
+
+```text
+seriesQty()
+pricingGroupQty()
+itemUnit()
+itemSubtotal()
+total()
+```
+
+B5-03 does not migrate Preview, Contact, Risk, Submission, shared pricing policy or the actual DOM
+renderer.
+
+Inquiry remains:
+
+```text
+status: partial
+runtimeEnabled: true
+```
+

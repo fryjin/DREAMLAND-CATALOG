@@ -4594,7 +4594,11 @@ function renderInquiry(){
   mergeDuplicateProductItems();
   save();
 
-  if(!state.items.length){
+  const viewModel=
+    inquiryFeature
+      .buildViewModel();
+
+  if(viewModel.empty){
     inquiryList.innerHTML=`
       <div class="empty">
         <div class="empty-icon">◒</div>
@@ -4630,38 +4634,25 @@ function renderInquiry(){
     return;
   }
 
-  const groups={};
-
-  state.items.forEach(item=>{
-    const key=
-      item.type==='custom'
-        ? 'custom'
-        : item.series;
-
-    if(!groups[key]){
-      groups[key]=[];
-    }
-
-    groups[key].push(item);
-  });
-
   inquiryList.innerHTML=
-    Object.entries(groups)
-      .map(([key,items])=>{
+    viewModel.groups
+      .map(group=>{
         const title=
-          key==='custom'
+          group.type==='custom'
             ? ui('customInquiry')
-            : seriesLabel(key);
+            : seriesLabel(
+                group.key
+              );
 
         const countText=
-          key==='custom'
-            ? `${items.length} ${ui('records')}`
-            : `${seriesQty(key)} ${qtyUnit()}`;
+          group.type==='custom'
+            ? `${group.itemCount} ${ui('records')}`
+            : `${group.quantity} ${qtyUnit()}`;
 
         return `
           <div
             class="group-title"
-            data-group-key="${htmlAttr(key)}"
+            data-group-key="${htmlAttr(group.key)}"
           >
             <span>${title}</span>
 
@@ -4670,7 +4661,7 @@ function renderInquiry(){
             </span>
           </div>
 
-          ${items.map(renderItem).join('')}
+          ${group.items.map(renderItem).join('')}
         `;
       })
       .join('');
@@ -4686,7 +4677,7 @@ function renderInquiry(){
           class="summary-value"
           id="inquiryItemCount"
         >
-          ${state.items.length} ${ui('items')}
+          ${viewModel.summary.itemCount} ${ui('items')}
         </span>
       </div>
 
@@ -4709,7 +4700,11 @@ function renderInquiry(){
           class="amount"
           id="inquiryEstimateTotal"
         >
-          ${money(total())}
+          ${money(
+            viewModel
+              .summary
+              .estimatedTotal
+          )}
         </span>
       </div>
 
@@ -4724,12 +4719,11 @@ function renderInquiry(){
 }
   
 function updateInquiryDynamicUi(){
-  /*
-   * 一个商品数量改变后，可能触发同价格组的阶梯价变化，
-   * 因此需要更新所有商品的单价和小计，
-   * 但不重新创建商品卡片和缩略图。
-   */
-  state.items.forEach(item=>{
+  const viewModel=
+    inquiryFeature
+      .buildViewModel();
+
+  viewModel.items.forEach(item=>{
     if(item.type!=='product'){
       return;
     }
@@ -4760,59 +4754,65 @@ function updateInquiryDynamicUi(){
 
     if(qtyInput){
       qtyInput.value=
-        normalizeQty(
-          item.qty,
-          QTY_MIN
-        );
+        item.normalizedQty;
     }
 
     if(unitPrice){
       unitPrice.textContent=
-        `${money(itemUnit(item))}${currencyUnit()}`;
+        `${money(
+          item.unitPrice
+        )}${currencyUnit()}`;
     }
 
     if(subtotal){
       subtotal.textContent=
         money(
-          itemSubtotal(item)
+          item.subtotal
         );
     }
   });
 
-  /*
-   * 更新各系列的数量。
-   */
+  const groupsByKey=
+    new Map(
+      viewModel.groups.map(
+        group=>[
+          group.key,
+          group
+        ]
+      )
+    );
+
   inquiryList
     .querySelectorAll(
       '.group-title[data-group-key]'
     )
-    .forEach(group=>{
+    .forEach(groupElement=>{
       const key=
-        group.dataset.groupKey;
+        groupElement
+          .dataset
+          .groupKey;
+
+      const group=
+        groupsByKey.get(
+          key
+        );
 
       const totalElement=
-        group.querySelector(
+        groupElement.querySelector(
           '[data-group-total]'
         );
 
-      if(!totalElement){
-        return;
-      }
-
-      if(key==='custom'){
-        const customCount=
-          state.items.filter(
-            item=>item.type==='custom'
-          ).length;
-
-        totalElement.textContent=
-          `${customCount} ${ui('records')}`;
-
+      if(
+        !group||
+        !totalElement
+      ){
         return;
       }
 
       totalElement.textContent=
-        `${seriesQty(key)} ${qtyUnit()}`;
+        group.type==='custom'
+          ? `${group.itemCount} ${ui('records')}`
+          : `${group.quantity} ${qtyUnit()}`;
     });
 
   const itemCount=
@@ -4822,7 +4822,7 @@ function updateInquiryDynamicUi(){
 
   if(itemCount){
     itemCount.textContent=
-      `${state.items.length} ${ui('items')}`;
+      `${viewModel.summary.itemCount} ${ui('items')}`;
   }
 
   const estimateTotal=
@@ -4832,19 +4832,33 @@ function updateInquiryDynamicUi(){
 
   if(estimateTotal){
     estimateTotal.textContent=
-      money(total());
+      money(
+        viewModel
+          .summary
+          .estimatedTotal
+      );
   }
 
   badge();
 }
   
   function renderItem(i){
-  const trashSvg = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M5 7h14"/><path d="M8 7l1 12h6l1-12"/><path d="M10 11v5"/><path d="M14 11v5"/></svg>`;
-  const delBtn = `<button class="delete-action" type="button" aria-label="删除" onclick="del('${i.id}')">${trashSvg}</button>`;
+  const trashSvg=
+    `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M5 7h14"/><path d="M8 7l1 12h6l1-12"/><path d="M10 11v5"/><path d="M14 11v5"/></svg>`;
+
+  const delBtn=
+    `<button class="delete-action" type="button" aria-label="删除" onclick="del('${i.id}')">${trashSvg}</button>`;
+
   if(i.type==='custom'){
-    const title = `${ui('customInquiry')} · ${choiceLabel(i.use) || ui('notFilled')}`;
-    const line1 = `${i.qty || ui('qtyPending')}${qtyUnit()} · ${choiceLabel(i.sizePref)||ui('sizeRecommend')} · ${choiceLabel(i.scent)||ui('scentRecommend')}`;
-    const line2 = `${i.color || ui('colorPending')} · ${choiceLabel(i.pack)||ui('packRecommend')}`;
+    const title=
+      `${ui('customInquiry')} · ${choiceLabel(i.use)||ui('notFilled')}`;
+
+    const line1=
+      `${i.qty||ui('qtyPending')}${qtyUnit()} · ${choiceLabel(i.sizePref)||ui('sizeRecommend')} · ${choiceLabel(i.scent)||ui('scentRecommend')}`;
+
+    const line2=
+      `${i.color||ui('colorPending')} · ${choiceLabel(i.pack)||ui('packRecommend')}`;
+
     return `<div class="swipe-shell" data-id="${i.id}">
       <div class="swipe-card">
         <div class="inquiry-row">
@@ -4854,83 +4868,128 @@ function updateInquiryDynamicUi(){
             <div class="inquiry-attr">${line1}</div>
             <div class="inquiry-attr">${line2}</div>
 
-
-
-<div class="qty-line"><div class="inquiry-attr">${ui('quantity')}：${i.qty || ui('toConfirm')} ${qtyUnit()}</div></div>
+            <div class="qty-line">
+              <div class="inquiry-attr">
+                ${ui('quantity')}：${i.qty||ui('toConfirm')} ${qtyUnit()}
+              </div>
+            </div>
           </div>
+
           <div class="inquiry-side">
             ${delBtn}
-           <div class="price-stack">
-  <div class="price-unit">${i.budget || ui('budgetPending')}</div>
-  <div class="price-total">${ui('quotePending')}</div>
-</div>
+
+            <div class="price-stack">
+              <div class="price-unit">
+                ${i.budget||ui('budgetPending')}
+              </div>
+
+              <div class="price-total">
+                ${ui('quotePending')}
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>`;
   }
-  let u = itemUnit(i);
-  const media = i.cover ? `<img src="${i.cover}" alt="${i.name || ''}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="product-img ${i.color||'color-1'}" style="display:none"></div>` : `<div class="product-img ${i.color||'color-1'}"></div>`;
+
+  const media=
+    i.cover
+      ? `<img src="${i.cover}" alt="${i.name||''}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="product-img ${i.color||'color-1'}" style="display:none"></div>`
+      : `<div class="product-img ${i.color||'color-1'}"></div>`;
+
   const line1=
-  `${
-    seriesLabel(i.series)||
-    i.series||
-    ui('toConfirm')
-  } · ${
-    i.size||
-    i.sizeCode||
-    ui('toConfirm')
-  } · ${
-    itemScentLabel(i)
-  }`;
-  const line2 = `${choiceLabel(i.pattern)||ui('toConfirm')} · ${choiceLabel(i.pack)||ui('toConfirm')}`;
+    `${
+      seriesLabel(i.series)||
+      i.series||
+      ui('toConfirm')
+    } · ${
+      i.size||
+      i.sizeCode||
+      ui('toConfirm')
+    } · ${
+      itemScentLabel(i)
+    }`;
+
+  const line2=
+    `${choiceLabel(i.pattern)||ui('toConfirm')} · ${choiceLabel(i.pack)||ui('toConfirm')}`;
+
   return `<div class="swipe-shell" data-id="${i.id}">
     <div class="swipe-card">
       <div class="inquiry-row">
         <div class="inquiry-media">${media}</div>
+
         <div class="inquiry-main">
-          <div class="inquiry-title">${productDisplayName(i)||ui('notFilled')}</div>
+          <div class="inquiry-title">
+            ${productDisplayName(i)||ui('notFilled')}
+          </div>
+
           <div class="inquiry-attr">${line1}</div>
-         <div class="inquiry-attr">${line2}</div>
+          <div class="inquiry-attr">${line2}</div>
 
-
-<div class="qty-line">
+          <div class="qty-line">
             <div class="mini-stepper">
-              <button class="step" onclick="qty('${i.id}',-QTY_STEP)">−</button>
-              <input class="qty-edit" type="number" min="${QTY_MIN}" max="${maximumQuantity()}" step="${QTY_STEP}" value="${i.qty}" inputmode="numeric" onchange="setItemQty('${i.id}',this.value)" onkeydown="if(event.key==='Enter')this.blur()">
-              <button class="step" onclick="qty('${i.id}',QTY_STEP)">+</button>
+              <button
+                class="step"
+                onclick="qty('${i.id}',-QTY_STEP)"
+              >−</button>
+
+              <input
+                class="qty-edit"
+                type="number"
+                min="${QTY_MIN}"
+                max="${maximumQuantity()}"
+                step="${QTY_STEP}"
+                value="${i.qty}"
+                inputmode="numeric"
+                onchange="setItemQty('${i.id}',this.value)"
+                onkeydown="if(event.key==='Enter')this.blur()"
+              >
+
+              <button
+                class="step"
+                onclick="qty('${i.id}',QTY_STEP)"
+              >+</button>
             </div>
           </div>
         </div>
+
         <div class="inquiry-side">
           ${delBtn}
-         <div class="price-stack">
-  <div class="price-unit">${money(u)}${currencyUnit()}</div>
-  <div class="price-total">${money(itemSubtotal(i))}</div>
 
-  <div class="item-actions item-actions-side">
-    <button
-      class="item-action"
-      type="button"
-      onclick="openEditProductItem('${i.id}')"
-    >
-      ${ui('editConfig')}
-    </button>
+          <div class="price-stack">
+            <div class="price-unit">
+              ${money(i.unitPrice)}${currencyUnit()}
+            </div>
 
-    <button
-      class="item-action"
-      type="button"
-      onclick="openItemTierSheet('${i.id}')"
-    >
-      ${ui('tierShort')}
-    </button>
-  </div>
-</div>
+            <div class="price-total">
+              ${money(i.subtotal)}
+            </div>
+
+            <div class="item-actions item-actions-side">
+              <button
+                class="item-action"
+                type="button"
+                onclick="openEditProductItem('${i.id}')"
+              >
+                ${ui('editConfig')}
+              </button>
+
+              <button
+                class="item-action"
+                type="button"
+                onclick="openItemTierSheet('${i.id}')"
+              >
+                ${ui('tierShort')}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>`;
 }
+
 function swipes(){}
 function qty(id,delta){
   const item=

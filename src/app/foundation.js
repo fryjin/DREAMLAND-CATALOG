@@ -22,11 +22,11 @@ import {
 /*
  * Architecture metadata only.
  *
- * B5-02 extends the Inquiry runtime boundary to own item-derived pricing aggregation, unit/subtotal/total calculation and derived summary state. Shared tier/package/currency rules, Inquiry DOM rendering, contact and submission orchestration remain outside the Feature runtime.
+ * B5-03 adds an Inquiry View Model boundary. DreamlandInquiry now prepares grouped Inquiry items, item pricing snapshots, empty-state status and summary data for both full rendering and incremental UI updates. The DOM renderer, localized formatting, event handlers, media lifecycle, contact and submission orchestration remain outside the Feature runtime.
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B5-02',
+  phase:'B5-03',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',

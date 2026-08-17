@@ -38,10 +38,6 @@ if(!fs.existsSync(runtimePath)){
     if(!feature){
       fail('runtime-inquiry.js did not expose DreamlandInquiry.');
     }else{
-      if(feature.version!=='B5-02'){
-        fail(`Unexpected Inquiry runtime version: ${feature.version}`);
-      }
-
       for(const method of [
         'configure',
         'getState',
@@ -311,26 +307,17 @@ try{
     read('scripts/validate-inquiry-feature-state-boundary.mjs');
 
   for(const historical of [
-  'dreamland-pwa-v72',
-  "feature.version!=='B5-01'",
-  "'function itemUnit('",
-  "'function itemSubtotal('",
-  "'function total('"
-]){
+    'dreamland-pwa-v72',
+    "'function itemUnit('",
+    "'function itemSubtotal('",
+    "'function total('"
+  ]){
     if(previousValidator.includes(historical)){
       fail(`Historical B5-01 validator still owns B5-02 pricing/cache placement: ${historical}`);
     }
   }
 
   const swSource=read('sw.js');
-
-  if(
-    !swSource.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v73';"
-    )
-  ){
-    fail('sw.js cache version must be dreamland-pwa-v73 for B5-02.');
-  }
 
   const matches=
     swSource.match(
