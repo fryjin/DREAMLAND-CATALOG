@@ -325,7 +325,25 @@ try{
 
   if(!renderSource||!dynamicSource||!itemSource){
     fail('Inquiry renderer functions could not be isolated.');
-  }else{
+  }
+  const compactRenderSource=
+  renderSource.replace(
+    /\s+/g,
+    ''
+  );
+
+const compactDynamicSource=
+  dynamicSource.replace(
+    /\s+/g,
+    ''
+  );
+
+const compactItemSource=
+  itemSource.replace(
+    /\s+/g,
+    ''
+  );
+  else{
     for(const marker of [
       'inquiry.beforeRender',
       'inquiry.afterRender',
@@ -339,7 +357,14 @@ try{
       'inquiryList.innerHTML',
       'summaryBox.innerHTML'
     ]){
-      if(!renderSource.includes(marker)){
+      if(
+  !compactRenderSource.includes(
+    marker.replace(
+      /\s+/g,
+      ''
+    )
+  )
+){
         fail(`renderInquiry() is missing the B5-03 Renderer contract: ${marker}`);
       }
     }
@@ -351,7 +376,14 @@ try{
       'itemSubtotal(',
       'total()'
     ]){
-      if(renderSource.includes(forbidden)){
+      if(
+  compactRenderSource.includes(
+    forbidden.replace(
+      /\s+/g,
+      ''
+    )
+  )
+){
         fail(`renderInquiry() still re-derives Inquiry screen state: ${forbidden}`);
       }
     }
