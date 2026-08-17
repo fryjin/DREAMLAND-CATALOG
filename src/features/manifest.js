@@ -1,13 +1,26 @@
 function feature(
   id,
   responsibilities,
-  legacyOwners
+  legacyOwners,
+  options={}
 ){
+  const runtimeEnabled=
+    options.runtimeEnabled===true;
+
   return Object.freeze({
     id,
     layer:'features',
-    status:'legacy-owned',
-    runtimeEnabled:false,
+    status:
+      options.status||
+      (
+        runtimeEnabled
+          ? 'partial'
+          : 'legacy-owned'
+      ),
+    runtimeEnabled,
+    runtimeOwner:
+      options.runtimeOwner||
+      '',
     responsibilities:Object.freeze([
       ...responsibilities
     ]),
@@ -63,7 +76,13 @@ export const FEATURE_MANIFEST=Object.freeze([
     [
       'index.html',
       'copy-polish.js'
-    ]
+    ],
+    {
+      status:'partial',
+      runtimeEnabled:true,
+      runtimeOwner:
+        'src/features/inquiry/runtime-inquiry.js'
+    }
   ),
   feature(
     'custom',

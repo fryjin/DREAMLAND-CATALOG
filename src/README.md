@@ -356,3 +356,60 @@ captcha_required response
 So B4-02 is a **client Risk/hCaptcha boundary**, not a rewrite of server risk policy.
 A later phase can decide whether the server implementation needs its own contract extraction.
 
+### B5-01 — Inquiry Feature State Boundary
+
+B5 starts the first real Feature runtime migration.
+
+Runtime active:
+
+```text
+src/features/inquiry/runtime-inquiry.js
+```
+
+The Inquiry feature now owns:
+
+```text
+productManualV2State hydration
+v2 compatibility state object
+items persistence
+product add/merge
+duplicate-product consolidation
+item replacement
+product quantity mutation
+item removal
+clear-all item mutation
+custom-intent insertion
+```
+
+The existing `state` variable in `index.html` becomes a compatibility reference returned by
+`DreamlandInquiry.configure()`. Existing render/pricing code may still read `state.items`,
+but B5-01 removes direct item-state persistence and the core item write paths from the page.
+
+The page deliberately continues to own:
+
+```text
+renderInquiry / renderItem
+dynamic Inquiry DOM updates
+pricing / tiers / totals
+toasts and navigation
+pending Inquiry ID
+contact draft state
+preview
+Risk orchestration
+Submission orchestration
+```
+
+`state.contact` remains legacy-written compatibility state and is still excluded from
+`productManualV2State` persistence exactly as before.
+
+Feature manifest status:
+
+```text
+inquiry
+  runtimeEnabled: true
+  status: partial
+  runtimeOwner: src/features/inquiry/runtime-inquiry.js
+```
+
+All other Features remain `legacy-owned` in B5-01.
+
