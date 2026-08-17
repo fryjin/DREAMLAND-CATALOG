@@ -16,7 +16,11 @@
     version:
       DEFAULT_VERSION,
     identityKey:null,
-    normalizeQuantity:null
+    normalizeQuantity:null,
+    pricingSeriesFor:null,
+    tierUnitCny:null,
+    packSurchargeCny:null,
+    convertCnyToBase:null
   };
 
   let state=
@@ -175,7 +179,11 @@
       version=
         DEFAULT_VERSION,
       identityKey=null,
-      normalizeQuantity=null
+      normalizeQuantity=null,
+      pricingSeriesFor=null,
+      tierUnitCny=null,
+      packSurchargeCny=null,
+      convertCnyToBase=null
     }={}
   ){
     config={
@@ -206,6 +214,26 @@
         typeof normalizeQuantity===
           'function'
           ? normalizeQuantity
+          : null,
+      pricingSeriesFor:
+        typeof pricingSeriesFor===
+          'function'
+          ? pricingSeriesFor
+          : null,
+      tierUnitCny:
+        typeof tierUnitCny===
+          'function'
+          ? tierUnitCny
+          : null,
+      packSurchargeCny:
+        typeof packSurchargeCny===
+          'function'
+          ? packSurchargeCny
+          : null,
+      convertCnyToBase:
+        typeof convertCnyToBase===
+          'function'
+          ? convertCnyToBase
           : null
     };
 
@@ -474,9 +502,236 @@
     return item;
   }
 
+  function pricingReady(){
+    return Boolean(
+      config.pricingSeriesFor&&
+      config.tierUnitCny&&
+      config.packSurchargeCny&&
+      config.convertCnyToBase
+    );
+  }
+
+  function pricingSeries(
+    item
+  ){
+    if(
+      typeof config.pricingSeriesFor===
+      'function'
+    ){
+      return String(
+        config.pricingSeriesFor(
+          item
+        )||
+        ''
+      );
+    }
+
+    return String(
+      item?.series||
+      ''
+    );
+  }
+
+  function pricingGroupKey(
+    item
+  ){
+    if(
+      item?.series==='holiday'
+    ){
+      return (
+        'holiday:'+
+        pricingSeries(
+          item
+        )
+      );
+    }
+
+    return String(
+      item?.series||
+      ''
+    );
+  }
+
+  function seriesQuantity(
+    series
+  ){
+    return state.items
+      .filter(
+        item=>
+          item?.type===
+            'product'&&
+          item?.series===
+            series
+      )
+      .reduce(
+        (
+          total,
+          item
+        )=>
+          total+
+          number(
+            item?.qty,
+            0
+          ),
+        0
+      );
+  }
+
+  function pricingGroupQuantity(
+    item
+  ){
+    const key=
+      pricingGroupKey(
+        item
+      );
+
+    return state.items
+      .filter(
+        row=>
+          row?.type===
+            'product'&&
+          pricingGroupKey(
+            row
+          )===key
+      )
+      .reduce(
+        (
+          total,
+          row
+        )=>
+          total+
+          number(
+            row?.qty,
+            0
+          ),
+        0
+      );
+  }
+
+  function itemUnit(
+    item
+  ){
+    if(
+      item?.type!==
+      'product'
+    ){
+      return 0;
+    }
+
+    if(!pricingReady()){
+      return 0;
+    }
+
+    const series=
+      pricingSeries(
+        item
+      );
+
+    const quantity=
+      pricingGroupQuantity(
+        item
+      );
+
+    const basePriceCny=
+      number(
+        config.tierUnitCny(
+          series,
+          item?.size,
+          quantity
+        ),
+        0
+      );
+
+    const packageCny=
+      number(
+        config.packSurchargeCny(
+          item?.series,
+          item?.pack
+        ),
+        0
+      );
+
+    return number(
+      config.convertCnyToBase(
+        basePriceCny+
+        packageCny
+      ),
+      0
+    );
+  }
+
+  function itemSubtotal(
+    item
+  ){
+    return item?.type===
+      'product'
+      ? number(
+          item?.qty,
+          0
+        )*
+        itemUnit(
+          item
+        )
+      : 0;
+  }
+
+  function total(){
+    return state.items.reduce(
+      (
+        sum,
+        item
+      )=>
+        sum+
+        itemSubtotal(
+          item
+        ),
+      0
+    );
+  }
+
+  function derivedSummary(){
+    let productCount=0;
+    let customCount=0;
+    let productQuantity=0;
+
+    state.items.forEach(
+      item=>{
+        if(
+          item?.type===
+          'product'
+        ){
+          productCount+=1;
+          productQuantity+=
+            number(
+              item?.qty,
+              0
+            );
+          return;
+        }
+
+        if(
+          item?.type===
+          'custom'
+        ){
+          customCount+=1;
+        }
+      }
+    );
+
+    return Object.freeze({
+      itemCount:
+        state.items.length,
+      productCount,
+      customCount,
+      productQuantity,
+      estimatedTotal:
+        total()
+    });
+  }
+
   root.DreamlandInquiry=
     Object.freeze({
-      version:'B5-01',
+      version:'B5-02',
       configure,
       getState,
       items,
@@ -489,7 +744,14 @@
       setProductQuantity,
       removeItem,
       clearItems,
-      addCustom
+      addCustom,
+      pricingReady,
+      seriesQuantity,
+      pricingGroupQuantity,
+      itemUnit,
+      itemSubtotal,
+      total,
+      derivedSummary
     });
 })(
   typeof globalThis!=='undefined'

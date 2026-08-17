@@ -22,11 +22,11 @@ import {
 /*
  * Architecture metadata only.
  *
- * B5-01 establishes the first runtime Feature boundary: Inquiry item-state hydration, persistence and mutation move behind DreamlandInquiry while Inquiry rendering, pricing, contact and submission orchestration remain legacy-owned.
+ * B5-02 extends the Inquiry runtime boundary to own item-derived pricing aggregation, unit/subtotal/total calculation and derived summary state. Shared tier/package/currency rules, Inquiry DOM rendering, contact and submission orchestration remain outside the Feature runtime.
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B5-01',
+  phase:'B5-02',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',

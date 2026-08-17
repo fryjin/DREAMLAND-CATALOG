@@ -1783,9 +1783,16 @@ let state=
     identityKey:
       productIdentityKey,
     normalizeQuantity:
-      normalizeQty
+      normalizeQty,
+    pricingSeriesFor:
+      pricingSeriesFor,
+    tierUnitCny:
+      tierUnitCny,
+    packSurchargeCny:
+      packSurchargeCny,
+    convertCnyToBase:
+      cnyToBase
   });
-
   if(!state.items.length&&pendingInquiryId){
 pendingInquiryId='';
 appStorage.local.removeItem(PENDING_INQUIRY_KEY)
@@ -1844,16 +1851,9 @@ function cnyToBase(cny){
 }
 
 function seriesQty(series){
-  return state.items
-    .filter(
-      item=>
-        item.type==='product'&&
-        item.series===series
-    )
-    .reduce(
-      (total,item)=>
-        total+(Number(item.qty)||0),
-      0
+  return inquiryFeature
+    .seriesQuantity(
+      series
     );
 }
 
@@ -1870,27 +1870,10 @@ function pricingSeriesFor(item){
   return item?.series||'';
 }
 
-function pricingGroupKey(item){
-  if(item?.series==='holiday'){
-    return `holiday:${pricingSeriesFor(item)}`;
-  }
-
-  return item?.series||'';
-}
-
 function pricingGroupQty(item){
-  const key=pricingGroupKey(item);
-
-  return state.items
-    .filter(
-      row=>
-        row.type==='product'&&
-        pricingGroupKey(row)===key
-    )
-    .reduce(
-      (total,row)=>
-        total+(Number(row.qty)||0),
-      0
+  return inquiryFeature
+    .pricingGroupQuantity(
+      item
     );
 }
 
@@ -2334,48 +2317,22 @@ function configUnit(){
 }
 
 function itemUnit(item){
-  if(item?.type!=='product'){
-    return 0;
-  }
-
-  const pricingSeries=
-    pricingSeriesFor(item);
-
-  const quantity=
-    pricingGroupQty(item);
-
-  const basePriceCny=
-    tierUnitCny(
-      pricingSeries,
-      item.size,
-      quantity
+  return inquiryFeature
+    .itemUnit(
+      item
     );
-
-  const packageCny=
-    packSurchargeCny(
-      item.series,
-      item.pack
-    );
-
-  return cnyToBase(
-    basePriceCny+
-    packageCny
-  );
 }
 
 function itemSubtotal(item){
-  return item?.type==='product'
-    ? (Number(item.qty)||0)*
-      itemUnit(item)
-    : 0;
+  return inquiryFeature
+    .itemSubtotal(
+      item
+    );
 }
 
 function total(){
-  return state.items.reduce(
-    (sum,item)=>
-      sum+itemSubtotal(item),
-    0
-  );
+  return inquiryFeature
+    .total();
 }
 
 function catalogUnit(product){

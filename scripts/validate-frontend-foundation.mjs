@@ -63,7 +63,7 @@ try{
 }
 
 if(foundation){
-  if(foundation.phase!=='B5-01'){
+  if(foundation.phase!=='B5-02'){
     fail(`Unexpected frontend foundation phase: ${foundation.phase}`)
   }
 
@@ -71,7 +71,7 @@ if(foundation){
     foundation.runtimeIntegrated!==true||
     foundation.runtimeIntegration!=='partial'
   ){
-    fail('B5-01 must declare partial runtime integration.')
+    fail('B5-02 must declare partial runtime integration.')
   }
 
   const uniqueIds=(items,label)=>{
@@ -101,7 +101,7 @@ if(foundation){
       'src/features/inquiry/runtime-inquiry.js'
   ){
     fail(
-      'B5-01 must runtime-enable only the partial Inquiry feature.'
+      'B5-02 must preserve only the partial Inquiry runtime Feature.'
     )
   }
 
@@ -124,7 +124,7 @@ if(foundation){
   }
 
   if(foundation.ui.some(item=>item.runtimeEnabled!==false)){
-    fail('B5-01 does not migrate UI runtime ownership yet.')
+    fail('B5-02 does not migrate UI runtime ownership yet.')
   }
 
   const enabledServices=foundation.services
@@ -143,7 +143,7 @@ if(foundation){
     !enabledSet.has('risk')
   ){
     fail(
-      `B5-01 must preserve runtime-enabled storage, pwa, media, submission and risk; found: `+
+      `B5-02 must preserve runtime-enabled storage, pwa, media, submission and risk; found: `+
       `${enabledServices.join(', ')||'none'}`
     )
   }
