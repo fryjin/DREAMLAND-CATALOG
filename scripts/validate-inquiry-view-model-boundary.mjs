@@ -477,7 +477,11 @@ try{
     }
   }
 }
-
+const compact=
+  indexSource.replace(
+    /\s+/g,
+    ''
+  );
   for(const preserved of [
     'function seriesQty(series){return inquiryFeature.seriesQuantity(series);}',
     'function pricingGroupQty(item){return inquiryFeature.pricingGroupQuantity(item);}',
