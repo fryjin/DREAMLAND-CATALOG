@@ -1186,16 +1186,25 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./src/services/submission/runtime-submission.js"></script>
 <script src="./src/services/risk/runtime-risk.js"></script>
 <script src="./src/features/inquiry/runtime-inquiry.js"></script>
+<script src="./src/ui/inquiry/runtime-inquiry-renderer.js"></script>
 <script>
 const appStorage=window.DreamlandStorage;
 const pwaService=window.DreamlandPwa;
 const submissionService=window.DreamlandSubmission;
 const riskService=window.DreamlandRisk;
 const inquiryFeature=window.DreamlandInquiry;
+const inquiryRenderer=
+  window.DreamlandInquiryRenderer;
 
 if(!inquiryFeature){
   throw new Error(
     'DreamlandInquiry must load before Inquiry state initialization.'
+  );
+}
+
+if(!inquiryRenderer){
+  throw new Error(
+    'DreamlandInquiryRenderer must load before Inquiry UI initialization.'
   );
 }
 
@@ -1771,6 +1780,79 @@ function riskAssessmentEndpoint(){
 const CATALOG_BATCH_SIZE=5;
 const QTY_STEP=1;
 const QTY_MIN=1;
+const inquiryListElement=
+  document.getElementById(
+    'inquiryList'
+  );
+
+const inquirySummaryElement=
+  document.getElementById(
+    'summaryBox'
+  );
+
+inquiryRenderer.configure({
+  list:
+    inquiryListElement,
+
+  summary:
+    inquirySummaryElement,
+
+  text:
+    ui,
+
+  seriesLabel:
+    seriesLabel,
+
+  choiceLabel:
+    choiceLabel,
+
+  qtyUnit:
+    qtyUnit,
+
+  htmlAttr:
+    htmlAttr,
+
+  money:
+    money,
+
+  currencyUnit:
+    currencyUnit,
+
+  itemScentLabel:
+    itemScentLabel,
+
+  productDisplayName:
+    productDisplayName,
+
+  maximumQuantity:
+    maximumQuantity,
+
+  quantityMin:
+    QTY_MIN,
+
+  quantityStep:
+    QTY_STEP,
+
+  actions:{
+    go:
+      go,
+
+    removeItem:
+      del,
+
+    adjustQuantity:
+      qty,
+
+    setQuantity:
+      setItemQty,
+
+    editItem:
+      openEditProductItem,
+
+    openTier:
+      openItemTierSheet
+  }
+});
 let activeScreen='home',activeSeries='advanced',activeProduct=null,config={},detailSlideIndex=0,detailTimer=null,catalogRenderToken=0,catalogBatchTimer=null,catalogList=[],catalogCursor=0,catalogLoading=false,editingItemId='';
 
 let state=
@@ -4575,7 +4657,8 @@ function renderInquiry(){
     ?.emit(
       'inquiry.beforeRender',
       {
-        list:inquiryList
+        list:
+          inquiryListElement
       }
     );
 
@@ -4585,7 +4668,8 @@ function renderInquiry(){
         ?.emit(
           'inquiry.afterRender',
           {
-            list:inquiryList
+            list:
+              inquiryListElement
           }
         );
     }
@@ -4598,121 +4682,15 @@ function renderInquiry(){
     inquiryFeature
       .buildViewModel();
 
-  if(viewModel.empty){
-    inquiryList.innerHTML=`
-      <div class="empty">
-        <div class="empty-icon">◒</div>
+  const renderResult=
+    inquiryRenderer
+      .render(
+        viewModel
+      );
 
-        <h3>${ui('emptyTitle')}</h3>
-
-        <p style="margin-top:8px;font-size:12px;line-height:1.5">
-          ${ui('emptyText')}
-        </p>
-
-        <div
-          class="btn-row"
-          style="margin-top:20px;width:100%"
-        >
-          <button
-            class="btn btn-primary full"
-            onclick="go('catalog')"
-          >
-            ${ui('goProducts')}
-          </button>
-
-          <button
-            class="btn btn-secondary full"
-            onclick="go('custom')"
-          >
-            ${ui('makeCustom')}
-          </button>
-        </div>
-      </div>
-    `;
-
-    summaryBox.innerHTML='';
+  if(renderResult.empty){
     return;
   }
-
-  inquiryList.innerHTML=
-    viewModel.groups
-      .map(group=>{
-        const title=
-          group.type==='custom'
-            ? ui('customInquiry')
-            : seriesLabel(
-                group.key
-              );
-
-        const countText=
-          group.type==='custom'
-            ? `${group.itemCount} ${ui('records')}`
-            : `${group.quantity} ${qtyUnit()}`;
-
-        return `
-          <div
-            class="group-title"
-            data-group-key="${htmlAttr(group.key)}"
-          >
-            <span>${title}</span>
-
-            <span data-group-total>
-              ${countText}
-            </span>
-          </div>
-
-          ${group.items.map(renderItem).join('')}
-        `;
-      })
-      .join('');
-
-  summaryBox.innerHTML=`
-    <div class="summary">
-      <div class="summary-row">
-        <span class="summary-label">
-          ${ui('inquiryContent')}
-        </span>
-
-        <span
-          class="summary-value"
-          id="inquiryItemCount"
-        >
-          ${viewModel.summary.itemCount} ${ui('items')}
-        </span>
-      </div>
-
-      <div class="summary-row">
-        <span class="summary-label">
-          ${ui('tierPrice')}
-        </span>
-
-        <span class="summary-value">
-          ${ui('tierRule')}
-        </span>
-      </div>
-
-      <div class="summary-row">
-        <span class="summary-label">
-          ${ui('productEstimate')}
-        </span>
-
-        <span
-          class="amount"
-          id="inquiryEstimateTotal"
-        >
-          ${money(
-            viewModel
-              .summary
-              .estimatedTotal
-          )}
-        </span>
-      </div>
-
-      <p class="note">
-        ${ui('summaryNote')}
-      </p>
-    </div>
-  `;
 
   swipes();
   badge();
@@ -4723,272 +4701,14 @@ function updateInquiryDynamicUi(){
     inquiryFeature
       .buildViewModel();
 
-  viewModel.items.forEach(item=>{
-    if(item.type!=='product'){
-      return;
-    }
-
-    const shell=
-      inquiryList.querySelector(
-        `.swipe-shell[data-id="${item.id}"]`
-      );
-
-    if(!shell){
-      return;
-    }
-
-    const qtyInput=
-      shell.querySelector(
-        '.qty-edit'
-      );
-
-    const unitPrice=
-      shell.querySelector(
-        '.price-unit'
-      );
-
-    const subtotal=
-      shell.querySelector(
-        '.price-total'
-      );
-
-    if(qtyInput){
-      qtyInput.value=
-        item.normalizedQty;
-    }
-
-    if(unitPrice){
-      unitPrice.textContent=
-        `${money(
-          item.unitPrice
-        )}${currencyUnit()}`;
-    }
-
-    if(subtotal){
-      subtotal.textContent=
-        money(
-          item.subtotal
-        );
-    }
-  });
-
-  const groupsByKey=
-    new Map(
-      viewModel.groups.map(
-        group=>[
-          group.key,
-          group
-        ]
-      )
+  inquiryRenderer
+    .update(
+      viewModel
     );
-
-  inquiryList
-    .querySelectorAll(
-      '.group-title[data-group-key]'
-    )
-    .forEach(groupElement=>{
-      const key=
-        groupElement
-          .dataset
-          .groupKey;
-
-      const group=
-        groupsByKey.get(
-          key
-        );
-
-      const totalElement=
-        groupElement.querySelector(
-          '[data-group-total]'
-        );
-
-      if(
-        !group||
-        !totalElement
-      ){
-        return;
-      }
-
-      totalElement.textContent=
-        group.type==='custom'
-          ? `${group.itemCount} ${ui('records')}`
-          : `${group.quantity} ${qtyUnit()}`;
-    });
-
-  const itemCount=
-    document.getElementById(
-      'inquiryItemCount'
-    );
-
-  if(itemCount){
-    itemCount.textContent=
-      `${viewModel.summary.itemCount} ${ui('items')}`;
-  }
-
-  const estimateTotal=
-    document.getElementById(
-      'inquiryEstimateTotal'
-    );
-
-  if(estimateTotal){
-    estimateTotal.textContent=
-      money(
-        viewModel
-          .summary
-          .estimatedTotal
-      );
-  }
 
   badge();
 }
   
-  function renderItem(i){
-  const trashSvg=
-    `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M5 7h14"/><path d="M8 7l1 12h6l1-12"/><path d="M10 11v5"/><path d="M14 11v5"/></svg>`;
-
-  const delBtn=
-    `<button class="delete-action" type="button" aria-label="删除" onclick="del('${i.id}')">${trashSvg}</button>`;
-
-  if(i.type==='custom'){
-    const title=
-      `${ui('customInquiry')} · ${choiceLabel(i.use)||ui('notFilled')}`;
-
-    const line1=
-      `${i.qty||ui('qtyPending')}${qtyUnit()} · ${choiceLabel(i.sizePref)||ui('sizeRecommend')} · ${choiceLabel(i.scent)||ui('scentRecommend')}`;
-
-    const line2=
-      `${i.color||ui('colorPending')} · ${choiceLabel(i.pack)||ui('packRecommend')}`;
-
-    return `<div class="swipe-shell" data-id="${i.id}">
-      <div class="swipe-card">
-        <div class="inquiry-row">
-          <div class="inquiry-media"><span class="custom-icon">✦</span></div>
-          <div class="inquiry-main">
-            <div class="inquiry-title">${title}</div>
-            <div class="inquiry-attr">${line1}</div>
-            <div class="inquiry-attr">${line2}</div>
-
-            <div class="qty-line">
-              <div class="inquiry-attr">
-                ${ui('quantity')}：${i.qty||ui('toConfirm')} ${qtyUnit()}
-              </div>
-            </div>
-          </div>
-
-          <div class="inquiry-side">
-            ${delBtn}
-
-            <div class="price-stack">
-              <div class="price-unit">
-                ${i.budget||ui('budgetPending')}
-              </div>
-
-              <div class="price-total">
-                ${ui('quotePending')}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-  }
-
-  const media=
-    i.cover
-      ? `<img src="${i.cover}" alt="${i.name||''}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="product-img ${i.color||'color-1'}" style="display:none"></div>`
-      : `<div class="product-img ${i.color||'color-1'}"></div>`;
-
-  const line1=
-    `${
-      seriesLabel(i.series)||
-      i.series||
-      ui('toConfirm')
-    } · ${
-      i.size||
-      i.sizeCode||
-      ui('toConfirm')
-    } · ${
-      itemScentLabel(i)
-    }`;
-
-  const line2=
-    `${choiceLabel(i.pattern)||ui('toConfirm')} · ${choiceLabel(i.pack)||ui('toConfirm')}`;
-
-  return `<div class="swipe-shell" data-id="${i.id}">
-    <div class="swipe-card">
-      <div class="inquiry-row">
-        <div class="inquiry-media">${media}</div>
-
-        <div class="inquiry-main">
-          <div class="inquiry-title">
-            ${productDisplayName(i)||ui('notFilled')}
-          </div>
-
-          <div class="inquiry-attr">${line1}</div>
-          <div class="inquiry-attr">${line2}</div>
-
-          <div class="qty-line">
-            <div class="mini-stepper">
-              <button
-                class="step"
-                onclick="qty('${i.id}',-QTY_STEP)"
-              >−</button>
-
-              <input
-                class="qty-edit"
-                type="number"
-                min="${QTY_MIN}"
-                max="${maximumQuantity()}"
-                step="${QTY_STEP}"
-                value="${i.qty}"
-                inputmode="numeric"
-                onchange="setItemQty('${i.id}',this.value)"
-                onkeydown="if(event.key==='Enter')this.blur()"
-              >
-
-              <button
-                class="step"
-                onclick="qty('${i.id}',QTY_STEP)"
-              >+</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="inquiry-side">
-          ${delBtn}
-
-          <div class="price-stack">
-            <div class="price-unit">
-              ${money(i.unitPrice)}${currencyUnit()}
-            </div>
-
-            <div class="price-total">
-              ${money(i.subtotal)}
-            </div>
-
-            <div class="item-actions item-actions-side">
-              <button
-                class="item-action"
-                type="button"
-                onclick="openEditProductItem('${i.id}')"
-              >
-                ${ui('editConfig')}
-              </button>
-
-              <button
-                class="item-action"
-                type="button"
-                onclick="openItemTierSheet('${i.id}')"
-              >
-                ${ui('tierShort')}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>`;
-}
 
 function swipes(){}
 function qty(id,delta){

@@ -574,3 +574,132 @@ status: partial
 runtimeEnabled: true
 ```
 
+### B5-04 — Inquiry UI Renderer Boundary
+
+B5-04 does **not** change the Inquiry Feature contract introduced in B5-03.
+
+`DreamlandInquiry` remains:
+
+```text
+State
+→ Mutation
+→ Pricing / Derived State
+→ View Model
+```
+
+A new UI runtime is added:
+
+```text
+src/ui/inquiry/runtime-inquiry-renderer.js
+window.DreamlandInquiryRenderer
+version: B5-04
+```
+
+API:
+
+```text
+configure()
+snapshot()
+ready()
+render(viewModel)
+update(viewModel)
+```
+
+The UI runtime owns:
+
+```text
+Inquiry empty-state HTML
+group/list HTML
+product/custom item HTML
+summary HTML
+
+full DOM render
+incremental DOM update
+
+item-level event delegation:
+- empty-state navigation
+- delete
+- quantity +/- buttons
+- quantity input change
+- edit item
+- tier sheet action
+```
+
+It deliberately does **not** import or reference:
+
+```text
+DreamlandInquiry
+DreamlandSubmission
+DreamlandRisk
+DreamlandStorage
+DreamlandRuntimeHooks
+
+state.items
+products
+seriesMeta
+currencyMap
+```
+
+The `ui` layer therefore keeps its existing architectural rule:
+
+```text
+ui → no dependencies
+```
+
+`index.html` remains the App/orchestration boundary and injects:
+
+```text
+presentation adapters:
+- ui
+- seriesLabel
+- choiceLabel
+- qtyUnit
+- htmlAttr
+- money
+- currencyUnit
+- itemScentLabel
+- productDisplayName
+- maximumQuantity
+
+business callbacks:
+- go
+- del
+- qty
+- setItemQty
+- openEditProductItem
+- openItemTierSheet
+```
+
+After B5-04:
+
+```text
+renderInquiry()
+  → beforeRender hook
+  → merge/persist
+  → DreamlandInquiry.buildViewModel()
+  → DreamlandInquiryRenderer.render()
+  → afterRender hook
+
+updateInquiryDynamicUi()
+  → DreamlandInquiry.buildViewModel()
+  → DreamlandInquiryRenderer.update()
+```
+
+The large `renderItem()` template is removed from `index.html`.
+
+B5-04 does not migrate:
+
+```text
+Preview / itemText
+submission projection
+Contact
+Risk / hCaptcha
+Submission orchestration
+shared pricing policy
+screen navigation
+badge
+media lifecycle
+```
+
+Inquiry remains a partial Feature because these orchestration and downstream projection paths are still legacy-owned.
+
