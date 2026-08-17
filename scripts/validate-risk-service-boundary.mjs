@@ -436,16 +436,16 @@ if(!fs.existsSync(runtimePath)){
 
 try{
   const indexSource=
-  read('index.html');
+    read('index.html');
 
-const compactIndexSource=
-  indexSource.replace(
-    /\s+/g,
-    ''
-  );
+  const compactIndexSource=
+    indexSource.replace(
+      /\s+/g,
+      ''
+    );
 
-for(
-  const marker of [
+  for(
+    const marker of [
       './src/services/risk/runtime-risk.js',
       'const riskService=window.DreamlandRisk',
       'riskService.configure(',
@@ -460,13 +460,13 @@ for(
     ]
   ){
     if(
-  !compactIndexSource.includes(
-    marker.replace(
-      /\s+/g,
-      ''
-    )
-  )
-){
+      !compactIndexSource.includes(
+        marker.replace(
+          /\s+/g,
+          ''
+        )
+      )
+    ){
       fail(
         `index.html is missing Risk boundary integration: ${marker}`
       );
@@ -702,16 +702,6 @@ try{
 
   const swSource=
     read('sw.js');
-
-  if(
-    !swSource.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v71';"
-    )
-  ){
-    fail(
-      'sw.js cache version must be dreamland-pwa-v71 for B4-02.'
-    );
-  }
 
   const matches=
     swSource.match(

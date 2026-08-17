@@ -1185,11 +1185,19 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./src/services/pwa/runtime-pwa.js"></script>
 <script src="./src/services/submission/runtime-submission.js"></script>
 <script src="./src/services/risk/runtime-risk.js"></script>
+<script src="./src/features/inquiry/runtime-inquiry.js"></script>
 <script>
 const appStorage=window.DreamlandStorage;
 const pwaService=window.DreamlandPwa;
 const submissionService=window.DreamlandSubmission;
 const riskService=window.DreamlandRisk;
+const inquiryFeature=window.DreamlandInquiry;
+
+if(!inquiryFeature){
+  throw new Error(
+    'DreamlandInquiry must load before Inquiry state initialization.'
+  );
+}
 
 if(!appStorage){
   throw new Error(
@@ -1763,7 +1771,20 @@ function riskAssessmentEndpoint(){
 const CATALOG_BATCH_SIZE=5;
 const QTY_STEP=1;
 const QTY_MIN=1;
-let activeScreen='home',activeSeries='advanced',activeProduct=null,config={},detailSlideIndex=0,detailTimer=null,catalogRenderToken=0,catalogBatchTimer=null,catalogList=[],catalogCursor=0,catalogLoading=false,editingItemId='';let state=JSON.parse(appStorage.local.getItem(STORAGE_KEY)||'{"version":2,"items":[],"contact":{}}');if(state.version!==2)state={version:2,items:[],contact:{}};
+let activeScreen='home',activeSeries='advanced',activeProduct=null,config={},detailSlideIndex=0,detailTimer=null,catalogRenderToken=0,catalogBatchTimer=null,catalogList=[],catalogCursor=0,catalogLoading=false,editingItemId='';
+
+let state=
+  inquiryFeature.configure({
+    storage:
+      appStorage.local,
+    storageKey:
+      STORAGE_KEY,
+    version:2,
+    identityKey:
+      productIdentityKey,
+    normalizeQuantity:
+      normalizeQty
+  });
 
   if(!state.items.length&&pendingInquiryId){
 pendingInquiryId='';
@@ -1771,20 +1792,10 @@ appStorage.local.removeItem(PENDING_INQUIRY_KEY)
 }
   
 function save(){
-  state.version=2;
-
-  const persistedState={
-    ...state,
-    contact:{}
-  };
-
-  appStorage.local.setItem(
-    STORAGE_KEY,
-    JSON.stringify(persistedState)
-  );
-
+  inquiryFeature.persist();
   badge();
-}function uid(){
+}
+function uid(){
   return 'I'+
     Date.now().toString(36)+
     Math.random().toString(36).slice(2,6);
@@ -4266,60 +4277,15 @@ function productIdentityKey(item){
 }
 
 function addOrMergeProductItem(item){
-  const key=
-    productIdentityKey(item);
-
-  const existing=
-    state.items.find(row=>
-      row.type==='product'&&
-      productIdentityKey(row)===key
+  return inquiryFeature
+    .addOrMergeProduct(
+      item
     );
-
-  if(existing){
-    existing.qty=
-      normalizeQty(
-        (Number(existing.qty)||0)+
-        (Number(item.qty)||0),
-        QTY_MIN
-      );
-
-    return existing;
-  }
-
-  state.items.push(item);
-
-  return item;
 }
 
 function mergeDuplicateProductItems(){
-  const map={};
-  const merged=[];
-
-  state.items.forEach(item=>{
-    if(item.type!=='product'){
-      merged.push(item);
-      return;
-    }
-
-    const key=
-      productIdentityKey(item);
-
-    if(map[key]){
-      map[key].qty=
-        normalizeQty(
-          (Number(map[key].qty)||0)+
-          (Number(item.qty)||0),
-          QTY_MIN
-        );
-
-      return;
-    }
-
-    map[key]=item;
-    merged.push(item);
-  });
-
-  state.items=merged;
+  inquiryFeature
+    .mergeDuplicateProducts();
 }
 
 function itemConfigData(item){
@@ -4548,14 +4514,10 @@ function addConfiguredProduct(){
   };
 
   if(wasEditing){
-    const index=
-      state.items.findIndex(
-        row=>row.id===editingItemId
-      );
-
-    if(index>=0){
-      state.items[index]=item;
-    }
+    inquiryFeature.replaceItem(
+  editingItemId,
+  item
+);
 
     editingItemId='';
 
@@ -5015,9 +4977,9 @@ function updateInquiryDynamicUi(){
 function swipes(){}
 function qty(id,delta){
   const item=
-    state.items.find(
-      row=>row.id===id
-    );
+  inquiryFeature.findItem(
+    id
+  );
 
   if(
     !item||
@@ -5026,20 +4988,22 @@ function qty(id,delta){
     return;
   }
 
-  item.qty=
-    normalizeQty(
-      Number(item.qty)+delta,
-      QTY_MIN
-    );
+  inquiryFeature
+  .setProductQuantity(
+    id,
+    Number(item.qty)+delta,
+    QTY_MIN
+  );
 
   save();
 updateInquiryDynamicUi();
 }
+
 function setItemQty(id,value){
   const item=
-    state.items.find(
-      row=>row.id===id
-    );
+  inquiryFeature.findItem(
+    id
+  );
 
   if(
     !item||
@@ -5065,20 +5029,29 @@ function setItemQty(id,value){
     );
   }
 
-  item.qty=
-    normalizeQty(
-      value,
-      QTY_MIN
-    );
-
+ inquiryFeature
+  .setProductQuantity(
+    id,
+    value,
+    QTY_MIN
+  );
   save();
 updateInquiryDynamicUi();
 }
-function del(id){state.items=state.items.filter(i=>i.id!==id);save();renderInquiry();toast(toastText('removedInquiry'))}
+function del(id){
+  inquiryFeature.removeItem(id);
+  save();
+  renderInquiry();
+  toast(
+    toastText(
+      'removedInquiry'
+    )
+  )
+}
 function confirmClearAll(){if(!state.items.length)return toast(toastText('emptyInquiry'));confirmLayer.classList.add('show')}
 function hideConfirm(){confirmLayer.classList.remove('show')}
 function clearInquiry(){
-  state.items=[];
+  inquiryFeature.clearItems();
   pendingInquiryId='';
   appStorage.local.removeItem(PENDING_INQUIRY_KEY);
   save();
@@ -5096,12 +5069,45 @@ function addCustomIntent(){
     ok=false
   }
   if(!ok)return;
-  state.items.push({
-    id:uid(),type:'custom',use,qty:rawQty,moq:min,
-    budget:fieldValue('customBudget'),date:fieldValue('customDate'),sizePref:fieldValue('customSize'),
-    scent:fieldValue('customScent'),color:fieldValue('customColor'),pack:fieldValue('customPack'),
-    branding:fieldValue('customBranding'),note:fieldValue('customNote')
-  });
+  inquiryFeature.addCustom({
+  id:uid(),
+  type:'custom',
+  use,
+  qty:rawQty,
+  moq:min,
+  budget:
+    fieldValue(
+      'customBudget'
+    ),
+  date:
+    fieldValue(
+      'customDate'
+    ),
+  sizePref:
+    fieldValue(
+      'customSize'
+    ),
+  scent:
+    fieldValue(
+      'customScent'
+    ),
+  color:
+    fieldValue(
+      'customColor'
+    ),
+  pack:
+    fieldValue(
+      'customPack'
+    ),
+  branding:
+    fieldValue(
+      'customBranding'
+    ),
+  note:
+    fieldValue(
+      'customNote'
+    )
+});
   save();toast(toastText('addedCustom'));go('inquiry')
 }
 function fieldValue(id){let el=document.getElementById(id);return el?el.value.trim():''}

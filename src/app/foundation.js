@@ -22,11 +22,11 @@ import {
 /*
  * Architecture metadata only.
  *
- * B4-02 establishes a client Risk/hCaptcha runtime boundary while keeping Risk UI orchestration and server-side scoring/persistence outside the service.
+ * B5-01 establishes the first runtime Feature boundary: Inquiry item-state hydration, persistence and mutation move behind DreamlandInquiry while Inquiry rendering, pricing, contact and submission orchestration remain legacy-owned.
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B4-02',
+  phase:'B5-01',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',

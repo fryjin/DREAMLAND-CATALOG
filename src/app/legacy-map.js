@@ -71,7 +71,16 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'features',
     'inquiry',
-    'Inquiry state, preview, pricing and submission remain legacy-owned.'
+    'Inquiry item-state hydration, persistence and core item mutations are routed through DreamlandInquiry. DOM rendering, pricing, preview, contact state and submission orchestration remain in index.html/copy-polish.js.',
+    {
+      status:'partial',
+      runtimeMigrated:false,
+      runtimeOwners:[
+        'src/features/inquiry/runtime-inquiry.js',
+        'index.html',
+        'copy-polish.js'
+      ]
+    }
   ),
   entry(
     'custom-request',

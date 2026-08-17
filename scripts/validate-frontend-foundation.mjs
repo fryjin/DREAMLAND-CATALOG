@@ -44,7 +44,8 @@ const requiredFiles=[
   'src/services/media/runtime-media.js',
   'src/app/runtime-hooks.js',
   'src/services/submission/runtime-submission.js',
-  'src/services/risk/runtime-risk.js'
+  'src/services/risk/runtime-risk.js',
+  'src/features/inquiry/runtime-inquiry.js'
 ];
 
 for(const file of requiredFiles){
@@ -62,7 +63,7 @@ try{
 }
 
 if(foundation){
-  if(foundation.phase!=='B4-02'){
+  if(foundation.phase!=='B5-01'){
     fail(`Unexpected frontend foundation phase: ${foundation.phase}`)
   }
 
@@ -70,7 +71,7 @@ if(foundation){
     foundation.runtimeIntegrated!==true||
     foundation.runtimeIntegration!=='partial'
   ){
-    fail('B4-02 must declare partial runtime integration.')
+    fail('B5-01 must declare partial runtime integration.')
   }
 
   const uniqueIds=(items,label)=>{
@@ -85,12 +86,45 @@ if(foundation){
   uniqueIds(foundation.ui,'UI contracts');
   uniqueIds(foundation.services,'Service contracts');
 
-  if(foundation.features.some(item=>item.runtimeEnabled!==false)){
-    fail('B4-02 does not migrate feature runtime ownership yet.')
+  const enabledFeatures=
+    foundation.features
+      .filter(
+        item=>
+          item.runtimeEnabled===true
+      );
+
+  if(
+    enabledFeatures.length!==1||
+    enabledFeatures[0]?.id!=='inquiry'||
+    enabledFeatures[0]?.status!=='partial'||
+    enabledFeatures[0]?.runtimeOwner!==
+      'src/features/inquiry/runtime-inquiry.js'
+  ){
+    fail(
+      'B5-01 must runtime-enable only the partial Inquiry feature.'
+    )
+  }
+
+  const inquiryMigration=
+    foundation.legacyMap.find(
+      item=>
+        item.id==='inquiry'
+    );
+
+  if(
+    inquiryMigration?.status!=='partial'||
+    inquiryMigration?.runtimeMigrated!==false||
+    !inquiryMigration?.runtimeOwners?.includes(
+      'src/features/inquiry/runtime-inquiry.js'
+    )
+  ){
+    fail(
+      'Legacy map does not mark Inquiry as a partial runtime feature.'
+    )
   }
 
   if(foundation.ui.some(item=>item.runtimeEnabled!==false)){
-    fail('B4-02 does not migrate UI runtime ownership yet.')
+    fail('B5-01 does not migrate UI runtime ownership yet.')
   }
 
   const enabledServices=foundation.services
@@ -109,7 +143,7 @@ if(foundation){
     !enabledSet.has('risk')
   ){
     fail(
-      `B4-02 must runtime-enable storage, pwa, media, submission and risk; found: `+
+      `B5-01 must preserve runtime-enabled storage, pwa, media, submission and risk; found: `+
       `${enabledServices.join(', ')||'none'}`
     )
   }
