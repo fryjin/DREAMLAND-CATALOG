@@ -729,9 +729,143 @@
     });
   }
 
+
+  function buildItemView(
+    item
+  ){
+    const base={
+      ...item
+    };
+
+    if(
+      item?.type!==
+      'product'
+    ){
+      return Object.freeze({
+        ...base,
+        normalizedQty:
+          number(
+            item?.qty,
+            0
+          ),
+        unitPrice:0,
+        subtotal:0
+      });
+    }
+
+    return Object.freeze({
+      ...base,
+      normalizedQty:
+        normalize(
+          item?.qty,
+          1
+        ),
+      unitPrice:
+        itemUnit(
+          item
+        ),
+      subtotal:
+        itemSubtotal(
+          item
+        )
+    });
+  }
+
+  function buildViewModel(){
+    const itemViews=
+      state.items.map(
+        buildItemView
+      );
+
+    const groupMap=
+      new Map();
+
+    itemViews.forEach(
+      item=>{
+        const key=
+          item?.type===
+            'custom'
+            ? 'custom'
+            : String(
+                item?.series||
+                ''
+              );
+
+        if(
+          !groupMap.has(
+            key
+          )
+        ){
+          groupMap.set(
+            key,
+            {
+              key,
+              type:
+                key==='custom'
+                  ? 'custom'
+                  : 'product',
+              items:[]
+            }
+          );
+        }
+
+        groupMap
+          .get(
+            key
+          )
+          .items
+          .push(
+            item
+          );
+      }
+    );
+
+    const groups=
+      [...groupMap.values()]
+        .map(
+          group=>
+            Object.freeze({
+              key:
+                group.key,
+              type:
+                group.type,
+              itemCount:
+                group.items.length,
+              quantity:
+                group.type===
+                  'product'
+                  ? seriesQuantity(
+                      group.key
+                    )
+                  : 0,
+              items:
+                Object.freeze([
+                  ...group.items
+                ])
+            })
+        );
+
+    const summary=
+      derivedSummary();
+
+    return Object.freeze({
+      empty:
+        summary.itemCount===0,
+      items:
+        Object.freeze([
+          ...itemViews
+        ]),
+      groups:
+        Object.freeze(
+          groups
+        ),
+      summary
+    });
+  }
+
   root.DreamlandInquiry=
     Object.freeze({
-      version:'B5-02',
+      version:'B5-03',
       configure,
       getState,
       items,
@@ -751,7 +885,8 @@
       itemUnit,
       itemSubtotal,
       total,
-      derivedSummary
+      derivedSummary,
+      buildViewModel
     });
 })(
   typeof globalThis!=='undefined'

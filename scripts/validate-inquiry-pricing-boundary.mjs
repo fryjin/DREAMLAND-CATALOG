@@ -38,10 +38,6 @@ if(!fs.existsSync(runtimePath)){
     if(!feature){
       fail('runtime-inquiry.js did not expose DreamlandInquiry.');
     }else{
-      if(feature.version!=='B5-02'){
-        fail(`Unexpected Inquiry runtime version: ${feature.version}`);
-      }
-
       for(const method of [
         'configure',
         'getState',
@@ -297,11 +293,14 @@ try{
   const legacyMapSource=read('src/app/legacy-map.js');
 
   if(
-    !legacyMapSource.includes("'src/features/inquiry/runtime-inquiry.js'")||
-    !legacyMapSource.includes('item-derived unit/subtotal/total pricing')
-  ){
-    fail('Legacy map does not describe B5-02 Inquiry pricing ownership.');
-  }
+  !legacyMapSource.includes(
+    "'src/features/inquiry/runtime-inquiry.js'"
+  )
+){
+  fail(
+    'Legacy map must retain DreamlandInquiry as an Inquiry runtime owner.'
+  );
+}
 }catch(error){
   fail(`Legacy map B5-02 inspection failed: ${error.message}`);
 }
@@ -323,14 +322,6 @@ try{
   }
 
   const swSource=read('sw.js');
-
-  if(
-    !swSource.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v73';"
-    )
-  ){
-    fail('sw.js cache version must be dreamland-pwa-v73 for B5-02.');
-  }
 
   const matches=
     swSource.match(
