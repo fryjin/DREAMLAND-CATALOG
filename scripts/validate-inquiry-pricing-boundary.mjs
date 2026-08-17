@@ -311,11 +311,12 @@ try{
     read('scripts/validate-inquiry-feature-state-boundary.mjs');
 
   for(const historical of [
-    'dreamland-pwa-v72',
-    "'function itemUnit('",
-    "'function itemSubtotal('",
-    "'function total('"
-  ]){
+  'dreamland-pwa-v72',
+  "feature.version!=='B5-01'",
+  "'function itemUnit('",
+  "'function itemSubtotal('",
+  "'function total('"
+]){
     if(previousValidator.includes(historical)){
       fail(`Historical B5-01 validator still owns B5-02 pricing/cache placement: ${historical}`);
     }
