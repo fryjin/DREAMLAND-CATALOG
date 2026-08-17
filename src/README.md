@@ -413,3 +413,76 @@ inquiry
 
 All other Features remain `legacy-owned` in B5-01.
 
+### B5-02 — Inquiry Pricing / Derived State Boundary
+
+Runtime extended:
+
+```text
+src/features/inquiry/runtime-inquiry.js
+version: B5-02
+```
+
+New Inquiry-derived calculations:
+
+```text
+pricingReady()
+seriesQuantity()
+pricingGroupQuantity()
+itemUnit()
+itemSubtotal()
+total()
+derivedSummary()
+```
+
+The Feature does **not** become the global pricing engine.
+
+These shared rules remain in `index.html` because Detail/Catalog also use them:
+
+```text
+pricingSeriesFor()
+tierFor()
+currentTierIndex()
+nextTierFor()
+tierUnitCny()
+packSurchargeCny()
+cnyToBase()
+configUnit()
+catalogUnit()
+```
+
+`DreamlandInquiry.configure()` receives narrow adapters:
+
+```text
+pricingSeriesFor
+tierUnitCny
+packSurchargeCny
+convertCnyToBase
+```
+
+The page keeps compatibility wrappers:
+
+```text
+seriesQty()
+pricingGroupQty()
+itemUnit()
+itemSubtotal()
+total()
+```
+
+but those wrappers no longer compute directly from `state.items`.
+
+`derivedSummary()` exposes:
+
+```text
+itemCount
+productCount
+customCount
+productQuantity
+estimatedTotal
+```
+
+for the later Inquiry View Model / Renderer migration.
+
+Inquiry remains `partial/runtimeEnabled` because DOM rendering, shared pricing policy, localized
+currency formatting, Contact, Risk and Submission are not migrated in B5-02.
+

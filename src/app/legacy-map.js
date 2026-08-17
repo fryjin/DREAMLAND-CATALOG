@@ -71,7 +71,7 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'features',
     'inquiry',
-    'Inquiry item-state hydration, persistence and core item mutations are routed through DreamlandInquiry. DOM rendering, pricing, preview, contact state and submission orchestration remain in index.html/copy-polish.js.',
+    'Inquiry item-state hydration/persistence/mutation plus Inquiry-specific quantity aggregation and item-derived unit/subtotal/total pricing are routed through DreamlandInquiry. Shared pricing rules (tier selection, package surcharge and CNY/base conversion), DOM rendering, preview, contact state and submission orchestration remain in index.html/copy-polish.js.',
     {
       status:'partial',
       runtimeMigrated:false,

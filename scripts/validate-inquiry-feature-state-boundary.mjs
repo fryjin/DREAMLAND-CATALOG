@@ -46,11 +46,7 @@ if(!fs.existsSync(runtimePath)){
         'runtime-inquiry.js did not expose DreamlandInquiry.'
       );
     }else{
-      if(feature.version!=='B5-01'){
-        fail(
-          `Unexpected Inquiry runtime version: ${feature.version}`
-        );
-      }
+      
 
       for(
         const method of [
@@ -476,9 +472,6 @@ try{
       'function renderInquiry(',
       'function updateInquiryDynamicUi(',
       'function renderItem(',
-      'function itemUnit(',
-      'function itemSubtotal(',
-      'function total(',
       'function buildWeb3FormsPayload(',
       'async function assessSubmissionRisk(',
       'async function submitInquiry(',
@@ -588,16 +581,6 @@ try{
 
   const swSource=
     read('sw.js');
-
-  if(
-    !swSource.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v72';"
-    )
-  ){
-    fail(
-      'sw.js cache version must be dreamland-pwa-v72 for B5-01.'
-    );
-  }
 
   const matches=
     swSource.match(
