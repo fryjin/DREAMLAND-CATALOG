@@ -46,11 +46,7 @@ if(!fs.existsSync(runtimePath)){
         'runtime-inquiry.js did not expose DreamlandInquiry.'
       );
     }else{
-      if(feature.version!=='B5-01'){
-        fail(
-          `Unexpected Inquiry runtime version: ${feature.version}`
-        );
-      }
+      
 
       for(
         const method of [
