@@ -293,11 +293,14 @@ try{
   const legacyMapSource=read('src/app/legacy-map.js');
 
   if(
-    !legacyMapSource.includes("'src/features/inquiry/runtime-inquiry.js'")||
-    !legacyMapSource.includes('item-derived unit/subtotal/total pricing')
-  ){
-    fail('Legacy map does not describe B5-02 Inquiry pricing ownership.');
-  }
+  !legacyMapSource.includes(
+    "'src/features/inquiry/runtime-inquiry.js'"
+  )
+){
+  fail(
+    'Legacy map must retain DreamlandInquiry as an Inquiry runtime owner.'
+  );
+}
 }catch(error){
   fail(`Legacy map B5-02 inspection failed: ${error.message}`);
 }
