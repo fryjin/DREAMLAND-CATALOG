@@ -63,7 +63,7 @@ try{
 }
 
 if(foundation){
-  if(foundation.phase!=='B5-03'){
+  if(foundation.phase!=='B5-04'){
     fail(`Unexpected frontend foundation phase: ${foundation.phase}`)
   }
 
@@ -71,7 +71,7 @@ if(foundation){
     foundation.runtimeIntegrated!==true||
     foundation.runtimeIntegration!=='partial'
   ){
-    fail('B5-03 must declare partial runtime integration.')
+    fail('B5-04 must declare partial runtime integration.')
   }
 
   const uniqueIds=(items,label)=>{
@@ -101,7 +101,7 @@ if(foundation){
       'src/features/inquiry/runtime-inquiry.js'
   ){
     fail(
-      'B5-03 must preserve only the partial Inquiry runtime Feature.'
+      'B5-04 must preserve only the partial Inquiry runtime Feature.'
     )
   }
 
@@ -123,8 +123,33 @@ if(foundation){
     )
   }
 
-  if(foundation.ui.some(item=>item.runtimeEnabled!==false)){
-    fail('B5-03 keeps Inquiry DOM/UI runtime ownership legacy-owned.')
+  const enabledUi=
+    foundation.ui
+      .filter(
+        item=>
+          item.runtimeEnabled===true
+      );
+
+  if(
+    enabledUi.length!==1||
+    enabledUi[0]?.id!=='inquiry-renderer'||
+    enabledUi[0]?.migrationStatus!=='migrated'||
+    enabledUi[0]?.runtimeOwner!==
+      'src/ui/inquiry/runtime-inquiry-renderer.js'
+  ){
+    fail(
+      'B5-04 must expose only the migrated Inquiry UI Renderer runtime.'
+    )
+  }
+
+  if(
+    !inquiryMigration?.runtimeOwners?.includes(
+      'src/ui/inquiry/runtime-inquiry-renderer.js'
+    )
+  ){
+    fail(
+      'Legacy map must include the Inquiry UI Renderer runtime owner.'
+    )
   }
 
   const enabledServices=foundation.services
@@ -143,7 +168,7 @@ if(foundation){
     !enabledSet.has('risk')
   ){
     fail(
-      `B5-03 must preserve runtime-enabled storage, pwa, media, submission and risk; found: `+
+      `B5-04 must preserve runtime-enabled storage, pwa, media, submission and risk; found: `+
       `${enabledServices.join(', ')||'none'}`
     )
   }

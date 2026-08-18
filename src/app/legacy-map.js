@@ -71,12 +71,13 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'features',
     'inquiry',
-    'Inquiry item-state hydration/persistence/mutation, Inquiry-specific pricing derivation and the Inquiry screen View Model (groups, item pricing snapshots, empty state and summary data) are routed through DreamlandInquiry. The DOM renderer, localized formatting, event handlers, shared pricing policy, preview, contact state and submission orchestration remain in index.html/copy-polish.js.',
+    'Inquiry item-state hydration/persistence/mutation, Inquiry-specific pricing derivation and the Inquiry screen View Model remain routed through DreamlandInquiry. Inquiry list/summary HTML templates, DOM rendering, incremental DOM updates and item-level event delegation are routed through DreamlandInquiryRenderer. App/index still owns render lifecycle orchestration, localization/money adapters, navigation/badge behavior, shared pricing policy, preview, contact state and submission orchestration.',
     {
       status:'partial',
       runtimeMigrated:false,
       runtimeOwners:[
         'src/features/inquiry/runtime-inquiry.js',
+        'src/ui/inquiry/runtime-inquiry-renderer.js',
         'index.html',
         'copy-polish.js'
       ]
