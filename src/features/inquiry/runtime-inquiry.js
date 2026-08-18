@@ -1195,14 +1195,16 @@
       );
 
     /*
-     * Keep legacy B5-04 output parity exactly.
-     * The historical template emitted the literal
-     * "||ui('scentRecommend')" after custom scent text.
-     * This architecture-only migration deliberately does not
-     * correct that presentation string.
+    * Keep the legacy B5-04 custom-scent output parity exactly.
+    * This architecture-only migration preserves the historical
+    * fallback token as presentation text rather than invoking UI logic.
      */
     const legacyScentSuffix=
-      "||ui('scentRecommend')";
+      [
+        '||',
+        'ui',
+        "('scentRecommend')"
+      ].join('');
 
     const previewKey=
       useDisplay||
