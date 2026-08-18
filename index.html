@@ -1873,7 +1873,34 @@ let state=
     packSurchargeCny:
       packSurchargeCny,
     convertCnyToBase:
-      cnyToBase
+      cnyToBase,
+
+    projectionText:
+      ui,
+
+    projectionProductDisplayName:
+      productDisplayName,
+
+    projectionSeriesLabel:
+      seriesLabel,
+
+    projectionChoiceLabel:
+      choiceLabel,
+
+    projectionQtyUnit:
+      qtyUnit,
+
+    projectionItemMoq:
+      itemMoq,
+
+    projectionItemScentLabel:
+      itemScentLabel,
+
+    projectionDefaultPack:
+      defaultPack,
+
+    projectionMoney:
+      money
   });
   if(!state.items.length&&pendingInquiryId){
 pendingInquiryId='';
@@ -5589,31 +5616,279 @@ submissionRiskSiteKey=
   }
 }
 function renderPreview(){
-  let c=state.contact||{},ps=state.items.filter(i=>i.type==='product'),cs=state.items.filter(i=>i.type==='custom'),inquiryId=ensureInquiryId();
-  previewContent.innerHTML=`<div class="preview-card"><h3>${ui('inquiryNumber')}</h3>${kv(ui('inquiryNumber'),inquiryId)}</div><div class="preview-card"><h3>${ui('personalInfo')}</h3>${kv(ui('nameLabel').replace(' *',''),c.name)}${kv(ui('companyBrand'),c.company||ui('notProvided'))}${kv(ui('countryRegion'),c.country)}${kv(ui('cityLabel'),c.city||ui('notProvided'))}${kv(ui('emailLabel').replace(' *',''),c.email)}${kv(ui('contactMethod'),c.phone)}${kv(ui('buyerType'),choiceLabel(c.buyerType)||ui('toConfirm'))}${kv(ui('note'),c.message||ui('notProvided'))}</div><div class="preview-card"><h3>${ui('productInquiry')}</h3>${ps.length?ps.map(i=>kv(productDisplayName(i),`${i.qty} ${qtyUnit()} · MOQ ${itemMoq(i)} · ${i.size} · ${itemScentLabel(i)} · ${choiceLabel(i.pack||defaultPack(i.series))} · ${money(itemSubtotal(i))}`)).join(''):kv(ui('products'),ui('none'))}</div><div class="preview-card"><h3>${ui('customInquiry')}</h3>${cs.length?cs.map(i=>kv(choiceLabel(i.use)||ui('customNeed'),`${i.qty||ui('qtyPending')} ${qtyUnit()} · ${i.budget||ui('budgetPending')} · ${choiceLabel(i.sizePref)||ui('sizeRecommend')} · ${itemScentLabel(i)}||ui('scentRecommend')} · ${i.color||ui('colorPending')} · ${choiceLabel(i.pack)||ui('packRecommend')} · ${choiceLabel(i.branding)||ui('brandingPending')} · ${i.date||ui('datePending')}`)).join(''):kv(ui('custom'),ui('none'))}</div><div class="preview-card"><h3>${ui('amountEstimate')}</h3>${kv(ui('productEstimate'),money(total()))}${kv(ui('customPart'),ui('consultantConfirm'))}${kv(ui('syncStatus'),submissionService.ready()?ui('syncReady'):ui('syncPending'))}</div><div class="preview-card verification-card"><label class="consent-check"><input
-  id="privacyConsent"
-  type="checkbox"
-  onchange="handlePrivacyConsentChange(this)"
-><span>${ui('privacyAgreePrefix')} <a href="${privacyUrl()}" target="_blank" rel="noopener">${ui('privacyLink')}</a></span></label><div class="risk-status" id="riskStatus">${riskText('checking')}</div><div class="captcha-section" id="captchaSection" hidden><div class="captcha-wrap" id="hcaptchaContainer"></div></div><div class="verification-error" id="verificationError"></div></div>`;
-  requestAnimationFrame(assessSubmissionRisk)
-}
-function itemText(i){
-  if(i.type==='product')return`${productDisplayName(i)}（${seriesLabel(i.series)||i.series} / ${i.productId||''}） - ${i.qty} ${qtyUnit()}，${i.size}，${itemScentLabel(i)}，${choiceLabel(i.pattern)}，${choiceLabel(i.pack||defaultPack(i.series))}，${ui('productEstimate')} ${money(itemSubtotal(i))}`;
-  return`${ui('customInquiry')} - ${choiceLabel(i.use)||ui('notFilled')}，${i.qty||ui('qtyPending')} ${qtyUnit()}，${i.budget||ui('budgetPending')}，${choiceLabel(i.sizePref)||ui('sizeRecommend')}，${itemScentLabel(i)}||ui('scentRecommend')}，${i.color||ui('colorPending')}，${choiceLabel(i.pack)||ui('packRecommend')}，${choiceLabel(i.branding)||ui('brandingPending')}，${i.date||ui('datePending')}，${ui('note')}：${i.note||ui('none')}`
-}
-function buildWeb3FormsPayload(inquiryId){
-  let c=state.contact||{},ps=state.items.filter(i=>i.type==='product'),cs=state.items.filter(i=>i.type==='custom'),submittedAt=new Date().toISOString(),subject=`[${inquiryId}] DREAMLAND 产品电子手册意向单 - ${c.name||'未填写联系人'}`;
-  return{
-    subject,from_name:c.name||'DREAMLAND 产品手册访客',email:c.email||'',
-    inquiry_id:inquiryId,submitted_at:submittedAt,privacy_version:appConfig.privacyVersion||'',privacy_accepted:'yes',
-    contact_name:c.name||'',company:c.company||'',country_or_region:c.country||'',city:c.city||'',email_address:c.email||'',phone_or_wechat:c.phone||'',buyer_type:c.buyerType||'',message:c.message||'',
-    personal_info:JSON.stringify(c,null,2),language:currentLang,estimated_amount:money(total()),estimated_amount_base_usd:total().toFixed(2),product_count:ps.length,custom_count:cs.length,
-    items_summary:state.items.map(itemText).join('\n'),product_items:JSON.stringify(ps,null,2),custom_items:JSON.stringify(cs,null,2)
-  }
+  const inquiryId=
+    ensureInquiryId();
+
+  const projection=
+    inquiryFeature
+      .buildProjection({
+        contact:
+          state.contact||
+          {},
+        inquiryId,
+        language:
+          currentLang,
+        privacyVersion:
+          appConfig
+            .privacyVersion||
+          ''
+      });
+
+  const c=
+    projection.contact;
+
+  previewContent.innerHTML=`
+    <div class="preview-card">
+      <h3>${ui('inquiryNumber')}</h3>
+      ${kv(
+        ui('inquiryNumber'),
+        projection.inquiryId
+      )}
+    </div>
+
+    <div class="preview-card">
+      <h3>${ui('personalInfo')}</h3>
+      ${kv(ui('nameLabel').replace(' *',''),c.name)}
+      ${kv(ui('companyBrand'),c.company||ui('notProvided'))}
+      ${kv(ui('countryRegion'),c.country)}
+      ${kv(ui('cityLabel'),c.city||ui('notProvided'))}
+      ${kv(ui('emailLabel').replace(' *',''),c.email)}
+      ${kv(ui('contactMethod'),c.phone)}
+      ${kv(ui('buyerType'),choiceLabel(c.buyerType)||ui('toConfirm'))}
+      ${kv(ui('note'),c.message||ui('notProvided'))}
+    </div>
+
+    <div class="preview-card">
+      <h3>${ui('productInquiry')}</h3>
+      ${
+        projection.products.length
+          ? projection.products
+              .map(
+                item=>
+                  kv(
+                    item.previewKey,
+                    item.previewValue
+                  )
+              )
+              .join('')
+          : kv(
+              ui('products'),
+              ui('none')
+            )
+      }
+    </div>
+
+    <div class="preview-card">
+      <h3>${ui('customInquiry')}</h3>
+      ${
+        projection.customs.length
+          ? projection.customs
+              .map(
+                item=>
+                  kv(
+                    item.previewKey,
+                    item.previewValue
+                  )
+              )
+              .join('')
+          : kv(
+              ui('custom'),
+              ui('none')
+            )
+      }
+    </div>
+
+    <div class="preview-card">
+      <h3>${ui('amountEstimate')}</h3>
+      ${kv(
+        ui('productEstimate'),
+        projection
+          .estimatedTotalDisplay
+      )}
+      ${kv(
+        ui('customPart'),
+        ui('consultantConfirm')
+      )}
+      ${kv(
+        ui('syncStatus'),
+        submissionService.ready()
+          ? ui('syncReady')
+          : ui('syncPending')
+      )}
+    </div>
+
+    <div class="preview-card verification-card">
+      <label class="consent-check">
+        <input
+          id="privacyConsent"
+          type="checkbox"
+          onchange="handlePrivacyConsentChange(this)"
+        >
+        <span>
+          ${ui('privacyAgreePrefix')}
+          <a
+            href="${privacyUrl()}"
+            target="_blank"
+            rel="noopener"
+          >
+            ${ui('privacyLink')}
+          </a>
+        </span>
+      </label>
+
+      <div class="risk-status" id="riskStatus">
+        ${riskText('checking')}
+      </div>
+
+      <div class="captcha-section" id="captchaSection" hidden>
+        <div class="captcha-wrap" id="hcaptchaContainer"></div>
+      </div>
+
+      <div class="verification-error" id="verificationError"></div>
+    </div>
+  `;
+
+  requestAnimationFrame(
+    assessSubmissionRisk
+  );
 }
 
-function submissionSnapshot(inquiryId){
-  return{inquiryId,submittedAt:new Date().toISOString(),language:currentLang,amountBaseUsd:total(),amountDisplay:money(total()),itemCount:state.items.length,items:state.items.map(item=>({type:item.type,productId:item.productId||'',name:productDisplayName(item),qty:Number(item.qty)||0,size:item.size||item.sizePref||'',cover:item.cover||''}))}
+function buildWeb3FormsPayload(
+  inquiryId
+){
+  const submittedAt=
+    new Date()
+      .toISOString();
+
+  const projection=
+    inquiryFeature
+      .buildProjection({
+        contact:
+          state.contact||
+          {},
+        inquiryId,
+        submittedAt,
+        language:
+          currentLang,
+        privacyVersion:
+          appConfig
+            .privacyVersion||
+          ''
+      });
+
+  const c=
+    projection.contact;
+
+  const subject=
+    `[${projection.inquiryId}] DREAMLAND 产品电子手册意向单 - ${c.name||'未填写联系人'}`;
+
+  return {
+    subject,
+    from_name:c.name||'DREAMLAND 产品手册访客',
+    email:c.email||'',
+    inquiry_id:projection.inquiryId,
+    submitted_at:projection.submittedAt,
+    privacy_version:projection.privacyVersion,
+    privacy_accepted:'yes',
+    contact_name:c.name||'',
+    company:c.company||'',
+    country_or_region:c.country||'',
+    city:c.city||'',
+    email_address:c.email||'',
+    phone_or_wechat:c.phone||'',
+    buyer_type:c.buyerType||'',
+    message:c.message||'',
+
+    personal_info:
+      JSON.stringify(
+        c,
+        null,
+        2
+      ),
+
+    language:
+      projection.language,
+
+    estimated_amount:
+      projection.estimatedTotalDisplay,
+
+    estimated_amount_base_usd:
+      projection.estimatedTotal
+        .toFixed(2),
+
+    product_count:
+      projection.productCount,
+
+    custom_count:
+      projection.customCount,
+
+    items_summary:
+      projection.itemsSummary,
+
+    product_items:
+      JSON.stringify(
+        projection.rawProductItems,
+        null,
+        2
+      ),
+
+    custom_items:
+      JSON.stringify(
+        projection.rawCustomItems,
+        null,
+        2
+      )
+  };
+}
+
+function submissionSnapshot(
+  inquiryId
+){
+  const projection=
+    inquiryFeature
+      .buildProjection({
+        contact:
+          state.contact||
+          {},
+        inquiryId,
+        submittedAt:
+          new Date()
+            .toISOString(),
+        language:
+          currentLang,
+        privacyVersion:
+          appConfig
+            .privacyVersion||
+          ''
+      });
+
+  return {
+    inquiryId:
+      projection.inquiryId,
+
+    submittedAt:
+      projection.submittedAt,
+
+    language:
+      projection.language,
+
+    amountBaseUsd:
+      projection.estimatedTotal,
+
+    amountDisplay:
+      projection.estimatedTotalDisplay,
+
+    itemCount:
+      projection.itemCount,
+
+    items:
+      projection.snapshotItems
+        .map(
+          item=>({
+            ...item
+          })
+        )
+  };
 }
 function archiveSubmission(snapshot){
   let archive=[];try{archive=JSON.parse(appStorage.local.getItem(SUBMISSION_ARCHIVE_KEY)||'[]')}catch(_){}

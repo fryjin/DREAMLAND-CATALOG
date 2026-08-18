@@ -20,7 +20,16 @@
     pricingSeriesFor:null,
     tierUnitCny:null,
     packSurchargeCny:null,
-    convertCnyToBase:null
+    convertCnyToBase:null,
+    projectionText:null,
+    projectionProductDisplayName:null,
+    projectionSeriesLabel:null,
+    projectionChoiceLabel:null,
+    projectionQtyUnit:null,
+    projectionItemMoq:null,
+    projectionItemScentLabel:null,
+    projectionDefaultPack:null,
+    projectionMoney:null
   };
 
   let state=
@@ -183,7 +192,16 @@
       pricingSeriesFor=null,
       tierUnitCny=null,
       packSurchargeCny=null,
-      convertCnyToBase=null
+      convertCnyToBase=null,
+      projectionText=null,
+      projectionProductDisplayName=null,
+      projectionSeriesLabel=null,
+      projectionChoiceLabel=null,
+      projectionQtyUnit=null,
+      projectionItemMoq=null,
+      projectionItemScentLabel=null,
+      projectionDefaultPack=null,
+      projectionMoney=null
     }={}
   ){
     config={
@@ -234,6 +252,51 @@
         typeof convertCnyToBase===
           'function'
           ? convertCnyToBase
+          : null,
+      projectionText:
+        typeof projectionText===
+          'function'
+          ? projectionText
+          : null,
+      projectionProductDisplayName:
+        typeof projectionProductDisplayName===
+          'function'
+          ? projectionProductDisplayName
+          : null,
+      projectionSeriesLabel:
+        typeof projectionSeriesLabel===
+          'function'
+          ? projectionSeriesLabel
+          : null,
+      projectionChoiceLabel:
+        typeof projectionChoiceLabel===
+          'function'
+          ? projectionChoiceLabel
+          : null,
+      projectionQtyUnit:
+        typeof projectionQtyUnit===
+          'function'
+          ? projectionQtyUnit
+          : null,
+      projectionItemMoq:
+        typeof projectionItemMoq===
+          'function'
+          ? projectionItemMoq
+          : null,
+      projectionItemScentLabel:
+        typeof projectionItemScentLabel===
+          'function'
+          ? projectionItemScentLabel
+          : null,
+      projectionDefaultPack:
+        typeof projectionDefaultPack===
+          'function'
+          ? projectionDefaultPack
+          : null,
+      projectionMoney:
+        typeof projectionMoney===
+          'function'
+          ? projectionMoney
           : null
     };
 
@@ -863,9 +926,488 @@
     });
   }
 
+
+  function projectionReady(){
+    return Boolean(
+      config.projectionText&&
+      config.projectionProductDisplayName&&
+      config.projectionSeriesLabel&&
+      config.projectionChoiceLabel&&
+      config.projectionQtyUnit&&
+      config.projectionItemMoq&&
+      config.projectionItemScentLabel&&
+      config.projectionDefaultPack&&
+      config.projectionMoney
+    );
+  }
+
+  function projectionClone(
+    value
+  ){
+    if(value===undefined){
+      return undefined;
+    }
+
+    return JSON.parse(
+      JSON.stringify(
+        value
+      )
+    );
+  }
+
+  function projectionText(
+    key
+  ){
+    return String(
+      config.projectionText?.(
+        key
+      )??
+      ''
+    );
+  }
+
+  function projectionProductDisplayName(
+    item
+  ){
+    return String(
+      config.projectionProductDisplayName?.(
+        item
+      )??
+      ''
+    );
+  }
+
+  function projectionSeriesLabel(
+    series
+  ){
+    return String(
+      config.projectionSeriesLabel?.(
+        series
+      )??
+      ''
+    );
+  }
+
+  function projectionChoiceLabel(
+    value
+  ){
+    return String(
+      config.projectionChoiceLabel?.(
+        value
+      )??
+      ''
+    );
+  }
+
+  function projectionQtyUnit(){
+    return String(
+      config.projectionQtyUnit?.()??
+      ''
+    );
+  }
+
+  function projectionItemMoq(
+    item
+  ){
+    return number(
+      config.projectionItemMoq?.(
+        item
+      ),
+      1
+    );
+  }
+
+  function projectionItemScentLabel(
+    item
+  ){
+    return String(
+      config.projectionItemScentLabel?.(
+        item
+      )??
+      ''
+    );
+  }
+
+  function projectionDefaultPack(
+    series
+  ){
+    return String(
+      config.projectionDefaultPack?.(
+        series
+      )??
+      ''
+    );
+  }
+
+  function projectionMoney(
+    value
+  ){
+    return String(
+      config.projectionMoney?.(
+        value
+      )??
+      ''
+    );
+  }
+
+  function buildProductProjection(
+    item
+  ){
+    const raw=
+      projectionClone(
+        item
+      );
+
+    const displayName=
+      projectionProductDisplayName(
+        item
+      );
+
+    const seriesDisplay=
+      projectionSeriesLabel(
+        item?.series
+      )||
+      String(
+        item?.series||
+        ''
+      );
+
+    const quantity=
+      number(
+        item?.qty,
+        0
+      );
+
+    const quantityUnit=
+      projectionQtyUnit();
+
+    const scentDisplay=
+      projectionItemScentLabel(
+        item
+      );
+
+    const packValue=
+      item?.pack||
+      projectionDefaultPack(
+        item?.series
+      );
+
+    const packDisplay=
+      projectionChoiceLabel(
+        packValue
+      );
+
+    const patternDisplay=
+      projectionChoiceLabel(
+        item?.pattern
+      );
+
+    const subtotal=
+      itemSubtotal(
+        item
+      );
+
+    const subtotalDisplay=
+      projectionMoney(
+        subtotal
+      );
+
+    const previewValue=
+      `${quantity} ${quantityUnit} · MOQ ${projectionItemMoq(item)} · ${item?.size||''} · ${scentDisplay} · ${packDisplay} · ${subtotalDisplay}`;
+
+    const summaryText=
+      `${displayName}（${seriesDisplay} / ${item?.productId||''}） - ${quantity} ${quantityUnit}，${item?.size||''}，${scentDisplay}，${patternDisplay}，${packDisplay}，${projectionText('productEstimate')} ${subtotalDisplay}`;
+
+    const snapshotItem=
+      Object.freeze({
+        type:
+          item?.type||
+          '',
+        productId:
+          item?.productId||
+          '',
+        name:
+          displayName,
+        qty:
+          number(
+            item?.qty,
+            0
+          ),
+        size:
+          item?.size||
+          item?.sizePref||
+          '',
+        cover:
+          item?.cover||
+          ''
+      });
+
+    return Object.freeze({
+      type:'product',
+      raw:
+        Object.freeze(
+          raw
+        ),
+      previewKey:
+        displayName,
+      previewValue,
+      summaryText,
+      subtotal,
+      subtotalDisplay,
+      snapshotItem
+    });
+  }
+
+  function buildCustomProjection(
+    item
+  ){
+    const raw=
+      projectionClone(
+        item
+      );
+
+    const quantityUnit=
+      projectionQtyUnit();
+
+    const useDisplay=
+      projectionChoiceLabel(
+        item?.use
+      );
+
+    const sizeDisplay=
+      projectionChoiceLabel(
+        item?.sizePref
+      );
+
+    const scentDisplay=
+      projectionItemScentLabel(
+        item
+      );
+
+    const packDisplay=
+      projectionChoiceLabel(
+        item?.pack
+      );
+
+    const brandingDisplay=
+      projectionChoiceLabel(
+        item?.branding
+      );
+
+    /*
+     * Keep legacy B5-04 output parity exactly.
+     * The historical template emitted the literal
+     * "||ui('scentRecommend')" after custom scent text.
+     * This architecture-only migration deliberately does not
+     * correct that presentation string.
+     */
+    const legacyScentSuffix=
+      "||ui('scentRecommend')";
+
+    const previewKey=
+      useDisplay||
+      projectionText(
+        'customNeed'
+      );
+
+    const previewValue=
+      `${item?.qty||projectionText('qtyPending')} ${quantityUnit} · ${item?.budget||projectionText('budgetPending')} · ${sizeDisplay||projectionText('sizeRecommend')} · ${scentDisplay}${legacyScentSuffix} · ${item?.color||projectionText('colorPending')} · ${packDisplay||projectionText('packRecommend')} · ${brandingDisplay||projectionText('brandingPending')} · ${item?.date||projectionText('datePending')}`;
+
+    const summaryText=
+      `${projectionText('customInquiry')} - ${useDisplay||projectionText('notFilled')}，${item?.qty||projectionText('qtyPending')} ${quantityUnit}，${item?.budget||projectionText('budgetPending')}，${sizeDisplay||projectionText('sizeRecommend')}，${scentDisplay}${legacyScentSuffix}，${item?.color||projectionText('colorPending')}，${packDisplay||projectionText('packRecommend')}，${brandingDisplay||projectionText('brandingPending')}，${item?.date||projectionText('datePending')}，${projectionText('note')}：${item?.note||projectionText('none')}`;
+
+    const snapshotItem=
+      Object.freeze({
+        type:
+          item?.type||
+          '',
+        productId:
+          item?.productId||
+          '',
+        name:
+          projectionProductDisplayName(
+            item
+          ),
+        qty:
+          number(
+            item?.qty,
+            0
+          ),
+        size:
+          item?.size||
+          item?.sizePref||
+          '',
+        cover:
+          item?.cover||
+          ''
+      });
+
+    return Object.freeze({
+      type:'custom',
+      raw:
+        Object.freeze(
+          raw
+        ),
+      previewKey,
+      previewValue,
+      summaryText,
+      subtotal:0,
+      subtotalDisplay:
+        projectionMoney(
+          0
+        ),
+      snapshotItem
+    });
+  }
+
+  function buildProjection(
+    {
+      contact={},
+      inquiryId='',
+      submittedAt='',
+      language='',
+      privacyVersion=''
+    }={}
+  ){
+    if(!projectionReady()){
+      throw new Error(
+        'DreamlandInquiry projection adapters are not configured.'
+      );
+    }
+
+    const contactSnapshot=
+      Object.freeze(
+        projectionClone(
+          (
+            contact&&
+            typeof contact==='object'&&
+            !Array.isArray(contact)
+          )
+            ? contact
+            : {}
+        )
+      );
+
+    const itemProjections=
+      state.items.map(
+        item=>
+          item?.type==='custom'
+            ? buildCustomProjection(
+                item
+              )
+            : buildProductProjection(
+                item
+              )
+      );
+
+    const products=
+      itemProjections.filter(
+        item=>
+          item.type==='product'
+      );
+
+    const customs=
+      itemProjections.filter(
+        item=>
+          item.type==='custom'
+      );
+
+    const rawProductItems=
+      products.map(
+        item=>
+          item.raw
+      );
+
+    const rawCustomItems=
+      customs.map(
+        item=>
+          item.raw
+      );
+
+    const snapshotItems=
+      itemProjections.map(
+        item=>
+          item.snapshotItem
+      );
+
+    const estimatedTotal=
+      total();
+
+    return Object.freeze({
+      inquiryId:
+        String(
+          inquiryId||
+          ''
+        ),
+      submittedAt:
+        String(
+          submittedAt||
+          ''
+        ),
+      language:
+        String(
+          language||
+          ''
+        ),
+      privacyVersion:
+        String(
+          privacyVersion||
+          ''
+        ),
+      contact:
+        contactSnapshot,
+      items:
+        Object.freeze([
+          ...itemProjections
+        ]),
+      products:
+        Object.freeze([
+          ...products
+        ]),
+      customs:
+        Object.freeze([
+          ...customs
+        ]),
+      rawProductItems:
+        Object.freeze([
+          ...rawProductItems
+        ]),
+      rawCustomItems:
+        Object.freeze([
+          ...rawCustomItems
+        ]),
+      snapshotItems:
+        Object.freeze([
+          ...snapshotItems
+        ]),
+      itemCount:
+        itemProjections.length,
+      productCount:
+        products.length,
+      customCount:
+        customs.length,
+      /*
+       * Preserve the legacy line-continuation join semantics from
+       * buildWeb3FormsPayload(): items were concatenated with no delimiter.
+       */
+      itemsSummary:
+        itemProjections
+          .map(
+            item=>
+              item.summaryText
+          )
+          .join(''),
+      estimatedTotal,
+      estimatedTotalDisplay:
+        projectionMoney(
+          estimatedTotal
+        )
+    });
+  }
+
   root.DreamlandInquiry=
     Object.freeze({
-      version:'B5-03',
+      version:'B5-05',
       configure,
       getState,
       items,
@@ -886,7 +1428,9 @@
       itemSubtotal,
       total,
       derivedSummary,
-      buildViewModel
+      buildViewModel,
+      projectionReady,
+      buildProjection
     });
 })(
   typeof globalThis!=='undefined'

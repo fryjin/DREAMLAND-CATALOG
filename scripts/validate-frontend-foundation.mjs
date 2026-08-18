@@ -63,7 +63,7 @@ try{
 }
 
 if(foundation){
-  if(foundation.phase!=='B5-04'){
+  if(foundation.phase!=='B5-05'){
     fail(`Unexpected frontend foundation phase: ${foundation.phase}`)
   }
 
@@ -71,7 +71,7 @@ if(foundation){
     foundation.runtimeIntegrated!==true||
     foundation.runtimeIntegration!=='partial'
   ){
-    fail('B5-04 must declare partial runtime integration.')
+    fail('B5-05 must declare partial runtime integration.')
   }
 
   const uniqueIds=(items,label)=>{
@@ -101,7 +101,7 @@ if(foundation){
       'src/features/inquiry/runtime-inquiry.js'
   ){
     fail(
-      'B5-04 must preserve only the partial Inquiry runtime Feature.'
+      'B5-05 must preserve only the partial Inquiry runtime Feature.'
     )
   }
 
@@ -138,7 +138,7 @@ if(foundation){
       'src/ui/inquiry/runtime-inquiry-renderer.js'
   ){
     fail(
-      'B5-04 must expose only the migrated Inquiry UI Renderer runtime.'
+      'B5-05 must preserve only the migrated Inquiry UI Renderer runtime.'
     )
   }
 
@@ -168,7 +168,7 @@ if(foundation){
     !enabledSet.has('risk')
   ){
     fail(
-      `B5-04 must preserve runtime-enabled storage, pwa, media, submission and risk; found: `+
+      `B5-05 must preserve runtime-enabled storage, pwa, media, submission and risk; found: `+
       `${enabledServices.join(', ')||'none'}`
     )
   }
