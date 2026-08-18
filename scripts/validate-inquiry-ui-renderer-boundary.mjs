@@ -1027,6 +1027,21 @@ try{
 }
 
 try{
+  const stateValidator=
+  read(
+    'scripts/validate-inquiry-feature-state-boundary.mjs'
+  );
+
+if(
+  stateValidator.includes(
+    "'function renderItem('"
+  )
+){
+  fail(
+    'Historical B5-01 validator still owns B5-04 Renderer placement: function renderItem('
+  );
+}
+  
   const historicalValidator=
     read(
       'scripts/validate-inquiry-view-model-boundary.mjs'

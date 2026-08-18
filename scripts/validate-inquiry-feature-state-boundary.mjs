@@ -471,7 +471,6 @@ try{
     const preserved of [
       'function renderInquiry(',
       'function updateInquiryDynamicUi(',
-      'function renderItem(',
       'function buildWeb3FormsPayload(',
       'async function assessSubmissionRisk(',
       'async function submitInquiry(',
