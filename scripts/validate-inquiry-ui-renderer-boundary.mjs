@@ -1041,7 +1041,22 @@ if(
     'Historical B5-01 validator still owns B5-04 Renderer placement: function renderItem('
   );
 }
-  
+
+const pricingValidator=
+  read(
+    'scripts/validate-inquiry-pricing-boundary.mjs'
+  );
+
+if(
+  pricingValidator.includes(
+    "'function renderItem('"
+  )
+){
+  fail(
+    'Historical B5-02 validator still owns B5-04 Renderer placement: function renderItem('
+  );
+}
+
   const historicalValidator=
     read(
       'scripts/validate-inquiry-view-model-boundary.mjs'

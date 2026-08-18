@@ -254,7 +254,6 @@ try{
     'function openItemTierSheet(',
     'function renderInquiry(',
     'function updateInquiryDynamicUi(',
-    'function renderItem(',
     'async function submitInquiry('
   ]){
     if(!compact.includes(preserved.replace(/\s+/g,''))){
