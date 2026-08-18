@@ -703,3 +703,123 @@ media lifecycle
 
 Inquiry remains a partial Feature because these orchestration and downstream projection paths are still legacy-owned.
 
+### B5-05 — Inquiry Preview / Projection Boundary
+
+B5-05 extends the existing `DreamlandInquiry` runtime without moving Preview DOM or Submission orchestration into the Feature.
+
+Runtime:
+
+```text
+src/features/inquiry/runtime-inquiry.js
+B5-03 → B5-05
+```
+
+New API:
+
+```text
+projectionReady()
+buildProjection(context)
+```
+
+Projection context:
+
+```text
+{
+  contact,
+  inquiryId,
+  submittedAt,
+  language,
+  privacyVersion
+}
+```
+
+Projection output provides one stable Inquiry interpretation for:
+
+```text
+Preview
+Web3Forms payload composition
+submission archive snapshots
+```
+
+The projection includes:
+
+```text
+products / customs
+previewKey / previewValue
+summaryText
+rawProductItems / rawCustomItems
+snapshotItems
+itemCount / productCount / customCount
+itemsSummary
+estimatedTotal
+estimatedTotalDisplay
+contact snapshot
+metadata
+```
+
+Presentation adapters are injected through `DreamlandInquiry.configure()`:
+
+```text
+projectionText
+projectionProductDisplayName
+projectionSeriesLabel
+projectionChoiceLabel
+projectionQtyUnit
+projectionItemMoq
+projectionItemScentLabel
+projectionDefaultPack
+projectionMoney
+```
+
+They are function references only. The Feature remains DOM-free and does not own localization state, currency state, Contact state, Risk, Submission or Preview HTML.
+
+After B5-05:
+
+```text
+renderPreview()
+  → buildProjection()
+  → Preview DOM
+
+buildWeb3FormsPayload()
+  → buildProjection()
+  → Web3Forms-specific flat fields
+
+submissionSnapshot()
+  → buildProjection()
+  → archive record
+```
+
+The legacy `itemText()` helper is removed.
+
+Compatibility wrappers remain temporarily:
+
+```text
+itemSubtotal()
+total()
+```
+
+even though Preview/Submission no longer consume them. Their cleanup is intentionally deferred so B5-05 does not mix Projection migration with shared Pricing compatibility cleanup.
+
+B5-05 preserves existing output parity, including two pre-existing legacy string behaviors:
+
+```text
+custom scent preview/summary retains the literal:
+||ui('scentRecommend')
+
+items_summary retains the historical no-delimiter concatenation
+```
+
+Those are not corrected in this architecture-only migration.
+
+Still legacy/App-owned:
+
+```text
+Preview HTML / kv()
+Contact draft and validation
+privacy consent UI
+Risk / hCaptcha
+Web3Forms field names
+Submission orchestration
+archive persistence
+```
+

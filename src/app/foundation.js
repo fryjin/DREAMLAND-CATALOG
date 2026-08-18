@@ -22,11 +22,11 @@ import {
 /*
  * Architecture metadata only.
  *
- * B5-04 establishes the first runtime UI boundary. DreamlandInquiry remains the DOM-free View Model owner, while DreamlandInquiryRenderer owns Inquiry list/summary HTML templates, DOM rendering, incremental DOM updates and item-level event delegation. App/index keeps lifecycle orchestration, View Model construction, localization/money adapters, navigation, badge updates and business callbacks.
+ * B5-05 adds an Inquiry Projection boundary. DreamlandInquiry remains DOM-free and now prepares stable Preview/Submission/Archive projections from Inquiry state while DreamlandInquiryRenderer keeps list/summary UI ownership. App/index still owns Preview DOM, Contact, Web3Forms field composition, Risk/Captcha and Submission orchestration.
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B5-04',
+  phase:'B5-05',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',
