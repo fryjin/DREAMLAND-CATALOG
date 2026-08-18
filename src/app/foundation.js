@@ -22,7 +22,7 @@ import {
 /*
  * Architecture metadata only.
  *
- * B5-05 adds an Inquiry Projection boundary. DreamlandInquiry remains DOM-free and now prepares stable Preview/Submission/Archive projections from Inquiry state while DreamlandInquiryRenderer keeps list/summary UI ownership. App/index still owns Preview DOM, Contact, Web3Forms field composition, Risk/Captcha and Submission orchestration.
+ * B5-06 adds an Inquiry Projection boundary. DreamlandInquiry remains DOM-free and now prepares stable Preview/Submission/Archive projections from Inquiry state while DreamlandInquiryRenderer keeps list/summary UI ownership. App/index still owns Preview DOM, Contact, Web3Forms field composition, Risk/Captcha and Submission orchestration.
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({

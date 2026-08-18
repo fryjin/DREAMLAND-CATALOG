@@ -71,7 +71,7 @@ export const FEATURE_MANIFEST=Object.freeze([
     [
       'inquiry list',
       'pricing preview',
-      'contact / submission flow'
+      'preview / submission projection'
     ],
     [
       'index.html',
@@ -96,13 +96,20 @@ export const FEATURE_MANIFEST=Object.freeze([
     ]
   ),
   feature(
-    'contact',
+      'contact',
     [
-      'contact information collection',
-      'submission preparation'
+      'contact information state',
+      'contact draft persistence',
+       'contact validation'
     ],
     [
       'index.html'
-    ]
+    ],
+   {
+       status:'partial',
+       runtimeEnabled:true,
+        runtimeOwner:
+        'src/features/contact/runtime-contact.js'
+   }
   )
 ]);
