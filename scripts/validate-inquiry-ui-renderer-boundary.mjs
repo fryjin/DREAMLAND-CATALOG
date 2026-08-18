@@ -1104,16 +1104,6 @@ if(
       'sw.js'
     );
 
-  if(
-    !swSource.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v75';"
-    )
-  ){
-    fail(
-      'sw.js cache version must be dreamland-pwa-v75 for B5-04.'
-    );
-  }
-
   const featureMatches=
     swSource.match(
       /'\.\/src\/features\/inquiry\/runtime-inquiry\.js'/g

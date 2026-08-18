@@ -678,6 +678,27 @@ try{
 }
 
 try{
+  const uiValidator=
+    read(
+      'scripts/validate-inquiry-ui-renderer-boundary.mjs'
+    );
+
+  if(
+    uiValidator.includes(
+      'dreamland-pwa-v75'
+    )
+  ){
+    fail(
+      'Historical B5-04 validator still owns B5-05 cache version: dreamland-pwa-v75'
+    );
+  }
+}catch(error){
+  fail(
+    `Historical B5-04 validator inspection failed: ${error.message}`
+  );
+}
+
+try{
   const swSource=
     read(
       'sw.js'
