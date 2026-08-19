@@ -47,6 +47,7 @@ const requiredFiles=[
   'src/services/risk/runtime-risk.js',
   'src/features/inquiry/runtime-inquiry.js',
   'src/features/contact/runtime-contact.js',
+  'src/features/catalog/runtime-catalog.js',
   'src/app/runtime-inquiry-submission-flow.js'
 ];
 
@@ -65,7 +66,7 @@ try{
 }
 
 if(foundation){
-  if(foundation.phase!=='B5-06'){
+  if(foundation.phase!=='B6-01'){
     fail(`Unexpected frontend foundation phase: ${foundation.phase}`)
   }
 
@@ -88,7 +89,7 @@ if(foundation){
   uniqueIds(foundation.ui,'UI contracts');
   uniqueIds(foundation.services,'Service contracts');
 
-  const enabledFeatures=
+const enabledFeatures=
   foundation.features
     .filter(
       item=>
@@ -103,6 +104,12 @@ const enabledIds=
     .sort()
     .join(',');
 
+const catalogFeature=
+  enabledFeatures.find(
+    item=>
+      item.id==='catalog'
+  );
+
 const inquiryFeature=
   enabledFeatures.find(
     item=>
@@ -116,16 +123,23 @@ const contactFeature=
   );
 
 if(
-  enabledIds!=='contact,inquiry'||
-  inquiryFeature?.status!=='partial'||
+  enabledIds!==
+    'catalog,contact,inquiry'||
+  catalogFeature?.status!==
+    'partial'||
+  catalogFeature?.runtimeOwner!==
+    'src/features/catalog/runtime-catalog.js'||
+  inquiryFeature?.status!==
+    'partial'||
   inquiryFeature?.runtimeOwner!==
     'src/features/inquiry/runtime-inquiry.js'||
-  contactFeature?.status!=='partial'||
+  contactFeature?.status!==
+    'partial'||
   contactFeature?.runtimeOwner!==
     'src/features/contact/runtime-contact.js'
 ){
   fail(
-    'B5-06 must runtime-enable only partial Inquiry and Contact Features.'
+    'B6-01 must runtime-enable only partial Catalog, Inquiry and Contact Features.'
   )
 }
 
@@ -296,6 +310,38 @@ if(
   ){
     fail('Legacy map does not mark Risk as a partial client/server boundary.')
   }
+}
+
+const catalogMigration=
+  foundation.legacyMap.find(
+    item=>
+      item.id==='catalog'
+  );
+
+if(
+  catalogMigration?.status!==
+    'partial'||
+  catalogMigration?.runtimeMigrated!==
+    false||
+  !catalogMigration
+    ?.runtimeOwners
+    ?.includes(
+      'src/features/catalog/runtime-catalog.js'
+    )||
+  !catalogMigration
+    ?.runtimeOwners
+    ?.includes(
+      'index.html'
+    )||
+  !catalogMigration
+    ?.runtimeOwners
+    ?.includes(
+      'catalog-data.js'
+    )
+){
+  fail(
+    'Legacy map does not mark Catalog as a partial runtime Feature.'
+  )
 }
 
 const contactMigration=

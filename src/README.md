@@ -856,3 +856,54 @@ index remains:
 - toast/button/navigation
 
 The previous clearSubmittedInquiry() reassigned the legacy global state object and could bypass DreamlandInquiry's internal state. B5-06 routes successful clearing through DreamlandInquiry.clearItems() + persist().
+
+### B6-01 — Catalog State / ViewModel Boundary
+
+Runtime active:
+
+```text
+src/features/catalog/runtime-catalog.js
+```
+
+`DreamlandCatalog` owns:
+
+```text
+active-series state
+default-series fallback
+available-series derivation
+current-series product filtering
+listSort / sortOrder ordering
+Catalog ViewModel snapshots
+```
+
+The Catalog ViewModel exposes:
+
+```text
+empty
+activeSeries
+availableSeries
+displayCount
+series
+products
+```
+
+`index.html` remains responsible for:
+
+```text
+renderTabs / renderProducts / renderProductCard
+Catalog DOM writes
+batch cursor / loading / render token / timer
+scroll-driven batch scheduling
+media hooks
+openDetail navigation
+```
+
+So Catalog is `partial/runtimeEnabled` in B6-01.
+
+B6-02 is responsible for the actual Catalog Renderer migration.
+
+PWA cache:
+
+```text
+dreamland-pwa-v78
+```

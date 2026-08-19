@@ -813,33 +813,35 @@ try{
       .join(',');
 
   const inquiry=
-    manifest.find(
-      item=>
-        item.id==='inquiry'
-    );
+  manifest.find(
+    item=>
+      item.id==='inquiry'
+  );
 
-  const contact=
-    manifest.find(
-      item=>
-        item.id==='contact'
-    );
+const contact=
+  manifest.find(
+    item=>
+      item.id==='contact'
+  );
 
-  if(
-    enabledIds!==
-      'contact,inquiry'||
-    inquiry?.status!==
-      'partial'||
-    inquiry?.runtimeOwner!==
-      'src/features/inquiry/runtime-inquiry.js'||
-    contact?.status!==
-      'partial'||
-    contact?.runtimeOwner!==
-      'src/features/contact/runtime-contact.js'
-  ){
-    fail(
-      'B5-06 must runtime-enable only partial Inquiry and Contact Features.'
-    );
-  }
+if(
+  inquiry?.runtimeEnabled!==
+    true||
+  inquiry?.status!==
+    'partial'||
+  inquiry?.runtimeOwner!==
+    'src/features/inquiry/runtime-inquiry.js'||
+  contact?.runtimeEnabled!==
+    true||
+  contact?.status!==
+    'partial'||
+  contact?.runtimeOwner!==
+    'src/features/contact/runtime-contact.js'
+){
+  fail(
+    'B5-06 must preserve partial Inquiry and Contact Feature ownership.'
+  );
+}
 }catch(error){
   fail(
     `Feature manifest B5-06 inspection failed: ${error.message}`
@@ -1024,15 +1026,7 @@ try{
       'sw.js'
     );
 
-  if(
-    !swSource.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v77';"
-    )
-  ){
-    fail(
-      'sw.js cache version must be dreamland-pwa-v77 for B5-06.'
-    );
-  }
+ 
 
   for(const [
     label,

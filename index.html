@@ -1185,6 +1185,7 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./src/services/pwa/runtime-pwa.js"></script>
 <script src="./src/services/submission/runtime-submission.js"></script>
 <script src="./src/services/risk/runtime-risk.js"></script>
+<script src="./src/features/catalog/runtime-catalog.js"></script>
 <script src="./src/features/inquiry/runtime-inquiry.js"></script>
 <script src="./src/features/contact/runtime-contact.js"></script>
 <script src="./src/ui/inquiry/runtime-inquiry-renderer.js"></script>
@@ -1194,17 +1195,11 @@ const appStorage=window.DreamlandStorage;
 const pwaService=window.DreamlandPwa;
 const submissionService=window.DreamlandSubmission;
 const riskService=window.DreamlandRisk;
-const inquiryFeature=
-  window.DreamlandInquiry;
-
-const contactFeature=
-  window.DreamlandContact;
-
-const inquiryRenderer=
-  window.DreamlandInquiryRenderer;
-
-const submissionFlow=
-  window.DreamlandInquirySubmissionFlow;
+const catalogFeature=window.DreamlandCatalog;
+const inquiryFeature=window.DreamlandInquiry;
+const contactFeature=window.DreamlandContact;
+const inquiryRenderer=window.DreamlandInquiryRenderer;
+const submissionFlow=window.DreamlandInquirySubmissionFlow;
 
 if(!inquiryFeature){
   throw new Error(
@@ -1239,6 +1234,12 @@ if(!appStorage){
 if(!pwaService){
   throw new Error(
     'DreamlandPwa must load before app initialization.'
+  );
+}
+
+if(!catalogFeature){
+  throw new Error(
+    'DreamlandCatalog must load before Catalog state initialization.'
   );
 }
 
@@ -1936,7 +1937,7 @@ inquiryRenderer.configure({
       openItemTierSheet
   }
 });
-let activeScreen='home',activeSeries='advanced',activeProduct=null,config={},detailSlideIndex=0,detailTimer=null,catalogRenderToken=0,catalogBatchTimer=null,catalogList=[],catalogCursor=0,catalogLoading=false,editingItemId='';
+let activeScreen='home',activeProduct=null,config={},detailSlideIndex=0,detailTimer=null,catalogRenderToken=0,catalogBatchTimer=null,catalogList=[],catalogCursor=0,catalogLoading=false,editingItemId='';
 
 let state=
   inquiryFeature.configure({
@@ -2759,7 +2760,42 @@ function go(n){closePreviewImage();if(n!=='catalog')cancelCatalogRender();if(n!=
 }if(n==='preview')renderPreview();if(n==='success')renderSuccess();applyI18n();requestAnimationFrame(()=>updateCtaReveal(n))}
 function updateCtaReveal(n){if(!['detail','contact','preview','inquiry','custom'].includes(n))return;let screen=document.querySelector(`.screen[data-screen="${n}"]`),c=screen?.querySelector('.content.with-cta');if(!screen||!c)return;let nearBottom=c.scrollHeight-c.scrollTop-c.clientHeight<28;screen.classList.toggle('cta-revealed',nearBottom)}
 function bindCtaReveal(){['detail','contact','preview','inquiry','custom'].forEach(n=>{let s=document.querySelector(`.screen[data-screen="${n}"]`),c=s?.querySelector('.content.with-cta');if(!c)return;c.addEventListener('scroll',()=>updateCtaReveal(n),{passive:true})})}
-function renderTabs(){seriesTabs.className=`tabs lang-${currentLang}`;seriesTabs.innerHTML=Object.keys(seriesMeta).map(k=>`<button class="tab ${k===activeSeries?'active':''}" data-s="${k}">${seriesTabLabel(k)}</button>`).join('');seriesTabs.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{activeSeries=t.dataset.s;renderTabs();renderProducts()})}
+function renderTabs(){
+  const activeSeries=
+    catalogFeature
+      .activeSeries();
+
+  const seriesIds=
+    catalogFeature
+      .availableSeries();
+
+  seriesTabs.className=
+    `tabs lang-${currentLang}`;
+
+  seriesTabs.innerHTML=
+    seriesIds
+      .map(
+        key=>
+          `<button class="tab ${key===activeSeries?'active':''}" data-s="${key}">${seriesTabLabel(key)}</button>`
+      )
+      .join('');
+
+  seriesTabs
+    .querySelectorAll(
+      '.tab'
+    )
+    .forEach(tab=>{
+      tab.onclick=()=>{
+        catalogFeature
+          .setActiveSeries(
+            tab.dataset.s
+          );
+
+        renderTabs();
+        renderProducts();
+      };
+    });
+}
 function imgMiss(el){el.classList.add('is-missing')}
 function legacyPatternThumb(value){
   const list=
@@ -3284,22 +3320,25 @@ function cancelCatalogRender(){
 function catalogContentEl(){return document.querySelector('.screen[data-screen="catalog"] .content')}
 function renderProducts(){
   cancelCatalogRender();
-let token=catalogRenderToken,
-    list=products
-      .filter(product=>product.series===activeSeries)
-      .sort((a,b)=>{
-        const sortDiff=
-          (Number(b.listSort)||Number(b.sortOrder)||0)-
-          (Number(a.listSort)||Number(a.sortOrder)||0);
 
-        return sortDiff||
-          String(a.id).localeCompare(String(b.id));
-      }),
-    displayCount=list.length,
-    content=catalogContentEl();
+  const view=
+    catalogFeature
+      .buildViewModel();
+
+  let token=
+        catalogRenderToken,
+      list=
+        view.products,
+      displayCount=
+        view.displayCount,
+      content=
+        catalogContentEl();
+
   catalogList=list;
   catalogCursor=0;
-  seriesCount.innerHTML=`<span>${seriesLabel(activeSeries)}</span><span>${ui('total')} ${displayCount} ${ui('models')}</span>`;
+
+  seriesCount.innerHTML=
+  `<span>${seriesLabel(view.activeSeries)}</span><span>${ui('total')} ${displayCount} ${ui('models')}</span>`;
   productGrid.innerHTML=`<div class="catalog-col left" data-catalog-col="left"><div class="series-count-card"><div class="series-kicker">${ui('discover')}</div><div class="series-highlight"><span class="series-number">${displayCount}</span><span class="series-word">${ui('dreams')}</span></div></div></div><div class="catalog-col right" data-catalog-col="right"></div>`;
   if(content)content.scrollTop=0;
   appendCatalogBatch(token);
@@ -6582,12 +6621,11 @@ async function bootstrap(){
 
   await loadCatalogData();
 
-  activeSeries=seriesMeta[defaultSeries]
-    ? defaultSeries
-    : (
-        Object.keys(seriesMeta)[0]||
-        'advanced'
-      );
+  catalogFeature.configure({
+  products,
+  seriesMeta,
+  defaultSeries
+  });
 
   activeProduct=products[0]||null;
 

@@ -22,11 +22,16 @@ import {
 /*
  * Architecture metadata only.
  *
- * B5-06 adds the Contact Feature runtime and the Inquiry Submission Flow App runtime. DreamlandContact owns contact state, draft TTL/persistence and contact validation. DreamlandInquirySubmissionFlow owns final client submission orchestration, archive persistence and success-state cleanup across Inquiry/Contact/Pending ID while Risk/Captcha UI and Preview DOM remain in index.html.
+ * B6-01 adds the Catalog Feature state/ViewModel runtime.
+ * DreamlandCatalog owns active-series state, default-series fallback,
+ * Catalog product filtering/ordering and the locale-neutral Catalog ViewModel.
+ * Catalog DOM rendering, batching, scrolling and detail navigation remain in index.html.
+ *
+ * B5 Contact/Inquiry/Submission ownership remains unchanged.
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B5-06',
+  phase:'B6-01',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',

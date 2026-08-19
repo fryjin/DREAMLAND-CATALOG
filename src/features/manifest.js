@@ -42,16 +42,24 @@ export const FEATURE_MANIFEST=Object.freeze([
     ]
   ),
   feature(
-    'catalog',
-    [
-      'series navigation',
-      'product masonry list',
-      'catalog pagination'
-    ],
-    [
-      'index.html',
-      'catalog-data.js'
-    ]
+  'catalog',
+  [
+    'catalog series state',
+    'catalog product filtering / ordering',
+    'catalog View Model',
+    'product masonry list',
+    'catalog pagination'
+  ],
+  [
+    'index.html',
+    'catalog-data.js'
+  ],
+  {
+    status:'partial',
+    runtimeEnabled:true,
+    runtimeOwner:
+      'src/features/catalog/runtime-catalog.js'
+  }
   ),
   feature(
     'detail',
