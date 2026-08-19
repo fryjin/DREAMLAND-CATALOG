@@ -857,7 +857,6 @@ index remains:
 
 The previous clearSubmittedInquiry() reassigned the legacy global state object and could bypass DreamlandInquiry's internal state. B5-06 routes successful clearing through DreamlandInquiry.clearItems() + persist().
 
-```markdown
 ### B6-01 — Catalog State / ViewModel Boundary
 
 Runtime active:
@@ -907,5 +906,4 @@ PWA cache:
 
 ```text
 dreamland-pwa-v78
-```
 ```
