@@ -59,12 +59,13 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
   ],
   'features',
   'catalog',
-  'Catalog active-series state, default-series resolution, product filtering/ordering and Catalog ViewModel are routed through DreamlandCatalog. Catalog DOM rendering, card templates, batch scheduling, scrolling, media hooks and detail navigation remain in index.html. Product data loading remains App-owned and continues to consume the B1-02 data contract.',
+  'Catalog active-series state, default-series resolution, product filtering/ordering and Catalog ViewModel are routed through DreamlandCatalog. Catalog tabs, product-card HTML, batch rendering, scroll-driven loading and Catalog UI event delegation are routed through DreamlandCatalogRenderer. Product data loading, shared pricing policy, Detail navigation and the catalog.afterAppendBatch media lifecycle bridge remain App-owned.',
   {
     status:'partial',
     runtimeMigrated:false,
     runtimeOwners:[
       'src/features/catalog/runtime-catalog.js',
+      'src/ui/catalog/runtime-catalog-renderer.js',
       'index.html',
       'catalog-data.js'
     ]

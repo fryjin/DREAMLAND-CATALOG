@@ -30,28 +30,6 @@
 
   let catalogObserver=null;
 
-  function escapeAttr(value){
-    return String(
-      value??''
-    )
-      .replace(
-        /&/g,
-        '&amp;'
-      )
-      .replace(
-        /"/g,
-        '&quot;'
-      )
-      .replace(
-        /</g,
-        '&lt;'
-      )
-      .replace(
-        />/g,
-        '&gt;'
-      );
-  }
-
   function catalogRoot(){
     return document
       .querySelector(
@@ -271,14 +249,6 @@
 
 
   function registerHooks(){
-    hooks.register(
-      'catalog.renderProductCard',
-      enhancedProductCard,
-      {
-        owner:'image-variants'
-      }
-    );
-
     hooks.register(
       'sharedAssets.transformCandidates',
       transformSharedAssetCandidates,
