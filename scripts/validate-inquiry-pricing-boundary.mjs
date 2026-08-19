@@ -277,13 +277,15 @@ try{
   const inquiry=manifest.find(item=>item.id==='inquiry');
 
   if(
-    enabled.length!==1||
-    enabled[0]?.id!=='inquiry'||
+    inquiry?.runtimeEnabled!==true||
     inquiry?.status!=='partial'||
-    inquiry?.runtimeOwner!=='src/features/inquiry/runtime-inquiry.js'
+    inquiry?.runtimeOwner!==
+    'src/features/inquiry/runtime-inquiry.js'
   ){
-    fail('B5-02 must preserve Inquiry as the only partial runtime Feature.');
-  }
+  fail(
+    'B5-02 must preserve partial Inquiry runtime ownership.'
+  );
+}
 }catch(error){
   fail(`Feature manifest B5-02 inspection failed: ${error.message}`);
 }

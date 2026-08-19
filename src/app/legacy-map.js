@@ -33,17 +33,26 @@ function entry(
 
 export const LEGACY_FRONTEND_MAP=Object.freeze([
   entry(
-    'app-shell',
-    [
+  'app-shell',
+  [
+    'index.html',
+    'startup-loader.js'
+  ],
+  'app',
+  'bootstrap',
+  'Application startup, screen navigation and DOM-facing orchestration remain in index.html. Final Inquiry submission transaction orchestration is routed through DreamlandInquirySubmissionFlow.',
+  {
+    status:'partial',
+    runtimeMigrated:false,
+    runtimeOwners:[
+      'src/app/runtime-inquiry-submission-flow.js',
       'index.html',
       'startup-loader.js'
-    ],
-    'app',
-    'bootstrap',
-    'Application startup, screen orchestration and legacy global state remain in the current runtime.'
-  ),
+    ]
+  }
+),
   entry(
-    'catalog',
+     'catalog',
     [
       'index.html',
       'catalog-data.js'
@@ -71,18 +80,37 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'features',
     'inquiry',
-    'Inquiry item-state hydration/persistence/mutation, Inquiry-specific pricing derivation, the Inquiry screen View Model and Preview/Submission/Archive projection data are routed through DreamlandInquiry. Inquiry list/summary HTML templates, DOM rendering, incremental DOM updates and item-level event delegation remain routed through DreamlandInquiryRenderer. App/index still owns render lifecycle orchestration, Preview DOM, Contact, Web3Forms field composition, Risk/Captcha, navigation/badge behavior, shared pricing policy and Submission orchestration.',
+    'Inquiry item-state hydration/persistence/mutation, Inquiry-specific pricing derivation, the Inquiry screen View Model and Preview/Submission/Archive projection data are routed through DreamlandInquiry. Inquiry list/summary HTML templates, DOM rendering, incremental DOM updates and item-level event delegation remain routed through DreamlandInquiryRenderer. Final submission transaction orchestration, archive persistence and success-state cleanup are routed through DreamlandInquirySubmissionFlow. Preview DOM, Risk/Captcha UI, navigation/badge behavior and shared pricing policy remain in index.html.',
     {
       status:'partial',
       runtimeMigrated:false,
       runtimeOwners:[
         'src/features/inquiry/runtime-inquiry.js',
         'src/ui/inquiry/runtime-inquiry-renderer.js',
+        'src/app/runtime-inquiry-submission-flow.js',
         'index.html',
         'copy-polish.js'
       ]
     }
   ),
+  entry(
+     'contact',
+     [
+    'index.html'
+     ],
+     'features',
+     'contact',
+     'Contact state, draft TTL/persistence and contact validation are routed through DreamlandContact. DOM field collection, invalid-field presentation and page lifecycle event binding remain in index.html.',
+     {
+      status:'partial',
+      runtimeMigrated:false,
+      runtimeOwners:[
+      'src/features/contact/runtime-contact.js',
+      'index.html'
+    ]
+    }
+  ),
+
   entry(
     'custom-request',
     [
@@ -139,12 +167,14 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'services',
     'submission',
-    'Client Web3Forms transport, FormData assembly and response normalization are routed through DreamlandSubmission. Inquiry payload composition, snapshot/archive handling, connectivity checks and UI orchestration remain in index.html.',
+    'Client Web3Forms transport, FormData assembly and response normalization are routed through DreamlandSubmission. Final submission transaction orchestration, reachability gating, attempt recording, archive persistence and success-state cleanup are routed through DreamlandInquirySubmissionFlow. Payload/snapshot composition and DOM feedback remain App/index concerns.',
     {
       status:'partial',
       runtimeMigrated:false,
       runtimeOwners:[
-        'src/services/submission/runtime-submission.js'
+        'src/services/submission/runtime-submission.js',
+        'src/app/runtime-inquiry-submission-flow.js',
+        'index.html'
       ]
     }
   ),

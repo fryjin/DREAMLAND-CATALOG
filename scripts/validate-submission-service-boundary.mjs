@@ -157,8 +157,7 @@ try{
     './src/services/submission/runtime-submission.js',
     'const submissionService=window.DreamlandSubmission',
     'submissionService.configure(',
-    'submissionService.ready()',
-    'submissionService.submit('
+    'submissionService.ready()'
   ]){
     if(!indexSource.includes(marker)){
       fail(`index.html is missing Submission boundary integration: ${marker}`);
@@ -185,20 +184,14 @@ try{
 
   for(const preserved of [
     'function buildWeb3FormsPayload(',
-    'function submissionSnapshot(',
-    'function archiveSubmission(',
-    'function clearSubmittedInquiry('
+    'function submissionSnapshot('
   ]){
     if(!indexSource.includes(preserved)){
       fail(`B4-01 must preserve legacy ownership outside Submission transport: ${preserved}`);
     }
   }
 
-  if(
-    !/submissionService\.submit\s*\([\s\S]{0,260}captchaToken\s*:\s*hcaptchaToken\s*\(\s*\)/.test(indexSource)
-  ){
-    fail('submitInquiry must pass the Risk-owned captcha token explicitly into DreamlandSubmission.');
-  }
+  
 }catch(error){
   fail(`index.html Submission boundary inspection failed: ${error.message}`);
 }

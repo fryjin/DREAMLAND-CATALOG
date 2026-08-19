@@ -22,11 +22,11 @@ import {
 /*
  * Architecture metadata only.
  *
- * B5-05 adds an Inquiry Projection boundary. DreamlandInquiry remains DOM-free and now prepares stable Preview/Submission/Archive projections from Inquiry state while DreamlandInquiryRenderer keeps list/summary UI ownership. App/index still owns Preview DOM, Contact, Web3Forms field composition, Risk/Captcha and Submission orchestration.
+ * B5-06 adds the Contact Feature runtime and the Inquiry Submission Flow App runtime. DreamlandContact owns contact state, draft TTL/persistence and contact validation. DreamlandInquirySubmissionFlow owns final client submission orchestration, archive persistence and success-state cleanup across Inquiry/Contact/Pending ID while Risk/Captcha UI and Preview DOM remain in index.html.
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B5-05',
+  phase:'B5-06',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',

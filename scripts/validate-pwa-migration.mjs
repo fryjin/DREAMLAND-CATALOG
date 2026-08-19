@@ -217,28 +217,61 @@ try{
     }
   }
 
-  const requiredBridgeCalls=[
-    'pwaService.probeReachability(true)',
-    'pwaService.applyReachability(',
-    "pwaService.text('offlineSubmit')",
-    'pwaService.refreshUi();',
-    'pwaService.initExperience();'
-  ];
+  const requiredIndexBridgeCalls=[
+  'pwaService.refreshUi();',
+  'pwaService.initExperience();'
+];
 
-  for(
-    const marker of
-    requiredBridgeCalls
+for(
+  const marker of
+  requiredIndexBridgeCalls
+){
+  if(
+    !indexSource.includes(
+      marker
+    )
   ){
-    if(
-      !indexSource.includes(
-        marker
-      )
-    ){
-      fail(
-        `index.html is missing PWA runtime bridge call: ${marker}`
-      );
-    }
+    fail(
+      `index.html is missing PWA runtime bridge call: ${marker}`
+    );
   }
+}
+
+if(
+  !/pwaService\.text\(\s*['"]offlineSubmit['"]\s*\)/m
+    .test(
+      indexSource
+    )
+){
+  fail(
+    'index.html is missing the PWA offline submission copy bridge.'
+  );
+}
+
+const submissionFlowSource=
+  read(
+    'src/app/runtime-inquiry-submission-flow.js'
+  );
+
+if(
+  !submissionFlowSource.includes(
+    '.probeReachability('
+  )
+){
+  fail(
+    'Inquiry Submission Flow is missing PWA reachability probing.'
+  );
+}
+
+if(
+  !submissionFlowSource.includes(
+    '.applyReachability('
+  )
+){
+  fail(
+    'Inquiry Submission Flow is missing PWA reachability application.'
+  );
+}
 
   const forbiddenInlineHandlers=[
     'onclick="hideNetworkBanner()"',

@@ -474,8 +474,7 @@ try{
       'function buildWeb3FormsPayload(',
       'async function assessSubmissionRisk(',
       'async function submitInquiry(',
-      'function collect(',
-      'state.contact=contact'
+      'function collect('
     ]
   ){
     if(
@@ -522,14 +521,13 @@ try{
     );
 
   if(
-    enabled.length!==1||
-    enabled[0]?.id!=='inquiry'||
+    inquiry?.runtimeEnabled!==true||
     inquiry?.status!=='partial'||
     inquiry?.runtimeOwner!==
-      'src/features/inquiry/runtime-inquiry.js'
+    'src/features/inquiry/runtime-inquiry.js'
   ){
     fail(
-      'Feature manifest must runtime-enable only partial Inquiry in B5-01.'
+      'Feature manifest must preserve partial Inquiry runtime ownership.'
     );
   }
 }catch(error){

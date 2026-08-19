@@ -475,16 +475,15 @@ try{
     );
 
   if(
-    enabled.length!==1||
-    enabled[0]?.id!=='inquiry'||
+    inquiry?.runtimeEnabled!==true||
     inquiry?.status!=='partial'||
     inquiry?.runtimeOwner!==
-      'src/features/inquiry/runtime-inquiry.js'
+    'src/features/inquiry/runtime-inquiry.js'
   ){
-    fail(
-      'Inquiry View Model contract must preserve Inquiry as the only partial runtime Feature.'
-    );
-  }
+  fail(
+    'Inquiry View Model contract must preserve partial Inquiry runtime ownership.'
+  );
+}
 }catch(error){
   fail(
     `Feature manifest View Model inspection failed: ${error.message}`
