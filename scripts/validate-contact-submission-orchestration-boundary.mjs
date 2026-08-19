@@ -848,25 +848,62 @@ try{
 
 try{
   const legacyMap=
-    read(
-      'src/app/legacy-map.js'
+    (
+      await import(
+        pathToFileURL(
+          path.join(
+            ROOT,
+            'src/app/legacy-map.js'
+          )
+        ).href+
+        `?b506-legacy=${Date.now()}`
+      )
+    ).LEGACY_FRONTEND_MAP;
+
+  const contactMigration=
+    legacyMap.find(
+      item=>
+        item.id===
+        'contact'
     );
 
-  for(const marker of [
-    'src/features/contact/runtime-contact.js',
-    'src/app/runtime-inquiry-submission-flow.js',
-    'Contact draft',
-    'Submission orchestration'
-  ]){
-    if(
-      !legacyMap.includes(
-        marker
+  const submissionMigration=
+    legacyMap.find(
+      item=>
+        item.id===
+        'submission'
+    );
+
+  if(
+    contactMigration?.status!==
+      'partial'||
+    contactMigration?.runtimeMigrated!==
+      false||
+    !contactMigration
+      ?.runtimeOwners
+      ?.includes(
+        'src/features/contact/runtime-contact.js'
       )
-    ){
-      fail(
-        `Legacy map is missing B5-06 ownership: ${marker}`
-      );
-    }
+  ){
+    fail(
+      'Legacy map does not describe the B5-06 Contact runtime ownership.'
+    );
+  }
+
+  if(
+    submissionMigration?.status!==
+      'partial'||
+    submissionMigration?.runtimeMigrated!==
+      false||
+    !submissionMigration
+      ?.runtimeOwners
+      ?.includes(
+        'src/app/runtime-inquiry-submission-flow.js'
+      )
+  ){
+    fail(
+      'Legacy map does not describe the B5-06 Inquiry Submission Flow ownership.'
+    );
   }
 }catch(error){
   fail(

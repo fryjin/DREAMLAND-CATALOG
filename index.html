@@ -4968,23 +4968,6 @@ function collect(){return{
   message:fieldValue('message')
 }}
 
-
-  window.addEventListener('pagehide',()=>{
-    if(activeScreen==='contact'){
-      saveContactDraftNow();
-    }
-  });
-
-  document.addEventListener('visibilitychange',()=>{
-    if(
-      document.visibilityState==='hidden'&&
-      activeScreen==='contact'
-    ){
-      saveContactDraftNow();
-    }
-  });
-}
-
 function saveContactDraftNow(){
   contactFeature
     .replace(
