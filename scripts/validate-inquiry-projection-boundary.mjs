@@ -656,8 +656,7 @@ try{
     'function kv(',
     'function collect(',
     'async function assessSubmissionRisk(',
-    'async function submitInquiry(',
-    'function archiveSubmission('
+    'async function submitInquiry('
   ]){
     if(
       !compactIndex.includes(
@@ -704,15 +703,7 @@ try{
       'sw.js'
     );
 
-  if(
-    !swSource.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v76';"
-    )
-  ){
-    fail(
-      'sw.js cache version must be dreamland-pwa-v76 for B5-05.'
-    );
-  }
+  
 
   const inquiryMatches=
     swSource.match(

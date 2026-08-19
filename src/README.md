@@ -822,4 +822,37 @@ Web3Forms field names
 Submission orchestration
 archive persistence
 ```
+### B5-06 — contact-submission-orchestration
 
+DreamlandContact
+version B5-06
+
+DreamlandInquirySubmissionFlow
+version B5-06
+
+Contact Feature owns:
+- contact state
+- draft TTL
+- draft persistence
+- validation
+
+Submission Flow owns:
+- duplicate/cooldown gate
+- submission readiness
+- reachability
+- risk attempt recording
+- DreamlandSubmission.submit()
+- archive / last-submission persistence
+- success cleanup:
+  Inquiry.clearItems + persist
+  Contact.clearAll
+  pending inquiry storage clear
+
+index remains:
+- DOM collection
+- invalid styles
+- privacy consent
+- captcha/risk UI
+- toast/button/navigation
+
+The previous clearSubmittedInquiry() reassigned the legacy global state object and could bypass DreamlandInquiry's internal state. B5-06 routes successful clearing through DreamlandInquiry.clearItems() + persist().

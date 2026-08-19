@@ -45,7 +45,9 @@ const requiredFiles=[
   'src/app/runtime-hooks.js',
   'src/services/submission/runtime-submission.js',
   'src/services/risk/runtime-risk.js',
-  'src/features/inquiry/runtime-inquiry.js'
+  'src/features/inquiry/runtime-inquiry.js',
+  'src/features/contact/runtime-contact.js',
+  'src/app/runtime-inquiry-submission-flow.js'
 ];
 
 for(const file of requiredFiles){
@@ -63,7 +65,7 @@ try{
 }
 
 if(foundation){
-  if(foundation.phase!=='B5-05'){
+  if(foundation.phase!=='B5-06'){
     fail(`Unexpected frontend foundation phase: ${foundation.phase}`)
   }
 
@@ -87,23 +89,45 @@ if(foundation){
   uniqueIds(foundation.services,'Service contracts');
 
   const enabledFeatures=
-    foundation.features
-      .filter(
-        item=>
-          item.runtimeEnabled===true
-      );
+  foundation.features
+    .filter(
+      item=>
+        item.runtimeEnabled===true
+    );
 
-  if(
-    enabledFeatures.length!==1||
-    enabledFeatures[0]?.id!=='inquiry'||
-    enabledFeatures[0]?.status!=='partial'||
-    enabledFeatures[0]?.runtimeOwner!==
-      'src/features/inquiry/runtime-inquiry.js'
-  ){
-    fail(
-      'B5-05 must preserve only the partial Inquiry runtime Feature.'
+const enabledIds=
+  enabledFeatures
+    .map(
+      item=>item.id
     )
-  }
+    .sort()
+    .join(',');
+
+const inquiryFeature=
+  enabledFeatures.find(
+    item=>
+      item.id==='inquiry'
+  );
+
+const contactFeature=
+  enabledFeatures.find(
+    item=>
+      item.id==='contact'
+  );
+
+if(
+  enabledIds!=='contact,inquiry'||
+  inquiryFeature?.status!=='partial'||
+  inquiryFeature?.runtimeOwner!==
+    'src/features/inquiry/runtime-inquiry.js'||
+  contactFeature?.status!=='partial'||
+  contactFeature?.runtimeOwner!==
+    'src/features/contact/runtime-contact.js'
+){
+  fail(
+    'B5-06 must runtime-enable only partial Inquiry and Contact Features.'
+  )
+}
 
   const inquiryMigration=
     foundation.legacyMap.find(
@@ -240,6 +264,9 @@ if(foundation){
     submissionMigration?.runtimeMigrated!==false||
     !submissionMigration?.runtimeOwners?.includes(
       'src/services/submission/runtime-submission.js'
+    !submissionMigration?.runtimeOwners?.includes(
+      'src/app/runtime-inquiry-submission-flow.js'
+)
     )
   ){
     fail('Legacy map does not mark Submission as a partial runtime boundary.')
@@ -267,6 +294,23 @@ if(foundation){
   ){
     fail('Legacy map does not mark Risk as a partial client/server boundary.')
   }
+}
+
+const contactMigration=
+  foundation.legacyMap.find(
+    item=>
+      item.id==='contact'
+  );
+
+if(
+  contactMigration?.status!=='partial'||
+  !contactMigration?.runtimeOwners?.includes(
+    'src/features/contact/runtime-contact.js'
+  )
+){
+  fail(
+    'Legacy map does not mark Contact as a partial runtime Feature.'
+  )
 }
 
 const architectureFiles=[

@@ -455,7 +455,6 @@ try{
       'riskService.renderCaptcha(',
       'riskService.ensureCaptcha(',
       'riskService.assess(',
-      'riskService.recordAttempt(',
       'riskService.resetCaptcha('
     ]
   ){
