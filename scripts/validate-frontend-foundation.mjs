@@ -89,27 +89,6 @@ if(foundation){
   uniqueIds(foundation.ui,'UI contracts');
   uniqueIds(foundation.services,'Service contracts');
 
-  const enabledFeatures=
-  foundation.features
-    .filter(
-      item=>
-        item.runtimeEnabled===true
-    );
-
-const enabledIds=
-  enabledFeatures
-    .map(
-      item=>item.id
-    )
-    .sort()
-    .join(',');
-
-const inquiryFeature=
-  enabledFeatures.find(
-    item=>
-      item.id==='inquiry'
-  );
-
 const enabledFeatures=
   foundation.features
     .filter(
