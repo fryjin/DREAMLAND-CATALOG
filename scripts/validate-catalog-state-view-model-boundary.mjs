@@ -230,6 +230,35 @@ if(!fs.existsSync(runtimePath)){
           'Catalog default-series fallback parity failed.'
         );
       }
+
+      catalog.configure({
+        products:[
+          {
+            id:'FALLBACK',
+            series:'advanced',
+            listSort:1
+          }
+        ],
+        seriesMeta:{},
+        defaultSeries:'missing'
+      });
+
+      const emptyMetaFallback=
+        catalog.buildViewModel();
+
+      if(
+        catalog.activeSeries()!==
+          'advanced'||
+        emptyMetaFallback
+          .displayCount!==1||
+        emptyMetaFallback
+          .products[0]?.id!==
+          'FALLBACK'
+      ){
+        fail(
+          'Catalog must preserve the legacy advanced fallback when series metadata is empty.'
+        );
+      }
     }
   }catch(error){
     fail(
