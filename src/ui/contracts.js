@@ -50,6 +50,16 @@ export const UI_CONTRACTS=Object.freeze([
     'Primary mobile navigation surface.'
   ),
   uiContract(
+  'catalog-renderer',
+  'Own Catalog tabs, product-card HTML, two-column batch rendering, scroll-driven incremental rendering and Catalog UI event delegation while consuming injected presentation adapters and business callbacks.',
+  {
+    runtimeEnabled:true,
+    migrationStatus:'migrated',
+    runtimeOwner:
+      'src/ui/catalog/runtime-catalog-renderer.js'
+  }
+),
+  uiContract(
     'inquiry-renderer',
     'Own Inquiry list/summary HTML templates, DOM rendering, incremental DOM updates and item-level event delegation while consuming injected presentation adapters and business callbacks.',
     {

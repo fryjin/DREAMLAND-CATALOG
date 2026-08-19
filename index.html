@@ -1188,6 +1188,7 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./src/features/catalog/runtime-catalog.js"></script>
 <script src="./src/features/inquiry/runtime-inquiry.js"></script>
 <script src="./src/features/contact/runtime-contact.js"></script>
+<script src="./src/ui/catalog/runtime-catalog-renderer.js"></script>
 <script src="./src/ui/inquiry/runtime-inquiry-renderer.js"></script>
 <script src="./src/app/runtime-inquiry-submission-flow.js"></script>
 <script>
@@ -1198,6 +1199,7 @@ const riskService=window.DreamlandRisk;
 const catalogFeature=window.DreamlandCatalog;
 const inquiryFeature=window.DreamlandInquiry;
 const contactFeature=window.DreamlandContact;
+const catalogRenderer=window.DreamlandCatalogRenderer;
 const inquiryRenderer=window.DreamlandInquiryRenderer;
 const submissionFlow=window.DreamlandInquirySubmissionFlow;
 
@@ -1240,6 +1242,12 @@ if(!pwaService){
 if(!catalogFeature){
   throw new Error(
     'DreamlandCatalog must load before Catalog state initialization.'
+  );
+}
+
+if(!catalogRenderer){
+  throw new Error(
+    'DreamlandCatalogRenderer must load before Catalog UI initialization.'
   );
 }
 
@@ -1861,7 +1869,6 @@ function riskAssessmentEndpoint(){
 
 
 ['catalogInquiry','productManualState','manualInquiry'].forEach(k=>appStorage.local.removeItem(k));
-const CATALOG_BATCH_SIZE=5;
 const QTY_STEP=1;
 const QTY_MIN=1;
 const inquiryListElement=
@@ -1873,6 +1880,85 @@ const inquirySummaryElement=
   document.getElementById(
     'summaryBox'
   );
+
+catalogRenderer.configure({
+  tabs:
+    document.getElementById(
+      'seriesTabs'
+    ),
+
+  seriesCount:
+    document.getElementById(
+      'seriesCount'
+    ),
+
+  grid:
+    document.getElementById(
+      'productGrid'
+    ),
+
+  content:
+    document.querySelector(
+      '.screen[data-screen="catalog"] .content'
+    ),
+
+  batchSize:5,
+
+  text:
+    ui,
+
+  language:
+    ()=>currentLang,
+
+  seriesLabel:
+    seriesLabel,
+
+  seriesTabLabel:
+    seriesTabLabel,
+
+  productDisplayName:
+    productDisplayName,
+
+  productCover:
+    productCover,
+
+  fromPrice:
+    fromPrice,
+
+  catalogUnit:
+    catalogUnit,
+
+  htmlAttr:
+    htmlAttr,
+
+  afterAppendBatch:
+    payload=>{
+      window.DreamlandRuntimeHooks
+        ?.emit(
+          'catalog.afterAppendBatch',
+          payload
+        );
+    },
+
+  actions:{
+    selectSeries:
+      series=>{
+        catalogFeature
+          .setActiveSeries(
+            series
+          );
+
+        renderTabs();
+        renderProducts();
+      },
+
+    openDetail:
+      openDetail,
+
+    quickAdd:
+      quickAdd
+  }
+});
 
 inquiryRenderer.configure({
   list:
@@ -1937,7 +2023,7 @@ inquiryRenderer.configure({
       openItemTierSheet
   }
 });
-let activeScreen='home',activeProduct=null,config={},detailSlideIndex=0,detailTimer=null,catalogRenderToken=0,catalogBatchTimer=null,catalogList=[],catalogCursor=0,catalogLoading=false,editingItemId='';
+let activeScreen='home',activeProduct=null,config={},detailSlideIndex=0,detailTimer=null,editingItemId='';
 
 let state=
   inquiryFeature.configure({
@@ -2761,40 +2847,11 @@ function go(n){closePreviewImage();if(n!=='catalog')cancelCatalogRender();if(n!=
 function updateCtaReveal(n){if(!['detail','contact','preview','inquiry','custom'].includes(n))return;let screen=document.querySelector(`.screen[data-screen="${n}"]`),c=screen?.querySelector('.content.with-cta');if(!screen||!c)return;let nearBottom=c.scrollHeight-c.scrollTop-c.clientHeight<28;screen.classList.toggle('cta-revealed',nearBottom)}
 function bindCtaReveal(){['detail','contact','preview','inquiry','custom'].forEach(n=>{let s=document.querySelector(`.screen[data-screen="${n}"]`),c=s?.querySelector('.content.with-cta');if(!c)return;c.addEventListener('scroll',()=>updateCtaReveal(n),{passive:true})})}
 function renderTabs(){
-  const activeSeries=
-    catalogFeature
-      .activeSeries();
-
-  const seriesIds=
-    catalogFeature
-      .availableSeries();
-
-  seriesTabs.className=
-    `tabs lang-${currentLang}`;
-
-  seriesTabs.innerHTML=
-    seriesIds
-      .map(
-        key=>
-          `<button class="tab ${key===activeSeries?'active':''}" data-s="${key}">${seriesTabLabel(key)}</button>`
-      )
-      .join('');
-
-  seriesTabs
-    .querySelectorAll(
-      '.tab'
-    )
-    .forEach(tab=>{
-      tab.onclick=()=>{
-        catalogFeature
-          .setActiveSeries(
-            tab.dataset.s
-          );
-
-        renderTabs();
-        renderProducts();
-      };
-    });
+  catalogRenderer
+    .renderTabs(
+      catalogFeature
+        .buildViewModel()
+    );
 }
 function imgMiss(el){el.classList.add('is-missing')}
 function legacyPatternThumb(value){
@@ -3249,168 +3306,20 @@ function openPreviewImage(src,label){
     content.innerHTML='';
   }
 }
-function renderProductCard(
-  product,
-  index,
-  tall=false
-){
-  const mediaRenderer=
-    window.DreamlandRuntimeHooks
-      ?.get(
-        'catalog.renderProductCard'
-      );
 
-  if(mediaRenderer){
-    return mediaRenderer(
-      product,
-      index,
-      tall
-    );
-  }
-  return `
-    <article
-      class="product-card ${tall?'tall':''}"
-      style="animation-delay:${Math.min(index%CATALOG_BATCH_SIZE,4)*42}ms"
-      onclick="openDetail('${product.id}')"
-    >
-      <div class="product-visual">
-        <div class="product-img ${product.color}"></div>
-
-        <img
-          class="product-cover"
-          src="${productCover(product)}"
-          alt="${productDisplayName(product)}"
-          loading="lazy"
-          decoding="async"
-          onerror="imgMiss(this)"
-        >
-      </div>
-
-      <button
-        class="add-mini"
-        onclick="event.stopPropagation();quickAdd('${product.id}')"
-      >
-        +
-      </button>
-
-      <div class="product-name">
-        ${productDisplayName(product)}
-      </div>
-
-      <div class="price-row">
-<span class="price">
-  ${fromPrice(catalogUnit(product))}
-</span>
-
-      </div>
-    </article>
-  `;
-}
 function cancelCatalogRender(){
-  catalogRenderToken++;
-  catalogList=[];
-  catalogCursor=0;
-  catalogLoading=false;
-  if(catalogBatchTimer){
-    if('cancelIdleCallback' in window)cancelIdleCallback(catalogBatchTimer);
-    clearTimeout(catalogBatchTimer);
-    catalogBatchTimer=null;
-  }
+  catalogRenderer
+    .cancel();
 }
-function catalogContentEl(){return document.querySelector('.screen[data-screen="catalog"] .content')}
+
 function renderProducts(){
-  cancelCatalogRender();
-
-  const view=
-    catalogFeature
-      .buildViewModel();
-
-  let token=
-        catalogRenderToken,
-      list=
-        view.products,
-      displayCount=
-        view.displayCount,
-      content=
-        catalogContentEl();
-
-  catalogList=list;
-  catalogCursor=0;
-
-  seriesCount.innerHTML=
-  `<span>${seriesLabel(view.activeSeries)}</span><span>${ui('total')} ${displayCount} ${ui('models')}</span>`;
-  productGrid.innerHTML=`<div class="catalog-col left" data-catalog-col="left"><div class="series-count-card"><div class="series-kicker">${ui('discover')}</div><div class="series-highlight"><span class="series-number">${displayCount}</span><span class="series-word">${ui('dreams')}</span></div></div></div><div class="catalog-col right" data-catalog-col="right"></div>`;
-  if(content)content.scrollTop=0;
-  appendCatalogBatch(token);
-  requestAnimationFrame(()=>ensureCatalogHasScroll(token));
-}
-function appendCatalogBatch(token){
-  if(token!==catalogRenderToken||activeScreen!=='catalog'||catalogCursor>=catalogList.length)return;
-  let left=productGrid.querySelector('[data-catalog-col="left"]'),
-      right=productGrid.querySelector('[data-catalog-col="right"]');
-  if(!left||!right)return;
-  let start=catalogCursor,
-      end=Math.min(start+CATALOG_BATCH_SIZE,catalogList.length),
-      leftHtml='',rightHtml='';
-  for(let i=start;i<end;i++){
-    let p=catalogList[i],cardHtml=renderProductCard(p,i,i===0);
-    if(i===0)rightHtml+=cardHtml;
-    else if((i-1)%2===0)leftHtml+=cardHtml;
-    else rightHtml+=cardHtml;
-  }
-  if(leftHtml)left.insertAdjacentHTML('beforeend',leftHtml);
-  if(rightHtml)right.insertAdjacentHTML('beforeend',rightHtml);
-  catalogCursor=end;
-
-  window.DreamlandRuntimeHooks
-    ?.emit(
-      'catalog.afterAppendBatch',
-      {
-        grid:productGrid,
-        start,
-        end
-      }
+  catalogRenderer
+    .render(
+      catalogFeature
+        .buildViewModel()
     );
 }
-function ensureCatalogHasScroll(token){
-  if(token!==catalogRenderToken||activeScreen!=='catalog')return;
-  let c=catalogContentEl();
-  if(!c)return;
-  if(catalogCursor<catalogList.length&&c.scrollHeight<=c.clientHeight+80){
-    scheduleCatalogBatch();
-  }
-}
-function scheduleCatalogBatch(){
-  if(catalogLoading||activeScreen!=='catalog'||catalogCursor>=catalogList.length)return;
-  catalogLoading=true;
-  let token=catalogRenderToken,
-      run=()=>{
-        catalogBatchTimer=null;
-        if(token===catalogRenderToken&&activeScreen==='catalog')appendCatalogBatch(token);
-        catalogLoading=false;
-        let c=catalogContentEl();
-        if(c&&catalogCursor<catalogList.length&&c.scrollHeight-c.scrollTop-c.clientHeight<280){
-          catalogBatchTimer=setTimeout(scheduleCatalogBatch,80);
-        }
-      };
-  if('requestIdleCallback' in window){
-    catalogBatchTimer=requestIdleCallback(run,{timeout:180});
-  }else{
-    catalogBatchTimer=setTimeout(run,40);
-  }
-}
-function maybeLoadMoreCatalog(){
-  if(activeScreen!=='catalog'||catalogCursor>=catalogList.length)return;
-  let c=catalogContentEl();
-  if(!c)return;
-  if(c.scrollHeight-c.scrollTop-c.clientHeight<520)scheduleCatalogBatch();
-}
-function bindCatalogLazyLoad(){
-  let c=catalogContentEl();
-  if(!c||c.dataset.lazyBound==='1')return;
-  c.dataset.lazyBound='1';
-  c.addEventListener('scroll',maybeLoadMoreCatalog,{passive:true});
-}
+
 function initialScentSeries(product){
   if(product?.series!=='holiday'){
     return '';
@@ -6632,7 +6541,6 @@ async function bootstrap(){
   applyRuntimeLimits();
   bindCtaReveal();
   bindContactDraft();
-  bindCatalogLazyLoad();
   refreshBudgetOptions();
   updateLangButton();
   renderLangOptions();

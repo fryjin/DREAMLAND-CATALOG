@@ -966,32 +966,25 @@ try{
       )
     ).UI_CONTRACTS;
 
-  const enabled=
-    uiContracts.filter(
-      item=>
-        item.runtimeEnabled===true
-    );
-
   const inquiryRenderer=
-    uiContracts.find(
-      item=>
-        item.id===
+  uiContracts.find(
+    item=>
+      item.id===
         'inquiry-renderer'
-    );
+  );
 
-  if(
-    enabled.length!==1||
-    enabled[0]?.id!==
-      'inquiry-renderer'||
-    inquiryRenderer?.migrationStatus!==
-      'migrated'||
-    inquiryRenderer?.runtimeOwner!==
-      'src/ui/inquiry/runtime-inquiry-renderer.js'
-  ){
-    fail(
-      'B5-04 must expose Inquiry Renderer as the only runtime-enabled UI contract.'
-    );
-  }
+if(
+  inquiryRenderer?.runtimeEnabled!==
+    true||
+  inquiryRenderer?.migrationStatus!==
+    'migrated'||
+  inquiryRenderer?.runtimeOwner!==
+    'src/ui/inquiry/runtime-inquiry-renderer.js'
+){
+  fail(
+    'B5-04 must preserve the migrated Inquiry UI Renderer contract.'
+  );
+}
 }catch(error){
   fail(
     `UI contract B5-04 inspection failed: ${error.message}`

@@ -221,11 +221,10 @@ try{
     read('index.html');
 
   const required=[
-    "'catalog.renderProductCard'",
-    "'catalog.afterAppendBatch'",
-    "'detail.renderMedia'",
-    "'detail.startCarousel'",
-    "'detail.afterSlideUpdate'"
+  "'catalog.afterAppendBatch'",
+  "'detail.renderMedia'",
+  "'detail.startCarousel'",
+  "'detail.afterSlideUpdate'"
   ];
 
   for(
@@ -273,7 +272,6 @@ try{
 
   for(
     const marker of [
-      "hooks.register(\n      'catalog.renderProductCard'",
       "hooks.subscribe(\n      'catalog.afterAppendBatch'"
     ]
   ){
@@ -286,6 +284,15 @@ try{
         `image-variants.js is missing explicit registration: ${marker}`
       );
     }
+    if(
+      variantsSource.includes(
+       "'catalog.renderProductCard'"
+      )
+    ){
+      fail(
+        'image-variants.js must not reclaim the migrated Catalog card renderer.'
+      );
+}
   }
 
   for(

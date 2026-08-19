@@ -30,28 +30,6 @@
 
   let catalogObserver=null;
 
-  function escapeAttr(value){
-    return String(
-      value??''
-    )
-      .replace(
-        /&/g,
-        '&amp;'
-      )
-      .replace(
-        /"/g,
-        '&quot;'
-      )
-      .replace(
-        /</g,
-        '&lt;'
-      )
-      .replace(
-        />/g,
-        '&gt;'
-      );
-  }
-
   function catalogRoot(){
     return document
       .querySelector(
@@ -179,60 +157,6 @@
       );
   }
 
-  function enhancedProductCard(
-    product,
-    index,
-    tall=false
-  ){
-    const original=
-      productCover(product);
-
-    const name=
-      productDisplayName(
-        product
-      );
-
-    const priority=
-      index<2
-        ? 'high'
-        : 'auto';
-
-    return `
-      <article
-        class="product-card ${tall?'tall':''}"
-        style="animation-delay:${Math.min(index%5,4)*42}ms"
-        onclick="openDetail('${escapeAttr(product.id)}')"
-      >
-        <div class="product-visual media-frame">
-          <span class="media-skeleton" aria-hidden="true"></span>
-          <img
-            class="product-cover"
-            data-image-manager-catalog="1"
-            data-responsive-source="${escapeAttr(original)}"
-            data-responsive-priority="${priority}"
-            alt="${escapeAttr(name)}"
-            width="480"
-            height="720"
-            loading="lazy"
-            decoding="async"
-          >
-        </div>
-
-        <button
-          class="add-mini"
-          onclick="event.stopPropagation();quickAdd('${escapeAttr(product.id)}')"
-        >
-          +
-        </button>
-
-        <div class="product-name">${name}</div>
-
-        <div class="price-row">
-          <span class="price">${fromPrice(catalogUnit(product))}</span>
-        </div>
-      </article>
-    `;
-  }
 
   function transformSharedAssetCandidates(
     payload={}
@@ -271,14 +195,6 @@
 
 
   function registerHooks(){
-    hooks.register(
-      'catalog.renderProductCard',
-      enhancedProductCard,
-      {
-        owner:'image-variants'
-      }
-    );
-
     hooks.register(
       'sharedAssets.transformCandidates',
       transformSharedAssetCandidates,

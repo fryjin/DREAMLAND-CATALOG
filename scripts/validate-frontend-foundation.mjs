@@ -48,6 +48,7 @@ const requiredFiles=[
   'src/features/inquiry/runtime-inquiry.js',
   'src/features/contact/runtime-contact.js',
   'src/features/catalog/runtime-catalog.js',
+  'src/ui/catalog/runtime-catalog-renderer.js',
   'src/app/runtime-inquiry-submission-flow.js'
 ];
 
@@ -66,7 +67,7 @@ try{
 }
 
 if(foundation){
-  if(foundation.phase!=='B6-01'){
+  if(foundation.phase!=='B6-02'){
     fail(`Unexpected frontend foundation phase: ${foundation.phase}`)
   }
 
@@ -74,7 +75,7 @@ if(foundation){
     foundation.runtimeIntegrated!==true||
     foundation.runtimeIntegration!=='partial'
   ){
-    fail('B5-05 must declare partial runtime integration.')
+    fail('B6-02 must declare partial runtime integration.')
   }
 
   const uniqueIds=(items,label)=>{
@@ -168,15 +169,42 @@ if(
           item.runtimeEnabled===true
       );
 
+  const enabledUiIds=
+    enabledUi
+      .map(
+        item=>item.id
+      )
+      .sort()
+      .join(',');
+
+  const catalogRenderer=
+    enabledUi.find(
+      item=>
+        item.id===
+        'catalog-renderer'
+    );
+
+  const inquiryRenderer=
+    enabledUi.find(
+      item=>
+        item.id===
+        'inquiry-renderer'
+    );
+
   if(
-    enabledUi.length!==1||
-    enabledUi[0]?.id!=='inquiry-renderer'||
-    enabledUi[0]?.migrationStatus!=='migrated'||
-    enabledUi[0]?.runtimeOwner!==
+    enabledUiIds!==
+      'catalog-renderer,inquiry-renderer'||
+    catalogRenderer?.migrationStatus!==
+      'migrated'||
+    catalogRenderer?.runtimeOwner!==
+      'src/ui/catalog/runtime-catalog-renderer.js'||
+    inquiryRenderer?.migrationStatus!==
+      'migrated'||
+    inquiryRenderer?.runtimeOwner!==
       'src/ui/inquiry/runtime-inquiry-renderer.js'
   ){
     fail(
-      'B5-05 must preserve only the migrated Inquiry UI Renderer runtime.'
+      'B6-02 must preserve the migrated Catalog and Inquiry UI Renderer runtimes.'
     )
   }
 
@@ -206,7 +234,7 @@ if(
     !enabledSet.has('risk')
   ){
     fail(
-      `B5-05 must preserve runtime-enabled storage, pwa, media, submission and risk; found: `+
+      `B6-02 must preserve runtime-enabled storage, pwa, media, submission and risk; found: `+
       `${enabledServices.join(', ')||'none'}`
     )
   }
@@ -319,6 +347,11 @@ const catalogMigration=
   );
 
 if(
+  !catalogMigration
+  ?.runtimeOwners
+  ?.includes(
+    'src/ui/catalog/runtime-catalog-renderer.js'
+  )||
   catalogMigration?.status!==
     'partial'||
   catalogMigration?.runtimeMigrated!==

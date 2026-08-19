@@ -22,16 +22,18 @@ import {
 /*
  * Architecture metadata only.
  *
- * B6-01 adds the Catalog Feature state/ViewModel runtime.
- * DreamlandCatalog owns active-series state, default-series fallback,
- * Catalog product filtering/ordering and the locale-neutral Catalog ViewModel.
- * Catalog DOM rendering, batching, scrolling and detail navigation remain in index.html.
+ * B6-02 adds the Catalog UI Renderer runtime.
+ * DreamlandCatalog continues to own Catalog state and ViewModel derivation.
+ * DreamlandCatalogRenderer now owns Catalog tabs, product-card DOM,
+ * batch rendering, scroll-driven loading and Catalog UI event delegation.
+ * Product data loading, shared pricing policy, Detail navigation and media
+ * orchestration remain outside the UI Renderer.
  *
  * B5 Contact/Inquiry/Submission ownership remains unchanged.
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B6-01',
+  phase:'B6-02',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',

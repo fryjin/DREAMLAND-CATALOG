@@ -907,3 +907,76 @@ PWA cache:
 ```text
 dreamland-pwa-v78
 ```
+
+### B6-02 — Catalog UI Renderer Boundary
+
+Runtime active:
+
+```text
+src/ui/catalog/runtime-catalog-renderer.js
+```
+
+`DreamlandCatalogRenderer` owns:
+
+```text
+Catalog tabs HTML and click delegation
+Catalog two-column product grid HTML
+product-card HTML
+Catalog batch render token / timer / cursor / loading state
+incremental batch rendering
+scroll-driven lazy rendering
+Catalog card / quick-add event delegation
+responsive-image data attributes
+```
+
+Current Catalog flow:
+
+```text
+DreamlandCatalog.buildViewModel()
+→ DreamlandCatalogRenderer
+→ catalog.afterAppendBatch
+→ image-variants.js
+→ DreamlandMedia
+```
+
+B6-02 retires the B3 transitional whole-card slot:
+
+```text
+catalog.renderProductCard
+```
+
+and preserves:
+
+```text
+catalog.afterAppendBatch
+```
+
+for responsive image mounting.
+
+`index.html` keeps only narrow Catalog UI wrappers plus business/orchestration callbacks:
+
+```text
+renderTabs
+renderProducts
+cancelCatalogRender
+setActiveSeries
+openDetail
+quickAdd
+shared pricing adapters
+RuntimeHooks event bridge
+```
+
+Catalog remains `partial/runtimeEnabled`.
+
+Runtime-enabled UI contracts are now:
+
+```text
+catalog-renderer
+inquiry-renderer
+```
+
+PWA cache:
+
+```text
+dreamland-pwa-v79
+```
