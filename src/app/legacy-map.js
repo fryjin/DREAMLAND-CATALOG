@@ -33,17 +33,26 @@ function entry(
 
 export const LEGACY_FRONTEND_MAP=Object.freeze([
   entry(
-    'app-shell',
-    [
+  'app-shell',
+  [
+    'index.html',
+    'startup-loader.js'
+  ],
+  'app',
+  'bootstrap',
+  'Application startup, screen navigation and DOM-facing orchestration remain in index.html. Final Inquiry submission transaction orchestration is routed through DreamlandInquirySubmissionFlow.',
+  {
+    status:'partial',
+    runtimeMigrated:false,
+    runtimeOwners:[
+      'src/app/runtime-inquiry-submission-flow.js',
       'index.html',
       'startup-loader.js'
-    ],
-    'app',
-    'bootstrap',
-    'Application startup, screen navigation and DOM-facing orchestration remain in index.html. Final Inquiry submission transaction orchestration is routed through DreamlandInquirySubmissionFlow.'
-  ),
+    ]
+  }
+),
   entry(
-    'catalog',
+     'catalog',
     [
       'index.html',
       'catalog-data.js'
@@ -51,15 +60,6 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     'features',
     'catalog',
     'Catalog rendering remains legacy-owned. B1-02 already extracted the shared product data contract.'
-    {
-    status:'partial',
-    runtimeMigrated:false,
-    runtimeOwners:[
-    'src/app/runtime-inquiry-submission-flow.js',
-    'index.html',
-    'startup-loader.js'
-    ]
-    }
   ),
   entry(
     'detail',

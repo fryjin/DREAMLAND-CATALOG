@@ -559,9 +559,9 @@ try{
 
   const snapshotSource=
     sliceBetween(
-      indexSource,
-      'function submissionSnapshot(',
-      'function archiveSubmission('
+     indexSource,
+     'function submissionSnapshot(',
+     'function resetSubmittedFormUi('
     );
 
   for(const [

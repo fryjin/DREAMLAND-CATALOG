@@ -157,8 +157,7 @@ try{
     './src/services/submission/runtime-submission.js',
     'const submissionService=window.DreamlandSubmission',
     'submissionService.configure(',
-    'submissionService.ready()',
-    'submissionService.submit('
+    'submissionService.ready()'
   ]){
     if(!indexSource.includes(marker)){
       fail(`index.html is missing Submission boundary integration: ${marker}`);

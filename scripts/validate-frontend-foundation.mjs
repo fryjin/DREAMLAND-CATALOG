@@ -263,13 +263,15 @@ if(
     submissionMigration?.status!=='partial'||
     submissionMigration?.runtimeMigrated!==false||
     !submissionMigration?.runtimeOwners?.includes(
-      'src/services/submission/runtime-submission.js'
+    'src/services/submission/runtime-submission.js'
+    )||
     !submissionMigration?.runtimeOwners?.includes(
-      'src/app/runtime-inquiry-submission-flow.js'
-)
-    )
+    'src/app/runtime-inquiry-submission-flow.js'
+  )
   ){
-    fail('Legacy map does not mark Submission as a partial runtime boundary.')
+  fail(
+    'Legacy map does not mark Submission as a partial runtime boundary.'
+  )
   }
 
   const riskService=foundation.services.find(item=>item.id==='risk');
@@ -297,15 +299,18 @@ if(
 }
 
 const contactMigration=
-  foundation.legacyMap.find(
+  foundation?.legacyMap?.find(
     item=>
       item.id==='contact'
   );
 
 if(
-  contactMigration?.status!=='partial'||
-  !contactMigration?.runtimeOwners?.includes(
-    'src/features/contact/runtime-contact.js'
+  foundation&&
+  (
+    contactMigration?.status!=='partial'||
+    !contactMigration?.runtimeOwners?.includes(
+      'src/features/contact/runtime-contact.js'
+    )
   )
 ){
   fail(
