@@ -845,6 +845,24 @@ try{
   );
 }
 
+const b504=
+  read(
+    'scripts/validate-inquiry-ui-renderer-boundary.mjs'
+  );
+
+if(
+  b504.includes(
+    'enabled.length!==1'
+  )||
+  b504.includes(
+    'only runtime-enabled UI contract'
+  )
+){
+  fail(
+    'Historical B5-04 Inquiry UI validator still locks the UI layer to a single runtime-enabled contract.'
+  );
+}
+
 if(errors.length){
   console.error(
     '\nCatalog UI Renderer boundary validation failed:\n'
