@@ -169,58 +169,42 @@ if(
           item.runtimeEnabled===true
       );
 
-  if(
-    const enabledUi=
-  foundation.ui
-    .filter(
+  const enabledUiIds=
+    enabledUi
+      .map(
+        item=>item.id
+      )
+      .sort()
+      .join(',');
+
+  const catalogRenderer=
+    enabledUi.find(
       item=>
-        item.runtimeEnabled===true
+        item.id===
+        'catalog-renderer'
     );
 
-const enabledUiIds=
-  enabledUi
-    .map(
-      item=>item.id
-    )
-    .sort()
-    .join(',');
+  const inquiryRenderer=
+    enabledUi.find(
+      item=>
+        item.id===
+        'inquiry-renderer'
+    );
 
-const catalogRenderer=
-  enabledUi.find(
-    item=>
-      item.id===
-      'catalog-renderer'
-  );
-
-const inquiryRenderer=
-  enabledUi.find(
-    item=>
-      item.id===
-      'inquiry-renderer'
-  );
-
-if(
-  enabledUiIds!==
-    'catalog-renderer,inquiry-renderer'||
-  catalogRenderer?.migrationStatus!==
-    'migrated'||
-  catalogRenderer?.runtimeOwner!==
-    'src/ui/catalog/runtime-catalog-renderer.js'||
-  inquiryRenderer?.migrationStatus!==
-    'migrated'||
-  inquiryRenderer?.runtimeOwner!==
-    'src/ui/inquiry/runtime-inquiry-renderer.js'
-){
-  fail(
-    'B6-02 must preserve the migrated Catalog and Inquiry UI Renderer runtimes.'
-  )
-}||
-    enabledUi[0]?.migrationStatus!=='migrated'||
-    enabledUi[0]?.runtimeOwner!==
+  if(
+    enabledUiIds!==
+      'catalog-renderer,inquiry-renderer'||
+    catalogRenderer?.migrationStatus!==
+      'migrated'||
+    catalogRenderer?.runtimeOwner!==
+      'src/ui/catalog/runtime-catalog-renderer.js'||
+    inquiryRenderer?.migrationStatus!==
+      'migrated'||
+    inquiryRenderer?.runtimeOwner!==
       'src/ui/inquiry/runtime-inquiry-renderer.js'
   ){
     fail(
-      'B6-02 must preserve only the migrated Inquiry UI Renderer runtime.'
+      'B6-02 must preserve the migrated Catalog and Inquiry UI Renderer runtimes.'
     )
   }
 

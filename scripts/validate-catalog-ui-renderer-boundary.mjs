@@ -412,7 +412,6 @@ try{
     );
 
   for(const forbidden of [
-    'DreamlandCatalog',
     'DreamlandInquiry',
     'DreamlandContact',
     'DreamlandSubmission',
@@ -432,6 +431,16 @@ try{
         `Catalog UI Renderer crossed its B6-02 boundary: ${forbidden}`
       );
     }
+  }
+
+  if(
+    /\bDreamlandCatalog\b/.test(
+      rendererSource
+    )
+  ){
+    fail(
+      'Catalog UI Renderer must not depend on the DreamlandCatalog Feature runtime.'
+    );
   }
 
   for(const required of [
@@ -820,11 +829,14 @@ try{
 
   if(
     b301.includes(
-      "'catalog.renderProductCard'"
+      "hooks.register(\n      'catalog.renderProductCard'"
+    )||
+    !b301.includes(
+      'image-variants.js must not reclaim the migrated Catalog card renderer.'
     )
   ){
     fail(
-      'Historical B3-01 validator still requires the superseded Catalog card-renderer hook.'
+      'Historical B3-01 validator has not released the superseded Catalog card-renderer hook contract.'
     );
   }
 }catch(error){
