@@ -103,7 +103,7 @@
 
     return (
       seriesIds()[0]||
-      ''
+      'advanced'
     );
   }
 
