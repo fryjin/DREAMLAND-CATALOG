@@ -805,7 +805,9 @@ try{
     'catalogRenderToken',
     'catalogBatchTimer',
     'catalogCursor',
-    'catalogLoading'
+    'catalogLoading',
+    'catalogFeature.activeSeries(',
+    'catalogFeature.availableSeries('
   ]){
     if(
       compact(

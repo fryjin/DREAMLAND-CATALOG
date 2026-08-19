@@ -313,14 +313,12 @@ try{
     );
 
   for(const marker of [
-    '<script src="./src/features/catalog/runtime-catalog.js"></script>',
-    'const catalogFeature=window.DreamlandCatalog',
-    'catalogFeature.configure(',
-    'catalogFeature.activeSeries(',
-    'catalogFeature.setActiveSeries(',
-    'catalogFeature.availableSeries(',
-    'catalogFeature.buildViewModel('
-  ]){
+  '<script src="./src/features/catalog/runtime-catalog.js"></script>',
+  'const catalogFeature=window.DreamlandCatalog',
+  'catalogFeature.configure(',
+  'catalogFeature.setActiveSeries(',
+  'catalogFeature.buildViewModel('
+]){
     if(
       !compactIndex.includes(
         compact(
