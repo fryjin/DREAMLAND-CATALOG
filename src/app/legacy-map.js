@@ -52,15 +52,24 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
   }
 ),
   entry(
-     'catalog',
-    [
+  'catalog',
+  [
+    'index.html',
+    'catalog-data.js'
+  ],
+  'features',
+  'catalog',
+  'Catalog active-series state, default-series resolution, product filtering/ordering and Catalog ViewModel are routed through DreamlandCatalog. Catalog DOM rendering, card templates, batch scheduling, scrolling, media hooks and detail navigation remain in index.html. Product data loading remains App-owned and continues to consume the B1-02 data contract.',
+  {
+    status:'partial',
+    runtimeMigrated:false,
+    runtimeOwners:[
+      'src/features/catalog/runtime-catalog.js',
       'index.html',
       'catalog-data.js'
-    ],
-    'features',
-    'catalog',
-    'Catalog rendering remains legacy-owned. B1-02 already extracted the shared product data contract.'
-  ),
+    ]
+  }
+),
   entry(
     'detail',
     [
