@@ -3338,7 +3338,7 @@ function renderProducts(){
   catalogCursor=0;
 
   seriesCount.innerHTML=
-    `<span>${seriesLabel(view.activeSeries)}</span><span>${ui('total')} ${displayCount} ${ui('models')}</span><span>${ui('total')} ${displayCount} ${ui('models')}</span>`;
+  `<span>${seriesLabel(view.activeSeries)}</span><span>${ui('total')} ${displayCount} ${ui('models')}</span>`;
   productGrid.innerHTML=`<div class="catalog-col left" data-catalog-col="left"><div class="series-count-card"><div class="series-kicker">${ui('discover')}</div><div class="series-highlight"><span class="series-number">${displayCount}</span><span class="series-word">${ui('dreams')}</span></div></div></div><div class="catalog-col right" data-catalog-col="right"></div>`;
   if(content)content.scrollTop=0;
   appendCatalogBatch(token);
