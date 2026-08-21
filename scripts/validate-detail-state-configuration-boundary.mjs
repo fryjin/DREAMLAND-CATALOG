@@ -549,8 +549,6 @@ try{
   for(const preserved of [
     'function renderDetail(',
     'function renderDetailMedia(',
-    'function block(',
-    'function scentBlock(',
     'function setDetailSlide(',
     'function startDetailCarousel(',
     'function bindDetailSwipe(',
@@ -641,12 +639,11 @@ try{
     ).FRONTEND_FOUNDATION;
 
   if(
-    foundation?.phase!=='B6-03'||
     foundation?.runtimeIntegrated!==true||
     foundation?.runtimeIntegration!=='partial'
   ){
     fail(
-      'Frontend foundation must declare B6-03 partial runtime integration.'
+      'Frontend foundation must preserve partial runtime integration.'
     );
   }
 
@@ -689,15 +686,7 @@ try{
       'sw.js'
     );
 
-  if(
-    !swSource.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v80';"
-    )
-  ){
-    fail(
-      'sw.js cache version must be dreamland-pwa-v80 for B6-03.'
-    );
-  }
+  
 
   const matches=
     swSource.match(

@@ -1190,6 +1190,7 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./src/features/inquiry/runtime-inquiry.js"></script>
 <script src="./src/features/contact/runtime-contact.js"></script>
 <script src="./src/ui/catalog/runtime-catalog-renderer.js"></script>
+<script src="./src/ui/detail/runtime-detail-renderer.js"></script>
 <script src="./src/ui/inquiry/runtime-inquiry-renderer.js"></script>
 <script src="./src/app/runtime-inquiry-submission-flow.js"></script>
 <script>
@@ -1202,6 +1203,7 @@ const inquiryFeature=window.DreamlandInquiry;
 const contactFeature=window.DreamlandContact;
 const catalogRenderer=window.DreamlandCatalogRenderer;
 const inquiryRenderer=window.DreamlandInquiryRenderer;
+const detailRenderer=window.DreamlandDetailRenderer;
 const submissionFlow=window.DreamlandInquirySubmissionFlow;
 const detailFeature=window.DreamlandDetail;
 
@@ -1256,6 +1258,12 @@ if(!catalogRenderer){
 if(!detailFeature){
   throw new Error(
     'DreamlandDetail must load before Detail state initialization.'
+  );
+}
+
+if(!detailRenderer){
+  throw new Error(
+    'DreamlandDetailRenderer must load before Detail UI initialization.'
   );
 }
 
@@ -1968,6 +1976,104 @@ catalogRenderer.configure({
   }
 });
 
+detailRenderer.configure({
+  configCard,
+
+  text:
+    ui,
+
+  language:
+    ()=>currentLang,
+
+  choiceLabel,
+
+  seriesLabel,
+
+  scentDisplayText,
+
+  sizeDimensions:
+    size=>
+      sizeDims[size]||
+      '',
+
+  previewData,
+
+  currentPackNotice,
+
+  money,
+
+  qtyUnit,
+
+  htmlAttr,
+
+  afterRender:
+    payload=>{
+      mountSharedAssetImages(
+        payload.root
+      );
+    },
+
+  actions:{
+    selectOption:
+      (
+        key,
+        value,
+        scrollState
+      )=>{
+        applyDetailOption(
+          key,
+          value,
+          scrollState
+        );
+      },
+
+    selectScent:
+      (
+        scentId,
+        scrollState
+      )=>{
+        applyDetailScent(
+          scentId,
+          scrollState
+        );
+      },
+
+    setQuantity:
+      (
+        value,
+        scrollState
+      )=>{
+        applyDetailQuantity(
+          value,
+          scrollState
+        );
+      },
+
+    adjustQuantity:
+      (
+        delta,
+        scrollState
+      )=>{
+        applyDetailQuantityDelta(
+          delta,
+          scrollState
+        );
+      },
+
+    openTier:
+      openTierSheet,
+
+    openScentNotes:
+      openScentNotes,
+
+    openPreview:
+      button=>
+        openSharedPreviewFromButton(
+          button
+        )
+  }
+});
+
 inquiryRenderer.configure({
   list:
     inquiryListElement,
@@ -2033,9 +2139,11 @@ inquiryRenderer.configure({
 });
 
 /*
- * B6-03 compatibility snapshots only.
- * DreamlandDetail is the source of truth.
- * Existing B6-04 Detail renderer/media code reads these snapshots.
+ * B6-04 compatibility snapshots only.
+ * DreamlandDetail remains the Detail state source of truth.
+ * DreamlandDetailRenderer consumes the ViewModel.
+ * Detail media/progressive adapters still read activeProduct/config until
+ * the shared compatibility cleanup phase.
  */
 let activeScreen='home',activeProduct=null,config={},detailSlideIndex=0,detailTimer=null,editingItemId='';
 
@@ -2959,8 +3067,7 @@ function previewData(key){
   return null;
 }
 
-function scentTipText(isScroll,h){return isScroll?ui('swipeScent'):h}
-function scentInfo(k){return k==='scent'?`<div class="scent-link-row"><button type="button" onclick="event.stopPropagation();openScentNotes()">${ui('scentNotes')}</button></div>`:''}
+
 function openScentNotes(){
   const scent=
     scentMap.get(config.scentId);
@@ -3118,44 +3225,7 @@ content.scrollTop=0;
     'show'
   );
 }
-function optionPreview(key){
-  const preview=
-    previewData(key);
 
-  if(!preview){
-    return '';
-  }
-
-  return `
-    <button
-      class="option-thumb media-frame"
-      type="button"
-      data-shared-category="${htmlAttr(preview.category)}"
-      data-shared-key="${htmlAttr(preview.lookupKey)}"
-      data-shared-size="${htmlAttr(preview.size)}"
-      data-fallback-src="${htmlAttr(preview.fallback)}"
-      data-preview-label="${htmlAttr(preview.label)}"
-      onclick="event.stopPropagation();openSharedPreviewFromButton(this)"
-    >
-      <span
-        class="media-skeleton"
-        aria-hidden="true"
-      ></span>
-
-      <img
-        data-shared-category="${htmlAttr(preview.category)}"
-        data-shared-key="${htmlAttr(preview.lookupKey)}"
-        data-shared-size="${htmlAttr(preview.size)}"
-        data-fallback-src="${htmlAttr(preview.fallback)}"
-        alt="${htmlAttr(preview.label)}"
-        loading="lazy"
-        decoding="async"
-      >
-
-      <span>${ui('view')}</span>
-    </button>
-  `;
-}
 
 async function openSharedPreviewFromButton(
   button
@@ -3676,167 +3746,10 @@ function resetDetailSwipe(){
   detailSwipeStartY=0;
 }
 
-function bindHorizontalOptions() {
-  document.querySelectorAll('.option-grid-scroll').forEach((el) => {
-    if (el.dataset.bound === '1') return;
-
-    el.dataset.bound = '1';
-
-    // 移动端由浏览器原生处理横向滑动。
-    // 桌面端将鼠标滚轮转换为横向滚动。
-    el.addEventListener(
-      'wheel',
-      (event) => {
-        if (el.scrollWidth <= el.clientWidth) return;
-
-        const horizontalMovement =
-          Math.abs(event.deltaX) >= Math.abs(event.deltaY)
-            ? event.deltaX
-            : event.deltaY;
-
-        if (!horizontalMovement) return;
-
-        el.scrollLeft += horizontalMovement;
-        event.preventDefault();
-      },
-      { passive: false }
-    );
-  });
-}
 
 function captureDetailOptionScrollState(){
-  if(!configCard){
-    return [];
-  }
-
-  return [...configCard.querySelectorAll('[data-config-key] .option-grid-scroll')]
-    .map(scroller=>{
-      const block=scroller.closest('[data-config-key]');
-
-      if(!block){
-        return null;
-      }
-
-      return {
-        key:block.dataset.configKey,
-        left:scroller.scrollLeft
-      };
-    })
-    .filter(Boolean);
-}
-
-function restoreDetailOptionScrollState(
-  scrollState
-){
-  const states=
-    Array.isArray(scrollState)
-      ? scrollState
-      : scrollState
-        ? [scrollState]
-        : [];
-
-  states.forEach(state=>{
-    if(
-      !state||
-      !state.key||
-      !Number.isFinite(state.left)
-    ){
-      return;
-    }
-
-    const scroller=
-      configCard.querySelector(
-        `[data-config-key="${state.key}"] .option-grid-scroll`
-      );
-
-    if(!scroller){
-      return;
-    }
-
-    /*
-     * DOM 重新生成后，先无动画恢复到用户操作前的位置。
-     */
-    scroller.scrollTo({
-      left:state.left,
-      behavior:'auto'
-    });
-  });
-}
-
-function scrollActiveOptionsIntoView(){
-  if(!configCard){
-    return;
-  }
-
-  configCard
-    .querySelectorAll('[data-config-key] .option-grid-scroll')
-    .forEach(scroller=>{
-      const active=scroller.querySelector('.option.active');
-
-      if(!active){
-        return;
-      }
-
-      const scrollerLeft=scroller.scrollLeft;
-      const scrollerRight=scrollerLeft+scroller.clientWidth;
-      const optionLeft=active.offsetLeft;
-      const optionRight=optionLeft+active.offsetWidth;
-
-      if(optionLeft<scrollerLeft||optionRight>scrollerRight){
-        scroller.scrollLeft=Math.max(0,optionLeft-12);
-      }
-    });
-}
-
-function centerSelectedOption(
-  key,
-  behavior='smooth'
-){
-  if(!configCard||!key){
-    return;
-  }
-
-  const scroller=
-    configCard.querySelector(
-      `[data-config-key="${key}"] .option-grid-scroll`
-    );
-
-  const active=
-    scroller?.querySelector(
-      '.option.active'
-    );
-
-  if(!scroller||!active){
-    return;
-  }
-
-  const targetLeft=
-    active.offsetLeft-
-    (
-      scroller.clientWidth-
-      active.offsetWidth
-    )/2;
-
-  const maxLeft=
-    Math.max(
-      0,
-      scroller.scrollWidth-
-      scroller.clientWidth
-    );
-
-  const nextLeft=
-    Math.max(
-      0,
-      Math.min(
-        maxLeft,
-        targetLeft
-      )
-    );
-
-  scroller.scrollTo({
-    left:nextLeft,
-    behavior
-  });
+  return detailRenderer
+    .captureScrollState();
 }
   
 function scentDisplayText(value){
@@ -3920,344 +3833,20 @@ function ensureCurrentScent(options){
   );
 }
 
-function setScent(scentId){
-  const optionScrollState=
-    captureDetailOptionScrollState();
-
-  const view=
-    detailFeature
-      .setScent(
-        scentId
-      );
-
-  if(!view){
-    return;
-  }
-
-  syncDetailLegacyState();
-
-  renderDetail(
-    optionScrollState,
-    'scent'
-  );
-}
-
-function scentBlock(){
-  const options=
-    availableScentsForProduct(
-      activeProduct,
-      activeProduct?.series==='holiday'
-        ? config.scentSeries
-        : ''
-    );
-
-  ensureCurrentScent(options);
-
-  const gridClass=
-    'option-grid option-grid-scroll';
-
-  const buttons=
-    options.map(scent=>{
-      const active=
-        config.scentId===scent.id;
-
-      const name=
-        scentDisplayText(
-          scent.name
-        );
-
-      return `
-        <button
-          class="option ${active?'active':''}"
-          type="button"
-          onclick="setScent('${scent.id}')"
-        >
-          ${scentSafeText(name)}
-        </button>
-      `;
-    }).join('');
-
-  return `
-    <div
-      class="config-block"
-      data-config-key="scent"
-    >
-      <div class="config-title">
-        <h3>${ui('scent')}</h3>
-
-        <div class="title-side">
-          <div class="tip-tools">
-            <span>
-              ${options.length}
-              ${ui('scentHint')}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="config-choice-row">
-        <div class="${gridClass}">
-          ${buttons}
-        </div>
-      </div>
-
-      ${scentInfo('scent')}
-    </div>
-  `;
-}
-  
-  function renderDetail(
-  scrollState=null,
-  focusKey=''
+function setScent(
+  scentId
 ){
-  const detailView=
-    syncDetailLegacyState();
-
-  if(detailView.empty){
-    return;
-  }
-  renderDetailMedia();
-
-  const meta=
-    seriesMeta[
-      activeProduct.series
-    ];
-
-  const seriesMoq=
-    configMoq();
-
-  const inputMin=
-    QTY_MIN;
-
-  const scentSeriesBlock=
-    activeProduct.series==='holiday'
-      ? block(
-          ui('scentSeries'),
-          'scentSeries',
-          meta.scentSeriesOptions,
-          ui('scentSeriesHint')
-        )
-      : '';
-
-  configCard.innerHTML=
-    block(
-      ui('size'),
-      'size',
-      ['S','M','L','XL'],
-      `${ui('currentSizeMoq')} ${seriesMoq}`
-    )+
-    scentSeriesBlock+scentBlock()+
-    block(
-      ui('pattern'),
-      'pattern',
-      patternsBySize[config.size]||[],
-      ui('patternHint')
-    )+
-    block(
-  ui('pack'),
-  'pack',
-  packOptions(activeProduct.series),
-  ''
-)+
-    `
-      <div class="config-block">
-        <div class="config-title">
-  <h3>${ui('quantity')}</h3>
-
-  <button
-    class="tier-title-link"
-    type="button"
-    onclick="openTierSheet()"
-  >
-    ${ui('viewTierPrice')}
-  </button>
-</div>
-
-        <div class="qty-bar">
-          <div>
-           <div class="summary-label">
-  ${ui('currentUnitPrice')}
-</div>
-
-<div class="amount">
-  ${money(configUnit())}
-</div>
-
-<div class="pack-note">
-  ${currentPackNotice()}
-</div>
-          </div>
-
-          <div class="qty-stepper">
-            <button
-              class="step"
-              onclick="changeDetailQty(-QTY_STEP)"
-            >
-              −
-            </button>
-
-            <input
-              class="qty qty-input"
-              id="detailQty"
-              type="number"
-              min="${inputMin}"
-              max="${maximumQuantity()}"
-              step="${QTY_STEP}"
-              value="${config.qty}"
-              inputmode="numeric"
-              onchange="setDetailQty(this.value)"
-            >
-
-            <button
-              class="step"
-              onclick="changeDetailQty(QTY_STEP)"
-            >
-              +
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-
-requestAnimationFrame(()=>{
-  mountSharedAssetImages(
-    configCard
+  return applyDetailScent(
+    scentId,
+    detailRenderer
+      .captureScrollState()
   );
+}
 
-  bindHorizontalOptions();
-
-  const hasScrollState=
-    Array.isArray(scrollState)
-      ? scrollState.length>0
-      : Boolean(scrollState);
-
-  /*
- * 第一阶段：所有横向列表先恢复到重绘前的位置。
- * 该操作发生在浏览器绘制前，不应被用户看到。
- */
-restoreDetailOptionScrollState(
+function applyDetailQuantity(
+  value,
   scrollState
-);
-
-if(focusKey){
-  /*
-   * 第二阶段：下一帧只让当前选中的列表轻微居中。
-   * 此时动画从用户原来的滚动位置开始，
-   * 而不是从最左侧开始。
-   */
-  requestAnimationFrame(()=>{
-    centerSelectedOption(
-      focusKey,
-      'smooth'
-    );
-  });
-}else if(!hasScrollState){
-  scrollActiveOptionsIntoView();
-}
-});
-}
-    
-function block(t, k, opts, h) {
- const optionLabel=(value)=>
-  k==='scentSeries'
-    ? seriesLabel(value)
-    : choiceLabel(value);
-
-const shouldScroll=
-  k!=='size'&&
-  (
-    opts.length>3||
-    currentLang!=='zh'||
-    opts.some(
-      value=>
-        String(optionLabel(value)).length>=7
-    )
-  );
-
-  const tip =
-  k === 'size'
-    ? sizeDims[config.size]
-    : k === 'scent'
-      ? scentTipText(shouldScroll, h)
-      : h;
-
-  const gridClass = shouldScroll
-  ? 'option-grid option-grid-scroll'
-  : 'option-grid';
-
-  const preview = optionPreview(k);
-  const scentRow = scentInfo(k);
-
-  return `
-   <div class="config-block" data-config-key="${k}">
-      <div class="config-title">
-        <h3>${t}</h3>
-        <div class="title-side">
-          <div class="tip-tools">
-            <span>${tip}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="config-choice-row">
-        <div class="${gridClass}">
-          ${opts
-            .map(
-              (o) => `
-                <button
-                  type="button"
-                  class="option ${config[k] === o ? 'active' : ''}"
-                  onclick="setCfg('${k}', '${o}')"
-                >
-                  ${
-  k==='scentSeries'
-    ? seriesLabel(o)
-    : choiceLabel(o)
-}
-                </button>
-              `
-            )
-            .join('')}
-        </div>
-
-        ${preview}
-      </div>
-
-      ${scentRow}
-    </div>
-  `;
-}
-
-function setCfg(
-  key,
-  value
 ){
-  const optionScrollState=
-    captureDetailOptionScrollState();
-
-  const view=
-    detailFeature
-      .setOption(
-        key,
-        value
-      );
-
-  if(!view){
-    return;
-  }
-
-  syncDetailLegacyState();
-
-  renderDetail(
-    optionScrollState,
-    key
-  );
-}
-
-function setDetailQty(value){
-  const optionScrollState=
-    captureDetailOptionScrollState();
-
   const result=
     detailFeature
       .setQuantity(
@@ -4281,25 +3870,106 @@ function setDetailQty(value){
 
   syncDetailLegacyState();
 
-  const input=
-    document.getElementById(
-      'detailQty'
-    );
+  renderDetail(
+    scrollState
+  );
+}
+  
+  function renderDetail(
+  scrollState=null,
+  focusKey=''
+){
+  const detailView=
+    syncDetailLegacyState();
 
-  if(input){
-    input.value=
-      config.qty;
+  if(detailView.empty){
+    return;
   }
 
+  renderDetailMedia();
+
+  return detailRenderer
+    .render(
+      detailView,
+      {
+        scrollState,
+        focusKey
+      }
+    );
+}
+    
+function applyDetailOption(
+  key,
+  value,
+  scrollState
+){
+  const view=
+    detailFeature
+      .setOption(
+        key,
+        value
+      );
+
+  if(!view){
+    return;
+  }
+
+  syncDetailLegacyState();
+
   renderDetail(
-    optionScrollState
+    scrollState,
+    key
   );
 }
 
-function changeDetailQty(delta){
-  const optionScrollState=
-    captureDetailOptionScrollState();
+function applyDetailScent(
+  scentId,
+  scrollState
+){
+  const view=
+    detailFeature
+      .setScent(
+        scentId
+      );
 
+  if(!view){
+    return;
+  }
+
+  syncDetailLegacyState();
+
+  renderDetail(
+    scrollState,
+    'scent'
+  );
+}
+
+function setCfg(
+  key,
+  value
+){
+  return applyDetailOption(
+    key,
+    value,
+    detailRenderer
+      .captureScrollState()
+  );
+}
+
+function setDetailQty(
+  value
+){
+  return applyDetailQuantity(
+    value,
+    detailRenderer
+      .captureScrollState()
+  );
+}
+
+function applyDetailQuantityDelta(
+  delta,
+  scrollState
+){
   detailFeature
     .adjustQuantity(
       delta
@@ -4308,7 +3978,17 @@ function changeDetailQty(delta){
   syncDetailLegacyState();
 
   renderDetail(
-    optionScrollState
+    scrollState
+  );
+}
+
+function changeDetailQty(
+  delta
+){
+  return applyDetailQuantityDelta(
+    delta,
+    detailRenderer
+      .captureScrollState()
   );
 }
 

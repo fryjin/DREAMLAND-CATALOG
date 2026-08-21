@@ -22,17 +22,19 @@ import {
 /*
  * Architecture metadata only.
  *
- * B6-03 adds the Detail Feature state/configuration runtime.
- * DreamlandDetail owns active-product selection, Detail configuration state,
- * option-state mutation and Detail pricing/MOQ ViewModel derivation.
- * Detail DOM rendering, media/carousel/swipe lifecycle, screen navigation and
- * Inquiry mutation orchestration remain outside the Feature.
+ * B6-04 adds the Detail UI Renderer runtime.
+ * DreamlandDetailRenderer owns the Detail configuration-card DOM, option /
+ * scent / quantity presentation, delegated configuration events and horizontal
+ * option-scroll lifecycle while consuming DreamlandDetail ViewModels through
+ * the App bridge.
  *
- * Catalog, Contact, Inquiry and existing service ownership remains unchanged.
+ * Detail media/carousel/swipe, shared preview modals, screen navigation and
+ * Inquiry mutation orchestration remain outside the Detail Renderer.
+ *
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B6-03',
+  phase:'B6-04',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',

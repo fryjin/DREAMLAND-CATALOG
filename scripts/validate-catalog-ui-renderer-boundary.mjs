@@ -615,13 +615,7 @@ try{
           item.runtimeEnabled===true
       );
 
-  const enabledIds=
-    enabled
-      .map(
-        item=>item.id
-      )
-      .sort()
-      .join(',');
+
 
   const catalog=
     enabled.find(
@@ -631,16 +625,16 @@ try{
     );
 
   if(
-    enabledIds!==
-      'catalog-renderer,inquiry-renderer'||
-    catalog?.migrationStatus!==
-      'migrated'||
-    catalog?.runtimeOwner!==
-      'src/ui/catalog/runtime-catalog-renderer.js'
+  catalog?.runtimeEnabled!==
+    true||
+  catalog?.migrationStatus!==
+    'migrated'||
+  catalog?.runtimeOwner!==
+    'src/ui/catalog/runtime-catalog-renderer.js'
   ){
-    fail(
-      'B6-02 must runtime-enable the migrated Catalog UI Renderer alongside Inquiry UI Renderer.'
-    );
+  fail(
+    'B6-02 must preserve the migrated Catalog UI Renderer runtime.'
+  );
   }
 }catch(error){
   fail(

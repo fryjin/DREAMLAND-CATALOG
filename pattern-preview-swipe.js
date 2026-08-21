@@ -97,13 +97,68 @@
   }
 
   function normalizeCurrentPackagingConfig(){
-    if(
-      typeof config!=='undefined'&&
-      config&&
-      config.pack
-    ){
-      config.pack=normalizePackagingValue(config.pack);
-    }
+  const detail=
+    window.DreamlandDetail;
+
+  if(
+    !detail||
+    typeof detail.getConfig!==
+      'function'
+  ){
+    return;
+  }
+
+  const current=
+    detail
+      .getConfig()
+      .pack||
+    '';
+
+  const normalized=
+    normalizePackagingValue(
+      current
+    );
+
+  if(
+    !current||
+    !normalized||
+    current===normalized
+  ){
+    return;
+  }
+
+  const view=
+    detail
+      .buildViewModel();
+
+  const packs=
+    view?.options?.packs||
+    [];
+
+  /*
+   * Packaging alias only changes Feature state when the normalized value
+   * is also a valid Detail packaging option. Otherwise preserve the
+   * Feature-owned canonical value and only normalize display labels.
+   */
+  if(
+    !packs.includes(
+      normalized
+    )
+  ){
+    return;
+  }
+
+  detail.setOption(
+    'pack',
+    normalized
+  );
+
+  if(
+    typeof syncDetailLegacyState===
+      'function'
+  ){
+    syncDetailLegacyState();
+  }
   }
 
   function normalizeCustomPackSelect(){
@@ -825,15 +880,45 @@
     const item=currentItem();
 
     if(
-      typeof config!=='undefined'&&
-      config&&
-      item&&
-      state.configKey
+  item&&
+  state.configKey
+){
+  const detail=
+    window.DreamlandDetail;
+
+  if(
+    detail&&
+    typeof detail.setOption===
+      'function'
+  ){
+    const view=
+      detail.setOption(
+        state.configKey,
+        item.value
+      );
+
+    const nextConfig=
+      view?.config||
+      detail.getConfig?.()||
+      {};
+
+    state.changed=
+      String(
+        nextConfig[
+          state.configKey
+        ]||
+        ''
+      )!==
+      state.initialValue;
+
+    if(
+      typeof syncDetailLegacyState===
+        'function'
     ){
-      config[state.configKey]=item.value;
-      state.changed=
-        String(config[state.configKey]||'')!==state.initialValue;
+      syncDetailLegacyState();
     }
+  }
+}
 
     updateMeta();
     renderTrack();

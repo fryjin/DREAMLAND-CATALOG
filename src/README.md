@@ -1067,3 +1067,90 @@ PWA cache:
 ```text
 dreamland-pwa-v80
 ```
+
+### B6-04 — Detail UI Renderer Boundary
+
+Runtime active:
+
+```text
+src/ui/detail/runtime-detail-renderer.js
+```
+
+`DreamlandDetailRenderer` owns:
+
+```text
+Detail configuration-card HTML
+
+size options
+scent-series options
+scent options
+pattern options
+packaging options
+quantity UI
+
+Detail configuration event delegation
+quantity input / +/- UI events
+
+horizontal option wheel handling
+option scroll-state capture / restore
+selected-option centering
+
+shared-option preview button markup
+scent-notes trigger markup
+tier-price trigger markup
+```
+
+Renderer input:
+
+```text
+DreamlandDetail.buildViewModel()
+```
+
+Business mutation callbacks still route through:
+
+```text
+DreamlandDetail
+```
+
+`index.html` keeps narrow compatibility wrappers:
+
+```text
+renderDetail
+setCfg
+setScent
+setDetailQty
+changeDetailQty
+captureDetailOptionScrollState
+```
+
+but no longer owns Detail configuration HTML templates or option-scroll lifecycle.
+
+Still outside B6-04:
+
+```text
+renderDetailMedia
+Detail carousel
+Detail swipe
+detail-progressive.js
+shared preview modal
+scent detail modal
+tier sheet
+screen navigation
+Inquiry mutation orchestration
+```
+
+`pattern-preview-swipe.js` no longer writes frozen `config` snapshots directly; option changes route through `DreamlandDetail.setOption()`.
+
+Runtime-enabled UI contracts:
+
+```text
+catalog-renderer
+detail-renderer
+inquiry-renderer
+```
+
+PWA cache:
+
+```text
+dreamland-pwa-v81
+```

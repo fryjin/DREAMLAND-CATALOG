@@ -50,6 +50,7 @@ const requiredFiles=[
   'src/features/catalog/runtime-catalog.js',
   'src/features/detail/runtime-detail.js',
   'src/ui/catalog/runtime-catalog-renderer.js',
+  'src/ui/detail/runtime-detail-renderer.js',
   'src/app/runtime-inquiry-submission-flow.js'
 ];
 
@@ -68,7 +69,7 @@ try{
 }
 
 if(foundation){
-  if(foundation.phase!=='B6-03'){
+  if(foundation.phase!=='B6-04'){
     fail(`Unexpected frontend foundation phase: ${foundation.phase}`)
   }
 
@@ -76,7 +77,7 @@ if(foundation){
     foundation.runtimeIntegrated!==true||
     foundation.runtimeIntegration!=='partial'
   ){
-    fail('B6-03 must declare partial runtime integration.')
+    fail('B6-04 must declare partial runtime integration.')
   }
 
   const uniqueIds=(items,label)=>{
@@ -151,7 +152,7 @@ if(
     'src/features/contact/runtime-contact.js'
 ){
   fail(
-    'B6-03 must preserve partial Catalog, Detail, Inquiry and Contact Feature runtimes.'
+    'B6-04 must preserve partial Catalog, Detail, Inquiry and Contact Feature runtimes.'
   )
 }
 
@@ -189,35 +190,46 @@ if(
       .join(',');
 
   const catalogRenderer=
-    enabledUi.find(
-      item=>
-        item.id===
-        'catalog-renderer'
-    );
+  enabledUi.find(
+    item=>
+      item.id===
+      'catalog-renderer'
+  );
+
+  const detailRenderer=
+  enabledUi.find(
+    item=>
+      item.id===
+      'detail-renderer'
+  );
 
   const inquiryRenderer=
-    enabledUi.find(
-      item=>
-        item.id===
-        'inquiry-renderer'
-    );
+  enabledUi.find(
+    item=>
+      item.id===
+      'inquiry-renderer'
+  );
 
   if(
-    enabledUiIds!==
-      'catalog-renderer,inquiry-renderer'||
-    catalogRenderer?.migrationStatus!==
-      'migrated'||
-    catalogRenderer?.runtimeOwner!==
-      'src/ui/catalog/runtime-catalog-renderer.js'||
-    inquiryRenderer?.migrationStatus!==
-      'migrated'||
-    inquiryRenderer?.runtimeOwner!==
-      'src/ui/inquiry/runtime-inquiry-renderer.js'
-  ){
-    fail(
-      'B6-02 must preserve the migrated Catalog and Inquiry UI Renderer runtimes.'
-    )
-  }
+  enabledUiIds!==
+    'catalog-renderer,detail-renderer,inquiry-renderer'||
+  catalogRenderer?.migrationStatus!==
+    'migrated'||
+  catalogRenderer?.runtimeOwner!==
+    'src/ui/catalog/runtime-catalog-renderer.js'||
+  detailRenderer?.migrationStatus!==
+    'migrated'||
+  detailRenderer?.runtimeOwner!==
+    'src/ui/detail/runtime-detail-renderer.js'||
+  inquiryRenderer?.migrationStatus!==
+    'migrated'||
+  inquiryRenderer?.runtimeOwner!==
+    'src/ui/inquiry/runtime-inquiry-renderer.js'
+){
+  fail(
+    'B6-04 must preserve the migrated Catalog, Detail and Inquiry UI Renderer runtimes.'
+  )
+}
 
   if(
     !inquiryMigration?.runtimeOwners?.includes(
@@ -439,6 +451,11 @@ if(
     !detailMigration
       ?.runtimeOwners
       ?.includes(
+       'src/ui/detail/runtime-detail-renderer.js'
+      )||  
+    !detailMigration
+      ?.runtimeOwners
+      ?.includes(
         'pattern-preview-swipe.js'
       )
   )
@@ -454,6 +471,7 @@ const architectureFiles=[
   ...walkJs(path.join(SRC_ROOT,'ui')),
   ...walkJs(path.join(SRC_ROOT,'services'))
 ];
+
 
 const importPattern=
   /(?:import|export)\s+(?:[^'"]+\s+from\s+)?['"]([^'"]+)['"]/g;
