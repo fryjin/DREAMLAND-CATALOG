@@ -152,7 +152,7 @@ if(
     'src/features/contact/runtime-contact.js'
 ){
   fail(
-    'B6-03 must preserve partial Catalog, Detail, Inquiry and Contact Feature runtimes.'
+    'B6-04 must preserve partial Catalog, Detail, Inquiry and Contact Feature runtimes.'
   )
 }
 
@@ -190,18 +190,25 @@ if(
       .join(',');
 
   const catalogRenderer=
-    enabledUi.find(
-      item=>
-        item.id===
-        'catalog-renderer'
-    );
+  enabledUi.find(
+    item=>
+      item.id===
+      'catalog-renderer'
+  );
+
+  const detailRenderer=
+  enabledUi.find(
+    item=>
+      item.id===
+      'detail-renderer'
+  );
 
   const inquiryRenderer=
-    enabledUi.find(
-      item=>
-        item.id===
-        'inquiry-renderer'
-    );
+  enabledUi.find(
+    item=>
+      item.id===
+      'inquiry-renderer'
+  );
 
   if(
   enabledUiIds!==
@@ -465,12 +472,6 @@ const architectureFiles=[
   ...walkJs(path.join(SRC_ROOT,'services'))
 ];
 
-const detailRenderer=
-  enabledUi.find(
-    item=>
-      item.id===
-      'detail-renderer'
-  );
 
 const importPattern=
   /(?:import|export)\s+(?:[^'"]+\s+from\s+)?['"]([^'"]+)['"]/g;
