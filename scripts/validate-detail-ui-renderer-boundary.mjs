@@ -609,16 +609,6 @@ try{
       'sw.js'
     );
 
-  if(
-    !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v81';"
-    )
-  ){
-    fail(
-      'sw.js cache version must be dreamland-pwa-v81 for B6-04.'
-    );
-  }
-
   const matches=
     sw.match(
       /'\.\/src\/ui\/detail\/runtime-detail-renderer\.js'/g

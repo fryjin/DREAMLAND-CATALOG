@@ -50,6 +50,28 @@ const seriesPath=
     'series.json'
   );
 
+const swPath=
+  path.join(
+    ROOT,
+    'sw.js'
+  );
+
+const swSource=
+  fs.readFileSync(
+    swPath,
+    'utf8'
+  );
+
+if(
+  !swSource.includes(
+    "const CACHE_VERSION = 'dreamland-pwa-v82';"
+  )
+){
+  fail(
+    'sw.js cache version must be dreamland-pwa-v82 for B6-04.1.'
+  );
+}
+
 const csvText=
   fs.readFileSync(
     csvPath,
