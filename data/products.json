@@ -1451,7 +1451,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 10,
-      "listSort": 340,
+      "listSort": 460,
       "name": "怦然心动",
       "names": {
         "zh": "怦然心动",
@@ -1527,7 +1527,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 20,
-      "listSort": 330,
+      "listSort": 450,
       "name": "欢喜",
       "names": {
         "zh": "欢喜",
@@ -1603,7 +1603,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 30,
-      "listSort": 320,
+      "listSort": 440,
       "name": "秘密花园",
       "names": {
         "zh": "秘密花园",
@@ -1679,7 +1679,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 40,
-      "listSort": 310,
+      "listSort": 430,
       "name": "黑糖拿铁",
       "names": {
         "zh": "黑糖拿铁",
@@ -1755,7 +1755,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 50,
-      "listSort": 300,
+      "listSort": 420,
       "name": "静谧之夜",
       "names": {
         "zh": "静谧之夜",
@@ -1831,7 +1831,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 60,
-      "listSort": 290,
+      "listSort": 410,
       "name": "伊莎贝拉",
       "names": {
         "zh": "伊莎贝拉",
@@ -1907,7 +1907,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 70,
-      "listSort": 280,
+      "listSort": 400,
       "name": "浓情蔓越莓",
       "names": {
         "zh": "浓情蔓越莓",
@@ -1983,7 +1983,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 80,
-      "listSort": 270,
+      "listSort": 390,
       "name": "蝴蝶夫人",
       "names": {
         "zh": "蝴蝶夫人",
@@ -2059,7 +2059,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 90,
-      "listSort": 260,
+      "listSort": 380,
       "name": "繁花秘境",
       "names": {
         "zh": "繁花秘境",
@@ -2135,7 +2135,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 100,
-      "listSort": 250,
+      "listSort": 370,
       "name": "屿你",
       "names": {
         "zh": "屿你",
@@ -2211,7 +2211,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 110,
-      "listSort": 240,
+      "listSort": 360,
       "name": "小天狼星",
       "names": {
         "zh": "小天狼星",
@@ -2287,7 +2287,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 120,
-      "listSort": 230,
+      "listSort": 350,
       "name": "星湉",
       "names": {
         "zh": "星湉",
@@ -2363,7 +2363,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 130,
-      "listSort": 220,
+      "listSort": 340,
       "name": "炽天使",
       "names": {
         "zh": "炽天使",
@@ -2439,7 +2439,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 140,
-      "listSort": 210,
+      "listSort": 330,
       "name": "只此青绿",
       "names": {
         "zh": "只此青绿",
@@ -2515,7 +2515,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 150,
-      "listSort": 200,
+      "listSort": 320,
       "name": "巴哈马幻境",
       "names": {
         "zh": "巴哈马幻境",
@@ -2591,7 +2591,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 160,
-      "listSort": 190,
+      "listSort": 310,
       "name": "光遇",
       "names": {
         "zh": "光遇",
@@ -2667,7 +2667,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 170,
-      "listSort": 180,
+      "listSort": 300,
       "name": "青青子衿",
       "names": {
         "zh": "青青子衿",
@@ -2743,7 +2743,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 180,
-      "listSort": 170,
+      "listSort": 290,
       "name": "迷雾",
       "names": {
         "zh": "迷雾",
@@ -2819,7 +2819,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 190,
-      "listSort": 160,
+      "listSort": 280,
       "name": "橘子汽水",
       "names": {
         "zh": "橘子汽水",
@@ -2895,7 +2895,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 200,
-      "listSort": 150,
+      "listSort": 270,
       "name": "月夜吟霜",
       "names": {
         "zh": "月夜吟霜",
@@ -2971,7 +2971,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 210,
-      "listSort": 140,
+      "listSort": 260,
       "name": "深海",
       "names": {
         "zh": "深海",
@@ -3047,7 +3047,7 @@
       "series": "masterpiece",
       "status": "active",
       "sortOrder": 220,
-      "listSort": 130,
+      "listSort": 250,
       "name": "喜欢你",
       "names": {
         "zh": "喜欢你",
@@ -3111,6 +3111,1830 @@
       "size_m_image": "./images/products/MPC022/size-m.webp",
       "size_l_image": "./images/products/MPC022/size-l.webp",
       "size_xl_image": "./images/products/MPC022/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC023",
+      "productId": "MPC023",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 230,
+      "listSort": 240,
+      "name": "乐园",
+      "names": {
+        "zh": "乐园",
+        "en": "Paradise",
+        "ko": "낙원"
+      },
+      "desc": "匠作系列 C42，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列 C42，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "匠作系列 C42. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "匠作系列 C42. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "来源于 2026 版批发产品手册第 1 页颜色展示区。颜色展示仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Sourced from the color reference section on page 1 of the 2026 wholesale manual. Color images are for reference only; handmade production and lighting may cause slight color differences.",
+        "ko": "2026 도매 제품 매뉴얼 1페이지 컬러 레퍼런스 기준입니다. 수작업 제작과 촬영 조명으로 실제 색상과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-5",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "C42",
+      "pdfSeriesLabel": "匠作系列",
+      "pdfSourcePage": 1,
+      "cover_image": "./images/products/MPC023/cover.webp",
+      "angle_image": "./images/products/MPC023/angle.webp",
+      "detail_image": "./images/products/MPC023/detail.webp",
+      "size_s_image": "./images/products/MPC023/size-s.webp",
+      "size_m_image": "./images/products/MPC023/size-m.webp",
+      "size_l_image": "./images/products/MPC023/size-l.webp",
+      "size_xl_image": "./images/products/MPC023/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC024",
+      "productId": "MPC024",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 240,
+      "listSort": 230,
+      "name": "鲸落星河",
+      "names": {
+        "zh": "鲸落星河",
+        "en": "Whale Fall Galaxy",
+        "ko": "고래의 은하"
+      },
+      "desc": "匠作系列 C43，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列 C43，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "匠作系列 C43. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "匠作系列 C43. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "来源于 2026 版批发产品手册第 1 页颜色展示区。颜色展示仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Sourced from the color reference section on page 1 of the 2026 wholesale manual. Color images are for reference only; handmade production and lighting may cause slight color differences.",
+        "ko": "2026 도매 제품 매뉴얼 1페이지 컬러 레퍼런스 기준입니다. 수작업 제작과 촬영 조명으로 실제 색상과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-6",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "C43",
+      "pdfSeriesLabel": "匠作系列",
+      "pdfSourcePage": 1,
+      "cover_image": "./images/products/MPC024/cover.webp",
+      "angle_image": "./images/products/MPC024/angle.webp",
+      "detail_image": "./images/products/MPC024/detail.webp",
+      "size_s_image": "./images/products/MPC024/size-s.webp",
+      "size_m_image": "./images/products/MPC024/size-m.webp",
+      "size_l_image": "./images/products/MPC024/size-l.webp",
+      "size_xl_image": "./images/products/MPC024/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC025",
+      "productId": "MPC025",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 250,
+      "listSort": 220,
+      "name": "海盐茉莉",
+      "names": {
+        "zh": "海盐茉莉",
+        "en": "Sea Salt Jasmine",
+        "ko": "씨솔트 자스민"
+      },
+      "desc": "匠作系列 C44，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列 C44，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "匠作系列 C44. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "匠作系列 C44. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "来源于 2026 版批发产品手册第 1 页颜色展示区。颜色展示仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Sourced from the color reference section on page 1 of the 2026 wholesale manual. Color images are for reference only; handmade production and lighting may cause slight color differences.",
+        "ko": "2026 도매 제품 매뉴얼 1페이지 컬러 레퍼런스 기준입니다. 수작업 제작과 촬영 조명으로 실제 색상과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-1",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "C44",
+      "pdfSeriesLabel": "匠作系列",
+      "pdfSourcePage": 1,
+      "cover_image": "./images/products/MPC025/cover.webp",
+      "angle_image": "./images/products/MPC025/angle.webp",
+      "detail_image": "./images/products/MPC025/detail.webp",
+      "size_s_image": "./images/products/MPC025/size-s.webp",
+      "size_m_image": "./images/products/MPC025/size-m.webp",
+      "size_l_image": "./images/products/MPC025/size-l.webp",
+      "size_xl_image": "./images/products/MPC025/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC026",
+      "productId": "MPC026",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 260,
+      "listSort": 210,
+      "name": "一梦桃花源",
+      "names": {
+        "zh": "一梦桃花源",
+        "en": "Peach Blossom Dream",
+        "ko": "도화원 꿈"
+      },
+      "desc": "匠作系列 C45，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列 C45，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "匠作系列 C45. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "匠作系列 C45. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "来源于 2026 版批发产品手册第 1 页颜色展示区。颜色展示仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Sourced from the color reference section on page 1 of the 2026 wholesale manual. Color images are for reference only; handmade production and lighting may cause slight color differences.",
+        "ko": "2026 도매 제품 매뉴얼 1페이지 컬러 레퍼런스 기준입니다. 수작업 제작과 촬영 조명으로 실제 색상과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-2",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "C45",
+      "pdfSeriesLabel": "匠作系列",
+      "pdfSourcePage": 1,
+      "cover_image": "./images/products/MPC026/cover.webp",
+      "angle_image": "./images/products/MPC026/angle.webp",
+      "detail_image": "./images/products/MPC026/detail.webp",
+      "size_s_image": "./images/products/MPC026/size-s.webp",
+      "size_m_image": "./images/products/MPC026/size-m.webp",
+      "size_l_image": "./images/products/MPC026/size-l.webp",
+      "size_xl_image": "./images/products/MPC026/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC027",
+      "productId": "MPC027",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 270,
+      "listSort": 200,
+      "name": "童话",
+      "names": {
+        "zh": "童话",
+        "en": "Fairy Tale",
+        "ko": "동화"
+      },
+      "desc": "匠作系列 C46，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列 C46，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "匠作系列 C46. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "匠作系列 C46. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "来源于 2026 版批发产品手册第 1 页颜色展示区。颜色展示仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Sourced from the color reference section on page 1 of the 2026 wholesale manual. Color images are for reference only; handmade production and lighting may cause slight color differences.",
+        "ko": "2026 도매 제품 매뉴얼 1페이지 컬러 레퍼런스 기준입니다. 수작업 제작과 촬영 조명으로 실제 색상과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-3",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "C46",
+      "pdfSeriesLabel": "匠作系列",
+      "pdfSourcePage": 1,
+      "cover_image": "./images/products/MPC027/cover.webp",
+      "angle_image": "./images/products/MPC027/angle.webp",
+      "detail_image": "./images/products/MPC027/detail.webp",
+      "size_s_image": "./images/products/MPC027/size-s.webp",
+      "size_m_image": "./images/products/MPC027/size-m.webp",
+      "size_l_image": "./images/products/MPC027/size-l.webp",
+      "size_xl_image": "./images/products/MPC027/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC028",
+      "productId": "MPC028",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 280,
+      "listSort": 190,
+      "name": "小熊维尼",
+      "names": {
+        "zh": "小熊维尼",
+        "en": "Winnie Bear",
+        "ko": "위니 베어"
+      },
+      "desc": "匠作系列 C47，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列 C47，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "匠作系列 C47. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "匠作系列 C47. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "来源于 2026 版批发产品手册第 1 页颜色展示区。颜色展示仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Sourced from the color reference section on page 1 of the 2026 wholesale manual. Color images are for reference only; handmade production and lighting may cause slight color differences.",
+        "ko": "2026 도매 제품 매뉴얼 1페이지 컬러 레퍼런스 기준입니다. 수작업 제작과 촬영 조명으로 실제 색상과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-4",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "C47",
+      "pdfSeriesLabel": "匠作系列",
+      "pdfSourcePage": 1,
+      "cover_image": "./images/products/MPC028/cover.webp",
+      "angle_image": "./images/products/MPC028/angle.webp",
+      "detail_image": "./images/products/MPC028/detail.webp",
+      "size_s_image": "./images/products/MPC028/size-s.webp",
+      "size_m_image": "./images/products/MPC028/size-m.webp",
+      "size_l_image": "./images/products/MPC028/size-l.webp",
+      "size_xl_image": "./images/products/MPC028/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC029",
+      "productId": "MPC029",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 290,
+      "listSort": 180,
+      "name": "夏梦",
+      "names": {
+        "zh": "夏梦",
+        "en": "Summer Dream",
+        "ko": "여름 꿈"
+      },
+      "desc": "匠作系列 C48，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列 C48，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "匠作系列 C48. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "匠作系列 C48. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "来源于 2026 版批发产品手册第 1 页颜色展示区。颜色展示仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Sourced from the color reference section on page 1 of the 2026 wholesale manual. Color images are for reference only; handmade production and lighting may cause slight color differences.",
+        "ko": "2026 도매 제품 매뉴얼 1페이지 컬러 레퍼런스 기준입니다. 수작업 제작과 촬영 조명으로 실제 색상과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-5",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "C48",
+      "pdfSeriesLabel": "匠作系列",
+      "pdfSourcePage": 1,
+      "cover_image": "./images/products/MPC029/cover.webp",
+      "angle_image": "./images/products/MPC029/angle.webp",
+      "detail_image": "./images/products/MPC029/detail.webp",
+      "size_s_image": "./images/products/MPC029/size-s.webp",
+      "size_m_image": "./images/products/MPC029/size-m.webp",
+      "size_l_image": "./images/products/MPC029/size-l.webp",
+      "size_xl_image": "./images/products/MPC029/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC030",
+      "productId": "MPC030",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 300,
+      "listSort": 170,
+      "name": "夜愿",
+      "names": {
+        "zh": "夜愿",
+        "en": "Night Wish",
+        "ko": "밤의 소원"
+      },
+      "desc": "匠作系列 C49，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列 C49，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "匠作系列 C49. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "匠作系列 C49. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "来源于 2026 版批发产品手册第 1 页颜色展示区。颜色展示仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Sourced from the color reference section on page 1 of the 2026 wholesale manual. Color images are for reference only; handmade production and lighting may cause slight color differences.",
+        "ko": "2026 도매 제품 매뉴얼 1페이지 컬러 레퍼런스 기준입니다. 수작업 제작과 촬영 조명으로 실제 색상과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-6",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "C49",
+      "pdfSeriesLabel": "匠作系列",
+      "pdfSourcePage": 1,
+      "cover_image": "./images/products/MPC030/cover.webp",
+      "angle_image": "./images/products/MPC030/angle.webp",
+      "detail_image": "./images/products/MPC030/detail.webp",
+      "size_s_image": "./images/products/MPC030/size-s.webp",
+      "size_m_image": "./images/products/MPC030/size-m.webp",
+      "size_l_image": "./images/products/MPC030/size-l.webp",
+      "size_xl_image": "./images/products/MPC030/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC031",
+      "productId": "MPC031",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 310,
+      "listSort": 160,
+      "name": "琉璃",
+      "names": {
+        "zh": "琉璃",
+        "en": "Colored Glaze",
+        "ko": "유리빛"
+      },
+      "desc": "匠作系列 C50，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列 C50，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "匠作系列 C50. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "匠作系列 C50. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "来源于 2026 版批发产品手册第 1 页颜色展示区。颜色展示仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Sourced from the color reference section on page 1 of the 2026 wholesale manual. Color images are for reference only; handmade production and lighting may cause slight color differences.",
+        "ko": "2026 도매 제품 매뉴얼 1페이지 컬러 레퍼런스 기준입니다. 수작업 제작과 촬영 조명으로 실제 색상과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-1",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "C50",
+      "pdfSeriesLabel": "匠作系列",
+      "pdfSourcePage": 1,
+      "cover_image": "./images/products/MPC031/cover.webp",
+      "angle_image": "./images/products/MPC031/angle.webp",
+      "detail_image": "./images/products/MPC031/detail.webp",
+      "size_s_image": "./images/products/MPC031/size-s.webp",
+      "size_m_image": "./images/products/MPC031/size-m.webp",
+      "size_l_image": "./images/products/MPC031/size-l.webp",
+      "size_xl_image": "./images/products/MPC031/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC032",
+      "productId": "MPC032",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 320,
+      "listSort": 150,
+      "name": "沙丘",
+      "names": {
+        "zh": "沙丘",
+        "en": "Dune",
+        "ko": "모래언덕"
+      },
+      "desc": "匠作系列 C51，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列 C51，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "匠作系列 C51. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "匠作系列 C51. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "来源于 2026 版批发产品手册第 1 页颜色展示区。颜色展示仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Sourced from the color reference section on page 1 of the 2026 wholesale manual. Color images are for reference only; handmade production and lighting may cause slight color differences.",
+        "ko": "2026 도매 제품 매뉴얼 1페이지 컬러 레퍼런스 기준입니다. 수작업 제작과 촬영 조명으로 실제 색상과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-2",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "C51",
+      "pdfSeriesLabel": "匠作系列",
+      "pdfSourcePage": 1,
+      "cover_image": "./images/products/MPC032/cover.webp",
+      "angle_image": "./images/products/MPC032/angle.webp",
+      "detail_image": "./images/products/MPC032/detail.webp",
+      "size_s_image": "./images/products/MPC032/size-s.webp",
+      "size_m_image": "./images/products/MPC032/size-m.webp",
+      "size_l_image": "./images/products/MPC032/size-l.webp",
+      "size_xl_image": "./images/products/MPC032/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC033",
+      "productId": "MPC033",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 330,
+      "listSort": 140,
+      "name": "小王子",
+      "names": {
+        "zh": "小王子",
+        "en": "Little Prince",
+        "ko": "어린 왕자"
+      },
+      "desc": "匠作系列 C52，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列 C52，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "匠作系列 C52. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "匠作系列 C52. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "来源于 2026 版批发产品手册第 1 页颜色展示区。颜色展示仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Sourced from the color reference section on page 1 of the 2026 wholesale manual. Color images are for reference only; handmade production and lighting may cause slight color differences.",
+        "ko": "2026 도매 제품 매뉴얼 1페이지 컬러 레퍼런스 기준입니다. 수작업 제작과 촬영 조명으로 실제 색상과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-3",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "C52",
+      "pdfSeriesLabel": "匠作系列",
+      "pdfSourcePage": 1,
+      "cover_image": "./images/products/MPC033/cover.webp",
+      "angle_image": "./images/products/MPC033/angle.webp",
+      "detail_image": "./images/products/MPC033/detail.webp",
+      "size_s_image": "./images/products/MPC033/size-s.webp",
+      "size_m_image": "./images/products/MPC033/size-m.webp",
+      "size_l_image": "./images/products/MPC033/size-l.webp",
+      "size_xl_image": "./images/products/MPC033/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC034",
+      "productId": "MPC034",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 340,
+      "listSort": 130,
+      "name": "泡泡",
+      "names": {
+        "zh": "泡泡",
+        "en": "Bubble",
+        "ko": "버블"
+      },
+      "desc": "匠作系列 C53，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列 C53，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "匠作系列 C53. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "匠作系列 C53. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "来源于 2026 版批发产品手册第 1 页颜色展示区。颜色展示仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Sourced from the color reference section on page 1 of the 2026 wholesale manual. Color images are for reference only; handmade production and lighting may cause slight color differences.",
+        "ko": "2026 도매 제품 매뉴얼 1페이지 컬러 레퍼런스 기준입니다. 수작업 제작과 촬영 조명으로 실제 색상과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-4",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "C53",
+      "pdfSeriesLabel": "匠作系列",
+      "pdfSourcePage": 1,
+      "cover_image": "./images/products/MPC034/cover.webp",
+      "angle_image": "./images/products/MPC034/angle.webp",
+      "detail_image": "./images/products/MPC034/detail.webp",
+      "size_s_image": "./images/products/MPC034/size-s.webp",
+      "size_m_image": "./images/products/MPC034/size-m.webp",
+      "size_l_image": "./images/products/MPC034/size-l.webp",
+      "size_xl_image": "./images/products/MPC034/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC036",
+      "productId": "MPC036",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 350,
+      "listSort": 120,
+      "name": "阿尔的海洋",
+      "names": {
+        "zh": "阿尔的海洋",
+        "en": "Arles Ocean",
+        "ko": "아를의 바다"
+      },
+      "desc": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "Masterpiece series. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "마스터피스 시리즈. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "颜色及图片仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Product images and colors are for reference only; handmade production and lighting may cause slight differences.",
+        "ko": "제품 이미지와 색상은 참고용이며, 수작업 제작 및 촬영 조명으로 실제 제품과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-4",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "",
+      "pdfSeriesLabel": "",
+      "pdfSourcePage": 0,
+      "cover_image": "./images/products/MPC036/cover.webp",
+      "angle_image": "./images/products/MPC036/angle.webp",
+      "detail_image": "./images/products/MPC036/detail.webp",
+      "size_s_image": "./images/products/MPC036/size-s.webp",
+      "size_m_image": "./images/products/MPC036/size-m.webp",
+      "size_l_image": "./images/products/MPC036/size-l.webp",
+      "size_xl_image": "./images/products/MPC036/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC037",
+      "productId": "MPC037",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 360,
+      "listSort": 110,
+      "name": "暗黑彩虹",
+      "names": {
+        "zh": "暗黑彩虹",
+        "en": "Noir Rainbow",
+        "ko": "누아르 레인보우"
+      },
+      "desc": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "Masterpiece series. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "마스터피스 시리즈. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "颜色及图片仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Product images and colors are for reference only; handmade production and lighting may cause slight differences.",
+        "ko": "제품 이미지와 색상은 참고용이며, 수작업 제작 및 촬영 조명으로 실제 제품과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-1",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "",
+      "pdfSeriesLabel": "",
+      "pdfSourcePage": 0,
+      "cover_image": "./images/products/MPC037/cover.webp",
+      "angle_image": "./images/products/MPC037/angle.webp",
+      "detail_image": "./images/products/MPC037/detail.webp",
+      "size_s_image": "./images/products/MPC037/size-s.webp",
+      "size_m_image": "./images/products/MPC037/size-m.webp",
+      "size_l_image": "./images/products/MPC037/size-l.webp",
+      "size_xl_image": "./images/products/MPC037/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC038",
+      "productId": "MPC038",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 370,
+      "listSort": 100,
+      "name": "苍葭",
+      "names": {
+        "zh": "苍葭",
+        "en": "Misty Reeds",
+        "ko": "안개 갈대"
+      },
+      "desc": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "Masterpiece series. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "마스터피스 시리즈. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "颜色及图片仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Product images and colors are for reference only; handmade production and lighting may cause slight differences.",
+        "ko": "제품 이미지와 색상은 참고용이며, 수작업 제작 및 촬영 조명으로 실제 제품과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-2",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "",
+      "pdfSeriesLabel": "",
+      "pdfSourcePage": 0,
+      "cover_image": "./images/products/MPC038/cover.webp",
+      "angle_image": "./images/products/MPC038/angle.webp",
+      "detail_image": "./images/products/MPC038/detail.webp",
+      "size_s_image": "./images/products/MPC038/size-s.webp",
+      "size_m_image": "./images/products/MPC038/size-m.webp",
+      "size_l_image": "./images/products/MPC038/size-l.webp",
+      "size_xl_image": "./images/products/MPC038/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC039",
+      "productId": "MPC039",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 380,
+      "listSort": 90,
+      "name": "弗洛伊德",
+      "names": {
+        "zh": "弗洛伊德",
+        "en": "Freud",
+        "ko": "프로이트"
+      },
+      "desc": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "Masterpiece series. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "마스터피스 시리즈. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "颜色及图片仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Product images and colors are for reference only; handmade production and lighting may cause slight differences.",
+        "ko": "제품 이미지와 색상은 참고용이며, 수작업 제작 및 촬영 조명으로 실제 제품과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-3",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "",
+      "pdfSeriesLabel": "",
+      "pdfSourcePage": 0,
+      "cover_image": "./images/products/MPC039/cover.webp",
+      "angle_image": "./images/products/MPC039/angle.webp",
+      "detail_image": "./images/products/MPC039/detail.webp",
+      "size_s_image": "./images/products/MPC039/size-s.webp",
+      "size_m_image": "./images/products/MPC039/size-m.webp",
+      "size_l_image": "./images/products/MPC039/size-l.webp",
+      "size_xl_image": "./images/products/MPC039/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC040",
+      "productId": "MPC040",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 390,
+      "listSort": 80,
+      "name": "黄金海岸",
+      "names": {
+        "zh": "黄金海岸",
+        "en": "Golden Coast",
+        "ko": "골든 코스트"
+      },
+      "desc": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "Masterpiece series. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "마스터피스 시리즈. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "颜色及图片仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Product images and colors are for reference only; handmade production and lighting may cause slight differences.",
+        "ko": "제품 이미지와 색상은 참고용이며, 수작업 제작 및 촬영 조명으로 실제 제품과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-4",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "",
+      "pdfSeriesLabel": "",
+      "pdfSourcePage": 0,
+      "cover_image": "./images/products/MPC040/cover.webp",
+      "angle_image": "./images/products/MPC040/angle.webp",
+      "detail_image": "./images/products/MPC040/detail.webp",
+      "size_s_image": "./images/products/MPC040/size-s.webp",
+      "size_m_image": "./images/products/MPC040/size-m.webp",
+      "size_l_image": "./images/products/MPC040/size-l.webp",
+      "size_xl_image": "./images/products/MPC040/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC041",
+      "productId": "MPC041",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 400,
+      "listSort": 70,
+      "name": "苍烟落照",
+      "names": {
+        "zh": "苍烟落照",
+        "en": "Dusky Afterglow",
+        "ko": "더스키 애프터글로우"
+      },
+      "desc": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "Masterpiece series. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "마스터피스 시리즈. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "颜色及图片仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Product images and colors are for reference only; handmade production and lighting may cause slight differences.",
+        "ko": "제품 이미지와 색상은 참고용이며, 수작업 제작 및 촬영 조명으로 실제 제품과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-5",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "",
+      "pdfSeriesLabel": "",
+      "pdfSourcePage": 0,
+      "cover_image": "./images/products/MPC041/cover.webp",
+      "angle_image": "./images/products/MPC041/angle.webp",
+      "detail_image": "./images/products/MPC041/detail.webp",
+      "size_s_image": "./images/products/MPC041/size-s.webp",
+      "size_m_image": "./images/products/MPC041/size-m.webp",
+      "size_l_image": "./images/products/MPC041/size-l.webp",
+      "size_xl_image": "./images/products/MPC041/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC042",
+      "productId": "MPC042",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 410,
+      "listSort": 60,
+      "name": "候鸟遗岛",
+      "names": {
+        "zh": "候鸟遗岛",
+        "en": "Migratory Isle",
+        "ko": "철새의 섬"
+      },
+      "desc": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "Masterpiece series. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "마스터피스 시리즈. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "颜色及图片仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Product images and colors are for reference only; handmade production and lighting may cause slight differences.",
+        "ko": "제품 이미지와 색상은 참고용이며, 수작업 제작 및 촬영 조명으로 실제 제품과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-6",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "",
+      "pdfSeriesLabel": "",
+      "pdfSourcePage": 0,
+      "cover_image": "./images/products/MPC042/cover.webp",
+      "angle_image": "./images/products/MPC042/angle.webp",
+      "detail_image": "./images/products/MPC042/detail.webp",
+      "size_s_image": "./images/products/MPC042/size-s.webp",
+      "size_m_image": "./images/products/MPC042/size-m.webp",
+      "size_l_image": "./images/products/MPC042/size-l.webp",
+      "size_xl_image": "./images/products/MPC042/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC043",
+      "productId": "MPC043",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 420,
+      "listSort": 50,
+      "name": "加州之梦",
+      "names": {
+        "zh": "加州之梦",
+        "en": "California Dream",
+        "ko": "캘리포니아 드림"
+      },
+      "desc": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "Masterpiece series. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "마스터피스 시리즈. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "颜色及图片仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Product images and colors are for reference only; handmade production and lighting may cause slight differences.",
+        "ko": "제품 이미지와 색상은 참고용이며, 수작업 제작 및 촬영 조명으로 실제 제품과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-1",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "",
+      "pdfSeriesLabel": "",
+      "pdfSourcePage": 0,
+      "cover_image": "./images/products/MPC043/cover.webp",
+      "angle_image": "./images/products/MPC043/angle.webp",
+      "detail_image": "./images/products/MPC043/detail.webp",
+      "size_s_image": "./images/products/MPC043/size-s.webp",
+      "size_m_image": "./images/products/MPC043/size-m.webp",
+      "size_l_image": "./images/products/MPC043/size-l.webp",
+      "size_xl_image": "./images/products/MPC043/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC044",
+      "productId": "MPC044",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 430,
+      "listSort": 40,
+      "name": "月光宝盒",
+      "names": {
+        "zh": "月光宝盒",
+        "en": "Moonlit Treasure",
+        "ko": "문릿 트레저"
+      },
+      "desc": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "Masterpiece series. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "마스터피스 시리즈. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "颜色及图片仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Product images and colors are for reference only; handmade production and lighting may cause slight differences.",
+        "ko": "제품 이미지와 색상은 참고용이며, 수작업 제작 및 촬영 조명으로 실제 제품과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-1",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "",
+      "pdfSeriesLabel": "",
+      "pdfSourcePage": 0,
+      "cover_image": "./images/products/MPC044/cover.webp",
+      "angle_image": "./images/products/MPC044/angle.webp",
+      "detail_image": "./images/products/MPC044/detail.webp",
+      "size_s_image": "./images/products/MPC044/size-s.webp",
+      "size_m_image": "./images/products/MPC044/size-m.webp",
+      "size_l_image": "./images/products/MPC044/size-l.webp",
+      "size_xl_image": "./images/products/MPC044/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC048",
+      "productId": "MPC048",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 440,
+      "listSort": 30,
+      "name": "圣诞炉边",
+      "names": {
+        "zh": "圣诞炉边",
+        "en": "Fireside Christmas",
+        "ko": "파이어사이드 크리스마스"
+      },
+      "desc": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "Masterpiece series. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "마스터피스 시리즈. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "颜色及图片仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Product images and colors are for reference only; handmade production and lighting may cause slight differences.",
+        "ko": "제품 이미지와 색상은 참고용이며, 수작업 제작 및 촬영 조명으로 실제 제품과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-3",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "",
+      "pdfSeriesLabel": "",
+      "pdfSourcePage": 0,
+      "cover_image": "./images/products/MPC048/cover.webp",
+      "angle_image": "./images/products/MPC048/angle.webp",
+      "detail_image": "./images/products/MPC048/detail.webp",
+      "size_s_image": "./images/products/MPC048/size-s.webp",
+      "size_m_image": "./images/products/MPC048/size-m.webp",
+      "size_l_image": "./images/products/MPC048/size-l.webp",
+      "size_xl_image": "./images/products/MPC048/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC049",
+      "productId": "MPC049",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 450,
+      "listSort": 20,
+      "name": "森潮",
+      "names": {
+        "zh": "森潮",
+        "en": "Forest Tide",
+        "ko": "포레스트 타이드"
+      },
+      "desc": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "Masterpiece series. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "마스터피스 시리즈. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "颜色及图片仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Product images and colors are for reference only; handmade production and lighting may cause slight differences.",
+        "ko": "제품 이미지와 색상은 참고용이며, 수작업 제작 및 촬영 조명으로 실제 제품과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-2",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "",
+      "pdfSeriesLabel": "",
+      "pdfSourcePage": 0,
+      "cover_image": "./images/products/MPC049/cover.webp",
+      "angle_image": "./images/products/MPC049/angle.webp",
+      "detail_image": "./images/products/MPC049/detail.webp",
+      "size_s_image": "./images/products/MPC049/size-s.webp",
+      "size_m_image": "./images/products/MPC049/size-m.webp",
+      "size_l_image": "./images/products/MPC049/size-l.webp",
+      "size_xl_image": "./images/products/MPC049/size-xl.webp",
+      "packaging_image": "",
+      "scene_image_1": "",
+      "scene_image_2": "",
+      "scene_image_3": "",
+      "scene_image_4": ""
+    },
+    {
+      "id": "MPC050",
+      "productId": "MPC050",
+      "series": "masterpiece",
+      "status": "active",
+      "sortOrder": 460,
+      "listSort": 10,
+      "name": "宇宙摩卡",
+      "names": {
+        "zh": "宇宙摩卡",
+        "en": "Cosmic Mocha",
+        "ko": "코스믹 모카"
+      },
+      "desc": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+      "descriptions": {
+        "zh": "匠作系列，适用 S/M/L/XL，可混批；美国 CandleScience 进口香薰精油，底模香薰比例10%。",
+        "en": "Masterpiece series. Suitable for S/M/L/XL mixed wholesale; CandleScience fragrance oil from the United States; fragrance ratio 10%.",
+        "ko": "마스터피스 시리즈. S/M/L/XL 혼합 도매 가능; 미국 CandleScience 수입 향료; 향료 비율 10%."
+      },
+      "detailDescriptions": {
+        "zh": "颜色及图片仅供参考，手工制作及拍摄光线可能存在轻微色差，最终以实物为准。",
+        "en": "Product images and colors are for reference only; handmade production and lighting may cause slight differences.",
+        "ko": "제품 이미지와 색상은 참고용이며, 수작업 제작 및 촬영 조명으로 실제 제품과 약간 다를 수 있습니다."
+      },
+      "size": "S",
+      "defaultSize": "S",
+      "availableSizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "availablePatterns": "S:小花卷/细波纹/简约切线; M:经典花瓣/海浪卷/礼盒花型; L:大花瓣/层叠波纹/展陈花型; XL:大礼花/雕塑卷/陈列款",
+      "availableScentSeries": [
+        "masterpiece"
+      ],
+      "color": "color-2",
+      "tags": {
+        "zh": [
+          "匠作系列",
+          "CandleScience",
+          "香薰比例10%",
+          "S/M/L/XL可混批"
+        ],
+        "en": [
+          "Masterpiece",
+          "CandleScience",
+          "10% fragrance",
+          "S/M/L/XL mixable"
+        ],
+        "ko": [
+          "마스터피스",
+          "CandleScience",
+          "향료 10%",
+          "S/M/L/XL 혼합 가능"
+        ]
+      },
+      "featured": false,
+      "launchDate": "",
+      "updatedAt": "2026-08-21",
+      "colorCode": "",
+      "pdfSeriesLabel": "",
+      "pdfSourcePage": 0,
+      "cover_image": "./images/products/MPC050/cover.webp",
+      "angle_image": "./images/products/MPC050/angle.webp",
+      "detail_image": "./images/products/MPC050/detail.webp",
+      "size_s_image": "./images/products/MPC050/size-s.webp",
+      "size_m_image": "./images/products/MPC050/size-m.webp",
+      "size_l_image": "./images/products/MPC050/size-l.webp",
+      "size_xl_image": "./images/products/MPC050/size-xl.webp",
       "packaging_image": "",
       "scene_image_1": "",
       "scene_image_2": "",
