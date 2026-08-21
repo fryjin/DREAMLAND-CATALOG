@@ -663,15 +663,13 @@ try{
     ).FRONTEND_FOUNDATION;
 
   if(
-    foundation?.phase!==
-      'B6-02'||
-    foundation?.runtimeIntegrated!==
-      true||
-    foundation?.runtimeIntegration!==
-      'partial'
+  foundation?.runtimeIntegrated!==
+    true||
+  foundation?.runtimeIntegration!==
+    'partial'
   ){
     fail(
-      'Frontend foundation must declare B6-02 partial runtime integration.'
+      'Frontend foundation must preserve partial runtime integration.'
     );
   }
 
@@ -724,15 +722,7 @@ try{
       'sw.js'
     );
 
-  if(
-    !swSource.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v79';"
-    )
-  ){
-    fail(
-      'sw.js cache version must be dreamland-pwa-v79 for B6-02.'
-    );
-  }
+  
 
   const rendererMatches=
     swSource.match(

@@ -72,16 +72,26 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
   }
 ),
   entry(
-    'detail',
-    [
+  'detail',
+  [
+    'index.html',
+    'detail-progressive.js',
+    'pattern-preview-swipe.js'
+  ],
+  'features',
+  'detail',
+  'Detail active-product state, configuration state, option mutation, quantity normalization and Detail pricing/MOQ ViewModel derivation are routed through DreamlandDetail. Detail DOM/templates, media/carousel/swipe lifecycle, shared preview UI, screen navigation and Inquiry mutation orchestration remain legacy/App-owned. index.html keeps read-only activeProduct/config compatibility snapshots until the B6-04 Detail Renderer migration.',
+  {
+    status:'partial',
+    runtimeMigrated:false,
+    runtimeOwners:[
+      'src/features/detail/runtime-detail.js',
       'index.html',
       'detail-progressive.js',
       'pattern-preview-swipe.js'
-    ],
-    'features',
-    'detail',
-    'Detail rendering and swipe behavior remain legacy-owned.'
-  ),
+    ]
+  }
+),
   entry(
     'inquiry',
     [

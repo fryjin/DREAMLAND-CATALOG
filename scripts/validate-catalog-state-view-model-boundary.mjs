@@ -387,18 +387,6 @@ try{
       )
     ).FEATURE_MANIFEST;
 
-  const enabledIds=
-    manifest
-      .filter(
-        item=>
-          item.runtimeEnabled===true
-      )
-      .map(
-        item=>item.id
-      )
-      .sort()
-      .join(',');
-
   const catalog=
     manifest.find(
       item=>
@@ -406,16 +394,16 @@ try{
     );
 
   if(
-    enabledIds!==
-      'catalog,contact,inquiry'||
-    catalog?.status!==
-      'partial'||
-    catalog?.runtimeOwner!==
-      'src/features/catalog/runtime-catalog.js'
+  catalog?.runtimeEnabled!==
+    true||
+  catalog?.status!==
+    'partial'||
+  catalog?.runtimeOwner!==
+    'src/features/catalog/runtime-catalog.js'
   ){
-    fail(
-      'B6-01 must runtime-enable partial Catalog alongside Contact and Inquiry.'
-    );
+  fail(
+    'B6-01 must preserve the partial Catalog Feature runtime.'
+  );
   }
 }catch(error){
   fail(

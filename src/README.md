@@ -980,3 +980,90 @@ PWA cache:
 ```text
 dreamland-pwa-v79
 ```
+
+### B6-03 — Detail State / Configuration Boundary
+
+Runtime active:
+
+```text
+src/features/detail/runtime-detail.js
+```
+
+`DreamlandDetail` owns:
+
+```text
+active product selection
+Detail configuration state
+
+size
+scent series
+scent
+pattern
+packaging
+quantity
+
+default configuration
+edit-item configuration hydration
+configuration mutation
+quantity normalization
+
+Detail option ViewModel
+Detail MOQ derivation
+Detail pricing-series derivation
+Detail unit-price / packaging-surcharge derivation
+```
+
+Detail ViewModel:
+
+```text
+product
+config
+options
+pricing
+limits
+```
+
+`index.html` temporarily retains read-only:
+
+```text
+activeProduct
+config
+```
+
+compatibility snapshots for the existing Detail renderer and `detail-progressive.js`.
+
+All writes route through:
+
+```text
+DreamlandDetail
+```
+
+B6-03 does not migrate:
+
+```text
+renderDetail
+renderDetailMedia
+Detail option HTML
+carousel
+swipe
+shared preview
+tier-sheet DOM
+Inquiry add/update orchestration
+```
+
+These remain B6-04/later responsibilities.
+
+Runtime-enabled Features:
+
+```text
+catalog
+contact
+detail
+inquiry
+```
+
+PWA cache:
+
+```text
+dreamland-pwa-v80
+```

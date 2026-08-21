@@ -62,17 +62,26 @@ export const FEATURE_MANIFEST=Object.freeze([
   }
   ),
   feature(
-    'detail',
-    [
-      'product detail presentation',
-      'size / scent / pattern selection',
-      'detail carousel'
-    ],
-    [
-      'index.html',
-      'detail-progressive.js',
-      'pattern-preview-swipe.js'
-    ]
+  'detail',
+  [
+    'product detail state',
+    'size / scent / pattern / packaging configuration',
+    'Detail configuration View Model',
+    'Detail pricing / MOQ derivation',
+    'product detail presentation',
+    'detail carousel'
+  ],
+  [
+    'index.html',
+    'detail-progressive.js',
+    'pattern-preview-swipe.js'
+  ],
+  {
+    status:'partial',
+    runtimeEnabled:true,
+    runtimeOwner:
+      'src/features/detail/runtime-detail.js'
+  }
   ),
   feature(
     'inquiry',
