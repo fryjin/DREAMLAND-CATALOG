@@ -58,7 +58,17 @@ export const UI_CONTRACTS=Object.freeze([
     runtimeOwner:
       'src/ui/catalog/runtime-catalog-renderer.js'
   }
-),
+  ),
+  uiContract(
+  'detail-renderer',
+  'Own Detail configuration-card HTML, size/scent/pattern/pack/quantity presentation, Detail configuration UI event delegation and horizontal option-scroll lifecycle while consuming an injected Detail ViewModel, presentation adapters and business callbacks. Detail media/carousel/swipe and shared preview modals remain outside this renderer.',
+  {
+    runtimeEnabled:true,
+    migrationStatus:'migrated',
+    runtimeOwner:
+      'src/ui/detail/runtime-detail-renderer.js'
+  }
+  ),
   uiContract(
     'inquiry-renderer',
     'Own Inquiry list/summary HTML templates, DOM rendering, incremental DOM updates and item-level event delegation while consuming injected presentation adapters and business callbacks.',

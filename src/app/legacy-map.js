@@ -80,12 +80,13 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
   ],
   'features',
   'detail',
-  'Detail active-product state, configuration state, option mutation, quantity normalization and Detail pricing/MOQ ViewModel derivation are routed through DreamlandDetail. Detail DOM/templates, media/carousel/swipe lifecycle, shared preview UI, screen navigation and Inquiry mutation orchestration remain legacy/App-owned. index.html keeps read-only activeProduct/config compatibility snapshots until the B6-04 Detail Renderer migration.',
+  'Detail active-product state, configuration state, option mutation, quantity normalization and Detail pricing/MOQ ViewModel derivation are routed through DreamlandDetail. Detail configuration-card HTML, size/scent/pattern/pack/quantity presentation, delegated configuration events and horizontal option-scroll lifecycle are routed through DreamlandDetailRenderer. Detail media/carousel/swipe, shared preview modals, screen navigation and Inquiry mutation orchestration remain App/adapter-owned. activeProduct/config remain temporary read-only compatibility snapshots for media/preview adapters.',
   {
     status:'partial',
     runtimeMigrated:false,
     runtimeOwners:[
       'src/features/detail/runtime-detail.js',
+      'src/ui/detail/runtime-detail-renderer.js',
       'index.html',
       'detail-progressive.js',
       'pattern-preview-swipe.js'
