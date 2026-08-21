@@ -48,6 +48,7 @@ const requiredFiles=[
   'src/features/inquiry/runtime-inquiry.js',
   'src/features/contact/runtime-contact.js',
   'src/features/catalog/runtime-catalog.js',
+  'src/features/detail/runtime-detail.js',
   'src/ui/catalog/runtime-catalog-renderer.js',
   'src/app/runtime-inquiry-submission-flow.js'
 ];
@@ -67,7 +68,7 @@ try{
 }
 
 if(foundation){
-  if(foundation.phase!=='B6-02'){
+  if(foundation.phase!=='B6-03'){
     fail(`Unexpected frontend foundation phase: ${foundation.phase}`)
   }
 
@@ -75,7 +76,7 @@ if(foundation){
     foundation.runtimeIntegrated!==true||
     foundation.runtimeIntegration!=='partial'
   ){
-    fail('B6-02 must declare partial runtime integration.')
+    fail('B6-03 must declare partial runtime integration.')
   }
 
   const uniqueIds=(items,label)=>{
@@ -123,13 +124,23 @@ const contactFeature=
       item.id==='contact'
   );
 
+const detailFeature=
+  enabledFeatures.find(
+    item=>
+      item.id==='detail'
+  );
+
 if(
   enabledIds!==
-    'catalog,contact,inquiry'||
+    'catalog,contact,detail,inquiry'||
   catalogFeature?.status!==
     'partial'||
   catalogFeature?.runtimeOwner!==
     'src/features/catalog/runtime-catalog.js'||
+  detailFeature?.status!==
+    'partial'||
+  detailFeature?.runtimeOwner!==
+    'src/features/detail/runtime-detail.js'||
   inquiryFeature?.status!==
     'partial'||
   inquiryFeature?.runtimeOwner!==
@@ -140,7 +151,7 @@ if(
     'src/features/contact/runtime-contact.js'
 ){
   fail(
-    'B6-01 must runtime-enable only partial Catalog, Inquiry and Contact Features.'
+    'B6-03 must preserve partial Catalog, Detail, Inquiry and Contact Feature runtimes.'
   )
 }
 
@@ -394,6 +405,46 @@ if(
 ){
   fail(
     'Legacy map does not mark Contact as a partial runtime Feature.'
+  )
+}
+
+const detailMigration=
+  foundation?.legacyMap?.find(
+    item=>
+      item.id==='detail'
+  );
+
+if(
+  foundation&&
+  (
+    detailMigration?.status!==
+      'partial'||
+    detailMigration?.runtimeMigrated!==
+      false||
+    !detailMigration
+      ?.runtimeOwners
+      ?.includes(
+        'src/features/detail/runtime-detail.js'
+      )||
+    !detailMigration
+      ?.runtimeOwners
+      ?.includes(
+        'index.html'
+      )||
+    !detailMigration
+      ?.runtimeOwners
+      ?.includes(
+        'detail-progressive.js'
+      )||
+    !detailMigration
+      ?.runtimeOwners
+      ?.includes(
+        'pattern-preview-swipe.js'
+      )
+  )
+){
+  fail(
+    'Legacy map does not mark Detail as a partial runtime Feature.'
   )
 }
 

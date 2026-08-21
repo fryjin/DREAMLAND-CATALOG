@@ -1186,6 +1186,7 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./src/services/submission/runtime-submission.js"></script>
 <script src="./src/services/risk/runtime-risk.js"></script>
 <script src="./src/features/catalog/runtime-catalog.js"></script>
+<script src="./src/features/detail/runtime-detail.js"></script>
 <script src="./src/features/inquiry/runtime-inquiry.js"></script>
 <script src="./src/features/contact/runtime-contact.js"></script>
 <script src="./src/ui/catalog/runtime-catalog-renderer.js"></script>
@@ -1202,6 +1203,7 @@ const contactFeature=window.DreamlandContact;
 const catalogRenderer=window.DreamlandCatalogRenderer;
 const inquiryRenderer=window.DreamlandInquiryRenderer;
 const submissionFlow=window.DreamlandInquirySubmissionFlow;
+const detailFeature=window.DreamlandDetail;
 
 if(!inquiryFeature){
   throw new Error(
@@ -1248,6 +1250,12 @@ if(!catalogFeature){
 if(!catalogRenderer){
   throw new Error(
     'DreamlandCatalogRenderer must load before Catalog UI initialization.'
+  );
+}
+
+if(!detailFeature){
+  throw new Error(
+    'DreamlandDetail must load before Detail state initialization.'
   );
 }
 
@@ -2023,6 +2031,12 @@ inquiryRenderer.configure({
       openItemTierSheet
   }
 });
+
+/*
+ * B6-03 compatibility snapshots only.
+ * DreamlandDetail is the source of truth.
+ * Existing B6-04 Detail renderer/media code reads these snapshots.
+ */
 let activeScreen='home',activeProduct=null,config={},detailSlideIndex=0,detailTimer=null,editingItemId='';
 
 let state=
@@ -2533,12 +2547,14 @@ function packHint(series){
     })
     .join(' · ');
 }
-function currentPackDeltaCny(){
-  if(!activeProduct)return 0;
 
-  return packSurchargeCny(
-    activeProduct.series,
-    config.pack
+function currentPackDeltaCny(){
+  return (
+    detailFeature
+      .buildViewModel()
+      .pricing
+      .packSurchargeCny||
+    0
   );
 }
 
@@ -2551,47 +2567,38 @@ function currentPackNotice(){
 
   return `已含${choiceLabel(config.pack)}`;
 }
+
 function configPricingItem(){
+  const view=
+    detailFeature
+      .buildViewModel();
+
   return {
-    series:activeProduct?.series||'',
-    scentSeries:config.scentSeries||''
+    series:
+      view.product?.series||
+      '',
+    scentSeries:
+      view.config
+        .scentSeries||
+      ''
   };
 }
 
 function configPricingQty(){
-  return normalizeQty(
-    Number(config.qty)||QTY_MIN,
-    QTY_MIN
+  return (
+    detailFeature
+      .buildViewModel()
+      .pricing
+      .quantity
   );
 }
 
 function configUnit(){
-  if(!activeProduct)return 0;
-
-  const pricingSeries=
-    pricingSeriesFor(
-      configPricingItem()
-    );
-
-  const quantity=
-    configPricingQty();
-
-  const basePriceCny=
-    tierUnitCny(
-      pricingSeries,
-      config.size,
-      quantity
-    );
-
-  const packageCny=
-    packSurchargeCny(
-      activeProduct.series,
-      config.pack
-    );
-
-  return cnyToBase(
-    basePriceCny+
-    packageCny
+  return (
+    detailFeature
+      .buildViewModel()
+      .pricing
+      .unitPrice
   );
 }
 
@@ -2751,12 +2758,14 @@ function itemMoq(item){
 }
 
 function configMoq(){
-  return moqForSeriesSize(
-    activeProduct?.series,
-    config.size||
-    activeProduct?.size
+  return (
+    detailFeature
+      .buildViewModel()
+      .pricing
+      .moq
   );
 }
+
 function maximumQuantity(){return Math.max(1,Number(appConfig.maxQuantity)||1000000)}
 function customMoq(){return Math.max(1,Number(appConfig.customMoq)||50)}
 function normalizeQty(value,min=1){
@@ -3320,6 +3329,20 @@ function renderProducts(){
     );
 }
 
+function syncDetailLegacyState(){
+  const view=
+    detailFeature
+      .buildViewModel();
+
+  activeProduct=
+    view.product;
+
+  config=
+    view.config;
+
+  return view;
+}
+
 function initialScentSeries(product){
   if(product?.series!=='holiday'){
     return '';
@@ -3378,42 +3401,23 @@ function openDetail(id){
   editingItemId='';
   cancelCatalogRender();
 
-  activeProduct=
-    products.find(
-      product=>product.id===id
-    )||
-    products[0];
+  const view=
+    detailFeature
+      .openProduct(
+        id
+      );
 
-  if(!activeProduct)return;
+  if(view.empty){
+    return;
+  }
 
-  const size=
-    defaultProductSize(activeProduct);
+  syncDetailLegacyState();
 
-  const scentSeries=
-    initialScentSeries(
-      activeProduct
-    );
+  detailSlideIndex=0;
 
-  config={
-  size,
-  scentSeries,
-  scentId:'',
-  scent:'',
-  pattern:
-    patternsBySize[size]?.[0]||
-    '',
-  pack:
-    defaultPack(
-      activeProduct.series
-    ),
-  qty:QTY_MIN
-};
-
-detailSlideIndex=0;
-
-renderDetail();
-go('detail');
-resetDetailScroll();
+  renderDetail();
+  go('detail');
+  resetDetailScroll();
 }
 
 function renderDetailMedia(){
@@ -3902,69 +3906,40 @@ function availableScentsForProduct(
 }
 
 function ensureCurrentScent(options){
-  let selected=
+  const view=
+    syncDetailLegacyState();
+
+  return (
     options.find(
-      scent=>scent.id===config.scentId
-    );
-
-  /*
-   * 兼容原来 config.scent 保存中文名称的旧数据。
-   */
-  if(!selected&&config.scent){
-    selected=options.find(scent=>
-      Object.values(scent.name||{})
-        .includes(config.scent)
-    );
-  }
-
-  if(!selected){
-    selected=options[0]||null;
-  }
-
-  config.scentId=
-    selected?.id||
-    '';
-
-  /*
-   * config.scent 暂时继续保存显示名称，
-   * 避免意向单等旧代码立即失效。
-   */
-  config.scent=
-    selected
-      ? scentDisplayText(selected.name)
-      : '';
-
-  return selected;
+      scent=>
+        scent.id===
+        view.config.scentId
+    )||
+    options[0]||
+    null
+  );
 }
 
 function setScent(scentId){
   const optionScrollState=
     captureDetailOptionScrollState();
 
-  const scent=
-    scentMap.get(scentId);
+  const view=
+    detailFeature
+      .setScent(
+        scentId
+      );
 
-  if(!scent)return;
-
-  config.scentId=
-    scent.id;
-
-  config.scent=
-    scentDisplayText(
-      scent.name
-    );
-
-  if(
-    activeProduct?.series==='holiday'
-  ){
-    config.scentSeries=
-      scent.series;
+  if(!view){
+    return;
   }
 
-renderDetail(
-  optionScrollState,
-  'scent'
-);
+  syncDetailLegacyState();
+
+  renderDetail(
+    optionScrollState,
+    'scent'
+  );
 }
 
 function scentBlock(){
@@ -4035,6 +4010,12 @@ function scentBlock(){
   scrollState=null,
   focusKey=''
 ){
+  const detailView=
+    syncDetailLegacyState();
+
+  if(detailView.empty){
+    return;
+  }
   renderDetailMedia();
 
   const meta=
@@ -4047,13 +4028,6 @@ function scentBlock(){
 
   const inputMin=
     QTY_MIN;
-
-
-  config.qty=
-    normalizeQty(
-      config.qty,
-      inputMin
-    );
 
   const scentSeriesBlock=
     activeProduct.series==='holiday'
@@ -4253,70 +4227,59 @@ const shouldScroll=
     </div>
   `;
 }
-function setCfg(key,value){
-const optionScrollState=captureDetailOptionScrollState();
 
-  config[key]=value;
+function setCfg(
+  key,
+  value
+){
+  const optionScrollState=
+    captureDetailOptionScrollState();
 
-  if(key==='scentSeries'){
-  config.scentId='';
-  config.scent='';
-}
-
- if(key==='size'){
-  config.pattern=
-    patternsBySize[value]?.[0]||
-    '';
-
-  config.qty=
-    normalizeQty(
-      config.qty,
-      QTY_MIN
-    );
-}
-
-  if(
-    key==='pack'&&
-    !packOptions(
-      activeProduct.series
-    ).includes(config.pack)
-  ){
-    config.pack=
-      defaultPack(
-        activeProduct.series
+  const view=
+    detailFeature
+      .setOption(
+        key,
+        value
       );
+
+  if(!view){
+    return;
   }
 
-renderDetail(
-  optionScrollState,
-  key
-);
+  syncDetailLegacyState();
+
+  renderDetail(
+    optionScrollState,
+    key
+  );
 }
+
 function setDetailQty(value){
-  const optionScrollState=captureDetailOptionScrollState();
-  const min=QTY_MIN;
-  const raw=Number(value);
+  const optionScrollState=
+    captureDetailOptionScrollState();
+
+  const result=
+    detailFeature
+      .setQuantity(
+        value
+      );
 
   if(
-    !Number.isFinite(raw)||
-    raw<min
+    result.invalid||
+    result.belowMin
   ){
     toast(
       ui('minQtyError')
     );
   }
 
-  if(raw>maximumQuantity()){
+  if(result.aboveMax){
     toast(
       ui('quantityTooLarge')
     );
   }
 
-  config.qty=
-    normalizeQty(
-      value,
-      min
-    );
+  syncDetailLegacyState();
 
   const input=
     document.getElementById(
@@ -4324,24 +4287,29 @@ function setDetailQty(value){
     );
 
   if(input){
-    input.value=config.qty;
+    input.value=
+      config.qty;
   }
 
   renderDetail(
-  optionScrollState
-);
+    optionScrollState
+  );
 }
 
 function changeDetailQty(delta){
-  const optionScrollState=captureDetailOptionScrollState();
+  const optionScrollState=
+    captureDetailOptionScrollState();
 
-  config.qty=
-    normalizeQty(
-      Number(config.qty)+delta,
-      QTY_MIN
+  detailFeature
+    .adjustQuantity(
+      delta
     );
 
-  renderDetail(optionScrollState);
+  syncDetailLegacyState();
+
+  renderDetail(
+    optionScrollState
+  );
 }
 
 function productIdentityKey(item){
@@ -4545,7 +4513,12 @@ function quickAdd(id){
 }
   
 function addConfiguredProduct(){
-  if(!activeProduct)return;
+  const detailView=
+    syncDetailLegacyState();
+
+  if(detailView.empty){
+    return;
+  }
 
   const wasEditing=
     Boolean(editingItemId);
@@ -4648,51 +4621,19 @@ function openEditProductItem(id){
 
   if(!item)return;
 
-  const product=
-    products.find(
-      row=>row.id===item.productId
+  const view=
+  detailFeature
+    .openItem(
+      item
     );
 
-  if(!product)return;
+  if(!view){
+  return;
+  }
 
-  activeProduct=product;
-  editingItemId=id;
+editingItemId=id;
 
-config={
-  size:
-    item.size||
-    defaultProductSize(product),
-
-  scentId:
-    item.scentId||
-    '',
-
-  scentSeries:
-    item.scentSeries||
-    initialScentSeries(product),
-
-  scent:
-    item.scent||
-    '',
-
-  pattern:
-    item.pattern||
-    patternsBySize[
-      item.size||
-      defaultProductSize(product)
-    ]?.[0]||
-    '',
-
-  pack:
-    item.pack||
-    defaultPack(product.series),
-
-  qty:
-    normalizeQty(
-      item.qty,
-      QTY_MIN
-    )
-};
+syncDetailLegacyState();
 
 detailSlideIndex=0;
 
@@ -6536,7 +6477,73 @@ async function bootstrap(){
   defaultSeries
   });
 
-  activeProduct=products[0]||null;
+  detailFeature.configure({
+  products,
+
+  sizes:[
+    'S',
+    'M',
+    'L',
+    'XL'
+  ],
+
+  qtyMin:
+    QTY_MIN,
+
+  qtyStep:
+    QTY_STEP,
+
+  defaultProductSize,
+
+  initialScentSeries,
+
+  patternsForSize:
+    size=>
+      patternsBySize[size]||
+      [],
+
+  scentSeriesOptions:
+    product=>
+      product?.series==='holiday'
+        ? (
+            seriesMeta.holiday
+              ?.scentSeriesOptions||
+            []
+          )
+        : [],
+
+  availableScents:
+    availableScentsForProduct,
+
+  scentById:
+    id=>
+      scentMap.get(id)||
+      null,
+
+  scentDisplayText,
+
+  defaultPack,
+
+  packOptions,
+
+  normalizeQuantity:
+    normalizeQty,
+
+  maximumQuantity,
+
+  moqForSeriesSize,
+
+  pricingSeriesFor,
+
+  tierUnitCny,
+
+  packSurchargeCny,
+
+  convertCnyToBase:
+    cnyToBase
+});
+
+syncDetailLegacyState();
 
   applyRuntimeLimits();
   bindCtaReveal();

@@ -22,18 +22,17 @@ import {
 /*
  * Architecture metadata only.
  *
- * B6-02 adds the Catalog UI Renderer runtime.
- * DreamlandCatalog continues to own Catalog state and ViewModel derivation.
- * DreamlandCatalogRenderer now owns Catalog tabs, product-card DOM,
- * batch rendering, scroll-driven loading and Catalog UI event delegation.
- * Product data loading, shared pricing policy, Detail navigation and media
- * orchestration remain outside the UI Renderer.
+ * B6-03 adds the Detail Feature state/configuration runtime.
+ * DreamlandDetail owns active-product selection, Detail configuration state,
+ * option-state mutation and Detail pricing/MOQ ViewModel derivation.
+ * Detail DOM rendering, media/carousel/swipe lifecycle, screen navigation and
+ * Inquiry mutation orchestration remain outside the Feature.
  *
- * B5 Contact/Inquiry/Submission ownership remains unchanged.
+ * Catalog, Contact, Inquiry and existing service ownership remains unchanged.
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B6-02',
+  phase:'B6-03',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',
