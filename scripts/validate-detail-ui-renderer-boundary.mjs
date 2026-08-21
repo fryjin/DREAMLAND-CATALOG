@@ -310,7 +310,7 @@ try{
   }
 
   if(
-    /\\bDreamlandDetail\\b/.test(
+    /\bDreamlandDetail\b/
       source
     )
   ){
