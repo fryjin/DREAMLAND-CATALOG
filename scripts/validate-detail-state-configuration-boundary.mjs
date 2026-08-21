@@ -509,24 +509,29 @@ try{
     }
   }
 
-  for(const legacyWrite of [
-    'config.scentId=',
-    'config.scent=',
-    'config.scentSeries=',
-    'config.pattern=',
-    'config.pack=',
-    'config.qty=',
-    'config[key]='
-  ]){
-    if(
-      compactIndex.includes(
-        compact(legacyWrite)
-      )
-    ){
-      fail(
-        `index.html still mutates legacy Detail config directly: ${legacyWrite}`
-      );
-    }
+  const legacyAssignmentPatterns=[
+  /\bconfig\.scentId\s*=(?!=)/,
+  /\bconfig\.scent\s*=(?!=)/,
+  /\bconfig\.scentSeries\s*=(?!=)/,
+  /\bconfig\.pattern\s*=(?!=)/,
+  /\bconfig\.pack\s*=(?!=)/,
+  /\bconfig\.qty\s*=(?!=)/,
+  /\bconfig\s*\[\s*key\s*\]\s*=(?!=)/
+  ];
+
+  for(
+  const pattern of
+  legacyAssignmentPatterns
+  ){
+  if(
+    pattern.test(
+      indexSource
+    )
+  ){
+    fail(
+      `index.html still mutates legacy Detail config directly: ${pattern}`
+    );
+  }
   }
 
   if(
