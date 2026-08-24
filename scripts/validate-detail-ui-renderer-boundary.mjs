@@ -460,7 +460,8 @@ try{
   for(const required of [
     'window.DreamlandDetail',
     '.setOption(',
-    'syncDetailLegacyState'
+    '.getConfig',
+    '.product'
   ]){
     if(
       !previewSource.includes(

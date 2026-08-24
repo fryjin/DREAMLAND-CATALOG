@@ -674,8 +674,6 @@ try{
       );
 
   if(
-    foundation?.phase!==
-      'B6-05'||
     foundation?.runtimeIntegrated!==
       true||
     foundation?.runtimeIntegration!==
@@ -715,16 +713,6 @@ try{
     read(
       'sw.js'
     );
-
-  if(
-    !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v83';"
-    )
-  ){
-    fail(
-      'sw.js cache version must be dreamland-pwa-v83 for B6-05.'
-    );
-  }
 
   const runtimeMatches=
     sw.match(

@@ -22,17 +22,16 @@ import {
 /*
  * Architecture metadata only.
  *
- * B6-05 adds the Custom Request Feature runtime.
- * DreamlandCustom owns Custom scent-series/scent selection state, Custom
- * validation and canonical Custom intent construction.
- *
- * Custom DOM field collection, localized scent controls, navigation/toasts and
- * Inquiry insertion remain App/UI orchestration concerns.
+ * B6-06 removes the shared compatibility layer left by the progressive migration.
+ * Detail media/preview adapters now read frozen state directly from
+ * DreamlandDetail; Inquiry media reads/writes route through DreamlandInquiry.
+ * PatternPreviewSwipe and CopyPolish are explicit adapters and no longer
+ * replace App globals.
  *
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B6-05',
+  phase:'B6-06',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',

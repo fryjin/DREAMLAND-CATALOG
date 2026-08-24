@@ -1219,3 +1219,63 @@ Custom DOM fields
 The existing Inquiry Renderer now uses its injected `itemScentLabel` adapter for Custom rows as well as Product rows, preserving multi-scent display without a renderer monkey-patch.
 
 Custom remains `partial` because DOM field collection, localized Custom controls, field-level invalid UI, navigation/toasts and final Inquiry insertion orchestration remain outside the Feature.
+
+
+### B6-06 — Shared / Compatibility Cleanup
+
+The progressive-migration compatibility layer is removed.
+
+Retired App-level aliases:
+
+```text
+activeProduct
+config
+syncDetailLegacyState
+state.items
+```
+
+Canonical runtime reads are now:
+
+```text
+DreamlandDetail.product()
+DreamlandDetail.getConfig()
+DreamlandDetail.buildViewModel()
+
+DreamlandInquiry.items()
+DreamlandInquiry.findItem()
+DreamlandInquiry.replaceItem()
+DreamlandInquiry.persist()
+```
+
+Adapter cleanup:
+
+```text
+detail-progressive.js
+→ reads DreamlandDetail directly
+
+pattern-preview-swipe.js
+→ reads DreamlandDetail directly
+→ exposes beforeClose/deactivate
+→ no longer replaces shared preview App globals
+
+image-manager.js
+→ reads/writes Inquiry media state through DreamlandInquiry
+→ no global state/save compatibility access
+
+copy-polish.js
+→ presentation-only dictionary/meta/preview decoration
+→ no setLang/renderPreview/buildWeb3FormsPayload monkey-patching
+
+catalog-data.js
+→ no duplicate dynamic load of custom-scent-multi.js
+```
+
+The App shell still owns screen navigation, Detail media controls, preview/modal
+DOM, shared pricing policy, Contact/Risk UI and final submission UI orchestration.
+Therefore frontend runtime integration remains `partial`.
+
+PWA cache:
+
+```text
+dreamland-pwa-v84
+```
