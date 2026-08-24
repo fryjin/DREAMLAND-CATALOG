@@ -1188,11 +1188,13 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./src/features/catalog/runtime-catalog.js"></script>
 <script src="./src/features/detail/runtime-detail.js"></script>
 <script src="./src/features/inquiry/runtime-inquiry.js"></script>
+<script src="./src/features/custom/runtime-custom.js"></script>
 <script src="./src/features/contact/runtime-contact.js"></script>
 <script src="./src/ui/catalog/runtime-catalog-renderer.js"></script>
 <script src="./src/ui/detail/runtime-detail-renderer.js"></script>
 <script src="./src/ui/inquiry/runtime-inquiry-renderer.js"></script>
 <script src="./src/app/runtime-inquiry-submission-flow.js"></script>
+<script src="./custom-scent-multi.js"></script>
 <script>
 const appStorage=window.DreamlandStorage;
 const pwaService=window.DreamlandPwa;
@@ -1200,16 +1202,24 @@ const submissionService=window.DreamlandSubmission;
 const riskService=window.DreamlandRisk;
 const catalogFeature=window.DreamlandCatalog;
 const inquiryFeature=window.DreamlandInquiry;
+const customFeature=window.DreamlandCustom;
 const contactFeature=window.DreamlandContact;
 const catalogRenderer=window.DreamlandCatalogRenderer;
 const inquiryRenderer=window.DreamlandInquiryRenderer;
 const detailRenderer=window.DreamlandDetailRenderer;
+const customScentUi=window.DreamlandCustomScent;
 const submissionFlow=window.DreamlandInquirySubmissionFlow;
 const detailFeature=window.DreamlandDetail;
 
 if(!inquiryFeature){
   throw new Error(
     'DreamlandInquiry must load before Inquiry state initialization.'
+  );
+}
+
+if(!customFeature||!customScentUi){
+  throw new Error(
+    'DreamlandCustom and DreamlandCustomScent must load before Custom initialization.'
   );
 }
 
@@ -2956,11 +2966,114 @@ function toastText(key){return ui(key)}
 
 function chooseLang(lang){closeLangSheet();if(lang!==currentLang)setLang(lang)}
 function toggleLang(){openLangSheet()}
-function go(n){closePreviewImage();if(n!=='catalog')cancelCatalogRender();if(n!=='detail'&&detailTimer){clearInterval(detailTimer);detailTimer=null}activeScreen=n;document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.dataset.screen===n));document.querySelectorAll('.screen').forEach(s=>s.classList.remove('cta-revealed'));document.getElementById('bottomNav').classList.toggle('is-visible',['catalog','inquiry','custom'].includes(n));updateLangButton();document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.nav===n||(n==='detail'&&x.dataset.nav==='catalog')));if(n==='catalog')renderProducts();if(n==='inquiry')renderInquiry();if(n==='contact'){
-  restoreContactDraft();
-  markRiskFormStart();
-  preloadHCaptchaScript();
-}if(n==='preview')renderPreview();if(n==='success')renderSuccess();applyI18n();requestAnimationFrame(()=>updateCtaReveal(n))}
+function go(n){
+  closePreviewImage();
+
+  if(n!=='catalog'){
+    cancelCatalogRender();
+  }
+
+  if(
+    n!=='detail'&&
+    detailTimer
+  ){
+    clearInterval(
+      detailTimer
+    );
+    detailTimer=null;
+  }
+
+  activeScreen=n;
+
+  document
+    .querySelectorAll(
+      '.screen'
+    )
+    .forEach(
+      screen=>
+        screen.classList.toggle(
+          'active',
+          screen.dataset.screen===n
+        )
+    );
+
+  document
+    .querySelectorAll(
+      '.screen'
+    )
+    .forEach(
+      screen=>
+        screen.classList.remove(
+          'cta-revealed'
+        )
+    );
+
+  document
+    .getElementById(
+      'bottomNav'
+    )
+    .classList.toggle(
+      'is-visible',
+      [
+        'catalog',
+        'inquiry',
+        'custom'
+      ].includes(n)
+    );
+
+  updateLangButton();
+
+  document
+    .querySelectorAll(
+      '.nav-item'
+    )
+    .forEach(
+      item=>
+        item.classList.toggle(
+          'active',
+          item.dataset.nav===n||
+          (
+            n==='detail'&&
+            item.dataset.nav===
+              'catalog'
+          )
+        )
+    );
+
+  if(n==='catalog'){
+    renderProducts();
+  }
+
+  if(n==='inquiry'){
+    renderInquiry();
+  }
+
+  if(n==='contact'){
+    restoreContactDraft();
+    markRiskFormStart();
+    preloadHCaptchaScript();
+  }
+
+  if(n==='preview'){
+    renderPreview();
+  }
+
+  if(n==='success'){
+    renderSuccess();
+  }
+
+  applyI18n();
+
+  if(n==='custom'){
+    ensureCustomRequestRuntime();
+    customScentUi.render();
+  }
+
+  requestAnimationFrame(
+    ()=>updateCtaReveal(n)
+  );
+}
+
 function updateCtaReveal(n){if(!['detail','contact','preview','inquiry','custom'].includes(n))return;let screen=document.querySelector(`.screen[data-screen="${n}"]`),c=screen?.querySelector('.content.with-cta');if(!screen||!c)return;let nearBottom=c.scrollHeight-c.scrollTop-c.clientHeight<28;screen.classList.toggle('cta-revealed',nearBottom)}
 function bindCtaReveal(){['detail','contact','preview','inquiry','custom'].forEach(n=>{let s=document.querySelector(`.screen[data-screen="${n}"]`),c=s?.querySelector('.content.with-cta');if(!c)return;c.addEventListener('scroll',()=>updateCtaReveal(n),{passive:true})})}
 function renderTabs(){
@@ -3427,6 +3540,21 @@ function initialScentSeries(product){
 
 
 function itemScentLabel(item){
+  if(
+    item?.type===
+      'custom'
+  ){
+    return (
+      customScentUi
+        .customScentLabel(
+          item
+        )||
+      ui(
+        'scentRecommend'
+      )
+    );
+  }
+
   const scent=
     itemScentText(item)||
     ui('scentRecommend');
@@ -4474,57 +4602,196 @@ function clearInquiry(){
   renderInquiry();
   toast(toastText('clearedInquiry'))
 }
-function addCustomIntent(){
-  document.querySelectorAll('[data-screen="custom"] .field').forEach(f=>f.classList.remove('invalid'));
-  let use=fieldValue('customUse'),rawQty=Number(fieldValue('customQty')),min=customMoq(),ok=true;
-  if(!use){document.getElementById('customUse').closest('.field').classList.add('invalid');ok=false}
-  if(!Number.isInteger(rawQty)||rawQty<min||rawQty>maximumQuantity()){
-    document.getElementById('customQty').closest('.field').classList.add('invalid');
-    toast(rawQty>maximumQuantity()?ui('quantityTooLarge'):ui('customMinQtyError'));
-    ok=false
-  }
-  if(!ok)return;
-  inquiryFeature.addCustom({
-  id:uid(),
-  type:'custom',
-  use,
-  qty:rawQty,
-  moq:min,
-  budget:
-    fieldValue(
-      'customBudget'
-    ),
-  date:
-    fieldValue(
-      'customDate'
-    ),
-  sizePref:
-    fieldValue(
-      'customSize'
-    ),
-  scent:
-    fieldValue(
-      'customScent'
-    ),
-  color:
-    fieldValue(
-      'customColor'
-    ),
-  pack:
-    fieldValue(
-      'customPack'
-    ),
-  branding:
-    fieldValue(
-      'customBranding'
-    ),
-  note:
-    fieldValue(
-      'customNote'
-    )
-});
-  save();toast(toastText('addedCustom'));go('inquiry')
+
+function ensureCustomRequestRuntime(){
+  customFeature.configure({
+    scentsBySeries,
+    seriesOrder:[
+      'classic',
+      'advanced',
+      'masterpiece'
+    ],
+    defaultSeries:'classic',
+    customMoq,
+    maximumQuantity
+  });
+
+  customScentUi.configure({
+    feature:customFeature,
+    language:()=>currentLang,
+    seriesLabel,
+    scentDisplayText,
+    scentById:
+      id=>
+        scentMap.get(id)||
+        null
+  });
+
+  return (
+    customFeature.ready()&&
+    customScentUi.ready()
+  );
 }
+
+function customDraftFromFields(){
+  return {
+    use:
+      fieldValue(
+        'customUse'
+      ),
+    qty:
+      fieldValue(
+        'customQty'
+      ),
+    budget:
+      fieldValue(
+        'customBudget'
+      ),
+    date:
+      fieldValue(
+        'customDate'
+      ),
+    sizePref:
+      fieldValue(
+        'customSize'
+      ),
+    color:
+      fieldValue(
+        'customColor'
+      ),
+    pack:
+      fieldValue(
+        'customPack'
+      ),
+    branding:
+      fieldValue(
+        'customBranding'
+      ),
+    note:
+      fieldValue(
+        'customNote'
+      )
+  };
+}
+
+function addCustomIntent(){
+  document
+    .querySelectorAll(
+      '[data-screen="custom"] .field'
+    )
+    .forEach(
+      field=>
+        field.classList.remove(
+          'invalid'
+        )
+    );
+
+  ensureCustomRequestRuntime();
+  customScentUi.clearInvalid();
+
+  const draft=
+    customDraftFromFields();
+
+  const validation=
+    customFeature.validateDraft(
+      draft
+    );
+
+  if(
+    validation.errors.includes(
+      'use'
+    )
+  ){
+    document
+      .getElementById(
+        'customUse'
+      )
+      ?.closest(
+        '.field'
+      )
+      ?.classList
+      ?.add(
+        'invalid'
+      );
+  }
+
+  if(
+    validation.errors.some(
+      error=>
+        error==='quantity'||
+        error==='quantity-min'||
+        error==='quantity-max'
+    )
+  ){
+    document
+      .getElementById(
+        'customQty'
+      )
+      ?.closest(
+        '.field'
+      )
+      ?.classList
+      ?.add(
+        'invalid'
+      );
+
+    toast(
+      validation.errors.includes(
+        'quantity-max'
+      )
+        ? ui(
+            'quantityTooLarge'
+          )
+        : ui(
+            'customMinQtyError'
+          )
+    );
+  }
+
+  if(
+    validation.errors.includes(
+      'scents'
+    )
+  ){
+    customScentUi.markInvalid();
+    toast(
+      customScentUi.requiredMessage()
+    );
+  }
+
+  if(
+    !validation.valid
+  ){
+    return;
+  }
+
+  const intent=
+    customFeature.buildIntent(
+      draft,
+      {
+        id:uid()
+      }
+    );
+
+  if(!intent){
+    return;
+  }
+
+  inquiryFeature.addCustom(
+    intent
+  );
+
+  save();
+  toast(
+    toastText(
+      'addedCustom'
+    )
+  );
+  go(
+    'inquiry'
+  );
+}
+
 function fieldValue(id){let el=document.getElementById(id);return el?el.value.trim():''}
 function collect(){return{
   name:fieldValue('name'),

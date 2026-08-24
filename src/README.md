@@ -1154,3 +1154,68 @@ PWA cache:
 ```text
 dreamland-pwa-v81
 ```
+
+### B6-05 — Custom Request Feature
+
+Runtime active:
+
+```text
+src/features/custom/runtime-custom.js
+window.DreamlandCustom
+version: B6-05
+```
+
+The Custom Feature owns:
+
+```text
+selected scent series
+selected scent IDs
+available Custom scent series / scent filtering
+Custom required-field / quantity / scent validation
+canonical Custom intent construction
+```
+
+The canonical Custom intent keeps the existing Inquiry data contract:
+
+```text
+id
+type=custom
+use
+qty
+moq
+budget
+date
+sizePref
+scentSeries
+scentIds
+scents
+scent
+color
+pack
+branding
+note
+```
+
+`custom-scent-multi.js` remains a DOM-facing adapter for the existing multi-scent UI, but no longer:
+
+```text
+mutates state.items
+owns selected Custom business state
+replaces addCustomIntent
+replaces renderItem / itemText / renderPreview
+monkey-patches go / applyI18n / clearSubmittedInquiry
+```
+
+The B6-05 flow is:
+
+```text
+Custom DOM fields
+→ DreamlandCustom.validateDraft / buildIntent
+→ DreamlandInquiry.addCustom
+→ Inquiry persistence
+→ existing Inquiry Renderer / Projection / Submission flow
+```
+
+The existing Inquiry Renderer now uses its injected `itemScentLabel` adapter for Custom rows as well as Product rows, preserving multi-scent display without a renderer monkey-patch.
+
+Custom remains `partial` because DOM field collection, localized Custom controls, field-level invalid UI, navigation/toasts and final Inquiry insertion orchestration remain outside the Feature.

@@ -544,8 +544,6 @@ try{
     ).FRONTEND_FOUNDATION;
 
   if(
-    foundation?.phase!==
-      'B6-04'||
     foundation?.runtimeIntegrated!==
       true||
     foundation?.runtimeIntegration!==
