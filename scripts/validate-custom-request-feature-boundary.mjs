@@ -490,6 +490,48 @@ try{
     );
   }
 
+  for(
+    const lifecycleMarker of [
+      "if(activeScreen==='custom')",
+      'ensureCustomRequestRuntime()',
+      'customScentUi.render()'
+    ]
+  ){
+    const rerenderStart=
+      index.indexOf(
+        'function rerenderCurrent('
+      );
+
+    const rerenderEnd=
+      index.indexOf(
+        'function ui(',
+        rerenderStart
+      );
+
+    const rerenderSlice=
+      rerenderStart>=0&&
+      rerenderEnd>rerenderStart
+        ? compact(
+            index.slice(
+              rerenderStart,
+              rerenderEnd
+            )
+          )
+        : '';
+
+    if(
+      !rerenderSlice.includes(
+        compact(
+          lifecycleMarker
+        )
+      )
+    ){
+      fail(
+        `Custom language rerender lifecycle is missing: ${lifecycleMarker}`
+      );
+    }
+  }
+
   const customRuntimeCount=
     (
       index.match(

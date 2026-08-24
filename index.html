@@ -2784,7 +2784,39 @@ function renderLangOptions(){let box=document.getElementById('langMenu');if(!box
 function openLangSheet(){renderLangOptions();document.getElementById('langMenu')?.classList.add('show')}
 function closeLangSheet(){document.getElementById('langMenu')?.classList.remove('show')}
 function toggleLangMenu(e){e?.stopPropagation?.();let m=document.getElementById('langMenu');if(!m)return;renderLangOptions();m.classList.toggle('show')}
-function rerenderCurrent(){refreshBudgetOptions();updateLangButton();renderLangOptions();renderTabs();if(activeScreen==='catalog')renderProducts();if(activeScreen==='detail')renderDetail();if(activeScreen==='inquiry')renderInquiry();if(activeScreen==='preview')renderPreview();if(activeScreen==='success')renderSuccess();applyI18n()}
+function rerenderCurrent(){
+  refreshBudgetOptions();
+  updateLangButton();
+  renderLangOptions();
+  renderTabs();
+
+  if(activeScreen==='catalog'){
+    renderProducts();
+  }
+
+  if(activeScreen==='detail'){
+    renderDetail();
+  }
+
+  if(activeScreen==='inquiry'){
+    renderInquiry();
+  }
+
+  if(activeScreen==='preview'){
+    renderPreview();
+  }
+
+  if(activeScreen==='success'){
+    renderSuccess();
+  }
+
+  applyI18n();
+
+  if(activeScreen==='custom'){
+    ensureCustomRequestRuntime();
+    customScentUi.render();
+  }
+}
 function ui(key){
   return uiDict[currentLang]?.[key]||uiDict.zh?.[key]||key;
 }
