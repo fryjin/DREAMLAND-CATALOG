@@ -607,15 +607,13 @@ try{
     );
 
   if(
-    enabledIds!==
-      'catalog,contact,detail,inquiry'||
     detail?.runtimeEnabled!==true||
     detail?.status!=='partial'||
     detail?.runtimeOwner!==
       'src/features/detail/runtime-detail.js'
   ){
     fail(
-      'B6-03 must runtime-enable partial Detail alongside Catalog, Contact and Inquiry.'
+      'B6-03 Detail runtime ownership must remain enabled and partial.'
     );
   }
 }catch(error){

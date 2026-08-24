@@ -104,13 +104,21 @@ export const FEATURE_MANIFEST=Object.freeze([
   feature(
     'custom',
     [
-      'custom product request',
+      'custom request selection state',
+      'custom request validation',
+      'custom intent construction',
       'multi scent selection'
     ],
     [
       'index.html',
       'custom-scent-multi.js'
-    ]
+    ],
+    {
+      status:'partial',
+      runtimeEnabled:true,
+      runtimeOwner:
+        'src/features/custom/runtime-custom.js'
+    }
   ),
   feature(
       'contact',

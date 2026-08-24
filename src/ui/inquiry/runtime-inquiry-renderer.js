@@ -477,7 +477,7 @@
       `${text('customInquiry')} · ${choiceLabel(item.use)||text('notFilled')}`;
 
     const line1=
-      `${item.qty||text('qtyPending')}${qtyUnit()} · ${choiceLabel(item.sizePref)||text('sizeRecommend')} · ${choiceLabel(item.scent)||text('scentRecommend')}`;
+      `${item.qty||text('qtyPending')}${qtyUnit()} · ${choiceLabel(item.sizePref)||text('sizeRecommend')} · ${itemScentLabel(item)||text('scentRecommend')}`;
 
     const line2=
       `${item.color||text('colorPending')} · ${choiceLabel(item.pack)||text('packRecommend')}`;

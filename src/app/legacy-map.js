@@ -140,7 +140,16 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'features',
     'custom',
-    'Custom request behavior remains legacy-owned.'
+    'Custom scent-series/scent selection state, Custom validation and canonical Custom intent construction are routed through DreamlandCustom. DOM field collection, field-level invalid presentation, localized Custom scent UI rendering and navigation/toast orchestration remain in index.html/custom-scent-multi.js. Final insertion/persistence stays routed through DreamlandInquiry.',
+    {
+      status:'partial',
+      runtimeMigrated:false,
+      runtimeOwners:[
+        'src/features/custom/runtime-custom.js',
+        'index.html',
+        'custom-scent-multi.js'
+      ]
+    }
   ),
   entry(
     'media',

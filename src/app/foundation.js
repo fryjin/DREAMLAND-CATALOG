@@ -22,19 +22,17 @@ import {
 /*
  * Architecture metadata only.
  *
- * B6-04 adds the Detail UI Renderer runtime.
- * DreamlandDetailRenderer owns the Detail configuration-card DOM, option /
- * scent / quantity presentation, delegated configuration events and horizontal
- * option-scroll lifecycle while consuming DreamlandDetail ViewModels through
- * the App bridge.
+ * B6-05 adds the Custom Request Feature runtime.
+ * DreamlandCustom owns Custom scent-series/scent selection state, Custom
+ * validation and canonical Custom intent construction.
  *
- * Detail media/carousel/swipe, shared preview modals, screen navigation and
- * Inquiry mutation orchestration remain outside the Detail Renderer.
+ * Custom DOM field collection, localized scent controls, navigation/toasts and
+ * Inquiry insertion remain App/UI orchestration concerns.
  *
  * The foundation manifest itself is still NOT loaded by index.html.
  */
 export const FRONTEND_FOUNDATION=Object.freeze({
-  phase:'B6-04',
+  phase:'B6-05',
   runtimeIntegrated:true,
   runtimeIntegration:'partial',
   strategy:'progressive-migration',

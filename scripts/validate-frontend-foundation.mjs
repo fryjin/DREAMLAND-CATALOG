@@ -49,6 +49,7 @@ const requiredFiles=[
   'src/features/contact/runtime-contact.js',
   'src/features/catalog/runtime-catalog.js',
   'src/features/detail/runtime-detail.js',
+  'src/features/custom/runtime-custom.js',
   'src/ui/catalog/runtime-catalog-renderer.js',
   'src/ui/detail/runtime-detail-renderer.js',
   'src/app/runtime-inquiry-submission-flow.js'
@@ -69,7 +70,7 @@ try{
 }
 
 if(foundation){
-  if(foundation.phase!=='B6-04'){
+  if(foundation.phase!=='B6-05'){
     fail(`Unexpected frontend foundation phase: ${foundation.phase}`)
   }
 
@@ -131,13 +132,23 @@ const detailFeature=
       item.id==='detail'
   );
 
+const customFeature=
+  enabledFeatures.find(
+    item=>
+      item.id==='custom'
+  );
+
 if(
   enabledIds!==
-    'catalog,contact,detail,inquiry'||
+    'catalog,contact,custom,detail,inquiry'||
   catalogFeature?.status!==
     'partial'||
   catalogFeature?.runtimeOwner!==
     'src/features/catalog/runtime-catalog.js'||
+  customFeature?.status!==
+    'partial'||
+  customFeature?.runtimeOwner!==
+    'src/features/custom/runtime-custom.js'||
   detailFeature?.status!==
     'partial'||
   detailFeature?.runtimeOwner!==
@@ -152,7 +163,7 @@ if(
     'src/features/contact/runtime-contact.js'
 ){
   fail(
-    'B6-04 must preserve partial Catalog, Detail, Inquiry and Contact Feature runtimes.'
+    'B6-05 must preserve partial Catalog, Custom, Detail, Inquiry and Contact Feature runtimes.'
   )
 }
 
