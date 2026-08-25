@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-25T15:40:05.597Z",
+  "generatedAt": "2026-08-25T15:54:49.621Z",
   "sourceBranch": "feat/en-product-catalog-ppt",
-  "sourceCommit": "171b81568e1176cb316b5000049e19e2e761458f",
+  "sourceCommit": "51af48aa4b86880fae7f298d8ec2d5b30e10c4e5",
   "sourceFiles": [
     "data/products.csv",
     "data/series.json"
