@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-25T16:07:49.916Z",
-  "generatorRevision": "R3",
+  "generatedAt": "2026-08-25T17:22:10.507Z",
+  "generatorRevision": "R4.1",
   "source": {
     "branch": "feat/en-product-catalog-ppt",
-    "commit": "a2ec27bb3816f947b035f9ae070626ff6477cc21"
+    "commit": "3b28fe20dc385f719bcd45ffe15db714d1ad8a4c"
   },
   "activeTotal": 89,
   "seriesCounts": {
@@ -104,14 +104,24 @@
     "CLA007",
     "CLA008"
   ],
+  "visualSystem": {
+    "direction": "editorial-lookbook-art-direction-polish",
+    "referenceCapabilities": [
+      "Brand_Design_02: image-led brand system / restrained grid",
+      "Brand_Design_04: strong section dividers / large-image hierarchy"
+    ],
+    "productPage": "adaptive 4/3/2/1-column selection board with simplified metadata hierarchy",
+    "seriesDivider": "alternating aligned two-image editorial layout"
+  },
   "imagePlacement": {
     "policy": "manual-contain-from-source-pixel-dimensions",
-    "auditedPlacements": 104,
+    "auditedPlacements": 107,
     "maxAspectRatioError": 0
   },
   "notes": [
     "Only status=active products are included.",
     "Product image aspect ratio is preserved by manual geometry; pptxgenjs sizing is not used.",
-    "Pricing is intentionally excluded because final quotation depends on configuration and quantity."
+    "Pricing is intentionally excluded because final quotation depends on configuration and quantity.",
+    "R4.1 refines image hierarchy, removes repeated series labels, and separates footnote from footer."
   ]
 }
