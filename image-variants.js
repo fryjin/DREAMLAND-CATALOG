@@ -121,9 +121,16 @@
               .responsivePriority||
             'auto';
 
+          const startupPreloaded=
+            window.DreamlandStartupLoader
+              ?.hasPreloaded?.(
+                img.dataset
+                  .responsiveSource
+              )===true;
+
           if(
-            priority===
-            'high'
+            priority==='high'||
+            startupPreloaded
           ){
             media
               .loadResponsiveImage(

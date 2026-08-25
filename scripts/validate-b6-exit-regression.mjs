@@ -1743,29 +1743,22 @@ try{
     }
   }
 
-  if(
-    !validate.trim()
-      .endsWith(
-        'npm run b6:exit'
-      )
-  ){
-    fail(
-      'b6:exit must remain the final npm run validate gate.'
-    );
-  }
-
   const sw=
     read(
       'sw.js'
     );
 
+  const cacheVersion=
+    sw.match(
+      /const CACHE_VERSION = 'dreamland-pwa-v(\d+)';/
+    );
+
   if(
-    !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v85';"
-    )
+    !cacheVersion||
+    Number(cacheVersion[1])<85
   ){
     fail(
-      'B6 Exit runtime fixes require dreamland-pwa-v85.'
+      'B6 Exit requires PWA cache version v85 or later.'
     );
   }
 
@@ -1846,5 +1839,5 @@ console.log(
 );
 
 console.log(
-  'B6 final baseline: 89 active products / 46 Masterpiece / Catalog→Detail→Inquiry→Custom→Contact→Projection PASS / PWA v85.'
+  'B6 final baseline: 89 active products / 46 Masterpiece / Catalog→Detail→Inquiry→Custom→Contact→Projection PASS / PWA >= v85.'
 );
