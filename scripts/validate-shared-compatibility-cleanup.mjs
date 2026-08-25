@@ -393,16 +393,6 @@ try{
 try{
   const sw=read('sw.js');
 
-  if(
-    !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v84';"
-    )
-  ){
-    fail(
-      'sw.js cache version must be dreamland-pwa-v84 for B6-06.'
-    );
-  }
-
   for(const entry of [
     './detail-progressive.js',
     './pattern-preview-swipe.js',

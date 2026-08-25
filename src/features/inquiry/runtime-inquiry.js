@@ -1194,18 +1194,6 @@
         item?.branding
       );
 
-    /*
-    * Keep the legacy B5-04 custom-scent output parity exactly.
-    * This architecture-only migration preserves the historical
-    * fallback token as presentation text rather than invoking UI logic.
-     */
-    const legacyScentSuffix=
-      [
-        '||',
-        'ui',
-        "('scentRecommend')"
-      ].join('');
-
     const previewKey=
       useDisplay||
       projectionText(
@@ -1213,10 +1201,10 @@
       );
 
     const previewValue=
-      `${item?.qty||projectionText('qtyPending')} ${quantityUnit} · ${item?.budget||projectionText('budgetPending')} · ${sizeDisplay||projectionText('sizeRecommend')} · ${scentDisplay}${legacyScentSuffix} · ${item?.color||projectionText('colorPending')} · ${packDisplay||projectionText('packRecommend')} · ${brandingDisplay||projectionText('brandingPending')} · ${item?.date||projectionText('datePending')}`;
+      `${item?.qty||projectionText('qtyPending')} ${quantityUnit} · ${item?.budget||projectionText('budgetPending')} · ${sizeDisplay||projectionText('sizeRecommend')} · ${scentDisplay||projectionText('scentRecommend')} · ${item?.color||projectionText('colorPending')} · ${packDisplay||projectionText('packRecommend')} · ${brandingDisplay||projectionText('brandingPending')} · ${item?.date||projectionText('datePending')}`;
 
     const summaryText=
-      `${projectionText('customInquiry')} - ${useDisplay||projectionText('notFilled')}，${item?.qty||projectionText('qtyPending')} ${quantityUnit}，${item?.budget||projectionText('budgetPending')}，${sizeDisplay||projectionText('sizeRecommend')}，${scentDisplay}${legacyScentSuffix}，${item?.color||projectionText('colorPending')}，${packDisplay||projectionText('packRecommend')}，${brandingDisplay||projectionText('brandingPending')}，${item?.date||projectionText('datePending')}，${projectionText('note')}：${item?.note||projectionText('none')}`;
+      `${projectionText('customInquiry')} - ${useDisplay||projectionText('notFilled')}，${item?.qty||projectionText('qtyPending')} ${quantityUnit}，${item?.budget||projectionText('budgetPending')}，${sizeDisplay||projectionText('sizeRecommend')}，${scentDisplay||projectionText('scentRecommend')}，${item?.color||projectionText('colorPending')}，${packDisplay||projectionText('packRecommend')}，${brandingDisplay||projectionText('brandingPending')}，${item?.date||projectionText('datePending')}，${projectionText('note')}：${item?.note||projectionText('none')}`;
 
     const snapshotItem=
       Object.freeze({
@@ -1389,8 +1377,7 @@
       customCount:
         customs.length,
       /*
-       * Preserve the legacy line-continuation join semantics from
-       * buildWeb3FormsPayload(): items were concatenated with no delimiter.
+       * B6 Exit keeps each item human-readable in transport/email output.
        */
       itemsSummary:
         itemProjections
@@ -1398,7 +1385,7 @@
             item=>
               item.summaryText
           )
-          .join(''),
+          .join('\n'),
       estimatedTotal,
       estimatedTotalDisplay:
         projectionMoney(
