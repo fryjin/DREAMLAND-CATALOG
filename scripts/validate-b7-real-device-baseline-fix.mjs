@@ -352,13 +352,17 @@ try{
   const sw=
     read('sw.js');
 
+  const cacheVersion=
+    sw.match(
+      /const CACHE_VERSION = 'dreamland-pwa-v(\d+)';/
+    );
+
   if(
-    !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v87';"
-    )
+    !cacheVersion||
+    Number(cacheVersion[1])<87
   ){
     fail(
-      'B7-00A requires dreamland-pwa-v87.'
+      'B7-00A requires PWA cache version v87 or later.'
     );
   }
 
@@ -406,13 +410,12 @@ try{
     !validate.includes(
       'npm run b6:exit'
     )||
-    !validate.trim()
-      .endsWith(
-        'npm run b7:device-baseline'
-      )
+    !validate.includes(
+      'npm run b7:device-baseline'
+    )
   ){
     fail(
-      'npm run validate must keep B6 Exit and finish with B7 device baseline.'
+      'npm run validate must keep the B6 Exit and B7 device baseline gates.'
     );
   }
 
@@ -453,5 +456,5 @@ console.log(
 );
 
 console.log(
-  'Startup/Catalog responsive image execution PASS / Masterpiece gift packaging included / PWA v87.'
+  'Startup/Catalog responsive image execution PASS / Masterpiece gift packaging included / PWA >= v87.'
 );
