@@ -462,6 +462,25 @@
         'dreamland-media-responsive'
       );
 
+    /*
+     * Register the loading token before loadCandidates() starts.
+     *
+     * Async functions execute synchronously until the first await.
+     * The previous order allowed loadCandidates() to evaluate
+     * isCurrent() before responsiveStates contained this token,
+     * cancelling every fresh Catalog responsive image.
+     */
+    const loadingState={
+      status:'loading',
+      token,
+      promise:null
+    };
+
+    responsiveStates.set(
+      img,
+      loadingState
+    );
+
     const promise=(async()=>{
       const result=
         await loadCandidates(
@@ -513,14 +532,8 @@
       return false;
     })();
 
-    responsiveStates.set(
-      img,
-      {
-        status:'loading',
-        token,
-        promise
-      }
-    );
+    loadingState.promise=
+      promise;
 
     return promise;
   }
