@@ -9,7 +9,7 @@
     "data:contract": "node scripts/validate-product-data-contract.mjs",
     "frontend:foundation": "node scripts/validate-frontend-foundation.mjs",
     "storage:migration": "node scripts/validate-storage-migration.mjs",
-    "validate": "node scripts/validate-project.mjs && npm run data:contract && npm run frontend:foundation && npm run storage:migration && npm run pwa:migration && npm run media:consolidation && npm run hooks:cleanup && npm run shared-assets:cleanup && npm run inquiry-media:cleanup && npm run submission:boundary && npm run risk:boundary && npm run inquiry-state:boundary && npm run inquiry-pricing:boundary && npm run inquiry-view-model:boundary && npm run inquiry-ui:boundary && npm run inquiry-projection:boundary && npm run contact-submission:boundary && npm run catalog-state:boundary && npm run catalog-ui:boundary && npm run detail-state:boundary && npm run detail-ui:boundary && npm run product-data:alignment && npm run custom-request:boundary && npm run compatibility:cleanup && npm run b6:exit",
+    "validate": "node scripts/validate-project.mjs && npm run data:contract && npm run frontend:foundation && npm run storage:migration && npm run pwa:migration && npm run media:consolidation && npm run hooks:cleanup && npm run shared-assets:cleanup && npm run inquiry-media:cleanup && npm run submission:boundary && npm run risk:boundary && npm run inquiry-state:boundary && npm run inquiry-pricing:boundary && npm run inquiry-view-model:boundary && npm run inquiry-ui:boundary && npm run inquiry-projection:boundary && npm run contact-submission:boundary && npm run catalog-state:boundary && npm run catalog-ui:boundary && npm run detail-state:boundary && npm run detail-ui:boundary && npm run product-data:alignment && npm run custom-request:boundary && npm run compatibility:cleanup && npm run b6:exit && npm run b7:device-baseline",
     "check": "npm run data:check && npm run validate",
     "pwa:migration": "node scripts/validate-pwa-migration.mjs",
     "media:consolidation": "node scripts/validate-media-consolidation.mjs",
@@ -31,7 +31,8 @@
     "product-data:alignment": "node scripts/validate-product-data-alignment.mjs",
     "custom-request:boundary": "node scripts/validate-custom-request-feature-boundary.mjs",
     "compatibility:cleanup": "node scripts/validate-shared-compatibility-cleanup.mjs",
-    "b6:exit": "node scripts/validate-b6-exit-regression.mjs"
+    "b6:exit": "node scripts/validate-b6-exit-regression.mjs",
+    "b7:device-baseline": "node scripts/validate-b7-real-device-baseline-fix.mjs"
   },
   "engines": {
     "node": ">=24"

@@ -326,6 +326,26 @@
       'data-dreamland-image-variants'
     );
 
+    if(
+      window.DreamlandMedia&&
+      window.ImageManager&&
+      window.DreamlandResponsiveImages
+        ?.mountResponsiveCatalog
+    ){
+      window.dispatchEvent(
+        new CustomEvent(
+          'dreamland:catalog-media-ready',
+          {
+            detail:{
+              media:true,
+              imageManager:true,
+              responsive:true
+            }
+          }
+        )
+      );
+    }
+
     await loadScript(
       './detail-progressive.js',
       'data-dreamland-detail-progressive'

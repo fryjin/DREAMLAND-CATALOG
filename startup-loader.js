@@ -5,7 +5,7 @@
     return;
   }
 
-  const VERSION='v62';
+  const VERSION='v63';
   const SEEN_KEY=`dreamland-startup-seen-${VERSION}`;
   const ROOT_CLASS='dreamland-booting';
   const LOADER_ID='dreamlandStartup';
@@ -55,6 +55,7 @@
       preparing:'正在加载完整手册内容',
       data:'正在载入产品与配置',
       visual:'正在准备首页视觉',
+      media:'正在连接商品图片',
       images:(loaded,total)=>`正在预载产品图 ${loaded}/${total}`,
       ready:'产品与图片已准备完成'
     },
@@ -63,6 +64,7 @@
       preparing:'Preparing the complete catalog',
       data:'Loading products and options',
       visual:'Preparing the home visual',
+      media:'Connecting catalog images',
       images:(loaded,total)=>`Preloading product images ${loaded}/${total}`,
       ready:'Catalog and images are ready'
     },
@@ -71,6 +73,7 @@
       preparing:'전체 카탈로그를 준비하고 있어요',
       data:'제품과 옵션을 불러오고 있어요',
       visual:'홈 화면을 준비하고 있어요',
+      media:'상품 이미지를 연결하고 있어요',
       images:(loaded,total)=>`제품 이미지를 불러오고 있어요 ${loaded}/${total}`,
       ready:'카탈로그와 이미지가 준비됐어요'
     }
@@ -88,6 +91,9 @@
   let productPreloadLoaded=0;
   let productPreloadAttempted=0;
   let productPreloadTarget=0;
+  let mediaReady=false;
+  let mediaReadyHandler=null;
+  const preloadedProductSources=new Set();
 
   let quietTimer=0;
   let hardTimer=0;
@@ -388,6 +394,70 @@
     },2800);
   }
 
+  function catalogMediaAvailable(){
+    return Boolean(
+      window.DreamlandMedia&&
+      window.ImageManager&&
+      window.DreamlandResponsiveImages
+        ?.mountResponsiveCatalog
+    );
+  }
+
+  function markCatalogMediaReady(){
+    if(mediaReady){
+      return true;
+    }
+
+    if(!catalogMediaAvailable()){
+      return false;
+    }
+
+    mediaReady=true;
+
+    if(productPreloadDone){
+      setProgress(96);
+      setStatus('ready');
+    }else if(productPreloadStarted){
+      setImageStatus();
+    }else{
+      setStatus('media');
+    }
+
+    maybeFinish();
+    return true;
+  }
+
+  function installCatalogMediaGate(){
+    if(mediaReadyHandler){
+      markCatalogMediaReady();
+      return;
+    }
+
+    mediaReadyHandler=()=>{
+      markCatalogMediaReady();
+    };
+
+    window.addEventListener(
+      'dreamland:catalog-media-ready',
+      mediaReadyHandler
+    );
+
+    markCatalogMediaReady();
+  }
+
+  function releaseCatalogMediaGate(){
+    if(!mediaReadyHandler){
+      return;
+    }
+
+    window.removeEventListener(
+      'dreamland:catalog-media-ready',
+      mediaReadyHandler
+    );
+
+    mediaReadyHandler=null;
+  }
+
   function connectionProfile(){
     const connection=
       navigator.connection||
@@ -571,6 +641,107 @@
     return output;
   }
 
+  function prioritizedCovers(
+    rows,
+    limit,
+    preferredSeries=''
+  ){
+    const output=[];
+    const seen=new Set();
+
+    const add=record=>{
+      const cover=String(
+        record?.cover||''
+      ).trim();
+
+      if(
+        !cover||
+        seen.has(cover)||
+        output.length>=limit
+      ){
+        return;
+      }
+
+      seen.add(cover);
+      output.push(cover);
+    };
+
+    const primary=
+      rows
+        .filter(
+          record=>
+            record.series===
+            preferredSeries
+        )
+        .sort(
+          (a,b)=>b.sort-a.sort
+        );
+
+    primary
+      .slice(
+        0,
+        Math.min(5,limit)
+      )
+      .forEach(add);
+
+    const remaining=
+      rows.filter(
+        record=>
+          !seen.has(
+            String(
+              record.cover||''
+            ).trim()
+          )
+      );
+
+    roundRobinCovers(
+      remaining,
+      Math.max(
+        0,
+        limit-output.length
+      )
+    ).forEach(
+      cover=>
+        add({cover})
+    );
+
+    return output;
+  }
+
+  async function resolveDefaultSeries(rows){
+    const fallback=
+      String(
+        rows?.[0]?.series||
+        ''
+      ).trim();
+
+    if(!originalFetch){
+      return fallback;
+    }
+
+    try{
+      const response=
+        await originalFetch(
+          './data/series.json',
+          {cache:'force-cache'}
+        );
+
+      if(!response.ok){
+        return fallback;
+      }
+
+      const data=
+        await response.json();
+
+      return String(
+        data?.defaultSeries||
+        fallback
+      ).trim();
+    }catch(_){
+      return fallback;
+    }
+  }
+
   function responsiveVariantPath(source,width=480){
     const value=String(source||'').trim();
     if(!value||value.includes('/images/generated/'))return value;
@@ -601,6 +772,17 @@
 
   function unique(values){
     return [...new Set(values.filter(Boolean))];
+  }
+
+  function sourceKey(value){
+    try{
+      return new URL(
+        String(value||'').trim(),
+        location.href
+      ).href;
+    }catch(_){
+      return String(value||'').trim();
+    }
   }
 
   function preloadImageSource(source){
@@ -672,13 +854,25 @@
     );
   }
 
-  function startProductPreload(rows){
+  async function startProductPreload(rows){
     if(productPreloadStarted||dismissed)return;
 
-    const profile=connectionProfile();
-    const covers=roundRobinCovers(rows,profile.count);
-
     productPreloadStarted=true;
+
+    const profile=connectionProfile();
+    const preferredSeries=
+      await resolveDefaultSeries(rows);
+
+    if(dismissed){
+      return;
+    }
+
+    const covers=
+      prioritizedCovers(
+        rows,
+        profile.count,
+        preferredSeries
+      );
     productPreloadTarget=covers.length;
     productPreloadLoaded=0;
     productPreloadAttempted=0;
@@ -699,7 +893,13 @@
       async source=>{
         const success=await preloadImageSource(source);
         productPreloadAttempted++;
-        if(success)productPreloadLoaded++;
+
+        if(success){
+          productPreloadLoaded++;
+          preloadedProductSources.add(
+            sourceKey(source)
+          );
+        }
 
         const ratio=
           productPreloadTarget
@@ -712,7 +912,11 @@
     ).finally(()=>{
       productPreloadDone=true;
       setProgress(96);
-      setStatus('ready');
+      setStatus(
+        mediaReady
+          ? 'ready'
+          : 'media'
+      );
       maybeFinish();
     });
   }
@@ -788,7 +992,8 @@
       domReady&&
       heroReady&&
       dataReady()&&
-      imagesReady()
+      imagesReady()&&
+      mediaReady
     );
   }
 
@@ -813,6 +1018,7 @@
     clearTimeout(quietTimer);
     clearTimeout(finishTimer);
     clearTimeout(fallbackCatalogTimer);
+    releaseCatalogMediaGate();
 
     setProgress(100);
     setStatus('ready');
@@ -856,6 +1062,7 @@
   function onDomReady(){
     domReady=true;
     createLoader();
+    installCatalogMediaGate();
     setProgress(28);
     setStatus(dataObserved?'data':'preparing');
     observeHero();
@@ -902,6 +1109,11 @@
   window.DreamlandStartupLoader={
     version:VERSION,
     dismiss,
+    hasPreloaded(source){
+      return preloadedProductSources.has(
+        sourceKey(source)
+      );
+    },
     state(){
       return {
         domReady,
@@ -914,6 +1126,9 @@
         productPreloadTarget,
         productPreloadAttempted,
         productPreloadLoaded,
+        mediaReady,
+        preloadedProductCount:
+          preloadedProductSources.size,
         dismissed,
         dismissing
       };
