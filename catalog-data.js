@@ -300,18 +300,10 @@
      * Replace the legacy custom-scent select
      * without delaying image loading.
      */
-    const customScentReady=
-      loadScript(
-        './custom-scent-multi.js',
-        'data-dreamland-custom-scent-multi'
-      );
-
     const copyPolishReady=
-      customScentReady.then(
-        ()=>loadScript(
-          './copy-polish.js',
-          'data-dreamland-copy-polish'
-        )
+      loadScript(
+        './copy-polish.js',
+        'data-dreamland-copy-polish'
       );
 
     await loadScript(
@@ -343,9 +335,7 @@
       './pattern-preview-swipe.js',
       'data-dreamland-pattern-preview-swipe'
     );
-
-    await customScentReady;
-    await copyPolishReady;
+await copyPolishReady;
   }
 
   if(document.readyState==='loading'){

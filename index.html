@@ -2149,16 +2149,21 @@ inquiryRenderer.configure({
 });
 
 /*
- * B6-04 compatibility snapshots only.
- * DreamlandDetail remains the Detail state source of truth.
- * DreamlandDetailRenderer consumes the ViewModel.
- * Detail media/progressive adapters still read activeProduct/config until
- * the shared compatibility cleanup phase.
+ * B6-06 direct-owner access only.
+ * Detail and Inquiry runtime state are read directly from their Features.
+ * No App-level Detail/Inquiry compatibility snapshots are retained.
  */
-let activeScreen='home',activeProduct=null,config={},detailSlideIndex=0,detailTimer=null,editingItemId='';
+let activeScreen='home',detailSlideIndex=0,detailTimer=null,editingItemId='';
 
-let state=
-  inquiryFeature.configure({
+function detailProduct(){
+  return detailFeature.product();
+}
+
+function detailConfig(){
+  return detailFeature.getConfig();
+}
+
+inquiryFeature.configure({
     storage:
       appStorage.local,
     storageKey:
@@ -2204,7 +2209,7 @@ let state=
     projectionMoney:
       money
   });
-  if(!state.items.length&&pendingInquiryId){
+  if(!inquiryFeature.items().length&&pendingInquiryId){
 pendingInquiryId='';
 appStorage.local.removeItem(PENDING_INQUIRY_KEY)
 }
@@ -2374,7 +2379,7 @@ function configPricingSeries(){
 
 function tierMarketingText(
   seriesKey=configPricingSeries(),
-  size=config.size,
+  size=detailConfig().size,
   quantity=configPricingQty()
 ){
   if(!seriesKey){
@@ -2411,13 +2416,13 @@ function tierMarketingText(
 
 function tierSheetTitle(){
   if(
-    activeProduct?.series==='holiday'
+    detailProduct()?.series==='holiday'
   ){
-    return `${seriesLabel(activeProduct.series)} · ${seriesLabel(config.scentSeries)}`;
+    return `${seriesLabel(detailProduct().series)} · ${seriesLabel(detailConfig().scentSeries)}`;
   }
 
   return seriesLabel(
-    activeProduct?.series
+    detailProduct()?.series
   );
 }
 
@@ -2523,7 +2528,7 @@ function itemTierSheetTitle(item){
 
 function openItemTierSheet(id){
   const item=
-    state.items.find(
+    inquiryFeature.items().find(
       row=>
         row.id===id&&
         row.type==='product'
@@ -2680,10 +2685,10 @@ function currentPackNotice(){
   const delta=currentPackDeltaCny();
 
   if(delta>0){
-    return `已含${choiceLabel(config.pack)} + ${money(cnyToBase(delta))}/${qtyUnit()}`;
+    return `已含${choiceLabel(detailConfig().pack)} + ${money(cnyToBase(delta))}/${qtyUnit()}`;
   }
 
-  return `已含${choiceLabel(config.pack)}`;
+  return `已含${choiceLabel(detailConfig().pack)}`;
 }
 
 function configPricingItem(){
@@ -2991,6 +2996,7 @@ function setLang(lang){
   currentLang=lang;
   appStorage.local.setItem(LANG_KEY,lang);
   rerenderCurrent();
+  window.DreamlandCopyPolish?.updateMeta?.();
   pwaService.refreshUi();
   toast(ui('switched'))
 }
@@ -3119,7 +3125,7 @@ function imgMiss(el){el.classList.add('is-missing')}
 function legacyPatternThumb(value){
   const list=
     patternsBySize[
-      config.size
+      detailConfig().size
     ]||[];
 
   const index=
@@ -3130,7 +3136,7 @@ function legacyPatternThumb(value){
 
   return (
     `./images/patterns/${
-      config.size
+      detailConfig().size
     }/pattern-${
       index
     }.jpg`
@@ -3157,7 +3163,7 @@ function patternThumb(value){
     sharedAssetCandidates(
       'pattern',
       value,
-      config.size,
+      detailConfig().size,
       legacyPatternThumb(value)
     )[0]||
     legacyPatternThumb(value)
@@ -3180,15 +3186,15 @@ function previewData(key){
   if(key==='pattern'){
     return {
       category:'pattern',
-      lookupKey:config.pattern,
-      size:config.size,
+      lookupKey:detailConfig().pattern,
+      size:detailConfig().size,
       fallback:
         legacyPatternThumb(
-          config.pattern
+          detailConfig().pattern
         ),
       label:
         choiceLabel(
-          config.pattern
+          detailConfig().pattern
         )
     };
   }
@@ -3196,15 +3202,15 @@ function previewData(key){
   if(key==='pack'){
     return {
       category:'package',
-      lookupKey:config.pack,
+      lookupKey:detailConfig().pack,
       size:'',
       fallback:
         legacyPackThumb(
-          config.pack
+          detailConfig().pack
         ),
       label:
         choiceLabel(
-          config.pack
+          detailConfig().pack
         )
     };
   }
@@ -3214,8 +3220,9 @@ function previewData(key){
 
 
 function openScentNotes(){
+  window.PatternPreviewSwipe?.deactivate?.();
   const scent=
-    scentMap.get(config.scentId);
+    scentMap.get(detailConfig().scentId);
 
   if(!scent){
     toast(
@@ -3375,6 +3382,38 @@ content.scrollTop=0;
 async function openSharedPreviewFromButton(
   button
 ){
+  const patternPreview=
+    window.PatternPreviewSwipe;
+
+  const category=
+    String(
+      button?.dataset
+        ?.sharedCategory||
+      ''
+    ).toLowerCase();
+
+  if(
+    patternPreview&&
+    (
+      category==='pattern'||
+      category==='package'
+    )
+  ){
+    const opened=
+      await patternPreview
+        .openSharedOptionPreview(
+          button,
+          category
+        );
+
+    if(opened){
+      return;
+    }
+  }
+
+  patternPreview
+    ?.deactivate?.();
+
   const layer=
     document.getElementById(
       'previewLayer'
@@ -3443,8 +3482,9 @@ async function openSharedPreviewFromButton(
 
   imgMiss(img);
 }
-  
+
 function openPreviewImage(src,label){
+  window.PatternPreviewSwipe?.deactivate?.();
   const layer=
     document.getElementById(
       'previewLayer'
@@ -3492,6 +3532,7 @@ function openPreviewImage(src,label){
 
   layer.classList.add('show');
 }function closePreviewImage(){
+  window.PatternPreviewSwipe?.beforeClose?.();
   const layer=
     document.getElementById(
       'previewLayer'
@@ -3542,20 +3583,6 @@ function renderProducts(){
       catalogFeature
         .buildViewModel()
     );
-}
-
-function syncDetailLegacyState(){
-  const view=
-    detailFeature
-      .buildViewModel();
-
-  activeProduct=
-    view.product;
-
-  config=
-    view.config;
-
-  return view;
 }
 
 function initialScentSeries(product){
@@ -3641,7 +3668,6 @@ function openDetail(id){
     return;
   }
 
-  syncDetailLegacyState();
 
   detailSlideIndex=0;
 
@@ -3661,7 +3687,17 @@ function renderDetailMedia(){
     return mediaRenderer();
   }
 
-  const imgs=productCarouselImages(activeProduct);
+  const product=
+    detailProduct();
+
+  if(!product){
+    return;
+  }
+
+  const imgs=
+    productCarouselImages(
+      product
+    );
 
   if(detailSlideIndex>=imgs.length){
     detailSlideIndex=0;
@@ -3674,7 +3710,7 @@ function renderDetailMedia(){
           <div class="detail-slide ${i===detailSlideIndex?'active':''}">
             <img
               src="${src}"
-              alt="${productDisplayName(activeProduct)} ${i+1}"
+              alt="${productDisplayName(product)} ${i+1}"
               onerror="imgMiss(this)"
             >
           </div>
@@ -3704,18 +3740,20 @@ function renderDetailMedia(){
     `
     : '';
 
-  detailMedia.className='detail-media '+activeProduct.color;
+  detailMedia.className=
+    'detail-media '+
+    product.color;
 
   detailMedia.innerHTML=`
-    <div class="product-img ${activeProduct.color}"></div>
+    <div class="product-img ${product.color}"></div>
 
     ${slidesHtml}
 
     ${controlsHtml}
 
     <div class="detail-titlebox">
-      <h2>${productDisplayName(activeProduct)}</h2>
-      <p>${productDesc(activeProduct)}</p>
+      <h2>${productDisplayName(product)}</h2>
+      <p>${productDesc(product)}</p>
     </div>
   `;
 
@@ -3745,7 +3783,7 @@ function updateDetailSlide(){
 }
 
 function setDetailSlide(i){
-  let imgs=productCarouselImages(activeProduct);
+  let imgs=productCarouselImages(detailProduct());
 
   if(!imgs.length){
     detailSlideIndex=0;
@@ -3778,7 +3816,7 @@ function startDetailCarousel(){
     clearInterval(detailTimer);
   }
 
-  const imgs=productCarouselImages(activeProduct);
+  const imgs=productCarouselImages(detailProduct());
 
   if(imgs.length<=1){
     detailTimer=null;
@@ -3786,7 +3824,7 @@ function startDetailCarousel(){
   }
 
   detailTimer=setInterval(()=>{
-    const currentImgs=productCarouselImages(activeProduct);
+    const currentImgs=productCarouselImages(detailProduct());
 
     if(currentImgs.length<=1){
       return;
@@ -3806,7 +3844,7 @@ const DETAIL_SWIPE_MIN_X=42;
 const DETAIL_SWIPE_DIRECTION_RATIO=1.25;
 
 function detailImageCount(){
-  return productCarouselImages(activeProduct).length;
+  return productCarouselImages(detailProduct()).length;
 }
 
 function bindDetailSwipe(){
@@ -3938,13 +3976,11 @@ function productScentSeries(product){
     product?.series||
     '';
 
-  if(Array.isArray(value)){
-    return value.filter(Boolean);
-  }
-
   return String(value)
     .split(',')
-    .map(item=>item.trim())
+    .map(
+      item=>item.trim()
+    )
     .filter(Boolean);
 }
 
@@ -3960,33 +3996,46 @@ function availableScentsForProduct(
   const result=[];
   const used=new Set();
 
-  allowedSeries.forEach(series=>{
-    const seriesScents=
-      scentsBySeries.get(series)||
-      [];
+  allowedSeries.forEach(
+    series=>{
+      const seriesScents=
+        scentsBySeries.get(series)||
+        [];
 
-    seriesScents.forEach(scent=>{
-      if(used.has(scent.id)){
-        return;
-      }
+      seriesScents.forEach(
+        scent=>{
+          if(
+            used.has(
+              scent.id
+            )
+          ){
+            return;
+          }
 
-      used.add(scent.id);
-      result.push(scent);
-    });
-  });
+          used.add(
+            scent.id
+          );
+
+          result.push(
+            scent
+          );
+        }
+      );
+    }
+  );
 
   return result;
 }
 
 function ensureCurrentScent(options){
-  const view=
-    syncDetailLegacyState();
+  const current=
+    detailConfig();
 
   return (
     options.find(
       scent=>
         scent.id===
-        view.config.scentId
+        current.scentId
     )||
     options[0]||
     null
@@ -4028,7 +4077,6 @@ function applyDetailQuantity(
     );
   }
 
-  syncDetailLegacyState();
 
   renderDetail(
     scrollState
@@ -4040,7 +4088,8 @@ function applyDetailQuantity(
   focusKey=''
 ){
   const detailView=
-    syncDetailLegacyState();
+    detailFeature
+      .buildViewModel();
 
   if(detailView.empty){
     return;
@@ -4057,7 +4106,7 @@ function applyDetailQuantity(
       }
     );
 }
-    
+
 function applyDetailOption(
   key,
   value,
@@ -4073,8 +4122,6 @@ function applyDetailOption(
   if(!view){
     return;
   }
-
-  syncDetailLegacyState();
 
   renderDetail(
     scrollState,
@@ -4095,8 +4142,6 @@ function applyDetailScent(
   if(!view){
     return;
   }
-
-  syncDetailLegacyState();
 
   renderDetail(
     scrollState,
@@ -4135,7 +4180,6 @@ function applyDetailQuantityDelta(
       delta
     );
 
-  syncDetailLegacyState();
 
   renderDetail(
     scrollState
@@ -4354,20 +4398,27 @@ function quickAdd(id){
   
 function addConfiguredProduct(){
   const detailView=
-    syncDetailLegacyState();
+    detailFeature
+      .buildViewModel();
 
   if(detailView.empty){
     return;
   }
+
+  const product=
+    detailView.product;
+
+  const detailConfig=
+    detailView.config;
 
   const wasEditing=
     Boolean(editingItemId);
 
   const scentData=
     scentSnapshot(
-      config.scentId,
-      activeProduct.series,
-      config.scent
+      detailConfig.scentId,
+      product.series,
+      detailConfig.scent
     );
 
   const item={
@@ -4378,28 +4429,28 @@ function addConfiguredProduct(){
     type:'product',
 
     productId:
-      activeProduct.id,
+      product.id,
 
     name:
-      activeProduct.name,
+      product.name,
 
     names:
-      activeProduct.names,
+      product.names,
 
     series:
-      activeProduct.series,
+      product.series,
 
     color:
-      activeProduct.color,
+      product.color,
 
     cover:
-      productCover(activeProduct),
+      productCover(product),
 
     moq:
-      productMoq(activeProduct),
+      productMoq(product),
 
     size:
-      config.size,
+      detailConfig.size,
 
     scentId:
       scentData.scentId,
@@ -4411,49 +4462,52 @@ function addConfiguredProduct(){
       scentData.scentSeries,
 
     pattern:
-      config.pattern,
+      detailConfig.pattern,
 
     pack:
-      config.pack,
+      detailConfig.pack,
 
     qty:
       normalizeQty(
-        config.qty,
+        detailConfig.qty,
         QTY_MIN
       )
   };
 
   if(wasEditing){
-    inquiryFeature.replaceItem(
-  editingItemId,
-  item
-);
+    inquiryFeature
+      .replaceItem(
+        editingItemId,
+        item
+      );
 
     editingItemId='';
 
     mergeDuplicateProductItems();
   }else{
-    addOrMergeProductItem(item);
+    addOrMergeProductItem(
+      item
+    );
   }
 
   save();
 
-toast(
-  toastText(
-    wasEditing
-      ? 'updatedInquiry'
-      : 'addedInquiry'
-  )
-);
+  toast(
+    toastText(
+      wasEditing
+        ? 'updatedInquiry'
+        : 'addedInquiry'
+    )
+  );
 
-if(wasEditing){
-  go('inquiry');
-}
+  if(wasEditing){
+    go('inquiry');
+  }
 }
 
 function openEditProductItem(id){
   const item=
-    state.items.find(
+    inquiryFeature.items().find(
       row=>
         row.id===id&&
         row.type==='product'
@@ -4473,7 +4527,6 @@ function openEditProductItem(id){
 
 editingItemId=id;
 
-syncDetailLegacyState();
 
 detailSlideIndex=0;
 
@@ -4623,7 +4676,7 @@ function del(id){
     )
   )
 }
-function confirmClearAll(){if(!state.items.length)return toast(toastText('emptyInquiry'));confirmLayer.classList.add('show')}
+function confirmClearAll(){if(!inquiryFeature.items().length)return toast(toastText('emptyInquiry'));confirmLayer.classList.add('show')}
 function hideConfirm(){confirmLayer.classList.remove('show')}
 function clearInquiry(){
   inquiryFeature.clearItems();
@@ -4969,7 +5022,7 @@ function moqGroupLabel(group){
 function productMoqGroups(){
   const groups={};
 
-  state.items.forEach(item=>{
+  inquiryFeature.items().forEach(item=>{
     if(item.type!=='product'){
       return;
     }
@@ -5024,7 +5077,7 @@ function validateProductMoqGroups(){
 }
   
 function goContact(){
-  if(!state.items.length){
+  if(!inquiryFeature.items().length){
     toast(
       ui('needInquiryFirst')
     );
@@ -5147,7 +5200,7 @@ function goPreview(){
   }
 
   for(
-    const item of state.items
+    const item of inquiryFeature.items()
   ){
     if(
       item.type==='product'&&
@@ -5803,6 +5856,9 @@ function renderPreview(){
     </div>
   `;
 
+  window.DreamlandCopyPolish
+    ?.decoratePreview?.();
+
   requestAnimationFrame(
     assessSubmissionRisk
   );
@@ -6263,7 +6319,7 @@ function renderSuccess(){
   let actions=document.querySelector('.success-actions');if(actions&&!actions.querySelector('.archive-note'))actions.insertAdjacentHTML('afterbegin',`<p class="archive-note">${ui('submissionArchived')}</p>`)
 }
 function inquiryBadgeCount(){
-  return state.items.reduce((sum,item)=>{
+  return inquiryFeature.items().reduce((sum,item)=>{
     if(item.type==='product')return sum+(Number(item.qty)||0);
     return sum+1;
   },0)
@@ -6522,7 +6578,6 @@ async function bootstrap(){
     cnyToBase
 });
 
-syncDetailLegacyState();
 
   applyRuntimeLimits();
   bindCtaReveal();

@@ -28,6 +28,20 @@
     return;
   }
 
+  const detail=
+    window.DreamlandDetail;
+
+  if(!detail){
+    console.warn(
+      '[catalog] Progressive detail loader requires DreamlandDetail.'
+    );
+    return;
+  }
+
+  function detailProduct(){
+    return detail.product?.()||null;
+  }
+
   const PREVIEW_WIDTH=480;
   const FULL_WIDTH=960;
   const FORWARD_QUEUE_START_DELAY=40;
@@ -889,7 +903,7 @@
 
     const images=
       productCarouselImages(
-        activeProduct
+        detailProduct()
       );
 
     if(
@@ -916,7 +930,7 @@
 
           const currentImages=
             productCarouselImages(
-              activeProduct
+              detailProduct()
             );
 
           if(
@@ -1012,14 +1026,14 @@
 
     if(
       !container||
-      !activeProduct
+      !detailProduct()
     ){
       return;
     }
 
     const images=
       productCarouselImages(
-        activeProduct
+        detailProduct()
       );
 
     if(
@@ -1048,7 +1062,7 @@
                 <span class="media-skeleton" aria-hidden="true"></span>
                 <img
                   data-progressive-source="${escapeAttr(source)}"
-                  alt="${escapeAttr(productDisplayName(activeProduct))} ${index+1}"
+                  alt="${escapeAttr(productDisplayName(detailProduct()))} ${index+1}"
                   width="960"
                   height="1440"
                   loading="lazy"
@@ -1093,14 +1107,14 @@
         : '';
 
     container.className=
-      `detail-media ${activeProduct.color}`;
+      `detail-media ${detailProduct().color}`;
 
     container.innerHTML=`
       ${slidesHtml}
       ${controlsHtml}
       <div class="detail-titlebox">
-        <h2>${productDisplayName(activeProduct)}</h2>
-        <p>${productDesc(activeProduct)}</p>
+        <h2>${productDisplayName(detailProduct())}</h2>
+        <p>${productDesc(detailProduct())}</p>
       </div>
     `;
 

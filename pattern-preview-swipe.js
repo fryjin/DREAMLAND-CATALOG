@@ -152,13 +152,6 @@
     'pack',
     normalized
   );
-
-  if(
-    typeof syncDetailLegacyState===
-      'function'
-  ){
-    syncDetailLegacyState();
-  }
   }
 
   function normalizeCustomPackSelect(){
@@ -531,10 +524,17 @@
   }
 
   function currentSize(){
-    if(typeof config!=='undefined'&&config?.size){
-      return String(config.size).trim().toUpperCase();
-    }
-    return '';
+    const current=
+      window.DreamlandDetail
+        ?.getConfig?.();
+
+    return current?.size
+      ? String(
+          current.size
+        )
+          .trim()
+          .toUpperCase()
+      : '';
   }
 
   function patternValues(size){
@@ -550,23 +550,35 @@
   }
 
   function packageValues(){
-    if(
-      typeof packOptions==='function'&&
-      typeof activeProduct!=='undefined'&&
-      activeProduct
-    ){
-      const options=packOptions(activeProduct.series);
-      if(Array.isArray(options))return options.filter(Boolean);
+    const product=
+      window.DreamlandDetail
+        ?.product?.();
+
+    if(!product){
+      return [];
     }
 
-    const series=
-      typeof activeProduct!=='undefined'
-        ? activeProduct?.series
-        : '';
+    if(
+      typeof packOptions===
+        'function'
+    ){
+      const options=
+        packOptions(
+          product.series
+        );
+
+      if(Array.isArray(options)){
+        return options.filter(Boolean);
+      }
+    }
 
     const options=
-      typeof seriesMeta!=='undefined'
-        ? seriesMeta?.[series]?.packaging?.options
+      typeof seriesMeta!==
+        'undefined'
+        ? seriesMeta
+            ?.[product.series]
+            ?.packaging
+            ?.options
         : null;
 
     return Array.isArray(options)
@@ -910,13 +922,6 @@
         ''
       )!==
       state.initialValue;
-
-    if(
-      typeof syncDetailLegacyState===
-        'function'
-    ){
-      syncDetailLegacyState();
-    }
   }
 }
 
@@ -1135,9 +1140,14 @@
     state.size=size;
     state.items=items;
     state.initialValue=
-      typeof config!=='undefined'&&config
-        ? String(config[configKey]||'')
-        : String(button?.dataset?.sharedKey||'');
+      String(
+        window.DreamlandDetail
+          ?.getConfig?.()
+          ?.[configKey]||
+        button?.dataset
+          ?.sharedKey||
+        ''
+      );
     state.changed=false;
     state.scrollState=
       typeof captureDetailOptionScrollState==='function'
@@ -1180,79 +1190,60 @@
     return openSharedOptionPreview(button,'package');
   }
 
-  function installHooks(){
-    const originalOpenShared=window.openSharedPreviewFromButton;
-    const originalClose=window.closePreviewImage;
-    const originalOpenImage=window.openPreviewImage;
-    const originalOpenScent=window.openScentNotes;
+  function beforeClose(){
+    const shouldSync=
+      state.active&&
+      state.changed;
 
-    if(typeof originalOpenShared==='function'){
-      window.openSharedPreviewFromButton=async function(button){
-        const category=String(
-          button?.dataset?.sharedCategory||''
-        ).toLowerCase();
+    if(shouldSync){
+      syncConfigUi();
+    }
 
-        if(category==='pattern'||category==='package'){
-          const opened=await openSharedOptionPreview(button,category);
-          if(opened)return;
+    deactivate();
+  }
+
+  function installLifecycle(){
+    /*
+     * Keep Escape-to-close and resize handling without replacing App globals.
+     */
+    document.addEventListener(
+      'keydown',
+      event=>{
+        if(!state.active){
+          return;
         }
 
-        deactivate();
-        return originalOpenShared.apply(this,arguments);
-      };
-    }
-
-    if(typeof originalClose==='function'){
-      window.closePreviewImage=function(){
-        const shouldSync=state.active&&state.changed;
-
-        if(shouldSync){
-          syncConfigUi();
+        if(event.key==='Escape'){
+          event.preventDefault();
+          window.closePreviewImage?.();
         }
-
-        deactivate();
-        return originalClose.apply(this,arguments);
-      };
-    }
-
-    if(typeof originalOpenImage==='function'){
-      window.openPreviewImage=function(){
-        deactivate();
-        return originalOpenImage.apply(this,arguments);
-      };
-    }
-
-    if(typeof originalOpenScent==='function'){
-      window.openScentNotes=function(){
-        deactivate();
-        return originalOpenScent.apply(this,arguments);
-      };
-    }
-
-    /* 仅保留 Escape 关闭，不提供键盘方向键切换。 */
-    document.addEventListener('keydown',event=>{
-      if(!state.active)return;
-      if(event.key==='Escape'){
-        event.preventDefault();
-        window.closePreviewImage?.();
       }
-    });
+    );
 
-    window.addEventListener('resize',()=>{
-      if(!state.active)return;
-      setTrackOffset(0);
-      applyDragEffects(0);
-    },{passive:true});
+    window.addEventListener(
+      'resize',
+      ()=>{
+        if(!state.active){
+          return;
+        }
+
+        setTrackOffset(0);
+        applyDragEffects(0);
+      },
+      {passive:true}
+    );
   }
 
   installPackagingUiSync();
   installStyles();
   ensureShell();
-  installHooks();
+  installLifecycle();
 
   window.PatternPreviewSwipe={
     openSharedOptionPreview,
     openPatternPreview,
-    openPackagePreview
+    openPackagePreview,
+    beforeClose,
+    deactivate
   };
 })();

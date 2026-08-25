@@ -455,9 +455,6 @@
   };
 
   let installed=false;
-  let setLangWrapped=false;
-  let previewWrapped=false;
-  let payloadWrapped=false;
 
   function language(){
     return (
@@ -517,17 +514,6 @@
     });
   }
 
-  function cleanBrokenScentText(root=document){
-    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
-    const nodes=[];
-    while(walker.nextNode())nodes.push(walker.currentNode);
-    nodes.forEach(node=>{
-      if(node.nodeValue?.includes("||ui('scentRecommend')")){
-        node.nodeValue=node.nodeValue.replaceAll("||ui('scentRecommend')",'');
-      }
-    });
-  }
-
   function insertProcessNote(){
     const preview=document.getElementById('previewContent');
     if(!preview)return;
@@ -546,46 +532,7 @@
 
   function decoratePreview(){
     removeTechnicalPreviewRows();
-    cleanBrokenScentText(document.getElementById('previewContent')||document);
     insertProcessNote();
-  }
-
-  function wrapPreview(){
-    if(previewWrapped||typeof renderPreview!=='function')return;
-    const original=renderPreview;
-    renderPreview=function(){
-      const result=original.apply(this,arguments);
-      decoratePreview();
-      return result;
-    };
-    previewWrapped=true;
-  }
-
-  function wrapPayload(){
-    if(payloadWrapped||typeof buildWeb3FormsPayload!=='function')return;
-    const original=buildWeb3FormsPayload;
-    buildWeb3FormsPayload=function(){
-      const payload=original.apply(this,arguments);
-      if(typeof payload?.items_summary==='string'){
-        payload.items_summary=payload.items_summary.replaceAll("||ui('scentRecommend')",'');
-      }
-      return payload;
-    };
-    payloadWrapped=true;
-  }
-
-  function wrapSetLang(){
-    if(setLangWrapped||typeof setLang!=='function')return;
-    const original=setLang;
-    setLang=function(){
-      const result=original.apply(this,arguments);
-      updateMeta();
-      window.DreamlandCustomScent?.render?.();
-      hideInternalHelpers();
-      decoratePreview();
-      return result;
-    };
-    setLangWrapped=true;
   }
 
   function apply(){
@@ -613,9 +560,6 @@
     }
 
     installStyles();
-    wrapPreview();
-    wrapPayload();
-    wrapSetLang();
     updateMeta();
 
     if(typeof applyI18n==='function')applyI18n();

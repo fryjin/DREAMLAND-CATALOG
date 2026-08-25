@@ -242,22 +242,15 @@
         ?.dataset.id||
       '';
 
-    if(
-      !itemId||
-      typeof state===
-        'undefined'||
-      !Array.isArray(
-        state.items
-      )
-    ){
+    if(!itemId){
       return null;
     }
 
     return (
-      state.items.find(
-        item=>
-          item.id===itemId
-      )||
+      window.DreamlandInquiry
+        ?.findItem?.(
+          itemId
+        )||
       null
     );
   }
@@ -323,28 +316,28 @@
   }
 
   function syncActiveInquiryCovers(){
+    const inquiry=
+      window.DreamlandInquiry;
+
+    const items=
+      inquiry?.items?.();
+
     if(
-      typeof state===
-        'undefined'||
-      !Array.isArray(
-        state.items
-      )||
+      !Array.isArray(items)||
       typeof products===
         'undefined'||
-      !Array.isArray(
-        products
-      )
+      !Array.isArray(products)
     ){
       return;
     }
 
     let changed=false;
 
-    state.items.forEach(
+    items.forEach(
       item=>{
         if(
           item.type!==
-          'product'
+            'product'
         ){
           return;
         }
@@ -357,7 +350,7 @@
         if(
           !currentProduct||
           typeof productCover!==
-          'function'
+            'function'
         ){
           return;
         }
@@ -370,22 +363,23 @@
         if(
           currentCover&&
           item.cover!==
-          currentCover
+            currentCover
         ){
-          item.cover=
-            currentCover;
+          inquiry.replaceItem(
+            item.id,
+            {
+              ...item,
+              cover:currentCover
+            }
+          );
 
           changed=true;
         }
       }
     );
 
-    if(
-      changed&&
-      typeof save===
-      'function'
-    ){
-      save();
+    if(changed){
+      inquiry.persist?.();
     }
   }
 
@@ -461,17 +455,22 @@
     if(
       result.success&&
       item.cover!==
-      result.source
+        result.source
     ){
-      item.cover=
-        result.source;
+      const inquiry=
+        window.DreamlandInquiry;
 
-      if(
-        typeof save===
-        'function'
-      ){
-        save();
-      }
+      inquiry
+        ?.replaceItem?.(
+          item.id,
+          {
+            ...item,
+            cover:result.source
+          }
+        );
+
+      inquiry
+        ?.persist?.();
     }
   }
 

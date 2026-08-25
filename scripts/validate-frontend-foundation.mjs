@@ -70,7 +70,7 @@ try{
 }
 
 if(foundation){
-  if(foundation.phase!=='B6-05'){
+  if(foundation.phase!=='B6-06'){
     fail(`Unexpected frontend foundation phase: ${foundation.phase}`)
   }
 

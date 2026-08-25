@@ -80,7 +80,7 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
   ],
   'features',
   'detail',
-  'Detail active-product state, configuration state, option mutation, quantity normalization and Detail pricing/MOQ ViewModel derivation are routed through DreamlandDetail. Detail configuration-card HTML, size/scent/pattern/pack/quantity presentation, delegated configuration events and horizontal option-scroll lifecycle are routed through DreamlandDetailRenderer. Detail media/carousel/swipe, shared preview modals, screen navigation and Inquiry mutation orchestration remain App/adapter-owned. activeProduct/config remain temporary read-only compatibility snapshots for media/preview adapters.',
+  'Detail active-product state, configuration state, option mutation, quantity normalization and Detail pricing/MOQ ViewModel derivation are routed through DreamlandDetail. Detail configuration-card HTML, size/scent/pattern/pack/quantity presentation, delegated configuration events and horizontal option-scroll lifecycle are routed through DreamlandDetailRenderer. Detail media/carousel/swipe, shared preview modals, screen navigation and Inquiry mutation orchestration remain App/adapter-owned. Detail media/preview adapters read frozen product/config snapshots directly from DreamlandDetail; the temporary App-level activeProduct/config compatibility state has been removed.',
   {
     status:'partial',
     runtimeMigrated:false,
@@ -101,7 +101,7 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'features',
     'inquiry',
-    'Inquiry item-state hydration/persistence/mutation, Inquiry-specific pricing derivation, the Inquiry screen View Model and Preview/Submission/Archive projection data are routed through DreamlandInquiry. Inquiry list/summary HTML templates, DOM rendering, incremental DOM updates and item-level event delegation remain routed through DreamlandInquiryRenderer. Final submission transaction orchestration, archive persistence and success-state cleanup are routed through DreamlandInquirySubmissionFlow. Preview DOM, Risk/Captcha UI, navigation/badge behavior and shared pricing policy remain in index.html.',
+    'Inquiry item-state hydration/persistence/mutation, Inquiry-specific pricing derivation, the Inquiry screen View Model and Preview/Submission/Archive projection data are routed through DreamlandInquiry. Inquiry list/summary HTML templates, DOM rendering, incremental DOM updates and item-level event delegation remain routed through DreamlandInquiryRenderer. Final submission transaction orchestration, archive persistence and success-state cleanup are routed through DreamlandInquirySubmissionFlow. Preview DOM, Risk/Captcha UI, navigation/badge behavior and shared pricing policy remain in index.html. copy-polish.js is presentation-only dictionary/meta/preview decoration and no longer wraps App render/language/payload functions.',
     {
       status:'partial',
       runtimeMigrated:false,
@@ -161,7 +161,7 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'services',
     'media',
-    'Shared media primitives are owned by DreamlandMedia. Catalog/detail media adapters, shared-asset candidate transformation, and inquiry media lifecycle integration now attach through DreamlandRuntimeHooks. The media-side global render-function monkey-patches tracked by B3-01 through B3-03 are removed; broader Inquiry feature ownership remains a later migration.',
+    'Shared media primitives are owned by DreamlandMedia. Catalog/detail media adapters, shared-asset candidate transformation, and inquiry media lifecycle integration now attach through DreamlandRuntimeHooks. The media-side global render-function monkey-patches tracked by B3-01 through B3-03 are removed. ImageManager now routes Inquiry item lookup/cover updates directly through DreamlandInquiry; PatternPreviewSwipe uses explicit App lifecycle calls instead of replacing shared preview globals.',
     {
       status:'partial',
       runtimeMigrated:false,

@@ -489,7 +489,6 @@ try{
     '<script src="./src/features/detail/runtime-detail.js"></script>',
     'const detailFeature=window.DreamlandDetail',
     'detailFeature.configure(',
-    'function syncDetailLegacyState(',
     'detailFeature.openProduct(',
     'detailFeature.openItem(',
     'detailFeature.setOption(',
