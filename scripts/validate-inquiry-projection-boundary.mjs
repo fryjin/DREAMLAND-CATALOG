@@ -317,14 +317,20 @@ if(!fs.existsSync(runtimePath)){
         customProjection.previewKey!==
           'choice:品牌活动'||
         !customProjection.previewValue.includes(
-          "scent:花香调||ui('scentRecommend')"
+          'scent:花香调'
         )||
         !customProjection.summaryText.includes(
-          "scent:花香调||ui('scentRecommend')"
+          'scent:花香调'
+        )||
+        customProjection.previewValue.includes(
+          '||ui('
+        )||
+        customProjection.summaryText.includes(
+          '||ui('
         )
       ){
         fail(
-          'Custom projection must preserve legacy B5-04 output parity.'
+          'Custom projection must emit clean scent presentation.'
         );
       }
 
@@ -342,11 +348,12 @@ if(!fs.existsSync(runtimePath)){
         projection.itemsSummary!==
           (
             productProjection.summaryText+
+            '\n'+
             customProjection.summaryText
           )
       ){
         fail(
-          'itemsSummary must preserve historical no-delimiter concatenation.'
+          'itemsSummary must delimit item summaries with a newline.'
         );
       }
 
@@ -450,6 +457,16 @@ try{
     read(
       'src/features/inquiry/runtime-inquiry.js'
     );
+
+  if(
+    runtimeSource.includes(
+      'legacyScentSuffix'
+    )
+  ){
+    fail(
+      'Inquiry Projection must not expose the legacy Custom scent fallback token.'
+    );
+  }
 
   for(const forbidden of [
     'document.',
