@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import {pathToFileURL} from 'node:url';
 
 const ROOT=process.cwd();
 const errors=[];
@@ -143,7 +144,133 @@ try{
 }
 
 /*
- * Gate 3 — Masterpiece packaging is included in base price.
+ * Gate 3 — Catalog responsive media execution regression.
+ *
+ * This catches the token-registration race that left Catalog cards
+ * permanently in their skeleton state while Detail images still worked.
+ */
+try{
+  delete globalThis.DreamlandMedia;
+
+  await import(
+    pathToFileURL(
+      path.join(
+        ROOT,
+        'src/services/media/runtime-media.js'
+      )
+    ).href+
+    `?b7-device-media=${Date.now()}`
+  );
+
+  const media=
+    globalThis.DreamlandMedia;
+
+  if(
+    !media||
+    typeof media.loadResponsiveImage!==
+      'function'
+  ){
+    fail(
+      'DreamlandMedia.loadResponsiveImage is unavailable.'
+    );
+  }else{
+    const classes=
+      new Set();
+
+    const frame={
+      classList:{
+        add(...values){
+          values.forEach(
+            value=>classes.add(value)
+          );
+        },
+        remove(...values){
+          values.forEach(
+            value=>classes.delete(value)
+          );
+        }
+      }
+    };
+
+    const image={
+      dataset:{},
+      classList:{
+        add(){},
+        remove(){}
+      },
+      complete:false,
+      naturalWidth:0,
+      onload:null,
+      onerror:null,
+      fetchPriority:'auto',
+      loading:'lazy',
+      decoding:'async',
+      removeAttribute(){},
+      closest(){
+        return frame;
+      },
+      async decode(){},
+      set src(value){
+        this._src=value;
+        this.naturalWidth=480;
+        this.complete=true;
+
+        queueMicrotask(
+          ()=>this.onload?.()
+        );
+      },
+      get src(){
+        return this._src||'';
+      }
+    };
+
+    const loaded=
+      await media.loadResponsiveImage(
+        image,
+        './images/products/ADV001/cover.webp',
+        'catalog',
+        'high'
+      );
+
+    if(loaded!==true){
+      fail(
+        'DreamlandMedia.loadResponsiveImage cancelled a fresh Catalog image.'
+      );
+    }
+
+    if(
+      !classes.has(
+        'is-loaded'
+      )||
+      classes.has(
+        'is-error'
+      )
+    ){
+      fail(
+        'Successful responsive image load did not mark its frame is-loaded.'
+      );
+    }
+
+    if(
+      !String(
+        image.src||''
+      ).includes(
+        '/images/generated/products/ADV001/cover-480.webp'
+      )
+    ){
+      fail(
+        'Catalog responsive media did not select the 480px generated candidate.'
+      );
+    }
+  }
+}catch(error){
+  fail(
+    `Responsive media execution regression failed: ${error.message}`
+  );
+}
+
+/*
+ * Gate 4 — Masterpiece packaging is included in base price.
  */
 try{
   const series=
@@ -219,7 +346,7 @@ try{
 }
 
 /*
- * Gate 4 — B7 takes the current release/cache gate without reopening B6.
+ * Gate 5 — B7 takes the current release/cache gate without reopening B6.
  */
 try{
   const sw=
@@ -227,11 +354,11 @@ try{
 
   if(
     !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v86';"
+      "const CACHE_VERSION = 'dreamland-pwa-v87';"
     )
   ){
     fail(
-      'B7-00A requires dreamland-pwa-v86.'
+      'B7-00A requires dreamland-pwa-v87.'
     );
   }
 
@@ -326,5 +453,5 @@ console.log(
 );
 
 console.log(
-  'Startup/Catalog image readiness bridge PASS / Masterpiece gift packaging included / PWA v86.'
+  'Startup/Catalog responsive image execution PASS / Masterpiece gift packaging included / PWA v87.'
 );
