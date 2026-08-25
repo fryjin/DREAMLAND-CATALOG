@@ -1110,8 +1110,106 @@ body[data-lang="ko"] .option-grid-scroll .option{
   overflow:visible;
 }
 </style>
+<link rel="stylesheet" href="./desktop-foundation.css"/>
 </head>
 <body>
+<header class="desktop-header" id="desktopHeader" aria-label="Desktop navigation">
+  <div class="desktop-header__inner">
+    <button
+      class="desktop-brand"
+      type="button"
+      data-desktop-nav="home"
+      aria-label="DREAMLAND Home"
+    >
+      DREAMLAND
+    </button>
+
+    <nav class="desktop-nav" aria-label="Primary">
+      <button
+        class="desktop-nav__item"
+        type="button"
+        data-desktop-nav="home"
+      >
+        <span data-desktop-copy="home">Home</span>
+      </button>
+
+      <button
+        class="desktop-nav__item"
+        type="button"
+        data-desktop-nav="catalog"
+      >
+        <span data-desktop-copy="catalog">Collection</span>
+      </button>
+
+      <button
+        class="desktop-nav__item"
+        type="button"
+        data-desktop-nav="custom"
+      >
+        <span data-desktop-copy="custom">Custom</span>
+      </button>
+    </nav>
+
+    <div class="desktop-header__actions">
+      <div class="desktop-language">
+        <button
+          class="desktop-language__toggle"
+          type="button"
+          aria-haspopup="menu"
+          aria-expanded="false"
+        >
+          <span class="desktop-language__globe" aria-hidden="true">◎</span>
+          <span class="desktop-language__current">中文</span>
+          <span class="desktop-language__caret" aria-hidden="true">▾</span>
+        </button>
+
+        <div
+          class="desktop-language__menu"
+          role="menu"
+          aria-label="Language"
+        >
+          <button
+            class="desktop-language__option"
+            type="button"
+            role="menuitemradio"
+            data-desktop-lang="zh"
+          >
+            <span>中文</span>
+            <small>ZH</small>
+          </button>
+
+          <button
+            class="desktop-language__option"
+            type="button"
+            role="menuitemradio"
+            data-desktop-lang="en"
+          >
+            <span>English</span>
+            <small>EN</small>
+          </button>
+
+          <button
+            class="desktop-language__option"
+            type="button"
+            role="menuitemradio"
+            data-desktop-lang="ko"
+          >
+            <span>한국어</span>
+            <small>KO</small>
+          </button>
+        </div>
+      </div>
+
+      <button
+        class="desktop-inquiry"
+        type="button"
+        data-desktop-nav="inquiry"
+      >
+        <span data-desktop-inquiry-label>Inquiry</span>
+      </button>
+    </div>
+  </div>
+</header>
 <main class="phone" id="app">
 <section class="screen active" data-screen="home"><div class="hero"><div class="hero-product media-frame">
   <span class="media-skeleton" aria-hidden="true"></span>
@@ -2990,7 +3088,10 @@ function applyI18n(){
   setSelectOptions('buyerType',[['待确认'],['批发商 / 经销商'],['品牌方'],['礼品公司'],['活动 / 婚礼策划'],['零售门店'],['个人客户'],['其他']]);
   let dc=document.querySelectorAll('.detail-label');['intentId','submitDate','currentStatus','estimatedAmount'].forEach((k,i)=>{if(dc[i])dc[i].textContent=ui(k)});let status=document.querySelector('.detail-row:nth-child(3) .detail-value');if(status)status.textContent=ui('statusPending');
   let cc=document.querySelector('.confirm-card');if(cc){let h=cc.querySelector('h3'),p=cc.querySelector('p'),bs=cc.querySelectorAll('button');if(h)h.textContent=ui('clearConfirmTitle');if(p)p.textContent=ui('clearConfirmText');if(bs[0])bs[0].textContent=ui('cancel');if(bs[1])bs[1].textContent=ui('clear')}
-  let toastEl=document.getElementById('toast');if(toastEl&&!toastEl.classList.contains('show'))toastEl.textContent=ui('addedInquiry')
+  let toastEl=document.getElementById('toast');if(toastEl&&!toastEl.classList.contains('show'))toastEl.textContent=ui('addedInquiry');
+
+  window.DreamlandDesktopFoundation
+    ?.syncI18n?.();
 }
 function setLang(lang){
   currentLang=lang;
@@ -3022,6 +3123,11 @@ function go(n){
   }
 
   activeScreen=n;
+
+  window.DreamlandDesktopFoundation
+    ?.syncNavigation?.(
+      n
+    );
 
   document
     .querySelectorAll(
@@ -6329,8 +6435,19 @@ function inquiryBadgeCount(){
 function badge(){
   badgeEl=document.getElementById('badge');
   let count=inquiryBadgeCount();
-  badgeEl.textContent=count;
-  badgeEl.classList.toggle('show',count>0)
+
+  if(badgeEl){
+    badgeEl.textContent=count;
+    badgeEl.classList.toggle(
+      'show',
+      count>0
+    );
+  }
+
+  window.DreamlandDesktopFoundation
+    ?.syncInquiry?.(
+      count
+    );
 }
 function toast(t){
   let el=document.getElementById('toast');
@@ -6601,6 +6718,7 @@ bootstrap().catch(error=>{
   if(copy)copy.textContent='请检查网络后刷新页面。';
 });
 </script>
+<script src="./desktop-foundation.js"></script>
 <div class="tier-layer" id="tierLayer" onclick="if(event.target===this)closeTierSheet()">
   <div class="tier-sheet" id="tierSheet"></div>
 </div>

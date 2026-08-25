@@ -1,0 +1,476 @@
+/*
+ * DREAMLAND B7-00B.1 — Desktop Foundation
+ *
+ * Desktop is a presentation mode over the existing mobile-first application.
+ * Business state remains owned by the existing Feature runtimes.
+ */
+
+.desktop-header{
+  display:none;
+}
+
+@media (min-width:1024px){
+  :root{
+    --desktop-bg:#f5f3ef;
+    --desktop-surface:#faf8f4;
+    --desktop-card:#fff;
+    --desktop-sand:#e9e0d5;
+    --desktop-sand-strong:#d8c9b8;
+    --desktop-ink:#171614;
+    --desktop-muted:#77736d;
+    --desktop-soft:#a09b94;
+    --desktop-border:rgba(69,59,49,.10);
+    --desktop-shadow:0 18px 48px rgba(69,59,49,.08);
+    --desktop-header-height:76px;
+    --desktop-content-max:1440px;
+    --desktop-page-max:1120px;
+    --desktop-gutter:clamp(28px,3.2vw,48px);
+  }
+
+  html,
+  body{
+    width:100%;
+    height:100%;
+    min-height:100%;
+    overflow:hidden;
+    background:var(--desktop-bg);
+  }
+
+  body{
+    display:block;
+    padding:0;
+    color:var(--desktop-ink);
+  }
+
+  .desktop-header{
+    position:relative;
+    z-index:120;
+    display:block;
+    width:100%;
+    height:var(--desktop-header-height);
+    background:rgba(250,248,244,.94);
+    border-bottom:1px solid var(--desktop-border);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+  }
+
+  .desktop-header__inner{
+    width:min(100%,var(--desktop-content-max));
+    height:100%;
+    margin:0 auto;
+    padding:0 var(--desktop-gutter);
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) auto;
+    align-items:center;
+    gap:36px;
+  }
+
+  .desktop-brand{
+    display:inline-flex;
+    align-items:center;
+    min-height:44px;
+    border:0;
+    background:transparent;
+    color:var(--desktop-ink);
+    font-size:15px;
+    line-height:1;
+    font-weight:950;
+    letter-spacing:.08em;
+    cursor:pointer;
+  }
+
+  .desktop-nav{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:30px;
+  }
+
+  .desktop-nav__item{
+    position:relative;
+    min-height:44px;
+    padding:0 2px;
+    border:0;
+    background:transparent;
+    color:var(--desktop-muted);
+    font-size:13px;
+    line-height:1;
+    font-weight:760;
+    cursor:pointer;
+    transition:color .18s ease,transform .18s ease;
+  }
+
+  .desktop-nav__item::after{
+    content:"";
+    position:absolute;
+    left:2px;
+    right:2px;
+    bottom:4px;
+    height:1px;
+    background:var(--desktop-ink);
+    transform:scaleX(0);
+    transform-origin:center;
+    transition:transform .18s ease;
+  }
+
+  .desktop-nav__item:hover{
+    color:var(--desktop-ink);
+  }
+
+  .desktop-nav__item.is-active{
+    color:var(--desktop-ink);
+  }
+
+  .desktop-nav__item.is-active::after{
+    transform:scaleX(1);
+  }
+
+  .desktop-header__actions{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:10px;
+  }
+
+  .desktop-language{
+    position:relative;
+  }
+
+  .desktop-language__toggle{
+    min-height:42px;
+    padding:0 12px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid transparent;
+    border-radius:12px;
+    background:transparent;
+    color:var(--desktop-ink);
+    font-size:12px;
+    font-weight:760;
+    cursor:pointer;
+    transition:background .18s ease,border-color .18s ease;
+  }
+
+  .desktop-language__toggle:hover,
+  .desktop-language__toggle[aria-expanded="true"]{
+    background:var(--desktop-surface);
+    border-color:var(--desktop-border);
+  }
+
+  .desktop-language__globe{
+    font-size:13px;
+    line-height:1;
+  }
+
+  .desktop-language__caret{
+    color:var(--desktop-soft);
+    font-size:10px;
+  }
+
+  .desktop-language__menu{
+    position:absolute;
+    top:calc(100% + 8px);
+    right:0;
+    z-index:140;
+    width:164px;
+    padding:7px;
+    display:none;
+    border:1px solid var(--desktop-border);
+    border-radius:16px;
+    background:rgba(255,255,255,.98);
+    box-shadow:var(--desktop-shadow);
+  }
+
+  .desktop-language__menu.show{
+    display:block;
+  }
+
+  .desktop-language__option{
+    width:100%;
+    min-height:40px;
+    padding:0 10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border:0;
+    border-radius:10px;
+    background:transparent;
+    color:var(--desktop-muted);
+    font-size:12px;
+    font-weight:760;
+    cursor:pointer;
+  }
+
+  .desktop-language__option small{
+    color:var(--desktop-soft);
+    font-size:9px;
+    font-weight:850;
+    letter-spacing:.08em;
+  }
+
+  .desktop-language__option:hover,
+  .desktop-language__option.is-active{
+    background:var(--desktop-surface);
+    color:var(--desktop-ink);
+  }
+
+  .desktop-inquiry{
+    min-height:42px;
+    padding:0 15px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border:0;
+    border-radius:12px;
+    background:var(--desktop-ink);
+    color:#fff;
+    font-size:12px;
+    line-height:1;
+    font-weight:820;
+    cursor:pointer;
+    box-shadow:0 10px 26px rgba(37,31,25,.13);
+    transition:transform .18s ease,box-shadow .18s ease,background .18s ease;
+  }
+
+  .desktop-inquiry:hover{
+    transform:translateY(-1px);
+    background:#0d0c0b;
+    box-shadow:0 14px 30px rgba(37,31,25,.16);
+  }
+
+  .desktop-inquiry.is-active{
+    outline:2px solid rgba(191,163,142,.42);
+    outline-offset:2px;
+  }
+
+  .phone{
+    width:100%;
+    max-width:none;
+    height:calc(100dvh - var(--desktop-header-height));
+    min-height:0;
+    border-radius:0;
+    background:var(--desktop-bg);
+    box-shadow:none;
+  }
+
+  .screen{
+    background:var(--desktop-bg);
+    border-radius:0;
+  }
+
+  .bottom-nav{
+    display:none!important;
+  }
+
+  /*
+   * B7-00B.1 only establishes the shared desktop shell.
+   * Page-specific Home/Catalog/Detail restructuring comes in later sub-phases.
+   * Existing page content is temporarily held to a comfortable reading width.
+   */
+  .fixed-top,
+  .content{
+    width:min(100%,var(--desktop-page-max));
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .fixed-top{
+    padding:30px var(--desktop-gutter) 0;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(245,243,239,1) 0%,
+        rgba(245,243,239,.98) 88%,
+        rgba(245,243,239,0) 100%
+      );
+  }
+
+  .content{
+    padding-left:var(--desktop-gutter);
+    padding-right:var(--desktop-gutter);
+    padding-bottom:48px;
+  }
+
+  .content.no-nav{
+    padding-bottom:40px;
+  }
+
+  .content.with-cta{
+    padding-bottom:88px;
+  }
+
+  .fixed-top .header{
+    height:auto;
+    min-height:62px;
+    margin:0 0 18px;
+    justify-content:flex-start;
+  }
+
+  .fixed-top .header > .icon-btn,
+  .fixed-top .header > .lang-wrap{
+    display:none;
+  }
+
+  .fixed-top .header > div:not(.lang-wrap){
+    position:static;
+    left:auto;
+    right:auto;
+    width:auto;
+    text-align:left;
+    pointer-events:auto;
+  }
+
+  .page-title{
+    font-size:34px;
+    line-height:1.04;
+    font-weight:900;
+    letter-spacing:-.035em;
+  }
+
+  .page-sub{
+    margin-top:7px;
+    color:var(--desktop-muted);
+    font-size:13px;
+    line-height:1.45;
+    font-weight:650;
+  }
+
+  .tabs{
+    display:flex;
+    align-items:center;
+    gap:28px;
+    padding:0;
+    overflow:visible;
+    border-bottom:1px solid var(--desktop-border);
+  }
+
+  .tab,
+  .tabs.lang-en .tab,
+  .tabs.lang-ko .tab{
+    position:relative;
+    width:auto;
+    min-width:0;
+    height:46px;
+    padding:0;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+    color:var(--desktop-muted);
+    font-size:12px;
+    font-weight:760;
+    letter-spacing:0;
+    overflow:visible;
+  }
+
+  .tab::after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:-1px;
+    height:2px;
+    background:var(--desktop-ink);
+    transform:scaleX(0);
+    transform-origin:center;
+    transition:transform .18s ease;
+  }
+
+  .tab:hover{
+    color:var(--desktop-ink);
+  }
+
+  .tab.active{
+    color:var(--desktop-ink);
+    background:transparent;
+    box-shadow:none;
+  }
+
+  .tab.active::after{
+    transform:scaleX(1);
+  }
+
+  .btn{
+    height:50px;
+    border-radius:14px;
+  }
+
+  .icon-btn{
+    border-radius:12px;
+  }
+
+  .sticky-action{
+    width:min(
+      calc(100% - 2 * var(--desktop-gutter)),
+      calc(var(--desktop-page-max) - 2 * var(--desktop-gutter))
+    );
+    left:50%;
+    right:auto;
+    transform:translateX(-50%);
+  }
+
+  .confirm-layer.show,
+  .tier-layer.show,
+  .preview-layer.show{
+    align-items:center;
+    justify-content:center;
+    padding:40px;
+  }
+
+  .confirm-card{
+    width:min(460px,100%);
+    border-radius:22px;
+  }
+
+  .tier-sheet{
+    width:min(760px,100%);
+    max-height:min(80dvh,720px);
+    border-radius:22px;
+  }
+
+  .preview-view{
+    width:min(920px,100%);
+    max-height:min(84dvh,820px);
+    border-radius:24px;
+  }
+
+  .preview-layer.scent-mode{
+    align-items:center;
+    justify-content:center;
+    padding:40px;
+  }
+
+  .preview-layer.scent-mode .preview-view{
+    width:min(620px,100%);
+    max-height:min(78dvh,720px);
+    border-radius:24px;
+  }
+
+  .preview-layer.scent-mode .preview-view::before{
+    display:none;
+  }
+
+  .desktop-header button:focus-visible,
+  .tab:focus-visible,
+  .btn:focus-visible,
+  .icon-btn:focus-visible,
+  .option:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible{
+    outline:2px solid #8f765f;
+    outline-offset:3px;
+  }
+}
+
+@media (min-width:1200px){
+  :root{
+    --desktop-page-max:1200px;
+  }
+}
+
+@media (min-width:1600px){
+  :root{
+    --desktop-page-max:1280px;
+  }
+}
