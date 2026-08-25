@@ -1,28 +1,19 @@
 {
-  "generatedAt": "2026-08-25T15:54:49.621Z",
-  "sourceBranch": "feat/en-product-catalog-ppt",
-  "sourceCommit": "51af48aa4b86880fae7f298d8ec2d5b30e10c4e5",
-  "sourceFiles": [
-    "data/products.csv",
-    "data/series.json"
-  ],
-  "language": "en",
-  "activeProductCount": 89,
+  "generatedAt": "2026-08-25T16:07:49.916Z",
+  "generatorRevision": "R3",
+  "source": {
+    "branch": "feat/en-product-catalog-ppt",
+    "commit": "a2ec27bb3816f947b035f9ae070626ff6477cc21"
+  },
+  "activeTotal": 89,
   "seriesCounts": {
     "advanced": 19,
     "masterpiece": 46,
     "holiday": 16,
     "classic": 8
   },
-  "seriesOrder": [
-    "advanced",
-    "masterpiece",
-    "holiday",
-    "classic"
-  ],
   "slideCount": 31,
-  "output": "DREAMLAND_Wholesale_Product_Catalog_EN_2026.pptx",
-  "activeProductIds": [
+  "products": [
     "ADV001",
     "ADV002",
     "ADV003",
@@ -112,5 +103,15 @@
     "CLA006",
     "CLA007",
     "CLA008"
+  ],
+  "imagePlacement": {
+    "policy": "manual-contain-from-source-pixel-dimensions",
+    "auditedPlacements": 104,
+    "maxAspectRatioError": 0
+  },
+  "notes": [
+    "Only status=active products are included.",
+    "Product image aspect ratio is preserved by manual geometry; pptxgenjs sizing is not used.",
+    "Pricing is intentionally excluded because final quotation depends on configuration and quantity."
   ]
 }
