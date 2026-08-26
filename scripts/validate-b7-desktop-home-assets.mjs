@@ -210,26 +210,29 @@ try{
     !validate.includes(
       'npm run desktop:home'
     )||
-    !validate.trim()
-      .endsWith(
-        'npm run desktop:home-assets'
-      )
+    !validate.includes(
+      'npm run desktop:home-assets'
+    )
   ){
     fail(
-      'npm run validate must keep desktop:home and finish with desktop:home-assets.'
+      'npm run validate must preserve desktop:home and desktop:home-assets.'
     );
   }
 
   const sw=
     read('sw.js');
 
+  const cacheVersion=
+    sw.match(
+      /const CACHE_VERSION = 'dreamland-pwa-v(\d+)';/
+    );
+
   if(
-    !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v90';"
-    )
+    !cacheVersion||
+    Number(cacheVersion[1])<90
   ){
     fail(
-      'B7-00B.2 requires dreamland-pwa-v90.'
+      'B7-00B.2 requires dreamland-pwa-v90 or later.'
     );
   }
 

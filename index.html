@@ -1113,6 +1113,7 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <link rel="stylesheet" href="./src/ui/desktop/styles/tokens.css"/>
 <link rel="stylesheet" href="./src/ui/desktop/styles/shell.css"/>
 <link rel="stylesheet" href="./src/ui/desktop/styles/home.css"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/catalog.css"/>
 </head>
 <body>
 <div id="desktopExperience" class="desktop-experience" aria-hidden="true"></div>
@@ -1199,6 +1200,8 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./src/ui/inquiry/runtime-inquiry-renderer.js"></script>
 <script src="./src/ui/desktop/shell/runtime-desktop-shell.js"></script>
 <script src="./src/ui/desktop/home/runtime-desktop-home.js"></script>
+<script src="./src/features/catalog/runtime-desktop-catalog-view.js"></script>
+<script src="./src/ui/desktop/catalog/runtime-desktop-catalog.js"></script>
 <script src="./src/ui/desktop/runtime-desktop-experience.js"></script>
 <script src="./src/app/runtime-inquiry-submission-flow.js"></script>
 <script src="./custom-scent-multi.js"></script>
@@ -6661,6 +6664,10 @@ async function bootstrap(){
           catalogUnit(product)
         ),
 
+    productPriceValue:
+      product=>
+        catalogUnit(product),
+
     productMoq:
       product=>
         moqForSeriesSize(
@@ -6676,6 +6683,23 @@ async function bootstrap(){
     media:
       ()=>window.DreamlandMedia,
 
+    catalogAfterRender:
+      payload=>{
+        window.DreamlandRuntimeHooks
+          ?.emit(
+            'catalog.afterAppendBatch',
+            {
+              grid:
+                payload?.grid||
+                payload?.root,
+              start:0,
+              end:
+                payload?.renderedCount||
+                0
+            }
+          );
+      },
+
     actions:{
       navigate:
         screen=>
@@ -6685,12 +6709,30 @@ async function bootstrap(){
         lang=>
           chooseLang(lang),
 
+      selectCatalogSeries:
+        series=>{
+          if(
+            series&&
+            series!=='all'
+          ){
+            catalogFeature
+              .setActiveSeries(
+                series
+              );
+          }
+        },
+
       openSeries:
         series=>{
-          catalogFeature
-            .setActiveSeries(
-              series
-            );
+          if(
+            series&&
+            series!=='all'
+          ){
+            catalogFeature
+              .setActiveSeries(
+                series
+              );
+          }
 
           go('catalog');
         },
