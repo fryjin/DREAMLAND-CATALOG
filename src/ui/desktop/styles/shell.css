@@ -8,6 +8,13 @@
     background:var(--dw-canvas);
   }
 
+  #desktopHeaderRoot{
+    position:sticky;
+    top:0;
+    z-index:320;
+    height:var(--dw-header);
+  }
+
   .desktop-site-header{
     position:sticky;
     top:0;

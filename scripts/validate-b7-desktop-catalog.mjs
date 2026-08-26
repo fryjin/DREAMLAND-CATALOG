@@ -410,7 +410,9 @@ try{
     'data-image-manager-catalog="1"',
     'data-responsive-source=',
     'load-more',
-    'review-inquiry'
+    'review-inquiry',
+    'onDocumentPointerDown',
+    "'pointerdown'"
   ]){
     if(!renderer.includes(required)){
       fail(
@@ -464,7 +466,9 @@ try{
     'desktopManaged=',
     'home||',
     'catalog;',
-    'setCatalogScope'
+    'setCatalogScope',
+    'desktopReadySignaled',
+    'dreamland:desktop-ready'
   ]){
     if(!experience.includes(required)){
       fail(
@@ -536,6 +540,57 @@ try{
     fail(
       'Desktop Shell still contains the old Home-only visibility rule that blanks the Desktop Catalog.'
     );
+  }
+
+  if(
+    !compactShell.includes(
+      compact(
+        '#desktopHeaderRoot{position:sticky;top:0;z-index:320;height:var(--dw-header);}'
+      )
+    )
+  ){
+    fail(
+      'Desktop Header wrapper must remain sticky across Home/Catalog scrolling.'
+    );
+  }
+
+  const responsive=
+    read(
+      'image-variants.js'
+    );
+
+  for(const required of [
+    '.product-cover[data-responsive-source]',
+    '.desktop-catalog-card__image[data-responsive-source]',
+    'desktopCatalogObserver',
+    "createCatalogObserver(\n          null,",
+    'getCatalogObserver(\n              img'
+  ]){
+    if(!responsive.includes(required)){
+      fail(
+        `Desktop responsive media pipeline is missing: ${required}`
+      );
+    }
+  }
+
+  const startup=
+    read(
+      'startup-loader.js'
+    );
+
+  for(const required of [
+    "const desktopViewport=",
+    "let desktopReady=",
+    "'dreamland:desktop-ready'",
+    'desktopReady\n    );',
+    'desktopViewport,',
+    'desktopReady,'
+  ]){
+    if(!startup.includes(required)){
+      fail(
+        `Desktop startup readiness gate is missing: ${required}`
+      );
+    }
   }
 }catch(error){
   fail(
@@ -718,7 +773,7 @@ try{
 }
 
 /*
- * Gate 8 — index bridge, PWA v91, validation chain.
+ * Gate 8 — index bridge, PWA v92, validation chain.
  */
 try{
   const index=
@@ -787,10 +842,10 @@ try{
 
   if(
     !cacheVersion||
-    Number(cacheVersion[1])!==91
+    Number(cacheVersion[1])!==92
   ){
     fail(
-      'B7-00B.3A requires dreamland-pwa-v91.'
+      'B7-00B.3A Real-preview Fix R3 requires dreamland-pwa-v92.'
     );
   }
 
@@ -835,5 +890,5 @@ console.log(
 );
 
 console.log(
-  'All 89 / 19 Advanced / 46 Masterpiece / 16 Holiday / 8 Classic / Search / Size / Sort / 24-item Load More / Desktop no-phone fallback / PWA v91 PASS.'
+  'All 89 / 19 Advanced / 46 Masterpiece / 16 Holiday / 8 Classic / Search / Size / Sort / 24-item Load More / Desktop media / startup handoff / sticky header / PWA v92 PASS.'
 );

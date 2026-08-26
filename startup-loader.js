@@ -26,6 +26,11 @@
     '(prefers-reduced-motion: reduce)'
   )?.matches===true;
 
+  const desktopViewport=
+    window.matchMedia?.(
+      '(min-width: 1024px)'
+    )?.matches===true;
+
   let seenBefore=false;
   try{
     seenBefore=localStorage.getItem(SEEN_KEY)==='1';
@@ -93,6 +98,11 @@
   let productPreloadTarget=0;
   let mediaReady=false;
   let mediaReadyHandler=null;
+
+  let desktopReady=
+    !desktopViewport;
+  let desktopReadyHandler=null;
+
   const preloadedProductSources=new Set();
 
   let quietTimer=0;
@@ -456,6 +466,64 @@
     );
 
     mediaReadyHandler=null;
+  }
+
+  function markDesktopExperienceReady(){
+    if(desktopReady){
+      return true;
+    }
+
+    const snapshot=
+      window.DreamlandDesktopExperience
+        ?.snapshot?.();
+
+    if(
+      snapshot?.mode!=='desktop'||
+      snapshot?.desktopMounted!==true
+    ){
+      return false;
+    }
+
+    desktopReady=true;
+    maybeFinish();
+    return true;
+  }
+
+  function installDesktopExperienceGate(){
+    if(!desktopViewport){
+      desktopReady=true;
+      return;
+    }
+
+    if(desktopReadyHandler){
+      markDesktopExperienceReady();
+      return;
+    }
+
+    desktopReadyHandler=()=>{
+      desktopReady=true;
+      maybeFinish();
+    };
+
+    window.addEventListener(
+      'dreamland:desktop-ready',
+      desktopReadyHandler
+    );
+
+    markDesktopExperienceReady();
+  }
+
+  function releaseDesktopExperienceGate(){
+    if(!desktopReadyHandler){
+      return;
+    }
+
+    window.removeEventListener(
+      'dreamland:desktop-ready',
+      desktopReadyHandler
+    );
+
+    desktopReadyHandler=null;
   }
 
   function connectionProfile(){
@@ -993,7 +1061,8 @@
       heroReady&&
       dataReady()&&
       imagesReady()&&
-      mediaReady
+      mediaReady&&
+      desktopReady
     );
   }
 
@@ -1019,6 +1088,7 @@
     clearTimeout(finishTimer);
     clearTimeout(fallbackCatalogTimer);
     releaseCatalogMediaGate();
+    releaseDesktopExperienceGate();
 
     setProgress(100);
     setStatus('ready');
@@ -1083,6 +1153,7 @@
     maybeFinish();
   }
 
+  installDesktopExperienceGate();
   installFetchTracker();
 
   hardTimer=window.setTimeout(
@@ -1127,6 +1198,8 @@
         productPreloadAttempted,
         productPreloadLoaded,
         mediaReady,
+        desktopViewport,
+        desktopReady,
         preloadedProductCount:
           preloadedProductSources.size,
         dismissed,

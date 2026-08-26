@@ -1023,6 +1023,32 @@
     }
   }
 
+  function onDocumentPointerDown(event){
+    if(
+      !filterOpen||
+      !catalogRoot
+    ){
+      return;
+    }
+
+    const insideFilter=
+      event.target
+        ?.closest?.(
+          '.desktop-catalog-filter'
+        );
+
+    if(
+      insideFilter&&
+      catalogRoot.contains(
+        insideFilter
+      )
+    ){
+      return;
+    }
+
+    closeFilter();
+  }
+
   function configure(options={}){
     config={
       content:
@@ -1096,6 +1122,12 @@
       catalogRoot.addEventListener(
         'keydown',
         onKeydown
+      );
+
+      document.addEventListener(
+        'pointerdown',
+        onDocumentPointerDown,
+        true
       );
 
       mounted=true;

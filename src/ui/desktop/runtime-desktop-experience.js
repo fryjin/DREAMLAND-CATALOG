@@ -12,6 +12,7 @@
   let rootElement=null;
   let mediaQuery=null;
   let desktopMounted=false;
+  let desktopReadySignaled=false;
   let currentScreen='home';
   let mode='mobile';
 
@@ -490,6 +491,53 @@
     });
   }
 
+  function signalDesktopReady(){
+    if(
+      desktopReadySignaled||
+      !desktopMounted||
+      mode!=='desktop'
+    ){
+      return;
+    }
+
+    const dispatch=()=>{
+      if(desktopReadySignaled){
+        return;
+      }
+
+      desktopReadySignaled=true;
+
+      root.dispatchEvent(
+        new CustomEvent(
+          'dreamland:desktop-ready',
+          {
+            detail:{
+              version:VERSION,
+              screen:currentScreen
+            }
+          }
+        )
+      );
+    };
+
+    if(
+      typeof root.requestAnimationFrame===
+      'function'
+    ){
+      root.requestAnimationFrame(
+        ()=>
+          root.requestAnimationFrame(
+            dispatch
+          )
+      );
+    }else{
+      root.setTimeout?.(
+        dispatch,
+        0
+      );
+    }
+  }
+
   function mountDesktop(){
     if(desktopMounted){
       return;
@@ -530,6 +578,8 @@
     syncScreen(
       currentScreen
     );
+
+    signalDesktopReady();
   }
 
   function applyMode(){
@@ -919,6 +969,7 @@
       breakpoint:BREAKPOINT,
       configured:Boolean(config),
       desktopMounted,
+      desktopReadySignaled,
       mode,
       screen:currentScreen,
       inquiryCount:
