@@ -1110,106 +1110,12 @@ body[data-lang="ko"] .option-grid-scroll .option{
   overflow:visible;
 }
 </style>
-<link rel="stylesheet" href="./desktop-foundation.css"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/tokens.css"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/shell.css"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/home.css"/>
 </head>
 <body>
-<header class="desktop-header" id="desktopHeader" aria-label="Desktop navigation">
-  <div class="desktop-header__inner">
-    <button
-      class="desktop-brand"
-      type="button"
-      data-desktop-nav="home"
-      aria-label="DREAMLAND Home"
-    >
-      DREAMLAND
-    </button>
-
-    <nav class="desktop-nav" aria-label="Primary">
-      <button
-        class="desktop-nav__item"
-        type="button"
-        data-desktop-nav="home"
-      >
-        <span data-desktop-copy="home">Home</span>
-      </button>
-
-      <button
-        class="desktop-nav__item"
-        type="button"
-        data-desktop-nav="catalog"
-      >
-        <span data-desktop-copy="catalog">Collection</span>
-      </button>
-
-      <button
-        class="desktop-nav__item"
-        type="button"
-        data-desktop-nav="custom"
-      >
-        <span data-desktop-copy="custom">Custom</span>
-      </button>
-    </nav>
-
-    <div class="desktop-header__actions">
-      <div class="desktop-language">
-        <button
-          class="desktop-language__toggle"
-          type="button"
-          aria-haspopup="menu"
-          aria-expanded="false"
-        >
-          <span class="desktop-language__globe" aria-hidden="true">◎</span>
-          <span class="desktop-language__current">中文</span>
-          <span class="desktop-language__caret" aria-hidden="true">▾</span>
-        </button>
-
-        <div
-          class="desktop-language__menu"
-          role="menu"
-          aria-label="Language"
-        >
-          <button
-            class="desktop-language__option"
-            type="button"
-            role="menuitemradio"
-            data-desktop-lang="zh"
-          >
-            <span>中文</span>
-            <small>ZH</small>
-          </button>
-
-          <button
-            class="desktop-language__option"
-            type="button"
-            role="menuitemradio"
-            data-desktop-lang="en"
-          >
-            <span>English</span>
-            <small>EN</small>
-          </button>
-
-          <button
-            class="desktop-language__option"
-            type="button"
-            role="menuitemradio"
-            data-desktop-lang="ko"
-          >
-            <span>한국어</span>
-            <small>KO</small>
-          </button>
-        </div>
-      </div>
-
-      <button
-        class="desktop-inquiry"
-        type="button"
-        data-desktop-nav="inquiry"
-      >
-        <span data-desktop-inquiry-label>Inquiry</span>
-      </button>
-    </div>
-  </div>
-</header>
+<div id="desktopExperience" class="desktop-experience" aria-hidden="true"></div>
 <main class="phone" id="app">
 <section class="screen active" data-screen="home"><div class="hero"><div class="hero-product media-frame">
   <span class="media-skeleton" aria-hidden="true"></span>
@@ -1291,6 +1197,9 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./src/ui/catalog/runtime-catalog-renderer.js"></script>
 <script src="./src/ui/detail/runtime-detail-renderer.js"></script>
 <script src="./src/ui/inquiry/runtime-inquiry-renderer.js"></script>
+<script src="./src/ui/desktop/shell/runtime-desktop-shell.js"></script>
+<script src="./src/ui/desktop/home/runtime-desktop-home.js"></script>
+<script src="./src/ui/desktop/runtime-desktop-experience.js"></script>
 <script src="./src/app/runtime-inquiry-submission-flow.js"></script>
 <script src="./custom-scent-multi.js"></script>
 <script>
@@ -1308,6 +1217,13 @@ const detailRenderer=window.DreamlandDetailRenderer;
 const customScentUi=window.DreamlandCustomScent;
 const submissionFlow=window.DreamlandInquirySubmissionFlow;
 const detailFeature=window.DreamlandDetail;
+const desktopExperience=window.DreamlandDesktopExperience;
+
+if(!desktopExperience){
+  throw new Error(
+    'DreamlandDesktopExperience must load before Desktop presentation initialization.'
+  );
+}
 
 if(!inquiryFeature){
   throw new Error(
@@ -1394,6 +1310,7 @@ let uiDict={};
 let choiceMaps={};
 let languageNames={};
 let appConfig={};
+let siteContent={};
 let defaultSeries='advanced';
 const SUBMISSION_ARCHIVE_KEY='dreamlandInquiryArchiveV1';
 const LAST_SUBMISSION_KEY='dreamlandLastSubmissionV1';
@@ -1784,14 +1701,23 @@ const [
   configResponse,
   loadedProducts,
   loadedSharedAssets,
-  loadedScents
+  loadedScents,
+  loadedSiteContent
 ]=await Promise.all([
   fetch('./data/series.json',{cache:'no-cache'}),
   fetch('./data/i18n.json',{cache:'no-cache'}),
   fetch('./data/app-config.json',{cache:'no-cache'}),
   DreamlandCatalogData.loadProductsWithFallback(),
   DreamlandCatalogData.loadSharedAssetsFromCsv(),
-  DreamlandCatalogData.loadScentsFromCsv()
+  DreamlandCatalogData.loadScentsFromCsv(),
+  fetch('./data/site-content.json',{cache:'no-cache'})
+    .then(
+      response=>
+        response.ok
+          ? response.json()
+          : {}
+    )
+    .catch(()=>({}))
 ]);
   
   const responses=[
@@ -1844,6 +1770,7 @@ indexScents(scents);
   choiceMaps=i18nData.choices||{};
   languageNames=i18nData.languageNames||{};
   appConfig=configData||{};
+  siteContent=loadedSiteContent||{};
 
   submissionService.configure({
     submitUrl:
@@ -3090,8 +3017,7 @@ function applyI18n(){
   let cc=document.querySelector('.confirm-card');if(cc){let h=cc.querySelector('h3'),p=cc.querySelector('p'),bs=cc.querySelectorAll('button');if(h)h.textContent=ui('clearConfirmTitle');if(p)p.textContent=ui('clearConfirmText');if(bs[0])bs[0].textContent=ui('cancel');if(bs[1])bs[1].textContent=ui('clear')}
   let toastEl=document.getElementById('toast');if(toastEl&&!toastEl.classList.contains('show'))toastEl.textContent=ui('addedInquiry');
 
-  window.DreamlandDesktopFoundation
-    ?.syncI18n?.();
+  desktopExperience.refresh();
 }
 function setLang(lang){
   currentLang=lang;
@@ -3124,10 +3050,9 @@ function go(n){
 
   activeScreen=n;
 
-  window.DreamlandDesktopFoundation
-    ?.syncNavigation?.(
-      n
-    );
+  desktopExperience.syncScreen(
+    n
+  );
 
   document
     .querySelectorAll(
@@ -6444,10 +6369,7 @@ function badge(){
     );
   }
 
-  window.DreamlandDesktopFoundation
-    ?.syncInquiry?.(
-      count
-    );
+  desktopExperience.syncInquiry();
 }
 function toast(t){
   let el=document.getElementById('toast');
@@ -6698,6 +6620,95 @@ async function bootstrap(){
 });
 
 
+  desktopExperience.configure({
+    root:
+      document.getElementById(
+        'desktopExperience'
+      ),
+
+    siteContent,
+    products,
+    seriesMeta,
+
+    language:
+      ()=>currentLang,
+
+    languageNames:
+      ()=>languageNames,
+
+    seriesLabel,
+
+    productName:
+      productDisplayName,
+
+    productCover,
+
+    productAngle:
+      product=>
+        cleanImagePath(
+          product?.angle_image
+        ),
+
+    productDetail:
+      product=>
+        cleanImagePath(
+          product?.detail_image
+        ),
+
+    productPrice:
+      product=>
+        fromPrice(
+          catalogUnit(product)
+        ),
+
+    productMoq:
+      product=>
+        moqForSeriesSize(
+          product?.series,
+          defaultProductSize(product)
+        ),
+
+    inquiryCount:
+      ()=>inquiryFeature
+        .items()
+        .length,
+
+    media:
+      ()=>window.DreamlandMedia,
+
+    actions:{
+      navigate:
+        screen=>
+          go(screen),
+
+      chooseLanguage:
+        lang=>
+          chooseLang(lang),
+
+      openSeries:
+        series=>{
+          catalogFeature
+            .setActiveSeries(
+              series
+            );
+
+          go('catalog');
+        },
+
+      openProduct:
+        id=>
+          openDetail(id),
+
+      privacy:
+        ()=>{
+          window.location.href=
+            privacyUrl();
+        }
+    }
+  });
+
+  desktopExperience.mount();
+
   applyRuntimeLimits();
   bindCtaReveal();
   bindContactDraft();
@@ -6718,7 +6729,6 @@ bootstrap().catch(error=>{
   if(copy)copy.textContent='请检查网络后刷新页面。';
 });
 </script>
-<script src="./desktop-foundation.js"></script>
 <div class="tier-layer" id="tierLayer" onclick="if(event.target===this)closeTierSheet()">
   <div class="tier-sheet" id="tierSheet"></div>
 </div>

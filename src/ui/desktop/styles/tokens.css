@@ -1,0 +1,165 @@
+/*
+ * DREAMLAND B7-00B.1 — Desktop Website Design Tokens
+ *
+ * Desktop is a separate Presentation Layer.
+ * These tokens do not override the mobile experience below 1024px.
+ */
+
+.desktop-experience{
+  display:none;
+}
+
+.desktop-experience[hidden]{
+  display:none!important;
+}
+
+@media (min-width:1024px){
+  :root{
+    --dw-canvas:#f5f3ef;
+    --dw-surface:#faf8f4;
+    --dw-card:#ffffff;
+    --dw-sand:#e9e0d5;
+    --dw-sand-strong:#d8c9b8;
+    --dw-clay:#bfa38e;
+    --dw-taupe:#988779;
+    --dw-ink:#171614;
+    --dw-muted:#77736d;
+    --dw-soft:#a09b94;
+    --dw-line:rgba(71,58,47,.12);
+    --dw-dark-line:rgba(255,255,255,.14);
+
+    --dw-header:76px;
+    --dw-max:1440px;
+    --dw-gap:24px;
+    --dw-gutter:clamp(28px,3.2vw,48px);
+
+    --dw-section:clamp(96px,8vw,128px);
+    --dw-radius-xl:28px;
+    --dw-radius-lg:22px;
+    --dw-radius-md:14px;
+
+    --dw-shadow-soft:0 18px 54px rgba(62,50,40,.08);
+    --dw-shadow-button:0 10px 28px rgba(27,23,19,.14);
+
+    --dw-ease:cubic-bezier(.22,.8,.22,1);
+  }
+
+  html{
+    background:var(--dw-canvas);
+  }
+
+  body.desktop-experience-ready{
+    display:block;
+    width:100%;
+    min-height:100vh;
+    padding:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+    background:var(--dw-canvas);
+    color:var(--dw-ink);
+  }
+
+  body.desktop-experience-ready .desktop-experience:not([hidden]){
+    display:block;
+  }
+
+  body.desktop-experience-ready[data-desktop-screen="home"] > #app{
+    display:none;
+  }
+
+  /*
+   * Temporary fallback while Catalog / PDP / Inquiry desktop renderers
+   * are delivered in B7-00B.2+.
+   * The existing mobile presentation remains functional and isolated.
+   */
+  body.desktop-experience-ready:not([data-desktop-screen="home"]) > #app{
+    margin:36px auto 64px;
+  }
+
+  .desktop-container{
+    width:min(
+      calc(100% - (2 * var(--dw-gutter))),
+      var(--dw-max)
+    );
+    margin-inline:auto;
+  }
+
+  .desktop-eyebrow{
+    color:var(--dw-muted);
+    font-size:12px;
+    line-height:1.2;
+    font-weight:850;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+  }
+
+  .desktop-arrow-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:inherit;
+    font-size:13px;
+    line-height:1;
+    font-weight:820;
+  }
+
+  .desktop-arrow-link .desktop-arrow{
+    display:inline-block;
+    transition:transform .2s var(--dw-ease);
+  }
+
+  .desktop-arrow-link:hover .desktop-arrow{
+    transform:translateX(4px);
+  }
+
+  .desktop-primary-button{
+    min-height:48px;
+    padding:0 18px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    border-radius:12px;
+    background:var(--dw-ink);
+    color:#fff;
+    box-shadow:var(--dw-shadow-button);
+    font-size:13px;
+    line-height:1;
+    font-weight:850;
+    cursor:pointer;
+    transition:
+      transform .18s ease,
+      background .18s ease,
+      box-shadow .18s ease;
+  }
+
+  .desktop-primary-button:hover{
+    transform:translateY(-1px);
+    background:#0d0c0b;
+    box-shadow:0 14px 32px rgba(27,23,19,.17);
+  }
+
+  .desktop-primary-button:focus-visible,
+  .desktop-text-button:focus-visible,
+  .desktop-site-header button:focus-visible,
+  .desktop-site-footer button:focus-visible,
+  .desktop-collection-card:focus-visible,
+  .desktop-product-link:focus-visible{
+    outline:2px solid #8f765f;
+    outline-offset:4px;
+  }
+
+  .desktop-text-button{
+    min-height:44px;
+    padding:0;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:transparent;
+    color:var(--dw-ink);
+    font-size:13px;
+    line-height:1;
+    font-weight:820;
+    cursor:pointer;
+  }
+}
