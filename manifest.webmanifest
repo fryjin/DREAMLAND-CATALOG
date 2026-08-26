@@ -1,15 +1,15 @@
 {
   "id": "./",
-  "name": "DREAMLAND 产品手册",
+  "name": "DREAMLAND 手工雕刻蜡烛｜批发与定制",
   "short_name": "DREAMLAND",
-  "description": "查看手工雕刻香薰蜡烛，整理选款并提交意向。",
+  "description": "浏览 DREAMLAND 手工雕刻蜡烛系列、工艺与定制能力，并提交批发或定制项目询价。",
   "lang": "zh-CN",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#f3f4f8",
-  "theme_color": "#f3f4f8",
+  "orientation": "any",
+  "background_color": "#faf8f4",
+  "theme_color": "#faf8f4",
   "categories": [
     "business",
     "shopping"

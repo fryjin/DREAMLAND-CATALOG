@@ -401,5 +401,30 @@
         "reviewInquiry": "문의 목록 확인"
       }
     }
+  },
+  "website": {
+    "positioning": "brand-wholesale-custom",
+    "audience": "global-b2b",
+    "experience": [
+      "brand",
+      "collection",
+      "product-configuration",
+      "custom-project",
+      "request-for-quotation"
+    ],
+    "meta": {
+      "en": {
+        "title": "DREAMLAND | Hand-carved Candles for Wholesale & Custom",
+        "description": "Discover hand-carved candles for wholesale, retail, gifting and custom projects. Explore collections, configure product options and request a quotation from DREAMLAND."
+      },
+      "zh": {
+        "title": "DREAMLAND 手工雕刻蜡烛｜批发与定制",
+        "description": "浏览 DREAMLAND 手工雕刻蜡烛系列，了解工艺、产品与定制能力，完成产品配置并提交批发或定制项目询价。"
+      },
+      "ko": {
+        "title": "DREAMLAND | 핸드카빙 캔들 도매 · 커스텀",
+        "description": "DREAMLAND 핸드카빙 캔들 컬렉션과 제작 방식을 살펴보고 제품 옵션을 구성한 뒤 도매 및 커스텀 프로젝트 견적을 문의하세요."
+      }
+    }
   }
 }

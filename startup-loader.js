@@ -107,31 +107,31 @@
 
   const copy={
     zh:{
-      label:'产品手册',
-      preparing:'正在加载完整手册内容',
+      label:'DREAMLAND',
+      preparing:'正在加载网站内容',
       data:'正在载入产品与配置',
       visual:'正在准备首页视觉',
       media:'正在连接商品图片',
       images:(loaded,total)=>`正在预载产品图 ${loaded}/${total}`,
-      ready:'产品与图片已准备完成'
+      ready:'网站内容已准备完成'
     },
     en:{
-      label:'PRODUCT CATALOG',
-      preparing:'Preparing the complete catalog',
+      label:'DREAMLAND',
+      preparing:'Preparing the website',
       data:'Loading products and options',
       visual:'Preparing the home visual',
       media:'Connecting catalog images',
       images:(loaded,total)=>`Preloading product images ${loaded}/${total}`,
-      ready:'Catalog and images are ready'
+      ready:'Website content is ready'
     },
     ko:{
-      label:'제품 카탈로그',
-      preparing:'전체 카탈로그를 준비하고 있어요',
+      label:'DREAMLAND',
+      preparing:'웹사이트를 준비하고 있어요',
       data:'제품과 옵션을 불러오고 있어요',
       visual:'홈 화면을 준비하고 있어요',
       media:'상품 이미지를 연결하고 있어요',
       images:(loaded,total)=>`제품 이미지를 불러오고 있어요 ${loaded}/${total}`,
-      ready:'카탈로그와 이미지가 준비됐어요'
+      ready:'웹사이트 콘텐츠가 준비됐어요'
     }
   };
 

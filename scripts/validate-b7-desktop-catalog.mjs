@@ -842,10 +842,10 @@ try{
 
   if(
     !cacheVersion||
-    Number(cacheVersion[1])!==94
+    Number(cacheVersion[1])!==95
   ){
     fail(
-      'B7-00B.3A Desktop Boot Experience Cleanup R5 requires dreamland-pwa-v94.'
+      'B7-00B.3A Desktop Boot Experience Cleanup R5 requires dreamland-pwa-v95.'
     );
   }
 
@@ -882,7 +882,7 @@ try{
  */
 try{
   const release=
-    'b7-00b3a-r5-v94';
+    'b7-00b3a-r6-v95';
 
   const index=
     read(
@@ -1075,7 +1075,7 @@ try{
 
   if(
     !index.includes(
-      `window.DREAMLAND_RELEASE='b7-00b3a-r5-v94';`
+      `window.DREAMLAND_RELEASE='b7-00b3a-r6-v95';`
     )
   ){
     fail(
@@ -1090,11 +1090,11 @@ try{
 
   if(
     !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v94';"
+      "const CACHE_VERSION = 'dreamland-pwa-v95';"
     )
   ){
     fail(
-      'R5 requires dreamland-pwa-v94.'
+      'R5 requires dreamland-pwa-v95.'
     );
   }
 }catch(error){
@@ -1122,5 +1122,5 @@ console.log(
 );
 
 console.log(
-  'All 89 / 19 Advanced / 46 Masterpiece / 16 Holiday / 8 Classic / Search / Size / Sort / 24-item Load More / Desktop media / startup handoff / release convergence / Desktop boot cleanup / PWA v94 PASS.'
+  'All 89 / 19 Advanced / 46 Masterpiece / 16 Holiday / 8 Classic / Search / Size / Sort / 24-item Load More / Desktop media / startup handoff / release convergence / Desktop boot cleanup / PWA v95 PASS.'
 );
