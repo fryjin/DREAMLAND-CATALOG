@@ -31,6 +31,57 @@
       '(min-width: 1024px)'
     )?.matches===true;
 
+  /*
+   * B7-00B.3A R5
+   * Desktop owns its own progressive boot experience. Do not create the
+   * Mobile startup overlay, do not wrap fetch, and do not preload the Mobile
+   * hero / catalog batch before Desktop Presentation can render.
+   */
+  if(desktopViewport){
+    document.documentElement
+      .classList
+      .remove(
+        ROOT_CLASS
+      );
+
+    window.DreamlandStartupLoader=
+      Object.freeze({
+        version:VERSION,
+        mode:'desktop-bypass',
+
+        dismiss(){
+          document.documentElement
+            .classList
+            .remove(
+              ROOT_CLASS
+            );
+        },
+
+        hasPreloaded(){
+          return false;
+        },
+
+        state(){
+          return {
+            desktopViewport:true,
+            desktopBypass:true,
+            dismissed:true,
+            dismissing:false,
+            productPreloadStarted:false,
+            productPreloadDone:false,
+            productPreloadTarget:0,
+            productPreloadAttempted:0,
+            productPreloadLoaded:0,
+            mediaReady:false,
+            desktopReady:false,
+            preloadedProductCount:0
+          };
+        }
+      });
+
+    return;
+  }
+
   let seenBefore=false;
   try{
     seenBefore=localStorage.getItem(SEEN_KEY)==='1';

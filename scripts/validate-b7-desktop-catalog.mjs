@@ -842,10 +842,10 @@ try{
 
   if(
     !cacheVersion||
-    Number(cacheVersion[1])!==93
+    Number(cacheVersion[1])!==94
   ){
     fail(
-      'B7-00B.3A PWA Version Convergence Fix R4 requires dreamland-pwa-v93.'
+      'B7-00B.3A Desktop Boot Experience Cleanup R5 requires dreamland-pwa-v94.'
     );
   }
 
@@ -882,7 +882,7 @@ try{
  */
 try{
   const release=
-    'b7-00b3a-r4-v93';
+    'b7-00b3a-r5-v94';
 
   const index=
     read(
@@ -990,6 +990,119 @@ try{
   );
 }
 
+/*
+ * Gate 10 — R5 Desktop Boot Experience Cleanup.
+ *
+ * Desktop must never render the legacy Mobile startup overlay. It stays on a
+ * quiet warm canvas until Desktop Experience has mounted, while Mobile keeps
+ * the existing loader and product-preload behavior.
+ */
+try{
+  const index=
+    read(
+      'index.html'
+    );
+
+  const startup=
+    read(
+      'startup-loader.js'
+    );
+
+  for(const marker of [
+    '<!-- DREAMLAND v63 startup loader — Mobile only -->',
+    'media="(max-width: 1023.98px)"',
+    'html.dreamland-desktop-boot body > #app{',
+    'display:none!important;',
+    'html.dreamland-desktop-boot body > #desktopExperience{',
+    'dreamlandDesktopBootWordmark',
+    'animation:',
+    '.8s forwards'
+  ]){
+    if(!index.includes(marker)){
+      fail(
+        `R5 Desktop boot presentation is missing: ${marker}`
+      );
+    }
+  }
+
+  if(
+    !index.includes(
+      'href="./images/shared/home/HOME001/cover.webp"'
+    )||
+    !/href="\.\/images\/shared\/home\/HOME001\/cover\.webp"[\s\S]{0,160}media="\(max-width: 1023\.98px\)"/m
+      .test(
+        index
+      )
+  ){
+    fail(
+      'R5 Mobile Home hero preload must be restricted to the Mobile viewport.'
+    );
+  }
+
+  for(const marker of [
+    'if(desktopViewport){',
+    "mode:'desktop-bypass'",
+    'desktopBypass:true',
+    'hasPreloaded(){',
+    'return false;'
+  ]){
+    if(!startup.includes(marker)){
+      fail(
+        `R5 Desktop startup bypass is missing: ${marker}`
+      );
+    }
+  }
+
+  const bypassIndex=
+    startup.indexOf(
+      'if(desktopViewport){'
+    );
+
+  const legacyLoaderIndex=
+    startup.indexOf(
+      'function createLoader(){'
+    );
+
+  if(
+    bypassIndex<0||
+    legacyLoaderIndex<0||
+    bypassIndex>legacyLoaderIndex
+  ){
+    fail(
+      'Desktop startup bypass must occur before legacy Mobile loader creation logic.'
+    );
+  }
+
+  if(
+    !index.includes(
+      `window.DREAMLAND_RELEASE='b7-00b3a-r5-v94';`
+    )
+  ){
+    fail(
+      'R5 release handshake is not active in index.html.'
+    );
+  }
+
+  const sw=
+    read(
+      'sw.js'
+    );
+
+  if(
+    !sw.includes(
+      "const CACHE_VERSION = 'dreamland-pwa-v94';"
+    )
+  ){
+    fail(
+      'R5 requires dreamland-pwa-v94.'
+    );
+  }
+}catch(error){
+  fail(
+    `R5 Desktop boot cleanup validation failed: ${error.message}`
+  );
+}
+
 if(errors.length){
   console.error(
     '\nB7-00B.3A Desktop Catalog validation failed:\n'
@@ -1009,5 +1122,5 @@ console.log(
 );
 
 console.log(
-  'All 89 / 19 Advanced / 46 Masterpiece / 16 Holiday / 8 Classic / Search / Size / Sort / 24-item Load More / Desktop media / startup handoff / release convergence / PWA v93 PASS.'
+  'All 89 / 19 Advanced / 46 Masterpiece / 16 Holiday / 8 Classic / Search / Size / Sort / 24-item Load More / Desktop media / startup handoff / release convergence / Desktop boot cleanup / PWA v94 PASS.'
 );
