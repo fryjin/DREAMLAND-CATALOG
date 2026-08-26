@@ -5,7 +5,7 @@
     return;
   }
 
-  const VERSION='B7-00B.3B';
+  const VERSION='B7-00B.3C';
   const BREAKPOINT='(min-width: 1024px)';
 
   let config=null;
@@ -70,6 +70,11 @@
       .DreamlandDesktopDetail;
   }
 
+  function customPresentation(){
+    return root
+      .DreamlandDesktopCustom;
+  }
+
   function ensureStructure(){
     if(
       !rootElement||
@@ -91,6 +96,7 @@
           <div id="desktopHomeRoot"></div>
           <div id="desktopCatalogRoot" hidden></div>
           <div id="desktopDetailRoot" hidden></div>
+          <div id="desktopCustomRoot" hidden></div>
         </main>
 
         <div id="desktopFooterRoot"></div>
@@ -251,15 +257,19 @@
     const detail=
       detailPresentation();
 
+    const custom=
+      customPresentation();
+
     if(
       !shell||
       !home||
       !view||
       !catalog||
-      !detail
+      !detail||
+      !custom
     ){
       throw new Error(
-        'Desktop Shell/Home/Catalog/Detail runtimes must load before Desktop Experience.'
+        'Desktop Shell/Home/Catalog/Detail/Custom runtimes must load before Desktop Experience.'
       );
     }
 
@@ -481,6 +491,46 @@
           ()=>config.actions
             ?.navigate?.(
               'custom'
+            )
+      }
+    });
+
+    custom.configure({
+      content:
+        localizedContent,
+
+      feature:
+        config.customState,
+
+      seriesLabel:
+        config.seriesLabel,
+
+      scentDisplayText:
+        config.scentDisplayText,
+
+      actions:{
+        addIntent:
+          draft=>
+            config.actions
+              ?.addCustomIntent?.(
+                draft
+              ),
+
+        syncInquiry,
+
+        explore:
+          ()=>enterCatalog(
+            'all',
+            {
+              fresh:true,
+              navigate:true
+            }
+          ),
+
+        review:
+          ()=>config.actions
+            ?.navigate?.(
+              'inquiry'
             )
       }
     });
@@ -725,6 +775,13 @@
         )
       );
 
+    root.DreamlandDesktopCustom
+      .mount(
+        rootElement.querySelector(
+          '#desktopCustomRoot'
+        )
+      );
+
     desktopMounted=true;
 
     syncInquiry();
@@ -845,6 +902,9 @@
 
       detailState:
         options.detailState,
+
+      customState:
+        options.customState,
 
       choiceLabel:
         options.choiceLabel,
@@ -969,10 +1029,13 @@
     const detail=
       currentScreen==='detail';
 
+    const custom=
+      currentScreen==='custom';
+
     /*
      * Keep the established Home/Catalog aggregate marker intact for the
-     * historical 3A gate, while Detail becomes an additional Desktop-owned
-     * screen in 3B.
+     * historical 3A gate. Detail (3B) and Custom (3C) are explicit successor
+     * Desktop-owned screens.
      */
     const desktopManaged=
       home||
@@ -980,6 +1043,9 @@
 
     const detailManaged=
       detail;
+
+    const customManaged=
+      custom;
 
     rootElement.classList
       .toggle(
@@ -997,6 +1063,12 @@
       .toggle(
         'is-detail',
         detail
+      );
+
+    rootElement.classList
+      .toggle(
+        'is-custom',
+        custom
       );
 
     root.DreamlandDesktopShell
@@ -1019,6 +1091,11 @@
         '#desktopDetailRoot'
       );
 
+    const customRoot=
+      rootElement.querySelector(
+        '#desktopCustomRoot'
+      );
+
     if(homeRoot){
       homeRoot.hidden=
         !home;
@@ -1034,6 +1111,11 @@
         !detail;
     }
 
+    if(customRoot){
+      customRoot.hidden=
+        !custom;
+    }
+
     const app=
       document.getElementById(
         'app'
@@ -1043,7 +1125,8 @@
       'aria-hidden',
       (
         desktopManaged||
-        detailManaged
+        detailManaged||
+        customManaged
       )
         ? 'true'
         : 'false'
@@ -1056,6 +1139,19 @@
 
     if(detail){
       root.DreamlandDesktopDetail
+        ?.refresh?.();
+
+      root.requestAnimationFrame?.(
+        ()=>
+          root.scrollTo?.(
+            0,
+            0
+          )
+      );
+    }
+
+    if(custom){
+      root.DreamlandDesktopCustom
         ?.refresh?.();
 
       root.requestAnimationFrame?.(
@@ -1107,6 +1203,13 @@
         });
     }
 
+    if(currentScreen==='custom'){
+      root.DreamlandDesktopCustom
+        ?.refresh?.({
+          preserveScroll:true
+        });
+    }
+
     if(currentScreen==='catalog'){
       const restoreY=
         catalogView()
@@ -1150,6 +1253,9 @@
       ?.syncInquiry?.();
 
     root.DreamlandDesktopDetail
+      ?.syncInquiry?.();
+
+    root.DreamlandDesktopCustom
       ?.syncInquiry?.();
 
     if(
@@ -1216,6 +1322,10 @@
         null,
       detail:
         detailPresentation()
+          ?.snapshot?.()||
+        null,
+      custom:
+        customPresentation()
           ?.snapshot?.()||
         null
     });

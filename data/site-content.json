@@ -172,6 +172,186 @@
         "configuredOptions": "Configured options",
         "wholesale": "Wholesale",
         "empty": "Choose a product from the collection to view details."
+      },
+      "customProject": {
+        "kicker": "CUSTOM PROJECT",
+        "title": "Made around your brand, event or collection.",
+        "body": "Share the essentials of your project. We’ll review product direction, scent, packaging and branding requirements, then confirm feasibility and quotation with you.",
+        "sectionBasicsKicker": "01 / PROJECT BASICS",
+        "sectionBasicsTitle": "Start with the project.",
+        "sectionBasicsBody": "Give us enough context to understand the scale, purpose and timing before we review the product direction.",
+        "sectionProductKicker": "02 / PRODUCT DIRECTION",
+        "sectionProductTitle": "Shape the product direction.",
+        "sectionProductBody": "Choose a size direction and fragrance collection, then add any color references you already have.",
+        "sectionPackagingKicker": "03 / PACKAGING & BRANDING",
+        "sectionPackagingTitle": "Finish the presentation.",
+        "sectionPackagingBody": "Tell us how the project should be packaged and whether it needs brand-facing elements.",
+        "useCase": "Use Case *",
+        "quantity": "Estimated Quantity *",
+        "minimumQuantity": "Custom MOQ",
+        "quantityPlaceholder": "e.g. 500",
+        "pieces": "pcs",
+        "budget": "Budget Range",
+        "delivery": "Preferred Delivery",
+        "deliveryHint": "A target date or timeline is fine",
+        "deliveryPlaceholder": "e.g. within 30 business days or before 15 Dec 2026",
+        "size": "Size Preference",
+        "fragranceCollection": "Fragrance Collection",
+        "scents": "Select Scents *",
+        "scentsHint": "{count} selected · multiple scents may be selected within one collection",
+        "color": "Color Direction",
+        "colorPlaceholder": "e.g. blush pink, sage green, or your brand color references",
+        "packaging": "Packaging",
+        "branding": "Branding",
+        "notes": "Project Notes",
+        "notesPlaceholder": "Add dimensions, color references, packaging direction, event context, brand guidelines or any other requirements.",
+        "optional": "Optional",
+        "summaryKicker": "YOUR PROJECT",
+        "summaryTitle": "Project brief",
+        "notSelected": "Not selected",
+        "scentCount": "{count} scents selected",
+        "customization": "CUSTOMIZATION",
+        "quotedAfterReview": "Quoted after requirements are reviewed",
+        "summaryNote": "Customization is not priced automatically. Our team will confirm feasibility, pricing, timing and production details.",
+        "addInquiry": "Add Custom Project to Inquiry",
+        "addedButton": "Added to Inquiry",
+        "addedTitle": "Custom project added.",
+        "addedBody": "You can continue browsing products or review the current inquiry.",
+        "exploreCollection": "Explore Collection",
+        "reviewInquiry": "Review Inquiry",
+        "errorUse": "Select a project type.",
+        "errorQuantity": "Enter a whole-number estimated quantity.",
+        "errorQuantityMin": "Minimum quantity for custom projects is {min} pcs.",
+        "errorQuantityMax": "The maximum supported quantity is {max} pcs.",
+        "errorScents": "Select at least one scent.",
+        "useCases": [
+          {
+            "value": "品牌活动",
+            "label": "Brand / Campaign",
+            "body": "Launches, collaborations and brand activations"
+          },
+          {
+            "value": "企业礼赠",
+            "label": "Corporate Gifting",
+            "body": "Client, employee and partner gifting"
+          },
+          {
+            "value": "婚礼 / 派对",
+            "label": "Wedding / Event",
+            "body": "Celebrations, parties and event projects"
+          },
+          {
+            "value": "门店陈列",
+            "label": "Retail / Display",
+            "body": "Retail presentation and store display"
+          },
+          {
+            "value": "节日礼品",
+            "label": "Holiday Gifting",
+            "body": "Seasonal and holiday projects"
+          },
+          {
+            "value": "其他用途",
+            "label": "Other",
+            "body": "Tell us the project context in the notes"
+          }
+        ],
+        "budgets": [
+          {
+            "value": "待确认",
+            "label": "To be confirmed"
+          },
+          {
+            "value": "USD 1,000 以下",
+            "label": "Under USD 1,000"
+          },
+          {
+            "value": "USD 1,000 - 3,000",
+            "label": "USD 1,000 – 3,000"
+          },
+          {
+            "value": "USD 3,000 - 10,000",
+            "label": "USD 3,000 – 10,000"
+          },
+          {
+            "value": "USD 10,000 以上",
+            "label": "USD 10,000+"
+          }
+        ],
+        "sizes": [
+          {
+            "value": "待推荐",
+            "label": "Recommend"
+          },
+          {
+            "value": "S / 10*13cm",
+            "label": "S · 10×13cm"
+          },
+          {
+            "value": "M / 11*17cm",
+            "label": "M · 11×17cm"
+          },
+          {
+            "value": "L / 14*21cm",
+            "label": "L · 14×21cm"
+          },
+          {
+            "value": "XL / 14*26cm",
+            "label": "XL · 14×26cm"
+          },
+          {
+            "value": "多尺寸组合",
+            "label": "Mixed Sizes"
+          }
+        ],
+        "packages": [
+          {
+            "value": "待推荐",
+            "label": "Please recommend",
+            "body": "Let us suggest an appropriate direction"
+          },
+          {
+            "value": "批发包装",
+            "label": "Wholesale Packaging",
+            "body": "Practical presentation for volume projects"
+          },
+          {
+            "value": "精品包装",
+            "label": "Gift Packaging",
+            "body": "Presentation-oriented gift packaging"
+          },
+          {
+            "value": "品牌包装",
+            "label": "Branded Packaging",
+            "body": "Packaging developed around your brand"
+          }
+        ],
+        "brandingOptions": [
+          {
+            "value": "暂不需要",
+            "label": "No branding"
+          },
+          {
+            "value": "需要 Logo",
+            "label": "Logo"
+          },
+          {
+            "value": "需要贺卡",
+            "label": "Greeting Card"
+          },
+          {
+            "value": "需要贴纸",
+            "label": "Sticker"
+          },
+          {
+            "value": "需要完整礼盒方案",
+            "label": "Full Gift Box"
+          },
+          {
+            "value": "待沟通确认",
+            "label": "Discuss With Us"
+          }
+        ]
       }
     },
     "zh": {
@@ -329,6 +509,186 @@
         "configuredOptions": "当前配置",
         "wholesale": "批发采购",
         "empty": "请从产品系列中选择产品查看详情。"
+      },
+      "customProject": {
+        "kicker": "定制项目",
+        "title": "为你的品牌、活动或系列打造。",
+        "body": "告诉我们项目的基本信息、产品方向、香型、包装与品牌需求，我们会进一步确认可行性、制作方案与正式报价。",
+        "sectionBasicsKicker": "01 / 项目基础",
+        "sectionBasicsTitle": "先说清楚这是什么项目。",
+        "sectionBasicsBody": "先补充用途、数量、预算与目标交付时间，帮助我们判断项目规模和沟通重点。",
+        "sectionProductKicker": "02 / 产品方向",
+        "sectionProductTitle": "确定产品与香型方向。",
+        "sectionProductBody": "选择尺寸偏好与香型系列，也可以补充已有的颜色或品牌视觉参考。",
+        "sectionPackagingKicker": "03 / 包装与品牌",
+        "sectionPackagingTitle": "补充最终呈现需求。",
+        "sectionPackagingBody": "告诉我们项目希望采用的包装形式，以及是否需要 Logo、贺卡、贴纸或完整礼盒方案。",
+        "useCase": "定制用途 *",
+        "quantity": "预计数量 *",
+        "minimumQuantity": "定制最低起订",
+        "quantityPlaceholder": "例如：500",
+        "pieces": "件",
+        "budget": "预算范围",
+        "delivery": "目标交付时间",
+        "deliveryHint": "具体日期或时间范围均可",
+        "deliveryPlaceholder": "例如：30 个工作日内，或 2026 年 12 月 15 日前",
+        "size": "尺寸偏好",
+        "fragranceCollection": "香型系列",
+        "scents": "选择香型 *",
+        "scentsHint": "已选 {count} 种 · 同一系列可多选",
+        "color": "色彩方向",
+        "colorPlaceholder": "例如：粉色系、鼠尾草绿，或品牌 VI 色参考",
+        "packaging": "包装需求",
+        "branding": "品牌物料",
+        "notes": "项目补充说明",
+        "notesPlaceholder": "补充尺寸、配色、包装方向、活动场景、品牌规范或其他定制要求。",
+        "optional": "选填",
+        "summaryKicker": "你的项目",
+        "summaryTitle": "项目概要",
+        "notSelected": "暂未选择",
+        "scentCount": "已选 {count} 种香型",
+        "customization": "定制报价",
+        "quotedAfterReview": "需求确认后单独报价",
+        "summaryNote": "定制项目不会自动计算金额。我们会进一步确认可行性、价格、交期与制作细节。",
+        "addInquiry": "将定制项目加入意向单",
+        "addedButton": "已加入意向单",
+        "addedTitle": "定制项目已加入。",
+        "addedBody": "你可以继续浏览产品，或进入当前意向单查看。",
+        "exploreCollection": "浏览产品系列",
+        "reviewInquiry": "查看意向单",
+        "errorUse": "请选择定制用途。",
+        "errorQuantity": "请输入整数数量。",
+        "errorQuantityMin": "定制项目最低数量为 {min} 件。",
+        "errorQuantityMax": "当前支持的最大数量为 {max} 件。",
+        "errorScents": "请至少选择一种香型。",
+        "useCases": [
+          {
+            "value": "品牌活动",
+            "label": "品牌活动",
+            "body": "新品发布、联名合作与品牌活动"
+          },
+          {
+            "value": "企业礼赠",
+            "label": "企业礼赠",
+            "body": "客户、员工或合作伙伴礼赠"
+          },
+          {
+            "value": "婚礼 / 派对",
+            "label": "婚礼 / 活动",
+            "body": "婚礼、派对与线下活动"
+          },
+          {
+            "value": "门店陈列",
+            "label": "零售 / 陈列",
+            "body": "门店陈列与零售场景"
+          },
+          {
+            "value": "节日礼品",
+            "label": "节日礼赠",
+            "body": "节庆、节日与季节性项目"
+          },
+          {
+            "value": "其他用途",
+            "label": "其他",
+            "body": "可在项目说明中补充具体场景"
+          }
+        ],
+        "budgets": [
+          {
+            "value": "待确认",
+            "label": "待确认"
+          },
+          {
+            "value": "USD 1,000 以下",
+            "label": "USD 1,000 以下"
+          },
+          {
+            "value": "USD 1,000 - 3,000",
+            "label": "USD 1,000 – 3,000"
+          },
+          {
+            "value": "USD 3,000 - 10,000",
+            "label": "USD 3,000 – 10,000"
+          },
+          {
+            "value": "USD 10,000 以上",
+            "label": "USD 10,000 以上"
+          }
+        ],
+        "sizes": [
+          {
+            "value": "待推荐",
+            "label": "待推荐"
+          },
+          {
+            "value": "S / 10*13cm",
+            "label": "S · 10×13cm"
+          },
+          {
+            "value": "M / 11*17cm",
+            "label": "M · 11×17cm"
+          },
+          {
+            "value": "L / 14*21cm",
+            "label": "L · 14×21cm"
+          },
+          {
+            "value": "XL / 14*26cm",
+            "label": "XL · 14×26cm"
+          },
+          {
+            "value": "多尺寸组合",
+            "label": "多尺寸组合"
+          }
+        ],
+        "packages": [
+          {
+            "value": "待推荐",
+            "label": "待推荐",
+            "body": "由我们根据项目方向推荐"
+          },
+          {
+            "value": "批发包装",
+            "label": "批发包装",
+            "body": "适合批量采购的基础包装方向"
+          },
+          {
+            "value": "精品包装",
+            "label": "礼品包装",
+            "body": "更适合礼赠与展示的包装方向"
+          },
+          {
+            "value": "品牌包装",
+            "label": "品牌包装",
+            "body": "围绕品牌视觉进一步设计"
+          }
+        ],
+        "brandingOptions": [
+          {
+            "value": "暂不需要",
+            "label": "暂不需要"
+          },
+          {
+            "value": "需要 Logo",
+            "label": "Logo"
+          },
+          {
+            "value": "需要贺卡",
+            "label": "贺卡"
+          },
+          {
+            "value": "需要贴纸",
+            "label": "贴纸"
+          },
+          {
+            "value": "需要完整礼盒方案",
+            "label": "完整礼盒"
+          },
+          {
+            "value": "待沟通确认",
+            "label": "待沟通确认"
+          }
+        ]
       }
     },
     "ko": {
@@ -486,6 +846,186 @@
         "configuredOptions": "현재 구성",
         "wholesale": "도매",
         "empty": "컬렉션에서 제품을 선택해 상세 정보를 확인하세요."
+      },
+      "customProject": {
+        "kicker": "커스텀 프로젝트",
+        "title": "브랜드, 이벤트 또는 컬렉션을 위한 맞춤 제작.",
+        "body": "프로젝트 기본 정보와 제품 방향, 향, 패키징, 브랜딩 요구사항을 알려주세요. 제작 가능 여부와 견적, 일정 및 세부 사항을 확인해 드립니다.",
+        "sectionBasicsKicker": "01 / 프로젝트 기본 정보",
+        "sectionBasicsTitle": "프로젝트부터 정리해 주세요.",
+        "sectionBasicsBody": "용도, 수량, 예산과 희망 납기를 알려주시면 프로젝트 규모와 검토 방향을 파악할 수 있습니다.",
+        "sectionProductKicker": "02 / 제품 방향",
+        "sectionProductTitle": "제품과 향의 방향을 정합니다.",
+        "sectionProductBody": "사이즈와 향 컬렉션을 선택하고, 원하는 컬러나 브랜드 레퍼런스가 있다면 함께 알려주세요.",
+        "sectionPackagingKicker": "03 / 패키징 및 브랜딩",
+        "sectionPackagingTitle": "최종 표현 방식을 정합니다.",
+        "sectionPackagingBody": "원하는 패키징 방식과 로고, 카드, 스티커 또는 전체 기프트 박스 구성 필요 여부를 알려주세요.",
+        "useCase": "사용 목적 *",
+        "quantity": "예상 수량 *",
+        "minimumQuantity": "커스텀 MOQ",
+        "quantityPlaceholder": "예: 500",
+        "pieces": "개",
+        "budget": "예산 범위",
+        "delivery": "희망 납기",
+        "deliveryHint": "날짜 또는 기간 모두 가능합니다",
+        "deliveryPlaceholder": "예: 영업일 30일 이내 또는 2026년 12월 15일 이전",
+        "size": "사이즈 선호",
+        "fragranceCollection": "향 컬렉션",
+        "scents": "향 선택 *",
+        "scentsHint": "{count}개 선택 · 같은 컬렉션에서 여러 향을 선택할 수 있습니다",
+        "color": "컬러 방향",
+        "colorPlaceholder": "예: 블러시 핑크, 세이지 그린 또는 브랜드 컬러 레퍼런스",
+        "packaging": "패키징",
+        "branding": "브랜딩",
+        "notes": "프로젝트 메모",
+        "notesPlaceholder": "사이즈, 컬러, 패키징 방향, 이벤트 상황, 브랜드 가이드 또는 기타 요구사항을 입력해 주세요.",
+        "optional": "선택",
+        "summaryKicker": "YOUR PROJECT",
+        "summaryTitle": "프로젝트 요약",
+        "notSelected": "미선택",
+        "scentCount": "향 {count}개 선택",
+        "customization": "CUSTOMIZATION",
+        "quotedAfterReview": "요구사항 확인 후 별도 견적",
+        "summaryNote": "커스텀 프로젝트는 자동으로 금액을 계산하지 않습니다. 제작 가능 여부, 가격, 일정과 세부 사항을 확인해 드립니다.",
+        "addInquiry": "커스텀 프로젝트를 문의에 추가",
+        "addedButton": "문의에 추가됨",
+        "addedTitle": "커스텀 프로젝트가 추가되었습니다.",
+        "addedBody": "계속 제품을 둘러보거나 현재 문의 목록을 확인할 수 있습니다.",
+        "exploreCollection": "컬렉션 보기",
+        "reviewInquiry": "문의 목록 보기",
+        "errorUse": "프로젝트 유형을 선택해 주세요.",
+        "errorQuantity": "정수 수량을 입력해 주세요.",
+        "errorQuantityMin": "커스텀 프로젝트 최소 수량은 {min}개입니다.",
+        "errorQuantityMax": "현재 지원 가능한 최대 수량은 {max}개입니다.",
+        "errorScents": "향을 하나 이상 선택해 주세요.",
+        "useCases": [
+          {
+            "value": "品牌活动",
+            "label": "브랜드 / 캠페인",
+            "body": "신제품 출시, 협업 및 브랜드 이벤트"
+          },
+          {
+            "value": "企业礼赠",
+            "label": "기업 기프트",
+            "body": "고객, 임직원 및 파트너 기프트"
+          },
+          {
+            "value": "婚礼 / 派对",
+            "label": "웨딩 / 이벤트",
+            "body": "웨딩, 파티 및 오프라인 이벤트"
+          },
+          {
+            "value": "门店陈列",
+            "label": "리테일 / 디스플레이",
+            "body": "매장 연출 및 리테일 프로젝트"
+          },
+          {
+            "value": "节日礼品",
+            "label": "시즌 기프트",
+            "body": "시즌 및 홀리데이 프로젝트"
+          },
+          {
+            "value": "其他用途",
+            "label": "기타",
+            "body": "메모에 프로젝트 상황을 알려주세요"
+          }
+        ],
+        "budgets": [
+          {
+            "value": "待确认",
+            "label": "추후 확인"
+          },
+          {
+            "value": "USD 1,000 以下",
+            "label": "USD 1,000 미만"
+          },
+          {
+            "value": "USD 1,000 - 3,000",
+            "label": "USD 1,000 – 3,000"
+          },
+          {
+            "value": "USD 3,000 - 10,000",
+            "label": "USD 3,000 – 10,000"
+          },
+          {
+            "value": "USD 10,000 以上",
+            "label": "USD 10,000 이상"
+          }
+        ],
+        "sizes": [
+          {
+            "value": "待推荐",
+            "label": "추천 요청"
+          },
+          {
+            "value": "S / 10*13cm",
+            "label": "S · 10×13cm"
+          },
+          {
+            "value": "M / 11*17cm",
+            "label": "M · 11×17cm"
+          },
+          {
+            "value": "L / 14*21cm",
+            "label": "L · 14×21cm"
+          },
+          {
+            "value": "XL / 14*26cm",
+            "label": "XL · 14×26cm"
+          },
+          {
+            "value": "多尺寸组合",
+            "label": "여러 사이즈 조합"
+          }
+        ],
+        "packages": [
+          {
+            "value": "待推荐",
+            "label": "추천 요청",
+            "body": "프로젝트에 맞는 방향을 제안합니다"
+          },
+          {
+            "value": "批发包装",
+            "label": "도매 패키징",
+            "body": "수량 프로젝트에 적합한 기본 패키징"
+          },
+          {
+            "value": "精品包装",
+            "label": "기프트 패키징",
+            "body": "기프트와 프레젠테이션에 적합한 방향"
+          },
+          {
+            "value": "品牌包装",
+            "label": "브랜드 패키징",
+            "body": "브랜드 비주얼을 반영한 패키징"
+          }
+        ],
+        "brandingOptions": [
+          {
+            "value": "暂不需要",
+            "label": "브랜딩 없음"
+          },
+          {
+            "value": "需要 Logo",
+            "label": "로고"
+          },
+          {
+            "value": "需要贺卡",
+            "label": "카드"
+          },
+          {
+            "value": "需要贴纸",
+            "label": "스티커"
+          },
+          {
+            "value": "需要完整礼盒方案",
+            "label": "전체 기프트 박스"
+          },
+          {
+            "value": "待沟通确认",
+            "label": "상담 후 결정"
+          }
+        ]
       }
     }
   },

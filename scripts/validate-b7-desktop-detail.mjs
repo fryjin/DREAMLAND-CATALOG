@@ -169,7 +169,7 @@ try{
     );
 
   for(const required of [
-    "const VERSION='B7-00B.3B';",
+    "const VERSION='B7-00B.3C';",
     'id="desktopDetailRoot"',
     'DreamlandDesktopDetail',
     'detailState:',
@@ -244,9 +244,9 @@ try{
     read('index.html');
 
   for(const required of [
-    "window.DREAMLAND_RELEASE='b7-00b3b-r1-v96';",
-    './src/ui/desktop/styles/detail.css?release=b7-00b3b-r1-v96',
-    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b3b-r1-v96',
+    "window.DREAMLAND_RELEASE='b7-00b3c-r1-v97';",
+    './src/ui/desktop/styles/detail.css?release=b7-00b3c-r1-v97',
+    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b3c-r1-v97',
     'detailState:',
     'detailFeature,',
     'productImages:',
@@ -269,7 +269,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/styles/detail.css?release=b7-00b3b-r1-v96'
+      './src/ui/desktop/styles/detail.css?release=b7-00b3c-r1-v97'
     )!==1
   ){
     fail(
@@ -280,7 +280,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b3b-r1-v96'
+      './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b3c-r1-v97'
     )!==1
   ){
     fail(
@@ -429,7 +429,7 @@ try{
 }
 
 /*
- * Gate 6 — PWA v96 / APP_SHELL / release-versioned runtime.
+ * Gate 6 — PWA v97 / APP_SHELL / release-versioned runtime.
  */
 try{
   const sw=
@@ -441,23 +441,23 @@ try{
     );
 
   for(const required of [
-    "const CACHE_VERSION = 'dreamland-pwa-v96';",
-    "'b7-00b3b-r1-v96'",
-    './src/ui/desktop/styles/detail.css?release=b7-00b3b-r1-v96',
-    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b3b-r1-v96',
+    "const CACHE_VERSION = 'dreamland-pwa-v97';",
+    "'b7-00b3c-r1-v97'",
+    './src/ui/desktop/styles/detail.css?release=b7-00b3c-r1-v97',
+    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b3c-r1-v97',
     "'./src/ui/desktop/styles/detail.css'",
     "'./src/ui/desktop/detail/runtime-desktop-detail.js'"
   ]){
     if(!sw.includes(required)){
       fail(
-        `sw.js is missing Desktop Detail/PWA v96 marker: ${required}`
+        `sw.js is missing Desktop Detail/PWA v97 marker: ${required}`
       );
     }
   }
 
   if(
     !pwa.includes(
-      "'b7-00b3b-r1-v96'"
+      "'b7-00b3c-r1-v97'"
     )
   ){
     fail(
@@ -536,5 +536,5 @@ console.log(
 );
 
 console.log(
-  'Desktop-owned PDP / canonical Detail state bridge / Size + Scent + Pattern + Packaging + Quantity / Add to Inquiry / EN-ZH-KO / responsive product media / PWA v96 PASS.'
+  'Desktop-owned PDP / canonical Detail state bridge / Size + Scent + Pattern + Packaging + Quantity / Add to Inquiry / EN-ZH-KO / responsive product media / PWA v97 PASS.'
 );

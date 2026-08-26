@@ -177,7 +177,8 @@ try{
   const allowedVersions=
     new Set([
       'B7-00B.1',
-      'B7-00B.3B'
+      'B7-00B.3B',
+      'B7-00B.3C'
     ]);
 
   if(
