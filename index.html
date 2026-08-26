@@ -3,24 +3,24 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<title>DREAMLAND 产品电子手册</title>
-<meta name="description" content="DREAMLAND 手工雕刻香薰蜡烛产品电子手册与询盘工具"/>
+<title>DREAMLAND 手工雕刻蜡烛｜批发与定制</title>
+<meta name="description" content="浏览 DREAMLAND 手工雕刻蜡烛系列，了解工艺、产品与定制能力，完成产品配置并提交批发或定制项目询价。"/>
  <!-- DREAMLAND share metadata: add after the existing description meta -->
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="DREAMLAND"/>
-<meta property="og:title" content="DREAMLAND 雕刻蜡烛产品手册"/>
-<meta property="og:description" content="浏览雕刻蜡烛产品、配置需求并提交询价。支持中文、English、한국어。"/>
+<meta property="og:title" content="DREAMLAND 手工雕刻蜡烛｜批发与定制"/>
+<meta property="og:description" content="浏览 DREAMLAND 手工雕刻蜡烛系列、工艺与定制能力，提交批发或定制项目询价。支持中文、English、한국어。"/>
 <meta property="og:url" content="https://dreamland-catalog.pages.dev/"/>
 <meta property="og:image" content="https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg"/>
 <meta property="og:image:secure_url" content="https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg"/>
 <meta property="og:image:type" content="image/jpeg"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="1200"/>
-<meta property="og:image:alt" content="DREAMLAND 雕刻蜡烛产品手册封面"/>
+<meta property="og:image:alt" content="DREAMLAND 手工雕刻蜡烛品牌与产品系列"/>
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="DREAMLAND 雕刻蜡烛产品手册"/>
-<meta name="twitter:description" content="浏览雕刻蜡烛产品、配置需求并提交询价。"/>
+<meta name="twitter:title" content="DREAMLAND 手工雕刻蜡烛｜批发与定制"/>
+<meta name="twitter:description" content="浏览手工雕刻蜡烛产品、工艺与定制能力，并提交批发或定制项目询价。"/>
 <meta name="twitter:image" content="https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg"/> 
 <meta name="theme-color" content="#f3f4f8"/>
 <meta name="color-scheme" content="light"/>
@@ -28,15 +28,123 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="DREAMLAND"/>
-<!-- DREAMLAND v63 startup loader -->
+<!-- DREAMLAND B7-00B.3A R4 release bootstrap -->
 <script>
-document.documentElement.classList.add('dreamland-booting');
-window.setTimeout(function(){
-  document.documentElement.classList.remove('dreamland-booting');
-},9000);
+window.DREAMLAND_RELEASE='b7-00b3c-r1-v97';
+
+(function(){
+  const desktop=
+    window.matchMedia?.(
+      '(min-width: 1024px)'
+    )?.matches===true;
+
+  if(!desktop){
+    return;
+  }
+
+  document.documentElement
+    .classList
+    .add(
+      'dreamland-desktop-boot'
+    );
+
+  /*
+   * R6: Desktop never falls back to the Mobile application because a boot
+   * timer elapsed. DreamlandDesktopExperience owns the only successful reveal.
+   */
+})();
 </script>
-<link rel="stylesheet" href="./startup-loader.css"/>
-<script src="./startup-loader.js"></script> 
+<style id="dreamlandReleaseBootStyle">
+@media (min-width:1024px){
+  html.dreamland-desktop-boot,
+  html.dreamland-desktop-boot body{
+    min-height:100%;
+    background:#faf8f4!important;
+  }
+
+  html.dreamland-desktop-boot body{
+    display:block!important;
+    padding:0!important;
+  }
+
+  html.dreamland-desktop-boot body > #app{
+    display:none!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+
+  html.dreamland-desktop-boot body > #desktopExperience{
+    visibility:hidden!important;
+  }
+
+  html.dreamland-desktop-boot body::after{
+    content:"DREAMLAND";
+    position:fixed;
+    left:50%;
+    top:50%;
+    z-index:2147482000;
+    transform:translate(-50%,-50%);
+    color:#171513;
+    font-family:
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
+    font-size:14px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:.13em;
+    opacity:0;
+    pointer-events:none;
+    animation:
+      dreamlandDesktopBootWordmark
+      .18s ease
+      .8s forwards;
+  }
+}
+
+@keyframes dreamlandDesktopBootWordmark{
+  to{
+    opacity:.72;
+  }
+}
+</style>
+<!-- DREAMLAND v63 startup loader — Mobile only -->
+<script>
+(function(){
+  const desktop=
+    window.matchMedia?.(
+      '(min-width: 1024px)'
+    )?.matches===true;
+
+  if(desktop){
+    return;
+  }
+
+  document.documentElement
+    .classList
+    .add(
+      'dreamland-booting'
+    );
+
+  window.setTimeout(
+    function(){
+      document.documentElement
+        .classList
+        .remove(
+          'dreamland-booting'
+        );
+    },
+    9000
+  );
+})();
+</script>
+<link
+  rel="stylesheet"
+  href="./startup-loader.css?release=b7-00b3c-r1-v97"
+  media="(max-width: 1023.98px)"
+/>
+<script src="./startup-loader.js?release=b7-00b3c-r1-v97"></script> 
 <link rel="manifest" href="./manifest.webmanifest"/>
 <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png"/>
@@ -46,6 +154,15 @@ window.setTimeout(function(){
   href="./images/shared/home/HOME001/cover.webp"
   type="image/webp"
   fetchpriority="high"
+  media="(max-width: 1023.98px)"
+>
+<link
+  rel="preload"
+  as="image"
+  href="./images/desktop/home/hero/hero-main.webp?release=b7-00b3c-r1-v97"
+  type="image/webp"
+  fetchpriority="high"
+  media="(min-width: 1024px)"
 >
   <script>
 window.imgMiss=function(img){
@@ -1110,9 +1227,12 @@ body[data-lang="ko"] .option-grid-scroll .option{
   overflow:visible;
 }
 </style>
-<link rel="stylesheet" href="./src/ui/desktop/styles/tokens.css"/>
-<link rel="stylesheet" href="./src/ui/desktop/styles/shell.css"/>
-<link rel="stylesheet" href="./src/ui/desktop/styles/home.css"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/tokens.css?release=b7-00b3c-r1-v97"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/shell.css?release=b7-00b3c-r1-v97"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/home.css?release=b7-00b3c-r1-v97"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/catalog.css?release=b7-00b3c-r1-v97"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/detail.css?release=b7-00b3c-r1-v97"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/custom.css?release=b7-00b3c-r1-v97"/>
 </head>
 <body>
 <div id="desktopExperience" class="desktop-experience" aria-hidden="true"></div>
@@ -1141,8 +1261,8 @@ body[data-lang="ko"] .option-grid-scroll .option{
   <span>WHOLESALE</span>
   <span>CATALOG</span>
 </div><div class="hero-copy">
-  <h1>从作梦开始，让好礼发生。</h1><p>浏览商品，加入意向单，先做金额预估，再由顾问确认报价与定制细节。</p></div><div class="hero-cta"><div class="unlock-slider" id="unlockSlider"><div class="unlock-fill" id="unlockFill"></div><button class="unlock-thumb" id="unlockThumb" type="button"><span class="thumb-label">开始入梦</span></button><div class="unlock-hint">右滑进入产品手册</div><div class="unlock-dock"><span class="arrow"></span><span class="arrow"></span><span class="arrow"></span></div></div></div></div></section>
-<section class="screen" data-screen="catalog"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1v-8.5Z"/></svg></button><div><div class="page-title">商品手册</div><div class="page-sub">先选款，再确认报价</div></div><div class="lang-wrap" id="langWrap"><button class="lang-toggle" id="langToggle" onclick="toggleLangMenu(event)"><span class="globe">🌐</span><span class="lang-current">中文</span><span class="caret">▾</span></button><div class="lang-menu" id="langMenu"></div></div></div><div class="tabs" id="seriesTabs"></div><div class="series-count" id="seriesCount"></div></div><div class="content"><div class="catalog-columns" id="productGrid"></div></div></section>
+  <h1>从作梦开始，让好礼发生。</h1><p>浏览商品，加入意向单，先做金额预估，再由顾问确认报价与定制细节。</p></div><div class="hero-cta"><div class="unlock-slider" id="unlockSlider"><div class="unlock-fill" id="unlockFill"></div><button class="unlock-thumb" id="unlockThumb" type="button"><span class="thumb-label">浏览产品</span></button><div class="unlock-hint">右滑浏览产品系列</div><div class="unlock-dock"><span class="arrow"></span><span class="arrow"></span><span class="arrow"></span></div></div></div></div></section>
+<section class="screen" data-screen="catalog"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1v-8.5Z"/></svg></button><div><div class="page-title">产品系列</div><div class="page-sub">先选款，再确认报价</div></div><div class="lang-wrap" id="langWrap"><button class="lang-toggle" id="langToggle" onclick="toggleLangMenu(event)"><span class="globe">🌐</span><span class="lang-current">中文</span><span class="caret">▾</span></button><div class="lang-menu" id="langMenu"></div></div></div><div class="tabs" id="seriesTabs"></div><div class="series-count" id="seriesCount"></div></div><div class="content"><div class="catalog-columns" id="productGrid"></div></div></section>
 <section class="screen" data-screen="detail"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="detailBack()"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">商品配置</div><div class="page-sub">选择尺寸、香型、花样与包装</div></div></div></div><div class="content no-nav with-cta"><div class="detail-media" id="detailMedia"></div><div class="config-card" id="configCard"></div></div><div class="sticky-action"><button class="btn btn-primary full" onclick="addConfiguredProduct()">加入意向单</button></div></section>
 <section class="screen" data-screen="inquiry"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('catalog')"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">意向单</div><div class="page-sub">预算预估，最终由顾问确认</div></div><button class="icon-btn" onclick="confirmClearAll()"><span style="font-size:11px;font-weight:950">清空</span></button></div></div><div class="content with-cta"><div id="inquiryList" class="inquiry-ui"></div><div id="summaryBox"></div></div><div class="sticky-action"><button class="btn btn-primary full" onclick="goContact()">提交意向单</button></div></section>
 <section class="screen" data-screen="custom"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('catalog')"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">定制信息</div><div class="page-sub">用于判断定制方案、数量、预算与交付需求</div></div></div></div><div class="content with-cta"><div class="form-card" id="customForm"><div class="field"><label class="label">定制用途 *</label><select class="select" id="customUse"><option value="">请选择定制用途</option><option>节日礼品</option><option>品牌活动</option><option>婚礼 / 派对</option><option>门店陈列</option><option>企业礼赠</option><option>其他用途</option></select><div class="error">请选择定制用途。</div></div><div class="field"><label class="label">预计数量 *</label><input class="input" id="customQty" type="number" min="1" placeholder="例如：500"><div class="error">请填写预计数量。</div></div><div class="field"><label class="label">预算范围</label><select class="select" id="customBudget"><option>待确认</option><option>USD 1,000 以下</option><option>USD 1,000 - 3,000</option><option>USD 3,000 - 10,000</option><option>USD 10,000 以上</option></select></div><div class="field"><label class="label">目标交付时间</label><input class="input" id="customDate" placeholder="例如：30 个工作日内 / 具体日期"></div><div class="field"><label class="label">尺寸偏好</label><select class="select" id="customSize"><option>待推荐</option><option>S / 10*13cm</option><option>M / 11*17cm</option><option>L / 14*21cm</option><option>XL / 14*26cm</option><option>多尺寸组合</option></select></div><div class="field"><label class="label">香型需求</label><select class="select" id="customScent"><option>待推荐</option><option>无香</option><option>花香调</option><option>木质调</option><option>水生调</option><option>节日甜香</option><option>指定香精品牌</option></select></div><div class="field"><label class="label">色系需求</label><input class="input" id="customColor" placeholder="例如：粉色系 / 绿色系 / 品牌 VI 色"></div><div class="field"><label class="label">包装需求</label><select class="select" id="customPack"><option>待推荐</option>
@@ -1184,9 +1304,9 @@ body[data-lang="ko"] .option-grid-scroll .option{
 </div>
 </main>
 <script src="./src/data/product-data-contract.js"></script>
-<script src="./catalog-data.js"></script>
+<script src="./catalog-data.js?release=b7-00b3c-r1-v97"></script>
 <script src="./src/services/storage/runtime-storage.js"></script>
-<script src="./src/services/pwa/runtime-pwa.js"></script>
+<script src="./src/services/pwa/runtime-pwa.js?release=b7-00b3c-r1-v97"></script>
 <script src="./src/services/submission/runtime-submission.js"></script>
 <script src="./src/services/risk/runtime-risk.js"></script>
 <script src="./src/features/catalog/runtime-catalog.js"></script>
@@ -1197,9 +1317,13 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./src/ui/catalog/runtime-catalog-renderer.js"></script>
 <script src="./src/ui/detail/runtime-detail-renderer.js"></script>
 <script src="./src/ui/inquiry/runtime-inquiry-renderer.js"></script>
-<script src="./src/ui/desktop/shell/runtime-desktop-shell.js"></script>
-<script src="./src/ui/desktop/home/runtime-desktop-home.js"></script>
-<script src="./src/ui/desktop/runtime-desktop-experience.js"></script>
+<script src="./src/ui/desktop/shell/runtime-desktop-shell.js?release=b7-00b3c-r1-v97"></script>
+<script src="./src/ui/desktop/home/runtime-desktop-home.js?release=b7-00b3c-r1-v97"></script>
+<script src="./src/features/catalog/runtime-desktop-catalog-view.js?release=b7-00b3c-r1-v97"></script>
+<script src="./src/ui/desktop/catalog/runtime-desktop-catalog.js?release=b7-00b3c-r1-v97"></script>
+<script src="./src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b3c-r1-v97"></script>
+<script src="./src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b3c-r1-v97"></script>
+<script src="./src/ui/desktop/runtime-desktop-experience.js?release=b7-00b3c-r1-v97"></script>
 <script src="./src/app/runtime-inquiry-submission-flow.js"></script>
 <script src="./custom-scent-multi.js"></script>
 <script>
@@ -4719,7 +4843,7 @@ function clearInquiry(){
   toast(toastText('clearedInquiry'))
 }
 
-function ensureCustomRequestRuntime(){
+function ensureCustomFeatureRuntime(){
   customFeature.configure({
     scentsBySeries,
     seriesOrder:[
@@ -4731,6 +4855,12 @@ function ensureCustomRequestRuntime(){
     customMoq,
     maximumQuantity
   });
+
+  return customFeature.ready();
+}
+
+function ensureCustomRequestRuntime(){
+  ensureCustomFeatureRuntime();
 
   customScentUi.configure({
     feature:customFeature,
@@ -4906,6 +5036,41 @@ function addCustomIntent(){
   go(
     'inquiry'
   );
+}
+
+function addCustomIntentDesktop(
+  draft
+){
+  ensureCustomFeatureRuntime();
+
+  const validation=
+    customFeature.validateDraft(
+      draft
+    );
+
+  if(!validation.valid){
+    return null;
+  }
+
+  const intent=
+    customFeature.buildIntent(
+      draft,
+      {
+        id:uid()
+      }
+    );
+
+  if(!intent){
+    return null;
+  }
+
+  inquiryFeature.addCustom(
+    intent
+  );
+
+  save();
+
+  return intent;
 }
 
 function fieldValue(id){let el=document.getElementById(id);return el?el.value.trim():''}
@@ -5922,11 +6087,11 @@ function buildWeb3FormsPayload(
     projection.contact;
 
   const subject=
-    `[${projection.inquiryId}] DREAMLAND 产品电子手册意向单 - ${c.name||'未填写联系人'}`;
+    `[${projection.inquiryId}] DREAMLAND 批发与定制询价 - ${c.name||'未填写联系人'}`;
 
   return {
     subject,
-    from_name:c.name||'DREAMLAND 产品手册访客',
+    from_name:c.name||'DREAMLAND 官网访客',
     email:c.email||'',
     inquiry_id:projection.inquiryId,
     submitted_at:projection.submittedAt,
@@ -6620,6 +6785,8 @@ async function bootstrap(){
 });
 
 
+  ensureCustomFeatureRuntime();
+
   desktopExperience.configure({
     root:
       document.getElementById(
@@ -6655,11 +6822,70 @@ async function bootstrap(){
           product?.detail_image
         ),
 
+    productDescription:
+      product=>
+        productDesc(product),
+
+    productImages:
+      product=>
+        productCarouselImages(
+          product
+        ),
+
+    detailState:
+      detailFeature,
+
+    customState:
+      customFeature,
+
+    choiceLabel,
+
+    scentDisplayText,
+
+    sizeDimensions:
+      size=>
+        sizeDims[size]||
+        '',
+
+    optionPreview:
+      (
+        key,
+        value
+      )=>{
+        if(key==='pattern'){
+          return patternThumb(value);
+        }
+
+        if(key==='pack'){
+          return packThumb(value);
+        }
+
+        return '';
+      },
+
+    packSurcharge:
+      (
+        series,
+        pack
+      )=>
+        packSurchargeBase(
+          series,
+          pack
+        ),
+
+    money,
+
+    qtyUnit,
+
     productPrice:
       product=>
         fromPrice(
           catalogUnit(product)
         ),
+
+    productPriceValue:
+      product=>
+        catalogUnit(product),
 
     productMoq:
       product=>
@@ -6676,6 +6902,23 @@ async function bootstrap(){
     media:
       ()=>window.DreamlandMedia,
 
+    catalogAfterRender:
+      payload=>{
+        window.DreamlandRuntimeHooks
+          ?.emit(
+            'catalog.afterAppendBatch',
+            {
+              grid:
+                payload?.grid||
+                payload?.root,
+              start:0,
+              end:
+                payload?.renderedCount||
+                0
+            }
+          );
+      },
+
     actions:{
       navigate:
         screen=>
@@ -6685,12 +6928,30 @@ async function bootstrap(){
         lang=>
           chooseLang(lang),
 
+      selectCatalogSeries:
+        series=>{
+          if(
+            series&&
+            series!=='all'
+          ){
+            catalogFeature
+              .setActiveSeries(
+                series
+              );
+          }
+        },
+
       openSeries:
         series=>{
-          catalogFeature
-            .setActiveSeries(
-              series
-            );
+          if(
+            series&&
+            series!=='all'
+          ){
+            catalogFeature
+              .setActiveSeries(
+                series
+              );
+          }
 
           go('catalog');
         },
@@ -6698,6 +6959,44 @@ async function bootstrap(){
       openProduct:
         id=>
           openDetail(id),
+
+      detailBack:
+        ()=>
+          detailBack(),
+
+      addConfiguredProduct:
+        ()=>
+          addConfiguredProduct(),
+
+      detailQuantityFeedback:
+        result=>{
+          if(
+            result?.invalid||
+            result?.belowMin
+          ){
+            toast(
+              ui(
+                'minQtyError'
+              )
+            );
+          }
+
+          if(
+            result?.aboveMax
+          ){
+            toast(
+              ui(
+                'quantityTooLarge'
+              )
+            );
+          }
+        },
+
+      addCustomIntent:
+        draft=>
+          addCustomIntentDesktop(
+            draft
+          ),
 
       privacy:
         ()=>{

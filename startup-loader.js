@@ -26,6 +26,62 @@
     '(prefers-reduced-motion: reduce)'
   )?.matches===true;
 
+  const desktopViewport=
+    window.matchMedia?.(
+      '(min-width: 1024px)'
+    )?.matches===true;
+
+  /*
+   * B7-00B.3A R5
+   * Desktop owns its own progressive boot experience. Do not create the
+   * Mobile startup overlay, do not wrap fetch, and do not preload the Mobile
+   * hero / catalog batch before Desktop Presentation can render.
+   */
+  if(desktopViewport){
+    document.documentElement
+      .classList
+      .remove(
+        ROOT_CLASS
+      );
+
+    window.DreamlandStartupLoader=
+      Object.freeze({
+        version:VERSION,
+        mode:'desktop-bypass',
+
+        dismiss(){
+          document.documentElement
+            .classList
+            .remove(
+              ROOT_CLASS
+            );
+        },
+
+        hasPreloaded(){
+          return false;
+        },
+
+        state(){
+          return {
+            desktopViewport:true,
+            desktopBypass:true,
+            dismissed:true,
+            dismissing:false,
+            productPreloadStarted:false,
+            productPreloadDone:false,
+            productPreloadTarget:0,
+            productPreloadAttempted:0,
+            productPreloadLoaded:0,
+            mediaReady:false,
+            desktopReady:false,
+            preloadedProductCount:0
+          };
+        }
+      });
+
+    return;
+  }
+
   let seenBefore=false;
   try{
     seenBefore=localStorage.getItem(SEEN_KEY)==='1';
@@ -51,31 +107,31 @@
 
   const copy={
     zh:{
-      label:'产品手册',
-      preparing:'正在加载完整手册内容',
+      label:'DREAMLAND',
+      preparing:'正在加载网站内容',
       data:'正在载入产品与配置',
       visual:'正在准备首页视觉',
       media:'正在连接商品图片',
       images:(loaded,total)=>`正在预载产品图 ${loaded}/${total}`,
-      ready:'产品与图片已准备完成'
+      ready:'网站内容已准备完成'
     },
     en:{
-      label:'PRODUCT CATALOG',
-      preparing:'Preparing the complete catalog',
+      label:'DREAMLAND',
+      preparing:'Preparing the website',
       data:'Loading products and options',
       visual:'Preparing the home visual',
       media:'Connecting catalog images',
       images:(loaded,total)=>`Preloading product images ${loaded}/${total}`,
-      ready:'Catalog and images are ready'
+      ready:'Website content is ready'
     },
     ko:{
-      label:'제품 카탈로그',
-      preparing:'전체 카탈로그를 준비하고 있어요',
+      label:'DREAMLAND',
+      preparing:'웹사이트를 준비하고 있어요',
       data:'제품과 옵션을 불러오고 있어요',
       visual:'홈 화면을 준비하고 있어요',
       media:'상품 이미지를 연결하고 있어요',
       images:(loaded,total)=>`제품 이미지를 불러오고 있어요 ${loaded}/${total}`,
-      ready:'카탈로그와 이미지가 준비됐어요'
+      ready:'웹사이트 콘텐츠가 준비됐어요'
     }
   };
 
@@ -93,6 +149,11 @@
   let productPreloadTarget=0;
   let mediaReady=false;
   let mediaReadyHandler=null;
+
+  let desktopReady=
+    !desktopViewport;
+  let desktopReadyHandler=null;
+
   const preloadedProductSources=new Set();
 
   let quietTimer=0;
@@ -456,6 +517,64 @@
     );
 
     mediaReadyHandler=null;
+  }
+
+  function markDesktopExperienceReady(){
+    if(desktopReady){
+      return true;
+    }
+
+    const snapshot=
+      window.DreamlandDesktopExperience
+        ?.snapshot?.();
+
+    if(
+      snapshot?.mode!=='desktop'||
+      snapshot?.desktopMounted!==true
+    ){
+      return false;
+    }
+
+    desktopReady=true;
+    maybeFinish();
+    return true;
+  }
+
+  function installDesktopExperienceGate(){
+    if(!desktopViewport){
+      desktopReady=true;
+      return;
+    }
+
+    if(desktopReadyHandler){
+      markDesktopExperienceReady();
+      return;
+    }
+
+    desktopReadyHandler=()=>{
+      desktopReady=true;
+      maybeFinish();
+    };
+
+    window.addEventListener(
+      'dreamland:desktop-ready',
+      desktopReadyHandler
+    );
+
+    markDesktopExperienceReady();
+  }
+
+  function releaseDesktopExperienceGate(){
+    if(!desktopReadyHandler){
+      return;
+    }
+
+    window.removeEventListener(
+      'dreamland:desktop-ready',
+      desktopReadyHandler
+    );
+
+    desktopReadyHandler=null;
   }
 
   function connectionProfile(){
@@ -993,7 +1112,8 @@
       heroReady&&
       dataReady()&&
       imagesReady()&&
-      mediaReady
+      mediaReady&&
+      desktopReady
     );
   }
 
@@ -1019,6 +1139,7 @@
     clearTimeout(finishTimer);
     clearTimeout(fallbackCatalogTimer);
     releaseCatalogMediaGate();
+    releaseDesktopExperienceGate();
 
     setProgress(100);
     setStatus('ready');
@@ -1083,6 +1204,7 @@
     maybeFinish();
   }
 
+  installDesktopExperienceGate();
   installFetchTracker();
 
   hardTimer=window.setTimeout(
@@ -1127,6 +1249,8 @@
         productPreloadAttempted,
         productPreloadLoaded,
         mediaReady,
+        desktopViewport,
+        desktopReady,
         preloadedProductCount:
           preloadedProductSources.size,
         dismissed,

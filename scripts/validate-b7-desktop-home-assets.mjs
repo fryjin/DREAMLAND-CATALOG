@@ -126,8 +126,38 @@ try{
     }
   }
 
+  /*
+   * B7-00B.3A R6 keeps the B7-00B.2 Home Asset System contract but advances
+   * the Desktop Home runtime implementation version because Home media now has
+   * a dedicated website-marketing fast path.
+   *
+   * Validate that the runtime is either the original B7-00B.2 owner or the
+   * explicit R6 successor; do not freeze the historical asset gate to one
+   * implementation-version string.
+   */
+  const versionMatch=
+    runtime.match(
+      /const VERSION='([^']+)';/
+    );
+
+  const allowedVersions=
+    new Set([
+      'B7-00B.2',
+      'B7-00B.3A-R6'
+    ]);
+
+  if(
+    !versionMatch||
+    !allowedVersions.has(
+      versionMatch[1]
+    )
+  ){
+    fail(
+      `Desktop Home runtime version is incompatible with the B7-00B.2 asset contract: ${versionMatch?.[1]||'missing'}`
+    );
+  }
+
   for(const required of [
-    "const VERSION='B7-00B.2';",
     "./data/desktop-home-assets.json",
     'desktop-product-overlay',
     'desktop-product-overlay__label',
@@ -210,26 +240,29 @@ try{
     !validate.includes(
       'npm run desktop:home'
     )||
-    !validate.trim()
-      .endsWith(
-        'npm run desktop:home-assets'
-      )
+    !validate.includes(
+      'npm run desktop:home-assets'
+    )
   ){
     fail(
-      'npm run validate must keep desktop:home and finish with desktop:home-assets.'
+      'npm run validate must preserve desktop:home and desktop:home-assets.'
     );
   }
 
   const sw=
     read('sw.js');
 
+  const cacheVersion=
+    sw.match(
+      /const CACHE_VERSION = 'dreamland-pwa-v(\d+)';/
+    );
+
   if(
-    !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v90';"
-    )
+    !cacheVersion||
+    Number(cacheVersion[1])<90
   ){
     fail(
-      'B7-00B.2 requires dreamland-pwa-v90.'
+      'B7-00B.2 requires dreamland-pwa-v90 or later.'
     );
   }
 

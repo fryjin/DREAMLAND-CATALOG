@@ -8,6 +8,7 @@
 
   const UI_PATCH={
     zh:{
+      docTitle:'DREAMLAND 手工雕刻蜡烛｜批发与定制',
       detailTitle:'选择规格',
       currentUnitPrice:'参考单价',
       currentSizeMoq:'起订量',
@@ -110,7 +111,7 @@
       processNote:'提交意向单不代表正式下单，我们会尽快与您联系，确认需求并推进签约。'
     },
     en:{
-      docTitle:'DREAMLAND Product Catalog',
+      docTitle:'DREAMLAND | Hand-carved Candles for Wholesale & Custom',
       catalogTitle:'Product Catalog',
       catalogSub:'Choose products, then confirm the quote',
       detailTitle:'Choose Options',
@@ -214,7 +215,7 @@
       processNote:'Submitting an inquiry does not place an order. We’ll contact you shortly to confirm the details and proceed with the agreement.'
     },
     ko:{
-      docTitle:'DREAMLAND 제품 카탈로그',
+      docTitle:'DREAMLAND | 핸드카빙 캔들 도매 · 커스텀',
       catalogTitle:'제품 카탈로그',
       catalogSub:'상품을 고른 뒤 견적을 확인해요',
       detailTitle:'옵션 선택',
@@ -449,9 +450,15 @@
   };
 
   const META_COPY={
-    zh:'DREAMLAND 手工雕刻香薰蜡烛产品手册与意向提交工具。',
-    en:'Browse DREAMLAND hand-carved scented candles and submit an inquiry.',
-    ko:'DREAMLAND 수제 조각 향초를 둘러보고 문의를 제출해 보세요.'
+    zh:'浏览 DREAMLAND 手工雕刻蜡烛系列，了解工艺、产品与定制能力，完成产品配置并提交批发或定制项目询价。',
+    en:'Discover hand-carved candles for wholesale, retail, gifting and custom projects. Explore collections, configure product options and request a quotation from DREAMLAND.',
+    ko:'DREAMLAND 핸드카빙 캔들 컬렉션과 제작 방식을 살펴보고 제품 옵션을 구성한 뒤 도매 및 커스텀 프로젝트 견적을 문의하세요.'
+  };
+
+  const META_IMAGE_ALT={
+    zh:'DREAMLAND 手工雕刻蜡烛品牌与产品系列',
+    en:'DREAMLAND hand-carved candle brand and collections',
+    ko:'DREAMLAND 핸드카빙 캔들 브랜드와 컬렉션'
   };
 
   let installed=false;
@@ -470,11 +477,67 @@
     });
   }
 
+  function updateMetaContent(
+    selector,
+    value
+  ){
+    const node=
+      document.querySelector(
+        selector
+      );
+
+    if(
+      node&&
+      value
+    ){
+      node.content=value;
+    }
+  }
+
   function updateMeta(){
     const lang=language();
-    document.title=UI_PATCH[lang]?.docTitle||document.title;
-    const description=document.querySelector('meta[name="description"]');
-    if(description)description.content=META_COPY[lang]||META_COPY.zh;
+
+    const title=
+      UI_PATCH[lang]?.docTitle||
+      UI_PATCH.zh?.docTitle||
+      document.title;
+
+    const description=
+      META_COPY[lang]||
+      META_COPY.zh;
+
+    document.title=title;
+
+    updateMetaContent(
+      'meta[name="description"]',
+      description
+    );
+
+    updateMetaContent(
+      'meta[property="og:title"]',
+      title
+    );
+
+    updateMetaContent(
+      'meta[property="og:description"]',
+      description
+    );
+
+    updateMetaContent(
+      'meta[name="twitter:title"]',
+      title
+    );
+
+    updateMetaContent(
+      'meta[name="twitter:description"]',
+      description
+    );
+
+    updateMetaContent(
+      'meta[property="og:image:alt"]',
+      META_IMAGE_ALT[lang]||
+      META_IMAGE_ALT.zh
+    );
   }
 
   function installStyles(){

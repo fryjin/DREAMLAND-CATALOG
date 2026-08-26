@@ -29,6 +29,7 @@
   }
 
   let catalogObserver=null;
+  let desktopCatalogObserver=null;
 
   function catalogRoot(){
     return document
@@ -37,21 +38,22 @@
       );
   }
 
-  function getCatalogObserver(){
-    if(catalogObserver){
-      return catalogObserver;
-    }
+  function isDesktopCatalogImage(img){
+    return Boolean(
+      img
+        ?.closest?.(
+          '#desktopCatalogRoot, .desktop-catalog-page'
+        )
+    );
+  }
 
-    if(
-      !(
-        'IntersectionObserver'
-        in window
-      )
-    ){
-      return null;
-    }
+  function createCatalogObserver(
+    rootNode,
+    rootMargin
+  ){
+    let observer=null;
 
-    catalogObserver=
+    observer=
       new IntersectionObserver(
         entries=>{
           entries.forEach(
@@ -76,20 +78,69 @@
                   'auto'
               );
 
-              catalogObserver
-                .unobserve(
+              observer
+                ?.unobserve(
                   img
                 );
             }
           );
         },
         {
-          root:
-            catalogRoot(),
-          rootMargin:
-            '100px 0px 220px 0px',
+          root:rootNode,
+          rootMargin,
           threshold:0.01
         }
+      );
+
+    return observer;
+  }
+
+  function getCatalogObserver(img){
+    const desktop=
+      isDesktopCatalogImage(
+        img
+      );
+
+    if(desktop){
+      if(desktopCatalogObserver){
+        return desktopCatalogObserver;
+      }
+
+      if(
+        !(
+          'IntersectionObserver'
+          in window
+        )
+      ){
+        return null;
+      }
+
+      desktopCatalogObserver=
+        createCatalogObserver(
+          null,
+          '180px 0px 480px 0px'
+        );
+
+      return desktopCatalogObserver;
+    }
+
+    if(catalogObserver){
+      return catalogObserver;
+    }
+
+    if(
+      !(
+        'IntersectionObserver'
+        in window
+      )
+    ){
+      return null;
+    }
+
+    catalogObserver=
+      createCatalogObserver(
+        catalogRoot(),
+        '100px 0px 220px 0px'
       );
 
     return catalogObserver;
@@ -100,7 +151,7 @@
   ){
     container
       .querySelectorAll?.(
-        '.product-cover[data-responsive-source]'
+        '.product-cover[data-responsive-source], .desktop-catalog-card__image[data-responsive-source]'
       )
       .forEach(
         img=>{
@@ -145,7 +196,9 @@
           }
 
           const observer=
-            getCatalogObserver();
+            getCatalogObserver(
+              img
+            );
 
           if(observer){
             observer.observe(
@@ -220,6 +273,10 @@
               document
                 .getElementById(
                   'productGrid'
+                )||
+              document
+                .getElementById(
+                  'desktopCatalogGrid'
                 );
 
             if(grid){
@@ -238,22 +295,23 @@
 
   registerHooks();
 
-  /*
-   * If catalog cards already exist when this late-loaded adapter is ready,
-   * bind any responsive markup that is already present.
-   */
   requestAnimationFrame(
     ()=>{
-      const grid=
+      [
         document.getElementById(
           'productGrid'
+        ),
+        document.getElementById(
+          'desktopCatalogGrid'
+        )
+      ]
+        .filter(Boolean)
+        .forEach(
+          grid=>
+            mountResponsiveCatalog(
+              grid
+            )
         );
-
-      if(grid){
-        mountResponsiveCatalog(
-          grid
-        );
-      }
     }
   );
 

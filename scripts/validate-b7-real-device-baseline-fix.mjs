@@ -422,13 +422,19 @@ try{
   const index=
     read('index.html');
 
+  /*
+   * B7-00B.3A R5 keeps the same v63 Mobile Startup Loader, but the marker now
+   * explicitly documents its Mobile-only ownership. Accept either historical
+   * marker form while still locking the loader release to v63.
+   */
   if(
-    !index.includes(
-      '<!-- DREAMLAND v63 startup loader -->'
-    )
+    !/<!-- DREAMLAND v63 startup loader(?: — Mobile only)? -->/
+      .test(
+        index
+      )
   ){
     fail(
-      'index.html startup loader release marker must be v63.'
+      'index.html startup loader release marker must remain v63 (Mobile-only wording is allowed).'
     );
   }
 }catch(error){

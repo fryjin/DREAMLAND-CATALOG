@@ -5,7 +5,7 @@
     return;
   }
 
-  const VERSION='B7-00B.2';
+  const VERSION='B7-00B.3A-R6';
 
   const DEFAULT_ASSETS=Object.freeze({
     hero:{
@@ -402,6 +402,133 @@
     });
   }
 
+  function desktopMarketingAsset(source){
+    return (
+      text(source)
+        .includes(
+          '/images/desktop/home/'
+        )
+    );
+  }
+
+  function releaseAssetSource(source){
+    const clean=
+      text(source);
+
+    if(
+      !clean||
+      !desktopMarketingAsset(
+        clean
+      )
+    ){
+      return clean;
+    }
+
+    const release=
+      text(
+        root.DREAMLAND_RELEASE
+      );
+
+    if(!release){
+      return clean;
+    }
+
+    const separator=
+      clean.includes('?')
+        ? '&'
+        : '?';
+
+    return (
+      clean+
+      separator+
+      'release='+
+      encodeURIComponent(
+        release
+      )
+    );
+  }
+
+  function assetImageSignature(assets){
+    const collections=
+      assets?.collections||{};
+
+    return JSON.stringify({
+      hero:
+        text(
+          assets?.hero?.image
+        ),
+
+      collections:
+        Object.keys(collections)
+          .sort()
+          .map(key=>[
+            key,
+            text(
+              collections
+                ?.[key]
+                ?.image
+            )
+          ]),
+
+      featured:
+        (
+          Array.isArray(
+            assets?.featured
+          )
+            ? assets.featured
+            : []
+        ).map(slot=>[
+          text(slot?.series),
+          text(slot?.productId),
+          text(slot?.image)
+        ]),
+
+      craft:
+        text(
+          assets?.craft?.image
+        ),
+
+      custom:
+        text(
+          assets?.custom?.image
+        ),
+
+      wholesale:
+        text(
+          assets?.wholesale?.image
+        )
+    });
+  }
+
+  function scheduleAssetContractLoad(){
+    if(assetLoadStarted){
+      return;
+    }
+
+    const start=()=>{
+      loadAssetContract();
+    };
+
+    if(
+      typeof root.requestIdleCallback===
+      'function'
+    ){
+      root.requestIdleCallback(
+        start,
+        {
+          timeout:1600
+        }
+      );
+
+      return;
+    }
+
+    root.setTimeout(
+      start,
+      650
+    );
+  }
+
   async function loadAssetContract(){
     if(assetLoadStarted){
       return;
@@ -414,7 +541,7 @@
         await fetch(
           './data/desktop-home-assets.json',
           {
-            cache:'no-cache'
+            cache:'default'
           }
         );
 
@@ -429,9 +556,23 @@
         loaded&&
         typeof loaded==='object'
       ){
+        const previousSignature=
+          assetImageSignature(
+            assetConfig
+          );
+
+        const nextSignature=
+          assetImageSignature(
+            loaded
+          );
+
         assetConfig=loaded;
 
-        if(mounted){
+        if(
+          previousSignature!==
+            nextSignature&&
+          mounted
+        ){
           refresh();
         }
       }
@@ -967,6 +1108,50 @@
       mediaApi();
 
     if(
+      desktopMarketingAsset(
+        source
+      )
+    ){
+      const directSource=
+        releaseAssetSource(
+          source
+        );
+
+      if(
+        media?.loadCandidates
+      ){
+        return media
+          .loadCandidates(
+            img,
+            [
+              directSource
+            ],
+            {
+              priority,
+              quality:'marketing'
+            }
+          )
+          .then(
+            result=>
+              result.success
+          );
+      }
+
+      img.loading=
+        priority==='high'
+          ? 'eager'
+          : 'lazy';
+
+      img.fetchPriority=
+        priority;
+
+      img.decoding='async';
+      img.src=directSource;
+
+      return true;
+    }
+
+    if(
       media?.loadResponsiveImage
     ){
       return media.loadResponsiveImage(
@@ -1166,7 +1351,7 @@
         options.actions||{}
     };
 
-    loadAssetContract();
+    scheduleAssetContractLoad();
 
     return snapshot();
   }
@@ -1188,7 +1373,7 @@
       mounted=true;
     }
 
-    loadAssetContract();
+    scheduleAssetContractLoad();
 
     return render(
       currentViewModel()

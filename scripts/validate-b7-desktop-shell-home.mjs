@@ -158,12 +158,43 @@ try{
     }
   }
 
-  includesAll(
+  const desktopExperienceSource=
     read(
       'src/ui/desktop/runtime-desktop-experience.js'
-    ),
+    );
+
+  /*
+   * B7-00B.1 established the formal Desktop Experience owner. Later Desktop
+   * stages extend that same owner, so this historical gate must validate a
+   * compatible successor rather than freezing the implementation version to
+   * B7-00B.1 forever.
+   */
+  const versionMatch=
+    desktopExperienceSource.match(
+      /const VERSION='([^']+)';/
+    );
+
+  const allowedVersions=
+    new Set([
+      'B7-00B.1',
+      'B7-00B.3B',
+      'B7-00B.3C'
+    ]);
+
+  if(
+    !versionMatch||
+    !allowedVersions.has(
+      versionMatch[1]
+    )
+  ){
+    fail(
+      `Desktop Experience runtime version is incompatible with the B7-00B.1 Shell/Home contract: ${versionMatch?.[1]||'missing'}`
+    );
+  }
+
+  includesAll(
+    desktopExperienceSource,
     [
-      "const VERSION='B7-00B.1';",
       "const BREAKPOINT='(min-width: 1024px)';",
       'desktopMounted',
       'function syncScreen(',
