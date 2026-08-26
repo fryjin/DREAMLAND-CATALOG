@@ -28,6 +28,46 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="DREAMLAND"/>
+<!-- DREAMLAND B7-00B.3A R4 release bootstrap -->
+<script>
+window.DREAMLAND_RELEASE='b7-00b3a-r4-v93';
+
+(function(){
+  const desktop=
+    window.matchMedia?.(
+      '(min-width: 1024px)'
+    )?.matches===true;
+
+  if(!desktop){
+    return;
+  }
+
+  document.documentElement
+    .classList
+    .add(
+      'dreamland-desktop-boot'
+    );
+
+  window.setTimeout(
+    function(){
+      document.documentElement
+        .classList
+        .remove(
+          'dreamland-desktop-boot'
+        );
+    },
+    12000
+  );
+})();
+</script>
+<style id="dreamlandReleaseBootStyle">
+@media (min-width:1024px){
+  html.dreamland-desktop-boot body > #app{
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+}
+</style>
 <!-- DREAMLAND v63 startup loader -->
 <script>
 document.documentElement.classList.add('dreamland-booting');
@@ -35,8 +75,8 @@ window.setTimeout(function(){
   document.documentElement.classList.remove('dreamland-booting');
 },9000);
 </script>
-<link rel="stylesheet" href="./startup-loader.css"/>
-<script src="./startup-loader.js"></script> 
+<link rel="stylesheet" href="./startup-loader.css?release=b7-00b3a-r4-v93"/>
+<script src="./startup-loader.js?release=b7-00b3a-r4-v93"></script> 
 <link rel="manifest" href="./manifest.webmanifest"/>
 <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png"/>
@@ -1110,10 +1150,10 @@ body[data-lang="ko"] .option-grid-scroll .option{
   overflow:visible;
 }
 </style>
-<link rel="stylesheet" href="./src/ui/desktop/styles/tokens.css"/>
-<link rel="stylesheet" href="./src/ui/desktop/styles/shell.css"/>
-<link rel="stylesheet" href="./src/ui/desktop/styles/home.css"/>
-<link rel="stylesheet" href="./src/ui/desktop/styles/catalog.css"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/tokens.css?release=b7-00b3a-r4-v93"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/shell.css?release=b7-00b3a-r4-v93"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/home.css?release=b7-00b3a-r4-v93"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/catalog.css?release=b7-00b3a-r4-v93"/>
 </head>
 <body>
 <div id="desktopExperience" class="desktop-experience" aria-hidden="true"></div>
@@ -1185,9 +1225,9 @@ body[data-lang="ko"] .option-grid-scroll .option{
 </div>
 </main>
 <script src="./src/data/product-data-contract.js"></script>
-<script src="./catalog-data.js"></script>
+<script src="./catalog-data.js?release=b7-00b3a-r4-v93"></script>
 <script src="./src/services/storage/runtime-storage.js"></script>
-<script src="./src/services/pwa/runtime-pwa.js"></script>
+<script src="./src/services/pwa/runtime-pwa.js?release=b7-00b3a-r4-v93"></script>
 <script src="./src/services/submission/runtime-submission.js"></script>
 <script src="./src/services/risk/runtime-risk.js"></script>
 <script src="./src/features/catalog/runtime-catalog.js"></script>
@@ -1198,11 +1238,11 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./src/ui/catalog/runtime-catalog-renderer.js"></script>
 <script src="./src/ui/detail/runtime-detail-renderer.js"></script>
 <script src="./src/ui/inquiry/runtime-inquiry-renderer.js"></script>
-<script src="./src/ui/desktop/shell/runtime-desktop-shell.js"></script>
-<script src="./src/ui/desktop/home/runtime-desktop-home.js"></script>
-<script src="./src/features/catalog/runtime-desktop-catalog-view.js"></script>
-<script src="./src/ui/desktop/catalog/runtime-desktop-catalog.js"></script>
-<script src="./src/ui/desktop/runtime-desktop-experience.js"></script>
+<script src="./src/ui/desktop/shell/runtime-desktop-shell.js?release=b7-00b3a-r4-v93"></script>
+<script src="./src/ui/desktop/home/runtime-desktop-home.js?release=b7-00b3a-r4-v93"></script>
+<script src="./src/features/catalog/runtime-desktop-catalog-view.js?release=b7-00b3a-r4-v93"></script>
+<script src="./src/ui/desktop/catalog/runtime-desktop-catalog.js?release=b7-00b3a-r4-v93"></script>
+<script src="./src/ui/desktop/runtime-desktop-experience.js?release=b7-00b3a-r4-v93"></script>
 <script src="./src/app/runtime-inquiry-submission-flow.js"></script>
 <script src="./custom-scent-multi.js"></script>
 <script>

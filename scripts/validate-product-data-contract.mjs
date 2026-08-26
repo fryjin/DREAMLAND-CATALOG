@@ -166,20 +166,45 @@ try{
   const indexSource=
     read('index.html');
 
-  const contractTag=
-    '<script src="./src/data/product-data-contract.js"></script>';
+  /*
+   * Release-versioned script URLs are valid, e.g.
+   *   ./catalog-data.js?release=b7-00b3a-r4-v93
+   *
+   * Match by the stable script-path prefix instead of requiring the exact
+   * unversioned raw tag.
+   */
+  function scriptIndex(pathname){
+    const markers=[
+      `<script src="${pathname}`,
+      `<script src='${pathname}`
+    ];
 
-  const catalogTag=
-    '<script src="./catalog-data.js"></script>';
+    const indexes=
+      markers
+        .map(
+          marker=>
+            indexSource.indexOf(
+              marker
+            )
+        )
+        .filter(
+          index=>
+            index>=0
+        );
+
+    return indexes.length
+      ? Math.min(...indexes)
+      : -1;
+  }
 
   const contractIndex=
-    indexSource.indexOf(
-      contractTag
+    scriptIndex(
+      './src/data/product-data-contract.js'
     );
 
   const catalogIndex=
-    indexSource.indexOf(
-      catalogTag
+    scriptIndex(
+      './catalog-data.js'
     );
 
   if(contractIndex<0){
@@ -190,7 +215,7 @@ try{
 
   if(catalogIndex<0){
     fail(
-      'index.html is missing catalog-data.js.'
+      'index.html is missing catalog-data.js (release query parameters are allowed).'
     );
   }
 

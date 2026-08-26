@@ -254,6 +254,29 @@
 (function(){
   'use strict';
 
+  function releaseScriptUrl(src){
+    const release=
+      String(
+        window.DREAMLAND_RELEASE||
+        ''
+      ).trim();
+
+    if(!release){
+      return src;
+    }
+
+    return (
+      src+
+      (
+        src.includes('?')
+          ? '&'
+          : '?'
+      )+
+      'release='+
+      encodeURIComponent(release)
+    );
+  }
+
   function loadScript(src,marker){
     return new Promise(resolve=>{
       const selector=`script[${marker}]`;
@@ -271,7 +294,10 @@
           'script'
         );
 
-      script.src=src;
+      script.src=
+        releaseScriptUrl(
+          src
+        );
       script.setAttribute(
         marker,
         '1'

@@ -11,6 +11,9 @@
   const PWA_UPDATE_SESSION_KEY=
     'dreamlandPwaUpdateDeferred';
 
+  const RELEASE_TAG=
+    'b7-00b3a-r4-v93';
+
   const PWA_COPY=Object.freeze({
     zh:Object.freeze({
       offline:'当前处于离线模式。已浏览内容可继续使用，联网后可提交意向。',
@@ -1040,6 +1043,72 @@
     }
   }
 
+  function currentRelease(){
+    return String(
+      root.DREAMLAND_RELEASE||
+      ''
+    ).trim();
+  }
+
+  function serviceWorkerUrl(){
+    return (
+      './sw.js?release='+
+      encodeURIComponent(
+        RELEASE_TAG
+      )
+    );
+  }
+
+  function safeForImmediateWorkerActivation(){
+    const screen=
+      activeScreen();
+
+    return (
+      !screen||
+      screen==='home'||
+      screen==='catalog'
+    );
+  }
+
+  function activateWaitingWorker(
+    registration
+  ){
+    const waiting=
+      registration?.waiting;
+
+    if(!waiting){
+      return false;
+    }
+
+    waiting.postMessage({
+      type:'SKIP_WAITING'
+    });
+
+    return true;
+  }
+
+  function handleWaitingUpdate(
+    registration
+  ){
+    pwaRegistration=
+      registration;
+
+    if(
+      currentRelease()===
+        RELEASE_TAG&&
+      safeForImmediateWorkerActivation()&&
+      activateWaitingWorker(
+        registration
+      )
+    ){
+      return;
+    }
+
+    notifyUpdate(
+      registration
+    );
+  }
+
   function notifyUpdate(
     registration
   ){
@@ -1071,7 +1140,7 @@
         await root.navigator
           .serviceWorker
           .register(
-            './sw.js',
+            serviceWorkerUrl(),
             {
               scope:'./',
               updateViaCache:'none'
@@ -1087,7 +1156,7 @@
           .serviceWorker
           .controller
       ){
-        notifyUpdate(
+        handleWaitingUpdate(
           registration
         );
       }
@@ -1112,7 +1181,7 @@
                   .serviceWorker
                   .controller
               ){
-                notifyUpdate(
+                handleWaitingUpdate(
                   registration
                 );
               }
@@ -1126,6 +1195,18 @@
         .addEventListener(
           'controllerchange',
           ()=>{
+            /*
+             * R4 critical assets are release-versioned. If this page already
+             * runs the current release, controller takeover does not need a
+             * second reload. This prevents an unnecessary double boot.
+             */
+            if(
+              currentRelease()===
+              RELEASE_TAG
+            ){
+              return;
+            }
+
             if(pwaReloading){
               return;
             }

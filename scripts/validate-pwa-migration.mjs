@@ -120,17 +120,67 @@ try{
   const indexSource=
     read('index.html');
 
-  const runtimeTag=
-    '<script src="./src/services/pwa/runtime-pwa.js"></script>';
+  /*
+   * B7-00B.3A R4 release convergence adds cache-busting query parameters:
+   *
+   *   ./src/services/pwa/runtime-pwa.js?release=...
+   *
+   * Script ownership and load order must therefore be validated by stable
+   * pathname instead of an exact unversioned HTML tag.
+   */
+  function scriptTagEntries(){
+    const entries=[];
+    const matcher=
+      /<script\b[^>]*\bsrc=(["'])(.*?)\1[^>]*>\s*<\/script>/gi;
 
-  const matches=
-    indexSource.match(
-      /<script src="\.\/src\/services\/pwa\/runtime-pwa\.js"><\/script>/g
-    )||[];
+    let match=null;
 
-  if(matches.length!==1){
+    while(
+      (
+        match=
+          matcher.exec(
+            indexSource
+          )
+      )
+    ){
+      entries.push({
+        index:match.index,
+        src:String(
+          match[2]||
+          ''
+        ),
+        pathname:String(
+          match[2]||
+          ''
+        ).replace(
+          /[?#].*$/,
+          ''
+        )
+      });
+    }
+
+    return entries;
+  }
+
+  const scripts=
+    scriptTagEntries();
+
+  function scriptEntries(pathname){
+    return scripts.filter(
+      entry=>
+        entry.pathname===
+        pathname
+    );
+  }
+
+  const pwaEntries=
+    scriptEntries(
+      './src/services/pwa/runtime-pwa.js'
+    );
+
+  if(pwaEntries.length!==1){
     fail(
-      `index.html must load runtime-pwa.js exactly once; found ${matches.length}.`
+      `index.html must load runtime-pwa.js exactly once; found ${pwaEntries.length}.`
     );
   }
 
@@ -154,18 +204,20 @@ try{
     );
   }
 
-  const storageTag=
-    '<script src="./src/services/storage/runtime-storage.js"></script>';
+  const storageEntries=
+    scriptEntries(
+      './src/services/storage/runtime-storage.js'
+    );
 
   const storageIndex=
-    indexSource.indexOf(
-      storageTag
-    );
+    storageEntries.length===1
+      ? storageEntries[0].index
+      : -1;
 
   const pwaIndex=
-    indexSource.indexOf(
-      runtimeTag
-    );
+    pwaEntries.length===1
+      ? pwaEntries[0].index
+      : -1;
 
   const bridgeIndex=
     indexSource.indexOf(
@@ -218,60 +270,60 @@ try{
   }
 
   const requiredIndexBridgeCalls=[
-  'pwaService.refreshUi();',
-  'pwaService.initExperience();'
-];
+    'pwaService.refreshUi();',
+    'pwaService.initExperience();'
+  ];
 
-for(
-  const marker of
-  requiredIndexBridgeCalls
-){
+  for(
+    const marker of
+    requiredIndexBridgeCalls
+  ){
+    if(
+      !indexSource.includes(
+        marker
+      )
+    ){
+      fail(
+        `index.html is missing PWA runtime bridge call: ${marker}`
+      );
+    }
+  }
+
   if(
-    !indexSource.includes(
-      marker
+    !/pwaService\.text\(\s*['"]offlineSubmit['"]\s*\)/m
+      .test(
+        indexSource
+      )
+  ){
+    fail(
+      'index.html is missing the PWA offline submission copy bridge.'
+    );
+  }
+
+  const submissionFlowSource=
+    read(
+      'src/app/runtime-inquiry-submission-flow.js'
+    );
+
+  if(
+    !submissionFlowSource.includes(
+      '.probeReachability('
     )
   ){
     fail(
-      `index.html is missing PWA runtime bridge call: ${marker}`
+      'Inquiry Submission Flow is missing PWA reachability probing.'
     );
   }
-}
 
-if(
-  !/pwaService\.text\(\s*['"]offlineSubmit['"]\s*\)/m
-    .test(
-      indexSource
+  if(
+    !submissionFlowSource.includes(
+      '.applyReachability('
     )
-){
-  fail(
-    'index.html is missing the PWA offline submission copy bridge.'
-  );
-}
-
-const submissionFlowSource=
-  read(
-    'src/app/runtime-inquiry-submission-flow.js'
-  );
-
-if(
-  !submissionFlowSource.includes(
-    '.probeReachability('
-  )
-){
-  fail(
-    'Inquiry Submission Flow is missing PWA reachability probing.'
-  );
-}
-
-if(
-  !submissionFlowSource.includes(
-    '.applyReachability('
-  )
-){
-  fail(
-    'Inquiry Submission Flow is missing PWA reachability application.'
-  );
-}
+  ){
+    fail(
+      'Inquiry Submission Flow is missing PWA reachability application.'
+    );
+  }
 
   const forbiddenInlineHandlers=[
     'onclick="hideNetworkBanner()"',
@@ -305,30 +357,61 @@ try{
   const swSource=
     read('sw.js');
 
-  const pwaMatches=
-    swSource.match(
-      /'\.\/src\/services\/pwa\/runtime-pwa\.js'/g
-    )||[];
+  /*
+   * APP_SHELL remains the stable unversioned contract. R4 additionally adds a
+   * RELEASE_ASSETS list with versioned URLs, which must not be mistaken for a
+   * duplicate APP_SHELL runtime.
+   */
+  const appShellStart=
+    swSource.indexOf(
+      'const APP_SHELL = ['
+    );
+
+  const appShellEnd=
+    swSource.indexOf(
+      '];',
+      appShellStart
+    );
 
   if(
-    pwaMatches.length!==1
+    appShellStart<0||
+    appShellEnd<=appShellStart
   ){
     fail(
-      `sw.js APP_SHELL must include runtime-pwa.js exactly once; found ${pwaMatches.length}.`
+      'sw.js APP_SHELL could not be isolated.'
     );
-  }
+  }else{
+    const appShell=
+      swSource.slice(
+        appShellStart,
+        appShellEnd+2
+      );
 
-  const storageMatches=
-    swSource.match(
-      /'\.\/src\/services\/storage\/runtime-storage\.js'/g
-    )||[];
+    const pwaMatches=
+      appShell.match(
+        /'\.\/src\/services\/pwa\/runtime-pwa\.js'/g
+      )||[];
 
-  if(
-    storageMatches.length!==1
-  ){
-    fail(
-      `sw.js must preserve runtime-storage.js exactly once; found ${storageMatches.length}.`
-    );
+    if(
+      pwaMatches.length!==1
+    ){
+      fail(
+        `sw.js APP_SHELL must include runtime-pwa.js exactly once; found ${pwaMatches.length}.`
+      );
+    }
+
+    const storageMatches=
+      appShell.match(
+        /'\.\/src\/services\/storage\/runtime-storage\.js'/g
+      )||[];
+
+    if(
+      storageMatches.length!==1
+    ){
+      fail(
+        `sw.js must preserve runtime-storage.js exactly once; found ${storageMatches.length}.`
+      );
+    }
   }
 }catch(error){
   fail(

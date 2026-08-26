@@ -507,6 +507,23 @@
 
       desktopReadySignaled=true;
 
+      root.document
+        ?.documentElement
+        ?.classList
+        ?.remove(
+          'dreamland-desktop-boot'
+        );
+
+      root.document
+        ?.documentElement
+        ?.setAttribute(
+          'data-dreamland-release',
+          String(
+            root.DREAMLAND_RELEASE||
+            ''
+          )
+        );
+
       root.dispatchEvent(
         new CustomEvent(
           'dreamland:desktop-ready',

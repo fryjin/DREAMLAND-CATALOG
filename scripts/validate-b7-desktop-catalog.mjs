@@ -842,10 +842,10 @@ try{
 
   if(
     !cacheVersion||
-    Number(cacheVersion[1])!==92
+    Number(cacheVersion[1])!==93
   ){
     fail(
-      'B7-00B.3A Real-preview Fix R3 requires dreamland-pwa-v92.'
+      'B7-00B.3A PWA Version Convergence Fix R4 requires dreamland-pwa-v93.'
     );
   }
 
@@ -871,6 +871,125 @@ try{
   );
 }
 
+
+/*
+ * Gate 9 — R4 release convergence.
+ *
+ * A normal returning browser must not mix old cached Mobile-era runtime with
+ * current Desktop HTML. Critical assets therefore carry one release tag,
+ * dynamic media infrastructure inherits it, and the waiting worker can be
+ * activated safely without reloading an already-current document.
+ */
+try{
+  const release=
+    'b7-00b3a-r4-v93';
+
+  const index=
+    read(
+      'index.html'
+    );
+
+  const requiredIndex=[
+    `window.DREAMLAND_RELEASE='${release}';`,
+    'dreamland-desktop-boot',
+    `./startup-loader.js?release=${release}`,
+    `./catalog-data.js?release=${release}`,
+    `./src/services/pwa/runtime-pwa.js?release=${release}`,
+    `./src/ui/desktop/styles/catalog.css?release=${release}`,
+    `./src/ui/desktop/runtime-desktop-experience.js?release=${release}`
+  ];
+
+  for(const marker of requiredIndex){
+    if(!index.includes(marker)){
+      fail(
+        `R4 index release handshake is missing: ${marker}`
+      );
+    }
+  }
+
+  const catalogData=
+    read(
+      'catalog-data.js'
+    );
+
+  for(const marker of [
+    'function releaseScriptUrl(src)',
+    'window.DREAMLAND_RELEASE',
+    "'release='+",
+    'releaseScriptUrl('
+  ]){
+    if(!catalogData.includes(marker)){
+      fail(
+        `R4 dynamic runtime versioning is missing: ${marker}`
+      );
+    }
+  }
+
+  const pwa=
+    read(
+      'src/services/pwa/runtime-pwa.js'
+    );
+
+  for(const marker of [
+    `const RELEASE_TAG=\n    '${release}';`,
+    'function serviceWorkerUrl()',
+    'function handleWaitingUpdate(',
+    'function safeForImmediateWorkerActivation()',
+    "screen==='home'||",
+    "screen==='catalog'",
+    "type:'SKIP_WAITING'",
+    'currentRelease()===\n              RELEASE_TAG'
+  ]){
+    if(!pwa.includes(marker)){
+      fail(
+        `R4 PWA convergence runtime is missing: ${marker}`
+      );
+    }
+  }
+
+  const sw=
+    read(
+      'sw.js'
+    );
+
+  for(const marker of [
+    `const RELEASE_TAG =\n  '${release}';`,
+    'const RELEASE_ASSETS = [',
+    `./startup-loader.js?release=${release}`,
+    `./image-variants.js?release=${release}`,
+    "url.searchParams.get(\n      'release'\n    )===RELEASE_TAG",
+    'cache.addAll(\n              RELEASE_ASSETS'
+  ]){
+    if(!sw.includes(marker)){
+      fail(
+        `R4 Service Worker release convergence is missing: ${marker}`
+      );
+    }
+  }
+
+  const experience=
+    read(
+      'src/ui/desktop/runtime-desktop-experience.js'
+    );
+
+  if(
+    !experience.includes(
+      "'dreamland-desktop-boot'"
+    )||
+    !experience.includes(
+      "'data-dreamland-release'"
+    )
+  ){
+    fail(
+      'Desktop Experience must remove the independent R4 Desktop boot guard when ready.'
+    );
+  }
+}catch(error){
+  fail(
+    `R4 release convergence validation failed: ${error.message}`
+  );
+}
+
 if(errors.length){
   console.error(
     '\nB7-00B.3A Desktop Catalog validation failed:\n'
@@ -890,5 +1009,5 @@ console.log(
 );
 
 console.log(
-  'All 89 / 19 Advanced / 46 Masterpiece / 16 Holiday / 8 Classic / Search / Size / Sort / 24-item Load More / Desktop media / startup handoff / sticky header / PWA v92 PASS.'
+  'All 89 / 19 Advanced / 46 Masterpiece / 16 Holiday / 8 Classic / Search / Size / Sort / 24-item Load More / Desktop media / startup handoff / release convergence / PWA v93 PASS.'
 );
