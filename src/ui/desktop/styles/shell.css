@@ -1,0 +1,305 @@
+/*
+ * DREAMLAND Desktop Website Shell
+ */
+
+@media (min-width:1024px){
+  .desktop-site-shell{
+    min-height:100vh;
+    background:var(--dw-canvas);
+  }
+
+  .desktop-site-header{
+    position:sticky;
+    top:0;
+    z-index:320;
+    height:var(--dw-header);
+    border-bottom:1px solid transparent;
+    background:rgba(250,248,244,.86);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    transition:
+      border-color .18s ease,
+      background .18s ease;
+  }
+
+  .desktop-site-header.is-scrolled{
+    border-bottom-color:var(--dw-line);
+    background:rgba(250,248,244,.95);
+  }
+
+  .desktop-site-header__inner{
+    width:min(
+      calc(100% - (2 * var(--dw-gutter))),
+      var(--dw-max)
+    );
+    height:100%;
+    margin-inline:auto;
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) auto;
+    align-items:center;
+    gap:42px;
+  }
+
+  .desktop-brand{
+    min-height:44px;
+    padding:0;
+    background:transparent;
+    color:var(--dw-ink);
+    font-size:16px;
+    line-height:1;
+    font-weight:950;
+    letter-spacing:.08em;
+    cursor:pointer;
+  }
+
+  .desktop-site-nav{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:34px;
+  }
+
+  .desktop-site-nav__item{
+    position:relative;
+    min-height:44px;
+    padding:0 2px;
+    background:transparent;
+    color:var(--dw-muted);
+    font-size:13px;
+    line-height:1;
+    font-weight:780;
+    cursor:pointer;
+    transition:color .18s ease;
+  }
+
+  .desktop-site-nav__item::after{
+    content:"";
+    position:absolute;
+    left:2px;
+    right:2px;
+    bottom:4px;
+    height:1px;
+    background:var(--dw-ink);
+    transform:scaleX(0);
+    transform-origin:center;
+    transition:transform .18s var(--dw-ease);
+  }
+
+  .desktop-site-nav__item:hover,
+  .desktop-site-nav__item.is-active{
+    color:var(--dw-ink);
+  }
+
+  .desktop-site-nav__item.is-active::after{
+    transform:scaleX(1);
+  }
+
+  .desktop-site-header__actions{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:10px;
+  }
+
+  .desktop-language{
+    position:relative;
+  }
+
+  .desktop-language__toggle{
+    min-height:42px;
+    padding:0 11px;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    border:1px solid transparent;
+    border-radius:12px;
+    background:transparent;
+    color:var(--dw-ink);
+    font-size:12px;
+    font-weight:780;
+    cursor:pointer;
+    transition:
+      background .18s ease,
+      border-color .18s ease;
+  }
+
+  .desktop-language__toggle:hover,
+  .desktop-language__toggle[aria-expanded="true"]{
+    border-color:var(--dw-line);
+    background:rgba(255,255,255,.62);
+  }
+
+  .desktop-language__globe{
+    width:15px;
+    height:15px;
+    display:grid;
+    place-items:center;
+    border:1px solid currentColor;
+    border-radius:50%;
+    font-size:8px;
+    line-height:1;
+  }
+
+  .desktop-language__caret{
+    color:var(--dw-soft);
+    font-size:10px;
+  }
+
+  .desktop-language__menu{
+    position:absolute;
+    top:calc(100% + 8px);
+    right:0;
+    z-index:360;
+    width:176px;
+    padding:7px;
+    display:none;
+    border:1px solid var(--dw-line);
+    border-radius:16px;
+    background:rgba(255,255,255,.98);
+    box-shadow:var(--dw-shadow-soft);
+  }
+
+  .desktop-language__menu.is-open{
+    display:block;
+  }
+
+  .desktop-language__option{
+    width:100%;
+    min-height:40px;
+    padding:0 10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-radius:10px;
+    background:transparent;
+    color:var(--dw-muted);
+    font-size:12px;
+    font-weight:780;
+    cursor:pointer;
+  }
+
+  .desktop-language__option small{
+    color:var(--dw-soft);
+    font-size:9px;
+    letter-spacing:.08em;
+  }
+
+  .desktop-language__option:hover,
+  .desktop-language__option.is-active{
+    background:var(--dw-surface);
+    color:var(--dw-ink);
+  }
+
+  .desktop-inquiry-button{
+    min-height:42px;
+    padding:0 15px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    background:var(--dw-ink);
+    color:#fff;
+    box-shadow:var(--dw-shadow-button);
+    font-size:12px;
+    line-height:1;
+    font-weight:850;
+    cursor:pointer;
+    transition:
+      transform .18s ease,
+      box-shadow .18s ease;
+  }
+
+  .desktop-inquiry-button:hover{
+    transform:translateY(-1px);
+    box-shadow:0 14px 32px rgba(27,23,19,.17);
+  }
+
+  .desktop-site-main{
+    display:block;
+  }
+
+  .desktop-experience:not(.is-home) .desktop-site-main,
+  .desktop-experience:not(.is-home) .desktop-site-footer{
+    display:none;
+  }
+
+  .desktop-site-footer{
+    padding:78px 0 42px;
+    background:var(--dw-ink);
+    color:#f8f4ee;
+  }
+
+  .desktop-site-footer__top{
+    display:grid;
+    grid-template-columns:minmax(260px,1.6fr) repeat(4,minmax(120px,1fr));
+    gap:40px;
+    padding-bottom:64px;
+  }
+
+  .desktop-footer-brand{
+    font-size:16px;
+    font-weight:950;
+    letter-spacing:.08em;
+  }
+
+  .desktop-footer-description{
+    max-width:300px;
+    margin-top:18px;
+    color:rgba(248,244,238,.62);
+    font-size:14px;
+    line-height:1.65;
+  }
+
+  .desktop-footer-group h3{
+    margin-bottom:16px;
+    color:rgba(248,244,238,.48);
+    font-size:10px;
+    font-weight:850;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+  }
+
+  .desktop-footer-links{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:11px;
+  }
+
+  .desktop-footer-link{
+    padding:0;
+    background:transparent;
+    color:rgba(248,244,238,.76);
+    font-size:12px;
+    line-height:1.4;
+    font-weight:700;
+    cursor:pointer;
+    transition:color .18s ease;
+  }
+
+  .desktop-footer-link:hover{
+    color:#fff;
+  }
+
+  .desktop-footer-bottom{
+    padding-top:22px;
+    border-top:1px solid var(--dw-dark-line);
+    color:rgba(248,244,238,.42);
+    font-size:11px;
+  }
+
+  @media (max-width:1199px){
+    .desktop-site-header__inner{
+      gap:26px;
+    }
+
+    .desktop-site-nav{
+      gap:24px;
+    }
+
+    .desktop-site-footer__top{
+      grid-template-columns:minmax(240px,1.5fr) repeat(4,minmax(100px,1fr));
+      gap:26px;
+    }
+  }
+}

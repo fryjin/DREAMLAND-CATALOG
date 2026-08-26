@@ -1,0 +1,297 @@
+{
+  "schemaVersion": 1,
+  "presentation": "desktop-home",
+  "home": {
+    "collectionOrder": [
+      "masterpiece",
+      "advanced",
+      "holiday",
+      "classic"
+    ],
+    "featuredSeriesOrder": [
+      "advanced",
+      "masterpiece",
+      "holiday",
+      "classic"
+    ],
+    "heroImage": "./images/shared/home/HOME001/cover.webp"
+  },
+  "languages": {
+    "en": {
+      "navigation": {
+        "collection": "Collection",
+        "custom": "Custom",
+        "inquiry": "Inquiry",
+        "language": "Language"
+      },
+      "hero": {
+        "kicker": "WHOLESALE / 2026 COLLECTION",
+        "title": "Hand-carved candles, shaped to be remembered.",
+        "body": "Distinctive carved candles for wholesale collections, retail, events and gifting. Configure products first, then send one clear inquiry.",
+        "primary": "Explore collection",
+        "secondary": "Start a custom project"
+      },
+      "collections": {
+        "kicker": "OUR COLLECTIONS",
+        "title": "Explore the collection",
+        "body": "Discover candles by craftsmanship, occasion and visual expression.",
+        "designSingular": "design",
+        "designPlural": "designs",
+        "explore": "Explore"
+      },
+      "featured": {
+        "kicker": "FEATURED PIECES",
+        "title": "A closer look at the collection",
+        "body": "Four starting points across our current active series.",
+        "viewAll": "View all",
+        "viewDetails": "View details",
+        "moq": "MOQ"
+      },
+      "craft": {
+        "kicker": "THE CRAFT",
+        "title": "Shaped while the wax is still warm.",
+        "body": "Each carved candle is built through layers, hand-cut forms and finishing details that give every piece its sculptural character."
+      },
+      "custom": {
+        "kicker": "CUSTOM MADE",
+        "title": "Made for your brand, event or collection.",
+        "body": "Build a request around color, scent, packaging and branding, then send it together with your selected products.",
+        "features": [
+          "Colors",
+          "Scents",
+          "Packaging",
+          "Branding"
+        ],
+        "action": "Start a custom project"
+      },
+      "wholesale": {
+        "kicker": "WHOLESALE, MADE SIMPLE",
+        "title": "A clearer path from selection to quotation.",
+        "facts": [
+          {
+            "title": "Wholesale quantities",
+            "body": "Different size and series options support projects at different volumes."
+          },
+          {
+            "title": "Customization",
+            "body": "Colors, scents, packaging and branding can be included in one request."
+          },
+          {
+            "title": "Global delivery",
+            "body": "International delivery options can be confirmed with the final quotation."
+          },
+          {
+            "title": "Dedicated quotation",
+            "body": "Configure first, then our team confirms pricing, timing and project details."
+          }
+        ]
+      },
+      "cta": {
+        "kicker": "YOUR NEXT PROJECT",
+        "title": "Ready to build your inquiry?",
+        "body": "Select your pieces, tell us what you need, and send one organized request for quotation.",
+        "explore": "Explore collection",
+        "custom": "Start custom project",
+        "review": "Review inquiry"
+      },
+      "footer": {
+        "description": "Hand-carved candles for wholesale and custom projects.",
+        "explore": "Explore",
+        "projects": "Projects",
+        "language": "Language",
+        "legal": "Legal",
+        "collection": "Collection",
+        "masterpiece": "Masterpiece",
+        "advanced": "Advanced",
+        "custom": "Custom",
+        "inquiry": "Inquiry",
+        "privacy": "Privacy",
+        "copyright": "© DREAMLAND"
+      }
+    },
+    "zh": {
+      "navigation": {
+        "collection": "产品系列",
+        "custom": "定制",
+        "inquiry": "意向单",
+        "language": "语言"
+      },
+      "hero": {
+        "kicker": "批发 / 2026 COLLECTION",
+        "title": "手工雕刻，让每一份心意更值得被记住。",
+        "body": "面向品牌、零售、活动与礼赠的雕刻蜡烛系列。先完成选款与配置，再统一提交清晰的采购意向。",
+        "primary": "浏览产品系列",
+        "secondary": "发起定制项目"
+      },
+      "collections": {
+        "kicker": "产品系列",
+        "title": "从不同工艺与场景开始选款",
+        "body": "按系列浏览当前可询价的雕刻蜡烛产品。",
+        "designSingular": "款",
+        "designPlural": "款",
+        "explore": "浏览系列"
+      },
+      "featured": {
+        "kicker": "精选产品",
+        "title": "先从这些作品开始",
+        "body": "从当前四个在售系列中各取一个代表产品。",
+        "viewAll": "查看全部",
+        "viewDetails": "查看详情",
+        "moq": "起订"
+      },
+      "craft": {
+        "kicker": "手工工艺",
+        "title": "趁蜡体仍有温度时完成塑形。",
+        "body": "多层蜡体经过手工切割、卷花与细节修整，形成每一件雕刻蜡烛独有的立体轮廓。"
+      },
+      "custom": {
+        "kicker": "定制项目",
+        "title": "为品牌、活动或专属系列定制。",
+        "body": "把配色、香型、包装与品牌需求集中在同一份定制意向里，并可与常规选款一起提交。",
+        "features": [
+          "配色",
+          "香型",
+          "包装",
+          "品牌"
+        ],
+        "action": "发起定制项目"
+      },
+      "wholesale": {
+        "kicker": "让批发采购更清晰",
+        "title": "从选款到报价，减少不必要的往返确认。",
+        "facts": [
+          {
+            "title": "批发数量",
+            "body": "不同尺寸和系列适用于不同数量区间的采购项目。"
+          },
+          {
+            "title": "定制能力",
+            "body": "配色、香型、包装与品牌需求可统一提交。"
+          },
+          {
+            "title": "全球交付",
+            "body": "国际物流方案将在最终报价中一并确认。"
+          },
+          {
+            "title": "专属报价",
+            "body": "先完成配置，再由团队确认价格、交期与项目细节。"
+          }
+        ]
+      },
+      "cta": {
+        "kicker": "下一步",
+        "title": "准备开始整理你的采购意向？",
+        "body": "选好产品、补充需求，再用一份清晰的意向单统一提交报价。",
+        "explore": "浏览产品系列",
+        "custom": "发起定制项目",
+        "review": "查看意向单"
+      },
+      "footer": {
+        "description": "面向批发与定制项目的手工雕刻蜡烛。",
+        "explore": "浏览",
+        "projects": "项目",
+        "language": "语言",
+        "legal": "其他",
+        "collection": "产品系列",
+        "masterpiece": "匠作系列",
+        "advanced": "进阶系列",
+        "custom": "定制",
+        "inquiry": "意向单",
+        "privacy": "隐私说明",
+        "copyright": "© DREAMLAND"
+      }
+    },
+    "ko": {
+      "navigation": {
+        "collection": "컬렉션",
+        "custom": "커스텀",
+        "inquiry": "문의 목록",
+        "language": "언어"
+      },
+      "hero": {
+        "kicker": "WHOLESALE / 2026 COLLECTION",
+        "title": "손으로 조각한 캔들, 오래 기억되는 형태.",
+        "body": "브랜드, 리테일, 이벤트와 기프트 프로젝트를 위한 조각 캔들 컬렉션입니다. 제품을 먼저 선택하고 구성한 뒤 하나의 문의로 정리해 보내세요.",
+        "primary": "컬렉션 보기",
+        "secondary": "커스텀 프로젝트 시작"
+      },
+      "collections": {
+        "kicker": "OUR COLLECTIONS",
+        "title": "컬렉션 살펴보기",
+        "body": "공예 방식과 용도, 시각적 분위기에 따라 현재 문의 가능한 제품을 둘러보세요.",
+        "designSingular": "디자인",
+        "designPlural": "디자인",
+        "explore": "컬렉션 보기"
+      },
+      "featured": {
+        "kicker": "FEATURED PIECES",
+        "title": "컬렉션을 가까이 살펴보세요",
+        "body": "현재 판매 중인 네 가지 시리즈에서 대표 제품을 골랐습니다.",
+        "viewAll": "전체 보기",
+        "viewDetails": "상세 보기",
+        "moq": "MOQ"
+      },
+      "craft": {
+        "kicker": "THE CRAFT",
+        "title": "왁스가 따뜻할 때 손으로 형태를 만듭니다.",
+        "body": "여러 겹의 왁스를 쌓고 손으로 자르고 말아 마감하면서 각 캔들만의 입체적인 형태를 완성합니다."
+      },
+      "custom": {
+        "kicker": "CUSTOM MADE",
+        "title": "브랜드와 이벤트, 전용 컬렉션을 위한 제작.",
+        "body": "컬러, 향, 패키지와 브랜딩 요구사항을 하나의 커스텀 문의로 정리하고 일반 제품 선택과 함께 보낼 수 있습니다.",
+        "features": [
+          "컬러",
+          "향",
+          "패키지",
+          "브랜딩"
+        ],
+        "action": "커스텀 프로젝트 시작"
+      },
+      "wholesale": {
+        "kicker": "WHOLESALE, MADE SIMPLE",
+        "title": "선택부터 견적까지 더 명확하게.",
+        "facts": [
+          {
+            "title": "도매 수량",
+            "body": "사이즈와 시리즈별 조건에 따라 다양한 규모의 프로젝트를 구성할 수 있습니다."
+          },
+          {
+            "title": "커스터마이징",
+            "body": "컬러, 향, 패키지와 브랜딩 요구를 한 번에 전달할 수 있습니다."
+          },
+          {
+            "title": "글로벌 배송",
+            "body": "국제 배송 방식은 최종 견적과 함께 확인합니다."
+          },
+          {
+            "title": "맞춤 견적",
+            "body": "제품 구성을 먼저 완료하면 가격, 일정과 프로젝트 세부사항을 확인해 드립니다."
+          }
+        ]
+      },
+      "cta": {
+        "kicker": "YOUR NEXT PROJECT",
+        "title": "문의 목록을 준비해 볼까요?",
+        "body": "제품을 선택하고 필요한 조건을 정리해 하나의 견적 문의로 보내세요.",
+        "explore": "컬렉션 보기",
+        "custom": "커스텀 프로젝트 시작",
+        "review": "문의 목록 확인"
+      },
+      "footer": {
+        "description": "도매와 커스텀 프로젝트를 위한 핸드카빙 캔들.",
+        "explore": "둘러보기",
+        "projects": "프로젝트",
+        "language": "언어",
+        "legal": "안내",
+        "collection": "컬렉션",
+        "masterpiece": "마스터피스",
+        "advanced": "어드밴스",
+        "custom": "커스텀",
+        "inquiry": "문의 목록",
+        "privacy": "개인정보 안내",
+        "copyright": "© DREAMLAND"
+      }
+    }
+  }
+}

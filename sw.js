@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'dreamland-pwa-v88';
+const CACHE_VERSION = 'dreamland-pwa-v89';
 
 const APP_CACHE = `${CACHE_VERSION}-app`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
@@ -11,8 +11,12 @@ const APP_SHELL = [
   './index.html',
   './startup-loader.css',
   './startup-loader.js',
-  './desktop-foundation.css',
-  './desktop-foundation.js',
+  './src/ui/desktop/styles/tokens.css',
+  './src/ui/desktop/styles/shell.css',
+  './src/ui/desktop/styles/home.css',
+  './src/ui/desktop/shell/runtime-desktop-shell.js',
+  './src/ui/desktop/home/runtime-desktop-home.js',
+  './src/ui/desktop/runtime-desktop-experience.js',
   './src/data/product-data-contract.js',
   './catalog-data.js',
   './src/services/storage/runtime-storage.js',
@@ -46,6 +50,7 @@ const APP_SHELL = [
   './data/series.json',
   './data/i18n.json',
   './data/app-config.json',
+  './data/site-content.json',
   './icons/favicon-32.png',
   './icons/apple-touch-icon.png',
   './icons/icon-192.png',

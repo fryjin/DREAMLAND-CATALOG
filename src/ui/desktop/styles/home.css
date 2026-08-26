@@ -1,0 +1,610 @@
+/*
+ * DREAMLAND B7-00B.1 — Desktop Editorial Home
+ */
+
+@media (min-width:1024px){
+  .desktop-home{
+    background:var(--dw-canvas);
+  }
+
+  .desktop-home-hero{
+    width:min(
+      calc(100% - (2 * var(--dw-gutter))),
+      var(--dw-max)
+    );
+    min-height:640px;
+    margin:24px auto 0;
+    display:grid;
+    grid-template-columns:7fr 5fr;
+    overflow:hidden;
+    border-radius:var(--dw-radius-xl);
+    background:var(--dw-sand);
+  }
+
+  .desktop-home-hero__media{
+    position:relative;
+    min-height:640px;
+    overflow:hidden;
+    background:#e8e4de;
+  }
+
+  .desktop-home-hero__media::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(31,25,20,.02),
+        rgba(31,25,20,.08)
+      );
+  }
+
+  .desktop-home-hero__media img,
+  .desktop-collection-media img,
+  .desktop-product-media img,
+  .desktop-editorial-media img,
+  .desktop-custom-media img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+    opacity:0;
+    transition:
+      opacity .28s ease,
+      transform .45s var(--dw-ease);
+  }
+
+  .desktop-home-hero__media.is-loaded img,
+  .desktop-collection-media.is-loaded img,
+  .desktop-product-media.is-loaded img,
+  .desktop-editorial-media.is-loaded img,
+  .desktop-custom-media.is-loaded img{
+    opacity:1;
+  }
+
+  .desktop-home-hero__copy{
+    padding:clamp(54px,5vw,82px);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-start;
+    background:
+      linear-gradient(
+        145deg,
+        #eee4d8 0%,
+        #e5d7c7 100%
+      );
+  }
+
+  .desktop-home-hero__title{
+    max-width:560px;
+    margin-top:22px;
+    font-size:clamp(48px,4.1vw,62px);
+    line-height:.98;
+    font-weight:900;
+    letter-spacing:-.055em;
+  }
+
+  .desktop-home-hero__body{
+    max-width:460px;
+    margin-top:26px;
+    color:#5f574f;
+    font-size:16px;
+    line-height:1.68;
+    font-weight:550;
+  }
+
+  .desktop-home-hero__actions{
+    margin-top:34px;
+    display:flex;
+    align-items:center;
+    gap:22px;
+    flex-wrap:wrap;
+  }
+
+  .desktop-home-section{
+    padding-top:var(--dw-section);
+  }
+
+  .desktop-home-section__head{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(280px,520px);
+    gap:48px;
+    align-items:end;
+    margin-bottom:42px;
+  }
+
+  .desktop-home-section__title{
+    margin-top:12px;
+    font-size:clamp(34px,3vw,46px);
+    line-height:1.02;
+    font-weight:900;
+    letter-spacing:-.045em;
+  }
+
+  .desktop-home-section__body{
+    color:var(--dw-muted);
+    font-size:15px;
+    line-height:1.65;
+  }
+
+  .desktop-collection-grid{
+    display:grid;
+    grid-template-columns:repeat(12,minmax(0,1fr));
+    gap:54px var(--dw-gap);
+  }
+
+  .desktop-collection-card{
+    grid-column:span 5;
+    width:100%;
+    display:block;
+    padding:0;
+    background:transparent;
+    color:var(--dw-ink);
+    text-align:left;
+    cursor:pointer;
+  }
+
+  .desktop-collection-card.is-wide{
+    grid-column:span 7;
+  }
+
+  .desktop-collection-media{
+    height:420px;
+    overflow:hidden;
+    border-radius:var(--dw-radius-lg);
+    background:#ede8e1;
+  }
+
+  .desktop-collection-card:hover .desktop-collection-media img{
+    transform:scale(1.025);
+  }
+
+  .desktop-collection-meta{
+    margin-top:17px;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:20px;
+    align-items:start;
+  }
+
+  .desktop-collection-name{
+    font-size:18px;
+    line-height:1.2;
+    font-weight:850;
+  }
+
+  .desktop-collection-count{
+    margin-top:5px;
+    color:var(--dw-muted);
+    font-size:12px;
+    line-height:1.4;
+  }
+
+  .desktop-featured-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:32px;
+    margin-bottom:38px;
+  }
+
+  .desktop-featured-copy{
+    max-width:640px;
+  }
+
+  .desktop-featured-copy .desktop-home-section__body{
+    margin-top:10px;
+  }
+
+  .desktop-product-grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:var(--dw-gap);
+  }
+
+  .desktop-product-link{
+    width:100%;
+    display:block;
+    padding:0;
+    background:transparent;
+    color:var(--dw-ink);
+    text-align:left;
+    cursor:pointer;
+  }
+
+  .desktop-product-media{
+    position:relative;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    border-radius:18px;
+    background:#eee9e2;
+  }
+
+  .desktop-product-media__angle{
+    position:absolute;
+    inset:0;
+    opacity:0!important;
+  }
+
+  .desktop-product-card.is-angle-active
+  .desktop-product-media__angle.is-angle-ready{
+    opacity:1!important;
+  }
+
+  .desktop-product-card.is-angle-active
+  .desktop-product-media__cover{
+    opacity:0;
+  }
+
+  .desktop-product-info{
+    padding-top:15px;
+  }
+
+  .desktop-product-name{
+    font-size:16px;
+    line-height:1.25;
+    font-weight:830;
+  }
+
+  .desktop-product-series{
+    margin-top:5px;
+    color:var(--dw-muted);
+    font-size:11px;
+    line-height:1.4;
+    font-weight:680;
+  }
+
+  .desktop-product-commercial{
+    margin-top:13px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  .desktop-product-price{
+    font-size:12px;
+    line-height:1.3;
+    font-weight:800;
+  }
+
+  .desktop-product-moq{
+    color:var(--dw-soft);
+    font-size:10px;
+    line-height:1.3;
+    font-weight:750;
+  }
+
+  .desktop-product-detail-link{
+    margin-top:12px;
+    color:var(--dw-muted);
+    opacity:0;
+    transform:translateY(3px);
+    transition:
+      opacity .2s ease,
+      transform .2s var(--dw-ease),
+      color .2s ease;
+  }
+
+  .desktop-product-card:hover .desktop-product-detail-link,
+  .desktop-product-link:focus-visible .desktop-product-detail-link{
+    opacity:1;
+    transform:none;
+    color:var(--dw-ink);
+  }
+
+  .desktop-home-band{
+    margin-top:var(--dw-section);
+  }
+
+  .desktop-home-band--sand{
+    padding:110px 0;
+    background:var(--dw-sand);
+  }
+
+  .desktop-editorial-grid{
+    display:grid;
+    grid-template-columns:repeat(12,minmax(0,1fr));
+    gap:var(--dw-gap);
+    align-items:center;
+  }
+
+  .desktop-editorial-media{
+    grid-column:span 6;
+    height:560px;
+    overflow:hidden;
+    border-radius:var(--dw-radius-lg);
+    background:#ddd4ca;
+  }
+
+  .desktop-editorial-copy{
+    grid-column:8 / span 5;
+    max-width:520px;
+  }
+
+  .desktop-editorial-title{
+    margin-top:18px;
+    font-size:clamp(38px,3.2vw,52px);
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-.05em;
+  }
+
+  .desktop-editorial-body{
+    margin-top:24px;
+    color:#5f574f;
+    font-size:16px;
+    line-height:1.7;
+  }
+
+  .desktop-custom-card{
+    display:grid;
+    grid-template-columns:5fr 7fr;
+    min-height:570px;
+    overflow:hidden;
+    border-radius:var(--dw-radius-xl);
+    background:#efe5de;
+  }
+
+  .desktop-custom-copy{
+    padding:clamp(54px,5vw,78px);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-start;
+  }
+
+  .desktop-custom-title{
+    max-width:500px;
+    margin-top:18px;
+    font-size:clamp(38px,3.2vw,52px);
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-.05em;
+  }
+
+  .desktop-custom-body{
+    max-width:460px;
+    margin-top:22px;
+    color:#625950;
+    font-size:15px;
+    line-height:1.7;
+  }
+
+  .desktop-custom-features{
+    margin-top:28px;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px 34px;
+  }
+
+  .desktop-custom-feature{
+    padding:10px 0;
+    border-bottom:1px solid rgba(72,56,45,.14);
+    color:#4b433c;
+    font-size:13px;
+    font-weight:760;
+  }
+
+  .desktop-custom-copy .desktop-arrow-link{
+    margin-top:28px;
+  }
+
+  .desktop-custom-media{
+    min-height:570px;
+    overflow:hidden;
+    border-radius:0;
+    background:#dfd4ca;
+  }
+
+  .desktop-wholesale-head{
+    max-width:760px;
+  }
+
+  .desktop-wholesale-head .desktop-home-section__body{
+    margin-top:14px;
+  }
+
+  .desktop-wholesale-grid{
+    margin-top:44px;
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    border-top:1px solid var(--dw-line);
+    border-bottom:1px solid var(--dw-line);
+  }
+
+  .desktop-wholesale-fact{
+    min-height:190px;
+    padding:30px 30px 30px 0;
+  }
+
+  .desktop-wholesale-fact + .desktop-wholesale-fact{
+    padding-left:30px;
+    border-left:1px solid var(--dw-line);
+  }
+
+  .desktop-wholesale-fact h3{
+    font-size:16px;
+    line-height:1.3;
+    font-weight:850;
+  }
+
+  .desktop-wholesale-fact p{
+    margin-top:14px;
+    color:var(--dw-muted);
+    font-size:13px;
+    line-height:1.65;
+  }
+
+  .desktop-home-cta{
+    margin-top:var(--dw-section);
+    padding:96px 0;
+    background:var(--dw-ink);
+    color:#f8f4ee;
+  }
+
+  .desktop-home-cta__inner{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:60px;
+    align-items:end;
+  }
+
+  .desktop-home-cta .desktop-eyebrow{
+    color:rgba(248,244,238,.48);
+  }
+
+  .desktop-home-cta__title{
+    max-width:820px;
+    margin-top:16px;
+    font-size:clamp(42px,4vw,58px);
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-.05em;
+  }
+
+  .desktop-home-cta__body{
+    max-width:680px;
+    margin-top:20px;
+    color:rgba(248,244,238,.62);
+    font-size:15px;
+    line-height:1.68;
+  }
+
+  .desktop-home-cta__actions{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:20px;
+    flex-wrap:wrap;
+  }
+
+  .desktop-home-cta .desktop-primary-button{
+    background:#f8f4ee;
+    color:var(--dw-ink);
+    box-shadow:none;
+  }
+
+  .desktop-home-cta .desktop-primary-button:hover{
+    background:#fff;
+  }
+
+  .desktop-home-cta .desktop-text-button{
+    color:#f8f4ee;
+  }
+
+  .desktop-reveal{
+    opacity:0;
+    transform:translateY(16px);
+    transition:
+      opacity .48s ease,
+      transform .48s var(--dw-ease);
+  }
+
+  .desktop-reveal.is-visible{
+    opacity:1;
+    transform:none;
+  }
+
+  .desktop-media-placeholder{
+    position:relative;
+  }
+
+  .desktop-media-placeholder::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(
+        110deg,
+        rgba(255,255,255,.16) 0%,
+        rgba(255,255,255,.42) 42%,
+        rgba(255,255,255,.16) 74%
+      );
+    background-size:220% 100%;
+    animation:desktopMediaShimmer 1.45s linear infinite;
+  }
+
+  .desktop-media-placeholder.is-loaded::before{
+    display:none;
+  }
+
+  @keyframes desktopMediaShimmer{
+    from{background-position:100% 0}
+    to{background-position:-120% 0}
+  }
+
+  @media (max-width:1199px){
+    .desktop-home-hero{
+      grid-template-columns:55fr 45fr;
+      min-height:590px;
+    }
+
+    .desktop-home-hero__media{
+      min-height:590px;
+    }
+
+    .desktop-home-hero__copy{
+      padding:48px;
+    }
+
+    .desktop-home-hero__title{
+      font-size:48px;
+    }
+
+    .desktop-home-section__head{
+      grid-template-columns:minmax(0,1fr) minmax(260px,430px);
+    }
+
+    .desktop-collection-media{
+      height:360px;
+    }
+
+    .desktop-product-grid{
+      grid-template-columns:repeat(3,minmax(0,1fr));
+    }
+
+    .desktop-editorial-media{
+      height:500px;
+    }
+
+    .desktop-custom-card{
+      grid-template-columns:1fr 1fr;
+    }
+
+    .desktop-wholesale-fact{
+      padding-right:20px;
+    }
+
+    .desktop-wholesale-fact + .desktop-wholesale-fact{
+      padding-left:20px;
+    }
+
+    .desktop-home-cta__inner{
+      grid-template-columns:1fr;
+    }
+
+    .desktop-home-cta__actions{
+      justify-content:flex-start;
+    }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .desktop-reveal,
+    .desktop-home-hero__media img,
+    .desktop-collection-media img,
+    .desktop-product-media img,
+    .desktop-editorial-media img{
+      transition-duration:.01ms!important;
+      animation:none!important;
+    }
+
+    .desktop-reveal{
+      opacity:1;
+      transform:none;
+    }
+  }
+}
