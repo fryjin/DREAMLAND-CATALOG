@@ -504,6 +504,39 @@ try{
       'Desktop fallback must exclude Home and Catalog while preserving later Mobile screens.'
     );
   }
+
+
+  const shell=
+    read(
+      'src/ui/desktop/styles/shell.css'
+    );
+
+  const compactShell=
+    compact(shell);
+
+  if(
+    !compactShell.includes(
+      compact(
+        '.desktop-experience:not(.is-home):not(.is-catalog) .desktop-site-main, .desktop-experience:not(.is-home):not(.is-catalog) .desktop-site-footer{display:none;}'
+      )
+    )
+  ){
+    fail(
+      'Desktop Shell must keep site main/footer visible for Catalog and hide them only on later Mobile-fallback screens.'
+    );
+  }
+
+  if(
+    compactShell.includes(
+      compact(
+        '.desktop-experience:not(.is-home) .desktop-site-main, .desktop-experience:not(.is-home) .desktop-site-footer{display:none;}'
+      )
+    )
+  ){
+    fail(
+      'Desktop Shell still contains the old Home-only visibility rule that blanks the Desktop Catalog.'
+    );
+  }
 }catch(error){
   fail(
     `Desktop Experience integration validation failed: ${error.message}`

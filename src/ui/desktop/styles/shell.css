@@ -218,8 +218,13 @@
     display:block;
   }
 
-  .desktop-experience:not(.is-home) .desktop-site-main,
-  .desktop-experience:not(.is-home) .desktop-site-footer{
+  /*
+   * Home and Catalog now have dedicated Desktop renderers.
+   * Hide Desktop main/footer only for screens that still use the temporary
+   * Mobile fallback.
+   */
+  .desktop-experience:not(.is-home):not(.is-catalog) .desktop-site-main,
+  .desktop-experience:not(.is-home):not(.is-catalog) .desktop-site-footer{
     display:none;
   }
 
