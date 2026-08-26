@@ -54,6 +54,16 @@
     );
   }
 
+  function catalogView(){
+    return root
+      .DreamlandDesktopCatalogView;
+  }
+
+  function catalogPresentation(){
+    return root
+      .DreamlandDesktopCatalog;
+  }
+
   function ensureStructure(){
     if(
       !rootElement||
@@ -73,6 +83,7 @@
           id="desktopSiteMain"
         >
           <div id="desktopHomeRoot"></div>
+          <div id="desktopCatalogRoot" hidden></div>
         </main>
 
         <div id="desktopFooterRoot"></div>
@@ -84,6 +95,139 @@
       'true';
   }
 
+  function scrollCatalogTop(){
+    const catalogRoot=
+      rootElement?.querySelector(
+        '#desktopCatalogRoot'
+      );
+
+    const top=
+      Math.max(
+        0,
+        (
+          catalogRoot
+            ?.getBoundingClientRect?.()
+            .top||
+          0
+        )+
+        (
+          root.scrollY||
+          0
+        )-
+        84
+      );
+
+    catalogView()
+      ?.setScrollY?.(
+        top
+      );
+
+    root.scrollTo?.({
+      top,
+      behavior:'smooth'
+    });
+  }
+
+  function refreshCatalog(options={}){
+    catalogPresentation()
+      ?.refresh?.(
+        options
+      );
+  }
+
+  function syncCanonicalSeries(scope){
+    if(
+      scope&&
+      scope!=='all'
+    ){
+      config.actions
+        ?.selectCatalogSeries?.(
+          scope
+        );
+    }
+  }
+
+  function enterCatalog(
+    scope='all',
+    {
+      fresh=true,
+      navigate=true
+    }={}
+  ){
+    const view=
+      catalogView();
+
+    if(view){
+      if(fresh){
+        view.reset({
+          scope
+        });
+      }else{
+        view.setScope(
+          scope
+        );
+      }
+    }
+
+    syncCanonicalSeries(
+      scope
+    );
+
+    refreshCatalog();
+
+    if(navigate){
+      config.actions
+        ?.navigate?.(
+          'catalog'
+        );
+    }
+  }
+
+  function navigateDesktop(screen){
+    if(screen==='catalog'){
+      enterCatalog(
+        'all',
+        {
+          fresh:true,
+          navigate:true
+        }
+      );
+
+      return;
+    }
+
+    config.actions
+      ?.navigate?.(
+        screen
+      );
+  }
+
+  function openSeriesDesktop(series){
+    const scope=
+      String(
+        series||
+        'all'
+      );
+
+    const view=
+      catalogView();
+
+    view?.reset?.({
+      scope
+    });
+
+    syncCanonicalSeries(
+      scope
+    );
+
+    refreshCatalog();
+
+    config.actions
+      ?.openSeries?.(
+        scope
+      );
+  }
+
   function configurePresentations(){
     const shell=
       root.DreamlandDesktopShell;
@@ -91,14 +235,41 @@
     const home=
       root.DreamlandDesktopHome;
 
+    const view=
+      catalogView();
+
+    const catalog=
+      catalogPresentation();
+
     if(
       !shell||
-      !home
+      !home||
+      !view||
+      !catalog
     ){
       throw new Error(
-        'Desktop Shell/Home runtimes must load before Desktop Experience.'
+        'Desktop Shell/Home/Catalog runtimes must load before Desktop Experience.'
       );
     }
+
+    view.configure({
+      products:
+        config.products,
+
+      seriesMeta:
+        config.seriesMeta,
+
+      batchSize:24,
+
+      productName:
+        config.productName,
+
+      productPriceValue:
+        config.productPriceValue,
+
+      productMoq:
+        config.productMoq
+    });
 
     shell.configure({
       content:
@@ -108,23 +279,18 @@
       languageNames,
       actions:{
         navigate:
-          screen=>
-            config.actions
-              ?.navigate?.(
-                screen
-              ),
+          navigateDesktop,
+
         chooseLanguage:
           lang=>
             config.actions
               ?.chooseLanguage?.(
                 lang
               ),
+
         openSeries:
-          series=>
-            config.actions
-              ?.openSeries?.(
-                series
-              ),
+          openSeriesDesktop,
+
         privacy:
           ()=>
             config.actions
@@ -135,49 +301,190 @@
     home.configure({
       content:
         localizedContent,
+
       homeConfig:
         config.siteContent
           ?.home||
         {},
+
       products:
         config.products,
+
       seriesMeta:
         config.seriesMeta,
+
       seriesLabel:
         config.seriesLabel,
+
       productName:
         config.productName,
+
       productCover:
         config.productCover,
+
       productAngle:
         config.productAngle,
+
       productDetail:
         config.productDetail,
+
       productPrice:
         config.productPrice,
+
       productMoq:
         config.productMoq,
+
       inquiryCount,
+
       media:
         config.media,
+
       actions:{
         navigate:
-          screen=>
-            config.actions
-              ?.navigate?.(
-                screen
-              ),
+          navigateDesktop,
+
         openSeries:
-          series=>
-            config.actions
-              ?.openSeries?.(
-                series
-              ),
+          openSeriesDesktop,
+
         openProduct:
           id=>
             config.actions
               ?.openProduct?.(
                 id
+              )
+      }
+    });
+
+    catalog.configure({
+      content:
+        localizedContent,
+
+      viewModel:
+        ()=>view
+          .buildViewModel(),
+
+      seriesLabel:
+        config.seriesLabel,
+
+      productName:
+        config.productName,
+
+      productCover:
+        config.productCover,
+
+      productPrice:
+        config.productPrice,
+
+      productMoq:
+        config.productMoq,
+
+      inquiryCount,
+
+      afterRender:
+        config.catalogAfterRender,
+
+      actions:{
+        setScope:
+          scope=>{
+            view.setScope(
+              scope
+            );
+
+            syncCanonicalSeries(
+              scope
+            );
+
+            refreshCatalog();
+
+            scrollCatalogTop();
+          },
+
+        setQuery:
+          query=>{
+            view.setQuery(
+              query
+            );
+
+            refreshCatalog({
+              preserveSearchFocus:true,
+              preserveScroll:true
+            });
+          },
+
+        setSizes:
+          sizes=>{
+            view.setSizes(
+              sizes
+            );
+
+            refreshCatalog();
+
+            scrollCatalogTop();
+          },
+
+        setSort:
+          sort=>{
+            view.setSort(
+              sort
+            );
+
+            refreshCatalog();
+
+            scrollCatalogTop();
+          },
+
+        loadMore:
+          ()=>{
+            view.setScrollY(
+              root.scrollY||
+              0
+            );
+
+            view.loadMore();
+
+            refreshCatalog({
+              preserveScroll:true
+            });
+          },
+
+        clearBrowse:
+          ()=>{
+            const scope=
+              view.snapshot()
+                .scope||
+              'all';
+
+            view.reset({
+              scope
+            });
+
+            syncCanonicalSeries(
+              scope
+            );
+
+            refreshCatalog();
+
+            scrollCatalogTop();
+          },
+
+        openProduct:
+          id=>{
+            view.setScrollY(
+              root.scrollY||
+              0
+            );
+
+            config.actions
+              ?.openProduct?.(
+                id
+              );
+          },
+
+        reviewInquiry:
+          ()=>
+            config.actions
+              ?.navigate?.(
+                'inquiry'
               )
       }
     });
@@ -207,6 +514,13 @@
       .mount(
         rootElement.querySelector(
           '#desktopHomeRoot'
+        )
+      );
+
+    root.DreamlandDesktopCatalog
+      .mount(
+        rootElement.querySelector(
+          '#desktopCatalogRoot'
         )
       );
 
@@ -284,44 +598,71 @@
     config={
       siteContent:
         options.siteContent||{},
+
       products:
-        Array.isArray(options.products)
+        Array.isArray(
+          options.products
+        )
           ? options.products
           : [],
+
       seriesMeta:
         options.seriesMeta||{},
+
       language:
         typeof options.language==='function'
           ? options.language
           : ()=>'en',
+
       languageNames:
         typeof options.languageNames==='function'
           ? options.languageNames
           : ()=>({}),
+
       seriesLabel:
         options.seriesLabel,
+
       productName:
         options.productName,
+
       productCover:
         options.productCover,
+
       productAngle:
         options.productAngle,
+
       productDetail:
         options.productDetail,
+
       productPrice:
         options.productPrice,
+
+      productPriceValue:
+        typeof options.productPriceValue==='function'
+          ? options.productPriceValue
+          : ()=>0,
+
       productMoq:
         options.productMoq,
+
       inquiryCount:
         typeof options.inquiryCount==='function'
           ? options.inquiryCount
           : ()=>0,
+
       media:
         typeof options.media==='function'
           ? options.media
           : ()=>null,
+
+      catalogAfterRender:
+        typeof options.catalogAfterRender==='function'
+          ? options.catalogAfterRender
+          : ()=>{},
+
       actions:
-        options.actions||{}
+        options.actions||
+        {}
     };
 
     return snapshot();
@@ -355,11 +696,25 @@
   }
 
   function syncScreen(screen){
-    currentScreen=
+    const next=
       String(
         screen||
         'home'
       );
+
+    if(
+      mode==='desktop'&&
+      currentScreen==='catalog'&&
+      next!=='catalog'
+    ){
+      catalogView()
+        ?.setScrollY?.(
+          root.scrollY||
+          0
+        );
+    }
+
+    currentScreen=next;
 
     if(
       mode!=='desktop'||
@@ -375,16 +730,49 @@
     const home=
       currentScreen==='home';
 
+    const catalog=
+      currentScreen==='catalog';
+
+    const desktopManaged=
+      home||
+      catalog;
+
     rootElement.classList
       .toggle(
         'is-home',
         home
       );
 
+    rootElement.classList
+      .toggle(
+        'is-catalog',
+        catalog
+      );
+
     root.DreamlandDesktopShell
       ?.setScreen?.(
         currentScreen
       );
+
+    const homeRoot=
+      rootElement.querySelector(
+        '#desktopHomeRoot'
+      );
+
+    const catalogRoot=
+      rootElement.querySelector(
+        '#desktopCatalogRoot'
+      );
+
+    if(homeRoot){
+      homeRoot.hidden=
+        !home;
+    }
+
+    if(catalogRoot){
+      catalogRoot.hidden=
+        !catalog;
+    }
 
     const app=
       document.getElementById(
@@ -393,7 +781,7 @@
 
     app?.setAttribute(
       'aria-hidden',
-      home
+      desktopManaged
         ? 'true'
         : 'false'
     );
@@ -401,6 +789,24 @@
     if(home){
       root.DreamlandDesktopHome
         ?.syncInquiry?.();
+    }
+
+    if(catalog){
+      refreshCatalog();
+
+      const restoreY=
+        catalogView()
+          ?.snapshot?.()
+          .scrollY||
+        0;
+
+      root.requestAnimationFrame?.(
+        ()=>
+          root.scrollTo?.(
+            0,
+            restoreY
+          )
+      );
     }
   }
 
@@ -417,6 +823,27 @@
 
     root.DreamlandDesktopHome
       ?.refresh?.();
+
+    if(currentScreen==='catalog'){
+      const restoreY=
+        catalogView()
+          ?.snapshot?.()
+          .scrollY||
+        root.scrollY||
+        0;
+
+      refreshCatalog({
+        preserveScroll:true
+      });
+
+      root.requestAnimationFrame?.(
+        ()=>
+          root.scrollTo?.(
+            0,
+            restoreY
+          )
+      );
+    }
 
     syncScreen(
       currentScreen
@@ -438,6 +865,52 @@
 
     root.DreamlandDesktopHome
       ?.syncInquiry?.();
+
+    if(
+      currentScreen===
+      'catalog'
+    ){
+      refreshCatalog({
+        preserveScroll:true
+      });
+    }
+  }
+
+  function setCatalogScope(
+    scope,
+    {
+      fresh=true
+    }={}
+  ){
+    const view=
+      catalogView();
+
+    if(!view){
+      return false;
+    }
+
+    if(fresh){
+      view.reset({
+        scope
+      });
+    }else{
+      view.setScope(
+        scope
+      );
+    }
+
+    syncCanonicalSeries(
+      scope
+    );
+
+    if(
+      mode==='desktop'&&
+      currentScreen==='catalog'
+    ){
+      refreshCatalog();
+    }
+
+    return true;
   }
 
   function snapshot(){
@@ -449,7 +922,11 @@
       mode,
       screen:currentScreen,
       inquiryCount:
-        inquiryCount()
+        inquiryCount(),
+      catalog:
+        catalogView()
+          ?.snapshot?.()||
+        null
     });
   }
 
@@ -462,6 +939,7 @@
       syncScreen,
       refresh,
       syncInquiry,
+      setCatalogScope,
       snapshot
     });
 })(

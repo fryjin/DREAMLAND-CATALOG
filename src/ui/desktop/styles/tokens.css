@@ -67,12 +67,16 @@
     display:none;
   }
 
+  body.desktop-experience-ready[data-desktop-screen="catalog"] > #app{
+    display:none;
+  }
+
   /*
    * Temporary fallback while Catalog / PDP / Inquiry desktop renderers
    * are delivered in B7-00B.2+.
    * The existing mobile presentation remains functional and isolated.
    */
-  body.desktop-experience-ready:not([data-desktop-screen="home"]) > #app{
+  body.desktop-experience-ready:not([data-desktop-screen="home"]):not([data-desktop-screen="catalog"]) > #app{
     margin:36px auto 64px;
   }
 

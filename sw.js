@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'dreamland-pwa-v90';
+const CACHE_VERSION = 'dreamland-pwa-v91';
 
 const APP_CACHE = `${CACHE_VERSION}-app`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
@@ -14,6 +14,7 @@ const APP_SHELL = [
   './src/ui/desktop/styles/tokens.css',
   './src/ui/desktop/styles/shell.css',
   './src/ui/desktop/styles/home.css',
+  './src/ui/desktop/styles/catalog.css',
   './src/ui/desktop/shell/runtime-desktop-shell.js',
   './src/ui/desktop/home/runtime-desktop-home.js',
   './src/ui/desktop/runtime-desktop-experience.js',
@@ -24,11 +25,13 @@ const APP_SHELL = [
   './src/services/submission/runtime-submission.js',
   './src/services/risk/runtime-risk.js',
   './src/features/catalog/runtime-catalog.js',
+  './src/features/catalog/runtime-desktop-catalog-view.js',
   './src/features/detail/runtime-detail.js',
   './src/features/inquiry/runtime-inquiry.js',
   './src/features/custom/runtime-custom.js',
   './src/features/contact/runtime-contact.js',
   './src/ui/catalog/runtime-catalog-renderer.js',
+  './src/ui/desktop/catalog/runtime-desktop-catalog.js',
   './src/ui/detail/runtime-detail-renderer.js',
   './src/ui/inquiry/runtime-inquiry-renderer.js',
   './src/app/runtime-inquiry-submission-flow.js',
