@@ -1,5 +1,6 @@
 /*
- * DREAMLAND B7-00B.1 — Desktop Editorial Home
+ * DREAMLAND B7-00B.2 — Desktop Editorial Home
+ * Asset-system + guided-hover refinement.
  */
 
 @media (min-width:1024px){
@@ -36,8 +37,8 @@
     background:
       linear-gradient(
         180deg,
-        rgba(31,25,20,.02),
-        rgba(31,25,20,.08)
+        rgba(31,25,20,.01),
+        rgba(31,25,20,.07)
       );
   }
 
@@ -53,7 +54,7 @@
     opacity:0;
     transition:
       opacity .28s ease,
-      transform .45s var(--dw-ease);
+      transform .34s var(--dw-ease);
   }
 
   .desktop-home-hero__media.is-loaded img,
@@ -152,14 +153,68 @@
   }
 
   .desktop-collection-media{
+    position:relative;
     height:420px;
     overflow:hidden;
     border-radius:var(--dw-radius-lg);
     background:#ede8e1;
   }
 
-  .desktop-collection-card:hover .desktop-collection-media img{
-    transform:scale(1.025);
+  .desktop-collection-media::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(23,22,20,0) 50%,
+        rgba(23,22,20,.32) 100%
+      );
+    opacity:0;
+    transition:opacity .22s ease;
+    pointer-events:none;
+  }
+
+  .desktop-collection-hover{
+    position:absolute;
+    left:22px;
+    bottom:20px;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#fff;
+    font-size:13px;
+    line-height:1;
+    font-weight:820;
+    opacity:0;
+    transform:translateY(6px);
+    transition:
+      opacity .22s ease,
+      transform .22s var(--dw-ease);
+    pointer-events:none;
+  }
+
+  .desktop-collection-card:hover
+  .desktop-collection-media img,
+  .desktop-collection-card:focus-visible
+  .desktop-collection-media img{
+    transform:scale(1.018);
+  }
+
+  .desktop-collection-card:hover
+  .desktop-collection-media::after,
+  .desktop-collection-card:focus-visible
+  .desktop-collection-media::after{
+    opacity:1;
+  }
+
+  .desktop-collection-card:hover
+  .desktop-collection-hover,
+  .desktop-collection-card:focus-visible
+  .desktop-collection-hover{
+    opacity:1;
+    transform:none;
   }
 
   .desktop-collection-meta{
@@ -200,6 +255,9 @@
   }
 
   .desktop-product-grid{
+    width:100%;
+    max-width:1320px;
+    margin-inline:auto;
     display:grid;
     grid-template-columns:repeat(4,minmax(0,1fr));
     gap:var(--dw-gap);
@@ -223,20 +281,55 @@
     background:#eee9e2;
   }
 
-  .desktop-product-media__angle{
+  .desktop-product-overlay{
     position:absolute;
     inset:0;
-    opacity:0!important;
-  }
-
-  .desktop-product-card.is-angle-active
-  .desktop-product-media__angle.is-angle-ready{
-    opacity:1!important;
-  }
-
-  .desktop-product-card.is-angle-active
-  .desktop-product-media__cover{
+    z-index:2;
+    display:flex;
+    align-items:flex-end;
+    padding:22px;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(23,22,20,.02) 36%,
+        rgba(23,22,20,.38) 100%
+      );
     opacity:0;
+    transition:opacity .22s ease;
+    pointer-events:none;
+  }
+
+  .desktop-product-overlay__label{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    color:#fff;
+    font-size:13px;
+    line-height:1;
+    font-weight:850;
+    transform:translateY(7px);
+    transition:transform .22s var(--dw-ease);
+  }
+
+  .desktop-product-link:hover
+  .desktop-product-media__image,
+  .desktop-product-link:focus-visible
+  .desktop-product-media__image{
+    transform:scale(1.025);
+  }
+
+  .desktop-product-link:hover
+  .desktop-product-overlay,
+  .desktop-product-link:focus-visible
+  .desktop-product-overlay{
+    opacity:1;
+  }
+
+  .desktop-product-link:hover
+  .desktop-product-overlay__label,
+  .desktop-product-link:focus-visible
+  .desktop-product-overlay__label{
+    transform:none;
   }
 
   .desktop-product-info{
@@ -276,24 +369,6 @@
     font-size:10px;
     line-height:1.3;
     font-weight:750;
-  }
-
-  .desktop-product-detail-link{
-    margin-top:12px;
-    color:var(--dw-muted);
-    opacity:0;
-    transform:translateY(3px);
-    transition:
-      opacity .2s ease,
-      transform .2s var(--dw-ease),
-      color .2s ease;
-  }
-
-  .desktop-product-card:hover .desktop-product-detail-link,
-  .desktop-product-link:focus-visible .desktop-product-detail-link{
-    opacity:1;
-    transform:none;
-    color:var(--dw-ink);
   }
 
   .desktop-home-band{
@@ -396,7 +471,6 @@
   .desktop-custom-media{
     min-height:570px;
     overflow:hidden;
-    border-radius:0;
     background:#dfd4ca;
   }
 
@@ -597,7 +671,8 @@
     .desktop-home-hero__media img,
     .desktop-collection-media img,
     .desktop-product-media img,
-    .desktop-editorial-media img{
+    .desktop-editorial-media img,
+    .desktop-custom-media img{
       transition-duration:.01ms!important;
       animation:none!important;
     }
