@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'dreamland-pwa-v89';
+const CACHE_VERSION = 'dreamland-pwa-v90';
 
 const APP_CACHE = `${CACHE_VERSION}-app`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
@@ -51,6 +51,7 @@ const APP_SHELL = [
   './data/i18n.json',
   './data/app-config.json',
   './data/site-content.json',
+  './data/desktop-home-assets.json',
   './icons/favicon-32.png',
   './icons/apple-touch-icon.png',
   './icons/icon-192.png',

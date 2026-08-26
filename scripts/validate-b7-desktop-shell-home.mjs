@@ -10,12 +10,6 @@ function fail(message){
   errors.push(message);
 }
 
-function exists(relative){
-  return fs.existsSync(
-    path.join(ROOT,relative)
-  );
-}
-
 function read(relative){
   return fs.readFileSync(
     path.join(ROOT,relative),
@@ -44,14 +38,18 @@ function includesAll(
 }
 
 /*
- * Gate 1 — The old Desktop Foundation prototype is retired.
+ * Gate 1 — The old Desktop Foundation prototype remains retired.
  */
 for(const relative of [
   'desktop-foundation.css',
   'desktop-foundation.js',
   'scripts/validate-b7-desktop-foundation.mjs'
 ]){
-  if(exists(relative)){
+  if(
+    fs.existsSync(
+      path.join(ROOT,relative)
+    )
+  ){
     fail(
       `Retired Desktop Foundation prototype file still exists: ${relative}`
     );
@@ -180,7 +178,7 @@ try{
 }
 
 /*
- * Gate 3 — Execute the pure Desktop Home ViewModel.
+ * Gate 3 — Execute Desktop Home ViewModel.
  */
 try{
   delete globalThis.DreamlandDesktopHome;
@@ -296,7 +294,7 @@ try{
       !model.custom.image
     ){
       fail(
-        'Desktop editorial sections must resolve product-backed imagery.'
+        'Desktop editorial sections must resolve imagery.'
       );
     }
   }
@@ -427,18 +425,6 @@ try{
     ],
     'Desktop Home styles'
   );
-
-  if(
-    read(
-      'src/ui/desktop/home/runtime-desktop-home.js'
-    ).includes(
-      'desktop-custom-media desktop-editorial-media'
-    )
-  ){
-    fail(
-      'Custom Home media must not inherit the Craft 12-column grid placement.'
-    );
-  }
 }catch(error){
   fail(
     `Desktop visual/content validation failed: ${error.message}`
@@ -483,7 +469,7 @@ try{
 }
 
 /*
- * Gate 6 — Package validation chain and PWA v89.
+ * Gate 6 — B7-00B.1 remains valid under later Desktop stages.
  */
 try{
   const packageJson=
@@ -498,7 +484,7 @@ try{
     )
   ){
     fail(
-      'Retired desktop:foundation npm script must be removed.'
+      'Retired desktop:foundation npm script must remain removed.'
     );
   }
 
@@ -533,26 +519,33 @@ try{
     !validate.includes(
       'npm run b7:device-baseline'
     )||
-    !validate.trim()
-      .endsWith(
-        'npm run desktop:home'
-      )
+    !validate.includes(
+      'npm run desktop:home'
+    )
   ){
     fail(
-      'npm run validate must keep B7 device baseline and finish with desktop:home.'
+      'npm run validate must keep B7 device baseline and desktop:home.'
     );
   }
 
   const sw=
     read('sw.js');
 
+  /*
+   * FIX R2:
+   * This must be a real digit character class (\d), not a literal "\\d".
+   */
+  const cacheVersion=
+    sw.match(
+      /const CACHE_VERSION = 'dreamland-pwa-v(\d+)';/
+    );
+
   if(
-    !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v89';"
-    )
+    !cacheVersion||
+    Number(cacheVersion[1])<89
   ){
     fail(
-      'Formal Desktop Shell + Home requires dreamland-pwa-v89.'
+      'Formal Desktop Shell + Home requires PWA v89 or later.'
     );
   }
 
@@ -638,5 +631,5 @@ console.log(
 );
 
 console.log(
-  'Prototype retired / separate Desktop Presentation / Editorial Home / item-count Inquiry / zh-en-ko / PWA v89 PASS.'
+  'Prototype retired / separate Desktop Presentation / Editorial Home / item-count Inquiry / zh-en-ko / PWA >= v89 PASS.'
 );

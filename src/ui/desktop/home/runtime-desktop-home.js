@@ -5,12 +5,61 @@
     return;
   }
 
-  const VERSION='B7-00B.1';
+  const VERSION='B7-00B.2';
+
+  const DEFAULT_ASSETS=Object.freeze({
+    hero:{
+      image:'./images/desktop/home/hero/hero-main.webp'
+    },
+    collections:{
+      masterpiece:{
+        image:'./images/desktop/home/collections/masterpiece.webp'
+      },
+      advanced:{
+        image:'./images/desktop/home/collections/advanced.webp'
+      },
+      holiday:{
+        image:'./images/desktop/home/collections/holiday.webp'
+      },
+      classic:{
+        image:'./images/desktop/home/collections/classic.webp'
+      }
+    },
+    featured:[
+      {
+        series:'advanced',
+        image:'./images/desktop/home/featured/featured-01.webp'
+      },
+      {
+        series:'masterpiece',
+        image:'./images/desktop/home/featured/featured-02.webp'
+      },
+      {
+        series:'holiday',
+        image:'./images/desktop/home/featured/featured-03.webp'
+      },
+      {
+        series:'classic',
+        image:'./images/desktop/home/featured/featured-04.webp'
+      }
+    ],
+    craft:{
+      image:'./images/desktop/home/craft/craft-main.webp'
+    },
+    custom:{
+      image:'./images/desktop/home/custom/custom-main.webp'
+    },
+    wholesale:{
+      image:'./images/desktop/home/wholesale/wholesale-main.webp'
+    }
+  });
 
   let config=null;
   let homeRoot=null;
   let mounted=false;
   let revealObserver=null;
+  let assetConfig=DEFAULT_ASSETS;
+  let assetLoadStarted=false;
 
   function text(value){
     return String(
@@ -60,30 +109,60 @@
     );
   }
 
-  function uniqueProducts(products){
-    const seen=new Set();
+  function productsForSeries(
+    products,
+    series
+  ){
+    return products.filter(
+      product=>
+        product.series===series
+    );
+  }
 
-    return products.filter(product=>{
-      const id=
-        text(product?.id);
+  function resolveFeaturedProduct(
+    products,
+    slot
+  ){
+    if(slot?.productId){
+      const byId=
+        products.find(
+          product=>
+            text(product?.id)===
+            text(slot.productId)
+        );
 
-      if(
-        !id||
-        seen.has(id)
-      ){
-        return false;
+      if(byId){
+        return byId;
       }
+    }
 
-      seen.add(id);
-      return true;
-    });
+    if(slot?.series){
+      const bySeries=
+        products.find(
+          product=>
+            product.series===
+            slot.series
+        );
+
+      if(bySeries){
+        return bySeries;
+      }
+    }
+
+    return null;
   }
 
   function buildViewModel(input={}){
     const content=
       input.content||{};
+
     const homeConfig=
       input.homeConfig||{};
+
+    const assets=
+      input.assets||
+      DEFAULT_ASSETS;
+
     const products=
       (
         Array.isArray(input.products)
@@ -105,14 +184,6 @@
         ? homeConfig.collectionOrder
         : Object.keys(seriesMeta);
 
-    const featuredSeriesOrder=
-      Array.isArray(
-        homeConfig.featuredSeriesOrder
-      )&&
-      homeConfig.featuredSeriesOrder.length
-        ? homeConfig.featuredSeriesOrder
-        : collectionOrder;
-
     const seriesLabel=
       typeof input.seriesLabel==='function'
         ? input.seriesLabel
@@ -127,31 +198,6 @@
               product?.id
             );
 
-    const productCover=
-      typeof input.productCover==='function'
-        ? input.productCover
-        : product=>
-            text(
-              product?.cover_image||
-              product?.cover
-            );
-
-    const productAngle=
-      typeof input.productAngle==='function'
-        ? input.productAngle
-        : product=>
-            text(
-              product?.angle_image
-            );
-
-    const productDetail=
-      typeof input.productDetail==='function'
-        ? input.productDetail
-        : product=>
-            text(
-              product?.detail_image
-            );
-
     const productPrice=
       typeof input.productPrice==='function'
         ? input.productPrice
@@ -162,32 +208,29 @@
         ? input.productMoq
         : ()=>1;
 
-    const productsForSeries=
-      series=>
-        products.filter(
-          product=>
-            product.series===series
-        );
-
     const collections=
       collectionOrder
         .map((series,index)=>{
           const list=
-            productsForSeries(series);
-
-          const representative=
-            list[0]||null;
+            productsForSeries(
+              products,
+              series
+            );
 
           return Object.freeze({
             id:series,
             label:seriesLabel(series),
             count:list.length,
             image:
-              representative
-                ? productCover(representative)
-                : '',
+              text(
+                assets
+                  ?.collections
+                  ?.[series]
+                  ?.image
+              ),
             layout:
-              index===0||index===3
+              index===0||
+              index===3
                 ? 'wide'
                 : 'narrow'
           });
@@ -196,30 +239,53 @@
           item=>item.count>0
         );
 
-    const explicitFeatured=
-      products.filter(
-        product=>
-          product.featured===true
-      );
+    const featuredSlots=
+      Array.isArray(
+        assets?.featured
+      )
+        ? assets.featured
+        : DEFAULT_ASSETS.featured;
 
-    const seriesFeatured=
-      featuredSeriesOrder
-        .map(
-          series=>
-            productsForSeries(series)[0]||
-            null
-        )
-        .filter(Boolean);
+    const used=new Set();
 
     const featuredProducts=
-      uniqueProducts([
-        ...explicitFeatured,
-        ...seriesFeatured,
-        ...products
-      ])
-        .slice(0,4)
-        .map(product=>
-          Object.freeze({
+      featuredSlots
+        .map(slot=>{
+          let product=
+            resolveFeaturedProduct(
+              products,
+              slot
+            );
+
+          if(
+            product&&
+            used.has(
+              text(product.id)
+            )
+          ){
+            product=null;
+          }
+
+          if(!product){
+            product=
+              products.find(
+                candidate=>
+                  !used.has(
+                    text(candidate.id)
+                  )
+              )||
+              null;
+          }
+
+          if(!product){
+            return null;
+          }
+
+          used.add(
+            text(product.id)
+          );
+
+          return Object.freeze({
             id:text(product.id),
             name:productName(product),
             series:text(product.series),
@@ -227,10 +293,8 @@
               seriesLabel(
                 product.series
               ),
-            cover:
-              productCover(product),
-            angle:
-              productAngle(product),
+            image:
+              text(slot?.image),
             price:
               productPrice(product),
             moq:
@@ -240,68 +304,54 @@
                   productMoq(product)
                 )||1
               )
-          })
-        );
-
-    const craftProduct=
-      products.find(
-        product=>
-          product.series==='masterpiece'&&
-          productDetail(product)
-      )||
-      products.find(
-        product=>
-          productDetail(product)
-      )||
-      products[0]||
-      null;
-
-    const customProduct=
-      products.find(
-        product=>
-          product.series==='masterpiece'&&
-          productAngle(product)
-      )||
-      products.find(
-        product=>
-          productAngle(product)
-      )||
-      products[1]||
-      products[0]||
-      null;
+          });
+        })
+        .filter(Boolean)
+        .slice(0,4);
 
     return Object.freeze({
       content,
+
       hero:Object.freeze({
         image:
-          text(homeConfig.heroImage)||
-          './images/shared/home/HOME001/cover.webp'
+          text(
+            assets?.hero?.image
+          )||
+          DEFAULT_ASSETS.hero.image
       }),
+
       collections:Object.freeze(
         collections
       ),
+
       featuredProducts:Object.freeze(
         featuredProducts
       ),
+
       craft:Object.freeze({
         image:
-          craftProduct
-            ? (
-                productDetail(craftProduct)||
-                productAngle(craftProduct)||
-                productCover(craftProduct)
-              )
-            : ''
+          text(
+            assets?.craft?.image
+          )||
+          DEFAULT_ASSETS.craft.image
       }),
+
       custom:Object.freeze({
         image:
-          customProduct
-            ? (
-                productAngle(customProduct)||
-                productCover(customProduct)
-              )
-            : ''
+          text(
+            assets?.custom?.image
+          )||
+          DEFAULT_ASSETS.custom.image
       }),
+
+      wholesale:Object.freeze({
+        image:
+          text(
+            assets?.wholesale?.image
+          )||
+          DEFAULT_ASSETS.wholesale.image
+      }),
+
       inquiryCount:
         Math.max(
           0,
@@ -314,35 +364,83 @@
 
   function currentViewModel(){
     if(!config){
-      return buildViewModel();
+      return buildViewModel({
+        assets:assetConfig
+      });
     }
 
     return buildViewModel({
       content:
         config.content?.()||{},
+
       homeConfig:
         config.homeConfig||{},
+
+      assets:
+        assetConfig,
+
       products:
         config.products||[],
+
       seriesMeta:
         config.seriesMeta||{},
+
       seriesLabel:
         config.seriesLabel,
+
       productName:
         config.productName,
-      productCover:
-        config.productCover,
-      productAngle:
-        config.productAngle,
-      productDetail:
-        config.productDetail,
+
       productPrice:
         config.productPrice,
+
       productMoq:
         config.productMoq,
+
       inquiryCount:
         config.inquiryCount?.()||0
     });
+  }
+
+  async function loadAssetContract(){
+    if(assetLoadStarted){
+      return;
+    }
+
+    assetLoadStarted=true;
+
+    try{
+      const response=
+        await fetch(
+          './data/desktop-home-assets.json',
+          {
+            cache:'no-cache'
+          }
+        );
+
+      if(!response.ok){
+        return;
+      }
+
+      const loaded=
+        await response.json();
+
+      if(
+        loaded&&
+        typeof loaded==='object'
+      ){
+        assetConfig=loaded;
+
+        if(mounted){
+          refresh();
+        }
+      }
+    }catch(error){
+      console.warn(
+        '[DesktopHome] asset contract fallback:',
+        error
+      );
+    }
   }
 
   function designLabel(
@@ -475,6 +573,14 @@
                   data-desktop-priority="auto"
                   alt="${escapeHtml(item.label)}"
                 >
+
+                <span
+                  class="desktop-collection-hover"
+                  aria-hidden="true"
+                >
+                  ${escapeHtml(content.explore||'Explore')}
+                  <span>→</span>
+                </span>
               </div>
 
               <div class="desktop-collection-meta">
@@ -553,30 +659,29 @@
                 type="button"
                 data-desktop-home-action="product"
                 data-desktop-product="${escapeHtml(product.id)}"
+                aria-label="${escapeHtml(`${content.viewDetails||'View details'}: ${product.name}`)}"
               >
                 <div
                   class="desktop-product-media media-frame desktop-media-placeholder"
                 >
                   <img
-                    class="desktop-product-media__cover"
+                    class="desktop-product-media__image"
                     data-desktop-image
-                    data-desktop-source="${escapeHtml(product.cover)}"
+                    data-desktop-source="${escapeHtml(product.image)}"
                     data-desktop-kind="catalog"
                     data-desktop-priority="auto"
                     alt="${escapeHtml(product.name)}"
                   >
 
-                  ${
-                    product.angle
-                      ? `
-                        <img
-                          class="desktop-product-media__angle"
-                          data-desktop-angle-source="${escapeHtml(product.angle)}"
-                          alt=""
-                        >
-                      `
-                      : ''
-                  }
+                  <span
+                    class="desktop-product-overlay"
+                    aria-hidden="true"
+                  >
+                    <span class="desktop-product-overlay__label">
+                      ${escapeHtml(content.viewDetails||'View details')}
+                      <span>→</span>
+                    </span>
+                  </span>
                 </div>
 
                 <div class="desktop-product-info">
@@ -597,11 +702,6 @@
                       ${escapeHtml(content.moq||'MOQ')}
                       ${escapeHtml(product.moq)}
                     </span>
-                  </div>
-
-                  <div class="desktop-product-detail-link desktop-arrow-link">
-                    ${escapeHtml(content.viewDetails||'')}
-                    <span class="desktop-arrow" aria-hidden="true">→</span>
                   </div>
                 </div>
               </button>
@@ -658,6 +758,7 @@
   function customHtml(view){
     const content=
       view.content.custom||{};
+
     const features=
       Array.isArray(content.features)
         ? content.features
@@ -722,6 +823,7 @@
   function wholesaleHtml(view){
     const content=
       view.content.wholesale||{};
+
     const facts=
       Array.isArray(content.facts)
         ? content.facts
@@ -765,6 +867,7 @@
   function ctaHtml(view){
     const content=
       view.content.cta||{};
+
     const hasInquiry=
       view.inquiryCount>0;
 
@@ -918,9 +1021,7 @@
       )
     ];
 
-    if(
-      !elements.length
-    ){
+    if(!elements.length){
       return;
     }
 
@@ -969,95 +1070,6 @@
         revealObserver
           ?.observe(element)
     );
-  }
-
-  async function activateAngle(card){
-    const angle=
-      card?.querySelector(
-        '[data-desktop-angle-source]'
-      );
-
-    if(
-      !angle||
-      !angle.dataset.desktopAngleSource
-    ){
-      return;
-    }
-
-    if(
-      angle.dataset.angleLoaded!==
-      'true'
-    ){
-      const success=
-        await loadImage(
-          angle,
-          angle.dataset
-            .desktopAngleSource,
-          'catalog',
-          'low'
-        );
-
-      if(!success){
-        return;
-      }
-
-      angle.dataset.angleLoaded='true';
-      angle.classList.add(
-        'is-angle-ready'
-      );
-    }
-
-    card.classList.add(
-      'is-angle-active'
-    );
-  }
-
-  function deactivateAngle(card){
-    card?.classList.remove(
-      'is-angle-active'
-    );
-  }
-
-  function onPointerOver(event){
-    const card=
-      event.target.closest?.(
-        '[data-desktop-product-card]'
-      );
-
-    if(
-      !card||
-      (
-        event.relatedTarget&&
-        card.contains(
-          event.relatedTarget
-        )
-      )
-    ){
-      return;
-    }
-
-    activateAngle(card);
-  }
-
-  function onPointerOut(event){
-    const card=
-      event.target.closest?.(
-        '[data-desktop-product-card]'
-      );
-
-    if(
-      !card||
-      (
-        event.relatedTarget&&
-        card.contains(
-          event.relatedTarget
-        )
-      )
-    ){
-      return;
-    }
-
-    deactivateAngle(card);
   }
 
   function onClick(event){
@@ -1116,39 +1128,45 @@
         typeof options.content==='function'
           ? options.content
           : ()=>({}),
+
       homeConfig:
         options.homeConfig||{},
+
       products:
         Array.isArray(options.products)
           ? options.products
           : [],
+
       seriesMeta:
         options.seriesMeta||{},
+
       seriesLabel:
         options.seriesLabel,
+
       productName:
         options.productName,
-      productCover:
-        options.productCover,
-      productAngle:
-        options.productAngle,
-      productDetail:
-        options.productDetail,
+
       productPrice:
         options.productPrice,
+
       productMoq:
         options.productMoq,
+
       inquiryCount:
         typeof options.inquiryCount==='function'
           ? options.inquiryCount
           : ()=>0,
+
       media:
         typeof options.media==='function'
           ? options.media
           : ()=>null,
+
       actions:
         options.actions||{}
     };
+
+    loadAssetContract();
 
     return snapshot();
   }
@@ -1167,18 +1185,10 @@
         onClick
       );
 
-      homeRoot.addEventListener(
-        'pointerover',
-        onPointerOver
-      );
-
-      homeRoot.addEventListener(
-        'pointerout',
-        onPointerOut
-      );
-
       mounted=true;
     }
+
+    loadAssetContract();
 
     return render(
       currentViewModel()
@@ -1241,7 +1251,10 @@
       configured:Boolean(config),
       mounted,
       productCount:
-        config?.products?.length||0
+        config?.products?.length||0,
+      assetContract:
+        assetConfig?.stage||
+        'fallback'
     });
   }
 
