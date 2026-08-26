@@ -5,7 +5,7 @@
     return;
   }
 
-  const VERSION='B7-00B.1';
+  const VERSION='B7-00B.3B';
   const BREAKPOINT='(min-width: 1024px)';
 
   let config=null;
@@ -65,6 +65,11 @@
       .DreamlandDesktopCatalog;
   }
 
+  function detailPresentation(){
+    return root
+      .DreamlandDesktopDetail;
+  }
+
   function ensureStructure(){
     if(
       !rootElement||
@@ -85,6 +90,7 @@
         >
           <div id="desktopHomeRoot"></div>
           <div id="desktopCatalogRoot" hidden></div>
+          <div id="desktopDetailRoot" hidden></div>
         </main>
 
         <div id="desktopFooterRoot"></div>
@@ -242,14 +248,18 @@
     const catalog=
       catalogPresentation();
 
+    const detail=
+      detailPresentation();
+
     if(
       !shell||
       !home||
       !view||
-      !catalog
+      !catalog||
+      !detail
     ){
       throw new Error(
-        'Desktop Shell/Home/Catalog runtimes must load before Desktop Experience.'
+        'Desktop Shell/Home/Catalog/Detail runtimes must load before Desktop Experience.'
       );
     }
 
@@ -353,6 +363,125 @@
               ?.openProduct?.(
                 id
               )
+      }
+    });
+
+    detail.configure({
+      content:
+        localizedContent,
+
+      language:
+        config.language,
+
+      viewModel:
+        ()=>config.detailState
+          ?.buildViewModel?.()||
+          {
+            empty:true
+          },
+
+      seriesLabel:
+        config.seriesLabel,
+
+      productName:
+        config.productName,
+
+      productDescription:
+        config.productDescription,
+
+      productCover:
+        config.productCover,
+
+      productImages:
+        config.productImages,
+
+      productPrice:
+        config.productPrice,
+
+      choiceLabel:
+        config.choiceLabel,
+
+      scentDisplayText:
+        config.scentDisplayText,
+
+      sizeDimensions:
+        config.sizeDimensions,
+
+      optionPreview:
+        config.optionPreview,
+
+      packSurcharge:
+        config.packSurcharge,
+
+      money:
+        config.money,
+
+      qtyUnit:
+        config.qtyUnit,
+
+      media:
+        config.media,
+
+      actions:{
+        back:
+          ()=>config.actions
+            ?.detailBack?.(),
+
+        setOption:
+          (
+            key,
+            value
+          )=>
+            config.detailState
+              ?.setOption?.(
+                key,
+                value
+              ),
+
+        setScent:
+          scentId=>
+            config.detailState
+              ?.setScent?.(
+                scentId
+              ),
+
+        setQuantity:
+          value=>{
+            const result=
+              config.detailState
+                ?.setQuantity?.(
+                  value
+                )||
+              null;
+
+            config.actions
+              ?.detailQuantityFeedback?.(
+                result
+              );
+
+            return result;
+          },
+
+        adjustQuantity:
+          delta=>
+            config.detailState
+              ?.adjustQuantity?.(
+                delta
+              ),
+
+        addInquiry:
+          ()=>{
+            config.actions
+              ?.addConfiguredProduct?.();
+
+            syncInquiry();
+          },
+
+        customProject:
+          ()=>config.actions
+            ?.navigate?.(
+              'custom'
+            )
       }
     });
 
@@ -589,6 +718,13 @@
         )
       );
 
+    root.DreamlandDesktopDetail
+      .mount(
+        rootElement.querySelector(
+          '#desktopDetailRoot'
+        )
+      );
+
     desktopMounted=true;
 
     syncInquiry();
@@ -701,6 +837,36 @@
       productDetail:
         options.productDetail,
 
+      productDescription:
+        options.productDescription,
+
+      productImages:
+        options.productImages,
+
+      detailState:
+        options.detailState,
+
+      choiceLabel:
+        options.choiceLabel,
+
+      scentDisplayText:
+        options.scentDisplayText,
+
+      sizeDimensions:
+        options.sizeDimensions,
+
+      optionPreview:
+        options.optionPreview,
+
+      packSurcharge:
+        options.packSurcharge,
+
+      money:
+        options.money,
+
+      qtyUnit:
+        options.qtyUnit,
+
       productPrice:
         options.productPrice,
 
@@ -800,9 +966,20 @@
     const catalog=
       currentScreen==='catalog';
 
+    const detail=
+      currentScreen==='detail';
+
+    /*
+     * Keep the established Home/Catalog aggregate marker intact for the
+     * historical 3A gate, while Detail becomes an additional Desktop-owned
+     * screen in 3B.
+     */
     const desktopManaged=
       home||
       catalog;
+
+    const detailManaged=
+      detail;
 
     rootElement.classList
       .toggle(
@@ -814,6 +991,12 @@
       .toggle(
         'is-catalog',
         catalog
+      );
+
+    rootElement.classList
+      .toggle(
+        'is-detail',
+        detail
       );
 
     root.DreamlandDesktopShell
@@ -831,6 +1014,11 @@
         '#desktopCatalogRoot'
       );
 
+    const detailRoot=
+      rootElement.querySelector(
+        '#desktopDetailRoot'
+      );
+
     if(homeRoot){
       homeRoot.hidden=
         !home;
@@ -841,6 +1029,11 @@
         !catalog;
     }
 
+    if(detailRoot){
+      detailRoot.hidden=
+        !detail;
+    }
+
     const app=
       document.getElementById(
         'app'
@@ -848,7 +1041,10 @@
 
     app?.setAttribute(
       'aria-hidden',
-      desktopManaged
+      (
+        desktopManaged||
+        detailManaged
+      )
         ? 'true'
         : 'false'
     );
@@ -856,6 +1052,19 @@
     if(home){
       root.DreamlandDesktopHome
         ?.syncInquiry?.();
+    }
+
+    if(detail){
+      root.DreamlandDesktopDetail
+        ?.refresh?.();
+
+      root.requestAnimationFrame?.(
+        ()=>
+          root.scrollTo?.(
+            0,
+            0
+          )
+      );
     }
 
     if(catalog){
@@ -890,6 +1099,13 @@
 
     root.DreamlandDesktopHome
       ?.refresh?.();
+
+    if(currentScreen==='detail'){
+      root.DreamlandDesktopDetail
+        ?.refresh?.({
+          preserveScroll:true
+        });
+    }
 
     if(currentScreen==='catalog'){
       const restoreY=
@@ -931,6 +1147,9 @@
       );
 
     root.DreamlandDesktopHome
+      ?.syncInquiry?.();
+
+    root.DreamlandDesktopDetail
       ?.syncInquiry?.();
 
     if(
@@ -993,6 +1212,10 @@
         inquiryCount(),
       catalog:
         catalogView()
+          ?.snapshot?.()||
+        null,
+      detail:
+        detailPresentation()
           ?.snapshot?.()||
         null
     });
