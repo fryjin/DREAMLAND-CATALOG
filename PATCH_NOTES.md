@@ -1,63 +1,86 @@
-# DREAMLAND B7-00B.4A R1 — Desktop Visual Refresh Foundation
+# DREAMLAND B7-00B.4A R1.1
 
-Base: `develop@ef32575f48e81378d8907636119a937bc99b7c73`
+## Stage
+Typography + Foundation Migration + Public Copy Fix
 
-Release after apply:
-- Client: `b7-00b4a-r1-v99`
-- PWA: `dreamland-pwa-v99`
+## Base
+This is an **incremental patch** for:
+
+`b7-00b4a-r1@cf4e11b4391dda0633c0473a62f165bf7d5aa068`
+
+Do not apply it to `develop` or to the old pre-R1 tree.
 
 ## Scope
 
-- Expanded semantic Desktop design tokens.
-- New shared `primitives.css` for typography, actions, surfaces, forms, choices, media, focus and motion.
-- Typography / line-breaking normalization across the existing Desktop DOM:
-  - editorial heading `text-wrap: balance`
-  - body `text-wrap: pretty`
-  - Korean `word-break: keep-all`
-  - short commercial/action labels use `white-space: nowrap`
-  - known short summary headings remain one line at >=1280px
-  - responsive fallback remains available at 1024–1199px
-- All current Desktop screens receive an explicit Desktop-owned shell successor rule.
-- New `desktop:visual-foundation` validator.
-- Release / Service Worker / historical Desktop release gates advanced to v99.
+### Typography
+- Adds a reliable Desktop `data-lang` presentation hook.
+- English display copy may use editorial `text-wrap: balance`.
+- Chinese display copy uses natural strict line breaking, not generic balance.
+- Korean uses `word-break: keep-all`.
+- At >=1280px, short Chinese Custom / Inquiry-flow / Success page displays use available width before creating a second line.
 
-## Intentionally unchanged
+### Visual Foundation migration
+- Warmer canvas / paper / surface palette.
+- Smaller, more consistent UI and panel radius system.
+- Custom form sections become divider-led editorial sections instead of large outer white cards.
+- Contact form outer card is removed.
+- PDP lower “Product information / Current configuration” cards become editorial divider sections.
+- Inquiry / Review / Success summaries use shared semantic surfaces.
+- Desktop boot background follows the Foundation palette.
 
-- Business owners and state.
-- Pricing / MOQ / quantity logic.
-- Inquiry / Contact storage.
-- Submission / Risk / Captcha.
-- Desktop runtime routing.
-- Home / Catalog / PDP / Custom / Inquiry DOM composition.
-- Startup Loader / Desktop boot architecture.
+### Inquiry progress
+Changes the progress treatment from:
+
+`line -> labels`
+
+to:
+
+`labels -> progress line`
+
+Active / complete steps receive the stronger lower rule.
+
+### Public-facing copy
+Refreshes EN / ZH / KO copy for:
+- Custom Project
+- Inquiry
+- Contact
+- Review
+- Success
+
+The patch removes several internal/product-spec phrases such as:
+- “先说清楚这是什么项目。”
+- “在一个页面完成最终确认。”
+- “谢谢，项目已经交给我们了。”
+- “Everything in one place.”
+- “Thank you. Your project is now with us.”
+
+The Chinese customer-facing concept is also normalized from mixed “意向单 / 询价单” language toward clearer quotation/inquiry language in the Desktop site.
+
+## Boundaries
+Not changed:
+- DreamlandInquiry canonical owner
+- DreamlandContact canonical owner
+- DreamlandDetail canonical owner
+- DreamlandCustom canonical owner
+- DreamlandInquirySubmissionFlow
+- DreamlandSubmission
+- DreamlandRisk
+- MOQ / price / quantity / storage / submission logic
+- Mobile presentation
+- PWA boot/convergence architecture
+
+The existing R1 release stays `b7-00b4a-r1-v99 / dreamland-pwa-v99` because R1.1 is an acceptance refinement inside the same unmerged R1 release.
 
 ## Apply
 
-```bash
-git switch develop
-git pull
-git rev-parse HEAD
-# Must be ef32575f48e81378d8907636119a937bc99b7c73
+From the existing `b7-00b4a-r1` branch:
 
-git switch -c b7-00b4a-r1
-unzip DREAMLAND-CATALOG_B7-00B.4A_R1_Foundation_Patch.zip
-node APPLY_B7_00B_4A_R1.mjs
+```bash
+git rev-parse HEAD
+# must be cf4e11b4391dda0633c0473a62f165bf7d5aa068
+
+node APPLY_B7_00B_4A_R1_1.mjs
 npm run check
 ```
 
-Do not run the patch twice.
-
-If `npm run check` reports an Acceptance Gate mismatch, keep the dirty tree and report the **first failure only**; do not reset and do not reapply an older patch.
-
-## Real Preview focus
-
-Validate at 1024 / 1280 / 1440 / 1920 and EN / ZH / KO:
-
-1. Header navigation and Inquiry CTA stay single-line.
-2. Short summary headings do not wrap unnecessarily on normal Desktop widths.
-3. Long editorial titles wrap deliberately and remain balanced rather than breaking awkwardly.
-4. Korean headings do not split semantic words unexpectedly.
-5. No horizontal overflow from `nowrap` controls at 1024px.
-6. Home / Catalog / PDP / Custom / Inquiry / Contact / Review / Success remain Desktop-native.
-7. Mobile below 1024px remains unchanged.
-8. No Desktop -> Mobile startup flash.
+If `npm run check` fails, do **not** reset or replay R1. Send the first failure from the current dirty tree for a successor acceptance fix.

@@ -43,6 +43,44 @@
     );
   }
 
+  /*
+   * B7-00B.4A R1.1 — presentation-only language hook.
+   * Typography needs a stable locale selector without reaching into Mobile DOM.
+   */
+  function syncPresentationLanguage(){
+    if(
+      !rootElement||
+      !config
+    ){
+      return;
+    }
+
+    const requested=
+      String(
+        config.language?.()||
+        'en'
+      );
+
+    const lang=
+      ['en','zh','ko']
+        .includes(
+          requested
+        )
+        ? requested
+        : 'en';
+
+    rootElement.dataset
+      .lang=
+      lang;
+
+    rootElement.setAttribute(
+      'lang',
+      lang==='zh'
+        ? 'zh-CN'
+        : lang
+    );
+  }
+
   function inquiryCount(){
     return Math.max(
       0,
@@ -1005,6 +1043,7 @@
     }
 
     ensureStructure();
+    syncPresentationLanguage();
     configurePresentations();
 
     root.DreamlandDesktopShell
@@ -1321,6 +1360,8 @@
       return;
     }
 
+    syncPresentationLanguage();
+
     document.body.dataset
       .desktopScreen=
       currentScreen;
@@ -1612,6 +1653,8 @@
     ){
       return;
     }
+
+    syncPresentationLanguage();
 
     root.DreamlandDesktopShell
       ?.refresh?.();

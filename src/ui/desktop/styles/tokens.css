@@ -21,17 +21,17 @@
     /* ---------------------------------------------------------------
      * Legacy palette aliases — retained for B7-00B.1–3D compatibility.
      * ------------------------------------------------------------- */
-    --dw-canvas:#f5f3ef;
-    --dw-surface:#faf8f4;
-    --dw-card:#ffffff;
-    --dw-sand:#e9e0d5;
-    --dw-sand-strong:#d8c9b8;
-    --dw-clay:#bfa38e;
-    --dw-taupe:#988779;
-    --dw-ink:#171614;
-    --dw-muted:#77736d;
-    --dw-soft:#a09b94;
-    --dw-line:rgba(71,58,47,.12);
+    --dw-canvas:#f3efe9;
+    --dw-surface:#fbf8f3;
+    --dw-card:#fffdf9;
+    --dw-sand:#e6dacd;
+    --dw-sand-strong:#d4c3b2;
+    --dw-clay:#b89b85;
+    --dw-taupe:#8c7a6d;
+    --dw-ink:#181512;
+    --dw-muted:#756c64;
+    --dw-soft:#9b928a;
+    --dw-line:rgba(53,43,35,.14);
     --dw-dark-line:rgba(255,255,255,.14);
 
     /* Semantic color system. */
@@ -39,8 +39,8 @@
     --dw-color-paper:var(--dw-surface);
     --dw-color-surface:var(--dw-surface);
     --dw-color-surface-raised:var(--dw-card);
-    --dw-color-surface-warm:#efe6dc;
-    --dw-color-surface-warm-soft:#f3ece4;
+    --dw-color-surface-warm:#eee3d6;
+    --dw-color-surface-warm-soft:#f5eee6;
     --dw-color-sand:var(--dw-sand);
     --dw-color-clay:var(--dw-clay);
     --dw-color-taupe:var(--dw-taupe);
@@ -49,7 +49,7 @@
     --dw-color-muted:var(--dw-muted);
     --dw-color-faint:var(--dw-soft);
     --dw-color-line:var(--dw-line);
-    --dw-color-line-strong:rgba(71,58,47,.22);
+    --dw-color-line-strong:rgba(53,43,35,.24);
     --dw-color-inverse:#f8f4ee;
     --dw-color-danger:#8c5146;
     --dw-color-danger-soft:#f7ebe7;
@@ -135,15 +135,15 @@
     --dw-section-editorial:clamp(128px,10vw,180px);
 
     /* Existing page-radius aliases plus semantic radii for new primitives. */
-    --dw-radius-xl:28px;
-    --dw-radius-lg:22px;
-    --dw-radius-md:14px;
-    --dw-radius-sm:8px;
-    --dw-radius-control:12px;
-    --dw-radius-ui:14px;
-    --dw-radius-panel:18px;
-    --dw-radius-editorial:22px;
-    --dw-radius-campaign:28px;
+    --dw-radius-xl:20px;
+    --dw-radius-lg:14px;
+    --dw-radius-md:10px;
+    --dw-radius-sm:6px;
+    --dw-radius-control:10px;
+    --dw-radius-ui:12px;
+    --dw-radius-panel:14px;
+    --dw-radius-editorial:18px;
+    --dw-radius-campaign:22px;
     --dw-radius-pill:999px;
 
     /* Elevation. */
@@ -313,3 +313,10 @@
     cursor:pointer;
   }
 }
+
+/*
+ * B7-00B.4A R1.1 — Foundation migration
+ * Warm Editorial values now flow through the legacy aliases so B7-00B.1–3D
+ * page composition adopts the same palette and geometry without moving
+ * business or routing ownership.
+ */

@@ -158,6 +158,150 @@ try{
 }
 
 try{
+  const experience=
+    read('src/ui/desktop/runtime-desktop-experience.js');
+  const primitives=
+    read('src/ui/desktop/styles/primitives.css');
+  const inquiry=
+    read('src/ui/desktop/styles/inquiry.css');
+  const custom=
+    read('src/ui/desktop/styles/custom.css');
+  const detail=
+    read('src/ui/desktop/styles/detail.css');
+  const site=
+    JSON.parse(
+      read('data/site-content.json')
+    );
+
+  includesAll(
+    experience,
+    [
+      'function syncPresentationLanguage()',
+      'rootElement.dataset',
+      ".lang=\n      lang;",
+      "lang==='zh'"
+    ],
+    'Desktop language-aware presentation hook'
+  );
+
+  includesAll(
+    primitives,
+    [
+      'B7-00B.4A R1.1 — language-aware typography successor',
+      '.desktop-experience[data-lang="en"]',
+      '.desktop-experience[data-lang="zh"]',
+      '.desktop-experience[data-lang="ko"]',
+      'line-break:strict;',
+      'word-break:keep-all;',
+      '@media (min-width:1280px)'
+    ],
+    'R1.1 typography successor'
+  );
+
+  if(
+    inquiry.includes(
+      '.desktop-flow-progress{\n    margin-top:34px;\n    display:grid;\n    grid-template-columns:repeat(3,minmax(0,1fr));\n    max-width:620px;\n    border-top:'
+    )
+  ){
+    fail('Inquiry progress rule must not sit above the step labels.');
+  }
+
+  includesAll(
+    inquiry,
+    [
+      'border-bottom:1px solid var(--dw-color-line);',
+      'border-color:var(--dw-color-ink);'
+    ],
+    'R1.1 progress treatment'
+  );
+
+  includesAll(
+    custom,
+    [
+      'R1.1 Foundation migration',
+      'border-top:1px solid var(--dw-color-line);',
+      'border-radius:0;',
+      'background:transparent;'
+    ],
+    'R1.1 Custom Foundation migration'
+  );
+
+  includesAll(
+    detail,
+    [
+      'lower PDP facts use editorial dividers',
+      '.desktop-detail-info-card{',
+      'border-radius:0;',
+      'background:transparent;'
+    ],
+    'R1.1 PDP Foundation migration'
+  );
+
+  const publicCopy={
+    en:{
+      customTitle:'Custom-made for brands, events and collections.',
+      reviewTitle:'Review your inquiry before sending.',
+      successTitle:'Thank you. We’ve received your inquiry.'
+    },
+    zh:{
+      customTitle:'为品牌、活动与专属系列定制。',
+      reviewTitle:'提交前，请确认以下信息。',
+      successTitle:'感谢提交，我们已收到你的询价。'
+    },
+    ko:{
+      customTitle:'브랜드, 이벤트와 전용 컬렉션을 위한 맞춤 제작.',
+      reviewTitle:'제출 전에 문의 내용을 확인해 주세요.',
+      successTitle:'감사합니다. 문의가 접수되었습니다.'
+    }
+  };
+
+  for(const [lang,expected] of Object.entries(publicCopy)){
+    const localized=site.languages?.[lang];
+
+    if(
+      localized?.customProject?.title!==
+      expected.customTitle
+    ){
+      fail(`Public copy regression: ${lang}.customProject.title`);
+    }
+
+    if(
+      localized?.inquiryFlow?.reviewTitle!==
+      expected.reviewTitle
+    ){
+      fail(`Public copy regression: ${lang}.inquiryFlow.reviewTitle`);
+    }
+
+    if(
+      localized?.inquiryFlow?.successTitle!==
+      expected.successTitle
+    ){
+      fail(`Public copy regression: ${lang}.inquiryFlow.successTitle`);
+    }
+  }
+
+  const serialized=
+    JSON.stringify(
+      site
+    );
+
+  for(const legacy of [
+    '先说清楚这是什么项目。',
+    '在一个页面完成最终确认。',
+    '谢谢，项目已经交给我们了。',
+    'Start with the project.',
+    'Everything in one place.',
+    'Thank you. Your project is now with us.'
+  ]){
+    if(serialized.includes(legacy)){
+      fail(`Legacy internal/product copy remains: ${legacy}`);
+    }
+  }
+}catch(error){
+  fail(`R1.1 Visual / copy successor validation failed: ${error.message}`);
+}
+
+try{
   const pkg=JSON.parse(read('package.json'));
 
   if(
@@ -192,5 +336,5 @@ if(errors.length){
   process.exit(1);
 }
 
-console.log('B7-00B.4A Desktop Visual Refresh Foundation validation: PASS');
-console.log('Semantic tokens / shared primitives / typography wrapping / Desktop ownership successor / PWA v99 PASS.');
+console.log('B7-00B.4A R1.1 Desktop Visual Refresh Foundation validation: PASS');
+console.log('Warm Editorial tokens / language-aware typography / bottom progress rules / Foundation migration / public EN-ZH-KO copy / Desktop ownership / PWA v99 PASS.');

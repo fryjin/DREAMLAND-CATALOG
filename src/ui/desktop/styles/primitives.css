@@ -482,3 +482,91 @@
     }
   }
 }
+
+@media (min-width:1024px){
+  /*
+   * B7-00B.4A R1.1 — language-aware typography successor.
+   * English may balance editorial display copy. Chinese uses strict natural
+   * line breaking instead of balance. Korean keeps semantic words together.
+   */
+  .desktop-experience[data-lang="en"] :is(
+    .desktop-home-hero__title,
+    .desktop-home-section__title,
+    .desktop-editorial-title,
+    .desktop-custom-title,
+    .desktop-home-cta__title,
+    .desktop-catalog-intro h1,
+    .desktop-catalog-empty h2,
+    .desktop-detail-heading h1,
+    .desktop-custom-hero h1,
+    .desktop-custom-section__heading h2,
+    .desktop-flow-hero h1,
+    .desktop-flow-empty h1,
+    .desktop-contact-card__head h2,
+    .desktop-contact-aside h2,
+    .desktop-review-section h2,
+    .desktop-review-notice h2,
+    .desktop-success-page h1,
+    .desktop-success-next h2
+  ){
+    text-wrap:balance;
+    overflow-wrap:normal;
+    hyphens:none;
+  }
+
+  .desktop-experience[data-lang="zh"] :is(
+    h1,
+    h2,
+    h3,
+    .desktop-display-xl,
+    .desktop-page-display,
+    .desktop-section-heading,
+    .desktop-subsection-heading
+  ){
+    text-wrap:wrap;
+    word-break:normal;
+    overflow-wrap:normal;
+    line-break:strict;
+    hyphens:none;
+  }
+
+  .desktop-experience[data-lang="ko"] :is(
+    h1,
+    h2,
+    h3,
+    .desktop-display-xl,
+    .desktop-page-display,
+    .desktop-section-heading,
+    .desktop-subsection-heading,
+    .desktop-site-nav__item,
+    button
+  ){
+    text-wrap:wrap;
+    word-break:keep-all;
+    overflow-wrap:normal;
+    hyphens:none;
+  }
+
+  .desktop-experience[data-lang="zh"] .desktop-eyebrow,
+  .desktop-experience[data-lang="ko"] .desktop-eyebrow{
+    letter-spacing:.08em;
+    text-transform:none;
+  }
+
+  /*
+   * Short Chinese page displays should use the available Desktop width before
+   * creating a second line. 1024–1279 keeps natural wrapping as a safe fallback.
+   */
+  @media (min-width:1280px){
+    .desktop-experience[data-lang="zh"] :is(
+      .desktop-custom-hero h1,
+      .desktop-flow-hero h1,
+      .desktop-success-page h1
+    ){
+      width:max-content;
+      max-width:100%;
+      white-space:nowrap;
+      text-wrap:nowrap;
+    }
+  }
+}

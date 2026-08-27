@@ -17,7 +17,7 @@
   }
 
   .desktop-success-container{
-    max-width:900px;
+    max-width:1120px;
   }
 
   .desktop-success-mark{
@@ -34,13 +34,13 @@
   }
 
   .desktop-success-page h1{
-    max-width:760px;
+    max-width:1120px;
     margin-top:10px;
-    color:var(--dw-ink);
-    font-size:clamp(48px,5vw,74px);
-    line-height:.97;
-    font-weight:950;
-    letter-spacing:-.05em;
+    color:var(--dw-color-ink);
+    font-size:var(--dw-type-page-size);
+    line-height:var(--dw-type-page-line);
+    font-weight:900;
+    letter-spacing:var(--dw-type-page-track);
   }
 
   .desktop-success-lead{
@@ -92,8 +92,9 @@
   .desktop-success-next{
     margin-top:44px;
     padding:28px;
-    border-radius:18px;
-    background:#efe6dc;
+    border:1px solid var(--dw-color-line);
+    border-radius:var(--dw-radius-panel);
+    background:var(--dw-color-surface-warm);
   }
 
   .desktop-success-next h2{
