@@ -1,0 +1,145 @@
+/*
+ * DREAMLAND B7-00B.3D — Desktop Success
+ */
+@media (min-width:1024px){
+  body.desktop-experience-ready[data-desktop-screen="success"] > #app{
+    display:none!important;
+  }
+
+  body.desktop-experience-ready .desktop-experience.is-success .desktop-site-main,
+  body.desktop-experience-ready .desktop-experience.is-success .desktop-site-footer{
+    display:block;
+  }
+
+  .desktop-success-page{
+    padding:clamp(72px,8vw,126px) 0 var(--dw-section);
+    background:var(--dw-canvas);
+  }
+
+  .desktop-success-container{
+    max-width:900px;
+  }
+
+  .desktop-success-mark{
+    width:52px;
+    height:52px;
+    margin-bottom:24px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:#e8ded3;
+    color:#4e674f;
+    font-size:18px;
+    font-weight:950;
+  }
+
+  .desktop-success-page h1{
+    max-width:760px;
+    margin-top:10px;
+    color:var(--dw-ink);
+    font-size:clamp(48px,5vw,74px);
+    line-height:.97;
+    font-weight:950;
+    letter-spacing:-.05em;
+  }
+
+  .desktop-success-lead{
+    max-width:640px;
+    margin-top:20px;
+    color:var(--dw-muted);
+    font-size:14px;
+    line-height:1.7;
+  }
+
+  .desktop-success-details{
+    margin-top:42px;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    border-top:1px solid var(--dw-line);
+  }
+
+  .desktop-success-details > div{
+    min-height:62px;
+    padding:14px 0;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:18px;
+    border-bottom:1px solid var(--dw-line);
+  }
+
+  .desktop-success-details > div:nth-child(odd){
+    padding-right:28px;
+  }
+
+  .desktop-success-details > div:nth-child(even){
+    padding-left:28px;
+    border-left:1px solid var(--dw-line);
+  }
+
+  .desktop-success-details dt{
+    color:var(--dw-soft);
+    font-size:9px;
+  }
+
+  .desktop-success-details dd{
+    color:var(--dw-ink);
+    font-size:10px;
+    font-weight:860;
+    text-align:right;
+  }
+
+  .desktop-success-next{
+    margin-top:44px;
+    padding:28px;
+    border-radius:18px;
+    background:#efe6dc;
+  }
+
+  .desktop-success-next h2{
+    margin-top:7px;
+    color:var(--dw-ink);
+    font-size:24px;
+    font-weight:920;
+    letter-spacing:-.03em;
+  }
+
+  .desktop-success-next ol{
+    margin-top:18px;
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:18px;
+    list-style:none;
+  }
+
+  .desktop-success-next li{
+    padding-top:12px;
+    border-top:1px solid rgba(89,69,52,.12);
+  }
+
+  .desktop-success-next b{
+    display:block;
+    color:var(--dw-soft);
+    font-size:9px;
+  }
+
+  .desktop-success-next span{
+    display:block;
+    margin-top:7px;
+    color:var(--dw-muted);
+    font-size:10px;
+    line-height:1.5;
+    font-weight:760;
+  }
+
+  .desktop-success-actions{
+    margin-top:30px;
+    display:flex;
+    align-items:center;
+    gap:22px;
+  }
+
+  .desktop-success-actions .desktop-flow-primary{
+    min-width:220px;
+  }
+}

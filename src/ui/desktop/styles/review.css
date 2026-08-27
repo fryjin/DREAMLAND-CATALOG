@@ -1,0 +1,260 @@
+/*
+ * DREAMLAND B7-00B.3D — Desktop Review
+ */
+@media (min-width:1024px){
+  body.desktop-experience-ready[data-desktop-screen="preview"] > #app{
+    display:none!important;
+  }
+
+  body.desktop-experience-ready .desktop-experience.is-review .desktop-site-main,
+  body.desktop-experience-ready .desktop-experience.is-review .desktop-site-footer{
+    display:block;
+  }
+
+  .desktop-review-layout{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(310px,360px);
+    gap:clamp(42px,5vw,70px);
+    align-items:start;
+  }
+
+  .desktop-review-main{
+    min-width:0;
+    border-top:1px solid var(--dw-line);
+  }
+
+  .desktop-review-section{
+    padding:26px 0;
+    border-bottom:1px solid var(--dw-line);
+  }
+
+  .desktop-review-section > header{
+    margin-bottom:18px;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:20px;
+  }
+
+  .desktop-review-section h2,
+  .desktop-review-notice h2{
+    color:var(--dw-ink);
+    font-size:23px;
+    font-weight:920;
+    letter-spacing:-.03em;
+  }
+
+  .desktop-review-section header button{
+    padding:0;
+    background:transparent;
+    color:var(--dw-muted);
+    font-size:9px;
+    font-weight:820;
+    cursor:pointer;
+  }
+
+  .desktop-review-kv{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:0 28px;
+  }
+
+  .desktop-review-kv > div{
+    min-height:38px;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:14px;
+    border-top:1px solid rgba(89,69,52,.07);
+  }
+
+  .desktop-review-kv dt{
+    color:var(--dw-soft);
+    font-size:9px;
+  }
+
+  .desktop-review-kv dd{
+    color:var(--dw-ink);
+    font-size:9px;
+    font-weight:820;
+    text-align:right;
+  }
+
+  .desktop-review-items article{
+    padding:14px 0;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:5px 24px;
+    border-top:1px solid rgba(89,69,52,.07);
+  }
+
+  .desktop-review-items strong{
+    color:var(--dw-ink);
+    font-size:11px;
+    font-weight:880;
+  }
+
+  .desktop-review-items p{
+    grid-column:1;
+    color:var(--dw-muted);
+    font-size:9px;
+    line-height:1.55;
+  }
+
+  .desktop-review-items span{
+    grid-column:2;
+    grid-row:1/3;
+    align-self:center;
+    color:var(--dw-ink);
+    font-size:10px;
+    font-weight:880;
+    text-align:right;
+  }
+
+  .desktop-review-items--custom span{
+    color:var(--dw-muted);
+    font-size:9px;
+  }
+
+  .desktop-review-empty{
+    color:var(--dw-muted);
+    font-size:10px;
+  }
+
+  .desktop-review-notice{
+    margin-top:26px;
+    padding:24px;
+    border-radius:16px;
+    background:#f0e7dc;
+  }
+
+  .desktop-review-notice h2{
+    margin-top:6px;
+  }
+
+  .desktop-review-notice p{
+    margin-top:9px;
+    color:var(--dw-muted);
+    font-size:10px;
+    line-height:1.6;
+  }
+
+  .desktop-review-summary{
+    position:sticky;
+    top:calc(var(--dw-header) + 24px);
+    padding:24px;
+    border-radius:18px;
+    background:#efe6dc;
+    box-shadow:inset 0 0 0 1px rgba(89,69,52,.07);
+  }
+
+  .desktop-review-summary h2{
+    margin-top:7px;
+    color:var(--dw-ink);
+    font-size:25px;
+    font-weight:920;
+    letter-spacing:-.03em;
+  }
+
+  .desktop-review-summary__id,
+  .desktop-review-summary__amount,
+  .desktop-review-summary__custom{
+    min-height:47px;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:14px;
+    border-bottom:1px solid rgba(89,69,52,.1);
+  }
+
+  .desktop-review-summary__id{
+    margin-top:18px;
+    border-top:1px solid rgba(89,69,52,.1);
+  }
+
+  .desktop-review-summary span{
+    color:var(--dw-muted);
+    font-size:9px;
+  }
+
+  .desktop-review-summary strong{
+    color:var(--dw-ink);
+    font-size:10px;
+    font-weight:860;
+    text-align:right;
+  }
+
+  .desktop-review-summary > p{
+    margin:15px 0;
+    color:var(--dw-muted);
+    font-size:9px;
+    line-height:1.55;
+  }
+
+  .desktop-review-consent{
+    display:grid;
+    grid-template-columns:16px minmax(0,1fr);
+    gap:9px;
+    align-items:start;
+    padding:13px 0;
+    border-top:1px solid rgba(89,69,52,.1);
+  }
+
+  .desktop-review-consent input{
+    margin-top:2px;
+  }
+
+  .desktop-review-consent span{
+    line-height:1.5;
+  }
+
+  .desktop-review-consent button{
+    padding:0;
+    background:transparent;
+    color:var(--dw-ink);
+    font-size:9px;
+    font-weight:820;
+    text-decoration:underline;
+    text-underline-offset:2px;
+    cursor:pointer;
+  }
+
+  .desktop-review-security{
+    margin:8px 0 14px;
+    padding:12px;
+    border-radius:10px;
+    background:rgba(255,255,255,.5);
+  }
+
+  .desktop-review-security span,
+  .desktop-review-security strong{
+    display:block;
+    text-align:left;
+  }
+
+  .desktop-review-security strong{
+    margin-top:4px;
+    font-size:9px;
+  }
+
+  .desktop-review-submit-error{
+    margin-bottom:12px;
+    padding:11px 12px;
+    border-radius:9px;
+    background:#f7ebe7;
+    color:#854d42;
+    font-size:9px;
+    line-height:1.45;
+  }
+
+  .desktop-review-submit{
+    width:100%;
+  }
+
+  @media (max-width:1199px){
+    .desktop-review-layout{
+      grid-template-columns:minmax(0,1fr) minmax(285px,320px);
+      gap:30px;
+    }
+  }
+}

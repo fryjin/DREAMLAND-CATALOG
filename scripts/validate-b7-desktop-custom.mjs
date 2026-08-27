@@ -140,7 +140,7 @@ try{
     );
 
   for(const required of [
-    "const VERSION='B7-00B.3C';",
+    "const VERSION='B7-00B.3D';",
     'id="desktopCustomRoot"',
     'DreamlandDesktopCustom',
     'customState:',
@@ -187,9 +187,9 @@ try{
     read('index.html');
 
   for(const required of [
-    "window.DREAMLAND_RELEASE='b7-00b3c-r1-v97';",
-    './src/ui/desktop/styles/custom.css?release=b7-00b3c-r1-v97',
-    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b3c-r1-v97',
+    "window.DREAMLAND_RELEASE='b7-00b3d-r1-v98';",
+    './src/ui/desktop/styles/custom.css?release=b7-00b3d-r1-v98',
+    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b3d-r1-v98',
     'ensureCustomFeatureRuntime();',
     'customState:',
     'customFeature,',
@@ -209,7 +209,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/styles/custom.css?release=b7-00b3c-r1-v97'
+      './src/ui/desktop/styles/custom.css?release=b7-00b3d-r1-v98'
     )!==1
   ){
     fail(
@@ -220,7 +220,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b3c-r1-v97'
+      './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b3d-r1-v98'
     )!==1
   ){
     fail(
@@ -405,7 +405,7 @@ try{
 }
 
 /*
- * Gate 6 — PWA v97 and release-versioned Custom assets.
+ * Gate 6 — PWA v98 and release-versioned Custom assets.
  */
 try{
   const sw=read('sw.js');
@@ -415,23 +415,23 @@ try{
     );
 
   for(const required of [
-    "const CACHE_VERSION = 'dreamland-pwa-v97';",
-    "'b7-00b3c-r1-v97'",
-    './src/ui/desktop/styles/custom.css?release=b7-00b3c-r1-v97',
-    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b3c-r1-v97',
+    "const CACHE_VERSION = 'dreamland-pwa-v98';",
+    "'b7-00b3d-r1-v98'",
+    './src/ui/desktop/styles/custom.css?release=b7-00b3d-r1-v98',
+    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b3d-r1-v98',
     "'./src/ui/desktop/styles/custom.css'",
     "'./src/ui/desktop/custom/runtime-desktop-custom.js'"
   ]){
     if(!sw.includes(required)){
       fail(
-        `sw.js is missing Desktop Custom/PWA v97 marker: ${required}`
+        `sw.js is missing Desktop Custom/PWA v98 marker: ${required}`
       );
     }
   }
 
   if(
     !pwa.includes(
-      "'b7-00b3c-r1-v97'"
+      "'b7-00b3d-r1-v98'"
     )
   ){
     fail(
@@ -510,5 +510,5 @@ console.log(
 );
 
 console.log(
-  'Desktop-owned Custom Project / canonical DreamlandCustom validation + scent state / canonical Inquiry add / field-level validation / EN-ZH-KO / PWA v97 PASS.'
+  'Desktop-owned Custom Project / canonical DreamlandCustom validation + scent state / canonical Inquiry add / field-level validation / EN-ZH-KO / PWA v98 PASS.'
 );

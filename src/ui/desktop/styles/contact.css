@@ -1,0 +1,211 @@
+/*
+ * DREAMLAND B7-00B.3D — Desktop Contact
+ */
+@media (min-width:1024px){
+  body.desktop-experience-ready[data-desktop-screen="contact"] > #app{
+    display:none!important;
+  }
+
+  body.desktop-experience-ready .desktop-experience.is-contact .desktop-site-main,
+  body.desktop-experience-ready .desktop-experience.is-contact .desktop-site-footer{
+    display:block;
+  }
+
+  .desktop-contact-layout{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(300px,350px);
+    gap:clamp(42px,5vw,68px);
+    align-items:start;
+  }
+
+  .desktop-contact-card{
+    padding:clamp(28px,3vw,38px);
+    border:1px solid var(--dw-line);
+    border-radius:18px;
+    background:rgba(255,255,255,.55);
+  }
+
+  .desktop-contact-card__head{
+    max-width:650px;
+    margin-bottom:28px;
+  }
+
+  .desktop-contact-card__head h2,
+  .desktop-contact-aside h2{
+    margin-top:7px;
+    color:var(--dw-ink);
+    font-size:26px;
+    line-height:1.08;
+    font-weight:920;
+    letter-spacing:-.03em;
+  }
+
+  .desktop-contact-card__head p{
+    margin-top:9px;
+    color:var(--dw-muted);
+    font-size:11px;
+    line-height:1.6;
+  }
+
+  .desktop-contact-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:18px 14px;
+  }
+
+  .desktop-contact-field{
+    min-width:0;
+  }
+
+  .desktop-contact-field--wide{
+    grid-column:1/-1;
+  }
+
+  .desktop-contact-field label{
+    display:block;
+    margin-bottom:7px;
+    color:var(--dw-ink);
+    font-size:10px;
+    font-weight:830;
+  }
+
+  .desktop-contact-field input,
+  .desktop-contact-field select,
+  .desktop-contact-field textarea{
+    width:100%;
+    border:1px solid var(--dw-line);
+    border-radius:11px;
+    background:#fff;
+    color:var(--dw-ink);
+    outline:0;
+    font-size:11px;
+  }
+
+  .desktop-contact-field input,
+  .desktop-contact-field select{
+    height:48px;
+    padding:0 12px;
+  }
+
+  .desktop-contact-field textarea{
+    min-height:132px;
+    padding:12px;
+    resize:vertical;
+    line-height:1.55;
+  }
+
+  .desktop-contact-field.is-invalid input,
+  .desktop-contact-field.is-invalid select{
+    border-color:#9b5c50;
+    box-shadow:0 0 0 3px rgba(155,92,80,.08);
+  }
+
+  .desktop-contact-field > p{
+    margin-top:6px;
+    color:#8c5146;
+    font-size:9px;
+    font-weight:760;
+  }
+
+  .desktop-contact-global-error{
+    margin-top:18px;
+    padding:12px 14px;
+    border-radius:10px;
+    background:#f7ebe7;
+    color:#854d42;
+    font-size:10px;
+    line-height:1.5;
+  }
+
+  .desktop-contact-actions{
+    margin-top:28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+  }
+
+  .desktop-contact-actions .desktop-flow-primary{
+    min-width:220px;
+  }
+
+  .desktop-contact-aside{
+    position:sticky;
+    top:calc(var(--dw-header) + 24px);
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+
+  .desktop-contact-summary,
+  .desktop-contact-next{
+    padding:23px;
+    border-radius:18px;
+    background:#efe6dc;
+    box-shadow:inset 0 0 0 1px rgba(89,69,52,.07);
+  }
+
+  .desktop-contact-summary > div:not(.desktop-eyebrow){
+    min-height:43px;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:14px;
+    border-bottom:1px solid rgba(89,69,52,.1);
+  }
+
+  .desktop-contact-summary > div:nth-of-type(2){
+    margin-top:16px;
+    border-top:1px solid rgba(89,69,52,.1);
+  }
+
+  .desktop-contact-summary span{
+    color:var(--dw-muted);
+    font-size:9px;
+  }
+
+  .desktop-contact-summary strong{
+    color:var(--dw-ink);
+    font-size:10px;
+    font-weight:860;
+    text-align:right;
+  }
+
+  .desktop-contact-next{
+    background:rgba(255,255,255,.56);
+  }
+
+  .desktop-contact-next ol{
+    margin-top:18px;
+    list-style:none;
+  }
+
+  .desktop-contact-next li{
+    min-height:50px;
+    display:grid;
+    grid-template-columns:30px minmax(0,1fr);
+    gap:10px;
+    align-items:start;
+    padding:11px 0;
+    border-top:1px solid var(--dw-line);
+  }
+
+  .desktop-contact-next b{
+    color:var(--dw-soft);
+    font-size:9px;
+  }
+
+  .desktop-contact-next span{
+    color:var(--dw-muted);
+    font-size:10px;
+    line-height:1.45;
+    font-weight:760;
+  }
+
+  @media (max-width:1199px){
+    .desktop-contact-layout{
+      grid-template-columns:minmax(0,1fr) minmax(280px,310px);
+      gap:30px;
+    }
+  }
+}
