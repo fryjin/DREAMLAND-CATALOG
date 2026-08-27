@@ -327,3 +327,15 @@
     }
   }
 }
+
+@media (min-width:1024px){
+  /* B7-00B.4A R1.3 — Shell readability polish */
+  .desktop-language__option small,
+  .desktop-footer-group h3{
+    font-size:11px;
+  }
+
+  .desktop-footer-bottom{
+    font-size:12px;
+  }
+}

@@ -69,7 +69,7 @@
     display:block;
     margin-bottom:7px;
     color:var(--dw-ink);
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
     font-weight:830;
   }
 
@@ -107,7 +107,7 @@
   .desktop-contact-field > p{
     margin-top:6px;
     color:#8c5146;
-    font-size:9px;
+    font-size:var(--dw-type-support-size);
     font-weight:760;
   }
 
@@ -117,7 +117,7 @@
     border-radius:10px;
     background:#f7ebe7;
     color:#854d42;
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
     line-height:1.5;
   }
 
@@ -166,12 +166,12 @@
 
   .desktop-contact-summary span{
     color:var(--dw-muted);
-    font-size:9px;
+    font-size:var(--dw-type-support-size);
   }
 
   .desktop-contact-summary strong{
     color:var(--dw-ink);
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
     font-weight:860;
     text-align:right;
   }
@@ -201,12 +201,12 @@
 
   .desktop-contact-next b{
     color:var(--dw-soft);
-    font-size:9px;
+    font-size:var(--dw-type-support-size);
   }
 
   .desktop-contact-next span{
     color:var(--dw-muted);
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
     line-height:1.45;
     font-weight:760;
   }
@@ -216,5 +216,48 @@
       grid-template-columns:minmax(0,1fr) minmax(280px,310px);
       gap:30px;
     }
+  }
+}
+
+@media (min-width:1024px){
+  /* B7-00B.4A R1.3 — Contact readable fields + unified focus */
+  .desktop-contact-card__head p{
+    font-size:13px;
+  }
+
+  .desktop-contact-field label{
+    font-size:var(--dw-type-label-size);
+  }
+
+  .desktop-contact-field input,
+  .desktop-contact-field select,
+  .desktop-contact-field textarea{
+    font-size:var(--dw-type-control-size);
+  }
+
+  .desktop-contact-field input,
+  .desktop-contact-field select{
+    height:52px;
+  }
+
+  .desktop-contact-field :is(input,select,textarea):focus-visible{
+    outline:0!important;
+    border-color:var(--dw-color-line-strong);
+    box-shadow:0 0 0 3px var(--dw-focus-ring-soft);
+  }
+
+  .desktop-contact-field > p,
+  .desktop-contact-summary span,
+  .desktop-contact-next b{
+    font-size:var(--dw-type-support-size);
+  }
+
+  .desktop-contact-summary strong,
+  .desktop-contact-next span{
+    font-size:12px;
+  }
+
+  .desktop-contact-global-error{
+    font-size:12px;
   }
 }

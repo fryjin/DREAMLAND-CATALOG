@@ -355,7 +355,8 @@
     line-height:1.6;
   }
 
-  .desktop-control:focus{
+  .desktop-control:focus-visible{
+    outline:0;
     border-color:var(--dw-color-line-strong);
     box-shadow:0 0 0 3px var(--dw-focus-ring-soft);
   }
@@ -459,16 +460,30 @@
   /* ------------------------------------------------------------------
    * Focus + motion accessibility
    * ---------------------------------------------------------------- */
+  /*
+   * R1.3 focus contract:
+   * actions receive the generic outline; form controls are owned by their
+   * complete visual control/wrapper so nested inputs never draw partial boxes.
+   */
   .desktop-experience :is(
     button,
     a,
-    input,
-    textarea,
-    select,
     [tabindex]
   ):focus-visible{
     outline:2px solid var(--dw-focus-ring);
     outline-offset:4px;
+  }
+
+  .desktop-experience input[type="number"]{
+    -moz-appearance:textfield;
+    appearance:textfield;
+  }
+
+  .desktop-experience input[type="number"]::-webkit-inner-spin-button,
+  .desktop-experience input[type="number"]::-webkit-outer-spin-button{
+    margin:0;
+    -webkit-appearance:none;
+    appearance:none;
   }
 
   @media (prefers-reduced-motion:reduce){

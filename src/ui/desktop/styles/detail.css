@@ -217,7 +217,7 @@
   .desktop-detail-product-id{
     margin-top:9px;
     color:var(--dw-soft);
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
     font-weight:750;
     letter-spacing:.04em;
   }
@@ -249,7 +249,7 @@
 
   .desktop-detail-option-head > span{
     color:var(--dw-soft);
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
     font-weight:750;
   }
 
@@ -285,7 +285,7 @@
 
   .desktop-detail-size span{
     color:var(--dw-muted);
-    font-size:9px;
+    font-size:var(--dw-type-support-size);
     line-height:1.25;
   }
 
@@ -352,7 +352,7 @@
     display:block;
     margin-bottom:10px;
     color:var(--dw-ink);
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
     font-weight:850;
     letter-spacing:.06em;
     text-transform:uppercase;
@@ -373,14 +373,14 @@
 
   .desktop-detail-scent-notes small{
     color:var(--dw-soft);
-    font-size:8px;
+    font-size:var(--dw-type-support-size);
     font-weight:750;
   }
 
   .desktop-detail-scent-notes b{
     overflow:hidden;
     color:var(--dw-muted);
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
     line-height:1.4;
     font-weight:760;
     text-overflow:ellipsis;
@@ -429,7 +429,7 @@
     display:block;
     padding:8px 3px 4px;
     overflow:hidden;
-    font-size:9px;
+    font-size:var(--dw-type-support-size);
     line-height:1.2;
     font-weight:800;
     text-align:left;
@@ -489,7 +489,7 @@
 
   .desktop-detail-packaging__copy strong{
     overflow:hidden;
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
     line-height:1.3;
     font-weight:850;
     text-overflow:ellipsis;
@@ -498,7 +498,7 @@
 
   .desktop-detail-packaging__copy small{
     color:var(--dw-muted);
-    font-size:9px;
+    font-size:var(--dw-type-support-size);
     line-height:1.35;
     font-weight:700;
   }
@@ -547,7 +547,7 @@
   .desktop-detail-quantity label span{
     flex:none;
     color:var(--dw-soft);
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
     font-weight:750;
   }
 
@@ -555,7 +555,7 @@
   .desktop-detail-quantity-message{
     margin-top:10px;
     color:var(--dw-muted);
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
     line-height:1.5;
   }
 
@@ -602,7 +602,7 @@
   .desktop-detail-summary > p{
     margin:12px 0 18px;
     color:var(--dw-muted);
-    font-size:9px;
+    font-size:var(--dw-type-support-size);
     line-height:1.55;
   }
 
@@ -651,7 +651,7 @@
     border-radius:10px;
     background:rgba(255,255,255,.56);
     color:#4f6d4e;
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
     font-weight:800;
   }
 
@@ -692,12 +692,12 @@
 
   .desktop-detail-info-list span{
     color:var(--dw-muted);
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
   }
 
   .desktop-detail-info-list strong{
     color:var(--dw-ink);
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
     font-weight:850;
     text-align:right;
   }
@@ -738,5 +738,34 @@
     .desktop-detail-visual-options{
       grid-template-columns:repeat(3,minmax(0,1fr));
     }
+  }
+}
+
+@media (min-width:1024px){
+  /* B7-00B.4A R1.3 — PDP readable metadata + compound focus */
+  .desktop-detail-quantity label:focus-within{
+    border-color:var(--dw-color-line-strong);
+    box-shadow:0 0 0 3px var(--dw-focus-ring-soft);
+  }
+
+  .desktop-detail-quantity input:focus,
+  .desktop-detail-quantity input:focus-visible{
+    outline:0!important;
+    outline-offset:0!important;
+    box-shadow:none!important;
+  }
+
+  .desktop-detail-packaging__copy strong,
+  .desktop-detail-info-list strong{
+    font-size:12px;
+  }
+
+  .desktop-detail-packaging__copy small,
+  .desktop-detail-info-list span,
+  .desktop-detail-option-head > span,
+  .desktop-detail-moq-note,
+  .desktop-detail-quantity-message,
+  .desktop-detail-summary > p{
+    font-size:var(--dw-type-support-size);
   }
 }
