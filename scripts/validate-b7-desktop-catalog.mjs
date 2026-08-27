@@ -888,7 +888,7 @@ try{
  */
 try{
   const release=
-    'b7-00b4b-r3-v102';
+    'b7-00b4b-r4-v103';
 
   const index=
     read(
@@ -1081,7 +1081,7 @@ try{
 
   if(
     !index.includes(
-      `window.DREAMLAND_RELEASE='b7-00b4b-r3-v102';`
+      `window.DREAMLAND_RELEASE='b7-00b4b-r4-v103';`
     )
   ){
     fail(
@@ -1096,11 +1096,11 @@ try{
 
   if(
     !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v102';"
+      "const CACHE_VERSION = 'dreamland-pwa-v103';"
     )
   ){
     fail(
-      'R5 requires dreamland-pwa-v102.'
+      'R5 requires dreamland-pwa-v103.'
     );
   }
 }catch(error){

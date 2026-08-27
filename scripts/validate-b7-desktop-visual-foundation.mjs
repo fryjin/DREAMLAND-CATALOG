@@ -94,14 +94,14 @@ try{
 
 try{
   const index=read('index.html');
-  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4b-r3-v102';
-  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4b-r3-v102';
-  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4b-r3-v102';
+  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4b-r4-v103';
+  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4b-r4-v103';
+  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4b-r4-v103';
 
   includesAll(
     index,
     [
-      "window.DREAMLAND_RELEASE='b7-00b4b-r3-v102';",
+      "window.DREAMLAND_RELEASE='b7-00b4b-r4-v103';",
       tokensRef,
       primitivesRef,
       shellRef
@@ -126,15 +126,15 @@ try{
   includesAll(
     sw,
     [
-      "const CACHE_VERSION = 'dreamland-pwa-v102';",
-      "'b7-00b4b-r3-v102'",
-      './src/ui/desktop/styles/primitives.css?release=b7-00b4b-r3-v102',
+      "const CACHE_VERSION = 'dreamland-pwa-v103';",
+      "'b7-00b4b-r4-v103'",
+      './src/ui/desktop/styles/primitives.css?release=b7-00b4b-r4-v103',
       "'./src/ui/desktop/styles/primitives.css'"
     ],
     'Service Worker Foundation release'
   );
 
-  if(!pwa.includes("'b7-00b4b-r3-v102'")){
+  if(!pwa.includes("'b7-00b4b-r4-v103'")){
     fail('PWA runtime release tag was not advanced to B7-00B.4A R1.');
   }
 }catch(error){
@@ -470,8 +470,10 @@ try{
       'B7-00B.4B R1 — Home Editorial Composition',
       'B7-00B.4B R2 — Home Art Direction Realignment',
       'B7-00B.4B R3 — Home Editorial Structure Realignment',
-      '.desktop-home-story{',
-      '.desktop-home-collections',
+      'B7-00B.4B R4 — Home Art Direction Distinction + Editorial Recomposition',
+      '.desktop-home-hero--cover{',
+      '.desktop-home-collections::before{',
+      '.desktop-home-story + .desktop-home-section',
       '--dw-home-serif:',
       '--dw-home-accent:',
       '.desktop-home-hero::before',
@@ -487,9 +489,10 @@ try{
   includesAll(
     runtime,
     [
-      "const VERSION='B7-00B.4B-R3';",
+      "const VERSION='B7-00B.4B-R4';",
+      'desktop-home-hero--cover',
       'function storyHtml(view)',
-      'desktop-home-story',
+      '${collectionsHtml(view)}',
       '${storyHtml(view)}',
       'desktop-wholesale-media',
       'view.wholesale.image',

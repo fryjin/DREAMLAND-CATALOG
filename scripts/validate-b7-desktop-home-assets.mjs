@@ -146,7 +146,8 @@ try{
       'B7-00B.3A-R6',
       'B7-00B.4B-R1',
       'B7-00B.4B-R2',
-      'B7-00B.4B-R3'
+      'B7-00B.4B-R3',
+      'B7-00B.4B-R4'
     ]);
 
   if(
@@ -196,8 +197,10 @@ try{
     'B7-00B.4B R1 — Home Editorial Composition',
     'B7-00B.4B R2 — Home Art Direction Realignment',
     'B7-00B.4B R3 — Home Editorial Structure Realignment',
-    '.desktop-home-story{',
-    '.desktop-home-collections',
+    'B7-00B.4B R4 — Home Art Direction Distinction + Editorial Recomposition',
+    '.desktop-home-hero--cover{',
+    '.desktop-home-collections::before{',
+    '.desktop-home-story + .desktop-home-section .desktop-featured-grid',
     '.desktop-wholesale-media{',
     'aspect-ratio:4/5;'
   ]){

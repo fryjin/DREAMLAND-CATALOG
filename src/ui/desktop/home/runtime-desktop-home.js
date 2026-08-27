@@ -5,7 +5,7 @@
     return;
   }
 
-  const VERSION='B7-00B.4B-R3';
+  const VERSION='B7-00B.4B-R4';
 
   const DEFAULT_ASSETS=Object.freeze({
     hero:{
@@ -608,19 +608,16 @@
   }
 
   function heroHtml(view){
-    const hero=
-      view.content.hero||{};
-
     return `
       <section
-        class="desktop-home-hero desktop-reveal"
+        class="desktop-home-hero desktop-home-hero--cover desktop-reveal"
         aria-labelledby="desktopHeroTitle"
       >
         <h1
           class="desktop-home-hero__sr-title"
           id="desktopHeroTitle"
         >
-          ${escapeHtml(hero.title||'DREAMLAND')}
+          DREAMLAND
         </h1>
 
         <div
@@ -1099,8 +1096,8 @@
     homeRoot.innerHTML=`
       <div class="desktop-home">
         ${heroHtml(view)}
-        ${storyHtml(view)}
         ${collectionsHtml(view)}
+        ${storyHtml(view)}
         ${featuredHtml(view)}
         ${craftHtml(view)}
         ${customHtml(view)}
