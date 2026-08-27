@@ -77,9 +77,14 @@
     --dw-type-display-xl-line:.90;
     --dw-type-display-xl-track:-.055em;
 
-    --dw-type-page-size:clamp(48px,5vw,78px);
-    --dw-type-page-line:.94;
-    --dw-type-page-track:-.045em;
+    /*
+     * B7-00B.4A R1.3 — calmer Desktop page display.
+     * Large editorial headings remain prominent without dominating the entire
+     * viewport at 1440–1920 widths.
+     */
+    --dw-type-page-size:clamp(42px,4vw,64px);
+    --dw-type-page-line:1.02;
+    --dw-type-page-track:-.035em;
 
     --dw-type-section-size:clamp(32px,3vw,48px);
     --dw-type-section-line:.98;
@@ -95,10 +100,15 @@
     --dw-type-body-line:1.65;
     --dw-type-meta-size:12px;
     --dw-type-meta-line:1.45;
-    --dw-type-micro-size:10px;
-    --dw-type-micro-line:1.35;
+    --dw-type-micro-size:11px;
+    --dw-type-micro-line:1.4;
     --dw-type-eyebrow-size:11px;
     --dw-type-eyebrow-track:.14em;
+
+    /* Desktop readability floor. */
+    --dw-type-support-size:11px;
+    --dw-type-label-size:12px;
+    --dw-type-control-size:13px;
 
     --dw-copy-measure:68ch;
     --dw-copy-measure-compact:54ch;

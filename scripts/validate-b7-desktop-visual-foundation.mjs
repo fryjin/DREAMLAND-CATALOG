@@ -377,6 +377,89 @@ try{
 }
 
 try{
+  const tokens=read('src/ui/desktop/styles/tokens.css');
+  const primitives=read('src/ui/desktop/styles/primitives.css');
+
+  includesAll(
+    tokens,
+    [
+      '--dw-type-page-size:clamp(42px,4vw,64px);',
+      '--dw-type-page-line:1.02;',
+      '--dw-type-support-size:11px;',
+      '--dw-type-label-size:12px;',
+      '--dw-type-control-size:13px;'
+    ],
+    'R1.3 Desktop readability tokens'
+  );
+
+  includesAll(
+    primitives,
+    [
+      'R1.3 focus contract',
+      '.desktop-experience :is(\n    button,\n    a,\n    [tabindex]',
+      'input[type="number"]::-webkit-inner-spin-button'
+    ],
+    'R1.3 complete-control focus contract'
+  );
+
+  const pageCss=[
+    'home.css',
+    'catalog.css',
+    'detail.css',
+    'custom.css',
+    'inquiry.css',
+    'contact.css',
+    'review.css',
+    'success.css'
+  ];
+
+  for(const file of pageCss){
+    const source=read(`src/ui/desktop/styles/${file}`);
+    if(/font-size:(?:8|9|10)px;/.test(source)){
+      fail(`R1.3 readability regression: ${file} still contains visible 8/9/10px text.`);
+    }
+  }
+
+  for(const [file,marker] of [
+    ['catalog.css','B7-00B.4A R1.3 — Catalog control focus consistency'],
+    ['detail.css','B7-00B.4A R1.3 — PDP readable metadata + compound focus'],
+    ['custom.css','B7-00B.4A R1.3 — Custom unified controls + readable hierarchy'],
+    ['inquiry.css','B7-00B.4A R1.3 — Inquiry readable data + full-control focus'],
+    ['contact.css','B7-00B.4A R1.3 — Contact readable fields + unified focus'],
+    ['review.css','B7-00B.4A R1.3 — Review readability + checkbox focus'],
+    ['success.css','B7-00B.4A R1.3 — Success calmer title + readable details']
+  ]){
+    if(!read(`src/ui/desktop/styles/${file}`).includes(marker)){
+      fail(`R1.3 screen consistency marker missing: ${file}`);
+    }
+  }
+
+  const custom=read('src/ui/desktop/styles/custom.css');
+  includesAll(
+    custom,
+    [
+      '.desktop-custom-select{\n    -webkit-appearance:none;',
+      '.desktop-custom-input-wrap:focus-within',
+      'font-size:var(--dw-type-control-size);'
+    ],
+    'R1.3 Custom control parity'
+  );
+
+  const detail=read('src/ui/desktop/styles/detail.css');
+  includesAll(
+    detail,
+    [
+      '.desktop-detail-quantity label:focus-within',
+      '.desktop-detail-quantity input:focus-visible',
+      'outline:0!important;'
+    ],
+    'R1.3 PDP quantity focus'
+  );
+}catch(error){
+  fail(`R1.3 Foundation Consistency validation failed: ${error.message}`);
+}
+
+try{
   const pkg=JSON.parse(read('package.json'));
 
   if(
@@ -411,5 +494,5 @@ if(errors.length){
   process.exit(1);
 }
 
-console.log('B7-00B.4A R1.2 Desktop Visual Refresh Foundation validation: PASS');
-console.log('Typography / section-divider policy / Custom field alignment + compound focus / public copy / Foundation migration / Desktop ownership / PWA v99 PASS.');
+console.log('B7-00B.4A R1.3 Desktop Visual Refresh Foundation validation: PASS');
+console.log('Calmer Page Display / 11px Desktop readability floor / unified Input-Select focus / compound-control ownership / EN-ZH-KO typography / Foundation migration / PWA v99 PASS.');

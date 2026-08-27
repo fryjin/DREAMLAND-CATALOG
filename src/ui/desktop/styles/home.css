@@ -366,7 +366,7 @@
 
   .desktop-product-moq{
     color:var(--dw-soft);
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
     line-height:1.3;
     font-weight:750;
   }

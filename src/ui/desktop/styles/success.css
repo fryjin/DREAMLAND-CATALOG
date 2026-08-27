@@ -79,12 +79,12 @@
 
   .desktop-success-details dt{
     color:var(--dw-soft);
-    font-size:9px;
+    font-size:var(--dw-type-support-size);
   }
 
   .desktop-success-details dd{
     color:var(--dw-ink);
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
     font-weight:860;
     text-align:right;
   }
@@ -121,14 +121,14 @@
   .desktop-success-next b{
     display:block;
     color:var(--dw-soft);
-    font-size:9px;
+    font-size:var(--dw-type-support-size);
   }
 
   .desktop-success-next span{
     display:block;
     margin-top:7px;
     color:var(--dw-muted);
-    font-size:10px;
+    font-size:var(--dw-type-support-size);
     line-height:1.5;
     font-weight:760;
   }
@@ -142,5 +142,23 @@
 
   .desktop-success-actions .desktop-flow-primary{
     min-width:220px;
+  }
+}
+
+@media (min-width:1024px){
+  /* B7-00B.4A R1.3 — Success calmer title + readable details */
+  .desktop-success-page h1{
+    font-weight:860;
+    letter-spacing:var(--dw-type-page-track);
+  }
+
+  .desktop-success-details dt,
+  .desktop-success-next b{
+    font-size:var(--dw-type-support-size);
+  }
+
+  .desktop-success-details dd,
+  .desktop-success-next span{
+    font-size:12px;
   }
 }
