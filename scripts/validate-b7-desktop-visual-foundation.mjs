@@ -94,14 +94,14 @@ try{
 
 try{
   const index=read('index.html');
-  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4b-r4.1-v104';
-  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4b-r4.1-v104';
-  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4b-r4.1-v104';
+  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4b-r4.2-v105';
+  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4b-r4.2-v105';
+  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4b-r4.2-v105';
 
   includesAll(
     index,
     [
-      "window.DREAMLAND_RELEASE='b7-00b4b-r4.1-v104';",
+      "window.DREAMLAND_RELEASE='b7-00b4b-r4.2-v105';",
       tokensRef,
       primitivesRef,
       shellRef
@@ -126,15 +126,15 @@ try{
   includesAll(
     sw,
     [
-      "const CACHE_VERSION = 'dreamland-pwa-v104';",
-      "'b7-00b4b-r4.1-v104'",
-      './src/ui/desktop/styles/primitives.css?release=b7-00b4b-r4.1-v104',
+      "const CACHE_VERSION = 'dreamland-pwa-v105';",
+      "'b7-00b4b-r4.2-v105'",
+      './src/ui/desktop/styles/primitives.css?release=b7-00b4b-r4.2-v105',
       "'./src/ui/desktop/styles/primitives.css'"
     ],
     'Service Worker Foundation release'
   );
 
-  if(!pwa.includes("'b7-00b4b-r4.1-v104'")){
+  if(!pwa.includes("'b7-00b4b-r4.2-v105'")){
     fail('PWA runtime release tag was not advanced to B7-00B.4A R1.');
   }
 }catch(error){
@@ -472,6 +472,7 @@ try{
       'B7-00B.4B R3 — Home Editorial Structure Realignment',
       'B7-00B.4B R4 — Home Art Direction Distinction + Editorial Recomposition',
       'B7-00B.4B R4.1.1 — accepted visual runtime alignment',
+      'B7-00B.4B R4.2 — Hero Graffiti Rebalance + Current Picks Height Recomposition',
       '.desktop-home-hero--cover{',
       '.desktop-home-collections::before{',
       '.desktop-home-story + .desktop-home-section',
@@ -490,7 +491,7 @@ try{
   includesAll(
     runtime,
     [
-      "const VERSION='B7-00B.4B-R4.1';",
+      "const VERSION='B7-00B.4B-R4.2';",
       'desktop-home-hero--cover',
       'function storyHtml(view)',
       '${collectionsHtml(view)}',

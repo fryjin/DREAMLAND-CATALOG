@@ -2507,3 +2507,176 @@
     height:204px!important;
   }
 }
+
+/* --------------------------------------------------------------------------
+ * B7-00B.4B R4.2 — Hero Graffiti Rebalance + Current Picks Height Recomposition
+ *
+ * 01 Keep DREAM / LAND brush assets, but hard-reset the opposite offsets so
+ *    the two pseudo-elements cannot inherit the historical left/right anchor
+ *    at the same time.
+ * 02 Keep the accepted 3 Masterpiece + 2 Advanced data plan, but apply the
+ *    3+2 composition to the actual runtime classes and give both rows a much
+ *    taller gallery-like media height. The shelf may naturally span screens.
+ * ------------------------------------------------------------------------ */
+@media (min-width:1024px){
+  /* 01 — Hero: two readable brush words, one on each side. */
+  .desktop-home-hero--cover{
+    min-height:860px;
+    padding-top:88px;
+    padding-bottom:108px;
+  }
+
+  .desktop-home-hero--cover::before,
+  .desktop-home-hero--cover::after{
+    top:336px!important;
+    height:238px!important;
+    background-repeat:no-repeat!important;
+    background-position:center!important;
+    background-size:contain!important;
+    opacity:.98!important;
+    filter:drop-shadow(0 6px 12px rgba(177,73,59,.06))!important;
+    z-index:2!important;
+  }
+
+  .desktop-home-hero--cover::before{
+    left:clamp(28px,3.3vw,64px)!important;
+    right:auto!important;
+    width:min(25vw,438px)!important;
+    background-image:url("../../../../images/desktop/home/r4-1/hero-word-dream.png")!important;
+    transform:rotate(-1.6deg)!important;
+  }
+
+  .desktop-home-hero--cover::after{
+    left:auto!important;
+    right:clamp(28px,3.3vw,64px)!important;
+    width:min(23vw,400px)!important;
+    background-image:url("../../../../images/desktop/home/r4-1/hero-word-land.png")!important;
+    transform:rotate(1.1deg)!important;
+  }
+
+  .desktop-home-hero--cover .desktop-home-hero__media{
+    grid-column:4 / 10!important;
+    width:min(100%,760px)!important;
+    height:462px!important;
+    margin-top:116px!important;
+    z-index:1!important;
+  }
+
+  /* 02 — Current Picks: true 3 + 2 with taller, equal-height image stages. */
+  .desktop-home-story + .desktop-home-section{
+    padding-top:104px!important;
+    padding-bottom:112px!important;
+  }
+
+  .desktop-home-story + .desktop-home-section .desktop-featured-head{
+    margin-bottom:34px!important;
+  }
+
+  .desktop-home-story + .desktop-home-section .desktop-product-grid{
+    width:min(100%,1280px)!important;
+    max-width:1280px!important;
+    margin-inline:auto!important;
+    display:grid!important;
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+    column-gap:22px!important;
+    row-gap:68px!important;
+    align-items:start!important;
+  }
+
+  .desktop-home-story + .desktop-home-section .desktop-product-card{
+    min-width:0!important;
+    margin-top:0!important;
+    transform:none!important;
+  }
+
+  .desktop-home-story + .desktop-home-section .desktop-product-card:nth-child(1){
+    grid-column:1 / span 2!important;
+    grid-row:1!important;
+  }
+  .desktop-home-story + .desktop-home-section .desktop-product-card:nth-child(2){
+    grid-column:3 / span 2!important;
+    grid-row:1!important;
+  }
+  .desktop-home-story + .desktop-home-section .desktop-product-card:nth-child(3){
+    grid-column:5 / span 2!important;
+    grid-row:1!important;
+  }
+  .desktop-home-story + .desktop-home-section .desktop-product-card:nth-child(4){
+    grid-column:1 / span 3!important;
+    grid-row:2!important;
+  }
+  .desktop-home-story + .desktop-home-section .desktop-product-card:nth-child(5){
+    grid-column:4 / span 3!important;
+    grid-row:2!important;
+  }
+  .desktop-home-story + .desktop-home-section .desktop-product-card:nth-child(n+6){
+    display:none!important;
+  }
+
+  .desktop-home-story + .desktop-home-section .desktop-product-link{
+    height:auto!important;
+    display:block!important;
+  }
+
+  .desktop-home-story + .desktop-home-section .desktop-product-media{
+    width:100%!important;
+    height:clamp(350px,23vw,440px)!important;
+    min-height:350px!important;
+    aspect-ratio:auto!important;
+    border-radius:8px!important;
+    overflow:hidden!important;
+  }
+
+  .desktop-home-story + .desktop-home-section .desktop-product-media img{
+    width:100%!important;
+    height:100%!important;
+    object-fit:cover!important;
+  }
+
+  .desktop-home-story + .desktop-home-section .desktop-product-info{
+    padding-top:12px!important;
+  }
+
+  .desktop-home-story + .desktop-home-section .desktop-product-name{
+    font-size:15px!important;
+  }
+
+  .desktop-home-story + .desktop-home-section .desktop-product-commercial{
+    margin-top:9px!important;
+  }
+}
+
+@media (min-width:1024px) and (max-width:1199px){
+  .desktop-home-hero--cover::before,
+  .desktop-home-hero--cover::after{
+    top:328px!important;
+    height:190px!important;
+  }
+
+  .desktop-home-hero--cover::before{
+    left:18px!important;
+    right:auto!important;
+    width:25vw!important;
+  }
+
+  .desktop-home-hero--cover::after{
+    left:auto!important;
+    right:18px!important;
+    width:23vw!important;
+  }
+
+  .desktop-home-hero--cover .desktop-home-hero__media{
+    width:min(100%,620px)!important;
+    height:420px!important;
+  }
+
+  .desktop-home-story + .desktop-home-section .desktop-product-grid{
+    column-gap:16px!important;
+    row-gap:54px!important;
+  }
+
+  .desktop-home-story + .desktop-home-section .desktop-product-media{
+    height:clamp(320px,28vw,370px)!important;
+    min-height:320px!important;
+  }
+}
