@@ -5,11 +5,14 @@
     return;
   }
 
-  const VERSION='B7-00B.4B-R4';
+  const VERSION='B7-00B.4B-R4.1';
 
   const DEFAULT_ASSETS=Object.freeze({
     hero:{
       image:'./images/desktop/home/hero/hero-main.webp'
+    },
+    story:{
+      image:'./images/desktop/home/r4-1/brand-story-main.jpg'
     },
     collections:{
       masterpiece:{
@@ -198,6 +201,16 @@
               product?.id
             );
 
+    const productCover=
+      typeof input.productCover==='function'
+        ? input.productCover
+        : product=>
+            text(
+              product?.cover_image||
+              product?.cover||
+              product?.image
+            );
+
     const productPrice=
       typeof input.productPrice==='function'
         ? input.productPrice
@@ -246,46 +259,50 @@
         ? assets.featured
         : DEFAULT_ASSETS.featured;
 
+    /*
+     * B7-00B.4B R4.1.2 — Current Picks
+     * Exactly 3 Masterpiece + 2 Advanced products.
+     * Product cover media is canonical; the historical four marketing slots
+     * remain only as a visual fallback and do not cap the shelf at four.
+     */
+    const currentPickPlan=[
+      ['masterpiece',3],
+      ['advanced',2]
+    ];
+
     const used=new Set();
+    const featuredProducts=[];
 
-    const featuredProducts=
-      featuredSlots
-        .map(slot=>{
-          let product=
-            resolveFeaturedProduct(
-              products,
-              slot
-            );
+    for(const [series,limit] of currentPickPlan){
+      const candidates=
+        productsForSeries(
+          products,
+          series
+        )
+          .filter(
+            product=>
+              !used.has(
+                text(product.id)
+              )
+          )
+          .slice(0,limit);
 
-          if(
-            product&&
-            used.has(
-              text(product.id)
+      for(const product of candidates){
+        const slot=
+          featuredSlots[
+            featuredProducts.length%
+            Math.max(
+              1,
+              featuredSlots.length
             )
-          ){
-            product=null;
-          }
+          ]||{};
 
-          if(!product){
-            product=
-              products.find(
-                candidate=>
-                  !used.has(
-                    text(candidate.id)
-                  )
-              )||
-              null;
-          }
+        used.add(
+          text(product.id)
+        );
 
-          if(!product){
-            return null;
-          }
-
-          used.add(
-            text(product.id)
-          );
-
-          return Object.freeze({
+        featuredProducts.push(
+          Object.freeze({
             id:text(product.id),
             name:productName(product),
             series:text(product.series),
@@ -294,6 +311,9 @@
                 product.series
               ),
             image:
+              text(
+                productCover(product)
+              )||
               text(slot?.image),
             price:
               productPrice(product),
@@ -304,10 +324,10 @@
                   productMoq(product)
                 )||1
               )
-          });
-        })
-        .filter(Boolean)
-        .slice(0,4);
+          })
+        );
+      }
+    }
 
     return Object.freeze({
       content,
@@ -318,6 +338,14 @@
             assets?.hero?.image
           )||
           DEFAULT_ASSETS.hero.image
+      }),
+
+      story:Object.freeze({
+        image:
+          text(
+            assets?.story?.image
+          )||
+          DEFAULT_ASSETS.story.image
       }),
 
       collections:Object.freeze(
@@ -390,6 +418,9 @@
 
       productName:
         config.productName,
+
+      productCover:
+        config.productCover,
 
       productPrice:
         config.productPrice,
@@ -644,24 +675,29 @@
         class="desktop-home-story desktop-container desktop-reveal"
         aria-labelledby="desktopStoryTitle"
       >
-        <div class="desktop-home-story__statement">
-          <div class="desktop-home-story__index">
-            <span aria-hidden="true">02</span>
-            ${escapeHtml(content.kicker||'')}
+        <div
+          class="desktop-home-story__media media-frame desktop-media-placeholder"
+        >
+          <img
+            data-desktop-image
+            data-desktop-source="${escapeHtml(view.story.image)}"
+            data-desktop-kind="shared"
+            data-desktop-priority="auto"
+            alt=""
+          >
+        </div>
+
+        <div class="desktop-home-story__copy">
+          <div class="desktop-eyebrow">
+            ${escapeHtml(content.eyebrow||content.kicker||'')}
           </div>
 
           <h2
             class="desktop-home-story__title"
             id="desktopStoryTitle"
           >
-            ${escapeHtml(content.title||'')}
+            ${escapeHtml(content.title||content.mark||'meet DREAMLAND')}
           </h2>
-        </div>
-
-        <div class="desktop-home-story__copy">
-          <div class="desktop-home-story__mark">
-            ${escapeHtml(content.mark||'meet DREAMLAND')}
-          </div>
 
           <p class="desktop-home-story__body">
             ${escapeHtml(content.body||'')}
@@ -684,76 +720,75 @@
         class="desktop-home-section desktop-home-collections desktop-container desktop-reveal"
         aria-labelledby="desktopCollectionsTitle"
       >
-        <div class="desktop-home-section__head">
-          <div>
-            <div class="desktop-eyebrow">
-              ${escapeHtml(content.kicker||'')}
-            </div>
-
-            <h2
-              class="desktop-home-section__title"
-              id="desktopCollectionsTitle"
-            >
-              ${escapeHtml(content.title||'')}
-            </h2>
-          </div>
-
-          <p class="desktop-home-section__body">
-            ${escapeHtml(content.body||'')}
-          </p>
+        <div class="desktop-home-collections__note" aria-hidden="true">
+          <span class="desktop-home-collections__note-column">HAND-CARVED / CANDLE ART</span>
+          <span class="desktop-home-collections__note-column">WARMTH IN WAX, ART IN LIGHT</span>
+          <span class="desktop-home-collections__note-column">SCULPTED SLOWLY, MADE TO STAY</span>
         </div>
 
-        <div class="desktop-collection-grid">
-          ${view.collections.map(item=>`
-            <button
-              class="desktop-collection-card ${item.layout==='wide'?'is-wide':''}"
-              type="button"
-              data-desktop-home-action="series"
-              data-desktop-series="${escapeHtml(item.id)}"
-            >
-              <div
-                class="desktop-collection-media media-frame desktop-media-placeholder"
-              >
-                <img
-                  data-desktop-image
-                  data-desktop-source="${escapeHtml(item.image)}"
-                  data-desktop-kind="shared"
-                  data-desktop-priority="auto"
-                  alt="${escapeHtml(item.label)}"
-                >
-
-                <span
-                  class="desktop-collection-hover"
-                  aria-hidden="true"
-                >
-                  ${escapeHtml(content.explore||'Explore')}
-                  <span>→</span>
-                </span>
+        <div class="desktop-home-collections__body">
+          <div class="desktop-home-section__head desktop-home-collections__intro">
+            <div>
+              <div class="desktop-eyebrow">
+                ${escapeHtml(content.kicker||'')}
               </div>
 
-              <div class="desktop-collection-meta">
-                <div>
-                  <div class="desktop-collection-name">
-                    ${escapeHtml(item.label)}
-                  </div>
+              <h2
+                class="desktop-home-section__title"
+                id="desktopCollectionsTitle"
+              >
+                ${escapeHtml(content.title||'')}
+              </h2>
+            </div>
 
-                  <div class="desktop-collection-count">
-                    ${escapeHtml(
-                      designLabel(
-                        item.count,
-                        view.content
-                      )
-                    )}
-                  </div>
+            <p class="desktop-home-section__body">
+              ${escapeHtml(content.body||'')}
+            </p>
+          </div>
+
+          <div class="desktop-collection-grid desktop-home-collections__grid">
+            ${view.collections.map(item=>`
+              <button
+                class="desktop-collection-card ${item.layout==='wide'?'is-wide':''}"
+                type="button"
+                data-desktop-home-action="series"
+                data-desktop-series="${escapeHtml(item.id)}"
+              >
+                <div
+                  class="desktop-collection-media media-frame desktop-media-placeholder"
+                >
+                  <img
+                    data-desktop-image
+                    data-desktop-source="${escapeHtml(item.image)}"
+                    data-desktop-kind="shared"
+                    data-desktop-priority="auto"
+                    alt="${escapeHtml(item.label)}"
+                  >
+
+                  <span class="desktop-collection-hover" aria-hidden="true">
+                    ${escapeHtml(content.explore||'Explore')}
+                    <span>→</span>
+                  </span>
                 </div>
 
-                <span class="desktop-arrow-link">
-                  ${escapeHtml(content.explore||'')}
-                  <span class="desktop-arrow" aria-hidden="true">→</span>
-                </span>
-              </div>
-            </button>
-          `).join('')}
+                <div class="desktop-collection-meta">
+                  <div>
+                    <div class="desktop-collection-name">
+                      ${escapeHtml(item.label)}
+                    </div>
+                    <div class="desktop-collection-count">
+                      ${escapeHtml(designLabel(item.count,view.content))}
+                    </div>
+                  </div>
+
+                  <span class="desktop-arrow-link">
+                    ${escapeHtml(content.explore||'')}
+                    <span class="desktop-arrow" aria-hidden="true">→</span>
+                  </span>
+                </div>
+              </button>
+            `).join('')}
+          </div>
         </div>
       </section>
     `;
@@ -765,7 +800,7 @@
 
     return `
       <section
-        class="desktop-home-section desktop-container desktop-reveal"
+        class="desktop-home-section desktop-home-featured desktop-container desktop-reveal"
         aria-labelledby="desktopFeaturedTitle"
       >
         <div class="desktop-featured-head">
@@ -796,10 +831,10 @@
           </button>
         </div>
 
-        <div class="desktop-product-grid">
+        <div class="desktop-product-grid desktop-home-featured__grid">
           ${view.featuredProducts.map(product=>`
             <article
-              class="desktop-product-card"
+              class="desktop-product-card desktop-home-featured__card"
               data-desktop-product-card="${escapeHtml(product.id)}"
             >
               <button
@@ -810,7 +845,7 @@
                 aria-label="${escapeHtml(`${content.viewDetails||'View details'}: ${product.name}`)}"
               >
                 <div
-                  class="desktop-product-media media-frame desktop-media-placeholder"
+                  class="desktop-product-media desktop-home-featured__media media-frame desktop-media-placeholder"
                 >
                   <img
                     class="desktop-product-media__image"
@@ -821,10 +856,7 @@
                     alt="${escapeHtml(product.name)}"
                   >
 
-                  <span
-                    class="desktop-product-overlay"
-                    aria-hidden="true"
-                  >
+                  <span class="desktop-product-overlay" aria-hidden="true">
                     <span class="desktop-product-overlay__label">
                       ${escapeHtml(content.viewDetails||'View details')}
                       <span>→</span>
@@ -845,7 +877,6 @@
                     <span class="desktop-product-price">
                       ${escapeHtml(product.price)}
                     </span>
-
                     <span class="desktop-product-moq">
                       ${escapeHtml(content.moq||'MOQ')}
                       ${escapeHtml(product.moq)}
@@ -1355,6 +1386,9 @@
 
       productName:
         options.productName,
+
+      productCover:
+        options.productCover,
 
       productPrice:
         options.productPrice,

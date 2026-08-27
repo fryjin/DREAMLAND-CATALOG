@@ -147,7 +147,8 @@ try{
       'B7-00B.4B-R1',
       'B7-00B.4B-R2',
       'B7-00B.4B-R3',
-      'B7-00B.4B-R4'
+      'B7-00B.4B-R4',
+      'B7-00B.4B-R4.1'
     ]);
 
   if(
@@ -198,6 +199,7 @@ try{
     'B7-00B.4B R2 — Home Art Direction Realignment',
     'B7-00B.4B R3 — Home Editorial Structure Realignment',
     'B7-00B.4B R4 — Home Art Direction Distinction + Editorial Recomposition',
+    'B7-00B.4B R4.1.1 — accepted visual runtime alignment',
     '.desktop-home-hero--cover{',
     '.desktop-home-collections::before{',
     '.desktop-home-story + .desktop-home-section .desktop-featured-grid',

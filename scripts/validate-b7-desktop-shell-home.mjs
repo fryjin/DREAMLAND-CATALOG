@@ -238,8 +238,11 @@ try{
     );
   }else{
     const series=[
-      'advanced',
       'masterpiece',
+      'masterpiece',
+      'masterpiece',
+      'advanced',
+      'advanced',
       'holiday',
       'classic'
     ];
@@ -308,10 +311,12 @@ try{
     }
 
     if(
-      model.featuredProducts.length!==4
+      model.featuredProducts.length!==5||
+      model.featuredProducts.slice(0,3).some(item=>item.series!=='masterpiece')||
+      model.featuredProducts.slice(3,5).some(item=>item.series!=='advanced')
     ){
       fail(
-        'Desktop Home must produce four featured product cards for the four-series baseline.'
+        'Desktop Home Current Picks must produce 3 Masterpiece + 2 Advanced product cards.'
       );
     }
 
@@ -453,6 +458,7 @@ try{
       'B7-00B.4B R2 — Home Art Direction Realignment',
       'B7-00B.4B R3 — Home Editorial Structure Realignment',
       'B7-00B.4B R4 — Home Art Direction Distinction + Editorial Recomposition',
+      'B7-00B.4B R4.1.1 — accepted visual runtime alignment',
       '.desktop-home-hero--cover',
       '.desktop-home-collections::before',
       '.desktop-home-story + .desktop-home-section',

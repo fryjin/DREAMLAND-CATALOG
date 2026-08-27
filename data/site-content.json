@@ -40,9 +40,9 @@
         "explore": "Explore"
       },
       "featured": {
-        "kicker": "SELECTED PIECES",
-        "title": "Selected pieces",
-        "body": "A closer look at four current designs.",
+        "kicker": "CURATED NOW",
+        "title": "Current Picks",
+        "body": "Five pieces selected from our Masterpiece and Advanced series.",
         "viewAll": "View all",
         "viewDetails": "View details",
         "moq": "MOQ"
@@ -501,9 +501,10 @@
       "story": {
         "kicker": "ABOUT DREAMLAND",
         "mark": "meet DREAMLAND",
-        "title": "Built layer by layer, shaped by hand.",
-        "body": "DREAMLAND focuses on hand-carved candle art. Color, fragrance and layers of warm wax come together through cutting, rolling and shaping by hand, giving every piece its own contour and character.",
-        "note": "Wholesale and custom project support is available for retail, gifting, events and brand projects."
+        "title": "meet DREAMLAND",
+        "body": "DREAMLAND focuses on hand-carved candles. Color, scent and wax layering guide each piece, while cutting, curling and shaping are done by hand when the wax is still warm.",
+        "note": "We believe a candle can be both an object and a vessel for time and light.",
+        "eyebrow": "ABOUT DREAMLAND"
       }
     },
     "zh": {
@@ -529,9 +530,9 @@
         "explore": "浏览系列"
       },
       "featured": {
-        "kicker": "精选作品",
-        "title": "精选作品",
-        "body": "从当前系列中，挑选四件值得近看的设计。",
+        "kicker": "精选推荐",
+        "title": "当下推荐",
+        "body": "从匠心工艺到色彩美学，探索此刻最值得拥有的五件作品。",
         "viewAll": "查看全部",
         "viewDetails": "查看详情",
         "moq": "起订"
@@ -990,9 +991,10 @@
       "story": {
         "kicker": "关于 DREAMLAND",
         "mark": "meet DREAMLAND",
-        "title": "从一层蜡开始，慢慢雕成一件作品。",
+        "title": "meet DREAMLAND",
         "body": "DREAMLAND 专注于手工雕刻蜡烛。我们从配色、香型与蜡体层次出发，在蜡尚温时切割、卷花与塑形，让每一件作品保留手工制作的细节与差异。",
-        "note": "同时为零售、礼赠、活动与品牌项目提供批发及定制支持。"
+        "note": "我们相信，蜡烛不仅是物件，也是时间与光的容器。愿 DREAMLAND 的作品为日常带来片刻宁静与想象。",
+        "eyebrow": "关于 DREAMLAND"
       }
     },
     "ko": {
@@ -1018,9 +1020,9 @@
         "explore": "컬렉션 보기"
       },
       "featured": {
-        "kicker": "SELECTED PIECES",
-        "title": "선별한 작품",
-        "body": "현재 컬렉션에서 가까이 볼 만한 네 가지 디자인을 골랐습니다.",
+        "kicker": "CURATED NOW",
+        "title": "지금의 추천",
+        "body": "마스터피스와 어드밴스드 시리즈에서 지금 주목할 다섯 작품을 골랐습니다.",
         "viewAll": "전체 보기",
         "viewDetails": "상세 보기",
         "moq": "MOQ"
@@ -1479,9 +1481,10 @@
       "story": {
         "kicker": "ABOUT DREAMLAND",
         "mark": "meet DREAMLAND",
-        "title": "한 겹의 왁스에서 시작해, 손으로 하나의 작품을 만듭니다.",
-        "body": "DREAMLAND는 핸드카빙 캔들 아트에 집중합니다. 컬러와 향, 따뜻한 왁스의 층을 손으로 자르고 말아 형태를 잡아 각 작품마다 고유한 윤곽과 디테일을 남깁니다.",
-        "note": "리테일, 기프트, 이벤트와 브랜드 프로젝트를 위한 도매 및 커스텀 제작도 지원합니다."
+        "title": "meet DREAMLAND",
+        "body": "DREAMLAND는 수작업 조각 캔들을 중심으로 전개됩니다. 배색, 향, 왁스 레이어를 바탕으로, 왁스가 아직 따뜻할 때 직접 자르고 말고 형태를 다듬습니다.",
+        "note": "캔들은 단순한 물건이 아니라 시간과 빛을 담는 그릇이라고 믿습니다.",
+        "eyebrow": "DREAMLAND 소개"
       }
     }
   },
