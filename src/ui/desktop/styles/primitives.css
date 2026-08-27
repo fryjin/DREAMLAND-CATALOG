@@ -1,0 +1,484 @@
+/*
+ * DREAMLAND B7-00B.4A — Desktop Visual Primitives
+ *
+ * Shared presentation primitives only. No business state or routing ownership.
+ */
+
+@media (min-width:1024px){
+  /* ------------------------------------------------------------------
+   * Typography roles
+   * ---------------------------------------------------------------- */
+  .desktop-display-xl,
+  .desktop-page-display,
+  .desktop-section-heading,
+  .desktop-subsection-heading{
+    margin:0;
+    color:var(--dw-color-ink);
+    font-family:var(--dw-font-display);
+    text-wrap:balance;
+    overflow-wrap:normal;
+    hyphens:none;
+  }
+
+  .desktop-display-xl{
+    font-size:var(--dw-type-display-xl-size);
+    line-height:var(--dw-type-display-xl-line);
+    font-weight:900;
+    letter-spacing:var(--dw-type-display-xl-track);
+  }
+
+  .desktop-page-display{
+    font-size:var(--dw-type-page-size);
+    line-height:var(--dw-type-page-line);
+    font-weight:900;
+    letter-spacing:var(--dw-type-page-track);
+  }
+
+  .desktop-section-heading{
+    font-size:var(--dw-type-section-size);
+    line-height:var(--dw-type-section-line);
+    font-weight:880;
+    letter-spacing:var(--dw-type-section-track);
+  }
+
+  .desktop-subsection-heading{
+    font-size:var(--dw-type-subsection-size);
+    line-height:var(--dw-type-subsection-line);
+    font-weight:860;
+    letter-spacing:var(--dw-type-subsection-track);
+  }
+
+  .desktop-body-lg,
+  .desktop-body,
+  .desktop-meta,
+  .desktop-micro{
+    color:var(--dw-color-muted);
+    text-wrap:pretty;
+    overflow-wrap:break-word;
+  }
+
+  .desktop-body-lg{
+    max-width:var(--dw-copy-measure);
+    font-size:var(--dw-type-body-lg-size);
+    line-height:var(--dw-type-body-lg-line);
+  }
+
+  .desktop-body{
+    max-width:var(--dw-copy-measure);
+    font-size:var(--dw-type-body-size);
+    line-height:var(--dw-type-body-line);
+  }
+
+  .desktop-meta{
+    font-size:var(--dw-type-meta-size);
+    line-height:var(--dw-type-meta-line);
+  }
+
+  .desktop-micro{
+    font-size:var(--dw-type-micro-size);
+    line-height:var(--dw-type-micro-line);
+  }
+
+  /*
+   * Existing B7-00B.1–3D headings inherit line-breaking behavior immediately
+   * without requiring DOM rewrites in 4A.
+   */
+  :is(
+    .desktop-home-hero__title,
+    .desktop-home-section__title,
+    .desktop-editorial-title,
+    .desktop-custom-title,
+    .desktop-home-cta__title,
+    .desktop-catalog-intro h1,
+    .desktop-catalog-empty h2,
+    .desktop-detail-heading h1,
+    .desktop-custom-hero h1,
+    .desktop-custom-section__heading h2,
+    .desktop-flow-hero h1,
+    .desktop-flow-empty h1,
+    .desktop-contact-card__head h2,
+    .desktop-contact-aside h2,
+    .desktop-review-section h2,
+    .desktop-review-notice h2,
+    .desktop-success-page h1,
+    .desktop-success-next h2
+  ){
+    text-wrap:balance;
+    overflow-wrap:normal;
+    hyphens:none;
+  }
+
+  :is(
+    .desktop-home-hero__body,
+    .desktop-home-section__body,
+    .desktop-editorial-body,
+    .desktop-custom-body,
+    .desktop-home-cta__body,
+    .desktop-catalog-intro p,
+    .desktop-detail-heading > p,
+    .desktop-custom-hero > p,
+    .desktop-custom-section__heading > p,
+    .desktop-flow-hero > p,
+    .desktop-flow-empty > p,
+    .desktop-contact-card__head p,
+    .desktop-review-notice p,
+    .desktop-success-lead
+  ){
+    text-wrap:pretty;
+    overflow-wrap:break-word;
+  }
+
+  /* Korean should not split a semantic word merely to fill a line. */
+  body[data-lang="ko"] :is(
+    h1,
+    h2,
+    h3,
+    .desktop-site-nav__item,
+    button
+  ){
+    word-break:keep-all;
+  }
+
+  /* Chinese display copy may break naturally, but never via Latin hyphenation. */
+  body[data-lang="zh"] :is(
+    h1,
+    h2,
+    h3
+  ){
+    hyphens:none;
+  }
+
+  /*
+   * Structural/commercial labels are intentionally one-line at Desktop sizes.
+   * Their containers may expand instead of producing low-value 2-line labels.
+   */
+  :is(
+    .desktop-eyebrow,
+    .desktop-arrow-link,
+    .desktop-primary-button,
+    .desktop-text-button,
+    .desktop-site-nav__item,
+    .desktop-language__toggle,
+    .desktop-inquiry-button,
+    .desktop-catalog-series__item,
+    .desktop-catalog-tool-button,
+    .desktop-catalog-load-more,
+    .desktop-detail-back,
+    .desktop-flow-primary,
+    .desktop-flow-secondary,
+    .desktop-flow-danger,
+    .desktop-custom-submit
+  ){
+    white-space:nowrap;
+  }
+
+  /* Known short summary headings should remain single-line on normal Desktop. */
+  @media (min-width:1280px){
+    :is(
+      .desktop-custom-summary h2,
+      .desktop-inquiry-summary h2,
+      .desktop-contact-aside h2,
+      .desktop-review-summary h2,
+      .desktop-success-next h2
+    ){
+      width:max-content;
+      max-width:100%;
+      white-space:nowrap;
+      text-wrap:nowrap;
+    }
+  }
+
+  /* ------------------------------------------------------------------
+   * Shared actions
+   * ---------------------------------------------------------------- */
+  .desktop-button{
+    min-height:48px;
+    padding:0 18px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    border:1px solid transparent;
+    border-radius:var(--dw-radius-control);
+    font-size:13px;
+    line-height:1;
+    font-weight:830;
+    white-space:nowrap;
+    cursor:pointer;
+    transition:
+      transform var(--dw-duration-fast) var(--dw-ease-out),
+      color var(--dw-duration-fast) ease,
+      background var(--dw-duration-fast) ease,
+      border-color var(--dw-duration-fast) ease,
+      box-shadow var(--dw-duration-fast) ease;
+  }
+
+  .desktop-button--primary{
+    background:var(--dw-color-ink);
+    color:#fff;
+    box-shadow:var(--dw-shadow-button);
+  }
+
+  .desktop-button--secondary{
+    border-color:var(--dw-color-line-strong);
+    background:transparent;
+    color:var(--dw-color-ink);
+    box-shadow:none;
+  }
+
+  .desktop-button--quiet{
+    min-height:42px;
+    padding-inline:0;
+    background:transparent;
+    color:var(--dw-color-ink);
+    box-shadow:none;
+  }
+
+  .desktop-button--inverse{
+    background:var(--dw-color-inverse);
+    color:var(--dw-color-ink);
+    box-shadow:none;
+  }
+
+  .desktop-button:hover:not(:disabled){
+    transform:translateY(-1px);
+  }
+
+  .desktop-button:disabled{
+    cursor:default;
+    opacity:.6;
+  }
+
+  .desktop-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:var(--dw-color-ink);
+    font-size:13px;
+    font-weight:800;
+    text-decoration:none;
+  }
+
+  .desktop-link--underline{
+    text-decoration:underline;
+    text-underline-offset:4px;
+    text-decoration-thickness:1px;
+  }
+
+  .desktop-link--arrow::after{
+    content:"→";
+    transition:transform var(--dw-duration-fast) var(--dw-ease-out);
+  }
+
+  .desktop-link--arrow:hover::after{
+    transform:translateX(4px);
+  }
+
+  /* ------------------------------------------------------------------
+   * Shared surfaces / dividers
+   * ---------------------------------------------------------------- */
+  .desktop-surface{
+    background:var(--dw-color-surface);
+  }
+
+  .desktop-surface--paper{
+    background:var(--dw-color-surface-raised);
+  }
+
+  .desktop-surface--warm{
+    background:var(--dw-color-surface-warm);
+  }
+
+  .desktop-surface--elevated{
+    background:var(--dw-color-surface-raised);
+    box-shadow:var(--dw-shadow-subtle);
+  }
+
+  .desktop-divider{
+    width:100%;
+    height:1px;
+    background:var(--dw-color-line);
+  }
+
+  /* ------------------------------------------------------------------
+   * Shared form controls
+   * ---------------------------------------------------------------- */
+  .desktop-field{
+    min-width:0;
+  }
+
+  .desktop-field__label{
+    display:block;
+    margin-bottom:8px;
+    color:var(--dw-color-ink);
+    font-size:11px;
+    line-height:1.3;
+    font-weight:820;
+  }
+
+  .desktop-field__hint,
+  .desktop-field__error{
+    margin-top:7px;
+    font-size:10px;
+    line-height:1.45;
+  }
+
+  .desktop-field__hint{
+    color:var(--dw-color-faint);
+  }
+
+  .desktop-field__error{
+    color:var(--dw-color-danger);
+    font-weight:720;
+  }
+
+  .desktop-control{
+    width:100%;
+    min-height:50px;
+    padding:0 14px;
+    border:1px solid var(--dw-color-line);
+    border-radius:var(--dw-radius-control);
+    background:var(--dw-color-surface-raised);
+    color:var(--dw-color-ink);
+    outline:0;
+    font:inherit;
+    transition:
+      border-color var(--dw-duration-fast) ease,
+      box-shadow var(--dw-duration-fast) ease,
+      background var(--dw-duration-fast) ease;
+  }
+
+  textarea.desktop-control{
+    min-height:144px;
+    padding-block:13px;
+    resize:vertical;
+    line-height:1.6;
+  }
+
+  .desktop-control:focus{
+    border-color:var(--dw-color-line-strong);
+    box-shadow:0 0 0 3px var(--dw-focus-ring-soft);
+  }
+
+  .desktop-control.is-invalid,
+  .desktop-field.is-invalid .desktop-control{
+    border-color:var(--dw-color-danger);
+    box-shadow:0 0 0 3px rgba(140,81,70,.08);
+  }
+
+  /* ------------------------------------------------------------------
+   * Shared choices
+   * ---------------------------------------------------------------- */
+  .desktop-choice{
+    min-height:42px;
+    padding:0 14px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid var(--dw-color-line);
+    border-radius:var(--dw-radius-control);
+    background:var(--dw-color-surface-raised);
+    color:var(--dw-color-muted);
+    font-size:11px;
+    line-height:1.2;
+    font-weight:780;
+    cursor:pointer;
+    transition:
+      color var(--dw-duration-fast) ease,
+      background var(--dw-duration-fast) ease,
+      border-color var(--dw-duration-fast) ease,
+      transform var(--dw-duration-fast) var(--dw-ease-out);
+  }
+
+  .desktop-choice--pill{
+    border-radius:var(--dw-radius-pill);
+    white-space:nowrap;
+  }
+
+  .desktop-choice:hover{
+    transform:translateY(-1px);
+    border-color:var(--dw-color-line-strong);
+  }
+
+  .desktop-choice.is-active{
+    border-color:var(--dw-color-ink);
+    background:var(--dw-color-ink);
+    color:#fff;
+  }
+
+  /* ------------------------------------------------------------------
+   * Shared media / guided hover
+   * ---------------------------------------------------------------- */
+  .desktop-media{
+    position:relative;
+    overflow:hidden;
+    background:var(--dw-color-surface-warm-soft);
+  }
+
+  .desktop-media--product{
+    aspect-ratio:var(--dw-ratio-product);
+  }
+
+  .desktop-media > img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+    transition:
+      opacity var(--dw-duration-standard) ease,
+      transform 360ms var(--dw-ease-out);
+  }
+
+  .desktop-media__overlay{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:flex-end;
+    padding:22px;
+    background:linear-gradient(
+      180deg,
+      rgba(23,22,20,0) 48%,
+      rgba(23,22,20,.42) 100%
+    );
+    color:#fff;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity var(--dw-duration-standard) ease;
+  }
+
+  .desktop-media:hover > img,
+  .desktop-media:focus-within > img{
+    transform:scale(var(--dw-media-zoom));
+  }
+
+  .desktop-media:hover .desktop-media__overlay,
+  .desktop-media:focus-within .desktop-media__overlay{
+    opacity:1;
+  }
+
+  /* ------------------------------------------------------------------
+   * Focus + motion accessibility
+   * ---------------------------------------------------------------- */
+  .desktop-experience :is(
+    button,
+    a,
+    input,
+    textarea,
+    select,
+    [tabindex]
+  ):focus-visible{
+    outline:2px solid var(--dw-focus-ring);
+    outline-offset:4px;
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .desktop-experience *,
+    .desktop-experience *::before,
+    .desktop-experience *::after{
+      scroll-behavior:auto!important;
+      animation-duration:.01ms!important;
+      animation-iteration-count:1!important;
+      transition-duration:.01ms!important;
+    }
+  }
+}
