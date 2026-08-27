@@ -373,6 +373,7 @@ try{
     for(const section of [
       'navigation',
       'hero',
+      'story',
       'collections',
       'featured',
       'craft',
@@ -450,6 +451,9 @@ try{
       '.desktop-home-hero',
       'B7-00B.4B R1 — Home Editorial Composition',
       'B7-00B.4B R2 — Home Art Direction Realignment',
+      'B7-00B.4B R3 — Home Editorial Structure Realignment',
+      '.desktop-home-story',
+      '.desktop-home-collections',
       '--dw-home-serif:',
       '--dw-home-accent:',
       '.desktop-collection-grid',

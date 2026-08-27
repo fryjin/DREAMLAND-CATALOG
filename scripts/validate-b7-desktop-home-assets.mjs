@@ -145,7 +145,8 @@ try{
       'B7-00B.2',
       'B7-00B.3A-R6',
       'B7-00B.4B-R1',
-      'B7-00B.4B-R2'
+      'B7-00B.4B-R2',
+      'B7-00B.4B-R3'
     ]);
 
   if(
@@ -194,6 +195,9 @@ try{
     '.desktop-collection-hover{',
     'B7-00B.4B R1 — Home Editorial Composition',
     'B7-00B.4B R2 — Home Art Direction Realignment',
+    'B7-00B.4B R3 — Home Editorial Structure Realignment',
+    '.desktop-home-story{',
+    '.desktop-home-collections',
     '.desktop-wholesale-media{',
     'aspect-ratio:4/5;'
   ]){

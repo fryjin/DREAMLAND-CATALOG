@@ -1515,3 +1515,291 @@
     grid-column:6 / 13;
   }
 }
+
+/* --------------------------------------------------------------------------
+ * B7-00B.4B R3 — Home Editorial Structure Realignment
+ *
+ * 01 Cover
+ * 02 Brand Story
+ * 03 Four Collections
+ * 04+ Existing editorial / commerce narrative
+ * ------------------------------------------------------------------------ */
+@media (min-width:1024px){
+  /* 01 — Cover: no functional copy and no shortcut actions. */
+  .desktop-home-hero{
+    min-height:760px;
+    padding:84px 0 80px;
+    align-items:center;
+  }
+
+  .desktop-home-hero::before{
+    top:96px;
+    font-size:clamp(108px,11.4vw,194px);
+    letter-spacing:-.09em;
+  }
+
+  .desktop-home-hero::after{
+    top:386px;
+  }
+
+  .desktop-home-hero__sr-title{
+    position:absolute!important;
+    width:1px!important;
+    height:1px!important;
+    padding:0!important;
+    margin:-1px!important;
+    overflow:hidden!important;
+    clip:rect(0,0,0,0)!important;
+    white-space:nowrap!important;
+    border:0!important;
+  }
+
+  .desktop-home-hero__media{
+    grid-column:4 / 10;
+    grid-row:1;
+    width:100%;
+    height:520px;
+    margin:112px 0 0;
+    justify-self:center;
+  }
+
+  /* 02 — Brand Story: typography-led editorial spread. */
+  .desktop-home-story{
+    position:relative;
+    min-height:650px;
+    padding-top:112px;
+    padding-bottom:124px;
+    display:grid;
+    grid-template-columns:repeat(12,minmax(0,1fr));
+    gap:var(--dw-grid-gap);
+    align-items:center;
+  }
+
+  .desktop-home-story::before{
+    content:"DREAMLAND / HAND-CARVED CANDLE ART";
+    position:absolute;
+    right:0;
+    top:108px;
+    color:rgba(167,67,55,.56);
+    font-size:var(--dw-type-support-size);
+    font-weight:760;
+    letter-spacing:.14em;
+    pointer-events:none;
+  }
+
+  .desktop-home-story__statement{
+    grid-column:2 / 8;
+    align-self:center;
+  }
+
+  .desktop-home-story__index{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color:var(--dw-color-muted);
+    font-size:var(--dw-type-support-size);
+    font-weight:760;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+
+  .desktop-home-story__index span{
+    color:var(--dw-home-accent);
+    font-family:var(--dw-home-serif);
+    font-size:20px;
+    font-weight:500;
+    letter-spacing:0;
+  }
+
+  .desktop-home-story__title{
+    max-width:720px;
+    margin-top:24px;
+    font-family:var(--dw-home-serif);
+    font-size:clamp(42px,4vw,64px);
+    line-height:1.08;
+    font-weight:500;
+    letter-spacing:-.026em;
+  }
+
+  .desktop-home-story__copy{
+    grid-column:9 / 13;
+    max-width:470px;
+    align-self:center;
+  }
+
+  .desktop-home-story__mark{
+    color:var(--dw-home-accent);
+    font-family:var(--dw-home-serif);
+    font-size:26px;
+    line-height:1.1;
+    font-weight:500;
+  }
+
+  .desktop-home-story__body{
+    margin-top:22px;
+    color:var(--dw-color-ink-soft);
+    font-size:14px;
+    line-height:1.78;
+  }
+
+  .desktop-home-story__note{
+    margin-top:22px;
+    padding-top:16px;
+    border-top:1px solid var(--dw-color-line);
+    color:var(--dw-color-muted);
+    font-size:12px;
+    line-height:1.7;
+  }
+
+  /* 03 — Four Collections: one compact, related horizontal group. */
+  .desktop-home-collections{
+    padding-top:84px;
+    padding-bottom:26px;
+  }
+
+  .desktop-home-collections .desktop-home-section__head{
+    display:block;
+    max-width:680px;
+    margin:0 auto 34px;
+    text-align:center;
+  }
+
+  .desktop-home-collections
+  .desktop-home-section__head > div,
+  .desktop-home-collections
+  .desktop-home-section__head >
+  .desktop-home-section__body{
+    max-width:none;
+    margin-inline:auto;
+  }
+
+  .desktop-home-collections
+  .desktop-home-section__head >
+  .desktop-home-section__body{
+    max-width:500px;
+    margin-top:8px;
+  }
+
+  .desktop-home-collections
+  .desktop-collection-grid{
+    width:min(100%,1280px);
+    margin-inline:auto;
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:18px;
+    align-items:start;
+  }
+
+  .desktop-home-collections
+  .desktop-collection-card:nth-child(1),
+  .desktop-home-collections
+  .desktop-collection-card:nth-child(2),
+  .desktop-home-collections
+  .desktop-collection-card:nth-child(3),
+  .desktop-home-collections
+  .desktop-collection-card:nth-child(4){
+    grid-column:auto;
+    margin-top:0;
+    transform:none;
+  }
+
+  .desktop-home-collections
+  .desktop-collection-card:nth-child(1)
+  .desktop-collection-media,
+  .desktop-home-collections
+  .desktop-collection-card:nth-child(2)
+  .desktop-collection-media,
+  .desktop-home-collections
+  .desktop-collection-card:nth-child(3)
+  .desktop-collection-media,
+  .desktop-home-collections
+  .desktop-collection-card:nth-child(4)
+  .desktop-collection-media{
+    aspect-ratio:4/5;
+  }
+
+  .desktop-home-collections
+  .desktop-collection-media{
+    border-radius:4px;
+  }
+
+  .desktop-home-collections
+  .desktop-collection-meta{
+    display:block;
+    margin-top:10px;
+  }
+
+  .desktop-home-collections
+  .desktop-collection-name{
+    font-size:17px;
+    line-height:1.2;
+  }
+
+  .desktop-home-collections
+  .desktop-collection-count{
+    margin-top:3px;
+    font-size:12px;
+  }
+
+  .desktop-home-collections
+  .desktop-collection-meta
+  .desktop-arrow-link{
+    display:inline-flex;
+    margin-top:9px;
+    padding:0;
+    color:var(--dw-home-accent);
+    font-size:var(--dw-type-support-size);
+  }
+
+  /* R3 continuation: tighten the handoff into Featured. */
+  .desktop-home-collections +
+  .desktop-home-section{
+    padding-top:92px;
+  }
+}
+
+@media (min-width:1024px) and (max-width:1199px){
+  .desktop-home-hero{
+    min-height:650px;
+  }
+
+  .desktop-home-hero::before{
+    top:86px;
+    font-size:clamp(90px,10.5vw,126px);
+  }
+
+  .desktop-home-hero__media{
+    grid-column:3 / 11;
+    width:min(100%,640px);
+    height:440px;
+    margin-top:98px;
+  }
+
+  .desktop-home-story{
+    min-height:560px;
+    padding-top:88px;
+    padding-bottom:96px;
+  }
+
+  .desktop-home-story__statement{
+    grid-column:1 / 8;
+  }
+
+  .desktop-home-story__copy{
+    grid-column:8 / 13;
+  }
+
+  .desktop-home-story__title{
+    font-size:clamp(36px,4vw,48px);
+  }
+
+  .desktop-home-collections
+  .desktop-collection-grid{
+    gap:12px;
+  }
+
+  .desktop-home-collections
+  .desktop-collection-name{
+    font-size:15px;
+  }
+}

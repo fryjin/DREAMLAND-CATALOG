@@ -94,14 +94,14 @@ try{
 
 try{
   const index=read('index.html');
-  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4b-r2-v101';
-  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4b-r2-v101';
-  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4b-r2-v101';
+  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4b-r3-v102';
+  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4b-r3-v102';
+  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4b-r3-v102';
 
   includesAll(
     index,
     [
-      "window.DREAMLAND_RELEASE='b7-00b4b-r2-v101';",
+      "window.DREAMLAND_RELEASE='b7-00b4b-r3-v102';",
       tokensRef,
       primitivesRef,
       shellRef
@@ -126,15 +126,15 @@ try{
   includesAll(
     sw,
     [
-      "const CACHE_VERSION = 'dreamland-pwa-v101';",
-      "'b7-00b4b-r2-v101'",
-      './src/ui/desktop/styles/primitives.css?release=b7-00b4b-r2-v101',
+      "const CACHE_VERSION = 'dreamland-pwa-v102';",
+      "'b7-00b4b-r3-v102'",
+      './src/ui/desktop/styles/primitives.css?release=b7-00b4b-r3-v102',
       "'./src/ui/desktop/styles/primitives.css'"
     ],
     'Service Worker Foundation release'
   );
 
-  if(!pwa.includes("'b7-00b4b-r2-v101'")){
+  if(!pwa.includes("'b7-00b4b-r3-v102'")){
     fail('PWA runtime release tag was not advanced to B7-00B.4A R1.');
   }
 }catch(error){
@@ -469,6 +469,9 @@ try{
     [
       'B7-00B.4B R1 — Home Editorial Composition',
       'B7-00B.4B R2 — Home Art Direction Realignment',
+      'B7-00B.4B R3 — Home Editorial Structure Realignment',
+      '.desktop-home-story{',
+      '.desktop-home-collections',
       '--dw-home-serif:',
       '--dw-home-accent:',
       '.desktop-home-hero::before',
@@ -484,7 +487,10 @@ try{
   includesAll(
     runtime,
     [
-      "const VERSION='B7-00B.4B-R2';",
+      "const VERSION='B7-00B.4B-R3';",
+      'function storyHtml(view)',
+      'desktop-home-story',
+      '${storyHtml(view)}',
       'desktop-wholesale-media',
       'view.wholesale.image',
       'desktop-wholesale-index'
@@ -499,6 +505,16 @@ try{
   ]){
     if(site.languages?.[lang]?.hero?.title!==title){
       fail(`4B Home public copy regression: ${lang}.hero.title`);
+    }
+  }
+
+  for(const [lang,title] of [
+    ['en','Built layer by layer, shaped by hand.'],
+    ['zh','从一层蜡开始，慢慢雕成一件作品。'],
+    ['ko','한 겹의 왁스에서 시작해, 손으로 하나의 작품을 만듭니다.']
+  ]){
+    if(site.languages?.[lang]?.story?.title!==title){
+      fail(`4B R3 Brand Story copy regression: ${lang}.story.title`);
     }
   }
 }catch(error){

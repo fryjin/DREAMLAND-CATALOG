@@ -5,7 +5,7 @@
     return;
   }
 
-  const VERSION='B7-00B.4B-R2';
+  const VERSION='B7-00B.4B-R3';
 
   const DEFAULT_ASSETS=Object.freeze({
     hero:{
@@ -616,6 +616,13 @@
         class="desktop-home-hero desktop-reveal"
         aria-labelledby="desktopHeroTitle"
       >
+        <h1
+          class="desktop-home-hero__sr-title"
+          id="desktopHeroTitle"
+        >
+          ${escapeHtml(hero.title||'DREAMLAND')}
+        </h1>
+
         <div
           class="desktop-home-hero__media media-frame desktop-media-placeholder"
         >
@@ -627,42 +634,45 @@
             alt=""
           >
         </div>
+      </section>
+    `;
+  }
 
-        <div class="desktop-home-hero__copy">
-          <div class="desktop-eyebrow">
-            ${escapeHtml(hero.kicker||'')}
+  function storyHtml(view){
+    const content=
+      view.content.story||{};
+
+    return `
+      <section
+        class="desktop-home-story desktop-container desktop-reveal"
+        aria-labelledby="desktopStoryTitle"
+      >
+        <div class="desktop-home-story__statement">
+          <div class="desktop-home-story__index">
+            <span aria-hidden="true">02</span>
+            ${escapeHtml(content.kicker||'')}
           </div>
 
-          <h1
-            class="desktop-home-hero__title"
-            id="desktopHeroTitle"
+          <h2
+            class="desktop-home-story__title"
+            id="desktopStoryTitle"
           >
-            ${escapeHtml(hero.title||'')}
-          </h1>
+            ${escapeHtml(content.title||'')}
+          </h2>
+        </div>
 
-          <p class="desktop-home-hero__body">
-            ${escapeHtml(hero.body||'')}
+        <div class="desktop-home-story__copy">
+          <div class="desktop-home-story__mark">
+            ${escapeHtml(content.mark||'meet DREAMLAND')}
+          </div>
+
+          <p class="desktop-home-story__body">
+            ${escapeHtml(content.body||'')}
           </p>
 
-          <div class="desktop-home-hero__actions">
-            <button
-              class="desktop-primary-button"
-              type="button"
-              data-desktop-home-action="catalog"
-            >
-              ${escapeHtml(hero.primary||'')}
-              <span aria-hidden="true">→</span>
-            </button>
-
-            <button
-              class="desktop-text-button desktop-arrow-link"
-              type="button"
-              data-desktop-home-action="custom"
-            >
-              ${escapeHtml(hero.secondary||'')}
-              <span class="desktop-arrow" aria-hidden="true">→</span>
-            </button>
-          </div>
+          <p class="desktop-home-story__note">
+            ${escapeHtml(content.note||'')}
+          </p>
         </div>
       </section>
     `;
@@ -674,7 +684,7 @@
 
     return `
       <section
-        class="desktop-home-section desktop-container desktop-reveal"
+        class="desktop-home-section desktop-home-collections desktop-container desktop-reveal"
         aria-labelledby="desktopCollectionsTitle"
       >
         <div class="desktop-home-section__head">
@@ -1089,6 +1099,7 @@
     homeRoot.innerHTML=`
       <div class="desktop-home">
         ${heroHtml(view)}
+        ${storyHtml(view)}
         ${collectionsHtml(view)}
         ${featuredHtml(view)}
         ${craftHtml(view)}

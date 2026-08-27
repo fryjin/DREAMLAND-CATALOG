@@ -497,6 +497,13 @@
         "status": "Status",
         "awaitingReview": "In review",
         "startAnotherProject": "Start a New Inquiry"
+      },
+      "story": {
+        "kicker": "ABOUT DREAMLAND",
+        "mark": "meet DREAMLAND",
+        "title": "Built layer by layer, shaped by hand.",
+        "body": "DREAMLAND focuses on hand-carved candle art. Color, fragrance and layers of warm wax come together through cutting, rolling and shaping by hand, giving every piece its own contour and character.",
+        "note": "Wholesale and custom project support is available for retail, gifting, events and brand projects."
       }
     },
     "zh": {
@@ -979,6 +986,13 @@
         "status": "状态",
         "awaitingReview": "处理中",
         "startAnotherProject": "提交新的询价"
+      },
+      "story": {
+        "kicker": "关于 DREAMLAND",
+        "mark": "meet DREAMLAND",
+        "title": "从一层蜡开始，慢慢雕成一件作品。",
+        "body": "DREAMLAND 专注于手工雕刻蜡烛。我们从配色、香型与蜡体层次出发，在蜡尚温时切割、卷花与塑形，让每一件作品保留手工制作的细节与差异。",
+        "note": "同时为零售、礼赠、活动与品牌项目提供批发及定制支持。"
       }
     },
     "ko": {
@@ -1461,6 +1475,13 @@
         "status": "상태",
         "awaitingReview": "검토 중",
         "startAnotherProject": "새 문의 시작"
+      },
+      "story": {
+        "kicker": "ABOUT DREAMLAND",
+        "mark": "meet DREAMLAND",
+        "title": "한 겹의 왁스에서 시작해, 손으로 하나의 작품을 만듭니다.",
+        "body": "DREAMLAND는 핸드카빙 캔들 아트에 집중합니다. 컬러와 향, 따뜻한 왁스의 층을 손으로 자르고 말아 형태를 잡아 각 작품마다 고유한 윤곽과 디테일을 남깁니다.",
+        "note": "리테일, 기프트, 이벤트와 브랜드 프로젝트를 위한 도매 및 커스텀 제작도 지원합니다."
       }
     }
   },
