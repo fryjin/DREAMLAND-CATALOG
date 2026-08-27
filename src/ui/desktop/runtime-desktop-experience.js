@@ -5,7 +5,7 @@
     return;
   }
 
-  const VERSION='B7-00B.3C';
+  const VERSION='B7-00B.3D';
   const BREAKPOINT='(min-width: 1024px)';
 
   let config=null;
@@ -75,6 +75,26 @@
       .DreamlandDesktopCustom;
   }
 
+  function inquiryPresentation(){
+    return root
+      .DreamlandDesktopInquiry;
+  }
+
+  function contactPresentation(){
+    return root
+      .DreamlandDesktopContact;
+  }
+
+  function reviewPresentation(){
+    return root
+      .DreamlandDesktopReview;
+  }
+
+  function successPresentation(){
+    return root
+      .DreamlandDesktopSuccess;
+  }
+
   function ensureStructure(){
     if(
       !rootElement||
@@ -97,6 +117,10 @@
           <div id="desktopCatalogRoot" hidden></div>
           <div id="desktopDetailRoot" hidden></div>
           <div id="desktopCustomRoot" hidden></div>
+          <div id="desktopInquiryRoot" hidden></div>
+          <div id="desktopContactRoot" hidden></div>
+          <div id="desktopReviewRoot" hidden></div>
+          <div id="desktopSuccessRoot" hidden></div>
         </main>
 
         <div id="desktopFooterRoot"></div>
@@ -260,16 +284,32 @@
     const custom=
       customPresentation();
 
+    const inquiry=
+      inquiryPresentation();
+
+    const contact=
+      contactPresentation();
+
+    const review=
+      reviewPresentation();
+
+    const success=
+      successPresentation();
+
     if(
       !shell||
       !home||
       !view||
       !catalog||
       !detail||
-      !custom
+      !custom||
+      !inquiry||
+      !contact||
+      !review||
+      !success
     ){
       throw new Error(
-        'Desktop Shell/Home/Catalog/Detail/Custom runtimes must load before Desktop Experience.'
+        'Desktop Shell/Home/Catalog/Detail/Custom/Inquiry/Contact/Review/Success runtimes must load before Desktop Experience.'
       );
     }
 
@@ -535,6 +575,231 @@
       }
     });
 
+    inquiry.configure({
+      content:
+        localizedContent,
+
+      viewModel:
+        ()=>config.inquiryState
+          ?.buildViewModel?.()||
+          {
+            empty:true,
+            items:[],
+            summary:{
+              itemCount:0,
+              productCount:0,
+              customCount:0,
+              productQuantity:0,
+              estimatedTotal:0
+            }
+          },
+
+      productName:
+        config.productName,
+
+      seriesLabel:
+        config.seriesLabel,
+
+      choiceLabel:
+        config.choiceLabel,
+
+      itemScentLabel:
+        config.itemScentLabel,
+
+      itemMoq:
+        config.itemMoq,
+
+      money:
+        config.money,
+
+      qtyUnit:
+        config.qtyUnit,
+
+      actions:{
+        adjustQuantity:
+          (
+            id,
+            delta
+          )=>
+            config.actions
+              ?.adjustInquiryQuantity?.(
+                id,
+                delta
+              ),
+
+        setQuantity:
+          (
+            id,
+            value
+          )=>
+            config.actions
+              ?.setInquiryQuantity?.(
+                id,
+                value
+              ),
+
+        remove:
+          id=>
+            config.actions
+              ?.removeInquiryItem?.(
+                id
+              ),
+
+        edit:
+          id=>
+            config.actions
+              ?.editInquiryItem?.(
+                id
+              ),
+
+        clear:
+          ()=>config.actions
+            ?.clearInquiryDesktop?.(),
+
+        continue:
+          ()=>config.actions
+            ?.continueInquiry?.(),
+
+        explore:
+          ()=>enterCatalog(
+            'all',
+            {
+              fresh:true,
+              navigate:true
+            }
+          ),
+
+        custom:
+          ()=>config.actions
+            ?.navigate?.(
+              'custom'
+            ),
+
+        feedback:
+          message=>config.actions
+            ?.feedback?.(
+              message
+            ),
+
+        syncInquiry
+      }
+    });
+
+    contact.configure({
+      content:
+        localizedContent,
+
+      feature:
+        config.contactState,
+
+      summary:
+        ()=>config.inquiryState
+          ?.derivedSummary?.()||
+          {
+            itemCount:0,
+            productQuantity:0,
+            estimatedTotal:0,
+            customCount:0
+          },
+
+      money:
+        config.money,
+
+      qtyUnit:
+        config.qtyUnit,
+
+      actions:{
+        back:
+          ()=>config.actions
+            ?.navigate?.(
+              'inquiry'
+            ),
+
+        continue:
+          contactValue=>
+            config.actions
+              ?.continueContact?.(
+                contactValue
+              )
+      }
+    });
+
+    review.configure({
+      content:
+        localizedContent,
+
+      projection:
+        ()=>config.actions
+          ?.reviewProjection?.()||
+          {},
+
+      riskState:
+        ()=>config.actions
+          ?.riskState?.()||
+          {},
+
+      actions:{
+        editContact:
+          ()=>config.actions
+            ?.navigate?.(
+              'contact'
+            ),
+
+        editInquiry:
+          ()=>config.actions
+            ?.navigate?.(
+              'inquiry'
+            ),
+
+        privacy:
+          ()=>config.actions
+            ?.privacy?.(),
+
+        privacyChanged:
+          accepted=>config.actions
+            ?.privacyChanged?.(
+              accepted
+            ),
+
+        submit:
+          accepted=>config.actions
+            ?.submitInquiryDesktop?.(
+              accepted
+            )
+      }
+    });
+
+    success.configure({
+      content:
+        localizedContent,
+
+      lastSubmission:
+        ()=>config.actions
+          ?.lastSubmission?.()||
+          {},
+
+      locale:
+        ()=>config.actions
+          ?.locale?.(),
+
+      actions:{
+        explore:
+          ()=>enterCatalog(
+            'all',
+            {
+              fresh:true,
+              navigate:true
+            }
+          ),
+
+        custom:
+          ()=>config.actions
+            ?.navigate?.(
+              'custom'
+            )
+      }
+    });
+
     catalog.configure({
       content:
         localizedContent,
@@ -782,6 +1047,34 @@
         )
       );
 
+    root.DreamlandDesktopInquiry
+      .mount(
+        rootElement.querySelector(
+          '#desktopInquiryRoot'
+        )
+      );
+
+    root.DreamlandDesktopContact
+      .mount(
+        rootElement.querySelector(
+          '#desktopContactRoot'
+        )
+      );
+
+    root.DreamlandDesktopReview
+      .mount(
+        rootElement.querySelector(
+          '#desktopReviewRoot'
+        )
+      );
+
+    root.DreamlandDesktopSuccess
+      .mount(
+        rootElement.querySelector(
+          '#desktopSuccessRoot'
+        )
+      );
+
     desktopMounted=true;
 
     syncInquiry();
@@ -905,6 +1198,18 @@
 
       customState:
         options.customState,
+
+      inquiryState:
+        options.inquiryState,
+
+      contactState:
+        options.contactState,
+
+      itemScentLabel:
+        options.itemScentLabel,
+
+      itemMoq:
+        options.itemMoq,
 
       choiceLabel:
         options.choiceLabel,
@@ -1032,10 +1337,22 @@
     const custom=
       currentScreen==='custom';
 
+    const inquiry=
+      currentScreen==='inquiry';
+
+    const contact=
+      currentScreen==='contact';
+
+    const review=
+      currentScreen==='preview';
+
+    const success=
+      currentScreen==='success';
+
     /*
      * Keep the established Home/Catalog aggregate marker intact for the
-     * historical 3A gate. Detail (3B) and Custom (3C) are explicit successor
-     * Desktop-owned screens.
+     * historical 3A gate. Detail (3B), Custom (3C), and the Inquiry Closure
+     * screens (3D) are explicit successor Desktop-owned screens.
      */
     const desktopManaged=
       home||
@@ -1046,6 +1363,12 @@
 
     const customManaged=
       custom;
+
+    const inquiryManaged=
+      inquiry||
+      contact||
+      review||
+      success;
 
     rootElement.classList
       .toggle(
@@ -1069,6 +1392,30 @@
       .toggle(
         'is-custom',
         custom
+      );
+
+    rootElement.classList
+      .toggle(
+        'is-inquiry',
+        inquiry
+      );
+
+    rootElement.classList
+      .toggle(
+        'is-contact',
+        contact
+      );
+
+    rootElement.classList
+      .toggle(
+        'is-review',
+        review
+      );
+
+    rootElement.classList
+      .toggle(
+        'is-success',
+        success
       );
 
     root.DreamlandDesktopShell
@@ -1096,6 +1443,26 @@
         '#desktopCustomRoot'
       );
 
+    const inquiryRoot=
+      rootElement.querySelector(
+        '#desktopInquiryRoot'
+      );
+
+    const contactRoot=
+      rootElement.querySelector(
+        '#desktopContactRoot'
+      );
+
+    const reviewRoot=
+      rootElement.querySelector(
+        '#desktopReviewRoot'
+      );
+
+    const successRoot=
+      rootElement.querySelector(
+        '#desktopSuccessRoot'
+      );
+
     if(homeRoot){
       homeRoot.hidden=
         !home;
@@ -1116,6 +1483,26 @@
         !custom;
     }
 
+    if(inquiryRoot){
+      inquiryRoot.hidden=
+        !inquiry;
+    }
+
+    if(contactRoot){
+      contactRoot.hidden=
+        !contact;
+    }
+
+    if(reviewRoot){
+      reviewRoot.hidden=
+        !review;
+    }
+
+    if(successRoot){
+      successRoot.hidden=
+        !success;
+    }
+
     const app=
       document.getElementById(
         'app'
@@ -1126,7 +1513,8 @@
       (
         desktopManaged||
         detailManaged||
-        customManaged
+        customManaged||
+        inquiryManaged
       )
         ? 'true'
         : 'false'
@@ -1154,6 +1542,41 @@
       root.DreamlandDesktopCustom
         ?.refresh?.();
 
+      root.requestAnimationFrame?.(
+        ()=>
+          root.scrollTo?.(
+            0,
+            0
+          )
+      );
+    }
+
+    if(inquiry){
+      root.DreamlandDesktopInquiry
+        ?.refresh?.();
+    }
+
+    if(contact){
+      root.DreamlandDesktopContact
+        ?.refresh?.();
+    }
+
+    if(review){
+      root.DreamlandDesktopReview
+        ?.refresh?.();
+    }
+
+    if(success){
+      root.DreamlandDesktopSuccess
+        ?.refresh?.();
+    }
+
+    if(
+      inquiry||
+      contact||
+      review||
+      success
+    ){
       root.requestAnimationFrame?.(
         ()=>
           root.scrollTo?.(
@@ -1210,6 +1633,30 @@
         });
     }
 
+    if(currentScreen==='inquiry'){
+      root.DreamlandDesktopInquiry
+        ?.refresh?.();
+    }
+
+    if(currentScreen==='contact'){
+      root.DreamlandDesktopContact
+        ?.refresh?.({
+          preserveScroll:true
+        });
+    }
+
+    if(currentScreen==='preview'){
+      root.DreamlandDesktopReview
+        ?.refresh?.({
+          preserveScroll:true
+        });
+    }
+
+    if(currentScreen==='success'){
+      root.DreamlandDesktopSuccess
+        ?.refresh?.();
+    }
+
     if(currentScreen==='catalog'){
       const restoreY=
         catalogView()
@@ -1256,6 +1703,15 @@
       ?.syncInquiry?.();
 
     root.DreamlandDesktopCustom
+      ?.syncInquiry?.();
+
+    root.DreamlandDesktopInquiry
+      ?.syncInquiry?.();
+
+    root.DreamlandDesktopContact
+      ?.syncInquiry?.();
+
+    root.DreamlandDesktopReview
       ?.syncInquiry?.();
 
     if(
@@ -1326,6 +1782,22 @@
         null,
       custom:
         customPresentation()
+          ?.snapshot?.()||
+        null,
+      inquiry:
+        inquiryPresentation()
+          ?.snapshot?.()||
+        null,
+      contact:
+        contactPresentation()
+          ?.snapshot?.()||
+        null,
+      review:
+        reviewPresentation()
+          ?.snapshot?.()||
+        null,
+      success:
+        successPresentation()
           ?.snapshot?.()||
         null
     });
