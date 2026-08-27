@@ -66,10 +66,14 @@
    * R1.1 Foundation migration: the form reads as an editorial sequence rather
    * than a stack of dashboard cards. DOM and field ownership stay unchanged.
    */
+  /*
+   * B7-00B.4A R1.2 — section rhythm without leading rules.
+   * Kicker + heading + whitespace establish hierarchy; dividers stay inside
+   * data rows instead of sitting above the next section title.
+   */
   .desktop-custom-section{
-    padding:clamp(32px,3.2vw,44px) 0;
+    padding:clamp(38px,3.5vw,52px) 0;
     border:0;
-    border-top:1px solid var(--dw-color-line);
     border-radius:0;
     background:transparent;
   }
@@ -96,9 +100,14 @@
     line-height:1.6;
   }
 
-  .desktop-custom-field + .desktop-custom-field,
-  .desktop-custom-two + .desktop-custom-field,
-  .desktop-custom-field + .desktop-custom-two{
+  /*
+   * Vertical spacing belongs only to direct section rows.
+   * The old generic sibling selector also matched the second column inside
+   * .desktop-custom-two and pushed Budget down by 24px.
+   */
+  .desktop-custom-section > .desktop-custom-field + .desktop-custom-field,
+  .desktop-custom-section > .desktop-custom-two + .desktop-custom-field,
+  .desktop-custom-section > .desktop-custom-field + .desktop-custom-two{
     margin-top:24px;
   }
 
@@ -127,6 +136,11 @@
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
     gap:14px;
+    align-items:start;
+  }
+
+  .desktop-custom-two > .desktop-custom-field{
+    margin-top:0;
   }
 
   .desktop-custom-choice-grid{
@@ -270,12 +284,24 @@
     font-weight:680;
   }
 
-  .desktop-custom-input:focus,
-  .desktop-custom-input--standalone:focus,
-  .desktop-custom-select:focus,
-  .desktop-custom-textarea:focus{
-    border-color:rgba(23,22,20,.62);
-    box-shadow:0 0 0 3px rgba(23,22,20,.045);
+  /*
+   * Compound quantity control owns one visual border. Focus the wrapper,
+   * not the nested number input, so the active state follows the same rounded
+   * geometry as Select / Text / Textarea controls.
+   */
+  .desktop-custom-input-wrap:focus-within,
+  .desktop-custom-input--standalone:focus-visible,
+  .desktop-custom-select:focus-visible,
+  .desktop-custom-textarea:focus-visible{
+    border-color:var(--dw-color-line-strong);
+    box-shadow:0 0 0 3px var(--dw-focus-ring-soft);
+  }
+
+  .desktop-custom-input-wrap .desktop-custom-input:focus,
+  .desktop-custom-input-wrap .desktop-custom-input:focus-visible{
+    outline:0!important;
+    outline-offset:0!important;
+    box-shadow:none!important;
   }
 
   .desktop-custom-error{

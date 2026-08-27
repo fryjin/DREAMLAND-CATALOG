@@ -82,7 +82,7 @@
 
   .desktop-inquiry-list{
     min-width:0;
-    border-top:1px solid var(--dw-line);
+    border-top:0;
   }
 
   .desktop-inquiry-list__head{

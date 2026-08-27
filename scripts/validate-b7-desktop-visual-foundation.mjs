@@ -219,7 +219,7 @@ try{
     custom,
     [
       'R1.1 Foundation migration',
-      'border-top:1px solid var(--dw-color-line);',
+      'border:0;',
       'border-radius:0;',
       'background:transparent;'
     ],
@@ -302,6 +302,81 @@ try{
 }
 
 try{
+  const custom=read('src/ui/desktop/styles/custom.css');
+  const inquiry=read('src/ui/desktop/styles/inquiry.css');
+  const contact=read('src/ui/desktop/styles/contact.css');
+  const review=read('src/ui/desktop/styles/review.css');
+  const detail=read('src/ui/desktop/styles/detail.css');
+  const site=JSON.parse(read('data/site-content.json'));
+
+  includesAll(
+    custom,
+    [
+      'B7-00B.4A R1.2 — section rhythm without leading rules',
+      '.desktop-custom-section > .desktop-custom-field + .desktop-custom-field',
+      '.desktop-custom-two > .desktop-custom-field',
+      '.desktop-custom-input-wrap:focus-within',
+      '.desktop-custom-input-wrap .desktop-custom-input:focus-visible',
+      'outline:0!important;'
+    ],
+    'R1.2 Custom alignment/focus successor'
+  );
+
+  for(const [label,source,pattern] of [
+    [
+      'Custom section shell',
+      custom,
+      /\.desktop-custom-section\s*\{[^}]*border-top\s*:/m
+    ],
+    [
+      'Inquiry list shell',
+      inquiry,
+      /\.desktop-inquiry-list\s*\{[^}]*border-top\s*:\s*1px/m
+    ],
+    [
+      'Contact card shell',
+      contact,
+      /\.desktop-contact-card\s*\{[^}]*border-top\s*:/m
+    ],
+    [
+      'Review main shell',
+      review,
+      /\.desktop-review-main\s*\{[^}]*border-top\s*:\s*1px/m
+    ],
+    [
+      'Review section shell',
+      review,
+      /\.desktop-review-section\s*\{[^}]*border-bottom\s*:\s*1px/m
+    ],
+    [
+      'PDP info-card shell',
+      detail,
+      /\.desktop-detail-info-card\s*\{[^}]*border-top\s*:/m
+    ]
+  ]){
+    if(pattern.test(source)){
+      fail(`R1.2 divider regression: ${label} still draws a leading section rule.`);
+    }
+  }
+
+  if(
+    site.languages?.zh?.customProject?.quotedAfterReview!==
+    '根据确认需求核算报价'
+  ){
+    fail('R1.2 public copy regression: zh custom quotation wording.');
+  }
+
+  if(
+    site.languages?.zh?.customProject?.minimumQuantity!==
+    '最低定制数量'
+  ){
+    fail('R1.2 public copy regression: zh minimum quantity label.');
+  }
+}catch(error){
+  fail(`R1.2 Visual Polish successor validation failed: ${error.message}`);
+}
+
+try{
   const pkg=JSON.parse(read('package.json'));
 
   if(
@@ -336,5 +411,5 @@ if(errors.length){
   process.exit(1);
 }
 
-console.log('B7-00B.4A R1.1 Desktop Visual Refresh Foundation validation: PASS');
-console.log('Warm Editorial tokens / language-aware typography / bottom progress rules / Foundation migration / public EN-ZH-KO copy / Desktop ownership / PWA v99 PASS.');
+console.log('B7-00B.4A R1.2 Desktop Visual Refresh Foundation validation: PASS');
+console.log('Typography / section-divider policy / Custom field alignment + compound focus / public copy / Foundation migration / Desktop ownership / PWA v99 PASS.');

@@ -669,7 +669,6 @@
   .desktop-detail-info-card{
     padding:28px 0;
     border:0;
-    border-top:1px solid var(--dw-color-line);
     border-radius:0;
     background:transparent;
   }

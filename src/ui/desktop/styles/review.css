@@ -18,14 +18,22 @@
     align-items:start;
   }
 
+  /*
+   * R1.2 divider policy: section shells do not draw rules above the following
+   * heading. Row/table dividers remain below headings where they clarify data.
+   */
   .desktop-review-main{
     min-width:0;
-    border-top:1px solid var(--dw-line);
+    border-top:0;
   }
 
   .desktop-review-section{
-    padding:26px 0;
-    border-bottom:1px solid var(--dw-line);
+    padding:28px 0 34px;
+    border-bottom:0;
+  }
+
+  .desktop-review-section + .desktop-review-section{
+    padding-top:36px;
   }
 
   .desktop-review-section > header{
