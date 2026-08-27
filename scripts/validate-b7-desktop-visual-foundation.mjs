@@ -94,14 +94,14 @@ try{
 
 try{
   const index=read('index.html');
-  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4a-r1-v99';
-  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4a-r1-v99';
-  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4a-r1-v99';
+  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4b-r1-v100';
+  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4b-r1-v100';
+  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4b-r1-v100';
 
   includesAll(
     index,
     [
-      "window.DREAMLAND_RELEASE='b7-00b4a-r1-v99';",
+      "window.DREAMLAND_RELEASE='b7-00b4b-r1-v100';",
       tokensRef,
       primitivesRef,
       shellRef
@@ -126,15 +126,15 @@ try{
   includesAll(
     sw,
     [
-      "const CACHE_VERSION = 'dreamland-pwa-v99';",
-      "'b7-00b4a-r1-v99'",
-      './src/ui/desktop/styles/primitives.css?release=b7-00b4a-r1-v99',
+      "const CACHE_VERSION = 'dreamland-pwa-v100';",
+      "'b7-00b4b-r1-v100'",
+      './src/ui/desktop/styles/primitives.css?release=b7-00b4b-r1-v100',
       "'./src/ui/desktop/styles/primitives.css'"
     ],
     'Service Worker Foundation release'
   );
 
-  if(!pwa.includes("'b7-00b4a-r1-v99'")){
+  if(!pwa.includes("'b7-00b4b-r1-v100'")){
     fail('PWA runtime release tag was not advanced to B7-00B.4A R1.');
   }
 }catch(error){
@@ -457,6 +457,48 @@ try{
   );
 }catch(error){
   fail(`R1.3 Foundation Consistency validation failed: ${error.message}`);
+}
+
+try{
+  const home=read('src/ui/desktop/styles/home.css');
+  const runtime=read('src/ui/desktop/home/runtime-desktop-home.js');
+  const site=JSON.parse(read('data/site-content.json'));
+
+  includesAll(
+    home,
+    [
+      'B7-00B.4B R1 — Home Editorial Composition',
+      '.desktop-collection-card:nth-child(4)',
+      '.desktop-product-card:nth-child(4)',
+      '.desktop-wholesale-layout{',
+      '.desktop-wholesale-media{',
+      '.desktop-home-cta__inner'
+    ],
+    'B7-00B.4B Home editorial composition'
+  );
+
+  includesAll(
+    runtime,
+    [
+      "const VERSION='B7-00B.4B-R1';",
+      'desktop-wholesale-media',
+      'view.wholesale.image',
+      'desktop-wholesale-index'
+    ],
+    'B7-00B.4B Home runtime successor'
+  );
+
+  for(const [lang,title] of [
+    ['en','Hand-carved candles, made to leave an impression.'],
+    ['zh','手工雕刻，让蜡烛成为被记住的作品。'],
+    ['ko','손으로 조각해, 오래 기억되는 캔들.']
+  ]){
+    if(site.languages?.[lang]?.hero?.title!==title){
+      fail(`4B Home public copy regression: ${lang}.hero.title`);
+    }
+  }
+}catch(error){
+  fail(`B7-00B.4B Home Editorial Composition validation failed: ${error.message}`);
 }
 
 try{

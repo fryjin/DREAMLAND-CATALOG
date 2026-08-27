@@ -25,37 +25,37 @@
         "language": "Language"
       },
       "hero": {
-        "kicker": "WHOLESALE / 2026 COLLECTION",
-        "title": "Hand-carved candles, shaped to be remembered.",
-        "body": "Distinctive carved candles for wholesale collections, retail, events and gifting. Configure products first, then send one clear inquiry.",
+        "kicker": "WHOLESALE / HAND-CARVED CANDLES",
+        "title": "Hand-carved candles, made to leave an impression.",
+        "body": "Sculptural candles for wholesale, retail, gifting, events and custom brand projects — shaped by hand with color, fragrance and presentation in mind.",
         "primary": "Explore collection",
         "secondary": "Start a custom project"
       },
       "collections": {
         "kicker": "OUR COLLECTIONS",
-        "title": "Explore the collection",
-        "body": "Discover candles by craftsmanship, occasion and visual expression.",
+        "title": "Four ways into the collection",
+        "body": "From intricate statement pieces to versatile seasonal designs, explore the collection by character and occasion.",
         "designSingular": "design",
         "designPlural": "designs",
         "explore": "Explore"
       },
       "featured": {
         "kicker": "FEATURED PIECES",
-        "title": "A closer look at the collection",
-        "body": "Four starting points across our current active series.",
+        "title": "Pieces worth a closer look",
+        "body": "A selection of current designs across our four active series.",
         "viewAll": "View all",
         "viewDetails": "View details",
         "moq": "MOQ"
       },
       "craft": {
         "kicker": "THE CRAFT",
-        "title": "Shaped while the wax is still warm.",
-        "body": "Each carved candle is built through layers, hand-cut forms and finishing details that give every piece its sculptural character."
+        "title": "Every contour is shaped while the wax is still warm.",
+        "body": "Layer by layer, the candle is built, cut and shaped by hand. The finishing work gives each piece its sculptural depth and individual character."
       },
       "custom": {
         "kicker": "CUSTOM MADE",
-        "title": "Made for your brand, event or collection.",
-        "body": "Build a request around color, scent, packaging and branding, then send it together with your selected products.",
+        "title": "Made around your brand, event or collection.",
+        "body": "Develop color, fragrance, packaging and branding around your project, with production details confirmed together.",
         "features": [
           "Colors",
           "Scents",
@@ -65,31 +65,31 @@
         "action": "Start a custom project"
       },
       "wholesale": {
-        "kicker": "WHOLESALE, MADE SIMPLE",
-        "title": "A clearer path from selection to quotation.",
+        "kicker": "WHOLESALE / PROJECT SUPPORT",
+        "title": "Distinctive pieces, with a clearer path to production.",
         "facts": [
           {
             "title": "Wholesale quantities",
-            "body": "Different size and series options support projects at different volumes."
+            "body": "Series and size options support projects at different volumes, with MOQ confirmed against the selected configuration."
           },
           {
             "title": "Customization",
-            "body": "Colors, scents, packaging and branding can be included in one request."
+            "body": "Color, fragrance, packaging and branding can be developed around the needs of the project."
           },
           {
             "title": "Global delivery",
-            "body": "International delivery options can be confirmed with the final quotation."
+            "body": "International delivery options are confirmed together with the final quotation and production plan."
           },
           {
             "title": "Dedicated quotation",
-            "body": "Configure first, then our team confirms pricing, timing and project details."
+            "body": "Pricing, lead time and project details are reviewed against the final selection and requirements."
           }
         ]
       },
       "cta": {
         "kicker": "YOUR NEXT PROJECT",
-        "title": "Ready to build your inquiry?",
-        "body": "Select your pieces, tell us what you need, and send one organized request for quotation.",
+        "title": "Tell us what you’re planning.",
+        "body": "Choose from the collection or start with a custom brief. We’ll review the project and prepare the right quotation.",
         "explore": "Explore collection",
         "custom": "Start custom project",
         "review": "Review inquiry"
@@ -507,37 +507,37 @@
         "language": "语言"
       },
       "hero": {
-        "kicker": "批发 / 2026 COLLECTION",
-        "title": "手工雕刻，让每一份心意更值得被记住。",
-        "body": "面向品牌、零售、活动与礼赠的雕刻蜡烛系列。先完成选款与配置，再统一提交清晰的采购意向。",
+        "kicker": "批发 / 手工雕刻蜡烛",
+        "title": "手工雕刻，让蜡烛成为被记住的作品。",
+        "body": "为品牌、零售、活动与礼赠项目打造具有雕塑感的手工雕刻蜡烛，并支持配色、香型、包装与品牌呈现的定制。",
         "primary": "浏览产品系列",
         "secondary": "发起定制项目"
       },
       "collections": {
         "kicker": "产品系列",
-        "title": "从不同工艺与场景开始选款",
-        "body": "按系列浏览当前可询价的雕刻蜡烛产品。",
+        "title": "从四个系列，找到适合项目的表达",
+        "body": "从精细匠作到节庆与经典款式，按风格与场景浏览当前系列。",
         "designSingular": "款",
         "designPlural": "款",
         "explore": "浏览系列"
       },
       "featured": {
         "kicker": "精选产品",
-        "title": "先从这些作品开始",
-        "body": "从当前四个在售系列中各取一个代表产品。",
+        "title": "值得近看的一些作品",
+        "body": "从当前四个在售系列中，选出不同风格的代表设计。",
         "viewAll": "查看全部",
         "viewDetails": "查看详情",
         "moq": "起订"
       },
       "craft": {
         "kicker": "手工工艺",
-        "title": "趁蜡体仍有温度时完成塑形。",
-        "body": "多层蜡体经过手工切割、卷花与细节修整，形成每一件雕刻蜡烛独有的立体轮廓。"
+        "title": "每一道轮廓，都在蜡体尚温时完成。",
+        "body": "蜡体经过层层塑造、手工切割、卷花与修整，最终形成每一件作品独有的立体层次与细节。"
       },
       "custom": {
         "kicker": "定制项目",
-        "title": "为品牌、活动或专属系列定制。",
-        "body": "把配色、香型、包装与品牌需求集中在同一份定制意向里，并可与常规选款一起提交。",
+        "title": "为品牌、活动与专属系列而做。",
+        "body": "围绕项目需要定制配色、香型、包装与品牌呈现，并一起确认制作方案与交付安排。",
         "features": [
           "配色",
           "香型",
@@ -547,31 +547,31 @@
         "action": "发起定制项目"
       },
       "wholesale": {
-        "kicker": "让批发采购更清晰",
-        "title": "从选款到报价，减少不必要的往返确认。",
+        "kicker": "批发 / 项目支持",
+        "title": "既要有辨识度，也要让采购过程足够清晰。",
         "facts": [
           {
             "title": "批发数量",
-            "body": "不同尺寸和系列适用于不同数量区间的采购项目。"
+            "body": "不同系列与尺寸适用于不同数量规模，最低起订要求会结合最终配置确认。"
           },
           {
             "title": "定制能力",
-            "body": "配色、香型、包装与品牌需求可统一提交。"
+            "body": "配色、香型、包装与品牌呈现可以围绕具体项目进一步开发。"
           },
           {
             "title": "全球交付",
-            "body": "国际物流方案将在最终报价中一并确认。"
+            "body": "国际物流方式会结合订单数量、目的地与制作计划，在正式报价中确认。"
           },
           {
             "title": "专属报价",
-            "body": "先完成配置，再由团队确认价格、交期与项目细节。"
+            "body": "最终价格、制作周期与项目细节，将根据确认后的选款与需求统一核算。"
           }
         ]
       },
       "cta": {
-        "kicker": "下一步",
-        "title": "准备开始整理你的采购意向？",
-        "body": "选好产品、补充需求，再用一份清晰的意向单统一提交报价。",
+        "kicker": "你的下一个项目",
+        "title": "告诉我们，你正在准备怎样的项目。",
+        "body": "可以从现有系列开始选款，也可以直接提出定制需求。我们会根据项目内容进一步确认报价与制作安排。",
         "explore": "浏览产品系列",
         "custom": "发起定制项目",
         "review": "查看询价单"
@@ -989,37 +989,37 @@
         "language": "언어"
       },
       "hero": {
-        "kicker": "WHOLESALE / 2026 COLLECTION",
-        "title": "손으로 조각한 캔들, 오래 기억되는 형태.",
-        "body": "브랜드, 리테일, 이벤트와 기프트 프로젝트를 위한 조각 캔들 컬렉션입니다. 제품을 먼저 선택하고 구성한 뒤 하나의 문의로 정리해 보내세요.",
+        "kicker": "WHOLESALE / HAND-CARVED CANDLES",
+        "title": "손으로 조각해, 오래 기억되는 캔들.",
+        "body": "브랜드, 리테일, 이벤트와 기프트 프로젝트를 위한 조형적인 핸드카빙 캔들입니다. 컬러, 향, 패키지와 브랜딩까지 프로젝트에 맞춰 구성할 수 있습니다.",
         "primary": "컬렉션 보기",
         "secondary": "커스텀 프로젝트 시작"
       },
       "collections": {
         "kicker": "OUR COLLECTIONS",
-        "title": "컬렉션 살펴보기",
-        "body": "공예 방식과 용도, 시각적 분위기에 따라 현재 문의 가능한 제품을 둘러보세요.",
+        "title": "네 가지 시리즈에서 시작하세요",
+        "body": "정교한 작품부터 시즌과 클래식 디자인까지, 분위기와 용도에 맞는 컬렉션을 살펴보세요.",
         "designSingular": "디자인",
         "designPlural": "디자인",
         "explore": "컬렉션 보기"
       },
       "featured": {
         "kicker": "FEATURED PIECES",
-        "title": "컬렉션을 가까이 살펴보세요",
-        "body": "현재 판매 중인 네 가지 시리즈에서 대표 제품을 골랐습니다.",
+        "title": "가까이 볼 가치가 있는 작품들",
+        "body": "현재 판매 중인 네 가지 시리즈에서 서로 다른 인상의 대표 디자인을 골랐습니다.",
         "viewAll": "전체 보기",
         "viewDetails": "상세 보기",
         "moq": "MOQ"
       },
       "craft": {
         "kicker": "THE CRAFT",
-        "title": "왁스가 따뜻할 때 손으로 형태를 만듭니다.",
-        "body": "여러 겹의 왁스를 쌓고 손으로 자르고 말아 마감하면서 각 캔들만의 입체적인 형태를 완성합니다."
+        "title": "모든 윤곽은 왁스가 따뜻할 때 완성됩니다.",
+        "body": "왁스를 여러 겹 쌓고 손으로 자르고 말아 다듬으며, 각 작품만의 입체적인 깊이와 디테일을 만듭니다."
       },
       "custom": {
         "kicker": "CUSTOM MADE",
-        "title": "브랜드와 이벤트, 전용 컬렉션을 위한 제작.",
-        "body": "컬러, 향, 패키지와 브랜딩 요구사항을 하나의 커스텀 문의로 정리하고 일반 제품 선택과 함께 보낼 수 있습니다.",
+        "title": "브랜드와 이벤트, 전용 컬렉션을 위해 만듭니다.",
+        "body": "프로젝트에 맞춰 컬러, 향, 패키지와 브랜딩을 구성하고 제작 방식과 납품 계획을 함께 확인합니다.",
         "features": [
           "컬러",
           "향",
@@ -1029,31 +1029,31 @@
         "action": "커스텀 프로젝트 시작"
       },
       "wholesale": {
-        "kicker": "WHOLESALE, MADE SIMPLE",
-        "title": "선택부터 견적까지 더 명확하게.",
+        "kicker": "WHOLESALE / PROJECT SUPPORT",
+        "title": "개성 있는 제품과 명확한 프로젝트 진행을 함께.",
         "facts": [
           {
             "title": "도매 수량",
-            "body": "사이즈와 시리즈별 조건에 따라 다양한 규모의 프로젝트를 구성할 수 있습니다."
+            "body": "시리즈와 사이즈에 따라 다양한 수량 규모를 구성할 수 있으며 MOQ는 최종 사양에 맞춰 확인합니다."
           },
           {
             "title": "커스터마이징",
-            "body": "컬러, 향, 패키지와 브랜딩 요구를 한 번에 전달할 수 있습니다."
+            "body": "컬러, 향, 패키지와 브랜딩을 프로젝트 요구에 맞춰 함께 개발할 수 있습니다."
           },
           {
             "title": "글로벌 배송",
-            "body": "국제 배송 방식은 최종 견적과 함께 확인합니다."
+            "body": "국제 배송 방식은 수량, 목적지와 제작 계획을 반영해 최종 견적에서 확인합니다."
           },
           {
             "title": "맞춤 견적",
-            "body": "제품 구성을 먼저 완료하면 가격, 일정과 프로젝트 세부사항을 확인해 드립니다."
+            "body": "최종 제품 선택과 요구사항을 기준으로 가격, 제작 일정과 세부 조건을 확인합니다."
           }
         ]
       },
       "cta": {
         "kicker": "YOUR NEXT PROJECT",
-        "title": "문의 목록을 준비해 볼까요?",
-        "body": "제품을 선택하고 필요한 조건을 정리해 하나의 견적 문의로 보내세요.",
+        "title": "준비 중인 프로젝트를 들려주세요.",
+        "body": "현재 컬렉션에서 시작하거나 커스텀 요구사항부터 알려주세요. 프로젝트를 검토해 적합한 견적과 제작 방향을 안내합니다.",
         "explore": "컬렉션 보기",
         "custom": "커스텀 프로젝트 시작",
         "review": "문의 목록 확인"

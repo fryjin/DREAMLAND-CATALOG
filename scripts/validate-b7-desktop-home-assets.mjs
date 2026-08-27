@@ -143,7 +143,8 @@ try{
   const allowedVersions=
     new Set([
       'B7-00B.2',
-      'B7-00B.3A-R6'
+      'B7-00B.3A-R6',
+      'B7-00B.4B-R1'
     ]);
 
   if(
@@ -162,7 +163,8 @@ try{
     'desktop-product-overlay',
     'desktop-product-overlay__label',
     'desktop-collection-hover',
-    'resolveFeaturedProduct('
+    'resolveFeaturedProduct(',
+    'desktop-wholesale-media'
   ]){
     if(!runtime.includes(required)){
       fail(
@@ -187,9 +189,10 @@ try{
     '.desktop-product-overlay__label{',
     '.desktop-product-link:hover',
     '.desktop-product-link:focus-visible',
-    'transform:scale(1.025);',
+    'transform:scale(var(--dw-media-zoom));',
     '.desktop-collection-hover{',
-    'max-width:1320px;',
+    'B7-00B.4B R1 — Home Editorial Composition',
+    '.desktop-wholesale-media{',
     'aspect-ratio:4/5;'
   ]){
     if(!css.includes(required)){

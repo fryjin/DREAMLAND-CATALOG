@@ -448,13 +448,14 @@ try{
     home,
     [
       '.desktop-home-hero',
-      'grid-template-columns:7fr 5fr;',
+      'B7-00B.4B R1 — Home Editorial Composition',
       '.desktop-collection-grid',
       '.desktop-product-grid',
       '.desktop-home-band--sand',
       '.desktop-custom-card',
       '.desktop-custom-media img',
-      '.desktop-wholesale-grid',
+      '.desktop-wholesale-layout',
+      '.desktop-wholesale-media',
       '.desktop-home-cta'
     ],
     'Desktop Home styles'

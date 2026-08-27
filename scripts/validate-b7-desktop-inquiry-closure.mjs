@@ -165,15 +165,15 @@ try{
   const index=read('index.html');
 
   for(const required of [
-    "window.DREAMLAND_RELEASE='b7-00b4a-r1-v99';",
-    './src/ui/desktop/styles/inquiry.css?release=b7-00b4a-r1-v99',
-    './src/ui/desktop/styles/contact.css?release=b7-00b4a-r1-v99',
-    './src/ui/desktop/styles/review.css?release=b7-00b4a-r1-v99',
-    './src/ui/desktop/styles/success.css?release=b7-00b4a-r1-v99',
-    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4a-r1-v99',
-    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4a-r1-v99',
-    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4a-r1-v99',
-    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4a-r1-v99',
+    "window.DREAMLAND_RELEASE='b7-00b4b-r1-v100';",
+    './src/ui/desktop/styles/inquiry.css?release=b7-00b4b-r1-v100',
+    './src/ui/desktop/styles/contact.css?release=b7-00b4b-r1-v100',
+    './src/ui/desktop/styles/review.css?release=b7-00b4b-r1-v100',
+    './src/ui/desktop/styles/success.css?release=b7-00b4b-r1-v100',
+    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4b-r1-v100',
+    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4b-r1-v100',
+    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4b-r1-v100',
+    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4b-r1-v100',
     'inquiryState:',
     'inquiryFeature,',
     'contactState:',
@@ -307,16 +307,16 @@ try{
   );
 
   for(const required of [
-    "const CACHE_VERSION = 'dreamland-pwa-v99';",
-    "'b7-00b4a-r1-v99'",
-    './src/ui/desktop/styles/inquiry.css?release=b7-00b4a-r1-v99',
-    './src/ui/desktop/styles/contact.css?release=b7-00b4a-r1-v99',
-    './src/ui/desktop/styles/review.css?release=b7-00b4a-r1-v99',
-    './src/ui/desktop/styles/success.css?release=b7-00b4a-r1-v99',
-    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4a-r1-v99',
-    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4a-r1-v99',
-    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4a-r1-v99',
-    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4a-r1-v99',
+    "const CACHE_VERSION = 'dreamland-pwa-v100';",
+    "'b7-00b4b-r1-v100'",
+    './src/ui/desktop/styles/inquiry.css?release=b7-00b4b-r1-v100',
+    './src/ui/desktop/styles/contact.css?release=b7-00b4b-r1-v100',
+    './src/ui/desktop/styles/review.css?release=b7-00b4b-r1-v100',
+    './src/ui/desktop/styles/success.css?release=b7-00b4b-r1-v100',
+    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4b-r1-v100',
+    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4b-r1-v100',
+    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4b-r1-v100',
+    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4b-r1-v100',
     "'./src/ui/desktop/inquiry/runtime-desktop-inquiry.js'",
     "'./src/ui/desktop/contact/runtime-desktop-contact.js'",
     "'./src/ui/desktop/review/runtime-desktop-review.js'",
@@ -327,7 +327,7 @@ try{
     }
   }
 
-  if(!pwa.includes("'b7-00b4a-r1-v99'")){
+  if(!pwa.includes("'b7-00b4b-r1-v100'")){
     fail('PWA runtime was not advanced to B7-00B.3D.');
   }
 }catch(error){

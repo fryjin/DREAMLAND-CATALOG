@@ -38,9 +38,9 @@ try{
     [
       '<title>DREAMLAND 手工雕刻蜡烛｜批发与定制</title>',
       'DREAMLAND 手工雕刻蜡烛系列，了解工艺、产品与定制能力',
-      "window.DREAMLAND_RELEASE='b7-00b4a-r1-v99';",
+      "window.DREAMLAND_RELEASE='b7-00b4b-r1-v100';",
       'dreamland-desktop-boot',
-      './images/desktop/home/hero/hero-main.webp?release=b7-00b4a-r1-v99',
+      './images/desktop/home/hero/hero-main.webp?release=b7-00b4b-r1-v100',
       'media="(min-width: 1024px)"',
       '右滑浏览产品系列',
       '<div class="page-title">产品系列</div>',
@@ -116,7 +116,6 @@ try{
   requireIncludes(
     home,
     [
-      "const VERSION='B7-00B.3A-R6';",
       'function desktopMarketingAsset(',
       'function releaseAssetSource(',
       "quality:'marketing'",
@@ -127,6 +126,34 @@ try{
     ],
     'Desktop Home runtime'
   );
+
+  /*
+   * B7-00B.4B successor:
+   * Website positioning owns the marketing-media behavior, not one frozen
+   * Home implementation version. Accept the last stable owner and the 4B
+   * editorial-composition successor.
+   */
+  const homeVersion=
+    home.match(
+      /const VERSION='([^']+)';/
+    );
+
+  const compatibleHomeVersions=
+    new Set([
+      'B7-00B.3A-R6',
+      'B7-00B.4B-R1'
+    ]);
+
+  if(
+    !homeVersion||
+    !compatibleHomeVersions.has(
+      homeVersion[1]
+    )
+  ){
+    fail(
+      `Desktop Home runtime version is incompatible with the Website / Boot / Home Media contract: ${homeVersion?.[1]||'missing'}`
+    );
+  }
 
   /*
    * Runtime source intentionally uses multiline chaining:
@@ -315,15 +342,15 @@ try{
 
   requireIncludes(
     pwa,
-    ["'b7-00b4a-r1-v99'"],
+    ["'b7-00b4b-r1-v100'"],
     'PWA runtime'
   );
 
   requireIncludes(
     sw,
     [
-      "const CACHE_VERSION = 'dreamland-pwa-v99';",
-      "'b7-00b4a-r1-v99'"
+      "const CACHE_VERSION = 'dreamland-pwa-v100';",
+      "'b7-00b4b-r1-v100'"
     ],
     'Service Worker'
   );

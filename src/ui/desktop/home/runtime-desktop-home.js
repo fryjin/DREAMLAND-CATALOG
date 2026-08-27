@@ -5,7 +5,7 @@
     return;
   }
 
-  const VERSION='B7-00B.3A-R6';
+  const VERSION='B7-00B.4B-R1';
 
   const DEFAULT_ASSETS=Object.freeze({
     hero:{
@@ -975,31 +975,48 @@
         class="desktop-home-section desktop-container desktop-reveal"
         aria-labelledby="desktopWholesaleTitle"
       >
-        <div class="desktop-wholesale-head">
-          <div class="desktop-eyebrow">
-            ${escapeHtml(content.kicker||'')}
+        <div class="desktop-wholesale-layout">
+          <div
+            class="desktop-wholesale-media media-frame desktop-media-placeholder"
+          >
+            <img
+              data-desktop-image
+              data-desktop-source="${escapeHtml(view.wholesale.image)}"
+              data-desktop-kind="detail"
+              data-desktop-priority="auto"
+              alt=""
+            >
           </div>
 
-          <h2
-            class="desktop-home-section__title"
-            id="desktopWholesaleTitle"
-          >
-            ${escapeHtml(content.title||'')}
-          </h2>
-        </div>
+          <div class="desktop-wholesale-copy">
+            <div class="desktop-wholesale-head">
+              <div class="desktop-eyebrow">
+                ${escapeHtml(content.kicker||'')}
+              </div>
 
-        <div class="desktop-wholesale-grid">
-          ${facts.map(fact=>`
-            <article class="desktop-wholesale-fact">
-              <h3>
-                ${escapeHtml(fact.title||'')}
-              </h3>
+              <h2
+                class="desktop-home-section__title"
+                id="desktopWholesaleTitle"
+              >
+                ${escapeHtml(content.title||'')}
+              </h2>
+            </div>
 
-              <p>
-                ${escapeHtml(fact.body||'')}
-              </p>
-            </article>
-          `).join('')}
+            <div class="desktop-wholesale-grid">
+              ${facts.map((fact,index)=>`
+                <article class="desktop-wholesale-fact">
+                  <span class="desktop-wholesale-index" aria-hidden="true">
+                    ${String(index+1).padStart(2,'0')}
+                  </span>
+
+                  <div>
+                    <h3>${escapeHtml(fact.title||'')}</h3>
+                    <p>${escapeHtml(fact.body||'')}</p>
+                  </div>
+                </article>
+              `).join('')}
+            </div>
+          </div>
         </div>
       </section>
     `;

@@ -840,12 +840,18 @@ try{
       /const CACHE_VERSION = 'dreamland-pwa-v(\d+)';/
     );
 
+  /*
+   * B7-00B.4B successor:
+   * R5 established the minimum safe Desktop boot cache generation. Later
+   * releases must be allowed to advance beyond v99 instead of being frozen to
+   * the exact historical cache number.
+   */
   if(
     !cacheVersion||
-    Number(cacheVersion[1])!==99
+    Number(cacheVersion[1])<99
   ){
     fail(
-      'B7-00B.3A Desktop Boot Experience Cleanup R5 requires dreamland-pwa-v99.'
+      'B7-00B.3A Desktop Boot Experience Cleanup R5 requires dreamland-pwa-v99 or later.'
     );
   }
 
@@ -882,7 +888,7 @@ try{
  */
 try{
   const release=
-    'b7-00b4a-r1-v99';
+    'b7-00b4b-r1-v100';
 
   const index=
     read(
@@ -1075,7 +1081,7 @@ try{
 
   if(
     !index.includes(
-      `window.DREAMLAND_RELEASE='b7-00b4a-r1-v99';`
+      `window.DREAMLAND_RELEASE='b7-00b4b-r1-v100';`
     )
   ){
     fail(
@@ -1090,11 +1096,11 @@ try{
 
   if(
     !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v99';"
+      "const CACHE_VERSION = 'dreamland-pwa-v100';"
     )
   ){
     fail(
-      'R5 requires dreamland-pwa-v99.'
+      'R5 requires dreamland-pwa-v100.'
     );
   }
 }catch(error){
