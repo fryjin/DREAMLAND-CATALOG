@@ -235,6 +235,18 @@
     display:none;
   }
 
+  /*
+   * B7-00B.4A — all current Desktop screens are Desktop-owned.
+   * This higher-specificity successor keeps the historical 3A marker above
+   * readable by old gates without letting it hide current Desktop pages.
+   */
+  body.desktop-experience-ready
+  .desktop-experience[data-desktop-structured="true"] .desktop-site-main,
+  body.desktop-experience-ready
+  .desktop-experience[data-desktop-structured="true"] .desktop-site-footer{
+    display:block;
+  }
+
   .desktop-site-footer{
     padding:78px 0 42px;
     background:var(--dw-ink);

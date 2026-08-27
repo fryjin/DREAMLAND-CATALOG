@@ -842,10 +842,10 @@ try{
 
   if(
     !cacheVersion||
-    Number(cacheVersion[1])!==98
+    Number(cacheVersion[1])!==99
   ){
     fail(
-      'B7-00B.3A Desktop Boot Experience Cleanup R5 requires dreamland-pwa-v98.'
+      'B7-00B.3A Desktop Boot Experience Cleanup R5 requires dreamland-pwa-v99.'
     );
   }
 
@@ -882,7 +882,7 @@ try{
  */
 try{
   const release=
-    'b7-00b3d-r1-v98';
+    'b7-00b4a-r1-v99';
 
   const index=
     read(
@@ -1075,7 +1075,7 @@ try{
 
   if(
     !index.includes(
-      `window.DREAMLAND_RELEASE='b7-00b3d-r1-v98';`
+      `window.DREAMLAND_RELEASE='b7-00b4a-r1-v99';`
     )
   ){
     fail(
@@ -1090,11 +1090,11 @@ try{
 
   if(
     !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v98';"
+      "const CACHE_VERSION = 'dreamland-pwa-v99';"
     )
   ){
     fail(
-      'R5 requires dreamland-pwa-v98.'
+      'R5 requires dreamland-pwa-v99.'
     );
   }
 }catch(error){

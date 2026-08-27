@@ -566,10 +566,10 @@
   .desktop-detail-summary{
     margin-top:28px;
     padding:22px;
-    border-radius:18px;
-    background:#efe6dc;
-    box-shadow:
-      inset 0 0 0 1px rgba(89,69,52,.07);
+    border:1px solid var(--dw-color-line);
+    border-radius:var(--dw-radius-panel);
+    background:var(--dw-color-surface-warm);
+    box-shadow:var(--dw-shadow-subtle);
   }
 
   .desktop-detail-summary__row{
@@ -659,14 +659,18 @@
     margin-top:var(--dw-section);
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:18px;
+    gap:clamp(32px,4vw,56px);
   }
 
+  /*
+   * R1.1 Foundation migration: lower PDP facts use editorial dividers rather
+   * than two oversized white dashboard cards.
+   */
   .desktop-detail-info-card{
-    padding:28px;
-    border:1px solid var(--dw-line);
-    border-radius:var(--dw-radius-lg);
-    background:rgba(255,255,255,.48);
+    padding:28px 0;
+    border:0;
+    border-radius:0;
+    background:transparent;
   }
 
   .desktop-detail-info-list{

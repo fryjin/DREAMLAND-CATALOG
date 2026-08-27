@@ -421,10 +421,12 @@ try{
     tokens,
     [
       '@media (min-width:1024px)',
-      '--dw-canvas:#f5f3ef;',
-      '--dw-sand:#e9e0d5;',
-      '--dw-clay:#bfa38e;',
-      '--dw-ink:#171614;',
+      '--dw-color-canvas:',
+      '--dw-color-sand:',
+      '--dw-color-clay:',
+      '--dw-color-ink:',
+      '--dw-font-sans:',
+      '--dw-radius-panel:',
       '--dw-max:1440px;',
       'body.desktop-experience-ready[data-desktop-screen="home"] > #app'
     ],
