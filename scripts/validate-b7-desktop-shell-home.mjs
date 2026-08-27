@@ -449,6 +449,9 @@ try{
     [
       '.desktop-home-hero',
       'B7-00B.4B R1 — Home Editorial Composition',
+      'B7-00B.4B R2 — Home Art Direction Realignment',
+      '--dw-home-serif:',
+      '--dw-home-accent:',
       '.desktop-collection-grid',
       '.desktop-product-grid',
       '.desktop-home-band--sand',

@@ -25,37 +25,37 @@
         "language": "Language"
       },
       "hero": {
-        "kicker": "WHOLESALE / HAND-CARVED CANDLES",
-        "title": "Hand-carved candles, made to leave an impression.",
-        "body": "Sculptural candles for wholesale, retail, gifting, events and custom brand projects — shaped by hand with color, fragrance and presentation in mind.",
+        "kicker": "HAND-CARVED CANDLE ART",
+        "title": "Candles, carved by hand.",
+        "body": "Sculptural candles for brands, retail, gifting and events — with color, fragrance, packaging and presentation shaped around the project.",
         "primary": "Explore collection",
         "secondary": "Start a custom project"
       },
       "collections": {
-        "kicker": "OUR COLLECTIONS",
-        "title": "Four ways into the collection",
-        "body": "From intricate statement pieces to versatile seasonal designs, explore the collection by character and occasion.",
+        "kicker": "THE COLLECTION",
+        "title": "Four collections",
+        "body": "Different levels of detail, color and occasion — four ways into DREAMLAND.",
         "designSingular": "design",
         "designPlural": "designs",
         "explore": "Explore"
       },
       "featured": {
-        "kicker": "FEATURED PIECES",
-        "title": "Pieces worth a closer look",
-        "body": "A selection of current designs across our four active series.",
+        "kicker": "SELECTED PIECES",
+        "title": "Selected pieces",
+        "body": "A closer look at four current designs.",
         "viewAll": "View all",
         "viewDetails": "View details",
         "moq": "MOQ"
       },
       "craft": {
         "kicker": "THE CRAFT",
-        "title": "Every contour is shaped while the wax is still warm.",
-        "body": "Layer by layer, the candle is built, cut and shaped by hand. The finishing work gives each piece its sculptural depth and individual character."
+        "title": "Shaped while the wax is warm.",
+        "body": "Layered wax is cut, rolled and refined by hand, creating the depth and contour of each piece."
       },
       "custom": {
         "kicker": "CUSTOM MADE",
-        "title": "Made around your brand, event or collection.",
-        "body": "Develop color, fragrance, packaging and branding around your project, with production details confirmed together.",
+        "title": "Made for your project.",
+        "body": "Color, fragrance, packaging and branding can be developed around a specific brief.",
         "features": [
           "Colors",
           "Scents",
@@ -66,7 +66,7 @@
       },
       "wholesale": {
         "kicker": "WHOLESALE / PROJECT SUPPORT",
-        "title": "Distinctive pieces, with a clearer path to production.",
+        "title": "From selection to delivery.",
         "facts": [
           {
             "title": "Wholesale quantities",
@@ -88,8 +88,8 @@
       },
       "cta": {
         "kicker": "YOUR NEXT PROJECT",
-        "title": "Tell us what you’re planning.",
-        "body": "Choose from the collection or start with a custom brief. We’ll review the project and prepare the right quotation.",
+        "title": "What are you making next?",
+        "body": "Start with a piece from the collection or tell us what you want to create.",
         "explore": "Explore collection",
         "custom": "Start custom project",
         "review": "Review inquiry"
@@ -507,37 +507,37 @@
         "language": "语言"
       },
       "hero": {
-        "kicker": "批发 / 手工雕刻蜡烛",
-        "title": "手工雕刻，让蜡烛成为被记住的作品。",
-        "body": "为品牌、零售、活动与礼赠项目打造具有雕塑感的手工雕刻蜡烛，并支持配色、香型、包装与品牌呈现的定制。",
+        "kicker": "手工雕刻蜡烛",
+        "title": "把蜡烛，做成一件作品。",
+        "body": "为品牌、零售、礼赠与活动项目而作。配色、香型、包装与品牌呈现，都可以围绕项目进一步定制。",
         "primary": "浏览产品系列",
         "secondary": "发起定制项目"
       },
       "collections": {
         "kicker": "产品系列",
-        "title": "从四个系列，找到适合项目的表达",
-        "body": "从精细匠作到节庆与经典款式，按风格与场景浏览当前系列。",
+        "title": "四个系列",
+        "body": "不同工艺、色彩与场景，从四个方向进入 DREAMLAND 的作品世界。",
         "designSingular": "款",
         "designPlural": "款",
         "explore": "浏览系列"
       },
       "featured": {
-        "kicker": "精选产品",
-        "title": "值得近看的一些作品",
-        "body": "从当前四个在售系列中，选出不同风格的代表设计。",
+        "kicker": "精选作品",
+        "title": "精选作品",
+        "body": "从当前系列中，挑选四件值得近看的设计。",
         "viewAll": "查看全部",
         "viewDetails": "查看详情",
         "moq": "起订"
       },
       "craft": {
         "kicker": "手工工艺",
-        "title": "每一道轮廓，都在蜡体尚温时完成。",
-        "body": "蜡体经过层层塑造、手工切割、卷花与修整，最终形成每一件作品独有的立体层次与细节。"
+        "title": "趁蜡尚温，完成每一道轮廓。",
+        "body": "层层塑蜡，再经过手工切割、卷花与修整，形成每件作品独有的立体层次。"
       },
       "custom": {
         "kicker": "定制项目",
-        "title": "为品牌、活动与专属系列而做。",
-        "body": "围绕项目需要定制配色、香型、包装与品牌呈现，并一起确认制作方案与交付安排。",
+        "title": "为你的项目而做。",
+        "body": "配色、香型、包装与品牌呈现，都可以围绕具体项目一起确认。",
         "features": [
           "配色",
           "香型",
@@ -548,7 +548,7 @@
       },
       "wholesale": {
         "kicker": "批发 / 项目支持",
-        "title": "既要有辨识度，也要让采购过程足够清晰。",
+        "title": "从选款，到报价与交付。",
         "facts": [
           {
             "title": "批发数量",
@@ -570,8 +570,8 @@
       },
       "cta": {
         "kicker": "你的下一个项目",
-        "title": "告诉我们，你正在准备怎样的项目。",
-        "body": "可以从现有系列开始选款，也可以直接提出定制需求。我们会根据项目内容进一步确认报价与制作安排。",
+        "title": "说说你正在准备的项目。",
+        "body": "可以从现有系列开始，也可以直接告诉我们你想做什么。",
         "explore": "浏览产品系列",
         "custom": "发起定制项目",
         "review": "查看询价单"
@@ -989,37 +989,37 @@
         "language": "언어"
       },
       "hero": {
-        "kicker": "WHOLESALE / HAND-CARVED CANDLES",
-        "title": "손으로 조각해, 오래 기억되는 캔들.",
-        "body": "브랜드, 리테일, 이벤트와 기프트 프로젝트를 위한 조형적인 핸드카빙 캔들입니다. 컬러, 향, 패키지와 브랜딩까지 프로젝트에 맞춰 구성할 수 있습니다.",
+        "kicker": "HAND-CARVED CANDLE ART",
+        "title": "손으로 조각한 하나의 작품.",
+        "body": "브랜드, 리테일, 기프트와 이벤트 프로젝트를 위한 조형적인 캔들입니다. 컬러, 향, 패키지와 브랜딩까지 프로젝트에 맞춰 구성할 수 있습니다.",
         "primary": "컬렉션 보기",
         "secondary": "커스텀 프로젝트 시작"
       },
       "collections": {
-        "kicker": "OUR COLLECTIONS",
-        "title": "네 가지 시리즈에서 시작하세요",
-        "body": "정교한 작품부터 시즌과 클래식 디자인까지, 분위기와 용도에 맞는 컬렉션을 살펴보세요.",
+        "kicker": "THE COLLECTION",
+        "title": "네 가지 시리즈",
+        "body": "서로 다른 디테일과 컬러, 용도에서 DREAMLAND 컬렉션을 시작해 보세요.",
         "designSingular": "디자인",
         "designPlural": "디자인",
         "explore": "컬렉션 보기"
       },
       "featured": {
-        "kicker": "FEATURED PIECES",
-        "title": "가까이 볼 가치가 있는 작품들",
-        "body": "현재 판매 중인 네 가지 시리즈에서 서로 다른 인상의 대표 디자인을 골랐습니다.",
+        "kicker": "SELECTED PIECES",
+        "title": "선별한 작품",
+        "body": "현재 컬렉션에서 가까이 볼 만한 네 가지 디자인을 골랐습니다.",
         "viewAll": "전체 보기",
         "viewDetails": "상세 보기",
         "moq": "MOQ"
       },
       "craft": {
         "kicker": "THE CRAFT",
-        "title": "모든 윤곽은 왁스가 따뜻할 때 완성됩니다.",
-        "body": "왁스를 여러 겹 쌓고 손으로 자르고 말아 다듬으며, 각 작품만의 입체적인 깊이와 디테일을 만듭니다."
+        "title": "왁스가 따뜻할 때 윤곽을 완성합니다.",
+        "body": "왁스를 겹겹이 쌓고 손으로 자르고 말아 다듬으며 각 작품만의 입체적인 깊이를 만듭니다."
       },
       "custom": {
         "kicker": "CUSTOM MADE",
-        "title": "브랜드와 이벤트, 전용 컬렉션을 위해 만듭니다.",
-        "body": "프로젝트에 맞춰 컬러, 향, 패키지와 브랜딩을 구성하고 제작 방식과 납품 계획을 함께 확인합니다.",
+        "title": "당신의 프로젝트를 위해 만듭니다.",
+        "body": "컬러, 향, 패키지와 브랜딩을 프로젝트 요구에 맞춰 함께 구성할 수 있습니다.",
         "features": [
           "컬러",
           "향",
@@ -1030,7 +1030,7 @@
       },
       "wholesale": {
         "kicker": "WHOLESALE / PROJECT SUPPORT",
-        "title": "개성 있는 제품과 명확한 프로젝트 진행을 함께.",
+        "title": "선택부터 견적과 배송까지.",
         "facts": [
           {
             "title": "도매 수량",
@@ -1052,8 +1052,8 @@
       },
       "cta": {
         "kicker": "YOUR NEXT PROJECT",
-        "title": "준비 중인 프로젝트를 들려주세요.",
-        "body": "현재 컬렉션에서 시작하거나 커스텀 요구사항부터 알려주세요. 프로젝트를 검토해 적합한 견적과 제작 방향을 안내합니다.",
+        "title": "다음 프로젝트를 들려주세요.",
+        "body": "현재 컬렉션에서 시작하거나 만들고 싶은 내용을 바로 알려주세요.",
         "explore": "컬렉션 보기",
         "custom": "커스텀 프로젝트 시작",
         "review": "문의 목록 확인"

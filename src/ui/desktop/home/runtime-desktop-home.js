@@ -5,7 +5,7 @@
     return;
   }
 
-  const VERSION='B7-00B.4B-R1';
+  const VERSION='B7-00B.4B-R2';
 
   const DEFAULT_ASSETS=Object.freeze({
     hero:{

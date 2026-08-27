@@ -94,14 +94,14 @@ try{
 
 try{
   const index=read('index.html');
-  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4b-r1-v100';
-  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4b-r1-v100';
-  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4b-r1-v100';
+  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4b-r2-v101';
+  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4b-r2-v101';
+  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4b-r2-v101';
 
   includesAll(
     index,
     [
-      "window.DREAMLAND_RELEASE='b7-00b4b-r1-v100';",
+      "window.DREAMLAND_RELEASE='b7-00b4b-r2-v101';",
       tokensRef,
       primitivesRef,
       shellRef
@@ -126,15 +126,15 @@ try{
   includesAll(
     sw,
     [
-      "const CACHE_VERSION = 'dreamland-pwa-v100';",
-      "'b7-00b4b-r1-v100'",
-      './src/ui/desktop/styles/primitives.css?release=b7-00b4b-r1-v100',
+      "const CACHE_VERSION = 'dreamland-pwa-v101';",
+      "'b7-00b4b-r2-v101'",
+      './src/ui/desktop/styles/primitives.css?release=b7-00b4b-r2-v101',
       "'./src/ui/desktop/styles/primitives.css'"
     ],
     'Service Worker Foundation release'
   );
 
-  if(!pwa.includes("'b7-00b4b-r1-v100'")){
+  if(!pwa.includes("'b7-00b4b-r2-v101'")){
     fail('PWA runtime release tag was not advanced to B7-00B.4A R1.');
   }
 }catch(error){
@@ -468,6 +468,10 @@ try{
     home,
     [
       'B7-00B.4B R1 — Home Editorial Composition',
+      'B7-00B.4B R2 — Home Art Direction Realignment',
+      '--dw-home-serif:',
+      '--dw-home-accent:',
+      '.desktop-home-hero::before',
       '.desktop-collection-card:nth-child(4)',
       '.desktop-product-card:nth-child(4)',
       '.desktop-wholesale-layout{',
@@ -480,7 +484,7 @@ try{
   includesAll(
     runtime,
     [
-      "const VERSION='B7-00B.4B-R1';",
+      "const VERSION='B7-00B.4B-R2';",
       'desktop-wholesale-media',
       'view.wholesale.image',
       'desktop-wholesale-index'
@@ -489,9 +493,9 @@ try{
   );
 
   for(const [lang,title] of [
-    ['en','Hand-carved candles, made to leave an impression.'],
-    ['zh','手工雕刻，让蜡烛成为被记住的作品。'],
-    ['ko','손으로 조각해, 오래 기억되는 캔들.']
+    ['en','Candles, carved by hand.'],
+    ['zh','把蜡烛，做成一件作品。'],
+    ['ko','손으로 조각한 하나의 작품.']
   ]){
     if(site.languages?.[lang]?.hero?.title!==title){
       fail(`4B Home public copy regression: ${lang}.hero.title`);
