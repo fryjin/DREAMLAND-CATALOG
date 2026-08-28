@@ -1203,3 +1203,611 @@
     padding-left:28px;
   }
 }
+
+/* --------------------------------------------------------------------------
+ * B7-00B.4D R1.5 — Persistent Configuration Dock + Inquiry Quick Drawer + PDP Balance
+ * ------------------------------------------------------------------------ */
+@media (min-width:1024px){
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]{
+    padding-bottom:calc(var(--dw-section) + 116px);
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-main-media{
+    background:var(--dw-color-paper);
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-media-caption{
+    grid-column:2;
+    grid-row:2;
+    min-width:0;
+    padding-top:10px;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:18px;
+    color:var(--dw-color-muted);
+    font-size:var(--dw-type-support-size);
+    line-height:1.45;
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-media-caption span{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-media-caption strong{
+    flex:none;
+    color:var(--dw-color-ink-soft);
+    font-size:var(--dw-type-support-size);
+    font-weight:780;
+    letter-spacing:.04em;
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-gallery.is-single .desktop-detail-media-caption{
+    grid-column:1;
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-heading__description{
+    max-width:520px;
+    color:var(--dw-color-muted);
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-heading__commercial{
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:10px 24px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-heading__commercial span{
+    max-width:350px;
+    line-height:1.45;
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-config-footer{
+    padding:24px 0 8px 34px;
+    border-top:1px solid var(--dw-color-line);
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-config-footer > p{
+    margin-top:14px;
+    color:var(--dw-color-muted);
+    font-size:var(--dw-type-support-size);
+    line-height:1.55;
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-moq-rule{
+    display:grid;
+    grid-template-columns:minmax(72px,auto) minmax(0,1fr);
+    gap:12px 18px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-moq-rule strong{
+    color:var(--dw-color-ink);
+    font-size:var(--dw-type-support-size);
+    font-weight:820;
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-moq-rule span{
+    color:var(--dw-color-muted);
+    font-size:var(--dw-type-support-size);
+    line-height:1.5;
+  }
+
+  .desktop-detail-dock{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:64;
+    min-height:96px;
+    border-top:1px solid var(--dw-color-line);
+    background:rgba(251,248,243,.96);
+    backdrop-filter:blur(18px);
+    box-shadow:0 -12px 36px rgba(32,25,20,.055);
+  }
+
+  .desktop-detail-dock__inner{
+    min-height:96px;
+    display:grid;
+    grid-template-columns:minmax(250px,1.35fr) minmax(150px,.62fr) auto minmax(360px,1fr);
+    align-items:center;
+    gap:24px;
+  }
+
+  .desktop-detail-dock__configuration,
+  .desktop-detail-dock__commercial{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+
+  .desktop-detail-dock__configuration > span,
+  .desktop-detail-dock__commercial > span{
+    color:var(--dw-color-faint);
+    font-size:var(--dw-type-support-size);
+    line-height:1.2;
+  }
+
+  .desktop-detail-dock__configuration strong{
+    overflow:hidden;
+    color:var(--dw-color-ink);
+    font-size:13px;
+    line-height:1.3;
+    font-weight:850;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .desktop-detail-dock__configuration small,
+  .desktop-detail-dock__commercial small{
+    overflow:hidden;
+    color:var(--dw-color-muted);
+    font-size:var(--dw-type-support-size);
+    line-height:1.35;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .desktop-detail-dock__commercial strong{
+    color:var(--dw-color-ink);
+    font-size:18px;
+    line-height:1.1;
+    font-weight:900;
+  }
+
+  .desktop-detail-dock__inquiry{
+    min-width:86px;
+    min-height:48px;
+    padding:0 14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    border:1px solid var(--dw-color-line);
+    border-radius:6px;
+    background:transparent;
+    color:var(--dw-color-ink);
+    cursor:pointer;
+  }
+
+  .desktop-detail-dock__inquiry span{
+    font-size:var(--dw-type-support-size);
+    font-weight:780;
+  }
+
+  .desktop-detail-dock__inquiry strong{
+    min-width:20px;
+    height:20px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:var(--dw-color-ink);
+    color:var(--dw-color-inverse);
+    font-size:var(--dw-type-support-size);
+    font-weight:850;
+  }
+
+  .desktop-detail-dock__actions{
+    position:relative;
+    min-width:0;
+    display:grid;
+    grid-template-columns:minmax(170px,.72fr) minmax(210px,1fr);
+    gap:10px;
+    align-items:center;
+  }
+
+  .desktop-detail-dock__quantity{
+    height:50px;
+    display:grid;
+    grid-template-columns:42px minmax(82px,1fr) 42px;
+    border:1px solid var(--dw-color-line);
+    border-radius:6px;
+    background:var(--dw-color-paper);
+  }
+
+  .desktop-detail-dock__quantity > button{
+    display:grid;
+    place-items:center;
+    background:transparent;
+    color:var(--dw-color-ink);
+    font-size:18px;
+    cursor:pointer;
+  }
+
+  .desktop-detail-dock__quantity label{
+    min-width:0;
+    padding:0 9px;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    border-left:1px solid var(--dw-color-line);
+    border-right:1px solid var(--dw-color-line);
+  }
+
+  .desktop-detail-dock__quantity input{
+    min-width:0;
+    width:100%;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:var(--dw-color-ink);
+    font-size:13px;
+    font-weight:850;
+  }
+
+  .desktop-detail-dock__quantity label span{
+    flex:none;
+    color:var(--dw-color-muted);
+    font-size:var(--dw-type-support-size);
+  }
+
+  .desktop-detail-dock__add{
+    min-height:50px;
+    border-radius:6px;
+    box-shadow:none;
+  }
+
+  .desktop-detail-dock__feedback{
+    position:absolute;
+    right:0;
+    bottom:calc(100% + 8px);
+    margin:0;
+    border:1px solid var(--dw-color-line);
+    background:var(--dw-color-paper);
+  }
+
+  .desktop-detail-inquiry-layer{
+    position:fixed;
+    inset:var(--dw-header) 0 96px;
+    z-index:72;
+  }
+
+  .desktop-detail-inquiry-layer[hidden]{
+    display:none!important;
+  }
+
+  .desktop-detail-inquiry-backdrop{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:0;
+    background:rgba(24,21,18,.13);
+    cursor:default;
+  }
+
+  .desktop-detail-inquiry-drawer{
+    position:absolute;
+    top:0;
+    right:0;
+    bottom:0;
+    width:min(460px,44vw);
+    display:grid;
+    grid-template-rows:auto minmax(0,1fr) auto;
+    border-left:1px solid var(--dw-color-line);
+    background:var(--dw-color-paper);
+    box-shadow:-18px 0 54px rgba(32,25,20,.10);
+  }
+
+  .desktop-detail-inquiry-drawer__head{
+    min-height:78px;
+    padding:18px 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    border-bottom:1px solid var(--dw-color-line);
+  }
+
+  .desktop-detail-inquiry-drawer__head > div{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+
+  .desktop-detail-inquiry-drawer__head span{
+    color:var(--dw-color-muted);
+    font-size:var(--dw-type-support-size);
+  }
+
+  .desktop-detail-inquiry-drawer__head strong{
+    color:var(--dw-color-ink);
+    font-size:15px;
+    font-weight:880;
+  }
+
+  .desktop-detail-inquiry-drawer__head > button{
+    width:36px;
+    height:36px;
+    display:grid;
+    place-items:center;
+    background:transparent;
+    color:var(--dw-color-ink);
+    font-size:22px;
+    cursor:pointer;
+  }
+
+  .desktop-detail-inquiry-drawer__body{
+    overflow:auto;
+    overscroll-behavior:contain;
+    padding:4px 24px 28px;
+  }
+
+  .desktop-detail-drawer-item{
+    padding:20px 0;
+    display:grid;
+    grid-template-columns:72px minmax(0,1fr);
+    gap:14px;
+    border-bottom:1px solid var(--dw-color-line);
+  }
+
+  .desktop-detail-drawer-item__media,
+  .desktop-detail-drawer-item__custom-mark{
+    width:72px;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    border-radius:4px;
+    background:var(--dw-color-surface-warm-soft);
+  }
+
+  .desktop-detail-drawer-item__media img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+
+  .desktop-detail-drawer-item__custom-mark{
+    display:grid;
+    place-items:center;
+    aspect-ratio:1/1;
+    color:var(--dw-color-muted);
+    font-size:22px;
+    font-weight:900;
+  }
+
+  .desktop-detail-drawer-item__body{
+    min-width:0;
+  }
+
+  .desktop-detail-drawer-item__head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  .desktop-detail-drawer-item__head > div{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+  }
+
+  .desktop-detail-drawer-item__head small{
+    color:var(--dw-color-muted);
+    font-size:var(--dw-type-support-size);
+  }
+
+  .desktop-detail-drawer-item__head strong{
+    overflow:hidden;
+    color:var(--dw-color-ink);
+    font-size:13px;
+    line-height:1.3;
+    font-weight:850;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .desktop-detail-drawer-item__head > button{
+    flex:none;
+    background:transparent;
+    color:var(--dw-color-muted);
+    font-size:var(--dw-type-support-size);
+    cursor:pointer;
+  }
+
+  .desktop-detail-drawer-item__body > p{
+    margin-top:8px;
+    color:var(--dw-color-muted);
+    font-size:var(--dw-type-support-size);
+    line-height:1.5;
+  }
+
+  .desktop-detail-drawer-item__commercial{
+    margin-top:14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  .desktop-detail-drawer-quantity{
+    display:grid;
+    grid-template-columns:32px 46px 32px;
+    height:34px;
+    border:1px solid var(--dw-color-line);
+    border-radius:4px;
+  }
+
+  .desktop-detail-drawer-quantity button,
+  .desktop-detail-drawer-quantity input{
+    min-width:0;
+    border:0;
+    background:transparent;
+    color:var(--dw-color-ink);
+    text-align:center;
+    font-size:var(--dw-type-support-size);
+  }
+
+  .desktop-detail-drawer-quantity button{
+    cursor:pointer;
+  }
+
+  .desktop-detail-drawer-quantity input{
+    border-left:1px solid var(--dw-color-line);
+    border-right:1px solid var(--dw-color-line);
+    outline:0;
+    font-weight:820;
+  }
+
+  .desktop-detail-drawer-item__commercial > div:last-child{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:3px;
+  }
+
+  .desktop-detail-drawer-item__commercial span{
+    color:var(--dw-color-muted);
+    font-size:var(--dw-type-support-size);
+  }
+
+  .desktop-detail-drawer-item__commercial strong{
+    color:var(--dw-color-ink);
+    font-size:12px;
+    font-weight:880;
+  }
+
+  .desktop-detail-drawer-moq{
+    margin-top:24px;
+    padding-top:20px;
+    border-top:1px solid var(--dw-color-line-strong);
+  }
+
+  .desktop-detail-drawer-moq > span{
+    display:block;
+    margin-bottom:8px;
+    color:var(--dw-color-muted);
+    font-size:var(--dw-type-support-size);
+    font-weight:780;
+  }
+
+  .desktop-detail-drawer-moq > div{
+    min-height:48px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    border-top:1px solid var(--dw-color-line);
+  }
+
+  .desktop-detail-drawer-moq p{
+    display:flex;
+    align-items:baseline;
+    gap:5px;
+  }
+
+  .desktop-detail-drawer-moq strong,
+  .desktop-detail-drawer-moq b{
+    color:var(--dw-color-ink);
+    font-size:var(--dw-type-support-size);
+    font-weight:850;
+  }
+
+  .desktop-detail-drawer-moq small{
+    color:var(--dw-color-muted);
+    font-size:var(--dw-type-support-size);
+  }
+
+  .desktop-detail-inquiry-empty{
+    padding:52px 0;
+  }
+
+  .desktop-detail-inquiry-empty strong{
+    color:var(--dw-color-ink);
+    font-size:15px;
+    font-weight:880;
+  }
+
+  .desktop-detail-inquiry-empty p{
+    max-width:300px;
+    margin-top:8px;
+    color:var(--dw-color-muted);
+    font-size:12px;
+    line-height:1.6;
+  }
+
+  .desktop-detail-inquiry-drawer__footer{
+    padding:16px 24px 20px;
+    border-top:1px solid var(--dw-color-line);
+    background:var(--dw-color-paper);
+  }
+
+  .desktop-detail-inquiry-full{
+    width:100%;
+    min-height:50px;
+    padding:0 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-radius:6px;
+    background:var(--dw-color-ink);
+    color:var(--dw-color-inverse);
+    font-size:12px;
+    font-weight:850;
+    cursor:pointer;
+  }
+}
+
+@media (min-width:1200px){
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-layout{
+    grid-template-columns:minmax(0,1.18fr) minmax(560px,1fr);
+    gap:clamp(34px,2.8vw,48px);
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-gallery{
+    grid-template-columns:58px minmax(0,1fr);
+    gap:12px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-thumb{
+    width:58px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-main-media{
+    height:min(68vh,700px);
+    min-height:500px;
+  }
+}
+
+@media (min-width:1024px) and (max-width:1279px){
+  .desktop-detail-dock__inner{
+    grid-template-columns:minmax(190px,1fr) auto minmax(330px,1fr);
+    gap:14px;
+  }
+
+  .desktop-detail-dock__commercial{
+    display:none;
+  }
+
+  .desktop-detail-inquiry-drawer{
+    width:min(430px,48vw);
+  }
+
+  .desktop-detail-page[data-desktop-detail-polish="B7-00B.4D-R1.5"]
+  .desktop-detail-media-caption{
+    display:flex;
+    margin-top:10px;
+    padding-top:0;
+  }
+}

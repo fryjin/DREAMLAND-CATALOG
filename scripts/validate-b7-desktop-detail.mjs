@@ -244,9 +244,9 @@ try{
     read('index.html');
 
   for(const required of [
-    "window.DREAMLAND_RELEASE='b7-00b4d-r1-v114';",
-    './src/ui/desktop/styles/detail.css?release=b7-00b4d-r1-v114',
-    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4d-r1-v114',
+    "window.DREAMLAND_RELEASE='b7-00b4h-r1-v122';",
+    './src/ui/desktop/styles/detail.css?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4h-r1-v122',
     'detailState:',
     'detailFeature,',
     'productImages:',
@@ -269,7 +269,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/styles/detail.css?release=b7-00b4d-r1-v114'
+      './src/ui/desktop/styles/detail.css?release=b7-00b4h-r1-v122'
     )!==1
   ){
     fail(
@@ -280,7 +280,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4d-r1-v114'
+      './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4h-r1-v122'
     )!==1
   ){
     fail(
@@ -441,10 +441,10 @@ try{
     );
 
   for(const required of [
-    "const CACHE_VERSION = 'dreamland-pwa-v114';",
-    "'b7-00b4d-r1-v114'",
-    './src/ui/desktop/styles/detail.css?release=b7-00b4d-r1-v114',
-    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4d-r1-v114',
+    "const CACHE_VERSION = 'dreamland-pwa-v122';",
+    "'b7-00b4h-r1-v122'",
+    './src/ui/desktop/styles/detail.css?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4h-r1-v122',
     "'./src/ui/desktop/styles/detail.css'",
     "'./src/ui/desktop/detail/runtime-desktop-detail.js'"
   ]){
@@ -457,7 +457,7 @@ try{
 
   if(
     !pwa.includes(
-      "'b7-00b4d-r1-v114'"
+      "'b7-00b4h-r1-v122'"
     )
   ){
     fail(
@@ -553,6 +553,89 @@ try{
 }catch(error){
   fail(`Desktop Detail 4D R1 successor validation failed: ${error.message}`);
 }
+/* Gate 4D-R1.5 — persistent configuration dock + inquiry quick drawer. */
+try{
+  const runtime=read('src/ui/desktop/detail/runtime-desktop-detail.js');
+  const experience=read('src/ui/desktop/runtime-desktop-experience.js');
+  const css=read('src/ui/desktop/styles/detail.css');
+
+  for(const required of [
+    "const POLISH_VERSION='B7-00B.4D-R1.5';",
+    'function dockHtml(view)',
+    'function inquiryDrawerHtml()',
+    'function syncPersistentCommerce(',
+    'data-desktop-detail-dock',
+    'data-desktop-detail-action="toggle-inquiry-drawer"',
+    'data-desktop-detail-action="open-inquiry"',
+    'data-desktop-detail-drawer-quantity=',
+    'data-desktop-detail-media-caption',
+    'moqRuleCompactText(view)'
+  ]){
+    if(!runtime.includes(required)){
+      fail(`4D R1.5 Detail runtime is missing: ${required}`);
+    }
+  }
+
+  for(const required of [
+    'inquiryViewModel:',
+    'itemScentLabel:',
+    'itemMoq:',
+    'adjustInquiryQuantity:',
+    'setInquiryQuantity:',
+    'removeInquiryItem:',
+    'openInquiry:'
+  ]){
+    if(!experience.includes(required)){
+      fail(`4D R1.5 Desktop Experience inquiry bridge is missing: ${required}`);
+    }
+  }
+
+  for(const required of [
+    'B7-00B.4D R1.5 — Persistent Configuration Dock + Inquiry Quick Drawer + PDP Balance',
+    '.desktop-detail-dock{',
+    '.desktop-detail-inquiry-drawer{',
+    'grid-template-columns:minmax(0,1.18fr) minmax(560px,1fr);'
+  ]){
+    if(!css.includes(required)){
+      fail(`4D R1.5 Detail CSS is missing: ${required}`);
+    }
+  }
+
+  if(/font-size:(?:8|9|10)px;/.test(css)){
+    fail('4D R1.5 readability regression: detail.css contains visible 8/9/10px text.');
+  }
+}catch(error){
+  fail(`4D R1.5 persistent PDP commerce validation failed: ${error.message}`);
+}
+
+
+/* Gate 4D-R1.5.1 — repeat Add + in-place Dock interaction semantics. */
+try{
+  const runtime=read('src/ui/desktop/detail/runtime-desktop-detail.js');
+
+  for(const required of [
+    "const INTERACTION_VERSION='B7-00B.4D-R1.5.1';",
+    'function currentInquiryItem(',
+    'function commitDockQuantity()',
+    'function syncDock(',
+    'data-desktop-detail-dock-add-label',
+    "r15UiCopy('addAgain')",
+    "r15UiCopy('addedAgain')",
+    "event.target.closest?.(\n        '[data-desktop-detail-dock-quantity]'",
+    "detailRoot.addEventListener(\n        'input',\n        onInput"
+  ]){
+    if(!runtime.includes(required)){
+      fail(`4D R1.5.1 Detail interaction is missing: ${required}`);
+    }
+  }
+
+  if(runtime.includes('dock.outerHTML=dockHtml(view);')){
+    fail('4D R1.5.1 regression: Persistent Dock must update in place rather than replace its outerHTML.');
+  }
+}catch(error){
+  fail(`4D R1.5.1 Dock interaction validation failed: ${error.message}`);
+}
+
 if(errors.length){
   console.error(
     '\nB7-00B.3B Desktop Product Detail / PDP validation failed:\n'

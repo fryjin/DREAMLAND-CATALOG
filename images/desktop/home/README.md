@@ -12,7 +12,8 @@ change is required.
 | Advanced collection | `collections/advanced.webp` | 1200 × 1200 | 1:1 |
 | Holiday collection | `collections/holiday.webp` | 1200 × 1200 | 1:1 |
 | Classic collection | `collections/classic.webp` | 1400 × 1050 | 4:3 |
-| Featured 01–04 | `featured/featured-0X.webp` | 900 × 1125 | 4:5 |
+| Featured 01–03 (narrow) | `featured/featured-01.webp` — `featured-03.webp` | 1200 × 1200 | narrow 3-up row |
+| Featured 04–05 (wide) | `featured/featured-04.webp` — `featured-05.webp` | 1600 × 1100 | wide 2-up row |
 | Craft | `craft/craft-main.webp` | 1400 × 1050 | 4:3 |
 | Custom | `custom/custom-main.webp` | 1600 × 1000 | 8:5 |
 | Wholesale | `wholesale/wholesale-main.webp` | 1600 × 1000 | 8:5 |
@@ -22,7 +23,9 @@ change is required.
 - Keep product subjects inside a generous safe area.
 - Avoid embedding text into the image.
 - Keep backgrounds visually related: warm white, sand, clay, soft studio light.
-- Featured images should use consistent camera distance and crop.
+- Featured 01–03 are the narrower first-row slots; Featured 04–05 are the wider second-row slots.
+- All five Featured files are Home-only marketing assets. Do not replace them with product catalog cover images.
+- Featured images should keep a compatible camera distance and crop within their own slot group.
 - Craft should show process / handwork / close detail rather than another
   plain product listing.
 - Custom should communicate packaging, branding, color or scent flexibility.

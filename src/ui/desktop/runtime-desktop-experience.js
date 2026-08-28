@@ -519,6 +519,17 @@
       media:
         config.media,
 
+      inquiryViewModel:
+        ()=>config.inquiryState
+          ?.buildViewModel?.()||
+          {empty:true,items:[],summary:{itemCount:0}},
+
+      itemScentLabel:
+        config.itemScentLabel,
+
+      itemMoq:
+        config.itemMoq,
+
       actions:{
         back:
           ()=>config.actions
@@ -574,6 +585,44 @@
             syncInquiry();
           },
 
+        adjustInquiryQuantity:
+          (id,delta)=>{
+            const result=config.actions
+              ?.adjustInquiryQuantity?.(
+                id,
+                delta
+              );
+            syncInquiry();
+            return result;
+          },
+
+        setInquiryQuantity:
+          (id,value)=>{
+            const result=config.actions
+              ?.setInquiryQuantity?.(
+                id,
+                value
+              );
+            syncInquiry();
+            return result;
+          },
+
+        removeInquiryItem:
+          id=>{
+            const result=config.actions
+              ?.removeInquiryItem?.(
+                id
+              );
+            syncInquiry();
+            return result;
+          },
+
+        openInquiry:
+          ()=>config.actions
+            ?.navigate?.(
+              'inquiry'
+            ),
+
         customProject:
           ()=>config.actions
             ?.navigate?.(
@@ -594,6 +643,9 @@
 
       scentDisplayText:
         config.scentDisplayText,
+
+      budgetOptions:
+        config.budgetOptions,
 
       actions:{
         addIntent:
@@ -1276,6 +1328,11 @@
 
       money:
         options.money,
+
+      budgetOptions:
+        typeof options.budgetOptions==='function'
+          ? options.budgetOptions
+          : ()=>[],
 
       qtyUnit:
         options.qtyUnit,

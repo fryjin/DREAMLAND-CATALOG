@@ -6,6 +6,7 @@
   }
 
   const VERSION='B7-00B.3D';
+  const PRESENTATION_VERSION='B7-00B.4F-R1.1';
 
   let config=null;
   let contactRoot=null;
@@ -119,6 +120,60 @@
     `;
   }
 
+
+  function countryRegions(){
+    const c=copy();
+    return Array.isArray(c.countryRegions)?c.countryRegions:[];
+  }
+
+  function countryField(){
+    const c=copy();
+    const error=fieldError('country');
+    const current=text(contact.country);
+    const options=countryRegions();
+    const known=options.some(row=>text(row?.code)===current);
+
+    const optionHtml=options.map(row=>{
+      const code=text(row?.code);
+      const label=text(row?.label);
+      return (
+        '<option value="'+escapeHtml(code)+'" '+
+        (current===code?'selected':'')+
+        '>'+
+        escapeHtml(label)+' ('+escapeHtml(code)+')'+
+        '</option>'
+      );
+    }).join('');
+
+    const fallback=
+      current&&!known
+        ? '<option value="'+escapeHtml(current)+'" selected>'+
+            escapeHtml(current)+
+          '</option>'
+        : '';
+
+    return `
+      <div class="desktop-contact-field desktop-contact-field--country ${error?'is-invalid':''}">
+        <label for="desktopContact_country">
+          ${escapeHtml(c.country)} *
+        </label>
+
+        <select
+          id="desktopContact_country"
+          autocomplete="country-name"
+          data-desktop-contact-field="country"
+          required
+        >
+          <option value="">${escapeHtml(c.countryPlaceholder||c.country)}</option>
+          ${fallback}
+          ${optionHtml}
+        </select>
+
+        ${error?`<p>${escapeHtml(error)}</p>`:''}
+      </div>
+    `;
+  }
+
   function formHtml(){
     const c=copy();
 
@@ -146,13 +201,7 @@
             autocomplete:'organization'
           })}
 
-          ${field({
-            key:'country',
-            label:c.country,
-            placeholder:c.countryPlaceholder,
-            autocomplete:'country-name',
-            required:true
-          })}
+          ${countryField()}
 
           ${field({
             key:'city',
@@ -282,7 +331,7 @@
     const c=copy();
 
     return `
-      <div class="desktop-flow-page desktop-contact-page">
+      <div class="desktop-flow-page desktop-contact-page" data-desktop-contact-presentation="${PRESENTATION_VERSION}">
         <div class="desktop-container">
           <header class="desktop-flow-hero">
             <div class="desktop-eyebrow">${escapeHtml(c.contactKicker)}</div>
@@ -365,6 +414,20 @@
     );
   }
 
+
+  function clearFieldErrorUi(target){
+    const wrapper=target?.closest?.('.desktop-contact-field');
+
+    if(!wrapper){
+      return false;
+    }
+
+    wrapper.classList.remove('is-invalid');
+    wrapper.querySelector(':scope > p')?.remove?.();
+    return true;
+  }
+
+
   function onInput(event){
     const target=event.target.closest?.('[data-desktop-contact-field]');
 
@@ -376,7 +439,10 @@
       target.dataset.desktopContactField,
       target.value
     );
+
+    clearFieldErrorUi(target);
   }
+
 
   function onChange(event){
     const target=event.target.closest?.('[data-desktop-contact-field]');
@@ -390,7 +456,7 @@
       target.value
     );
 
-    render({preserveScroll:true});
+    clearFieldErrorUi(target);
   }
 
   function onClick(event){
@@ -489,6 +555,7 @@
   function snapshot(){
     return Object.freeze({
       version:VERSION,
+      presentation:PRESENTATION_VERSION,
       configured:Boolean(config),
       mounted,
       contact:Object.freeze({...contact})

@@ -165,15 +165,15 @@ try{
   const index=read('index.html');
 
   for(const required of [
-    "window.DREAMLAND_RELEASE='b7-00b4d-r1-v114';",
-    './src/ui/desktop/styles/inquiry.css?release=b7-00b4d-r1-v114',
-    './src/ui/desktop/styles/contact.css?release=b7-00b4d-r1-v114',
-    './src/ui/desktop/styles/review.css?release=b7-00b4d-r1-v114',
-    './src/ui/desktop/styles/success.css?release=b7-00b4d-r1-v114',
-    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4d-r1-v114',
-    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4d-r1-v114',
-    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4d-r1-v114',
-    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4d-r1-v114',
+    "window.DREAMLAND_RELEASE='b7-00b4h-r1-v122';",
+    './src/ui/desktop/styles/inquiry.css?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/styles/contact.css?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/styles/review.css?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/styles/success.css?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4h-r1-v122',
     'inquiryState:',
     'inquiryFeature,',
     'contactState:',
@@ -307,16 +307,16 @@ try{
   );
 
   for(const required of [
-    "const CACHE_VERSION = 'dreamland-pwa-v114';",
-    "'b7-00b4d-r1-v114'",
-    './src/ui/desktop/styles/inquiry.css?release=b7-00b4d-r1-v114',
-    './src/ui/desktop/styles/contact.css?release=b7-00b4d-r1-v114',
-    './src/ui/desktop/styles/review.css?release=b7-00b4d-r1-v114',
-    './src/ui/desktop/styles/success.css?release=b7-00b4d-r1-v114',
-    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4d-r1-v114',
-    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4d-r1-v114',
-    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4d-r1-v114',
-    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4d-r1-v114',
+    "const CACHE_VERSION = 'dreamland-pwa-v122';",
+    "'b7-00b4h-r1-v122'",
+    './src/ui/desktop/styles/inquiry.css?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/styles/contact.css?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/styles/review.css?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/styles/success.css?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4h-r1-v122',
     "'./src/ui/desktop/inquiry/runtime-desktop-inquiry.js'",
     "'./src/ui/desktop/contact/runtime-desktop-contact.js'",
     "'./src/ui/desktop/review/runtime-desktop-review.js'",
@@ -327,7 +327,7 @@ try{
     }
   }
 
-  if(!pwa.includes("'b7-00b4d-r1-v114'")){
+  if(!pwa.includes("'b7-00b4h-r1-v122'")){
     fail('PWA runtime was not advanced to B7-00B.3D.');
   }
 }catch(error){
@@ -357,6 +357,231 @@ try{
   }
 }catch(error){
   fail(`package validation failed: ${error.message}`);
+}
+
+
+/* Gate 4F-R1 — Inquiry Workspace + MOQ Group Review Recomposition. */
+try{
+  const runtime=read('src/ui/desktop/inquiry/runtime-desktop-inquiry.js');
+  const css=read('src/ui/desktop/styles/inquiry.css');
+  const site=JSON.parse(read('data/site-content.json'));
+
+  for(const required of [
+    "const PRESENTATION_VERSION='B7-00B.4F-R1';",
+    'data-desktop-inquiry-presentation=',
+    'desktop-inquiry-workspace',
+    'desktop-inquiry-moq-group',
+    'desktop-inquiry-overview',
+    'desktop-inquiry-product-selection',
+    'desktop-inquiry-custom-projects',
+    'function deriveMoqGroups(data=view())',
+    'function syncWorkspace(data=view())',
+    'function syncOverview(data=view())',
+    'function renderDialog()'
+  ]){
+    if(!runtime.includes(required)){
+      fail('Desktop Inquiry 4F R1 runtime is missing: '+required);
+    }
+  }
+
+  for(const required of [
+    'B7-00B.4F R1 — Inquiry Workspace + MOQ Group Review Recomposition',
+    '[data-desktop-inquiry-presentation="B7-00B.4F-R1"]',
+    '.desktop-inquiry-moq-group__head',
+    '.desktop-inquiry-overview',
+    '.desktop-inquiry-custom-projects',
+    'var(--dw-container-wide)'
+  ]){
+    if(!css.includes(required)){
+      fail('Desktop Inquiry 4F R1 CSS is missing: '+required);
+    }
+  }
+
+  if(/font-size:(?:8|9|10)px;/.test(css)){
+    fail('Desktop Inquiry 4F R1 readability regression: inquiry.css contains visible 8/9/10px text.');
+  }
+
+  const clickStart=runtime.indexOf('function onClick(event)');
+  const clickEnd=runtime.indexOf('function onChange(event)',clickStart);
+  const clickBody=
+    clickStart>=0&&clickEnd>clickStart
+      ? runtime.slice(clickStart,clickEnd)
+      : '';
+
+  if(clickBody.includes('render();')){
+    fail('Desktop Inquiry 4F R1 interaction regression: click mutations/dialog actions still call full render().');
+  }
+
+  const changeStart=runtime.indexOf('function onChange(event)');
+  const changeEnd=runtime.indexOf('function onKeyDown(event)',changeStart);
+  const changeBody=
+    changeStart>=0&&changeEnd>changeStart
+      ? runtime.slice(changeStart,changeEnd)
+      : '';
+
+  if(changeBody.includes('render();')){
+    fail('Desktop Inquiry 4F R1 interaction regression: quantity changes still call full render().');
+  }
+
+  for(const lang of ['en','zh','ko']){
+    const flow=site?.languages?.[lang]?.inquiryFlow;
+
+    for(const key of [
+      'workspaceTitle',
+      'productSelection',
+      'customProjects',
+      'inquiryOverview',
+      'currentItemQuantity',
+      'moqRule',
+      'moqReady',
+      'moqRemaining',
+      'moqGroupsPending'
+    ]){
+      if(!flow?.[key]){
+        fail('Desktop Inquiry 4F R1 copy is missing for '+lang+'.'+key+'.');
+      }
+    }
+  }
+}catch(error){
+  fail('Desktop Inquiry 4F R1 successor validation failed: '+error.message);
+}
+
+
+/* Gate 4F-R1.1 + 4G-R1 — selection, countries and public-copy audit. */
+try{
+  const inquiry=read('src/ui/desktop/inquiry/runtime-desktop-inquiry.js');
+  const contact=read('src/ui/desktop/contact/runtime-desktop-contact.js');
+  const review=read('src/ui/desktop/review/runtime-desktop-review.js');
+  const inquiryCss=read('src/ui/desktop/styles/inquiry.css');
+  const contactCss=read('src/ui/desktop/styles/contact.css');
+  const site=JSON.parse(read('data/site-content.json'));
+
+  for(const required of [
+    "const SELECTION_VERSION='B7-00B.4F-R1.1';",
+    'let selectedIds=new Set();',
+    'data-desktop-inquiry-select-all',
+    'data-desktop-inquiry-select-item',
+    'data-desktop-inquiry-select-group',
+    'data-desktop-inquiry-action="remove-selected"',
+    'data-desktop-inquiry-action="remove-group"',
+    'function syncSelectionControls(data=view())'
+  ]){
+    if(!inquiry.includes(required)){
+      fail('Desktop Inquiry 4F R1.1 is missing: '+required);
+    }
+  }
+
+  for(const required of [
+    'B7-00B.4F R1.1 — Inquiry Multi-Select + Group Actions',
+    '[data-desktop-inquiry-selection="B7-00B.4F-R1.1"]',
+    '.desktop-inquiry-select',
+    '.desktop-inquiry-group-remove'
+  ]){
+    if(!inquiryCss.includes(required)){
+      fail('Desktop Inquiry 4F R1.1 CSS is missing: '+required);
+    }
+  }
+
+  for(const required of [
+    "const PRESENTATION_VERSION='B7-00B.4F-R1.1';",
+    'function countryRegions()',
+    'function countryField()',
+    'data-desktop-contact-field="country"',
+    '<select'
+  ]){
+    if(!contact.includes(required)){
+      fail('Desktop Contact country selector is missing: '+required);
+    }
+  }
+
+  if(!review.includes('function countryDisplay(value)')){
+    fail('Desktop Review must display localized country / region name + ISO code.');
+  }
+
+  const contactChangeStart=contact.indexOf('function onChange(event)');
+  const contactChangeEnd=contact.indexOf('function onClick(event)',contactChangeStart);
+  const contactChangeBody=
+    contactChangeStart>=0&&contactChangeEnd>contactChangeStart
+      ? contact.slice(contactChangeStart,contactChangeEnd)
+      : '';
+
+  if(contactChangeBody.includes('render(')){
+    fail('Desktop Contact selector change still triggers a full render.');
+  }
+
+  if(!contactCss.includes('B7-00B.4F R1.1 — Country / Region Selector')){
+    fail('Desktop Contact country selector CSS is missing.');
+  }
+
+  const serialized=JSON.stringify(site);
+
+  for(const forbidden of [
+    '你的作品清单正在成形。',
+    'Your selection is taking shape.',
+    '선택한 디자인이 모이고 있습니다.',
+    '当前意向单',
+    '确认意向单'
+  ]){
+    if(serialized.includes(forbidden)){
+      fail('Global public-copy audit still contains rejected copy: '+forbidden);
+    }
+  }
+
+  for(const lang of ['en','zh','ko']){
+    const language=site?.languages?.[lang];
+    const flow=language?.inquiryFlow;
+    const rows=flow?.countryRegions;
+
+    if(!Array.isArray(rows)||rows.length<240){
+      fail('Country / region list is incomplete for '+lang+'.');
+      continue;
+    }
+
+    const codes=new Set();
+
+    for(const row of rows){
+      if(
+        !/^[A-Z]{2}$/.test(String(row?.code||''))||
+        !String(row?.label||'').trim()
+      ){
+        fail('Invalid country / region row for '+lang+'.');
+        break;
+      }
+
+      codes.add(row.code);
+    }
+
+    if(codes.size!==rows.length){
+      fail('Country / region codes are not unique for '+lang+'.');
+    }
+
+    for(const key of [
+      'selectAll',
+      'selectedCount',
+      'removeSelected',
+      'removeGroup',
+      'workspaceTitle',
+      'productSelection'
+    ]){
+      if(!flow?.[key]){
+        fail('Inquiry selection copy is missing for '+lang+'.'+key+'.');
+      }
+    }
+  }
+
+  if(site?.languages?.zh?.catalog?.ctaReadyTitle!=='查看已选产品。'){
+    fail('Chinese Catalog CTA still uses rejected ownership wording.');
+  }
+
+  if(site?.languages?.en?.catalog?.ctaReadyTitle!=='Review selected products.'){
+    fail('English Catalog CTA audit was not applied.');
+  }
+
+  if(site?.languages?.ko?.catalog?.ctaReadyTitle!=='선택한 제품을 확인하세요.'){
+    fail('Korean Catalog CTA audit was not applied.');
+  }
+}catch(error){
+  fail('4F R1.1 + 4G R1 successor validation failed: '+error.message);
 }
 
 if(errors.length){

@@ -6,6 +6,10 @@
   }
 
   const VERSION='B7-00B.3C';
+  const PRESENTATION_VERSION='B7-00B.4E-R1';
+  const INTERACTION_VERSION='B7-00B.4E-R1.1';
+  const POLISH_VERSION='B7-00B.4E-R1.2';
+  const CURRENCY_VERSION='B7-00B.4H-R1';
 
   const DEFAULT_DRAFT=Object.freeze({
     use:'',
@@ -27,6 +31,8 @@
   };
   let validation=null;
   let added=false;
+  let activeSection='basics';
+  let sectionObserver=null;
 
   function text(value){
     return String(
@@ -59,6 +65,9 @@
   function snapshot(){
     return Object.freeze({
       version:VERSION,
+      presentation:PRESENTATION_VERSION,
+      polish:POLISH_VERSION,
+      currency:CURRENCY_VERSION,
       configured:Boolean(config),
       mounted,
       added,
@@ -93,6 +102,18 @@
   }
 
   function options(key){
+    if(key==='budgets'){
+      const localized=
+        config?.budgetOptions?.();
+
+      if(
+        Array.isArray(localized)&&
+        localized.length
+      ){
+        return localized;
+      }
+    }
+
     const rows=
       content()?.[key];
 
@@ -259,7 +280,10 @@
         : '';
 
     return `
-      <div class="desktop-custom-field ${error?'is-invalid':''}">
+      <div
+        class="desktop-custom-field ${error?'is-invalid':''}"
+        ${field?`data-desktop-custom-validation="${escapeHtml(field)}"`:''}
+      >
         <div class="desktop-custom-field__head">
           <label>${escapeHtml(label)}</label>
           ${
@@ -293,9 +317,12 @@
     className=''
   ){
     return `
-      <div class="desktop-custom-choice-grid ${className}">
+      <div
+        class="desktop-custom-choice-grid ${className}"
+        data-desktop-custom-choice-group="${escapeHtml(field)}"
+      >
         ${options(key)
-          .map(option=>{
+          .map((option,index)=>{
             const value=
               text(option.value);
 
@@ -305,18 +332,24 @@
 
             return `
               <button
-                class="desktop-custom-choice ${active?'is-active':''}"
+                class="desktop-custom-choice desktop-custom-editorial-choice ${active?'is-active':''}"
                 type="button"
                 data-desktop-custom-pick="${escapeHtml(field)}"
                 data-desktop-custom-value="${escapeHtml(value)}"
                 aria-pressed="${active?'true':'false'}"
               >
-                <strong>${escapeHtml(option.label)}</strong>
-                ${
-                  option.body
-                    ? `<span>${escapeHtml(option.body)}</span>`
-                    : ''
-                }
+                <span class="desktop-custom-choice__index" aria-hidden="true">
+                  ${String(index+1).padStart(2,'0')}
+                </span>
+                <span class="desktop-custom-choice__copy">
+                  <strong>${escapeHtml(option.label)}</strong>
+                  ${
+                    option.body
+                      ? `<span>${escapeHtml(option.body)}</span>`
+                      : ''
+                  }
+                </span>
+                <span class="desktop-custom-choice__mark" aria-hidden="true">✓</span>
               </button>
             `;
           })
@@ -356,7 +389,7 @@
 
     return `
       <section
-        class="desktop-custom-section"
+        class="desktop-custom-section desktop-custom-section--context"
         data-desktop-custom-section="basics"
       >
         <div class="desktop-custom-section__heading">
@@ -377,10 +410,10 @@
           )
         })}
 
-        <div class="desktop-custom-two">
+        <div class="desktop-custom-two desktop-custom-two--project-parameters">
           ${fieldHtml({
             label:c.quantity,
-            hint:`${c.minimumQuantity} ${limits.minimumQuantity||1}`,
+            hint:`${c.minimumQuantity} · ${limits.minimumQuantity||1} ${c.pieces}`,
             field:'qty',
             body:`
               <div class="desktop-custom-input-wrap ${inputClass('qty')}">
@@ -441,62 +474,71 @@
       );
 
     return `
-      ${fieldHtml({
-        label:c.fragranceCollection,
-        body:`
-          <div
-            class="desktop-custom-series"
-            role="radiogroup"
-          >
-            ${availableSeries()
-              .map(value=>`
-                <button
-                  class="desktop-custom-series__button ${value===series?'is-active':''}"
-                  type="button"
-                  data-desktop-custom-series="${escapeHtml(value)}"
-                  role="radio"
-                  aria-checked="${value===series?'true':'false'}"
-                >
-                  ${escapeHtml(seriesLabel(value))}
-                </button>
-              `)
-              .join('')}
-          </div>
-        `
-      })}
-
-      ${fieldHtml({
-        label:c.scents,
-        hint:c.scentsHint
-          .replace(
-            '{count}',
-            String(selectedIds.size)
-          ),
-        field:'scents',
-        body:`
-          <div class="desktop-custom-scents">
-            ${availableScents()
-              .map(scent=>{
-                const id=text(scent?.id);
-                const active=
-                  selectedIds.has(id);
-
-                return `
+      <div
+        class="desktop-custom-fragrance-panel"
+        data-desktop-custom-fragrance
+      >
+        ${fieldHtml({
+          label:c.fragranceCollection,
+          hint:c.collectionResetHint||'',
+          body:`
+            <div
+              class="desktop-custom-series"
+              role="radiogroup"
+            >
+              ${availableSeries()
+                .map(value=>`
                   <button
-                    class="desktop-custom-scent ${active?'is-active':''}"
+                    class="desktop-custom-series__button ${value===series?'is-active':''}"
                     type="button"
-                    data-desktop-custom-scent="${escapeHtml(id)}"
-                    aria-pressed="${active?'true':'false'}"
+                    data-desktop-custom-series="${escapeHtml(value)}"
+                    role="radio"
+                    aria-checked="${value===series?'true':'false'}"
                   >
-                    <span class="desktop-custom-scent__check" aria-hidden="true">✓</span>
-                    <span>${escapeHtml(scentLabel(scent))}</span>
+                    ${escapeHtml(seriesLabel(value))}
                   </button>
-                `;
-              })
-              .join('')}
-          </div>
-        `
-      })}
+                `)
+                .join('')}
+            </div>
+          `
+        })}
+
+        ${fieldHtml({
+          label:c.scents,
+          hint:c.scentsHint
+            .replace(
+              '{count}',
+              String(selectedIds.size)
+            ),
+          field:'scents',
+          body:`
+            <div
+              class="desktop-custom-scents desktop-custom-fragrance-matrix"
+              data-desktop-custom-scents
+            >
+              ${availableScents()
+                .map(scent=>{
+                  const id=text(scent?.id);
+                  const active=
+                    selectedIds.has(id);
+
+                  return `
+                    <button
+                      class="desktop-custom-scent ${active?'is-active':''}"
+                      type="button"
+                      data-desktop-custom-scent="${escapeHtml(id)}"
+                      aria-pressed="${active?'true':'false'}"
+                    >
+                      <span class="desktop-custom-scent__check" aria-hidden="true">✓</span>
+                      <span>${escapeHtml(scentLabel(scent))}</span>
+                    </button>
+                  `;
+                })
+                .join('')}
+            </div>
+          `
+        })}
+      </div>
     `;
   }
 
@@ -505,7 +547,7 @@
 
     return `
       <section
-        class="desktop-custom-section"
+        class="desktop-custom-section desktop-custom-section--product"
         data-desktop-custom-section="product"
       >
         <div class="desktop-custom-section__heading">
@@ -521,7 +563,7 @@
           body:cardChoices(
             'sizes',
             'sizePref',
-            'desktop-custom-choice-grid--compact'
+            'desktop-custom-choice-grid--compact desktop-custom-size-selector'
           )
         })}
 
@@ -549,7 +591,7 @@
 
     return `
       <section
-        class="desktop-custom-section"
+        class="desktop-custom-section desktop-custom-section--presentation"
         data-desktop-custom-section="packaging"
       >
         <div class="desktop-custom-section__heading">
@@ -565,7 +607,7 @@
           body:cardChoices(
             'packages',
             'pack',
-            'desktop-custom-choice-grid--packaging'
+            'desktop-custom-choice-grid--packaging desktop-custom-packaging-selector'
           )
         })}
 
@@ -574,7 +616,7 @@
           body:cardChoices(
             'brandingOptions',
             'branding',
-            'desktop-custom-choice-grid--branding'
+            'desktop-custom-choice-grid--branding desktop-custom-branding-selector'
           )
         })}
 
@@ -583,7 +625,7 @@
           hint:c.optional,
           body:`
             <textarea
-              class="desktop-custom-textarea"
+              class="desktop-custom-textarea desktop-custom-project-notes"
               placeholder="${escapeHtml(c.notesPlaceholder)}"
               data-desktop-custom-field="note"
             >${escapeHtml(draft.note)}</textarea>
@@ -595,17 +637,22 @@
 
   function summaryValue(
     label,
-    value
+    value,
+    className=''
   ){
+    if(!text(value)){
+      return '';
+    }
+
     return `
-      <div class="desktop-custom-summary__row">
+      <div class="desktop-custom-summary__row ${className}">
         <span>${escapeHtml(label)}</span>
-        <strong>${escapeHtml(value||content().notSelected)}</strong>
+        <strong>${escapeHtml(value)}</strong>
       </div>
     `;
   }
 
-  function summaryHtml(){
+  function liveBriefHtml(){
     const c=content();
     const scents=
       selectedScents();
@@ -614,140 +661,384 @@
         .map(scentLabel)
         .filter(Boolean);
 
-    const summarySeries=
-      scentNames.length
-        ? seriesLabel(
-            selectedSeries()
-          )
-        : c.notSelected;
+    const rows=[
+      summaryValue(
+        c.useCase,
+        draft.use
+          ? optionLabel('useCases',draft.use)
+          : ''
+      ),
+      summaryValue(
+        c.quantity,
+        draft.qty
+          ? `${draft.qty} ${c.pieces}`
+          : ''
+      ),
+      summaryValue(
+        c.budget,
+        draft.budget
+          ? optionLabel('budgets',draft.budget)
+          : ''
+      ),
+      summaryValue(
+        c.delivery,
+        draft.date
+      ),
+      summaryValue(
+        c.size,
+        draft.sizePref
+          ? optionLabel('sizes',draft.sizePref)
+          : ''
+      ),
+      summaryValue(
+        c.fragranceCollection,
+        scentNames.length
+          ? seriesLabel(selectedSeries())
+          : ''
+      ),
+      summaryValue(
+        c.scents,
+        scentNames.length
+          ? scentNames.join(' / ')
+          : ''
+      ),
+      summaryValue(
+        c.color,
+        draft.color
+      ),
+      summaryValue(
+        c.packaging,
+        draft.pack
+          ? optionLabel('packages',draft.pack)
+          : ''
+      ),
+      summaryValue(
+        c.branding,
+        draft.branding
+          ? optionLabel('brandingOptions',draft.branding)
+          : ''
+      )
+    ].filter(Boolean).join('');
 
     return `
-      <div class="desktop-custom-summary">
-        <div class="desktop-eyebrow">
-          ${escapeHtml(c.summaryKicker)}
+      <div class="desktop-custom-summary desktop-custom-live-brief">
+        <div class="desktop-custom-live-brief__head">
+          <div class="desktop-eyebrow">
+            ${escapeHtml(c.summaryKicker)}
+          </div>
+          <h2>${escapeHtml(c.summaryTitle)}</h2>
         </div>
 
-        <h2>${escapeHtml(c.summaryTitle)}</h2>
-
-        <div class="desktop-custom-summary__rows">
-          ${summaryValue(
-            c.useCase,
-            optionLabel(
-              'useCases',
-              draft.use
-            )
-          )}
-
-          ${summaryValue(
-            c.quantity,
-            draft.qty
-              ? `${draft.qty} ${c.pieces}`
-              : ''
-          )}
-
-          ${summaryValue(
-            c.size,
-            optionLabel(
-              'sizes',
-              draft.sizePref
-            )
-          )}
-
-          ${summaryValue(
-            c.fragranceCollection,
-            summarySeries
-          )}
-
-          ${summaryValue(
-            c.scents,
-            scentNames.length
-              ? c.scentCount
-                  .replace(
-                    '{count}',
-                    String(scentNames.length)
-                  )
-              : ''
-          )}
-
-          ${summaryValue(
-            c.packaging,
-            optionLabel(
-              'packages',
-              draft.pack
-            )
-          )}
-
-          ${summaryValue(
-            c.branding,
-            optionLabel(
-              'brandingOptions',
-              draft.branding
-            )
-          )}
+        <div class="desktop-custom-summary__rows desktop-custom-live-brief__rows">
+          ${
+            rows||
+            `<p class="desktop-custom-live-brief__empty">${escapeHtml(c.body||c.notSelected||'')}</p>`
+          }
         </div>
 
-        <div class="desktop-custom-summary__quotation">
+        <div class="desktop-custom-summary__quotation desktop-custom-live-brief__quotation">
           <span>${escapeHtml(c.customization)}</span>
           <strong>${escapeHtml(c.quotedAfterReview)}</strong>
           <p>${escapeHtml(c.summaryNote)}</p>
         </div>
 
-        <button
-          class="desktop-custom-submit"
-          type="button"
-          data-desktop-custom-action="submit"
-          ${added?'disabled':''}
-        >
-          <span>
-            ${escapeHtml(
-              added
-                ? c.addedButton
-                : c.addInquiry
-            )}
-          </span>
-          <span aria-hidden="true">${added?'✓':'→'}</span>
-        </button>
+        <div class="desktop-custom-live-brief__footer">
+          <button
+            class="desktop-custom-submit"
+            type="button"
+            data-desktop-custom-action="submit"
+            ${added?'disabled':''}
+          >
+            <span>
+              ${escapeHtml(
+                added
+                  ? c.addedButton
+                  : c.addInquiry
+              )}
+            </span>
+            <span aria-hidden="true">${added?'✓':'→'}</span>
+          </button>
 
-        ${
-          added
-            ? `
-              <div
-                class="desktop-custom-success"
-                role="status"
-                aria-live="polite"
-              >
-                <strong>${escapeHtml(c.addedTitle)}</strong>
-                <p>${escapeHtml(c.addedBody)}</p>
+          ${
+            added
+              ? `
+                <div
+                  class="desktop-custom-success"
+                  role="status"
+                  aria-live="polite"
+                >
+                  <strong>${escapeHtml(c.addedTitle)}</strong>
+                  <p>${escapeHtml(c.addedBody)}</p>
 
-                <div>
-                  <button
-                    type="button"
-                    data-desktop-custom-action="explore"
-                  >
-                    ${escapeHtml(c.exploreCollection)}
-                  </button>
+                  <div>
+                    <button
+                      type="button"
+                      data-desktop-custom-action="explore"
+                    >
+                      ${escapeHtml(c.exploreCollection)}
+                    </button>
 
-                  <button
-                    type="button"
-                    data-desktop-custom-action="review"
-                  >
-                    ${escapeHtml(c.reviewInquiry)}
-                  </button>
+                    <button
+                      type="button"
+                      data-desktop-custom-action="review"
+                    >
+                      ${escapeHtml(c.reviewInquiry)}
+                    </button>
+                  </div>
                 </div>
-              </div>
-            `
-            : ''
-        }
+              `
+              : ''
+          }
+        </div>
       </div>
     `;
+  }
+
+  function chapterLabel(value,fallback=''){
+    const raw=text(value);
+    if(!raw){
+      return text(fallback);
+    }
+
+    const parts=raw.split('/');
+    return text(
+      parts.length>1
+        ? parts.slice(1).join('/')
+        : raw
+    )||text(fallback);
+  }
+
+  function requiredProgressState(){
+    const limits=featureSnapshot();
+    const quantity=Number(draft.qty);
+    const quantityReady=
+      Number.isInteger(quantity)&&
+      quantity>=Number(limits.minimumQuantity||1)&&
+      quantity<=Number(limits.maximumQuantity||1000000);
+
+    const state={
+      use:Boolean(text(draft.use)),
+      qty:quantityReady,
+      scents:selectedScents().length>0
+    };
+
+    return {
+      ...state,
+      done:[state.use,state.qty,state.scents].filter(Boolean).length,
+      total:3
+    };
+  }
+
+  function requiredProgressText(){
+    const c=content();
+    const progress=requiredProgressState();
+    return text(c.requiredProgress||'{done} / {total} required')
+      .replace('{done}',String(progress.done))
+      .replace('{total}',String(progress.total));
+  }
+
+  function sectionComplete(name){
+    const progress=requiredProgressState();
+    if(name==='basics'){
+      return progress.use&&progress.qty;
+    }
+    if(name==='product'){
+      return progress.scents;
+    }
+    if(name==='packaging'){
+      return added;
+    }
+    return false;
+  }
+
+  function flowNavigatorHtml(){
+    const c=content();
+    const items=[
+      {
+        name:'basics',
+        index:'01',
+        label:chapterLabel(c.sectionBasicsKicker,c.sectionBasicsTitle)
+      },
+      {
+        name:'product',
+        index:'02',
+        label:chapterLabel(c.sectionProductKicker,c.sectionProductTitle)
+      },
+      {
+        name:'packaging',
+        index:'03',
+        label:chapterLabel(c.sectionPackagingKicker,c.sectionPackagingTitle)
+      }
+    ];
+
+    return `
+      <nav
+        class="desktop-custom-flow-nav"
+        data-desktop-custom-flow-nav
+        aria-label="${escapeHtml(c.flowTitle||c.kicker||'Project flow')}"
+      >
+        <div class="desktop-custom-flow-nav__head">
+          <span>${escapeHtml(c.flowTitle||c.kicker||'Project flow')}</span>
+          <strong data-desktop-custom-flow-progress>${escapeHtml(requiredProgressText())}</strong>
+        </div>
+
+        <div class="desktop-custom-flow-nav__items">
+          ${items.map(item=>`
+            <button
+              class="desktop-custom-flow-nav__item ${activeSection===item.name?'is-active':''} ${sectionComplete(item.name)?'is-complete':''}"
+              type="button"
+              data-desktop-custom-jump="${item.name}"
+              aria-current="${activeSection===item.name?'step':'false'}"
+            >
+              <span>${item.index}</span>
+              <strong>${escapeHtml(item.label)}</strong>
+              <i aria-hidden="true">✓</i>
+            </button>
+          `).join('')}
+        </div>
+      </nav>
+    `;
+  }
+
+  function continuationHtml(target,kicker,title){
+    const c=content();
+    return `
+      <button
+        class="desktop-custom-section-next"
+        type="button"
+        data-desktop-custom-jump="${escapeHtml(target)}"
+      >
+        <span>${escapeHtml(c.continueToNext||'Continue')}</span>
+        <strong>${escapeHtml(chapterLabel(kicker,title))}</strong>
+        <i aria-hidden="true">↓</i>
+      </button>
+    `;
+  }
+
+  function decorateSectionContinuations(){
+    const c=content();
+    const definitions=[
+      {
+        from:'basics',
+        to:'product',
+        kicker:c.sectionProductKicker,
+        title:c.sectionProductTitle
+      },
+      {
+        from:'product',
+        to:'packaging',
+        kicker:c.sectionPackagingKicker,
+        title:c.sectionPackagingTitle
+      }
+    ];
+
+    for(const item of definitions){
+      const section=customRoot?.querySelector(
+        `[data-desktop-custom-section="${item.from}"]`
+      );
+      if(!section||section.querySelector('.desktop-custom-section-next')){
+        continue;
+      }
+      section.insertAdjacentHTML(
+        'beforeend',
+        continuationHtml(item.to,item.kicker,item.title)
+      );
+    }
+  }
+
+  function syncGuidedNavigation(){
+    const progressText=requiredProgressText();
+
+    customRoot
+      ?.querySelectorAll('[data-desktop-custom-flow-progress]')
+      .forEach(node=>{
+        node.textContent=progressText;
+      });
+
+    customRoot
+      ?.querySelectorAll('[data-desktop-custom-flow-nav] [data-desktop-custom-jump]')
+      .forEach(button=>{
+        const name=text(button.dataset.desktopCustomJump);
+        const active=name===activeSection;
+        button.classList.toggle('is-active',active);
+        button.classList.toggle('is-complete',sectionComplete(name));
+        button.setAttribute('aria-current',active?'step':'false');
+      });
+  }
+
+  function setActiveSection(name){
+    const next=text(name);
+    if(!['basics','product','packaging'].includes(next)){
+      return false;
+    }
+    activeSection=next;
+    syncGuidedNavigation();
+    return true;
+  }
+
+  function jumpToSection(name){
+    const target=customRoot?.querySelector(
+      `[data-desktop-custom-section="${text(name)}"]`
+    );
+    if(!target){
+      return false;
+    }
+    setActiveSection(name);
+    target.scrollIntoView?.({
+      behavior:'smooth',
+      block:'start'
+    });
+    return true;
+  }
+
+  function setupGuidedNavigation(){
+    syncGuidedNavigation();
+
+    sectionObserver?.disconnect?.();
+    sectionObserver=null;
+
+    if(typeof root.IntersectionObserver!=='function'){
+      return;
+    }
+
+    sectionObserver=new root.IntersectionObserver(
+      entries=>{
+        const visible=entries
+          .filter(entry=>entry.isIntersecting)
+          .sort((a,b)=>b.intersectionRatio-a.intersectionRatio);
+
+        const name=text(
+          visible[0]?.target?.dataset?.desktopCustomSection
+        );
+
+        if(name){
+          setActiveSection(name);
+        }
+      },
+      {
+        root:null,
+        rootMargin:'-120px 0px -52% 0px',
+        threshold:[0,.08,.2,.4]
+      }
+    );
+
+    customRoot
+      ?.querySelectorAll('[data-desktop-custom-section]')
+      .forEach(section=>sectionObserver.observe(section));
   }
 
   function pageHtml(){
     const c=content();
 
     return `
-      <div class="desktop-custom-page">
-        <div class="desktop-container">
+      <div
+        class="desktop-custom-page"
+        data-desktop-custom-presentation="${PRESENTATION_VERSION}"
+        data-desktop-custom-interaction="${INTERACTION_VERSION}"
+        data-desktop-custom-polish="${POLISH_VERSION}"
+        data-desktop-custom-currency="${CURRENCY_VERSION}"
+      >
+        <div class="desktop-container--wide desktop-custom-shell">
           <header class="desktop-custom-hero">
             <div class="desktop-eyebrow">
               ${escapeHtml(c.kicker)}
@@ -758,17 +1049,20 @@
           </header>
 
           <div class="desktop-custom-layout">
-            <div class="desktop-custom-builder">
-              ${projectBasicsHtml()}
-              ${productDirectionHtml()}
-              ${packagingHtml()}
-            </div>
+            <main class="desktop-custom-builder desktop-custom-brief-builder">
+              ${flowNavigatorHtml()}
+              <div class="desktop-custom-section-stack">
+                ${projectBasicsHtml()}
+                ${productDirectionHtml()}
+                ${packagingHtml()}
+              </div>
+            </main>
 
             <aside
               class="desktop-custom-summary-wrap"
               data-desktop-custom-summary
             >
-              ${summaryHtml()}
+              ${liveBriefHtml()}
             </aside>
           </div>
         </div>
@@ -791,6 +1085,8 @@
     customRoot.innerHTML=
       pageHtml();
 
+    setupGuidedNavigation();
+
     if(
       preserveScroll&&
       Number.isFinite(y)
@@ -807,18 +1103,25 @@
     return true;
   }
 
-  function refreshSummary(){
+  function renderLiveBrief(){
     const node=
       customRoot?.querySelector(
         '[data-desktop-custom-summary]'
       );
 
     if(!node){
-      return;
+      return false;
     }
 
     node.innerHTML=
-      summaryHtml();
+      liveBriefHtml();
+
+    syncGuidedNavigation();
+    return true;
+  }
+
+  function refreshSummary(){
+    return renderLiveBrief();
   }
 
   function clearFieldError(field){
@@ -872,6 +1175,188 @@
 
     added=false;
     clearFieldError(field);
+  }
+
+  function syncChoiceState(field){
+    const value=text(draft[field]);
+
+    customRoot
+      ?.querySelectorAll(
+        `[data-desktop-custom-pick="${field}"]`
+      )
+      .forEach(button=>{
+        const active=
+          text(
+            button.dataset
+              .desktopCustomValue
+          )===value;
+
+        button.classList
+          .toggle(
+            'is-active',
+            active
+          );
+
+        button.setAttribute(
+          'aria-pressed',
+          active
+            ? 'true'
+            : 'false'
+        );
+      });
+  }
+
+  function syncScentState(){
+    const selected=
+      new Set(
+        selectedScents()
+          .map(scent=>text(scent?.id))
+      );
+
+    customRoot
+      ?.querySelectorAll(
+        '[data-desktop-custom-scent]'
+      )
+      .forEach(button=>{
+        const active=
+          selected.has(
+            text(
+              button.dataset
+                .desktopCustomScent
+            )
+          );
+
+        button.classList
+          .toggle(
+            'is-active',
+            active
+          );
+
+        button.setAttribute(
+          'aria-pressed',
+          active
+            ? 'true'
+            : 'false'
+        );
+      });
+
+    const field=
+      customRoot?.querySelector(
+        '[data-desktop-custom-validation="scents"]'
+      );
+
+    const hint=
+      field?.querySelector(
+        '.desktop-custom-field__head span'
+      );
+
+    if(hint){
+      hint.textContent=
+        text(content().scentsHint)
+          .replace(
+            '{count}',
+            String(selected.size)
+          );
+    }
+  }
+
+  function renderFragrancePanel(){
+    const current=
+      customRoot?.querySelector(
+        '[data-desktop-custom-fragrance]'
+      );
+
+    if(!current){
+      return false;
+    }
+
+    const wrapper=
+      root.document
+        ?.createElement?.('div');
+
+    if(!wrapper){
+      return false;
+    }
+
+    wrapper.innerHTML=
+      fragranceHtml();
+
+    const next=
+      wrapper.firstElementChild;
+
+    if(!next){
+      return false;
+    }
+
+    current.replaceWith(next);
+    return true;
+  }
+
+  function syncFieldError(field){
+    const wrap=
+      customRoot?.querySelector(
+        `[data-desktop-custom-validation="${field}"]`
+      );
+
+    if(!wrap){
+      return;
+    }
+
+    const error=fieldError(field);
+    const current=
+      wrap.querySelector(
+        `[data-desktop-custom-error="${field}"]`
+      );
+
+    wrap.classList.toggle(
+      'is-invalid',
+      Boolean(error)
+    );
+
+    if(field==='qty'){
+      wrap.querySelector(
+        '.desktop-custom-input-wrap'
+      )?.classList.toggle(
+        'is-invalid',
+        Boolean(error)
+      );
+    }
+
+    if(!error){
+      current?.remove();
+      return;
+    }
+
+    if(current){
+      current.textContent=error;
+      return;
+    }
+
+    const node=
+      root.document
+        ?.createElement?.('p');
+
+    if(!node){
+      return;
+    }
+
+    node.className=
+      'desktop-custom-error';
+    node.dataset
+      .desktopCustomError=
+      field;
+    node.textContent=error;
+    wrap.append(node);
+  }
+
+  function syncValidationUi(){
+    for(const field of [
+      'use',
+      'qty',
+      'scents'
+    ]){
+      syncFieldError(field);
+    }
   }
 
   function focusFirstError(){
@@ -942,9 +1427,8 @@
 
     if(!validation.valid){
       added=false;
-      render({
-        preserveScroll:true
-      });
+      syncValidationUi();
+      renderLiveBrief();
       focusFirstError();
       return false;
     }
@@ -963,9 +1447,8 @@
 
     added=true;
     validation=null;
-    render({
-      preserveScroll:true
-    });
+    syncValidationUi();
+    renderLiveBrief();
 
     config?.actions
       ?.syncInquiry?.();
@@ -974,6 +1457,21 @@
   }
 
   function onClick(event){
+    const jump=
+      event.target.closest?.(
+        '[data-desktop-custom-jump]'
+      );
+
+    if(
+      jump&&
+      customRoot?.contains(jump)
+    ){
+      jumpToSection(
+        jump.dataset.desktopCustomJump
+      );
+      return;
+    }
+
     const pick=
       event.target.closest?.(
         '[data-desktop-custom-pick]'
@@ -993,9 +1491,9 @@
           .desktopCustomValue
       );
 
-      render({
-        preserveScroll:true
-      });
+      syncChoiceState(field);
+      syncFieldError(field);
+      renderLiveBrief();
       return;
     }
 
@@ -1016,9 +1514,9 @@
 
       added=false;
       clearFieldError('scents');
-      render({
-        preserveScroll:true
-      });
+      renderFragrancePanel();
+      syncFieldError('scents');
+      renderLiveBrief();
       return;
     }
 
@@ -1039,9 +1537,9 @@
 
       added=false;
       clearFieldError('scents');
-      render({
-        preserveScroll:true
-      });
+      syncScentState();
+      syncFieldError('scents');
+      renderLiveBrief();
       return;
     }
 
@@ -1091,13 +1589,17 @@
       return;
     }
 
-    mutateDraft(
+    const name=
       field.dataset
-        .desktopCustomField,
+        .desktopCustomField;
+
+    mutateDraft(
+      name,
       field.value
     );
 
-    refreshSummary();
+    syncFieldError(name);
+    renderLiveBrief();
   }
 
   function onChange(event){
@@ -1113,15 +1615,17 @@
       return;
     }
 
-    mutateDraft(
+    const name=
       field.dataset
-        .desktopCustomField,
+        .desktopCustomField;
+
+    mutateDraft(
+      name,
       field.value
     );
 
-    render({
-      preserveScroll:true
-    });
+    syncFieldError(name);
+    renderLiveBrief();
   }
 
   function configure(options={}){
@@ -1139,6 +1643,10 @@
         options.seriesLabel,
       scentDisplayText:
         options.scentDisplayText,
+      budgetOptions:
+        typeof options.budgetOptions==='function'
+          ? options.budgetOptions
+          : ()=>[],
       actions:
         options.actions||
         {}
@@ -1185,13 +1693,14 @@
   }
 
   function syncInquiry(){
-    refreshSummary();
+    renderLiveBrief();
     return true;
   }
 
   root.DreamlandDesktopCustom=
     Object.freeze({
       version:VERSION,
+      presentation:PRESENTATION_VERSION,
       configure,
       mount,
       refresh,

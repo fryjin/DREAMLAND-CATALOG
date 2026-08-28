@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "stage": "B7-00B.2",
+  "stage": "B7-00B.4H-R1",
   "basePath": "./images/desktop/home/",
   "hero": {
     "image": "./images/desktop/home/hero/hero-main.webp",
@@ -27,27 +27,38 @@
   "featured": [
     {
       "slot": 1,
-      "series": "advanced",
+      "series": "masterpiece",
+      "layout": "narrow",
       "image": "./images/desktop/home/featured/featured-01.webp",
-      "recommendedSize": "900x1125"
+      "recommendedSize": "1200x1200"
     },
     {
       "slot": 2,
       "series": "masterpiece",
+      "layout": "narrow",
       "image": "./images/desktop/home/featured/featured-02.webp",
-      "recommendedSize": "900x1125"
+      "recommendedSize": "1200x1200"
     },
     {
       "slot": 3,
-      "series": "holiday",
+      "series": "masterpiece",
+      "layout": "narrow",
       "image": "./images/desktop/home/featured/featured-03.webp",
-      "recommendedSize": "900x1125"
+      "recommendedSize": "1200x1200"
     },
     {
       "slot": 4,
-      "series": "classic",
+      "series": "advanced",
+      "layout": "wide",
       "image": "./images/desktop/home/featured/featured-04.webp",
-      "recommendedSize": "900x1125"
+      "recommendedSize": "1600x1100"
+    },
+    {
+      "slot": 5,
+      "series": "advanced",
+      "layout": "wide",
+      "image": "./images/desktop/home/featured/featured-05.webp",
+      "recommendedSize": "1600x1100"
     }
   ],
   "craft": {

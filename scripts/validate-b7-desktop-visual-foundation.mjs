@@ -94,14 +94,14 @@ try{
 
 try{
   const index=read('index.html');
-  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4d-r1-v114';
-  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4d-r1-v114';
-  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4d-r1-v114';
+  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4h-r1-v122';
+  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4h-r1-v122';
+  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4h-r1-v122';
 
   includesAll(
     index,
     [
-      "window.DREAMLAND_RELEASE='b7-00b4d-r1-v114';",
+      "window.DREAMLAND_RELEASE='b7-00b4h-r1-v122';",
       tokensRef,
       primitivesRef,
       shellRef
@@ -126,15 +126,15 @@ try{
   includesAll(
     sw,
     [
-      "const CACHE_VERSION = 'dreamland-pwa-v114';",
-      "'b7-00b4d-r1-v114'",
-      './src/ui/desktop/styles/primitives.css?release=b7-00b4d-r1-v114',
+      "const CACHE_VERSION = 'dreamland-pwa-v122';",
+      "'b7-00b4h-r1-v122'",
+      './src/ui/desktop/styles/primitives.css?release=b7-00b4h-r1-v122',
       "'./src/ui/desktop/styles/primitives.css'"
     ],
     'Service Worker Foundation release'
   );
 
-  if(!pwa.includes("'b7-00b4d-r1-v114'")){
+  if(!pwa.includes("'b7-00b4h-r1-v122'")){
     fail('PWA runtime release tag was not advanced to B7-00B.4A R1.');
   }
 }catch(error){
@@ -237,21 +237,22 @@ try{
     'R1.1 PDP Foundation migration'
   );
 
+  // B7-00B.4G R1.1 — audited public-copy validator baseline
   const publicCopy={
     en:{
-      customTitle:'Custom-made for brands, events and collections.',
-      reviewTitle:'Review your inquiry before sending.',
-      successTitle:'Thank you. We’ve received your inquiry.'
+      customTitle:'Custom products for brands, events and gifting.',
+      reviewTitle:'Review and submit the inquiry.',
+      successTitle:'We have received your inquiry.'
     },
     zh:{
-      customTitle:'为品牌、活动与专属系列定制。',
-      reviewTitle:'提交前，请确认以下信息。',
-      successTitle:'感谢提交，我们已收到你的询价。'
+      customTitle:'品牌、活动与礼赠定制。',
+      reviewTitle:'确认信息后提交询价。',
+      successTitle:'我们已收到您的询价。'
     },
     ko:{
-      customTitle:'브랜드, 이벤트와 전용 컬렉션을 위한 맞춤 제작.',
-      reviewTitle:'제출 전에 문의 내용을 확인해 주세요.',
-      successTitle:'감사합니다. 문의가 접수되었습니다.'
+      customTitle:'브랜드, 이벤트와 기프트를 위한 커스텀 제작.',
+      reviewTitle:'내용을 확인한 뒤 문의를 제출하세요.',
+      successTitle:'문의가 접수되었습니다.'
     }
   };
 
@@ -361,7 +362,7 @@ try{
 
   if(
     site.languages?.zh?.customProject?.quotedAfterReview!==
-    '根据确认需求核算报价'
+    '确认需求后报价'
   ){
     fail('R1.2 public copy regression: zh custom quotation wording.');
   }
@@ -494,7 +495,7 @@ try{
   includesAll(
     runtime,
     [
-      "const VERSION='B7-00B.4B-R4.2.6';",
+      "const VERSION='B7-00B.4H-R1';",
       'desktop-home-editorial-wide',
       'desktop-home-collections__typography-rail',
       'desktop-home-collections__annotation-index',
@@ -508,8 +509,10 @@ try{
       'view.wholesale.image',
       'desktop-wholesale-index'
     ],
-    'B7-00B.4B Home runtime successor'
+    'B7-00B.4B / 4H Home runtime successor'
   );
+
+  // B7-00B.4H R1.1a — repaired Home runtime validator compatibility syntax.
 
   for(const [lang,title] of [
     ['en','Candles, carved by hand.'],
