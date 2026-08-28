@@ -769,3 +769,437 @@
     font-size:var(--dw-type-support-size);
   }
 }
+
+/* --------------------------------------------------------------------------
+ * B7-00B.4D R1 — PDP Editorial Composition + Configuration Recomposition
+ *
+ * Editorial product field on the left, precise B2B configuration on the right.
+ * Canonical Detail / Pricing / Inquiry state remains outside this stylesheet.
+ * ------------------------------------------------------------------------ */
+@media (min-width:1024px){
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]{
+    padding-top:clamp(30px,2.8vw,44px);
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-back{
+    margin-bottom:30px;
+    min-height:34px;
+    font-weight:760;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-layout{
+    grid-template-columns:minmax(0,1.58fr) minmax(400px,.74fr);
+    gap:clamp(44px,4vw,68px);
+  }
+
+  /* Gallery becomes an editorial media field with a real thumbnail rail. */
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-gallery{
+    display:grid;
+    grid-template-columns:72px minmax(0,1fr);
+    grid-template-rows:auto;
+    gap:14px;
+    align-items:start;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-gallery.is-single{
+    grid-template-columns:minmax(0,1fr);
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-main-media{
+    grid-column:2;
+    grid-row:1;
+    height:min(76vh,820px);
+    min-height:600px;
+    border-radius:6px;
+    background:#eee9e2;
+    box-shadow:inset 0 0 0 1px rgba(53,43,35,.08);
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-gallery.is-single .desktop-detail-main-media{
+    grid-column:1;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-thumbs{
+    grid-column:1;
+    grid-row:1;
+    margin-top:0;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-thumb{
+    width:72px;
+    border:0;
+    border-radius:0;
+    opacity:.58;
+    transition:opacity .18s ease,transform .18s ease;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-thumb:hover,
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-thumb.is-active{
+    opacity:1;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-thumb.is-active{
+    border-color:transparent;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-thumb.is-active .desktop-detail-thumb__media{
+    box-shadow:inset 0 0 0 1.5px var(--dw-color-ink);
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-thumb__media{
+    border-radius:4px;
+  }
+
+  /* Product heading: calmer name, stronger commercial information. */
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-heading{
+    padding-bottom:28px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-heading h1{
+    max-width:520px;
+    margin-top:10px;
+    font-size:clamp(36px,2.65vw,46px);
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-.04em;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-heading > p{
+    margin-top:18px;
+    max-width:520px;
+    font-size:14px;
+    line-height:1.68;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-heading__commercial{
+    margin-top:24px;
+    justify-content:flex-start;
+    gap:28px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-heading__commercial strong{
+    font-size:clamp(21px,1.5vw,24px);
+    font-weight:880;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-heading__commercial span,
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-product-id{
+    font-size:12px;
+    font-weight:720;
+  }
+
+  /* Configuration chapters: spacing and typography define grouping, not cards. */
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-options{
+    counter-reset:pdp-config;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-option-block{
+    position:relative;
+    padding:30px 0 30px 34px;
+    counter-increment:pdp-config;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-option-block::before{
+    content:counter(pdp-config,decimal-leading-zero);
+    position:absolute;
+    left:0;
+    top:32px;
+    color:var(--dw-color-faint);
+    font-size:var(--dw-type-support-size);
+    line-height:1;
+    font-weight:760;
+    letter-spacing:.08em;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-option-head{
+    margin-bottom:17px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-option-head h2{
+    font-size:12px;
+    font-weight:860;
+    letter-spacing:.01em;
+  }
+
+  /* Flat specification selector. */
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-size-grid{
+    gap:0;
+    border-top:1px solid var(--dw-color-line);
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-size{
+    min-height:64px;
+    padding:11px 7px 10px;
+    border:0;
+    border-bottom:1px solid var(--dw-color-line);
+    border-radius:0;
+    background:transparent;
+    transform:none!important;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-size:hover,
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-size.is-active{
+    background:transparent;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-size.is-active{
+    box-shadow:inset 0 -2px 0 var(--dw-color-ink);
+  }
+
+  /* Scent / collection choices: text rails instead of pills. */
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-choice-row{
+    gap:10px 20px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-choice{
+    min-height:34px;
+    padding:0 1px;
+    border:0;
+    border-bottom:1px solid transparent;
+    border-radius:0;
+    background:transparent;
+    color:var(--dw-color-muted);
+    font-size:12px;
+    font-weight:720;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-choice:hover,
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-choice.is-active{
+    border-color:var(--dw-color-ink);
+    background:transparent;
+    color:var(--dw-color-ink);
+  }
+
+  /* Scent notes are metadata, not a warm card. */
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-scent-notes{
+    margin-top:20px;
+    padding:16px 0 0;
+    border-top:1px solid var(--dw-color-line);
+    border-radius:0;
+    background:transparent;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-scent-notes > strong{
+    margin-bottom:12px;
+  }
+
+  /* Pattern options retain imagery while losing card chrome. */
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-visual-options{
+    gap:12px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-visual-option{
+    padding:0;
+    border:0;
+    border-radius:0;
+    background:transparent!important;
+    transform:none!important;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-visual-option__media,
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-visual-option__placeholder{
+    border-radius:4px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-visual-option.is-active .desktop-detail-visual-option__media,
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-visual-option.is-active .desktop-detail-visual-option__placeholder{
+    box-shadow:inset 0 0 0 1.5px var(--dw-color-ink);
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-visual-option > span:last-child{
+    padding:8px 1px 0;
+    font-size:11px;
+    font-weight:720;
+  }
+
+  /* Packaging reads as material / presentation choices rather than setting cards. */
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-packaging-grid{
+    gap:16px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-packaging{
+    padding:0;
+    display:block;
+    border:0;
+    border-radius:0;
+    background:transparent!important;
+    transform:none!important;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-packaging__media{
+    width:100%;
+    aspect-ratio:4/3;
+    border-radius:4px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-packaging.is-active .desktop-detail-packaging__media{
+    box-shadow:inset 0 0 0 1.5px var(--dw-color-ink);
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-packaging__copy{
+    margin-top:9px;
+    gap:3px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-packaging__copy strong{
+    font-size:12px;
+    font-weight:800;
+  }
+
+  /* Quantity stays explicit but adopts the same reduced chrome. */
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-quantity > button,
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-quantity label{
+    border-radius:6px;
+    box-shadow:none;
+  }
+
+  /* Pricing / inquiry is an editorial decision block rather than checkout card. */
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-summary{
+    margin-top:38px;
+    padding:28px 0;
+    border:0;
+    border-top:1px solid var(--dw-color-line-strong);
+    border-bottom:1px solid var(--dw-color-line);
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-summary__row{
+    min-height:38px;
+    font-size:12px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-summary__row--total{
+    margin-top:10px;
+    padding-top:18px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-summary__row--total strong{
+    font-size:clamp(24px,1.7vw,28px);
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-add{
+    min-height:54px;
+    border-radius:6px;
+    box-shadow:none;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-add:hover{
+    box-shadow:none;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-add-feedback{
+    border-radius:4px;
+  }
+
+  /* Lower facts stay on the already-approved divider system, now on wide measure. */
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-lower{
+    margin-top:clamp(104px,8vw,136px);
+    gap:clamp(48px,5vw,72px);
+  }
+}
+
+@media (min-width:1024px) and (max-width:1199px){
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-layout{
+    grid-template-columns:minmax(0,1.04fr) minmax(380px,.96fr);
+    gap:32px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-gallery{
+    display:block;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-main-media{
+    height:min(68vh,680px);
+    min-height:500px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-thumbs{
+    margin-top:12px;
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:8px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-thumb{
+    width:auto;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-heading h1{
+    font-size:38px;
+  }
+
+  .desktop-detail-page[data-desktop-detail-presentation="B7-00B.4D-R1"]
+  .desktop-detail-option-block{
+    padding-left:28px;
+  }
+}

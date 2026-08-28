@@ -6,6 +6,7 @@
   }
 
   const VERSION='B7-00B.3B';
+  const PRESENTATION_VERSION='B7-00B.4D-R1';
 
   const FALLBACK_COPY=Object.freeze({
     en:Object.freeze({
@@ -385,7 +386,7 @@
       '';
 
     return `
-      <div class="desktop-detail-gallery">
+      <div class="desktop-detail-gallery ${images.length>1?'has-thumbs':'is-single'}">
         <div class="desktop-detail-main-media media-frame">
           ${
             selected
@@ -1010,7 +1011,7 @@
     );
 
     return `
-      <section class="desktop-detail-lower desktop-container">
+      <section class="desktop-detail-lower desktop-container--wide">
         <article class="desktop-detail-info-card">
           <div class="desktop-eyebrow">
             ${escapeHtml(c.productDetails)}
@@ -1061,6 +1062,74 @@
     `;
   }
 
+  function configurationHtml(view){
+    const c=copy();
+    const product=view.product;
+    const description=
+      productDescription(
+        product
+      );
+
+    return `
+      <aside class="desktop-detail-config">
+        <div class="desktop-detail-heading">
+          <div class="desktop-eyebrow">
+            ${escapeHtml(seriesLabel(product?.series))}
+          </div>
+
+          <h1>${escapeHtml(productName(product))}</h1>
+
+          ${
+            description
+              ? `<p>${escapeHtml(description)}</p>`
+              : ''
+          }
+
+          <div class="desktop-detail-heading__commercial">
+            <strong>
+              ${escapeHtml(
+                config?.productPrice?.(
+                  product
+                )||
+                money(
+                  view.pricing?.unitPrice||
+                  0
+                )
+              )}
+            </strong>
+
+            <span>
+              ${escapeHtml(c.moq)}
+              ${escapeHtml(view.pricing?.moq||1)}
+            </span>
+          </div>
+
+          <div class="desktop-detail-product-id">
+            ${escapeHtml(c.productId)}
+            ·
+            ${escapeHtml(product?.id||'—')}
+          </div>
+        </div>
+
+        <div class="desktop-detail-options">
+          ${sizeOptionsHtml(view)}
+          ${scentSeriesHtml(view)}
+          ${scentHtml(view)}
+          ${visualOptionsHtml(
+            view,
+            'pattern',
+            view.options?.patterns||[],
+            c.pattern
+          )}
+          ${packagingHtml(view)}
+          ${quantityHtml(view)}
+        </div>
+
+        ${summaryHtml(view)}
+      </aside>
+    `;
+  }
+
   function pageHtml(view){
     const c=copy();
 
@@ -1089,8 +1158,8 @@
       );
 
     return `
-      <div class="desktop-detail-page">
-        <div class="desktop-container">
+      <div class="desktop-detail-page" data-desktop-detail-presentation="${escapeHtml(PRESENTATION_VERSION)}">
+        <div class="desktop-container--wide">
           <button
             class="desktop-detail-back"
             type="button"
@@ -1103,62 +1172,7 @@
           <div class="desktop-detail-layout">
             ${galleryHtml(view,images)}
 
-            <aside class="desktop-detail-config">
-              <div class="desktop-detail-heading">
-                <div class="desktop-eyebrow">
-                  ${escapeHtml(seriesLabel(product?.series))}
-                </div>
-
-                <h1>${escapeHtml(productName(product))}</h1>
-
-                ${
-                  description
-                    ? `<p>${escapeHtml(description)}</p>`
-                    : ''
-                }
-
-                <div class="desktop-detail-heading__commercial">
-                  <strong>
-                    ${escapeHtml(
-                      config?.productPrice?.(
-                        product
-                      )||
-                      money(
-                        view.pricing?.unitPrice||
-                        0
-                      )
-                    )}
-                  </strong>
-
-                  <span>
-                    ${escapeHtml(c.moq)}
-                    ${escapeHtml(view.pricing?.moq||1)}
-                  </span>
-                </div>
-
-                <div class="desktop-detail-product-id">
-                  ${escapeHtml(c.productId)}
-                  ·
-                  ${escapeHtml(product?.id||'—')}
-                </div>
-              </div>
-
-              <div class="desktop-detail-options">
-                ${sizeOptionsHtml(view)}
-                ${scentSeriesHtml(view)}
-                ${scentHtml(view)}
-                ${visualOptionsHtml(
-                  view,
-                  'pattern',
-                  view.options?.patterns||[],
-                  c.pattern
-                )}
-                ${packagingHtml(view)}
-                ${quantityHtml(view)}
-              </div>
-
-              ${summaryHtml(view)}
-            </aside>
+            ${configurationHtml(view)}
           </div>
         </div>
 
@@ -1167,8 +1181,151 @@
     `;
   }
 
-  async function loadResponsiveMedia(){
+  async function selectGalleryImage(nextIndex){
     if(!detailRoot){
+      return false;
+    }
+
+    const view=viewModel();
+    const images=currentImages(view);
+
+    if(!images.length){
+      return false;
+    }
+
+    activeImageIndex=
+      Math.max(
+        0,
+        Math.min(
+          Math.trunc(Number(nextIndex)||0),
+          images.length-1
+        )
+      );
+
+    const source=
+      images[activeImageIndex];
+
+    const mainImage=
+      detailRoot.querySelector(
+        '.desktop-detail-main-image'
+      );
+
+    if(mainImage&&source){
+      mainImage.dataset
+        .desktopDetailSource=
+        source;
+
+      mainImage.alt=
+        productName(view.product);
+
+      const frame=
+        mainImage.closest?.(
+          '.media-frame'
+        );
+
+      frame?.classList?.remove(
+        'is-loaded'
+      );
+
+      const media=
+        config?.media?.();
+
+      if(media?.loadResponsiveImage){
+        await media.loadResponsiveImage(
+          mainImage,
+          source,
+          'detail',
+          'high'
+        );
+      }else{
+        mainImage.src=source;
+        frame?.classList?.add(
+          'is-loaded'
+        );
+      }
+    }
+
+    for(const thumb of detailRoot.querySelectorAll(
+      '[data-desktop-detail-action="gallery"]'
+    )){
+      const index=
+        Number(
+          thumb.dataset
+            .desktopDetailIndex
+        );
+
+      const active=
+        index===activeImageIndex;
+
+      thumb.classList.toggle(
+        'is-active',
+        active
+      );
+
+      thumb.setAttribute(
+        'aria-pressed',
+        active
+          ? 'true'
+          : 'false'
+      );
+    }
+
+    return true;
+  }
+
+  function renderConfiguration({
+    preserveScroll=true
+  }={}){
+    if(!detailRoot){
+      return false;
+    }
+
+    const current=
+      detailRoot.querySelector(
+        '.desktop-detail-config'
+      );
+
+    if(!current){
+      return render({
+        preserveScroll
+      });
+    }
+
+    const y=
+      preserveScroll
+        ? Number(root.scrollY||0)
+        : null;
+
+    current.outerHTML=
+      configurationHtml(
+        viewModel()
+      );
+
+    const next=
+      detailRoot.querySelector(
+        '.desktop-detail-config'
+      );
+
+    loadResponsiveMedia(next);
+
+    if(
+      preserveScroll&&
+      Number.isFinite(y)
+    ){
+      root.requestAnimationFrame?.(
+        ()=>
+          root.scrollTo?.(
+            0,
+            y
+          )
+      );
+    }
+
+    return true;
+  }
+
+  async function loadResponsiveMedia(scope=detailRoot){
+    if(!scope){
       return;
     }
 
@@ -1176,7 +1333,7 @@
       config?.media?.();
 
     const images=[
-      ...detailRoot.querySelectorAll(
+      ...scope.querySelectorAll(
         'img[data-desktop-detail-source]'
       )
     ];
@@ -1337,15 +1494,7 @@
         );
 
       if(Number.isInteger(next)){
-        activeImageIndex=
-          Math.max(
-            0,
-            next
-          );
-
-        preserveWindowScroll(
-          ()=>render()
-        );
+        selectGalleryImage(next);
       }
 
       return;
@@ -1362,9 +1511,9 @@
             .desktopDetailValue
         );
 
-      preserveWindowScroll(
-        ()=>render()
-      );
+      renderConfiguration({
+        preserveScroll:true
+      });
 
       return;
     }
@@ -1378,9 +1527,9 @@
             .desktopDetailScent
         );
 
-      preserveWindowScroll(
-        ()=>render()
-      );
+      renderConfiguration({
+        preserveScroll:true
+      });
 
       return;
     }
@@ -1397,9 +1546,9 @@
           )
         );
 
-      preserveWindowScroll(
-        ()=>render()
-      );
+      renderConfiguration({
+        preserveScroll:true
+      });
 
       return;
     }

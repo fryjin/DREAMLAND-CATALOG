@@ -143,7 +143,16 @@ try{
   const allowedVersions=
     new Set([
       'B7-00B.2',
-      'B7-00B.3A-R6'
+      'B7-00B.3A-R6',
+      'B7-00B.4B-R1',
+      'B7-00B.4B-R2',
+      'B7-00B.4B-R3',
+      'B7-00B.4B-R4',
+      'B7-00B.4B-R4.1',
+      'B7-00B.4B-R4.2',
+      'B7-00B.4B-R4.2.4',
+      'B7-00B.4B-R4.2.5',
+      'B7-00B.4B-R4.2.6'
     ]);
 
   if(
@@ -162,7 +171,14 @@ try{
     'desktop-product-overlay',
     'desktop-product-overlay__label',
     'desktop-collection-hover',
-    'resolveFeaturedProduct('
+    'resolveFeaturedProduct(',
+    'desktop-wholesale-media',
+    'desktop-home-collections__annotation-index',
+    'desktop-home-craft',
+    'desktop-container',
+    'desktop-home-editorial-wide',
+    'desktop-home-collections__typography-rail',
+    'desktop-home-collections__rail-track--primary'
   ]){
     if(!runtime.includes(required)){
       fail(
@@ -187,9 +203,24 @@ try{
     '.desktop-product-overlay__label{',
     '.desktop-product-link:hover',
     '.desktop-product-link:focus-visible',
-    'transform:scale(1.025);',
+    'transform:scale(var(--dw-media-zoom));',
     '.desktop-collection-hover{',
-    'max-width:1320px;',
+    'B7-00B.4B R1 — Home Editorial Composition',
+    'B7-00B.4B R2 — Home Art Direction Realignment',
+    'B7-00B.4B R3 — Home Editorial Structure Realignment',
+    'B7-00B.4B R4 — Home Art Direction Distinction + Editorial Recomposition',
+    'B7-00B.4B R4.1.1 — accepted visual runtime alignment',
+    'B7-00B.4B R4.2 — Hero Graffiti Rebalance + Current Picks Height Recomposition',
+    'B7-00B.4B R4.2.4 — Canonical Craft Container + Directional Typography System',
+    'B7-00B.4B R4.2.5 — Home Editorial Grid Unification + Typography Rail + Hero Asset Cleanup',
+    '.desktop-home-editorial-wide',
+    '.desktop-home-collections__rail-tracks',
+    '.desktop-home-collections__annotation-line--primary',
+    '.desktop-home-craft',
+    '.desktop-home-hero--cover{',
+    '.desktop-home-collections::before{',
+    '.desktop-home-story + .desktop-home-section .desktop-featured-grid',
+    '.desktop-wholesale-media{',
     'aspect-ratio:4/5;'
   ]){
     if(!css.includes(required)){

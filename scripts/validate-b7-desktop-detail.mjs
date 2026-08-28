@@ -244,9 +244,9 @@ try{
     read('index.html');
 
   for(const required of [
-    "window.DREAMLAND_RELEASE='b7-00b4a-r1-v99';",
-    './src/ui/desktop/styles/detail.css?release=b7-00b4a-r1-v99',
-    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4a-r1-v99',
+    "window.DREAMLAND_RELEASE='b7-00b4d-r1-v114';",
+    './src/ui/desktop/styles/detail.css?release=b7-00b4d-r1-v114',
+    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4d-r1-v114',
     'detailState:',
     'detailFeature,',
     'productImages:',
@@ -269,7 +269,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/styles/detail.css?release=b7-00b4a-r1-v99'
+      './src/ui/desktop/styles/detail.css?release=b7-00b4d-r1-v114'
     )!==1
   ){
     fail(
@@ -280,7 +280,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4a-r1-v99'
+      './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4d-r1-v114'
     )!==1
   ){
     fail(
@@ -441,10 +441,10 @@ try{
     );
 
   for(const required of [
-    "const CACHE_VERSION = 'dreamland-pwa-v99';",
-    "'b7-00b4a-r1-v99'",
-    './src/ui/desktop/styles/detail.css?release=b7-00b4a-r1-v99',
-    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4a-r1-v99',
+    "const CACHE_VERSION = 'dreamland-pwa-v114';",
+    "'b7-00b4d-r1-v114'",
+    './src/ui/desktop/styles/detail.css?release=b7-00b4d-r1-v114',
+    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4d-r1-v114',
     "'./src/ui/desktop/styles/detail.css'",
     "'./src/ui/desktop/detail/runtime-desktop-detail.js'"
   ]){
@@ -457,7 +457,7 @@ try{
 
   if(
     !pwa.includes(
-      "'b7-00b4a-r1-v99'"
+      "'b7-00b4d-r1-v114'"
     )
   ){
     fail(
@@ -519,6 +519,40 @@ try{
   );
 }
 
+
+/* Gate 4D-R1 — editorial PDP successor + local configuration rendering. */
+try{
+  const runtime=read('src/ui/desktop/detail/runtime-desktop-detail.js');
+  const css=read('src/ui/desktop/styles/detail.css');
+
+  for(const required of [
+    "const PRESENTATION_VERSION='B7-00B.4D-R1';",
+    'data-desktop-detail-presentation=',
+    'desktop-container--wide',
+    'function configurationHtml(view)',
+    'function renderConfiguration(',
+    'async function selectGalleryImage(',
+    'loadResponsiveMedia(next);'
+  ]){
+    if(!runtime.includes(required)){
+      fail(`Desktop Detail 4D R1 runtime is missing: ${required}`);
+    }
+  }
+
+  for(const required of [
+    'B7-00B.4D R1 — PDP Editorial Composition + Configuration Recomposition',
+    'grid-template-columns:72px minmax(0,1fr);',
+    'counter-reset:pdp-config;',
+    'border-radius:6px;',
+    '.desktop-detail-summary{'
+  ]){
+    if(!css.includes(required)){
+      fail(`Desktop Detail 4D R1 CSS is missing: ${required}`);
+    }
+  }
+}catch(error){
+  fail(`Desktop Detail 4D R1 successor validation failed: ${error.message}`);
+}
 if(errors.length){
   console.error(
     '\nB7-00B.3B Desktop Product Detail / PDP validation failed:\n'

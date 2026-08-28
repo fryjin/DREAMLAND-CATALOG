@@ -238,8 +238,11 @@ try{
     );
   }else{
     const series=[
-      'advanced',
       'masterpiece',
+      'masterpiece',
+      'masterpiece',
+      'advanced',
+      'advanced',
       'holiday',
       'classic'
     ];
@@ -308,10 +311,12 @@ try{
     }
 
     if(
-      model.featuredProducts.length!==4
+      model.featuredProducts.length!==5||
+      model.featuredProducts.slice(0,3).some(item=>item.series!=='masterpiece')||
+      model.featuredProducts.slice(3,5).some(item=>item.series!=='advanced')
     ){
       fail(
-        'Desktop Home must produce four featured product cards for the four-series baseline.'
+        'Desktop Home Current Picks must produce 3 Masterpiece + 2 Advanced product cards.'
       );
     }
 
@@ -373,6 +378,7 @@ try{
     for(const section of [
       'navigation',
       'hero',
+      'story',
       'collections',
       'featured',
       'craft',
@@ -448,13 +454,26 @@ try{
     home,
     [
       '.desktop-home-hero',
-      'grid-template-columns:7fr 5fr;',
+      'B7-00B.4B R1 — Home Editorial Composition',
+      'B7-00B.4B R2 — Home Art Direction Realignment',
+      'B7-00B.4B R3 — Home Editorial Structure Realignment',
+      'B7-00B.4B R4 — Home Art Direction Distinction + Editorial Recomposition',
+      'B7-00B.4B R4.1.1 — accepted visual runtime alignment',
+      'B7-00B.4B R4.2.4 — Canonical Craft Container + Directional Typography System',
+      'B7-00B.4B R4.2.5 — Home Editorial Grid Unification + Typography Rail + Hero Asset Cleanup',
+      'B7-00B.4B R4.2.6 — Hero Dual Asset Renewal + Collections Left-Line Recomposition',
+      '.desktop-home-hero--cover',
+      '.desktop-home-collections::before',
+      '.desktop-home-story + .desktop-home-section',
+      '--dw-home-serif:',
+      '--dw-home-accent:',
       '.desktop-collection-grid',
       '.desktop-product-grid',
       '.desktop-home-band--sand',
       '.desktop-custom-card',
       '.desktop-custom-media img',
-      '.desktop-wholesale-grid',
+      '.desktop-wholesale-layout',
+      '.desktop-wholesale-media',
       '.desktop-home-cta'
     ],
     'Desktop Home styles'

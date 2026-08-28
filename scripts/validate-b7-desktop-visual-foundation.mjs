@@ -94,14 +94,14 @@ try{
 
 try{
   const index=read('index.html');
-  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4a-r1-v99';
-  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4a-r1-v99';
-  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4a-r1-v99';
+  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4d-r1-v114';
+  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4d-r1-v114';
+  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4d-r1-v114';
 
   includesAll(
     index,
     [
-      "window.DREAMLAND_RELEASE='b7-00b4a-r1-v99';",
+      "window.DREAMLAND_RELEASE='b7-00b4d-r1-v114';",
       tokensRef,
       primitivesRef,
       shellRef
@@ -126,15 +126,15 @@ try{
   includesAll(
     sw,
     [
-      "const CACHE_VERSION = 'dreamland-pwa-v99';",
-      "'b7-00b4a-r1-v99'",
-      './src/ui/desktop/styles/primitives.css?release=b7-00b4a-r1-v99',
+      "const CACHE_VERSION = 'dreamland-pwa-v114';",
+      "'b7-00b4d-r1-v114'",
+      './src/ui/desktop/styles/primitives.css?release=b7-00b4d-r1-v114',
       "'./src/ui/desktop/styles/primitives.css'"
     ],
     'Service Worker Foundation release'
   );
 
-  if(!pwa.includes("'b7-00b4a-r1-v99'")){
+  if(!pwa.includes("'b7-00b4d-r1-v114'")){
     fail('PWA runtime release tag was not advanced to B7-00B.4A R1.');
   }
 }catch(error){
@@ -457,6 +457,77 @@ try{
   );
 }catch(error){
   fail(`R1.3 Foundation Consistency validation failed: ${error.message}`);
+}
+
+try{
+  const home=read('src/ui/desktop/styles/home.css');
+  const runtime=read('src/ui/desktop/home/runtime-desktop-home.js');
+  const site=JSON.parse(read('data/site-content.json'));
+
+  includesAll(
+    home,
+    [
+      'B7-00B.4B R1 — Home Editorial Composition',
+      'B7-00B.4B R2 — Home Art Direction Realignment',
+      'B7-00B.4B R3 — Home Editorial Structure Realignment',
+      'B7-00B.4B R4 — Home Art Direction Distinction + Editorial Recomposition',
+      'B7-00B.4B R4.1.1 — accepted visual runtime alignment',
+      'B7-00B.4B R4.2 — Hero Graffiti Rebalance + Current Picks Height Recomposition',
+      'B7-00B.4B R4.2.4 — Canonical Craft Container + Directional Typography System',
+      'B7-00B.4B R4.2.5 — Home Editorial Grid Unification + Typography Rail + Hero Asset Cleanup',
+      'B7-00B.4B R4.2.6 — Hero Dual Asset Renewal + Collections Left-Line Recomposition',
+      '.desktop-home-hero--cover{',
+      '.desktop-home-collections::before{',
+      '.desktop-home-story + .desktop-home-section',
+      '--dw-home-serif:',
+      '--dw-home-accent:',
+      '.desktop-home-hero::before',
+      '.desktop-collection-card:nth-child(4)',
+      '.desktop-product-card:nth-child(4)',
+      '.desktop-wholesale-layout{',
+      '.desktop-wholesale-media{',
+      '.desktop-home-cta__inner'
+    ],
+    'B7-00B.4B Home editorial composition'
+  );
+
+  includesAll(
+    runtime,
+    [
+      "const VERSION='B7-00B.4B-R4.2.6';",
+      'desktop-home-editorial-wide',
+      'desktop-home-collections__typography-rail',
+      'desktop-home-collections__annotation-index',
+      'desktop-home-craft',
+      'desktop-container',
+      'desktop-home-hero--cover',
+      'function storyHtml(view)',
+      '${collectionsHtml(view)}',
+      '${storyHtml(view)}',
+      'desktop-wholesale-media',
+      'view.wholesale.image',
+      'desktop-wholesale-index'
+    ],
+    'B7-00B.4B Home runtime successor'
+  );
+
+  for(const [lang,title] of [
+    ['en','Candles, carved by hand.'],
+    ['zh','把蜡烛，做成一件作品。'],
+    ['ko','손으로 조각한 하나의 작품.']
+  ]){
+    if(site.languages?.[lang]?.hero?.title!==title){
+      fail(`4B Home public copy regression: ${lang}.hero.title`);
+    }
+  }
+
+  for(const lang of ['en','zh','ko']){
+    if(site.languages?.[lang]?.story?.title!=='meet DREAMLAND'){
+      fail(`4B R4.1 Brand Story copy regression: ${lang}.story.title`);
+    }
+  }
+}catch(error){
+  fail(`B7-00B.4B Home Editorial Composition validation failed: ${error.message}`);
 }
 
 try{
