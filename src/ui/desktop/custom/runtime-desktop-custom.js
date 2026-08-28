@@ -7,6 +7,7 @@
 
   const VERSION='B7-00B.3C';
   const PRESENTATION_VERSION='B7-00B.4E-R1';
+  const INTERACTION_VERSION='B7-00B.4E-R1.1';
 
   const DEFAULT_DRAFT=Object.freeze({
     use:'',
@@ -28,6 +29,8 @@
   };
   let validation=null;
   let added=false;
+  let activeSection='basics';
+  let sectionObserver=null;
 
   function text(value){
     return String(
@@ -708,6 +711,10 @@
             ${escapeHtml(c.summaryKicker)}
           </div>
           <h2>${escapeHtml(c.summaryTitle)}</h2>
+          <div class="desktop-custom-live-brief__progress">
+            <span>${escapeHtml(c.flowTitle||c.kicker||'Project flow')}</span>
+            <strong data-desktop-custom-flow-progress>${escapeHtml(requiredProgressText())}</strong>
+          </div>
         </div>
 
         <div class="desktop-custom-summary__rows desktop-custom-live-brief__rows">
@@ -775,6 +782,240 @@
     `;
   }
 
+  function chapterLabel(value,fallback=''){
+    const raw=text(value);
+    if(!raw){
+      return text(fallback);
+    }
+
+    const parts=raw.split('/');
+    return text(
+      parts.length>1
+        ? parts.slice(1).join('/')
+        : raw
+    )||text(fallback);
+  }
+
+  function requiredProgressState(){
+    const limits=featureSnapshot();
+    const quantity=Number(draft.qty);
+    const quantityReady=
+      Number.isInteger(quantity)&&
+      quantity>=Number(limits.minimumQuantity||1)&&
+      quantity<=Number(limits.maximumQuantity||1000000);
+
+    const state={
+      use:Boolean(text(draft.use)),
+      qty:quantityReady,
+      scents:selectedScents().length>0
+    };
+
+    return {
+      ...state,
+      done:[state.use,state.qty,state.scents].filter(Boolean).length,
+      total:3
+    };
+  }
+
+  function requiredProgressText(){
+    const c=content();
+    const progress=requiredProgressState();
+    return text(c.requiredProgress||'{done} / {total} required')
+      .replace('{done}',String(progress.done))
+      .replace('{total}',String(progress.total));
+  }
+
+  function sectionComplete(name){
+    const progress=requiredProgressState();
+    if(name==='basics'){
+      return progress.use&&progress.qty;
+    }
+    if(name==='product'){
+      return progress.scents;
+    }
+    if(name==='packaging'){
+      return added;
+    }
+    return false;
+  }
+
+  function flowNavigatorHtml(){
+    const c=content();
+    const items=[
+      {
+        name:'basics',
+        index:'01',
+        label:chapterLabel(c.sectionBasicsKicker,c.sectionBasicsTitle)
+      },
+      {
+        name:'product',
+        index:'02',
+        label:chapterLabel(c.sectionProductKicker,c.sectionProductTitle)
+      },
+      {
+        name:'packaging',
+        index:'03',
+        label:chapterLabel(c.sectionPackagingKicker,c.sectionPackagingTitle)
+      }
+    ];
+
+    return `
+      <nav
+        class="desktop-custom-flow-nav"
+        data-desktop-custom-flow-nav
+        aria-label="${escapeHtml(c.flowTitle||c.kicker||'Project flow')}"
+      >
+        <div class="desktop-custom-flow-nav__head">
+          <span>${escapeHtml(c.flowTitle||c.kicker||'Project flow')}</span>
+          <strong data-desktop-custom-flow-progress>${escapeHtml(requiredProgressText())}</strong>
+        </div>
+
+        <div class="desktop-custom-flow-nav__items">
+          ${items.map(item=>`
+            <button
+              class="desktop-custom-flow-nav__item ${activeSection===item.name?'is-active':''} ${sectionComplete(item.name)?'is-complete':''}"
+              type="button"
+              data-desktop-custom-jump="${item.name}"
+              aria-current="${activeSection===item.name?'step':'false'}"
+            >
+              <span>${item.index}</span>
+              <strong>${escapeHtml(item.label)}</strong>
+              <i aria-hidden="true">✓</i>
+            </button>
+          `).join('')}
+        </div>
+      </nav>
+    `;
+  }
+
+  function continuationHtml(target,kicker,title){
+    const c=content();
+    return `
+      <button
+        class="desktop-custom-section-next"
+        type="button"
+        data-desktop-custom-jump="${escapeHtml(target)}"
+      >
+        <span>${escapeHtml(c.continueToNext||'Continue')}</span>
+        <strong>${escapeHtml(chapterLabel(kicker,title))}</strong>
+        <i aria-hidden="true">↓</i>
+      </button>
+    `;
+  }
+
+  function decorateSectionContinuations(){
+    const c=content();
+    const definitions=[
+      {
+        from:'basics',
+        to:'product',
+        kicker:c.sectionProductKicker,
+        title:c.sectionProductTitle
+      },
+      {
+        from:'product',
+        to:'packaging',
+        kicker:c.sectionPackagingKicker,
+        title:c.sectionPackagingTitle
+      }
+    ];
+
+    for(const item of definitions){
+      const section=customRoot?.querySelector(
+        `[data-desktop-custom-section="${item.from}"]`
+      );
+      if(!section||section.querySelector('.desktop-custom-section-next')){
+        continue;
+      }
+      section.insertAdjacentHTML(
+        'beforeend',
+        continuationHtml(item.to,item.kicker,item.title)
+      );
+    }
+  }
+
+  function syncGuidedNavigation(){
+    const progressText=requiredProgressText();
+
+    customRoot
+      ?.querySelectorAll('[data-desktop-custom-flow-progress]')
+      .forEach(node=>{
+        node.textContent=progressText;
+      });
+
+    customRoot
+      ?.querySelectorAll('[data-desktop-custom-flow-nav] [data-desktop-custom-jump]')
+      .forEach(button=>{
+        const name=text(button.dataset.desktopCustomJump);
+        const active=name===activeSection;
+        button.classList.toggle('is-active',active);
+        button.classList.toggle('is-complete',sectionComplete(name));
+        button.setAttribute('aria-current',active?'step':'false');
+      });
+  }
+
+  function setActiveSection(name){
+    const next=text(name);
+    if(!['basics','product','packaging'].includes(next)){
+      return false;
+    }
+    activeSection=next;
+    syncGuidedNavigation();
+    return true;
+  }
+
+  function jumpToSection(name){
+    const target=customRoot?.querySelector(
+      `[data-desktop-custom-section="${text(name)}"]`
+    );
+    if(!target){
+      return false;
+    }
+    setActiveSection(name);
+    target.scrollIntoView?.({
+      behavior:'smooth',
+      block:'start'
+    });
+    return true;
+  }
+
+  function setupGuidedNavigation(){
+    decorateSectionContinuations();
+    syncGuidedNavigation();
+
+    sectionObserver?.disconnect?.();
+    sectionObserver=null;
+
+    if(typeof root.IntersectionObserver!=='function'){
+      return;
+    }
+
+    sectionObserver=new root.IntersectionObserver(
+      entries=>{
+        const visible=entries
+          .filter(entry=>entry.isIntersecting)
+          .sort((a,b)=>b.intersectionRatio-a.intersectionRatio);
+
+        const name=text(
+          visible[0]?.target?.dataset?.desktopCustomSection
+        );
+
+        if(name){
+          setActiveSection(name);
+        }
+      },
+      {
+        root:null,
+        rootMargin:'-120px 0px -52% 0px',
+        threshold:[0,.08,.2,.4]
+      }
+    );
+
+    customRoot
+      ?.querySelectorAll('[data-desktop-custom-section]')
+      .forEach(section=>sectionObserver.observe(section));
+  }
+
   function pageHtml(){
     const c=content();
 
@@ -782,6 +1023,7 @@
       <div
         class="desktop-custom-page"
         data-desktop-custom-presentation="${PRESENTATION_VERSION}"
+        data-desktop-custom-interaction="${INTERACTION_VERSION}"
       >
         <div class="desktop-container--wide desktop-custom-shell">
           <header class="desktop-custom-hero">
@@ -795,9 +1037,12 @@
 
           <div class="desktop-custom-layout">
             <main class="desktop-custom-builder desktop-custom-brief-builder">
-              ${projectBasicsHtml()}
-              ${productDirectionHtml()}
-              ${packagingHtml()}
+              ${flowNavigatorHtml()}
+              <div class="desktop-custom-section-stack">
+                ${projectBasicsHtml()}
+                ${productDirectionHtml()}
+                ${packagingHtml()}
+              </div>
             </main>
 
             <aside
@@ -826,6 +1071,8 @@
 
     customRoot.innerHTML=
       pageHtml();
+
+    setupGuidedNavigation();
 
     if(
       preserveScroll&&
@@ -856,6 +1103,7 @@
     node.innerHTML=
       liveBriefHtml();
 
+    syncGuidedNavigation();
     return true;
   }
 
@@ -1196,6 +1444,21 @@
   }
 
   function onClick(event){
+    const jump=
+      event.target.closest?.(
+        '[data-desktop-custom-jump]'
+      );
+
+    if(
+      jump&&
+      customRoot?.contains(jump)
+    ){
+      jumpToSection(
+        jump.dataset.desktopCustomJump
+      );
+      return;
+    }
+
     const pick=
       event.target.closest?.(
         '[data-desktop-custom-pick]'

@@ -353,7 +353,10 @@
             "label": "Discuss With Us"
           }
         ],
-        "collectionResetHint": "Choose multiple scents within one collection. Switching collections resets the current scent selection."
+        "collectionResetHint": "Choose multiple scents within one collection. Switching collections resets the current scent selection.",
+        "flowTitle": "Project flow",
+        "requiredProgress": "{done} / {total} required",
+        "continueToNext": "Continue to next section"
       },
       "inquiryFlow": {
         "progressLabel": "Inquiry progress",
@@ -845,7 +848,10 @@
             "label": "待沟通确认"
           }
         ],
-        "collectionResetHint": "香型可在同一系列中多选；切换系列后需重新选择香型。"
+        "collectionResetHint": "香型可在同一系列中多选；切换系列后需重新选择香型。",
+        "flowTitle": "定制流程",
+        "requiredProgress": "必填信息 {done} / {total}",
+        "continueToNext": "继续完善项目"
       },
       "inquiryFlow": {
         "progressLabel": "询价进度",
@@ -1337,7 +1343,10 @@
             "label": "상담 후 결정"
           }
         ],
-        "collectionResetHint": "한 컬렉션 안에서 여러 향을 선택할 수 있습니다. 컬렉션을 변경하면 향 선택이 초기화됩니다."
+        "collectionResetHint": "한 컬렉션 안에서 여러 향을 선택할 수 있습니다. 컬렉션을 변경하면 향 선택이 초기화됩니다.",
+        "flowTitle": "프로젝트 흐름",
+        "requiredProgress": "필수 정보 {done} / {total}",
+        "continueToNext": "다음 항목 계속"
       },
       "inquiryFlow": {
         "progressLabel": "문의 진행",

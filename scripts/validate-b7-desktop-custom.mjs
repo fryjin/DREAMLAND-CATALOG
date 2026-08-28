@@ -187,9 +187,9 @@ try{
     read('index.html');
 
   for(const required of [
-    "window.DREAMLAND_RELEASE='b7-00b4e-r1-v117';",
-    './src/ui/desktop/styles/custom.css?release=b7-00b4e-r1-v117',
-    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4e-r1-v117',
+    "window.DREAMLAND_RELEASE='b7-00b4e-r1.1-v118';",
+    './src/ui/desktop/styles/custom.css?release=b7-00b4e-r1.1-v118',
+    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4e-r1.1-v118',
     'ensureCustomFeatureRuntime();',
     'customState:',
     'customFeature,',
@@ -209,7 +209,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/styles/custom.css?release=b7-00b4e-r1-v117'
+      './src/ui/desktop/styles/custom.css?release=b7-00b4e-r1.1-v118'
     )!==1
   ){
     fail(
@@ -220,7 +220,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4e-r1-v117'
+      './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4e-r1.1-v118'
     )!==1
   ){
     fail(
@@ -415,10 +415,10 @@ try{
     );
 
   for(const required of [
-    "const CACHE_VERSION = 'dreamland-pwa-v117';",
-    "'b7-00b4e-r1-v117'",
-    './src/ui/desktop/styles/custom.css?release=b7-00b4e-r1-v117',
-    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4e-r1-v117',
+    "const CACHE_VERSION = 'dreamland-pwa-v118';",
+    "'b7-00b4e-r1.1-v118'",
+    './src/ui/desktop/styles/custom.css?release=b7-00b4e-r1.1-v118',
+    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4e-r1.1-v118',
     "'./src/ui/desktop/styles/custom.css'",
     "'./src/ui/desktop/custom/runtime-desktop-custom.js'"
   ]){
@@ -431,7 +431,7 @@ try{
 
   if(
     !pwa.includes(
-      "'b7-00b4e-r1-v117'"
+      "'b7-00b4e-r1.1-v118'"
     )
   ){
     fail(
@@ -565,6 +565,72 @@ try{
   }
 }catch(error){
   fail(`Desktop Custom 4E R1 successor validation failed: ${error.message}`);
+}
+
+/* Gate 4E-R1.1 — interaction affordance + guided section navigation. */
+try{
+  const runtime=read('src/ui/desktop/custom/runtime-desktop-custom.js');
+  const css=read('src/ui/desktop/styles/custom.css');
+  const site=JSON.parse(read('data/site-content.json'));
+
+  for(const required of [
+    "const INTERACTION_VERSION='B7-00B.4E-R1.1';",
+    'data-desktop-custom-interaction=',
+    'function flowNavigatorHtml()',
+    'function setupGuidedNavigation()',
+    'function syncGuidedNavigation()',
+    'function jumpToSection(name)',
+    'data-desktop-custom-flow-progress',
+    'data-desktop-custom-jump=',
+    'desktop-custom-section-stack',
+    'desktop-custom-section-next',
+    'desktop-custom-live-brief__progress'
+  ]){
+    if(!runtime.includes(required)){
+      fail(`Desktop Custom 4E R1.1 runtime is missing: ${required}`);
+    }
+  }
+
+  for(const required of [
+    'B7-00B.4E R1.1 — Interaction Affordance + Guided Section Navigation',
+    '[data-desktop-custom-interaction="B7-00B.4E-R1.1"]',
+    '.desktop-custom-flow-nav{',
+    '.desktop-custom-flow-nav__item.is-active{',
+    '.desktop-custom-section-next{',
+    '.desktop-custom-live-brief__progress{',
+    'border:1px solid var(--dw-color-line-strong)!important;',
+    'background-image:'
+  ]){
+    if(!css.includes(required)){
+      fail(`Desktop Custom 4E R1.1 CSS is missing: ${required}`);
+    }
+  }
+
+  if(/font-size:(?:8|9|10)px;/.test(css)){
+    fail('Desktop Custom 4E R1.1 readability regression: custom.css contains visible 8/9/10px text.');
+  }
+
+  for(const lang of ['en','zh','ko']){
+    const custom=site?.languages?.[lang]?.customProject;
+    for(const key of ['flowTitle','requiredProgress','continueToNext']){
+      if(!custom?.[key]){
+        fail(`Desktop Custom 4E R1.1 guided-flow copy is missing for ${lang}.${key}.`);
+      }
+    }
+  }
+
+  const clickStart=runtime.indexOf('function onClick(event)');
+  const clickEnd=runtime.indexOf('function onInput(event)',clickStart);
+  const clickBody=
+    clickStart>=0&&clickEnd>clickStart
+      ? runtime.slice(clickStart,clickEnd)
+      : '';
+
+  if(clickBody.includes('render({')){
+    fail('Desktop Custom 4E R1.1 interaction regression: guided interactions must not restore full-page render().');
+  }
+}catch(error){
+  fail(`Desktop Custom 4E R1.1 successor validation failed: ${error.message}`);
 }
 
 if(errors.length){
