@@ -644,6 +644,9 @@
       scentDisplayText:
         config.scentDisplayText,
 
+      budgetOptions:
+        config.budgetOptions,
+
       actions:{
         addIntent:
           draft=>
@@ -1325,6 +1328,11 @@
 
       money:
         options.money,
+
+      budgetOptions:
+        typeof options.budgetOptions==='function'
+          ? options.budgetOptions
+          : ()=>[],
 
       qtyUnit:
         options.qtyUnit,

@@ -38,9 +38,9 @@ try{
     [
       '<title>DREAMLAND 手工雕刻蜡烛｜批发与定制</title>',
       'DREAMLAND 手工雕刻蜡烛系列，了解工艺、产品与定制能力',
-      "window.DREAMLAND_RELEASE='b7-00b4g-r1-v121';",
+      "window.DREAMLAND_RELEASE='b7-00b4h-r1-v122';",
       'dreamland-desktop-boot',
-      './images/desktop/home/hero/hero-main.webp?release=b7-00b4g-r1-v121',
+      './images/desktop/home/hero/hero-main.webp?release=b7-00b4h-r1-v122',
       'media="(min-width: 1024px)"',
       '右滑浏览产品系列',
       '<div class="page-title">产品系列</div>',
@@ -149,7 +149,8 @@ try{
       'B7-00B.4B-R4.2',
       'B7-00B.4B-R4.2.4',
       'B7-00B.4B-R4.2.5',
-      'B7-00B.4B-R4.2.6'
+      'B7-00B.4B-R4.2.6',
+      'B7-00B.4H-R1'
     ]);
 
   if(
@@ -162,6 +163,9 @@ try{
       `Desktop Home runtime version is incompatible with the Website / Boot / Home Media contract: ${homeVersion?.[1]||'missing'}`
     );
   }
+
+  // B7-00B.4H R1.3 — Website Home runtime compatibility.
+  // The 4H Home successor keeps the existing marketing-media / boot contract.
 
   /*
    * Runtime source intentionally uses multiline chaining:
@@ -350,15 +354,15 @@ try{
 
   requireIncludes(
     pwa,
-    ["'b7-00b4g-r1-v121'"],
+    ["'b7-00b4h-r1-v122'"],
     'PWA runtime'
   );
 
   requireIncludes(
     sw,
     [
-      "const CACHE_VERSION = 'dreamland-pwa-v121';",
-      "'b7-00b4g-r1-v121'"
+      "const CACHE_VERSION = 'dreamland-pwa-v122';",
+      "'b7-00b4h-r1-v122'"
     ],
     'Service Worker'
   );

@@ -5,7 +5,7 @@
     return;
   }
 
-  const VERSION='B7-00B.4B-R4.2.6';
+  const VERSION='B7-00B.4H-R1';
 
   const DEFAULT_ASSETS=Object.freeze({
     hero:{
@@ -30,20 +30,34 @@
     },
     featured:[
       {
-        series:'advanced',
+        slot:1,
+        series:'masterpiece',
+        layout:'narrow',
         image:'./images/desktop/home/featured/featured-01.webp'
       },
       {
+        slot:2,
         series:'masterpiece',
+        layout:'narrow',
         image:'./images/desktop/home/featured/featured-02.webp'
       },
       {
-        series:'holiday',
+        slot:3,
+        series:'masterpiece',
+        layout:'narrow',
         image:'./images/desktop/home/featured/featured-03.webp'
       },
       {
-        series:'classic',
+        slot:4,
+        series:'advanced',
+        layout:'wide',
         image:'./images/desktop/home/featured/featured-04.webp'
+      },
+      {
+        slot:5,
+        series:'advanced',
+        layout:'wide',
+        image:'./images/desktop/home/featured/featured-05.webp'
       }
     ],
     craft:{
@@ -260,10 +274,10 @@
         : DEFAULT_ASSETS.featured;
 
     /*
-     * B7-00B.4B R4.1.2 — Current Picks
-     * Exactly 3 Masterpiece + 2 Advanced products.
-     * Product cover media is canonical; the historical four marketing slots
-     * remain only as a visual fallback and do not cap the shelf at four.
+     * B7-00B.4H R1 — Current Picks asset decoupling.
+     * Product identity stays 3 Masterpiece + 2 Advanced.
+     * The 5 Current Picks images are Home-owned marketing assets and never
+     * fall back to, or reuse, the product catalog cover.
      */
     const currentPickPlan=[
       ['masterpiece',3],
@@ -311,10 +325,23 @@
                 product.series
               ),
             image:
+              text(slot?.image)||
               text(
-                productCover(product)
-              )||
-              text(slot?.image),
+                DEFAULT_ASSETS
+                  .featured
+                  ?.[featuredProducts.length]
+                  ?.image
+              ),
+            assetSlot:
+              Number(slot?.slot)||
+              featuredProducts.length+1,
+            layout:
+              text(slot?.layout)||
+              (
+                featuredProducts.length<3
+                  ? 'narrow'
+                  : 'wide'
+              ),
             price:
               productPrice(product),
             moq:
@@ -509,8 +536,10 @@
             ? assets.featured
             : []
         ).map(slot=>[
+          Number(slot?.slot)||0,
           text(slot?.series),
           text(slot?.productId),
+          text(slot?.layout),
           text(slot?.image)
         ]),
 
@@ -853,6 +882,8 @@
             <article
               class="desktop-product-card desktop-home-featured__card"
               data-desktop-product-card="${escapeHtml(product.id)}"
+              data-desktop-featured-slot="${escapeHtml(product.assetSlot)}"
+              data-desktop-featured-layout="${escapeHtml(product.layout)}"
             >
               <button
                 class="desktop-product-link"
@@ -868,7 +899,7 @@
                     class="desktop-product-media__image"
                     data-desktop-image
                     data-desktop-source="${escapeHtml(product.image)}"
-                    data-desktop-kind="catalog"
+                    data-desktop-kind="shared"
                     data-desktop-priority="auto"
                     alt="${escapeHtml(product.name)}"
                   >

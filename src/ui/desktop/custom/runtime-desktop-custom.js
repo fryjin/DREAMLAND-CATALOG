@@ -9,6 +9,7 @@
   const PRESENTATION_VERSION='B7-00B.4E-R1';
   const INTERACTION_VERSION='B7-00B.4E-R1.1';
   const POLISH_VERSION='B7-00B.4E-R1.2';
+  const CURRENCY_VERSION='B7-00B.4H-R1';
 
   const DEFAULT_DRAFT=Object.freeze({
     use:'',
@@ -66,6 +67,7 @@
       version:VERSION,
       presentation:PRESENTATION_VERSION,
       polish:POLISH_VERSION,
+      currency:CURRENCY_VERSION,
       configured:Boolean(config),
       mounted,
       added,
@@ -100,6 +102,18 @@
   }
 
   function options(key){
+    if(key==='budgets'){
+      const localized=
+        config?.budgetOptions?.();
+
+      if(
+        Array.isArray(localized)&&
+        localized.length
+      ){
+        return localized;
+      }
+    }
+
     const rows=
       content()?.[key];
 
@@ -1022,6 +1036,7 @@
         data-desktop-custom-presentation="${PRESENTATION_VERSION}"
         data-desktop-custom-interaction="${INTERACTION_VERSION}"
         data-desktop-custom-polish="${POLISH_VERSION}"
+        data-desktop-custom-currency="${CURRENCY_VERSION}"
       >
         <div class="desktop-container--wide desktop-custom-shell">
           <header class="desktop-custom-hero">
@@ -1628,6 +1643,10 @@
         options.seriesLabel,
       scentDisplayText:
         options.scentDisplayText,
+      budgetOptions:
+        typeof options.budgetOptions==='function'
+          ? options.budgetOptions
+          : ()=>[],
       actions:
         options.actions||
         {}

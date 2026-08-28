@@ -187,9 +187,9 @@ try{
     read('index.html');
 
   for(const required of [
-    "window.DREAMLAND_RELEASE='b7-00b4g-r1-v121';",
-    './src/ui/desktop/styles/custom.css?release=b7-00b4g-r1-v121',
-    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4g-r1-v121',
+    "window.DREAMLAND_RELEASE='b7-00b4h-r1-v122';",
+    './src/ui/desktop/styles/custom.css?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4h-r1-v122',
     'ensureCustomFeatureRuntime();',
     'customState:',
     'customFeature,',
@@ -209,7 +209,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/styles/custom.css?release=b7-00b4g-r1-v121'
+      './src/ui/desktop/styles/custom.css?release=b7-00b4h-r1-v122'
     )!==1
   ){
     fail(
@@ -220,7 +220,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4g-r1-v121'
+      './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4h-r1-v122'
     )!==1
   ){
     fail(
@@ -415,10 +415,10 @@ try{
     );
 
   for(const required of [
-    "const CACHE_VERSION = 'dreamland-pwa-v121';",
-    "'b7-00b4g-r1-v121'",
-    './src/ui/desktop/styles/custom.css?release=b7-00b4g-r1-v121',
-    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4g-r1-v121',
+    "const CACHE_VERSION = 'dreamland-pwa-v122';",
+    "'b7-00b4h-r1-v122'",
+    './src/ui/desktop/styles/custom.css?release=b7-00b4h-r1-v122',
+    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4h-r1-v122',
     "'./src/ui/desktop/styles/custom.css'",
     "'./src/ui/desktop/custom/runtime-desktop-custom.js'"
   ]){
@@ -431,7 +431,7 @@ try{
 
   if(
     !pwa.includes(
-      "'b7-00b4g-r1-v121'"
+      "'b7-00b4h-r1-v122'"
     )
   ){
     fail(
@@ -690,6 +690,71 @@ try{
   fail(`Desktop Custom 4E R1.2 successor validation failed: ${error.message}`);
 }
 
+
+
+/* Gate 4H-R1 — FX-backed localized Budget Range. */
+try{
+  const custom=read('src/ui/desktop/custom/runtime-desktop-custom.js');
+  const experience=read('src/ui/desktop/runtime-desktop-experience.js');
+  const index=read('index.html');
+  const i18n=JSON.parse(read('data/i18n.json'));
+
+  for(const required of [
+    "const CURRENCY_VERSION='B7-00B.4H-R1';",
+    "if(key==='budgets')",
+    'config?.budgetOptions?.()',
+    'data-desktop-custom-currency=',
+    'budgetOptions:'
+  ]){
+    if(!custom.includes(required)){
+      fail('Desktop Custom 4H R1 currency bridge is missing: '+required);
+    }
+  }
+
+  // B7-00B.4H R1.2 — FX budget validator structural matching.
+  if(
+    !experience.includes('budgetOptions:')||
+    !experience.includes('config.budgetOptions')
+  ){
+    fail('Desktop Experience does not bridge FX-backed Custom budget options.');
+  }
+
+  for(const required of [
+    'function desktopCustomBudgetOptions()',
+    'currencyMap[currentLang]',
+    'budgetOptions:',
+    'desktopCustomBudgetOptions'
+  ]){
+    if(!index.includes(required)){
+      fail('index.html is missing Desktop Custom FX budget integration: '+required);
+    }
+  }
+
+  const currency=i18n?.currencyMap||{};
+
+  if(Number(currency.en?.rate)!==1){
+    fail('English currency base rate must remain 1 USD.');
+  }
+
+  if(!(Number(currency.zh?.rate)>1)){
+    fail('Chinese currency conversion rate is missing.');
+  }
+
+  if(!(Number(currency.ko?.rate)>100)){
+    fail('Korean currency conversion rate is missing.');
+  }
+
+  for(const lang of ['zh','en','ko']){
+    if(
+      !Array.isArray(currency?.[lang]?.budget)||
+      currency[lang].budget.length!==5
+    ){
+      fail('FX-backed budget ranges are incomplete for '+lang+'.');
+    }
+  }
+}catch(error){
+  fail('Desktop Custom 4H R1 FX budget validation failed: '+error.message);
+}
 
 if(errors.length){
   console.error(

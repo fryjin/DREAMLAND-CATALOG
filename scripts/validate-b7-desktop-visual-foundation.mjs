@@ -94,14 +94,14 @@ try{
 
 try{
   const index=read('index.html');
-  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4g-r1-v121';
-  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4g-r1-v121';
-  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4g-r1-v121';
+  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4h-r1-v122';
+  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4h-r1-v122';
+  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4h-r1-v122';
 
   includesAll(
     index,
     [
-      "window.DREAMLAND_RELEASE='b7-00b4g-r1-v121';",
+      "window.DREAMLAND_RELEASE='b7-00b4h-r1-v122';",
       tokensRef,
       primitivesRef,
       shellRef
@@ -126,15 +126,15 @@ try{
   includesAll(
     sw,
     [
-      "const CACHE_VERSION = 'dreamland-pwa-v121';",
-      "'b7-00b4g-r1-v121'",
-      './src/ui/desktop/styles/primitives.css?release=b7-00b4g-r1-v121',
+      "const CACHE_VERSION = 'dreamland-pwa-v122';",
+      "'b7-00b4h-r1-v122'",
+      './src/ui/desktop/styles/primitives.css?release=b7-00b4h-r1-v122',
       "'./src/ui/desktop/styles/primitives.css'"
     ],
     'Service Worker Foundation release'
   );
 
-  if(!pwa.includes("'b7-00b4g-r1-v121'")){
+  if(!pwa.includes("'b7-00b4h-r1-v122'")){
     fail('PWA runtime release tag was not advanced to B7-00B.4A R1.');
   }
 }catch(error){
@@ -495,7 +495,7 @@ try{
   includesAll(
     runtime,
     [
-      "const VERSION='B7-00B.4B-R4.2.6';",
+      "const VERSION='B7-00B.4H-R1';",
       'desktop-home-editorial-wide',
       'desktop-home-collections__typography-rail',
       'desktop-home-collections__annotation-index',
@@ -509,8 +509,10 @@ try{
       'view.wholesale.image',
       'desktop-wholesale-index'
     ],
-    'B7-00B.4B Home runtime successor'
+    'B7-00B.4B / 4H Home runtime successor'
   );
+
+  // B7-00B.4H R1.1a — repaired Home runtime validator compatibility syntax.
 
   for(const [lang,title] of [
     ['en','Candles, carved by hand.'],

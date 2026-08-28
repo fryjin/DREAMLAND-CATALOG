@@ -36,7 +36,7 @@ try{
 
   if(
     contract.schemaVersion!==1||
-    contract.stage!=='B7-00B.2'
+    !['B7-00B.2','B7-00B.4H-R1'].includes(contract.stage)
   ){
     fail(
       'desktop-home-assets.json has an invalid contract.'
@@ -56,9 +56,14 @@ try{
     contract.wholesale?.image
   ];
 
-  if(required.length!==12){
+  const expectedRoleCount=
+    contract.stage==='B7-00B.4H-R1'
+      ? 13
+      : 12;
+
+  if(required.length!==expectedRoleCount){
     fail(
-      `Desktop Home asset contract must expose 12 image roles; found ${required.length}.`
+      `Desktop Home asset contract must expose ${expectedRoleCount} image roles; found ${required.length}.`
     );
   }
 
@@ -152,7 +157,8 @@ try{
       'B7-00B.4B-R4.2',
       'B7-00B.4B-R4.2.4',
       'B7-00B.4B-R4.2.5',
-      'B7-00B.4B-R4.2.6'
+      'B7-00B.4B-R4.2.6',
+      'B7-00B.4H-R1'
     ]);
 
   if(
@@ -321,6 +327,96 @@ try{
   fail(
     `Release-gate validation failed: ${error.message}`
   );
+}
+
+
+/* Gate 4H-R1 — 5 independent Current Picks marketing assets. */
+try{
+  const contract=json('data/desktop-home-assets.json');
+  const runtime=read('src/ui/desktop/home/runtime-desktop-home.js');
+  const css=read('src/ui/desktop/styles/home.css');
+
+  if(contract.stage!=='B7-00B.4H-R1'){
+    fail('Desktop Home 4H R1 asset contract stage is missing.');
+  }
+
+  if(
+    !Array.isArray(contract.featured)||
+    contract.featured.length!==5
+  ){
+    fail('Desktop Home 4H R1 must expose exactly 5 Featured marketing slots.');
+  }else{
+    const images=new Set();
+
+    contract.featured.forEach((slot,index)=>{
+      const expectedSlot=index+1;
+      const expectedLayout=index<3?'narrow':'wide';
+
+      if(Number(slot?.slot)!==expectedSlot){
+        fail('Featured asset slot '+expectedSlot+' has an invalid slot number.');
+      }
+
+      if(slot?.layout!==expectedLayout){
+        fail(
+          'Featured asset slot '+expectedSlot+
+          ' must use layout '+expectedLayout+'.'
+        );
+      }
+
+      if(
+        !String(slot?.image||'').includes(
+          '/featured-'+String(expectedSlot).padStart(2,'0')+'.webp'
+        )
+      ){
+        fail('Featured asset slot '+expectedSlot+' has an unexpected image path.');
+      }
+
+      images.add(slot?.image);
+    });
+
+    if(images.size!==5){
+      fail('All five Home Featured slots must own independent image paths.');
+    }
+  }
+
+  for(const required of [
+    "const VERSION='B7-00B.4H-R1';",
+    'data-desktop-featured-slot=',
+    'data-desktop-featured-layout=',
+    "layout:'narrow'",
+    "layout:'wide'",
+    'assetSlot:'
+  ]){
+    if(!runtime.includes(required)){
+      fail('Desktop Home 4H R1 runtime is missing: '+required);
+    }
+  }
+
+  const pickStart=runtime.indexOf('const currentPickPlan=');
+  const pickEnd=runtime.indexOf('return Object.freeze({',pickStart);
+  const pickBody=
+    pickStart>=0&&pickEnd>pickStart
+      ? runtime.slice(pickStart,pickEnd)
+      : '';
+
+  if(pickBody.includes('productCover(product)')){
+    fail('Current Picks must not reuse product catalog cover media.');
+  }
+
+  for(const required of [
+    '.desktop-product-card:nth-child(1)',
+    '.desktop-product-card:nth-child(3)',
+    '.desktop-product-card:nth-child(4)',
+    '.desktop-product-card:nth-child(5)',
+    'grid-column:1 / span 2!important;',
+    'grid-column:1 / span 3!important;'
+  ]){
+    if(!css.includes(required)){
+      fail('Accepted unequal 3+2 Current Picks geometry regressed: '+required);
+    }
+  }
+}catch(error){
+  fail('Desktop Home 4H R1 asset-decoupling validation failed: '+error.message);
 }
 
 if(errors.length){
