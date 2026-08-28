@@ -165,15 +165,15 @@ try{
   const index=read('index.html');
 
   for(const required of [
-    "window.DREAMLAND_RELEASE='b7-00b4b-r4.2.2-v107';",
-    './src/ui/desktop/styles/inquiry.css?release=b7-00b4b-r4.2.2-v107',
-    './src/ui/desktop/styles/contact.css?release=b7-00b4b-r4.2.2-v107',
-    './src/ui/desktop/styles/review.css?release=b7-00b4b-r4.2.2-v107',
-    './src/ui/desktop/styles/success.css?release=b7-00b4b-r4.2.2-v107',
-    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4b-r4.2.2-v107',
-    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4b-r4.2.2-v107',
-    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4b-r4.2.2-v107',
-    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4b-r4.2.2-v107',
+    "window.DREAMLAND_RELEASE='b7-00b4b-r4.2.3-v108';",
+    './src/ui/desktop/styles/inquiry.css?release=b7-00b4b-r4.2.3-v108',
+    './src/ui/desktop/styles/contact.css?release=b7-00b4b-r4.2.3-v108',
+    './src/ui/desktop/styles/review.css?release=b7-00b4b-r4.2.3-v108',
+    './src/ui/desktop/styles/success.css?release=b7-00b4b-r4.2.3-v108',
+    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4b-r4.2.3-v108',
+    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4b-r4.2.3-v108',
+    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4b-r4.2.3-v108',
+    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4b-r4.2.3-v108',
     'inquiryState:',
     'inquiryFeature,',
     'contactState:',
@@ -307,16 +307,16 @@ try{
   );
 
   for(const required of [
-    "const CACHE_VERSION = 'dreamland-pwa-v107';",
-    "'b7-00b4b-r4.2.2-v107'",
-    './src/ui/desktop/styles/inquiry.css?release=b7-00b4b-r4.2.2-v107',
-    './src/ui/desktop/styles/contact.css?release=b7-00b4b-r4.2.2-v107',
-    './src/ui/desktop/styles/review.css?release=b7-00b4b-r4.2.2-v107',
-    './src/ui/desktop/styles/success.css?release=b7-00b4b-r4.2.2-v107',
-    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4b-r4.2.2-v107',
-    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4b-r4.2.2-v107',
-    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4b-r4.2.2-v107',
-    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4b-r4.2.2-v107',
+    "const CACHE_VERSION = 'dreamland-pwa-v108';",
+    "'b7-00b4b-r4.2.3-v108'",
+    './src/ui/desktop/styles/inquiry.css?release=b7-00b4b-r4.2.3-v108',
+    './src/ui/desktop/styles/contact.css?release=b7-00b4b-r4.2.3-v108',
+    './src/ui/desktop/styles/review.css?release=b7-00b4b-r4.2.3-v108',
+    './src/ui/desktop/styles/success.css?release=b7-00b4b-r4.2.3-v108',
+    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4b-r4.2.3-v108',
+    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4b-r4.2.3-v108',
+    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4b-r4.2.3-v108',
+    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4b-r4.2.3-v108',
     "'./src/ui/desktop/inquiry/runtime-desktop-inquiry.js'",
     "'./src/ui/desktop/contact/runtime-desktop-contact.js'",
     "'./src/ui/desktop/review/runtime-desktop-review.js'",
@@ -327,7 +327,7 @@ try{
     }
   }
 
-  if(!pwa.includes("'b7-00b4b-r4.2.2-v107'")){
+  if(!pwa.includes("'b7-00b4b-r4.2.3-v108'")){
     fail('PWA runtime was not advanced to B7-00B.3D.');
   }
 }catch(error){

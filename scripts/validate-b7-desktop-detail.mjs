@@ -244,9 +244,9 @@ try{
     read('index.html');
 
   for(const required of [
-    "window.DREAMLAND_RELEASE='b7-00b4b-r4.2.2-v107';",
-    './src/ui/desktop/styles/detail.css?release=b7-00b4b-r4.2.2-v107',
-    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4b-r4.2.2-v107',
+    "window.DREAMLAND_RELEASE='b7-00b4b-r4.2.3-v108';",
+    './src/ui/desktop/styles/detail.css?release=b7-00b4b-r4.2.3-v108',
+    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4b-r4.2.3-v108',
     'detailState:',
     'detailFeature,',
     'productImages:',
@@ -269,7 +269,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/styles/detail.css?release=b7-00b4b-r4.2.2-v107'
+      './src/ui/desktop/styles/detail.css?release=b7-00b4b-r4.2.3-v108'
     )!==1
   ){
     fail(
@@ -280,7 +280,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4b-r4.2.2-v107'
+      './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4b-r4.2.3-v108'
     )!==1
   ){
     fail(
@@ -441,10 +441,10 @@ try{
     );
 
   for(const required of [
-    "const CACHE_VERSION = 'dreamland-pwa-v107';",
-    "'b7-00b4b-r4.2.2-v107'",
-    './src/ui/desktop/styles/detail.css?release=b7-00b4b-r4.2.2-v107',
-    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4b-r4.2.2-v107',
+    "const CACHE_VERSION = 'dreamland-pwa-v108';",
+    "'b7-00b4b-r4.2.3-v108'",
+    './src/ui/desktop/styles/detail.css?release=b7-00b4b-r4.2.3-v108',
+    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4b-r4.2.3-v108',
     "'./src/ui/desktop/styles/detail.css'",
     "'./src/ui/desktop/detail/runtime-desktop-detail.js'"
   ]){
@@ -457,7 +457,7 @@ try{
 
   if(
     !pwa.includes(
-      "'b7-00b4b-r4.2.2-v107'"
+      "'b7-00b4b-r4.2.3-v108'"
     )
   ){
     fail(

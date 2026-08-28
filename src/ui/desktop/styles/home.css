@@ -2840,3 +2840,42 @@
     max-width:1080px!important;
   }
 }
+
+/* --------------------------------------------------------------------------
+ * B7-00B.4B R4.2.3 — Craft Container Measure Alignment
+ *
+ * R4.2.2 stopped Craft from becoming edge-to-edge, but its hard-coded 1280px
+ * measure is narrower than the shared Desktop container used by the Header,
+ * Story, Custom and Wholesale sections. Restore the canonical container rule:
+ * 1440px maximum with the shared responsive gutter on both sides.
+ *
+ * Solved Current Picks flow and Featured → Craft spacing remain untouched.
+ * ------------------------------------------------------------------------ */
+@media (min-width:1024px){
+  .desktop-home-featured +
+  .desktop-home-band
+  .desktop-editorial-grid{
+    width:min(
+      calc(100% - (2 * var(--dw-gutter))),
+      var(--dw-max)
+    )!important;
+    max-width:var(--dw-max)!important;
+    margin-inline:auto!important;
+  }
+
+  .desktop-home-featured +
+  .desktop-home-band
+  .desktop-editorial-media{
+    grid-column:1 / 7!important;
+    width:100%!important;
+  }
+
+  .desktop-home-featured +
+  .desktop-home-band
+  .desktop-editorial-copy{
+    grid-column:8 / 13!important;
+    width:100%!important;
+    max-width:500px!important;
+    justify-self:start!important;
+  }
+}
