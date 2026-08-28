@@ -1106,3 +1106,169 @@
   }
 }
 
+
+
+/* --------------------------------------------------------------------------
+ * B7-00B.4F R1.1 — Inquiry Multi-Select + Group Actions
+ * ------------------------------------------------------------------------ */
+@media (min-width:1024px){
+  .desktop-inquiry-page[data-desktop-inquiry-selection="B7-00B.4F-R1.1"]
+  .desktop-inquiry-workspace__head{
+    min-height:62px;
+    padding-block:14px;
+    gap:24px;
+  }
+
+  .desktop-inquiry-selection-tools,
+  .desktop-inquiry-selection-actions{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+
+  .desktop-inquiry-selection-count{
+    color:var(--dw-color-muted);
+    font-size:var(--dw-type-support-size);
+    font-weight:760;
+  }
+
+  .desktop-inquiry-selection-actions button{
+    border:0;
+    padding:4px 0;
+    background:transparent;
+    color:var(--dw-color-muted);
+    font:inherit;
+    font-size:var(--dw-type-support-size);
+    font-weight:780;
+    cursor:pointer;
+  }
+
+  .desktop-inquiry-selection-actions button:hover{
+    color:var(--dw-color-ink);
+  }
+
+  .desktop-inquiry-selection-actions button:disabled{
+    opacity:.34;
+    cursor:default;
+  }
+
+  .desktop-inquiry-selection-actions
+  [data-desktop-inquiry-action="clear"]{
+    color:#8c6255;
+  }
+
+  .desktop-inquiry-select{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:var(--dw-color-ink);
+    font-size:var(--dw-type-support-size);
+    font-weight:780;
+    cursor:pointer;
+    user-select:none;
+  }
+
+  .desktop-inquiry-select input{
+    appearance:none;
+    width:18px;
+    height:18px;
+    margin:0;
+    display:grid;
+    place-items:center;
+    border:1px solid var(--dw-color-line-strong);
+    border-radius:3px;
+    background:var(--dw-color-paper);
+    cursor:pointer;
+  }
+
+  .desktop-inquiry-select input::after{
+    content:"";
+    width:9px;
+    height:5px;
+    border-left:2px solid transparent;
+    border-bottom:2px solid transparent;
+    transform:rotate(-45deg) translate(1px,-1px);
+  }
+
+  .desktop-inquiry-select input:checked,
+  .desktop-inquiry-select input:indeterminate{
+    border-color:var(--dw-color-ink);
+    background:var(--dw-color-ink);
+  }
+
+  .desktop-inquiry-select input:checked::after{
+    border-left-color:var(--dw-color-paper);
+    border-bottom-color:var(--dw-color-paper);
+  }
+
+  .desktop-inquiry-select input:indeterminate::after{
+    width:8px;
+    height:0;
+    border:0;
+    border-bottom:2px solid var(--dw-color-paper);
+    transform:none;
+  }
+
+  .desktop-inquiry-page[data-desktop-inquiry-selection="B7-00B.4F-R1.1"]
+  .desktop-inquiry-moq-group__head{
+    grid-template-columns:minmax(260px,.9fr) minmax(320px,1.1fr) auto;
+    column-gap:24px;
+  }
+
+  .desktop-inquiry-page[data-desktop-inquiry-selection="B7-00B.4F-R1.1"]
+  .desktop-inquiry-moq-group__identity{
+    grid-template-columns:20px 30px minmax(0,1fr);
+    gap:10px;
+  }
+
+  .desktop-inquiry-group-remove{
+    align-self:start;
+    border:0;
+    padding:3px 0;
+    background:transparent;
+    color:#8c6255;
+    font-size:var(--dw-type-support-size);
+    font-weight:780;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+
+  .desktop-inquiry-product{
+    grid-template-columns:20px 126px minmax(0,1fr);
+    gap:18px;
+  }
+
+  .desktop-inquiry-product > .desktop-inquiry-select{
+    align-self:start;
+    margin-top:2px;
+  }
+
+  .desktop-inquiry-custom-project{
+    grid-template-columns:20px 100px minmax(0,1fr);
+    gap:20px;
+  }
+
+  .desktop-inquiry-custom-project > .desktop-inquiry-select{
+    align-self:start;
+    margin-top:2px;
+  }
+}
+
+@media (min-width:1024px) and (max-width:1199px){
+  .desktop-inquiry-page[data-desktop-inquiry-selection="B7-00B.4F-R1.1"]
+  .desktop-inquiry-moq-group__head{
+    grid-template-columns:minmax(0,1fr) auto;
+  }
+
+  .desktop-inquiry-page[data-desktop-inquiry-selection="B7-00B.4F-R1.1"]
+  .desktop-inquiry-moq-group__status{
+    grid-column:1 / -1;
+  }
+
+  .desktop-inquiry-page[data-desktop-inquiry-selection="B7-00B.4F-R1.1"]
+  .desktop-inquiry-product{
+    grid-template-columns:20px 108px minmax(0,1fr);
+  }
+}
+

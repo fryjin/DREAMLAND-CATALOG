@@ -7,11 +7,13 @@
 
   const VERSION='B7-00B.3D';
   const PRESENTATION_VERSION='B7-00B.4F-R1';
+  const SELECTION_VERSION='B7-00B.4F-R1.1';
 
   let config=null;
   let inquiryRoot=null;
   let mounted=false;
   let dialog=null;
+  let selectedIds=new Set();
 
   function text(value){
     return String(value??'').trim();
@@ -78,6 +80,100 @@
       1,
       Number(config?.itemMoq?.(item)||item?.moq||1)||1
     );
+  }
+
+
+  function inquiryItems(data=view()){
+    return Array.isArray(data?.items)?data.items:[];
+  }
+
+  function allInquiryIds(data=view()){
+    return inquiryItems(data)
+      .map(item=>text(item?.id))
+      .filter(Boolean);
+  }
+
+  function selectedCount(data=view()){
+    const valid=new Set(allInquiryIds(data));
+    let count=0;
+
+    for(const id of selectedIds){
+      if(valid.has(id)){
+        count+=1;
+      }
+    }
+
+    return count;
+  }
+
+  function pruneSelection(data=view()){
+    const valid=new Set(allInquiryIds(data));
+
+    selectedIds=new Set(
+      [...selectedIds].filter(id=>valid.has(id))
+    );
+
+    return selectedIds;
+  }
+
+  function itemSelected(id){
+    return selectedIds.has(text(id));
+  }
+
+  function groupSelectionState(group){
+    const ids=(group?.items||[])
+      .map(item=>text(item?.id))
+      .filter(Boolean);
+
+    const selected=ids.filter(id=>selectedIds.has(id)).length;
+
+    return {
+      ids,
+      selected,
+      checked:ids.length>0&&selected===ids.length,
+      mixed:selected>0&&selected<ids.length
+    };
+  }
+
+  function selectionCountLabel(data=view()){
+    const c=copy();
+    const selected=selectedCount(data);
+    const total=allInquiryIds(data).length;
+
+    return text(c.selectedCount||'{selected} / {total} selected')
+      .replace('{selected}',String(selected))
+      .replace('{total}',String(total));
+  }
+
+  function syncSelectionControls(data=view()){
+    pruneSelection(data);
+
+    const ids=allInquiryIds(data);
+    const selected=selectedCount(data);
+    const all=inquiryRoot?.querySelector('[data-desktop-inquiry-select-all]');
+
+    if(all){
+      all.checked=ids.length>0&&selected===ids.length;
+      all.indeterminate=selected>0&&selected<ids.length;
+    }
+
+    const groups=deriveMoqGroups(data);
+
+    for(const input of inquiryRoot?.querySelectorAll?.('[data-desktop-inquiry-select-group]')||[]){
+      const key=text(input.dataset.desktopInquirySelectGroup);
+      const group=groups.find(row=>row.key===key);
+      const state=groupSelectionState(group);
+      input.checked=state.checked;
+      input.indeterminate=state.mixed;
+    }
+
+    const removeSelected=inquiryRoot?.querySelector('[data-desktop-inquiry-action="remove-selected"]');
+
+    if(removeSelected){
+      removeSelected.disabled=selected===0;
+    }
+
+    return true;
   }
 
   function progress(){
@@ -166,16 +262,27 @@
       .replace('{count}',String(group.remaining));
   }
 
+
   function moqGroupHeader(group,index){
     const c=copy();
     const percent=Math.max(0,Math.min(100,group.ratio*100));
+    const selection=groupSelectionState(group);
 
     return `
       <header
         class="desktop-inquiry-moq-group__head ${group.ready?'is-ready':'is-pending'}"
       >
         <div class="desktop-inquiry-moq-group__identity">
+          <label class="desktop-inquiry-select" aria-label="${escapeHtml(c.selectGroup||'Select group')}">
+            <input
+              type="checkbox"
+              data-desktop-inquiry-select-group="${escapeHtml(group.key)}"
+              ${selection.checked?'checked':''}
+            >
+          </label>
+
           <span>${String(index+1).padStart(2,'0')}</span>
+
           <div>
             <div class="desktop-eyebrow">
               ${escapeHtml(c.moqGroup||'MOQ GROUP')}
@@ -206,9 +313,17 @@
 
           <p>${escapeHtml(c.moqRule||'Quantities within the same series and size count together toward MOQ.')}</p>
         </div>
+
+        <button
+          class="desktop-inquiry-group-remove"
+          type="button"
+          data-desktop-inquiry-action="remove-group"
+          data-group="${escapeHtml(group.key)}"
+        >${escapeHtml(c.removeGroup||'Remove group')}</button>
       </header>
     `;
   }
+
 
   function productRow(item){
     const c=copy();
@@ -219,6 +334,14 @@
         class="desktop-inquiry-product"
         data-inquiry-id="${escapeHtml(item.id)}"
       >
+        <label class="desktop-inquiry-select" aria-label="${escapeHtml(c.selectItem||'Select item')}">
+          <input
+            type="checkbox"
+            data-desktop-inquiry-select-item="${escapeHtml(item.id)}"
+            ${itemSelected(item.id)?'checked':''}
+          >
+        </label>
+
         <div class="desktop-inquiry-product__media">
           ${
             item.cover
@@ -362,6 +485,7 @@
     ].filter(Boolean);
   }
 
+
   function customRow(item,index){
     const c=copy();
     const values=customConfig(item);
@@ -371,6 +495,14 @@
         class="desktop-inquiry-custom-project"
         data-inquiry-id="${escapeHtml(item.id)}"
       >
+        <label class="desktop-inquiry-select" aria-label="${escapeHtml(c.selectItem||'Select item')}">
+          <input
+            type="checkbox"
+            data-desktop-inquiry-select-item="${escapeHtml(item.id)}"
+            ${itemSelected(item.id)?'checked':''}
+          >
+        </label>
+
         <div class="desktop-inquiry-custom-project__index">
           CUSTOM / ${String(index+1).padStart(2,'0')}
         </div>
@@ -430,21 +562,41 @@
     `;
   }
 
+
   function workspaceBody(data){
     const c=copy();
+    const total=allInquiryIds(data).length;
+    const selected=selectedCount(data);
 
     return `
       <div class="desktop-inquiry-workspace__head">
-        <div>
-          <span>${escapeHtml(c.selectedProducts)}</span>
-          <strong>${escapeHtml(data.summary?.itemCount||0)}</strong>
+        <div class="desktop-inquiry-selection-tools">
+          <label class="desktop-inquiry-select">
+            <input
+              type="checkbox"
+              data-desktop-inquiry-select-all
+              ${total>0&&selected===total?'checked':''}
+            >
+            <span>${escapeHtml(c.selectAll||'Select all')}</span>
+          </label>
+
+          <span class="desktop-inquiry-selection-count">
+            ${escapeHtml(selectionCountLabel(data))}
+          </span>
         </div>
 
-        <button
-          class="desktop-inquiry-clear"
-          type="button"
-          data-desktop-inquiry-action="clear"
-        >${escapeHtml(c.clearInquiry||c.clearAll)}</button>
+        <div class="desktop-inquiry-selection-actions">
+          <button
+            type="button"
+            data-desktop-inquiry-action="remove-selected"
+            ${selected===0?'disabled':''}
+          >${escapeHtml(c.removeSelected||'Remove selected')}</button>
+
+          <button
+            type="button"
+            data-desktop-inquiry-action="clear"
+          >${escapeHtml(c.clearInquiry||c.clearAll)}</button>
+        </div>
       </div>
 
       ${productGroupsHtml(data)}
@@ -554,19 +706,45 @@
     `;
   }
 
+
   function dialogHtml(){
     if(!dialog){
       return '';
     }
 
     const c=copy();
-    const clear=dialog.type==='clear';
+    const type=text(dialog.type);
+    const clear=type==='clear';
+    const group=type==='remove-group';
+    const batch=type==='remove-selected';
+    const count=Array.isArray(dialog.ids)?dialog.ids.length:0;
+
+    const title=
+      clear
+        ? c.clearTitle
+        : group
+          ? c.removeGroupTitle
+          : batch
+            ? c.removeSelectedTitle
+            : c.removeTitle;
+
+    const bodyTemplate=text(
+      clear
+        ? c.clearBody
+        : group
+          ? c.removeGroupBody
+          : batch
+            ? c.removeSelectedBody
+            : c.removeBody
+    );
+
+    const body=bodyTemplate.replace('{count}',String(count));
 
     return `
       <div class="desktop-flow-dialog-layer" data-desktop-inquiry-dialog>
         <div class="desktop-flow-dialog" role="dialog" aria-modal="true">
-          <h3>${escapeHtml(clear?c.clearTitle:c.removeTitle)}</h3>
-          <p>${escapeHtml(clear?c.clearBody:c.removeBody)}</p>
+          <h3>${escapeHtml(title)}</h3>
+          <p>${escapeHtml(body)}</p>
           <div>
             <button
               class="desktop-flow-secondary"
@@ -592,6 +770,7 @@
       <div
         class="desktop-flow-page desktop-inquiry-page"
         data-desktop-inquiry-presentation="${PRESENTATION_VERSION}"
+        data-desktop-inquiry-selection="${SELECTION_VERSION}"
       >
         <div class="desktop-container--wide desktop-inquiry-shell">
           <div class="desktop-flow-empty desktop-inquiry-empty">
@@ -632,6 +811,7 @@
       <div
         class="desktop-flow-page desktop-inquiry-page"
         data-desktop-inquiry-presentation="${PRESENTATION_VERSION}"
+        data-desktop-inquiry-selection="${SELECTION_VERSION}"
       >
         <div class="desktop-container--wide desktop-inquiry-shell">
           <header class="desktop-flow-hero desktop-inquiry-hero">
@@ -669,12 +849,16 @@
     `;
   }
 
+
   function render(){
     if(!inquiryRoot){
       return false;
     }
 
     inquiryRoot.innerHTML=pageHtml();
+    const data=view();
+    pruneSelection(data);
+    syncSelectionControls(data);
     return true;
   }
 
@@ -688,18 +872,24 @@
     return true;
   }
 
+
   function syncWorkspace(data=view()){
     if(data.empty){
+      selectedIds.clear();
       return render();
     }
 
+    pruneSelection(data);
+
     const node=inquiryRoot?.querySelector('[data-desktop-inquiry-workspace]');
+
     if(!node){
       return render();
     }
 
     node.innerHTML=workspaceBody(data);
     syncOverview(data);
+    syncSelectionControls(data);
     return true;
   }
 
@@ -713,18 +903,22 @@
     return true;
   }
 
+
   function syncAfterMutation(){
     dialog=null;
     config?.actions?.syncInquiry?.();
     const data=view();
 
     if(data.empty){
+      selectedIds.clear();
       return render();
     }
 
+    pruneSelection(data);
     renderDialog();
     return syncWorkspace(data);
   }
+
 
   function onClick(event){
     const target=event.target.closest?.('[data-desktop-inquiry-action]');
@@ -751,7 +945,37 @@
     }
 
     if(action==='remove'){
-      dialog={type:'remove',id};
+      dialog={
+        type:'remove',
+        ids:id?[id]:[]
+      };
+      renderDialog();
+      return;
+    }
+
+    if(action==='remove-group'){
+      const key=text(target.dataset.group);
+      const group=deriveMoqGroups(view()).find(row=>row.key===key);
+
+      dialog={
+        type:'remove-group',
+        ids:(group?.items||[]).map(item=>text(item.id)).filter(Boolean)
+      };
+      renderDialog();
+      return;
+    }
+
+    if(action==='remove-selected'){
+      const ids=[...selectedIds];
+
+      if(!ids.length){
+        return;
+      }
+
+      dialog={
+        type:'remove-selected',
+        ids
+      };
       renderDialog();
       return;
     }
@@ -769,12 +993,14 @@
     }
 
     if(action==='dialog-confirm'){
-      if(dialog?.type==='remove'&&dialog.id){
-        config?.actions?.remove?.(dialog.id);
-      }
-
       if(dialog?.type==='clear'){
         config?.actions?.clear?.();
+        selectedIds.clear();
+      }else{
+        for(const removeId of dialog?.ids||[]){
+          config?.actions?.remove?.(removeId);
+          selectedIds.delete(removeId);
+        }
       }
 
       syncAfterMutation();
@@ -803,7 +1029,59 @@
     }
   }
 
+
   function onChange(event){
+    const itemSelect=event.target.closest?.('[data-desktop-inquiry-select-item]');
+
+    if(itemSelect&&inquiryRoot?.contains(itemSelect)){
+      const id=text(itemSelect.dataset.desktopInquirySelectItem);
+
+      if(itemSelect.checked){
+        selectedIds.add(id);
+      }else{
+        selectedIds.delete(id);
+      }
+
+      syncWorkspace(view());
+      return;
+    }
+
+    const groupSelect=event.target.closest?.('[data-desktop-inquiry-select-group]');
+
+    if(groupSelect&&inquiryRoot?.contains(groupSelect)){
+      const key=text(groupSelect.dataset.desktopInquirySelectGroup);
+      const group=deriveMoqGroups(view()).find(row=>row.key===key);
+
+      for(const item of group?.items||[]){
+        const id=text(item?.id);
+
+        if(!id){
+          continue;
+        }
+
+        if(groupSelect.checked){
+          selectedIds.add(id);
+        }else{
+          selectedIds.delete(id);
+        }
+      }
+
+      syncWorkspace(view());
+      return;
+    }
+
+    const allSelect=event.target.closest?.('[data-desktop-inquiry-select-all]');
+
+    if(allSelect&&inquiryRoot?.contains(allSelect)){
+      selectedIds=
+        allSelect.checked
+          ? new Set(allInquiryIds(view()))
+          : new Set();
+
+      syncWorkspace(view());
+      return;
+    }
+
     const input=event.target.closest?.('[data-desktop-inquiry-qty]');
 
     if(!input||!inquiryRoot?.contains(input)){
@@ -882,6 +1160,7 @@
     return Object.freeze({
       version:VERSION,
       presentation:PRESENTATION_VERSION,
+      selection:SELECTION_VERSION,
       configured:Boolean(config),
       mounted,
       itemCount:Number(data.summary?.itemCount||0),

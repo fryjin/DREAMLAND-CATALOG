@@ -6,6 +6,7 @@
   }
 
   const VERSION='B7-00B.3D';
+  const PRESENTATION_VERSION='B7-00B.4F-R1.1';
 
   let config=null;
   let reviewRoot=null;
@@ -78,12 +79,24 @@
     `;
   }
 
+
+  function countryDisplay(value){
+    const raw=text(value);
+    const code=raw.toUpperCase();
+    const rows=Array.isArray(copy().countryRegions)?copy().countryRegions:[];
+    const match=rows.find(row=>text(row?.code).toUpperCase()===code);
+
+    return match
+      ? `${text(match.label)} (${text(match.code)})`
+      : raw;
+  }
+
   function contactHtml(data){
     const c=copy();
     const rows=[
       [c.name,data.name],
       [c.company,data.company||c.notProvided],
-      [c.country,data.country],
+      [c.country,countryDisplay(data.country)],
       [c.city,data.city||c.notProvided],
       [c.email,data.email],
       [c.phone,data.phone],
@@ -419,6 +432,7 @@
   function snapshot(){
     return Object.freeze({
       version:VERSION,
+      presentation:PRESENTATION_VERSION,
       configured:Boolean(config),
       mounted,
       privacyAccepted,

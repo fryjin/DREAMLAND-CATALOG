@@ -888,7 +888,7 @@ try{
  */
 try{
   const release=
-    'b7-00b4f-r1-v120';
+    'b7-00b4g-r1-v121';
 
   const index=
     read(
@@ -1081,7 +1081,7 @@ try{
 
   if(
     !index.includes(
-      `window.DREAMLAND_RELEASE='b7-00b4f-r1-v120';`
+      `window.DREAMLAND_RELEASE='b7-00b4g-r1-v121';`
     )
   ){
     fail(
@@ -1096,11 +1096,11 @@ try{
 
   if(
     !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v120';"
+      "const CACHE_VERSION = 'dreamland-pwa-v121';"
     )
   ){
     fail(
-      'R5 requires dreamland-pwa-v120.'
+      'R5 requires dreamland-pwa-v121.'
     );
   }
 }catch(error){
@@ -1140,6 +1140,10 @@ try{
 }
 
 
+/* B7-00B.4G R1.2 — audited Catalog count terminology baseline.
+ * 4C navigation behavior remains protected; only the public count noun
+ * contract advances from branded DREAMS / 个梦境 to direct product wording.
+ */
 /* Gate 4C-R1.1 — sticky series navigation + explicit page-top recovery. */
 try{
   const renderer=read('src/ui/desktop/catalog/runtime-desktop-catalog.js');
@@ -1175,8 +1179,8 @@ try{
     if(!css.includes(required)) fail('Desktop Catalog R1.1 CSS is missing: '+required);
   }
 
-  if(site.languages?.zh?.catalog?.activeDesigns!=='个梦境') fail('ZH Catalog cover count must use 个梦境.');
-  if(site.languages?.en?.catalog?.activeDesigns!=='DREAMS') fail('EN Catalog cover count must use DREAMS.');
+  if(site.languages?.zh?.catalog?.activeDesigns!=='款产品') fail('ZH Catalog cover count must use 款产品.');
+  if(site.languages?.en?.catalog?.activeDesigns!=='products') fail('EN Catalog cover count must use products.');
   if(site.languages?.zh?.catalog?.backToTop!=='返回顶部') fail('ZH Catalog Back to top copy is missing.');
 }catch(error){
   fail('Desktop Catalog 4C R1.1 successor validation failed: '+error.message);

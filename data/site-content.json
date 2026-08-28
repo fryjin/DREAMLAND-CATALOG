@@ -34,7 +34,7 @@
       "collections": {
         "kicker": "THE COLLECTION",
         "title": "Four collections",
-        "body": "Different levels of detail, color and occasion — four ways into DREAMLAND.",
+        "body": "Four collections with different carving detail, color and character.",
         "designSingular": "design",
         "designPlural": "designs",
         "explore": "Explore"
@@ -42,7 +42,7 @@
       "featured": {
         "kicker": "CURATED NOW",
         "title": "Current Picks",
-        "body": "Five pieces selected from our Masterpiece and Advanced series.",
+        "body": "Five products selected from the Masterpiece and Advanced series.",
         "viewAll": "View all",
         "viewDetails": "View details",
         "moq": "MOQ"
@@ -55,7 +55,7 @@
       "custom": {
         "kicker": "CUSTOM MADE",
         "title": "Made for your project.",
-        "body": "Color, fragrance, packaging and branding can be developed around a specific brief.",
+        "body": "Color, fragrance, packaging and branding can be adjusted to suit the project.",
         "features": [
           "Colors",
           "Scents",
@@ -88,8 +88,8 @@
       },
       "cta": {
         "kicker": "YOUR NEXT PROJECT",
-        "title": "What are you making next?",
-        "body": "Start with a piece from the collection or tell us what you want to create.",
+        "title": "Planning a new project?",
+        "body": "Start with an existing product or send us a custom brief.",
         "explore": "Explore collection",
         "custom": "Start custom project",
         "review": "Review inquiry"
@@ -109,12 +109,12 @@
         "copyright": "© DREAMLAND"
       },
       "catalog": {
-        "kicker": "THE COLLECTION",
-        "title": "Explore the DREAMLAND collection",
-        "body": "Hand-carved candle designs across four series, available for wholesale and project inquiries.",
+        "kicker": "PRODUCT CATALOG",
+        "title": "Browse the DREAMLAND collection",
+        "body": "Products currently available for wholesale and project inquiries.",
         "all": "All",
-        "activeDesigns": "DREAMS",
-        "designs": "designs",
+        "activeDesigns": "products",
+        "designs": "products",
         "seriesNavigation": "Collection index",
         "searchPlaceholder": "Search designs or product ID",
         "filters": "Filter",
@@ -138,10 +138,10 @@
         "emptyBody": "Try another size or clear your filters.",
         "clearFilters": "Clear filters",
         "ctaKicker": "YOUR INQUIRY",
-        "ctaEmptyTitle": "Found a piece for your project?",
-        "ctaEmptyBody": "Open any design to choose size, scent and packaging, then add it to your inquiry.",
-        "ctaReadyTitle": "Your selection is taking shape.",
-        "ctaReadyBody": "{count} selected designs are ready to review.",
+        "ctaEmptyTitle": "Add products to an inquiry when you are ready for a quote.",
+        "ctaEmptyBody": "Choose size, fragrance and packaging on the product page, then add the configuration to your inquiry.",
+        "ctaReadyTitle": "Review selected products.",
+        "ctaReadyBody": "{count} products have been added to your inquiry.",
         "reviewInquiry": "Review inquiry",
         "backToTop": "Back to top"
       },
@@ -176,17 +176,17 @@
       },
       "customProject": {
         "kicker": "CUSTOM PROJECT",
-        "title": "Custom-made for brands, events and collections.",
-        "body": "Share your project needs, expected quantity and preferred product direction. We’ll review feasibility, quotation, lead time and delivery with you.",
+        "title": "Custom products for brands, events and gifting.",
+        "body": "Tell us the intended use, quantity and product requirements. We will review feasibility, pricing, lead time and delivery.",
         "sectionBasicsKicker": "01 / PROJECT BASICS",
-        "sectionBasicsTitle": "Tell us about your project.",
-        "sectionBasicsBody": "Share the intended use, expected quantity, budget and target delivery date so we can recommend the right product and production direction.",
+        "sectionBasicsTitle": "Add the project basics.",
+        "sectionBasicsBody": "Use, quantity, budget and delivery timing help us recommend a suitable product and production plan.",
         "sectionProductKicker": "02 / PRODUCT DIRECTION",
-        "sectionProductTitle": "Define the product direction.",
-        "sectionProductBody": "Choose a preferred size and fragrance collection, then add any color or brand references you would like us to consider.",
+        "sectionProductTitle": "Choose product and fragrance.",
+        "sectionProductBody": "Select a size and fragrance, then add any color, brand or product references.",
         "sectionPackagingKicker": "03 / PACKAGING & BRANDING",
-        "sectionPackagingTitle": "Complete the presentation.",
-        "sectionPackagingBody": "Choose a packaging direction and tell us which branding elements you would like to include.",
+        "sectionPackagingTitle": "Choose packaging and branding.",
+        "sectionPackagingBody": "Select packaging and tell us whether you need a logo, card, sticker or gift box.",
         "useCase": "Use Case *",
         "quantity": "Estimated Quantity *",
         "minimumQuantity": "Custom MOQ",
@@ -200,7 +200,7 @@
         "fragranceCollection": "Fragrance Collection",
         "scents": "Select Scents *",
         "scentsHint": "{count} selected · multiple scents may be selected within one collection",
-        "color": "Color Direction",
+        "color": "Color preference",
         "colorPlaceholder": "e.g. blush pink, sage green, or your brand color references",
         "packaging": "Packaging",
         "branding": "Branding",
@@ -212,12 +212,12 @@
         "notSelected": "Not selected",
         "scentCount": "{count} scents selected",
         "customization": "CUSTOMIZATION",
-        "quotedAfterReview": "Quoted against confirmed requirements",
-        "summaryNote": "Custom pricing is calculated against the confirmed product, quantity, packaging and branding requirements. We’ll confirm feasibility, lead time and delivery with you.",
+        "quotedAfterReview": "Quoted separately after review",
+        "summaryNote": "Custom pricing is based on the confirmed product, quantity, packaging and branding requirements. Lead time and delivery will be confirmed with the quotation.",
         "addInquiry": "Add Custom Project to Inquiry",
         "addedButton": "Added to Inquiry",
-        "addedTitle": "Added to this inquiry.",
-        "addedBody": "Continue browsing the collection or review the current inquiry.",
+        "addedTitle": "Added to the inquiry.",
+        "addedBody": "Continue browsing products or review the inquiry.",
         "exploreCollection": "Explore Collection",
         "reviewInquiry": "Review Inquiry",
         "errorUse": "Select a project type.",
@@ -353,7 +353,7 @@
             "label": "Discuss With Us"
           }
         ],
-        "collectionResetHint": "Choose multiple scents within one collection. Switching collections resets the current scent selection.",
+        "collectionResetHint": "Multiple scents can be selected within one collection. Changing collections clears the current scent selection.",
         "flowTitle": "Project flow",
         "requiredProgress": "{done} / {total} required",
         "continueToNext": "Continue to next section"
@@ -364,23 +364,23 @@
         "stepContact": "Contact",
         "stepReview": "Review",
         "kicker": "INQUIRY",
-        "title": "Your inquiry",
-        "body": "Review the products and custom requirements you would like us to quote, then continue with your contact details.",
-        "selectedProducts": "Selected items",
-        "selectedItems": "Selected Items",
+        "title": "Review inquiry",
+        "body": "Check the products, quantities and custom projects before adding contact details.",
+        "selectedProducts": "Inquiry items",
+        "selectedItems": "Items",
         "totalQuantity": "Total Quantity",
         "summaryKicker": "YOUR INQUIRY",
-        "summaryTitle": "Quotation overview",
-        "productEstimate": "Estimated Product Total",
+        "summaryTitle": "Inquiry overview",
+        "productEstimate": "Estimated product amount",
         "customProject": "Custom Project",
         "customQuotedSeparately": "Quoted separately",
-        "finalPricingNote": "Product pricing, customization, lead time and delivery will be confirmed in the formal quotation.",
+        "finalPricingNote": "Final pricing, lead time and delivery will be confirmed in the formal quotation.",
         "continueContact": "Continue to Contact Details",
         "continueExploring": "Continue Exploring",
         "exploreCollection": "Explore Collection",
         "startCustom": "Start a Custom Project",
-        "emptyTitle": "Your inquiry is empty.",
-        "emptyBody": "Start with a piece from the collection or tell us about a custom project.",
+        "emptyTitle": "No items in this inquiry.",
+        "emptyBody": "Add products from the collection or start a custom project.",
         "size": "Size",
         "scent": "Scent",
         "pattern": "Pattern",
@@ -394,20 +394,20 @@
         "branding": "Branding",
         "remove": "Remove",
         "removeTitle": "Remove this item?",
-        "removeBody": "This selection will be removed from the current inquiry.",
+        "removeBody": "This item will be removed from the inquiry.",
         "cancel": "Cancel",
-        "clearAll": "Clear inquiry",
+        "clearAll": "Clear all",
         "clearTitle": "Clear this inquiry?",
-        "clearBody": "All selected products and custom projects will be removed.",
+        "clearBody": "All products and custom projects will be removed.",
         "clearConfirm": "Clear all items from this inquiry?",
         "editConfiguration": "Edit configuration",
         "cannotContinue": "Review the selected quantities before continuing.",
         "contactKicker": "CONTACT",
-        "contactTitle": "How should we contact you?",
-        "contactBody": "Share the best contact details for quotation and project follow-up.",
+        "contactTitle": "Add contact details",
+        "contactBody": "We will use these details to confirm the quotation and project requirements.",
         "contactDetailsKicker": "CONTACT DETAILS",
         "contactDetailsTitle": "Contact details",
-        "contactDetailsBody": "We’ll use these details only to respond to this inquiry and discuss your project.",
+        "contactDetailsBody": "These details are used only to reply to this inquiry and follow up on the project.",
         "name": "Contact Name",
         "company": "Company / Brand",
         "country": "Country / Region",
@@ -418,7 +418,7 @@
         "message": "Other Notes",
         "namePlaceholder": "Your name",
         "companyPlaceholder": "Company or brand",
-        "countryPlaceholder": "Country / region",
+        "countryPlaceholder": "Select country / region",
         "cityPlaceholder": "City",
         "emailPlaceholder": "name@example.com",
         "phonePlaceholder": "Preferred contact method",
@@ -467,44 +467,44 @@
           "generic": "Check this field."
         },
         "whatNextKicker": "AFTER SUBMISSION",
-        "whatNextTitle": "What happens next",
+        "whatNextTitle": "What happens after submission",
         "whatNextSteps": [
-          "We review your product selections, quantities and custom requirements.",
-          "We confirm feasibility and any project information still needed.",
-          "We contact you with quotation, production lead time and delivery details."
+          "We check the selected products, quantities and custom requirements.",
+          "We confirm any information needed to prepare the quotation.",
+          "We contact you with pricing, lead time and delivery details."
         ],
         "reviewKicker": "FINAL CHECK",
-        "reviewTitle": "Review your inquiry before sending.",
-        "reviewBody": "Check the contact details, product configurations and custom requirements below before submitting.",
+        "reviewTitle": "Review and submit the inquiry.",
+        "reviewBody": "Check the contact details, product configurations and custom project requirements.",
         "edit": "Edit",
         "notProvided": "Not provided",
         "none": "None",
         "reviewSummaryTitle": "Inquiry overview",
         "inquiryNumber": "Inquiry ID",
         "beforeSubmitKicker": "BEFORE SUBMISSION",
-        "beforeSubmitTitle": "This request is for quotation, not a confirmed order.",
-        "beforeSubmitBody": "Pricing, production arrangements and delivery become final only after both sides confirm the quotation.",
+        "beforeSubmitTitle": "Submitting an inquiry does not place an order.",
+        "beforeSubmitBody": "Pricing, production and delivery are confirmed only after the quotation is accepted.",
         "privacyPrefix": "I have read and agree to the",
         "privacyLink": "Privacy Notice",
         "privacyRequired": "Please agree to the Privacy Notice before submitting.",
         "security": "Security",
-        "securityChecking": "Running background security check…",
-        "securityReady": "Security check ready.",
-        "securityAdditional": "Additional verification may be required on submission.",
-        "securityVerified": "Security verification completed.",
+        "securityChecking": "Verifying…",
+        "securityReady": "Verification complete.",
+        "securityAdditional": "Additional verification is required before submission.",
+        "securityVerified": "Verification complete.",
         "submitInquiry": "Submit Inquiry",
         "submitting": "Sending…",
         "submitFailed": "We couldn't send the inquiry. Your selections are still saved. Please try again.",
         "successKicker": "INQUIRY RECEIVED",
-        "successTitle": "Thank you. We’ve received your inquiry.",
-        "successBody": "Our team will review your selections and requirements, then contact you to confirm quotation, production lead time and delivery.",
+        "successTitle": "We have received your inquiry.",
+        "successBody": "We will review the products, quantities and custom requirements, then contact you with pricing, lead time and delivery details.",
         "submitted": "Submitted",
         "status": "Status",
         "awaitingReview": "In review",
         "startAnotherProject": "Start a New Inquiry",
         "workspaceKicker": "INQUIRY REVIEW",
-        "workspaceTitle": "Review your selection.",
-        "workspaceBody": "Confirm the products, quantities and custom projects you want us to quote, then continue with your contact details.",
+        "workspaceTitle": "Review inquiry",
+        "workspaceBody": "Check the products, quantities and custom projects, then add contact details.",
         "productSelection": "Product selection",
         "customProjects": "Custom projects",
         "inquiryOverview": "Inquiry overview",
@@ -517,14 +517,1022 @@
         "moqRemaining": "{count} pcs remaining",
         "moqGroupsReady": "{count} groups ready",
         "moqGroupsPending": "{count} groups still below MOQ",
-        "clearInquiry": "Clear inquiry"
+        "clearInquiry": "Clear inquiry",
+        "selectAll": "Select all",
+        "selectedCount": "{selected} / {total} selected",
+        "selectItem": "Select item",
+        "selectGroup": "Select group",
+        "removeSelected": "Remove selected",
+        "removeGroup": "Remove group",
+        "removeSelectedTitle": "Remove selected items?",
+        "removeSelectedBody": "{count} selected items will be removed from the inquiry.",
+        "removeGroupTitle": "Remove this group?",
+        "removeGroupBody": "{count} items in this series and size group will be removed.",
+        "countryRegions": [
+          {
+            "code": "AD",
+            "label": "Andorra"
+          },
+          {
+            "code": "AE",
+            "label": "United Arab Emirates"
+          },
+          {
+            "code": "AF",
+            "label": "Afghanistan"
+          },
+          {
+            "code": "AG",
+            "label": "Antigua & Barbuda"
+          },
+          {
+            "code": "AI",
+            "label": "Anguilla"
+          },
+          {
+            "code": "AL",
+            "label": "Albania"
+          },
+          {
+            "code": "AM",
+            "label": "Armenia"
+          },
+          {
+            "code": "AO",
+            "label": "Angola"
+          },
+          {
+            "code": "AQ",
+            "label": "Antarctica"
+          },
+          {
+            "code": "AR",
+            "label": "Argentina"
+          },
+          {
+            "code": "AS",
+            "label": "American Samoa"
+          },
+          {
+            "code": "AT",
+            "label": "Austria"
+          },
+          {
+            "code": "AU",
+            "label": "Australia"
+          },
+          {
+            "code": "AW",
+            "label": "Aruba"
+          },
+          {
+            "code": "AX",
+            "label": "Åland Islands"
+          },
+          {
+            "code": "AZ",
+            "label": "Azerbaijan"
+          },
+          {
+            "code": "BA",
+            "label": "Bosnia & Herzegovina"
+          },
+          {
+            "code": "BB",
+            "label": "Barbados"
+          },
+          {
+            "code": "BD",
+            "label": "Bangladesh"
+          },
+          {
+            "code": "BE",
+            "label": "Belgium"
+          },
+          {
+            "code": "BF",
+            "label": "Burkina Faso"
+          },
+          {
+            "code": "BG",
+            "label": "Bulgaria"
+          },
+          {
+            "code": "BH",
+            "label": "Bahrain"
+          },
+          {
+            "code": "BI",
+            "label": "Burundi"
+          },
+          {
+            "code": "BJ",
+            "label": "Benin"
+          },
+          {
+            "code": "BL",
+            "label": "St. Barthélemy"
+          },
+          {
+            "code": "BM",
+            "label": "Bermuda"
+          },
+          {
+            "code": "BN",
+            "label": "Brunei"
+          },
+          {
+            "code": "BO",
+            "label": "Bolivia"
+          },
+          {
+            "code": "BQ",
+            "label": "Caribbean Netherlands"
+          },
+          {
+            "code": "BR",
+            "label": "Brazil"
+          },
+          {
+            "code": "BS",
+            "label": "Bahamas"
+          },
+          {
+            "code": "BT",
+            "label": "Bhutan"
+          },
+          {
+            "code": "BV",
+            "label": "Bouvet Island"
+          },
+          {
+            "code": "BW",
+            "label": "Botswana"
+          },
+          {
+            "code": "BY",
+            "label": "Belarus"
+          },
+          {
+            "code": "BZ",
+            "label": "Belize"
+          },
+          {
+            "code": "CA",
+            "label": "Canada"
+          },
+          {
+            "code": "CC",
+            "label": "Cocos (Keeling) Islands"
+          },
+          {
+            "code": "CD",
+            "label": "Congo - Kinshasa"
+          },
+          {
+            "code": "CF",
+            "label": "Central African Republic"
+          },
+          {
+            "code": "CG",
+            "label": "Congo - Brazzaville"
+          },
+          {
+            "code": "CH",
+            "label": "Switzerland"
+          },
+          {
+            "code": "CI",
+            "label": "Côte d’Ivoire"
+          },
+          {
+            "code": "CK",
+            "label": "Cook Islands"
+          },
+          {
+            "code": "CL",
+            "label": "Chile"
+          },
+          {
+            "code": "CM",
+            "label": "Cameroon"
+          },
+          {
+            "code": "CN",
+            "label": "China"
+          },
+          {
+            "code": "CO",
+            "label": "Colombia"
+          },
+          {
+            "code": "CR",
+            "label": "Costa Rica"
+          },
+          {
+            "code": "CU",
+            "label": "Cuba"
+          },
+          {
+            "code": "CV",
+            "label": "Cape Verde"
+          },
+          {
+            "code": "CW",
+            "label": "Curaçao"
+          },
+          {
+            "code": "CX",
+            "label": "Christmas Island"
+          },
+          {
+            "code": "CY",
+            "label": "Cyprus"
+          },
+          {
+            "code": "CZ",
+            "label": "Czechia"
+          },
+          {
+            "code": "DE",
+            "label": "Germany"
+          },
+          {
+            "code": "DJ",
+            "label": "Djibouti"
+          },
+          {
+            "code": "DK",
+            "label": "Denmark"
+          },
+          {
+            "code": "DM",
+            "label": "Dominica"
+          },
+          {
+            "code": "DO",
+            "label": "Dominican Republic"
+          },
+          {
+            "code": "DZ",
+            "label": "Algeria"
+          },
+          {
+            "code": "EC",
+            "label": "Ecuador"
+          },
+          {
+            "code": "EE",
+            "label": "Estonia"
+          },
+          {
+            "code": "EG",
+            "label": "Egypt"
+          },
+          {
+            "code": "EH",
+            "label": "Western Sahara"
+          },
+          {
+            "code": "ER",
+            "label": "Eritrea"
+          },
+          {
+            "code": "ES",
+            "label": "Spain"
+          },
+          {
+            "code": "ET",
+            "label": "Ethiopia"
+          },
+          {
+            "code": "FI",
+            "label": "Finland"
+          },
+          {
+            "code": "FJ",
+            "label": "Fiji"
+          },
+          {
+            "code": "FK",
+            "label": "Falkland Islands"
+          },
+          {
+            "code": "FM",
+            "label": "Micronesia"
+          },
+          {
+            "code": "FO",
+            "label": "Faroe Islands"
+          },
+          {
+            "code": "FR",
+            "label": "France"
+          },
+          {
+            "code": "GA",
+            "label": "Gabon"
+          },
+          {
+            "code": "GB",
+            "label": "United Kingdom"
+          },
+          {
+            "code": "GD",
+            "label": "Grenada"
+          },
+          {
+            "code": "GE",
+            "label": "Georgia"
+          },
+          {
+            "code": "GF",
+            "label": "French Guiana"
+          },
+          {
+            "code": "GG",
+            "label": "Guernsey"
+          },
+          {
+            "code": "GH",
+            "label": "Ghana"
+          },
+          {
+            "code": "GI",
+            "label": "Gibraltar"
+          },
+          {
+            "code": "GL",
+            "label": "Greenland"
+          },
+          {
+            "code": "GM",
+            "label": "Gambia"
+          },
+          {
+            "code": "GN",
+            "label": "Guinea"
+          },
+          {
+            "code": "GP",
+            "label": "Guadeloupe"
+          },
+          {
+            "code": "GQ",
+            "label": "Equatorial Guinea"
+          },
+          {
+            "code": "GR",
+            "label": "Greece"
+          },
+          {
+            "code": "GS",
+            "label": "South Georgia & South Sandwich Islands"
+          },
+          {
+            "code": "GT",
+            "label": "Guatemala"
+          },
+          {
+            "code": "GU",
+            "label": "Guam"
+          },
+          {
+            "code": "GW",
+            "label": "Guinea-Bissau"
+          },
+          {
+            "code": "GY",
+            "label": "Guyana"
+          },
+          {
+            "code": "HK",
+            "label": "Hong Kong SAR China"
+          },
+          {
+            "code": "HM",
+            "label": "Heard & McDonald Islands"
+          },
+          {
+            "code": "HN",
+            "label": "Honduras"
+          },
+          {
+            "code": "HR",
+            "label": "Croatia"
+          },
+          {
+            "code": "HT",
+            "label": "Haiti"
+          },
+          {
+            "code": "HU",
+            "label": "Hungary"
+          },
+          {
+            "code": "ID",
+            "label": "Indonesia"
+          },
+          {
+            "code": "IE",
+            "label": "Ireland"
+          },
+          {
+            "code": "IL",
+            "label": "Israel"
+          },
+          {
+            "code": "IM",
+            "label": "Isle of Man"
+          },
+          {
+            "code": "IN",
+            "label": "India"
+          },
+          {
+            "code": "IO",
+            "label": "British Indian Ocean Territory"
+          },
+          {
+            "code": "IQ",
+            "label": "Iraq"
+          },
+          {
+            "code": "IR",
+            "label": "Iran"
+          },
+          {
+            "code": "IS",
+            "label": "Iceland"
+          },
+          {
+            "code": "IT",
+            "label": "Italy"
+          },
+          {
+            "code": "JE",
+            "label": "Jersey"
+          },
+          {
+            "code": "JM",
+            "label": "Jamaica"
+          },
+          {
+            "code": "JO",
+            "label": "Jordan"
+          },
+          {
+            "code": "JP",
+            "label": "Japan"
+          },
+          {
+            "code": "KE",
+            "label": "Kenya"
+          },
+          {
+            "code": "KG",
+            "label": "Kyrgyzstan"
+          },
+          {
+            "code": "KH",
+            "label": "Cambodia"
+          },
+          {
+            "code": "KI",
+            "label": "Kiribati"
+          },
+          {
+            "code": "KM",
+            "label": "Comoros"
+          },
+          {
+            "code": "KN",
+            "label": "St. Kitts & Nevis"
+          },
+          {
+            "code": "KP",
+            "label": "North Korea"
+          },
+          {
+            "code": "KR",
+            "label": "South Korea"
+          },
+          {
+            "code": "KW",
+            "label": "Kuwait"
+          },
+          {
+            "code": "KY",
+            "label": "Cayman Islands"
+          },
+          {
+            "code": "KZ",
+            "label": "Kazakhstan"
+          },
+          {
+            "code": "LA",
+            "label": "Laos"
+          },
+          {
+            "code": "LB",
+            "label": "Lebanon"
+          },
+          {
+            "code": "LC",
+            "label": "St. Lucia"
+          },
+          {
+            "code": "LI",
+            "label": "Liechtenstein"
+          },
+          {
+            "code": "LK",
+            "label": "Sri Lanka"
+          },
+          {
+            "code": "LR",
+            "label": "Liberia"
+          },
+          {
+            "code": "LS",
+            "label": "Lesotho"
+          },
+          {
+            "code": "LT",
+            "label": "Lithuania"
+          },
+          {
+            "code": "LU",
+            "label": "Luxembourg"
+          },
+          {
+            "code": "LV",
+            "label": "Latvia"
+          },
+          {
+            "code": "LY",
+            "label": "Libya"
+          },
+          {
+            "code": "MA",
+            "label": "Morocco"
+          },
+          {
+            "code": "MC",
+            "label": "Monaco"
+          },
+          {
+            "code": "MD",
+            "label": "Moldova"
+          },
+          {
+            "code": "ME",
+            "label": "Montenegro"
+          },
+          {
+            "code": "MF",
+            "label": "St. Martin"
+          },
+          {
+            "code": "MG",
+            "label": "Madagascar"
+          },
+          {
+            "code": "MH",
+            "label": "Marshall Islands"
+          },
+          {
+            "code": "MK",
+            "label": "North Macedonia"
+          },
+          {
+            "code": "ML",
+            "label": "Mali"
+          },
+          {
+            "code": "MM",
+            "label": "Myanmar (Burma)"
+          },
+          {
+            "code": "MN",
+            "label": "Mongolia"
+          },
+          {
+            "code": "MO",
+            "label": "Macao SAR China"
+          },
+          {
+            "code": "MP",
+            "label": "Northern Mariana Islands"
+          },
+          {
+            "code": "MQ",
+            "label": "Martinique"
+          },
+          {
+            "code": "MR",
+            "label": "Mauritania"
+          },
+          {
+            "code": "MS",
+            "label": "Montserrat"
+          },
+          {
+            "code": "MT",
+            "label": "Malta"
+          },
+          {
+            "code": "MU",
+            "label": "Mauritius"
+          },
+          {
+            "code": "MV",
+            "label": "Maldives"
+          },
+          {
+            "code": "MW",
+            "label": "Malawi"
+          },
+          {
+            "code": "MX",
+            "label": "Mexico"
+          },
+          {
+            "code": "MY",
+            "label": "Malaysia"
+          },
+          {
+            "code": "MZ",
+            "label": "Mozambique"
+          },
+          {
+            "code": "NA",
+            "label": "Namibia"
+          },
+          {
+            "code": "NC",
+            "label": "New Caledonia"
+          },
+          {
+            "code": "NE",
+            "label": "Niger"
+          },
+          {
+            "code": "NF",
+            "label": "Norfolk Island"
+          },
+          {
+            "code": "NG",
+            "label": "Nigeria"
+          },
+          {
+            "code": "NI",
+            "label": "Nicaragua"
+          },
+          {
+            "code": "NL",
+            "label": "Netherlands"
+          },
+          {
+            "code": "NO",
+            "label": "Norway"
+          },
+          {
+            "code": "NP",
+            "label": "Nepal"
+          },
+          {
+            "code": "NR",
+            "label": "Nauru"
+          },
+          {
+            "code": "NU",
+            "label": "Niue"
+          },
+          {
+            "code": "NZ",
+            "label": "New Zealand"
+          },
+          {
+            "code": "OM",
+            "label": "Oman"
+          },
+          {
+            "code": "PA",
+            "label": "Panama"
+          },
+          {
+            "code": "PE",
+            "label": "Peru"
+          },
+          {
+            "code": "PF",
+            "label": "French Polynesia"
+          },
+          {
+            "code": "PG",
+            "label": "Papua New Guinea"
+          },
+          {
+            "code": "PH",
+            "label": "Philippines"
+          },
+          {
+            "code": "PK",
+            "label": "Pakistan"
+          },
+          {
+            "code": "PL",
+            "label": "Poland"
+          },
+          {
+            "code": "PM",
+            "label": "St. Pierre & Miquelon"
+          },
+          {
+            "code": "PN",
+            "label": "Pitcairn Islands"
+          },
+          {
+            "code": "PR",
+            "label": "Puerto Rico"
+          },
+          {
+            "code": "PS",
+            "label": "Palestinian Territories"
+          },
+          {
+            "code": "PT",
+            "label": "Portugal"
+          },
+          {
+            "code": "PW",
+            "label": "Palau"
+          },
+          {
+            "code": "PY",
+            "label": "Paraguay"
+          },
+          {
+            "code": "QA",
+            "label": "Qatar"
+          },
+          {
+            "code": "RE",
+            "label": "Réunion"
+          },
+          {
+            "code": "RO",
+            "label": "Romania"
+          },
+          {
+            "code": "RS",
+            "label": "Serbia"
+          },
+          {
+            "code": "RU",
+            "label": "Russia"
+          },
+          {
+            "code": "RW",
+            "label": "Rwanda"
+          },
+          {
+            "code": "SA",
+            "label": "Saudi Arabia"
+          },
+          {
+            "code": "SB",
+            "label": "Solomon Islands"
+          },
+          {
+            "code": "SC",
+            "label": "Seychelles"
+          },
+          {
+            "code": "SD",
+            "label": "Sudan"
+          },
+          {
+            "code": "SE",
+            "label": "Sweden"
+          },
+          {
+            "code": "SG",
+            "label": "Singapore"
+          },
+          {
+            "code": "SH",
+            "label": "St. Helena"
+          },
+          {
+            "code": "SI",
+            "label": "Slovenia"
+          },
+          {
+            "code": "SJ",
+            "label": "Svalbard & Jan Mayen"
+          },
+          {
+            "code": "SK",
+            "label": "Slovakia"
+          },
+          {
+            "code": "SL",
+            "label": "Sierra Leone"
+          },
+          {
+            "code": "SM",
+            "label": "San Marino"
+          },
+          {
+            "code": "SN",
+            "label": "Senegal"
+          },
+          {
+            "code": "SO",
+            "label": "Somalia"
+          },
+          {
+            "code": "SR",
+            "label": "Suriname"
+          },
+          {
+            "code": "SS",
+            "label": "South Sudan"
+          },
+          {
+            "code": "ST",
+            "label": "São Tomé & Príncipe"
+          },
+          {
+            "code": "SV",
+            "label": "El Salvador"
+          },
+          {
+            "code": "SX",
+            "label": "Sint Maarten"
+          },
+          {
+            "code": "SY",
+            "label": "Syria"
+          },
+          {
+            "code": "SZ",
+            "label": "Eswatini"
+          },
+          {
+            "code": "TC",
+            "label": "Turks & Caicos Islands"
+          },
+          {
+            "code": "TD",
+            "label": "Chad"
+          },
+          {
+            "code": "TF",
+            "label": "French Southern Territories"
+          },
+          {
+            "code": "TG",
+            "label": "Togo"
+          },
+          {
+            "code": "TH",
+            "label": "Thailand"
+          },
+          {
+            "code": "TJ",
+            "label": "Tajikistan"
+          },
+          {
+            "code": "TK",
+            "label": "Tokelau"
+          },
+          {
+            "code": "TL",
+            "label": "Timor-Leste"
+          },
+          {
+            "code": "TM",
+            "label": "Turkmenistan"
+          },
+          {
+            "code": "TN",
+            "label": "Tunisia"
+          },
+          {
+            "code": "TO",
+            "label": "Tonga"
+          },
+          {
+            "code": "TR",
+            "label": "Türkiye"
+          },
+          {
+            "code": "TT",
+            "label": "Trinidad & Tobago"
+          },
+          {
+            "code": "TV",
+            "label": "Tuvalu"
+          },
+          {
+            "code": "TW",
+            "label": "Taiwan"
+          },
+          {
+            "code": "TZ",
+            "label": "Tanzania"
+          },
+          {
+            "code": "UA",
+            "label": "Ukraine"
+          },
+          {
+            "code": "UG",
+            "label": "Uganda"
+          },
+          {
+            "code": "UM",
+            "label": "U.S. Outlying Islands"
+          },
+          {
+            "code": "US",
+            "label": "United States"
+          },
+          {
+            "code": "UY",
+            "label": "Uruguay"
+          },
+          {
+            "code": "UZ",
+            "label": "Uzbekistan"
+          },
+          {
+            "code": "VA",
+            "label": "Vatican City"
+          },
+          {
+            "code": "VC",
+            "label": "St. Vincent & Grenadines"
+          },
+          {
+            "code": "VE",
+            "label": "Venezuela"
+          },
+          {
+            "code": "VG",
+            "label": "British Virgin Islands"
+          },
+          {
+            "code": "VI",
+            "label": "U.S. Virgin Islands"
+          },
+          {
+            "code": "VN",
+            "label": "Vietnam"
+          },
+          {
+            "code": "VU",
+            "label": "Vanuatu"
+          },
+          {
+            "code": "WF",
+            "label": "Wallis & Futuna"
+          },
+          {
+            "code": "WS",
+            "label": "Samoa"
+          },
+          {
+            "code": "YE",
+            "label": "Yemen"
+          },
+          {
+            "code": "YT",
+            "label": "Mayotte"
+          },
+          {
+            "code": "ZA",
+            "label": "South Africa"
+          },
+          {
+            "code": "ZM",
+            "label": "Zambia"
+          },
+          {
+            "code": "ZW",
+            "label": "Zimbabwe"
+          }
+        ]
       },
       "story": {
         "kicker": "ABOUT DREAMLAND",
         "mark": "meet DREAMLAND",
         "title": "meet DREAMLAND",
         "body": "DREAMLAND focuses on hand-carved candles. Color, scent and wax layering guide each piece, while cutting, curling and shaping are done by hand when the wax is still warm.",
-        "note": "We believe a candle can be both an object and a vessel for time and light.",
+        "note": "We make hand-carved candles to be lit, displayed, or both.",
         "eyebrow": "ABOUT DREAMLAND"
       }
     },
@@ -545,7 +1553,7 @@
       "collections": {
         "kicker": "产品系列",
         "title": "四个系列",
-        "body": "不同工艺、色彩与场景，从四个方向进入 DREAMLAND 的作品世界。",
+        "body": "四个系列，以不同的雕刻细节、配色和风格区分。",
         "designSingular": "款",
         "designPlural": "款",
         "explore": "浏览系列"
@@ -553,7 +1561,7 @@
       "featured": {
         "kicker": "精选推荐",
         "title": "当下推荐",
-        "body": "从匠心工艺到色彩美学，探索此刻最值得拥有的五件作品。",
+        "body": "从匠作与进阶系列中精选 5 款产品。",
         "viewAll": "查看全部",
         "viewDetails": "查看详情",
         "moq": "起订"
@@ -566,7 +1574,7 @@
       "custom": {
         "kicker": "定制项目",
         "title": "为你的项目而做。",
-        "body": "配色、香型、包装与品牌呈现，都可以围绕具体项目一起确认。",
+        "body": "可根据项目需求调整配色、香型、包装和品牌物料。",
         "features": [
           "配色",
           "香型",
@@ -599,8 +1607,8 @@
       },
       "cta": {
         "kicker": "你的下一个项目",
-        "title": "说说你正在准备的项目。",
-        "body": "可以从现有系列开始，也可以直接告诉我们你想做什么。",
+        "title": "正在准备新项目？",
+        "body": "可以从现有产品开始选款，也可以直接提交定制需求。",
         "explore": "浏览产品系列",
         "custom": "发起定制项目",
         "review": "查看询价单"
@@ -620,12 +1628,12 @@
         "copyright": "© DREAMLAND"
       },
       "catalog": {
-        "kicker": "作品目录",
-        "title": "浏览 DREAMLAND 全部作品",
-        "body": "从手工雕刻、色彩层次到节日表达，浏览当前开放批发与项目询价的完整作品系列。",
+        "kicker": "产品目录",
+        "title": "浏览 DREAMLAND 产品系列",
+        "body": "查看当前可用于批发与项目询价的产品。",
         "all": "全部",
-        "activeDesigns": "个梦境",
-        "designs": "件作品",
+        "activeDesigns": "款产品",
+        "designs": "款产品",
         "seriesNavigation": "作品系列",
         "searchPlaceholder": "搜索作品名称或编号",
         "filters": "筛选",
@@ -648,11 +1656,11 @@
         "searchEmptyTitle": "没有找到“{query}”",
         "emptyBody": "可以更换尺寸条件，或清除筛选后继续浏览。",
         "clearFilters": "清除筛选",
-        "ctaKicker": "采购意向",
-        "ctaEmptyTitle": "找到适合项目的作品了吗？",
-        "ctaEmptyBody": "进入作品详情选择尺寸、香型与包装，再加入询价项目。",
-        "ctaReadyTitle": "你的作品清单正在成形。",
-        "ctaReadyBody": "已有 {count} 件作品等待确认。",
+        "ctaKicker": "询价单",
+        "ctaEmptyTitle": "需要报价的产品可以直接加入询价单。",
+        "ctaEmptyBody": "进入产品详情选择尺寸、香型和包装后加入询价单。",
+        "ctaReadyTitle": "查看已选产品。",
+        "ctaReadyBody": "已加入 {count} 款产品。",
         "reviewInquiry": "查看询价",
         "backToTop": "返回顶部"
       },
@@ -687,17 +1695,17 @@
       },
       "customProject": {
         "kicker": "定制项目",
-        "title": "为品牌、活动与专属系列定制。",
-        "body": "告诉我们项目用途、预计数量、产品偏好与定制需求。我们会评估制作可行性，并与你确认报价、制作周期和交付安排。",
+        "title": "品牌、活动与礼赠定制。",
+        "body": "填写用途、数量和产品要求，我们会确认制作可行性、报价、制作周期和交付安排。",
         "sectionBasicsKicker": "01 / 项目基础",
-        "sectionBasicsTitle": "从项目需求开始。",
-        "sectionBasicsBody": "填写用途、预计数量、预算与目标交付时间，我们会据此判断适合的产品与制作方向。",
+        "sectionBasicsTitle": "填写项目基本信息。",
+        "sectionBasicsBody": "用途、数量、预算和交付时间将帮助我们推荐合适的产品与制作方案。",
         "sectionProductKicker": "02 / 产品方向",
-        "sectionProductTitle": "确定产品与香型方向。",
-        "sectionProductBody": "选择尺寸与香型系列，并补充希望参考的配色、品牌视觉或其他产品要求。",
+        "sectionProductTitle": "选择产品与香型。",
+        "sectionProductBody": "选择尺寸和香型，并补充配色、品牌视觉或其他产品要求。",
         "sectionPackagingKicker": "03 / 包装与品牌",
-        "sectionPackagingTitle": "确认包装与品牌呈现。",
-        "sectionPackagingBody": "选择包装方向，并说明是否需要 Logo、贺卡、贴纸或礼盒等品牌物料。",
+        "sectionPackagingTitle": "选择包装与品牌物料。",
+        "sectionPackagingBody": "选择包装，并说明是否需要 Logo、贺卡、贴纸或礼盒。",
         "useCase": "定制用途 *",
         "quantity": "预计数量 *",
         "minimumQuantity": "最低定制数量",
@@ -711,7 +1719,7 @@
         "fragranceCollection": "香型系列",
         "scents": "选择香型 *",
         "scentsHint": "已选 {count} 种 · 同一系列可多选",
-        "color": "色彩方向",
+        "color": "配色偏好",
         "colorPlaceholder": "例如：粉色系、鼠尾草绿，或品牌 VI 色参考",
         "packaging": "包装需求",
         "branding": "品牌物料",
@@ -723,12 +1731,12 @@
         "notSelected": "暂未选择",
         "scentCount": "已选 {count} 种香型",
         "customization": "定制报价",
-        "quotedAfterReview": "根据确认需求核算报价",
-        "summaryNote": "定制报价将根据最终确认的产品、数量、包装与品牌需求核算。我们会与你确认制作可行性、制作周期及交付安排。",
+        "quotedAfterReview": "确认需求后报价",
+        "summaryNote": "报价将根据确认后的产品、数量、包装和品牌需求核算。制作周期和交付安排将在报价时一并确认。",
         "addInquiry": "加入本次询价",
         "addedButton": "已加入询价",
-        "addedTitle": "已加入当前询价。",
-        "addedBody": "你可以继续浏览产品，或查看当前询价内容。",
+        "addedTitle": "已加入询价单。",
+        "addedBody": "可以继续浏览产品，或查看询价单。",
         "exploreCollection": "浏览产品系列",
         "reviewInquiry": "查看询价内容",
         "errorUse": "请选择定制用途。",
@@ -864,7 +1872,7 @@
             "label": "待沟通确认"
           }
         ],
-        "collectionResetHint": "香型可在同一系列中多选；切换系列后需重新选择香型。",
+        "collectionResetHint": "同一香型系列可多选；切换系列会清空已选香型。",
         "flowTitle": "定制流程",
         "requiredProgress": "必填信息 {done} / {total}",
         "continueToNext": "继续完善项目"
@@ -874,24 +1882,24 @@
         "stepSelection": "询价内容",
         "stepContact": "联系信息",
         "stepReview": "确认提交",
-        "kicker": "采购询价",
-        "title": "询价内容",
-        "body": "确认需要询价的产品与定制项目，再继续填写联系信息。",
-        "selectedProducts": "已选项目",
-        "selectedItems": "项目数量",
+        "kicker": "询价单",
+        "title": "确认询价内容",
+        "body": "核对产品、数量和定制项目，然后填写联系信息。",
+        "selectedProducts": "询价项目",
+        "selectedItems": "项目数",
         "totalQuantity": "产品总数量",
         "summaryKicker": "询价概要",
-        "summaryTitle": "本次询价",
+        "summaryTitle": "询价概要",
         "productEstimate": "产品预估金额",
         "customProject": "定制项目",
         "customQuotedSeparately": "需求确认后单独报价",
-        "finalPricingNote": "产品价格与定制费用将根据最终需求确认；制作周期与交付方式会在正式报价中说明。",
+        "finalPricingNote": "最终价格、制作周期和交付方式以正式报价为准。",
         "continueContact": "填写联系信息",
         "continueExploring": "继续浏览",
         "exploreCollection": "浏览产品系列",
         "startCustom": "发起定制项目",
-        "emptyTitle": "还没有需要询价的项目。",
-        "emptyBody": "可以先从产品系列选择产品，或直接提交定制需求。",
+        "emptyTitle": "询价单暂无内容。",
+        "emptyBody": "从产品系列加入产品，或提交定制项目。",
         "size": "尺寸",
         "scent": "香型",
         "pattern": "图案",
@@ -905,20 +1913,20 @@
         "branding": "品牌物料",
         "remove": "移除",
         "removeTitle": "移除这个项目？",
-        "removeBody": "该项目将从当前意向单中移除。",
+        "removeBody": "该项目将从询价单中移除。",
         "cancel": "取消",
-        "clearAll": "清空询价单",
-        "clearTitle": "清空当前询价单？",
-        "clearBody": "已选产品和定制项目将全部移除。",
+        "clearAll": "清空全部",
+        "clearTitle": "清空询价单？",
+        "clearBody": "询价单中的产品和定制项目将全部移除。",
         "clearConfirm": "确认清空当前询价单中的全部项目？",
         "editConfiguration": "修改配置",
         "cannotContinue": "请先检查产品数量和最低起订要求。",
         "contactKicker": "联系信息",
-        "contactTitle": "请留下便于联系的信息。",
-        "contactBody": "我们会通过你填写的联系方式跟进报价与项目细节。",
+        "contactTitle": "填写联系信息",
+        "contactBody": "我们将通过以下联系方式确认报价和项目细节。",
         "contactDetailsKicker": "询价联系人",
         "contactDetailsTitle": "联系信息",
-        "contactDetailsBody": "联系信息仅用于本次询价回复及后续项目沟通。",
+        "contactDetailsBody": "联系信息仅用于本次询价回复和后续项目沟通。",
         "name": "联系人",
         "company": "公司 / 品牌",
         "country": "国家 / 地区",
@@ -929,7 +1937,7 @@
         "message": "其他说明",
         "namePlaceholder": "联系人姓名",
         "companyPlaceholder": "公司或品牌名称",
-        "countryPlaceholder": "国家 / 地区",
+        "countryPlaceholder": "请选择国家 / 地区",
         "cityPlaceholder": "城市",
         "emailPlaceholder": "name@example.com",
         "phonePlaceholder": "首选联系方式",
@@ -972,51 +1980,51 @@
         ],
         "validation": {
           "invalidName": "请输入有效的联系人姓名。",
-          "countryRequired": "请填写国家 / 地区。",
+          "countryRequired": "请选择国家 / 地区。",
           "invalidEmail": "请输入有效的邮箱地址。",
           "invalidPhone": "请输入有效的联系方式。",
           "generic": "请检查该字段。"
         },
         "whatNextKicker": "提交后",
-        "whatNextTitle": "接下来，我们会这样跟进",
+        "whatNextTitle": "提交后我们会这样处理",
         "whatNextSteps": [
-          "核对产品选择、数量与定制需求。",
-          "确认定制可行性及需要补充的项目资料。",
-          "与你确认正式报价、制作周期和交付安排。"
+          "核对产品、数量和定制需求。",
+          "确认报价所需的项目资料。",
+          "联系您确认价格、制作周期和交付安排。"
         ],
         "reviewKicker": "提交前确认",
-        "reviewTitle": "提交前，请确认以下信息。",
-        "reviewBody": "请核对联系信息、产品配置与定制需求，确认无误后提交询价。",
+        "reviewTitle": "确认信息后提交询价。",
+        "reviewBody": "核对联系信息、产品配置和定制项目。",
         "edit": "修改",
         "notProvided": "未填写",
         "none": "无",
         "reviewSummaryTitle": "询价概要",
         "inquiryNumber": "询价编号",
         "beforeSubmitKicker": "提交前",
-        "beforeSubmitTitle": "本次提交为询价，不会直接生成订单。",
-        "beforeSubmitBody": "最终报价、生产安排与交付方式将在双方确认后确定。",
+        "beforeSubmitTitle": "提交询价不会直接生成订单。",
+        "beforeSubmitBody": "最终价格、生产安排和交付方式以双方确认的正式报价为准。",
         "privacyPrefix": "我已阅读并同意",
         "privacyLink": "隐私说明",
         "privacyRequired": "提交前请先同意隐私说明。",
         "security": "安全验证",
-        "securityChecking": "正在进行后台安全检查…",
-        "securityReady": "安全检查已准备完成。",
-        "securityAdditional": "提交时可能需要额外安全验证。",
-        "securityVerified": "安全验证已完成。",
+        "securityChecking": "正在验证…",
+        "securityReady": "验证完成。",
+        "securityAdditional": "提交前需要完成额外验证。",
+        "securityVerified": "验证完成。",
         "submitInquiry": "提交询价",
         "submitting": "正在提交…",
         "submitFailed": "询价未能成功发送。当前选择仍然保留，请稍后重试。",
         "successKicker": "询价已收到",
-        "successTitle": "感谢提交，我们已收到你的询价。",
-        "successBody": "我们会核对产品选择与定制需求，并与你确认正式报价、制作周期及交付安排。",
+        "successTitle": "我们已收到您的询价。",
+        "successBody": "我们会核对产品、数量和定制需求，并联系您确认报价、制作周期和交付安排。",
         "submitted": "提交时间",
         "status": "状态",
         "awaitingReview": "处理中",
         "startAnotherProject": "提交新的询价",
         "workspaceKicker": "询价审核",
-        "workspaceTitle": "确认你的询价内容。",
-        "workspaceBody": "确认需要报价的作品、数量与定制项目，然后继续填写联系信息。",
-        "productSelection": "作品选择",
+        "workspaceTitle": "确认询价内容",
+        "workspaceBody": "核对需要报价的产品、数量和定制项目，然后填写联系信息。",
+        "productSelection": "产品选择",
         "customProjects": "定制项目",
         "inquiryOverview": "询价概要",
         "productConfigurations": "项配置",
@@ -1028,14 +2036,1022 @@
         "moqRemaining": "还差 {count} 件",
         "moqGroupsReady": "{count} 个组合已满足",
         "moqGroupsPending": "{count} 个组合尚未满足起订要求",
-        "clearInquiry": "清空询价内容"
+        "clearInquiry": "清空询价内容",
+        "selectAll": "全选",
+        "selectedCount": "已选择 {selected} / {total}",
+        "selectItem": "选择项目",
+        "selectGroup": "选择本组",
+        "removeSelected": "删除已选",
+        "removeGroup": "删除本组",
+        "removeSelectedTitle": "删除已选项目？",
+        "removeSelectedBody": "将从询价单中删除已选择的 {count} 个项目。",
+        "removeGroupTitle": "删除本组产品？",
+        "removeGroupBody": "将删除当前系列和尺寸组合中的 {count} 个项目。",
+        "countryRegions": [
+          {
+            "code": "AD",
+            "label": "安道尔"
+          },
+          {
+            "code": "AE",
+            "label": "阿拉伯联合酋长国"
+          },
+          {
+            "code": "AF",
+            "label": "阿富汗"
+          },
+          {
+            "code": "AG",
+            "label": "安提瓜和巴布达"
+          },
+          {
+            "code": "AI",
+            "label": "安圭拉"
+          },
+          {
+            "code": "AL",
+            "label": "阿尔巴尼亚"
+          },
+          {
+            "code": "AM",
+            "label": "亚美尼亚"
+          },
+          {
+            "code": "AO",
+            "label": "安哥拉"
+          },
+          {
+            "code": "AQ",
+            "label": "南极洲"
+          },
+          {
+            "code": "AR",
+            "label": "阿根廷"
+          },
+          {
+            "code": "AS",
+            "label": "美属萨摩亚"
+          },
+          {
+            "code": "AT",
+            "label": "奥地利"
+          },
+          {
+            "code": "AU",
+            "label": "澳大利亚"
+          },
+          {
+            "code": "AW",
+            "label": "阿鲁巴"
+          },
+          {
+            "code": "AX",
+            "label": "奥兰群岛"
+          },
+          {
+            "code": "AZ",
+            "label": "阿塞拜疆"
+          },
+          {
+            "code": "BA",
+            "label": "波斯尼亚和黑塞哥维那"
+          },
+          {
+            "code": "BB",
+            "label": "巴巴多斯"
+          },
+          {
+            "code": "BD",
+            "label": "孟加拉国"
+          },
+          {
+            "code": "BE",
+            "label": "比利时"
+          },
+          {
+            "code": "BF",
+            "label": "布基纳法索"
+          },
+          {
+            "code": "BG",
+            "label": "保加利亚"
+          },
+          {
+            "code": "BH",
+            "label": "巴林"
+          },
+          {
+            "code": "BI",
+            "label": "布隆迪"
+          },
+          {
+            "code": "BJ",
+            "label": "贝宁"
+          },
+          {
+            "code": "BL",
+            "label": "圣巴泰勒米"
+          },
+          {
+            "code": "BM",
+            "label": "百慕大"
+          },
+          {
+            "code": "BN",
+            "label": "文莱"
+          },
+          {
+            "code": "BO",
+            "label": "玻利维亚"
+          },
+          {
+            "code": "BQ",
+            "label": "荷属加勒比区"
+          },
+          {
+            "code": "BR",
+            "label": "巴西"
+          },
+          {
+            "code": "BS",
+            "label": "巴哈马"
+          },
+          {
+            "code": "BT",
+            "label": "不丹"
+          },
+          {
+            "code": "BV",
+            "label": "布韦岛"
+          },
+          {
+            "code": "BW",
+            "label": "博茨瓦纳"
+          },
+          {
+            "code": "BY",
+            "label": "白俄罗斯"
+          },
+          {
+            "code": "BZ",
+            "label": "伯利兹"
+          },
+          {
+            "code": "CA",
+            "label": "加拿大"
+          },
+          {
+            "code": "CC",
+            "label": "科科斯（基林）群岛"
+          },
+          {
+            "code": "CD",
+            "label": "刚果（金）"
+          },
+          {
+            "code": "CF",
+            "label": "中非共和国"
+          },
+          {
+            "code": "CG",
+            "label": "刚果（布）"
+          },
+          {
+            "code": "CH",
+            "label": "瑞士"
+          },
+          {
+            "code": "CI",
+            "label": "科特迪瓦"
+          },
+          {
+            "code": "CK",
+            "label": "库克群岛"
+          },
+          {
+            "code": "CL",
+            "label": "智利"
+          },
+          {
+            "code": "CM",
+            "label": "喀麦隆"
+          },
+          {
+            "code": "CN",
+            "label": "中国"
+          },
+          {
+            "code": "CO",
+            "label": "哥伦比亚"
+          },
+          {
+            "code": "CR",
+            "label": "哥斯达黎加"
+          },
+          {
+            "code": "CU",
+            "label": "古巴"
+          },
+          {
+            "code": "CV",
+            "label": "佛得角"
+          },
+          {
+            "code": "CW",
+            "label": "库拉索"
+          },
+          {
+            "code": "CX",
+            "label": "圣诞岛"
+          },
+          {
+            "code": "CY",
+            "label": "塞浦路斯"
+          },
+          {
+            "code": "CZ",
+            "label": "捷克"
+          },
+          {
+            "code": "DE",
+            "label": "德国"
+          },
+          {
+            "code": "DJ",
+            "label": "吉布提"
+          },
+          {
+            "code": "DK",
+            "label": "丹麦"
+          },
+          {
+            "code": "DM",
+            "label": "多米尼克"
+          },
+          {
+            "code": "DO",
+            "label": "多米尼加共和国"
+          },
+          {
+            "code": "DZ",
+            "label": "阿尔及利亚"
+          },
+          {
+            "code": "EC",
+            "label": "厄瓜多尔"
+          },
+          {
+            "code": "EE",
+            "label": "爱沙尼亚"
+          },
+          {
+            "code": "EG",
+            "label": "埃及"
+          },
+          {
+            "code": "EH",
+            "label": "西撒哈拉"
+          },
+          {
+            "code": "ER",
+            "label": "厄立特里亚"
+          },
+          {
+            "code": "ES",
+            "label": "西班牙"
+          },
+          {
+            "code": "ET",
+            "label": "埃塞俄比亚"
+          },
+          {
+            "code": "FI",
+            "label": "芬兰"
+          },
+          {
+            "code": "FJ",
+            "label": "斐济"
+          },
+          {
+            "code": "FK",
+            "label": "福克兰群岛"
+          },
+          {
+            "code": "FM",
+            "label": "密克罗尼西亚"
+          },
+          {
+            "code": "FO",
+            "label": "法罗群岛"
+          },
+          {
+            "code": "FR",
+            "label": "法国"
+          },
+          {
+            "code": "GA",
+            "label": "加蓬"
+          },
+          {
+            "code": "GB",
+            "label": "英国"
+          },
+          {
+            "code": "GD",
+            "label": "格林纳达"
+          },
+          {
+            "code": "GE",
+            "label": "格鲁吉亚"
+          },
+          {
+            "code": "GF",
+            "label": "法属圭亚那"
+          },
+          {
+            "code": "GG",
+            "label": "根西岛"
+          },
+          {
+            "code": "GH",
+            "label": "加纳"
+          },
+          {
+            "code": "GI",
+            "label": "直布罗陀"
+          },
+          {
+            "code": "GL",
+            "label": "格陵兰"
+          },
+          {
+            "code": "GM",
+            "label": "冈比亚"
+          },
+          {
+            "code": "GN",
+            "label": "几内亚"
+          },
+          {
+            "code": "GP",
+            "label": "瓜德罗普"
+          },
+          {
+            "code": "GQ",
+            "label": "赤道几内亚"
+          },
+          {
+            "code": "GR",
+            "label": "希腊"
+          },
+          {
+            "code": "GS",
+            "label": "南乔治亚和南桑威奇群岛"
+          },
+          {
+            "code": "GT",
+            "label": "危地马拉"
+          },
+          {
+            "code": "GU",
+            "label": "关岛"
+          },
+          {
+            "code": "GW",
+            "label": "几内亚比绍"
+          },
+          {
+            "code": "GY",
+            "label": "圭亚那"
+          },
+          {
+            "code": "HK",
+            "label": "中国香港特别行政区"
+          },
+          {
+            "code": "HM",
+            "label": "赫德岛和麦克唐纳群岛"
+          },
+          {
+            "code": "HN",
+            "label": "洪都拉斯"
+          },
+          {
+            "code": "HR",
+            "label": "克罗地亚"
+          },
+          {
+            "code": "HT",
+            "label": "海地"
+          },
+          {
+            "code": "HU",
+            "label": "匈牙利"
+          },
+          {
+            "code": "ID",
+            "label": "印度尼西亚"
+          },
+          {
+            "code": "IE",
+            "label": "爱尔兰"
+          },
+          {
+            "code": "IL",
+            "label": "以色列"
+          },
+          {
+            "code": "IM",
+            "label": "马恩岛"
+          },
+          {
+            "code": "IN",
+            "label": "印度"
+          },
+          {
+            "code": "IO",
+            "label": "英属印度洋领地"
+          },
+          {
+            "code": "IQ",
+            "label": "伊拉克"
+          },
+          {
+            "code": "IR",
+            "label": "伊朗"
+          },
+          {
+            "code": "IS",
+            "label": "冰岛"
+          },
+          {
+            "code": "IT",
+            "label": "意大利"
+          },
+          {
+            "code": "JE",
+            "label": "泽西岛"
+          },
+          {
+            "code": "JM",
+            "label": "牙买加"
+          },
+          {
+            "code": "JO",
+            "label": "约旦"
+          },
+          {
+            "code": "JP",
+            "label": "日本"
+          },
+          {
+            "code": "KE",
+            "label": "肯尼亚"
+          },
+          {
+            "code": "KG",
+            "label": "吉尔吉斯斯坦"
+          },
+          {
+            "code": "KH",
+            "label": "柬埔寨"
+          },
+          {
+            "code": "KI",
+            "label": "基里巴斯"
+          },
+          {
+            "code": "KM",
+            "label": "科摩罗"
+          },
+          {
+            "code": "KN",
+            "label": "圣基茨和尼维斯"
+          },
+          {
+            "code": "KP",
+            "label": "朝鲜"
+          },
+          {
+            "code": "KR",
+            "label": "韩国"
+          },
+          {
+            "code": "KW",
+            "label": "科威特"
+          },
+          {
+            "code": "KY",
+            "label": "开曼群岛"
+          },
+          {
+            "code": "KZ",
+            "label": "哈萨克斯坦"
+          },
+          {
+            "code": "LA",
+            "label": "老挝"
+          },
+          {
+            "code": "LB",
+            "label": "黎巴嫩"
+          },
+          {
+            "code": "LC",
+            "label": "圣卢西亚"
+          },
+          {
+            "code": "LI",
+            "label": "列支敦士登"
+          },
+          {
+            "code": "LK",
+            "label": "斯里兰卡"
+          },
+          {
+            "code": "LR",
+            "label": "利比里亚"
+          },
+          {
+            "code": "LS",
+            "label": "莱索托"
+          },
+          {
+            "code": "LT",
+            "label": "立陶宛"
+          },
+          {
+            "code": "LU",
+            "label": "卢森堡"
+          },
+          {
+            "code": "LV",
+            "label": "拉脱维亚"
+          },
+          {
+            "code": "LY",
+            "label": "利比亚"
+          },
+          {
+            "code": "MA",
+            "label": "摩洛哥"
+          },
+          {
+            "code": "MC",
+            "label": "摩纳哥"
+          },
+          {
+            "code": "MD",
+            "label": "摩尔多瓦"
+          },
+          {
+            "code": "ME",
+            "label": "黑山"
+          },
+          {
+            "code": "MF",
+            "label": "法属圣马丁"
+          },
+          {
+            "code": "MG",
+            "label": "马达加斯加"
+          },
+          {
+            "code": "MH",
+            "label": "马绍尔群岛"
+          },
+          {
+            "code": "MK",
+            "label": "北马其顿"
+          },
+          {
+            "code": "ML",
+            "label": "马里"
+          },
+          {
+            "code": "MM",
+            "label": "缅甸"
+          },
+          {
+            "code": "MN",
+            "label": "蒙古"
+          },
+          {
+            "code": "MO",
+            "label": "中国澳门特别行政区"
+          },
+          {
+            "code": "MP",
+            "label": "北马里亚纳群岛"
+          },
+          {
+            "code": "MQ",
+            "label": "马提尼克"
+          },
+          {
+            "code": "MR",
+            "label": "毛里塔尼亚"
+          },
+          {
+            "code": "MS",
+            "label": "蒙特塞拉特"
+          },
+          {
+            "code": "MT",
+            "label": "马耳他"
+          },
+          {
+            "code": "MU",
+            "label": "毛里求斯"
+          },
+          {
+            "code": "MV",
+            "label": "马尔代夫"
+          },
+          {
+            "code": "MW",
+            "label": "马拉维"
+          },
+          {
+            "code": "MX",
+            "label": "墨西哥"
+          },
+          {
+            "code": "MY",
+            "label": "马来西亚"
+          },
+          {
+            "code": "MZ",
+            "label": "莫桑比克"
+          },
+          {
+            "code": "NA",
+            "label": "纳米比亚"
+          },
+          {
+            "code": "NC",
+            "label": "新喀里多尼亚"
+          },
+          {
+            "code": "NE",
+            "label": "尼日尔"
+          },
+          {
+            "code": "NF",
+            "label": "诺福克岛"
+          },
+          {
+            "code": "NG",
+            "label": "尼日利亚"
+          },
+          {
+            "code": "NI",
+            "label": "尼加拉瓜"
+          },
+          {
+            "code": "NL",
+            "label": "荷兰"
+          },
+          {
+            "code": "NO",
+            "label": "挪威"
+          },
+          {
+            "code": "NP",
+            "label": "尼泊尔"
+          },
+          {
+            "code": "NR",
+            "label": "瑙鲁"
+          },
+          {
+            "code": "NU",
+            "label": "纽埃"
+          },
+          {
+            "code": "NZ",
+            "label": "新西兰"
+          },
+          {
+            "code": "OM",
+            "label": "阿曼"
+          },
+          {
+            "code": "PA",
+            "label": "巴拿马"
+          },
+          {
+            "code": "PE",
+            "label": "秘鲁"
+          },
+          {
+            "code": "PF",
+            "label": "法属波利尼西亚"
+          },
+          {
+            "code": "PG",
+            "label": "巴布亚新几内亚"
+          },
+          {
+            "code": "PH",
+            "label": "菲律宾"
+          },
+          {
+            "code": "PK",
+            "label": "巴基斯坦"
+          },
+          {
+            "code": "PL",
+            "label": "波兰"
+          },
+          {
+            "code": "PM",
+            "label": "圣皮埃尔和密克隆群岛"
+          },
+          {
+            "code": "PN",
+            "label": "皮特凯恩群岛"
+          },
+          {
+            "code": "PR",
+            "label": "波多黎各"
+          },
+          {
+            "code": "PS",
+            "label": "巴勒斯坦领土"
+          },
+          {
+            "code": "PT",
+            "label": "葡萄牙"
+          },
+          {
+            "code": "PW",
+            "label": "帕劳"
+          },
+          {
+            "code": "PY",
+            "label": "巴拉圭"
+          },
+          {
+            "code": "QA",
+            "label": "卡塔尔"
+          },
+          {
+            "code": "RE",
+            "label": "留尼汪"
+          },
+          {
+            "code": "RO",
+            "label": "罗马尼亚"
+          },
+          {
+            "code": "RS",
+            "label": "塞尔维亚"
+          },
+          {
+            "code": "RU",
+            "label": "俄罗斯"
+          },
+          {
+            "code": "RW",
+            "label": "卢旺达"
+          },
+          {
+            "code": "SA",
+            "label": "沙特阿拉伯"
+          },
+          {
+            "code": "SB",
+            "label": "所罗门群岛"
+          },
+          {
+            "code": "SC",
+            "label": "塞舌尔"
+          },
+          {
+            "code": "SD",
+            "label": "苏丹"
+          },
+          {
+            "code": "SE",
+            "label": "瑞典"
+          },
+          {
+            "code": "SG",
+            "label": "新加坡"
+          },
+          {
+            "code": "SH",
+            "label": "圣赫勒拿"
+          },
+          {
+            "code": "SI",
+            "label": "斯洛文尼亚"
+          },
+          {
+            "code": "SJ",
+            "label": "斯瓦尔巴和扬马延"
+          },
+          {
+            "code": "SK",
+            "label": "斯洛伐克"
+          },
+          {
+            "code": "SL",
+            "label": "塞拉利昂"
+          },
+          {
+            "code": "SM",
+            "label": "圣马力诺"
+          },
+          {
+            "code": "SN",
+            "label": "塞内加尔"
+          },
+          {
+            "code": "SO",
+            "label": "索马里"
+          },
+          {
+            "code": "SR",
+            "label": "苏里南"
+          },
+          {
+            "code": "SS",
+            "label": "南苏丹"
+          },
+          {
+            "code": "ST",
+            "label": "圣多美和普林西比"
+          },
+          {
+            "code": "SV",
+            "label": "萨尔瓦多"
+          },
+          {
+            "code": "SX",
+            "label": "荷属圣马丁"
+          },
+          {
+            "code": "SY",
+            "label": "叙利亚"
+          },
+          {
+            "code": "SZ",
+            "label": "斯威士兰"
+          },
+          {
+            "code": "TC",
+            "label": "特克斯和凯科斯群岛"
+          },
+          {
+            "code": "TD",
+            "label": "乍得"
+          },
+          {
+            "code": "TF",
+            "label": "法属南部领地"
+          },
+          {
+            "code": "TG",
+            "label": "多哥"
+          },
+          {
+            "code": "TH",
+            "label": "泰国"
+          },
+          {
+            "code": "TJ",
+            "label": "塔吉克斯坦"
+          },
+          {
+            "code": "TK",
+            "label": "托克劳"
+          },
+          {
+            "code": "TL",
+            "label": "东帝汶"
+          },
+          {
+            "code": "TM",
+            "label": "土库曼斯坦"
+          },
+          {
+            "code": "TN",
+            "label": "突尼斯"
+          },
+          {
+            "code": "TO",
+            "label": "汤加"
+          },
+          {
+            "code": "TR",
+            "label": "土耳其"
+          },
+          {
+            "code": "TT",
+            "label": "特立尼达和多巴哥"
+          },
+          {
+            "code": "TV",
+            "label": "图瓦卢"
+          },
+          {
+            "code": "TW",
+            "label": "台湾"
+          },
+          {
+            "code": "TZ",
+            "label": "坦桑尼亚"
+          },
+          {
+            "code": "UA",
+            "label": "乌克兰"
+          },
+          {
+            "code": "UG",
+            "label": "乌干达"
+          },
+          {
+            "code": "UM",
+            "label": "美国本土外小岛屿"
+          },
+          {
+            "code": "US",
+            "label": "美国"
+          },
+          {
+            "code": "UY",
+            "label": "乌拉圭"
+          },
+          {
+            "code": "UZ",
+            "label": "乌兹别克斯坦"
+          },
+          {
+            "code": "VA",
+            "label": "梵蒂冈"
+          },
+          {
+            "code": "VC",
+            "label": "圣文森特和格林纳丁斯"
+          },
+          {
+            "code": "VE",
+            "label": "委内瑞拉"
+          },
+          {
+            "code": "VG",
+            "label": "英属维尔京群岛"
+          },
+          {
+            "code": "VI",
+            "label": "美属维尔京群岛"
+          },
+          {
+            "code": "VN",
+            "label": "越南"
+          },
+          {
+            "code": "VU",
+            "label": "瓦努阿图"
+          },
+          {
+            "code": "WF",
+            "label": "瓦利斯和富图纳"
+          },
+          {
+            "code": "WS",
+            "label": "萨摩亚"
+          },
+          {
+            "code": "YE",
+            "label": "也门"
+          },
+          {
+            "code": "YT",
+            "label": "马约特"
+          },
+          {
+            "code": "ZA",
+            "label": "南非"
+          },
+          {
+            "code": "ZM",
+            "label": "赞比亚"
+          },
+          {
+            "code": "ZW",
+            "label": "津巴布韦"
+          }
+        ]
       },
       "story": {
         "kicker": "关于 DREAMLAND",
         "mark": "meet DREAMLAND",
         "title": "meet DREAMLAND",
         "body": "DREAMLAND 专注于手工雕刻蜡烛。我们从配色、香型与蜡体层次出发，在蜡尚温时切割、卷花与塑形，让每一件作品保留手工制作的细节与差异。",
-        "note": "我们相信，蜡烛不仅是物件，也是时间与光的容器。愿 DREAMLAND 的作品为日常带来片刻宁静与想象。",
+        "note": "我们希望手工雕刻蜡烛既可以被点燃，也值得被陈列。",
         "eyebrow": "关于 DREAMLAND"
       }
     },
@@ -1056,7 +3072,7 @@
       "collections": {
         "kicker": "THE COLLECTION",
         "title": "네 가지 시리즈",
-        "body": "서로 다른 디테일과 컬러, 용도에서 DREAMLAND 컬렉션을 시작해 보세요.",
+        "body": "네 가지 시리즈는 조각 디테일, 컬러와 분위기가 서로 다릅니다.",
         "designSingular": "디자인",
         "designPlural": "디자인",
         "explore": "컬렉션 보기"
@@ -1064,7 +3080,7 @@
       "featured": {
         "kicker": "CURATED NOW",
         "title": "지금의 추천",
-        "body": "마스터피스와 어드밴스드 시리즈에서 지금 주목할 다섯 작품을 골랐습니다.",
+        "body": "마스터피스와 어드밴스드 시리즈에서 5개 제품을 선정했습니다.",
         "viewAll": "전체 보기",
         "viewDetails": "상세 보기",
         "moq": "MOQ"
@@ -1077,7 +3093,7 @@
       "custom": {
         "kicker": "CUSTOM MADE",
         "title": "당신의 프로젝트를 위해 만듭니다.",
-        "body": "컬러, 향, 패키지와 브랜딩을 프로젝트 요구에 맞춰 함께 구성할 수 있습니다.",
+        "body": "프로젝트에 맞춰 컬러, 향, 패키지와 브랜딩을 조정할 수 있습니다.",
         "features": [
           "컬러",
           "향",
@@ -1110,8 +3126,8 @@
       },
       "cta": {
         "kicker": "YOUR NEXT PROJECT",
-        "title": "다음 프로젝트를 들려주세요.",
-        "body": "현재 컬렉션에서 시작하거나 만들고 싶은 내용을 바로 알려주세요.",
+        "title": "새 프로젝트를 준비하고 계신가요?",
+        "body": "기존 제품에서 선택하거나 커스텀 요청을 보내주세요.",
         "explore": "컬렉션 보기",
         "custom": "커스텀 프로젝트 시작",
         "review": "문의 목록 확인"
@@ -1131,12 +3147,12 @@
         "copyright": "© DREAMLAND"
       },
       "catalog": {
-        "kicker": "COLLECTION",
-        "title": "DREAMLAND 전체 컬렉션 보기",
-        "body": "핸드 카빙, 컬러 레이어, 시즌 표현까지 현재 도매 및 프로젝트 문의가 가능한 전체 디자인을 살펴보세요.",
+        "kicker": "제품 카탈로그",
+        "title": "DREAMLAND 제품 보기",
+        "body": "도매 및 프로젝트 문의가 가능한 제품을 확인하세요.",
         "all": "전체",
-        "activeDesigns": "개의 꿈",
-        "designs": "개 디자인",
+        "activeDesigns": "개 제품",
+        "designs": "개 제품",
         "seriesNavigation": "컬렉션 시리즈",
         "searchPlaceholder": "디자인명 또는 제품 번호 검색",
         "filters": "필터",
@@ -1159,11 +3175,11 @@
         "searchEmptyTitle": "“{query}” 검색 결과가 없습니다.",
         "emptyBody": "다른 사이즈를 선택하거나 필터를 초기화해 보세요.",
         "clearFilters": "필터 지우기",
-        "ctaKicker": "YOUR INQUIRY",
-        "ctaEmptyTitle": "프로젝트에 맞는 디자인을 찾으셨나요?",
-        "ctaEmptyBody": "제품 상세에서 사이즈, 향, 패키지를 선택한 뒤 문의에 추가하세요.",
-        "ctaReadyTitle": "선택한 디자인이 모이고 있습니다.",
-        "ctaReadyBody": "{count}개 디자인을 검토할 수 있습니다.",
+        "ctaKicker": "문의",
+        "ctaEmptyTitle": "견적이 필요한 제품을 문의에 추가하세요.",
+        "ctaEmptyBody": "제품 상세에서 사이즈, 향과 패키지를 선택한 뒤 문의에 추가하세요.",
+        "ctaReadyTitle": "선택한 제품을 확인하세요.",
+        "ctaReadyBody": "문의에 {count}개 제품이 추가되었습니다.",
         "reviewInquiry": "문의 검토",
         "backToTop": "맨 위로"
       },
@@ -1198,17 +3214,17 @@
       },
       "customProject": {
         "kicker": "커스텀 프로젝트",
-        "title": "브랜드, 이벤트와 전용 컬렉션을 위한 맞춤 제작.",
-        "body": "프로젝트 용도, 예상 수량, 제품 선호와 커스텀 요구사항을 알려주세요. 제작 가능 여부를 검토한 뒤 견적, 제작 일정과 배송 계획을 안내해 드립니다.",
+        "title": "브랜드, 이벤트와 기프트를 위한 커스텀 제작.",
+        "body": "용도, 수량과 제품 요구사항을 알려주시면 제작 가능 여부, 견적, 제작 일정과 배송을 확인합니다.",
         "sectionBasicsKicker": "01 / 프로젝트 기본 정보",
-        "sectionBasicsTitle": "프로젝트 요구사항부터 알려주세요.",
-        "sectionBasicsBody": "용도, 예상 수량, 예산과 목표 납기를 알려주시면 적합한 제품과 제작 방향을 검토할 수 있습니다.",
+        "sectionBasicsTitle": "프로젝트 기본 정보를 입력하세요.",
+        "sectionBasicsBody": "용도, 수량, 예산과 희망 납기는 적합한 제품과 제작 방식을 제안하는 데 사용됩니다.",
         "sectionProductKicker": "02 / 제품 방향",
-        "sectionProductTitle": "제품 방향을 정합니다.",
-        "sectionProductBody": "사이즈와 향 컬렉션을 선택하고, 참고할 컬러나 브랜드 비주얼이 있다면 함께 알려주세요.",
+        "sectionProductTitle": "제품과 향을 선택하세요.",
+        "sectionProductBody": "사이즈와 향을 선택하고 컬러, 브랜드 또는 기타 제품 요청 사항을 입력하세요.",
         "sectionPackagingKicker": "03 / 패키징 및 브랜딩",
-        "sectionPackagingTitle": "패키징과 브랜드 표현을 확인합니다.",
-        "sectionPackagingBody": "원하는 패키징 방향과 로고, 카드, 스티커 또는 기프트 박스 등 필요한 브랜드 요소를 알려주세요.",
+        "sectionPackagingTitle": "패키지와 브랜딩을 선택하세요.",
+        "sectionPackagingBody": "패키지를 선택하고 로고, 카드, 스티커 또는 기프트 박스가 필요한지 알려주세요.",
         "useCase": "사용 목적 *",
         "quantity": "예상 수량 *",
         "minimumQuantity": "커스텀 MOQ",
@@ -1222,7 +3238,7 @@
         "fragranceCollection": "향 컬렉션",
         "scents": "향 선택 *",
         "scentsHint": "{count}개 선택 · 같은 컬렉션에서 여러 향을 선택할 수 있습니다",
-        "color": "컬러 방향",
+        "color": "컬러 선호",
         "colorPlaceholder": "예: 블러시 핑크, 세이지 그린 또는 브랜드 컬러 레퍼런스",
         "packaging": "패키징",
         "branding": "브랜딩",
@@ -1234,12 +3250,12 @@
         "notSelected": "미선택",
         "scentCount": "향 {count}개 선택",
         "customization": "CUSTOMIZATION",
-        "quotedAfterReview": "확정된 요구사항 기준 별도 견적",
-        "summaryNote": "커스텀 견적은 최종 확정된 제품, 수량, 패키징 및 브랜딩 요구사항을 기준으로 산정합니다. 제작 가능 여부, 일정과 배송을 함께 확인해 드립니다.",
+        "quotedAfterReview": "요청 사항 확인 후 별도 견적",
+        "summaryNote": "커스텀 견적은 확정된 제품, 수량, 패키지와 브랜딩 요구사항을 기준으로 산정합니다. 제작 일정과 배송은 견적과 함께 안내합니다.",
         "addInquiry": "커스텀 프로젝트를 문의에 추가",
         "addedButton": "문의에 추가됨",
-        "addedTitle": "현재 문의에 추가되었습니다.",
-        "addedBody": "계속 제품을 둘러보거나 현재 문의 내용을 확인할 수 있습니다.",
+        "addedTitle": "문의에 추가되었습니다.",
+        "addedBody": "제품을 계속 둘러보거나 문의 내용을 확인하세요.",
         "exploreCollection": "컬렉션 보기",
         "reviewInquiry": "문의 목록 보기",
         "errorUse": "프로젝트 유형을 선택해 주세요.",
@@ -1375,7 +3391,7 @@
             "label": "상담 후 결정"
           }
         ],
-        "collectionResetHint": "한 컬렉션 안에서 여러 향을 선택할 수 있습니다. 컬렉션을 변경하면 향 선택이 초기화됩니다.",
+        "collectionResetHint": "같은 향 컬렉션에서 여러 향을 선택할 수 있습니다. 컬렉션을 변경하면 기존 향 선택이 초기화됩니다.",
         "flowTitle": "프로젝트 흐름",
         "requiredProgress": "필수 정보 {done} / {total}",
         "continueToNext": "다음 항목 계속"
@@ -1386,23 +3402,23 @@
         "stepContact": "연락처",
         "stepReview": "검토",
         "kicker": "문의",
-        "title": "견적 문의",
-        "body": "견적이 필요한 제품과 커스텀 요구사항을 확인한 뒤 연락처 정보를 입력해 주세요.",
-        "selectedProducts": "선택 항목",
-        "selectedItems": "선택 항목 수",
+        "title": "문의 내용 확인",
+        "body": "제품, 수량과 커스텀 프로젝트를 확인한 뒤 연락처 정보를 입력하세요.",
+        "selectedProducts": "문의 항목",
+        "selectedItems": "항목 수",
         "totalQuantity": "제품 총 수량",
         "summaryKicker": "문의 요약",
-        "summaryTitle": "견적 개요",
-        "productEstimate": "예상 제품 금액",
+        "summaryTitle": "문의 요약",
+        "productEstimate": "제품 예상 금액",
         "customProject": "커스텀 프로젝트",
         "customQuotedSeparately": "요구사항 확인 후 별도 견적",
-        "finalPricingNote": "제품 가격, 커스텀 비용, 제작 일정과 배송 방식은 최종 견적에서 확인합니다.",
+        "finalPricingNote": "최종 가격, 제작 일정과 배송 방식은 정식 견적에서 확인합니다.",
         "continueContact": "연락처 정보 입력",
         "continueExploring": "계속 둘러보기",
         "exploreCollection": "컬렉션 보기",
         "startCustom": "커스텀 프로젝트 시작",
-        "emptyTitle": "문의 목록이 비어 있습니다.",
-        "emptyBody": "컬렉션에서 제품을 선택하거나 커스텀 프로젝트를 알려주세요.",
+        "emptyTitle": "문의에 추가된 항목이 없습니다.",
+        "emptyBody": "제품을 추가하거나 커스텀 프로젝트를 시작하세요.",
         "size": "사이즈",
         "scent": "향",
         "pattern": "패턴",
@@ -1416,20 +3432,20 @@
         "branding": "브랜딩",
         "remove": "삭제",
         "removeTitle": "이 항목을 삭제할까요?",
-        "removeBody": "현재 문의 목록에서 해당 항목이 삭제됩니다.",
+        "removeBody": "이 항목을 문의에서 삭제합니다.",
         "cancel": "취소",
-        "clearAll": "문의 비우기",
-        "clearTitle": "문의 목록을 비울까요?",
-        "clearBody": "선택한 모든 제품과 커스텀 프로젝트가 삭제됩니다.",
+        "clearAll": "전체 삭제",
+        "clearTitle": "문의 내용을 모두 삭제할까요?",
+        "clearBody": "문의에 추가된 제품과 커스텀 프로젝트가 모두 삭제됩니다.",
         "clearConfirm": "현재 문의 목록의 모든 항목을 삭제할까요?",
         "editConfiguration": "구성 수정",
         "cannotContinue": "제품 수량과 최소 주문 수량을 확인해 주세요.",
         "contactKicker": "연락처",
-        "contactTitle": "연락 가능한 정보를 알려주세요.",
-        "contactBody": "견적과 프로젝트 후속 안내를 받을 연락처를 입력해 주세요.",
+        "contactTitle": "연락처 정보 입력",
+        "contactBody": "견적과 프로젝트 세부 사항을 확인하기 위해 아래 연락처로 안내드립니다.",
         "contactDetailsKicker": "CONTACT DETAILS",
         "contactDetailsTitle": "연락처 정보",
-        "contactDetailsBody": "입력한 정보는 이번 문의에 답변하고 프로젝트를 상담하는 용도로만 사용됩니다.",
+        "contactDetailsBody": "연락처 정보는 문의 답변과 프로젝트 후속 연락에만 사용됩니다.",
         "name": "담당자 이름",
         "company": "회사 / 브랜드",
         "country": "국가 / 지역",
@@ -1440,7 +3456,7 @@
         "message": "기타 메모",
         "namePlaceholder": "이름",
         "companyPlaceholder": "회사 또는 브랜드",
-        "countryPlaceholder": "국가 / 지역",
+        "countryPlaceholder": "국가 / 지역을 선택하세요",
         "cityPlaceholder": "도시",
         "emailPlaceholder": "name@example.com",
         "phonePlaceholder": "선호 연락 수단",
@@ -1483,50 +3499,50 @@
         ],
         "validation": {
           "invalidName": "올바른 담당자 이름을 입력해 주세요.",
-          "countryRequired": "국가 / 지역을 입력해 주세요.",
+          "countryRequired": "국가 / 지역을 선택하세요.",
           "invalidEmail": "올바른 이메일을 입력해 주세요.",
           "invalidPhone": "유효한 연락처를 입력해 주세요.",
           "generic": "입력 내용을 확인해 주세요."
         },
         "whatNextKicker": "제출 후",
-        "whatNextTitle": "다음 진행 안내",
+        "whatNextTitle": "제출 후 진행 절차",
         "whatNextSteps": [
-          "제품 선택, 수량과 커스텀 요구사항을 확인합니다.",
-          "제작 가능 여부와 추가로 필요한 프로젝트 정보를 확인합니다.",
-          "견적, 제작 일정과 배송 조건을 안내해 드립니다."
+          "제품, 수량과 커스텀 요청 사항을 확인합니다.",
+          "견적에 필요한 추가 정보를 확인합니다.",
+          "가격, 제작 일정과 배송 내용을 안내드립니다."
         ],
         "reviewKicker": "제출 전 확인",
-        "reviewTitle": "제출 전에 문의 내용을 확인해 주세요.",
-        "reviewBody": "연락처, 제품 구성과 커스텀 요구사항을 확인한 뒤 문의를 제출해 주세요.",
+        "reviewTitle": "내용을 확인한 뒤 문의를 제출하세요.",
+        "reviewBody": "연락처, 제품 구성과 커스텀 프로젝트 내용을 확인하세요.",
         "edit": "수정",
         "notProvided": "미입력",
         "none": "없음",
         "reviewSummaryTitle": "문의 개요",
         "inquiryNumber": "문의 번호",
         "beforeSubmitKicker": "제출 전",
-        "beforeSubmitTitle": "이번 제출은 견적 문의이며 주문 확정이 아닙니다.",
-        "beforeSubmitBody": "최종 가격, 제작 일정과 배송 방식은 견적 확인 후 확정됩니다.",
+        "beforeSubmitTitle": "문의 제출만으로 주문이 확정되지 않습니다.",
+        "beforeSubmitBody": "가격, 제작과 배송은 정식 견적을 확인한 뒤 확정됩니다.",
         "privacyPrefix": "다음을 읽고 동의합니다:",
         "privacyLink": "개인정보 안내",
         "privacyRequired": "제출 전에 개인정보 안내에 동의해 주세요.",
         "security": "보안 확인",
-        "securityChecking": "백그라운드 보안 확인 중…",
-        "securityReady": "보안 확인 준비 완료.",
-        "securityAdditional": "제출 시 추가 보안 인증이 필요할 수 있습니다.",
-        "securityVerified": "보안 인증이 완료되었습니다.",
+        "securityChecking": "확인 중…",
+        "securityReady": "확인이 완료되었습니다.",
+        "securityAdditional": "제출 전에 추가 확인이 필요합니다.",
+        "securityVerified": "확인이 완료되었습니다.",
         "submitInquiry": "문의 제출",
         "submitting": "전송 중…",
         "submitFailed": "문의를 전송하지 못했습니다. 선택 내용은 그대로 저장되어 있으니 다시 시도해 주세요.",
         "successKicker": "문의 접수 완료",
-        "successTitle": "감사합니다. 문의가 접수되었습니다.",
-        "successBody": "제품 선택과 요청사항을 검토한 뒤 견적, 제작 일정과 배송을 확인할 수 있도록 연락드리겠습니다.",
+        "successTitle": "문의가 접수되었습니다.",
+        "successBody": "제품, 수량과 커스텀 요청을 확인한 뒤 가격, 제작 일정과 배송 내용을 안내드리겠습니다.",
         "submitted": "제출일",
         "status": "상태",
         "awaitingReview": "검토 중",
         "startAnotherProject": "새 문의 시작",
         "workspaceKicker": "문의 검토",
-        "workspaceTitle": "문의 내용을 확인하세요.",
-        "workspaceBody": "견적을 요청할 제품, 수량 및 맞춤 프로젝트를 확인한 뒤 연락처 정보로 계속 진행하세요.",
+        "workspaceTitle": "문의 내용 확인",
+        "workspaceBody": "견적이 필요한 제품, 수량과 커스텀 프로젝트를 확인한 뒤 연락처를 입력하세요.",
         "productSelection": "제품 선택",
         "customProjects": "맞춤 프로젝트",
         "inquiryOverview": "문의 요약",
@@ -1539,14 +3555,1022 @@
         "moqRemaining": "{count}개 추가 필요",
         "moqGroupsReady": "{count}개 그룹 충족",
         "moqGroupsPending": "{count}개 그룹이 아직 MOQ 미달",
-        "clearInquiry": "문의 내용 비우기"
+        "clearInquiry": "문의 내용 비우기",
+        "selectAll": "전체 선택",
+        "selectedCount": "{selected} / {total}개 선택",
+        "selectItem": "항목 선택",
+        "selectGroup": "그룹 선택",
+        "removeSelected": "선택 삭제",
+        "removeGroup": "그룹 삭제",
+        "removeSelectedTitle": "선택한 항목을 삭제할까요?",
+        "removeSelectedBody": "선택한 {count}개 항목이 문의에서 삭제됩니다.",
+        "removeGroupTitle": "이 그룹을 삭제할까요?",
+        "removeGroupBody": "현재 시리즈와 사이즈 그룹의 {count}개 항목이 삭제됩니다.",
+        "countryRegions": [
+          {
+            "code": "AD",
+            "label": "안도라"
+          },
+          {
+            "code": "AE",
+            "label": "아랍에미리트"
+          },
+          {
+            "code": "AF",
+            "label": "아프가니스탄"
+          },
+          {
+            "code": "AG",
+            "label": "앤티가 바부다"
+          },
+          {
+            "code": "AI",
+            "label": "앵귈라"
+          },
+          {
+            "code": "AL",
+            "label": "알바니아"
+          },
+          {
+            "code": "AM",
+            "label": "아르메니아"
+          },
+          {
+            "code": "AO",
+            "label": "앙골라"
+          },
+          {
+            "code": "AQ",
+            "label": "남극 대륙"
+          },
+          {
+            "code": "AR",
+            "label": "아르헨티나"
+          },
+          {
+            "code": "AS",
+            "label": "아메리칸 사모아"
+          },
+          {
+            "code": "AT",
+            "label": "오스트리아"
+          },
+          {
+            "code": "AU",
+            "label": "오스트레일리아"
+          },
+          {
+            "code": "AW",
+            "label": "아루바"
+          },
+          {
+            "code": "AX",
+            "label": "올란드 제도"
+          },
+          {
+            "code": "AZ",
+            "label": "아제르바이잔"
+          },
+          {
+            "code": "BA",
+            "label": "보스니아 헤르체고비나"
+          },
+          {
+            "code": "BB",
+            "label": "바베이도스"
+          },
+          {
+            "code": "BD",
+            "label": "방글라데시"
+          },
+          {
+            "code": "BE",
+            "label": "벨기에"
+          },
+          {
+            "code": "BF",
+            "label": "부르키나파소"
+          },
+          {
+            "code": "BG",
+            "label": "불가리아"
+          },
+          {
+            "code": "BH",
+            "label": "바레인"
+          },
+          {
+            "code": "BI",
+            "label": "부룬디"
+          },
+          {
+            "code": "BJ",
+            "label": "베냉"
+          },
+          {
+            "code": "BL",
+            "label": "생바르텔레미"
+          },
+          {
+            "code": "BM",
+            "label": "버뮤다"
+          },
+          {
+            "code": "BN",
+            "label": "브루나이"
+          },
+          {
+            "code": "BO",
+            "label": "볼리비아"
+          },
+          {
+            "code": "BQ",
+            "label": "네덜란드령 카리브"
+          },
+          {
+            "code": "BR",
+            "label": "브라질"
+          },
+          {
+            "code": "BS",
+            "label": "바하마"
+          },
+          {
+            "code": "BT",
+            "label": "부탄"
+          },
+          {
+            "code": "BV",
+            "label": "부베섬"
+          },
+          {
+            "code": "BW",
+            "label": "보츠와나"
+          },
+          {
+            "code": "BY",
+            "label": "벨라루스"
+          },
+          {
+            "code": "BZ",
+            "label": "벨리즈"
+          },
+          {
+            "code": "CA",
+            "label": "캐나다"
+          },
+          {
+            "code": "CC",
+            "label": "코코스 제도"
+          },
+          {
+            "code": "CD",
+            "label": "콩고-킨샤사"
+          },
+          {
+            "code": "CF",
+            "label": "중앙 아프리카 공화국"
+          },
+          {
+            "code": "CG",
+            "label": "콩고-브라자빌"
+          },
+          {
+            "code": "CH",
+            "label": "스위스"
+          },
+          {
+            "code": "CI",
+            "label": "코트디부아르"
+          },
+          {
+            "code": "CK",
+            "label": "쿡 제도"
+          },
+          {
+            "code": "CL",
+            "label": "칠레"
+          },
+          {
+            "code": "CM",
+            "label": "카메룬"
+          },
+          {
+            "code": "CN",
+            "label": "중국"
+          },
+          {
+            "code": "CO",
+            "label": "콜롬비아"
+          },
+          {
+            "code": "CR",
+            "label": "코스타리카"
+          },
+          {
+            "code": "CU",
+            "label": "쿠바"
+          },
+          {
+            "code": "CV",
+            "label": "카보베르데"
+          },
+          {
+            "code": "CW",
+            "label": "퀴라소"
+          },
+          {
+            "code": "CX",
+            "label": "크리스마스섬"
+          },
+          {
+            "code": "CY",
+            "label": "키프로스"
+          },
+          {
+            "code": "CZ",
+            "label": "체코"
+          },
+          {
+            "code": "DE",
+            "label": "독일"
+          },
+          {
+            "code": "DJ",
+            "label": "지부티"
+          },
+          {
+            "code": "DK",
+            "label": "덴마크"
+          },
+          {
+            "code": "DM",
+            "label": "도미니카"
+          },
+          {
+            "code": "DO",
+            "label": "도미니카 공화국"
+          },
+          {
+            "code": "DZ",
+            "label": "알제리"
+          },
+          {
+            "code": "EC",
+            "label": "에콰도르"
+          },
+          {
+            "code": "EE",
+            "label": "에스토니아"
+          },
+          {
+            "code": "EG",
+            "label": "이집트"
+          },
+          {
+            "code": "EH",
+            "label": "서사하라"
+          },
+          {
+            "code": "ER",
+            "label": "에리트리아"
+          },
+          {
+            "code": "ES",
+            "label": "스페인"
+          },
+          {
+            "code": "ET",
+            "label": "에티오피아"
+          },
+          {
+            "code": "FI",
+            "label": "핀란드"
+          },
+          {
+            "code": "FJ",
+            "label": "피지"
+          },
+          {
+            "code": "FK",
+            "label": "포클랜드 제도"
+          },
+          {
+            "code": "FM",
+            "label": "미크로네시아"
+          },
+          {
+            "code": "FO",
+            "label": "페로 제도"
+          },
+          {
+            "code": "FR",
+            "label": "프랑스"
+          },
+          {
+            "code": "GA",
+            "label": "가봉"
+          },
+          {
+            "code": "GB",
+            "label": "영국"
+          },
+          {
+            "code": "GD",
+            "label": "그레나다"
+          },
+          {
+            "code": "GE",
+            "label": "조지아"
+          },
+          {
+            "code": "GF",
+            "label": "프랑스령 기아나"
+          },
+          {
+            "code": "GG",
+            "label": "건지"
+          },
+          {
+            "code": "GH",
+            "label": "가나"
+          },
+          {
+            "code": "GI",
+            "label": "지브롤터"
+          },
+          {
+            "code": "GL",
+            "label": "그린란드"
+          },
+          {
+            "code": "GM",
+            "label": "감비아"
+          },
+          {
+            "code": "GN",
+            "label": "기니"
+          },
+          {
+            "code": "GP",
+            "label": "과들루프"
+          },
+          {
+            "code": "GQ",
+            "label": "적도 기니"
+          },
+          {
+            "code": "GR",
+            "label": "그리스"
+          },
+          {
+            "code": "GS",
+            "label": "사우스조지아 사우스샌드위치 제도"
+          },
+          {
+            "code": "GT",
+            "label": "과테말라"
+          },
+          {
+            "code": "GU",
+            "label": "괌"
+          },
+          {
+            "code": "GW",
+            "label": "기니비사우"
+          },
+          {
+            "code": "GY",
+            "label": "가이아나"
+          },
+          {
+            "code": "HK",
+            "label": "홍콩(중국 특별행정구)"
+          },
+          {
+            "code": "HM",
+            "label": "허드 맥도널드 제도"
+          },
+          {
+            "code": "HN",
+            "label": "온두라스"
+          },
+          {
+            "code": "HR",
+            "label": "크로아티아"
+          },
+          {
+            "code": "HT",
+            "label": "아이티"
+          },
+          {
+            "code": "HU",
+            "label": "헝가리"
+          },
+          {
+            "code": "ID",
+            "label": "인도네시아"
+          },
+          {
+            "code": "IE",
+            "label": "아일랜드"
+          },
+          {
+            "code": "IL",
+            "label": "이스라엘"
+          },
+          {
+            "code": "IM",
+            "label": "맨섬"
+          },
+          {
+            "code": "IN",
+            "label": "인도"
+          },
+          {
+            "code": "IO",
+            "label": "영국령 인도양 지역"
+          },
+          {
+            "code": "IQ",
+            "label": "이라크"
+          },
+          {
+            "code": "IR",
+            "label": "이란"
+          },
+          {
+            "code": "IS",
+            "label": "아이슬란드"
+          },
+          {
+            "code": "IT",
+            "label": "이탈리아"
+          },
+          {
+            "code": "JE",
+            "label": "저지"
+          },
+          {
+            "code": "JM",
+            "label": "자메이카"
+          },
+          {
+            "code": "JO",
+            "label": "요르단"
+          },
+          {
+            "code": "JP",
+            "label": "일본"
+          },
+          {
+            "code": "KE",
+            "label": "케냐"
+          },
+          {
+            "code": "KG",
+            "label": "키르기스스탄"
+          },
+          {
+            "code": "KH",
+            "label": "캄보디아"
+          },
+          {
+            "code": "KI",
+            "label": "키리바시"
+          },
+          {
+            "code": "KM",
+            "label": "코모로"
+          },
+          {
+            "code": "KN",
+            "label": "세인트키츠 네비스"
+          },
+          {
+            "code": "KP",
+            "label": "북한"
+          },
+          {
+            "code": "KR",
+            "label": "대한민국"
+          },
+          {
+            "code": "KW",
+            "label": "쿠웨이트"
+          },
+          {
+            "code": "KY",
+            "label": "케이맨 제도"
+          },
+          {
+            "code": "KZ",
+            "label": "카자흐스탄"
+          },
+          {
+            "code": "LA",
+            "label": "라오스"
+          },
+          {
+            "code": "LB",
+            "label": "레바논"
+          },
+          {
+            "code": "LC",
+            "label": "세인트루시아"
+          },
+          {
+            "code": "LI",
+            "label": "리히텐슈타인"
+          },
+          {
+            "code": "LK",
+            "label": "스리랑카"
+          },
+          {
+            "code": "LR",
+            "label": "라이베리아"
+          },
+          {
+            "code": "LS",
+            "label": "레소토"
+          },
+          {
+            "code": "LT",
+            "label": "리투아니아"
+          },
+          {
+            "code": "LU",
+            "label": "룩셈부르크"
+          },
+          {
+            "code": "LV",
+            "label": "라트비아"
+          },
+          {
+            "code": "LY",
+            "label": "리비아"
+          },
+          {
+            "code": "MA",
+            "label": "모로코"
+          },
+          {
+            "code": "MC",
+            "label": "모나코"
+          },
+          {
+            "code": "MD",
+            "label": "몰도바"
+          },
+          {
+            "code": "ME",
+            "label": "몬테네그로"
+          },
+          {
+            "code": "MF",
+            "label": "생마르탱"
+          },
+          {
+            "code": "MG",
+            "label": "마다가스카르"
+          },
+          {
+            "code": "MH",
+            "label": "마셜 제도"
+          },
+          {
+            "code": "MK",
+            "label": "북마케도니아"
+          },
+          {
+            "code": "ML",
+            "label": "말리"
+          },
+          {
+            "code": "MM",
+            "label": "미얀마"
+          },
+          {
+            "code": "MN",
+            "label": "몽골"
+          },
+          {
+            "code": "MO",
+            "label": "마카오(중국 특별행정구)"
+          },
+          {
+            "code": "MP",
+            "label": "북마리아나제도"
+          },
+          {
+            "code": "MQ",
+            "label": "마르티니크"
+          },
+          {
+            "code": "MR",
+            "label": "모리타니"
+          },
+          {
+            "code": "MS",
+            "label": "몬트세라트"
+          },
+          {
+            "code": "MT",
+            "label": "몰타"
+          },
+          {
+            "code": "MU",
+            "label": "모리셔스"
+          },
+          {
+            "code": "MV",
+            "label": "몰디브"
+          },
+          {
+            "code": "MW",
+            "label": "말라위"
+          },
+          {
+            "code": "MX",
+            "label": "멕시코"
+          },
+          {
+            "code": "MY",
+            "label": "말레이시아"
+          },
+          {
+            "code": "MZ",
+            "label": "모잠비크"
+          },
+          {
+            "code": "NA",
+            "label": "나미비아"
+          },
+          {
+            "code": "NC",
+            "label": "뉴칼레도니아"
+          },
+          {
+            "code": "NE",
+            "label": "니제르"
+          },
+          {
+            "code": "NF",
+            "label": "노퍽섬"
+          },
+          {
+            "code": "NG",
+            "label": "나이지리아"
+          },
+          {
+            "code": "NI",
+            "label": "니카라과"
+          },
+          {
+            "code": "NL",
+            "label": "네덜란드"
+          },
+          {
+            "code": "NO",
+            "label": "노르웨이"
+          },
+          {
+            "code": "NP",
+            "label": "네팔"
+          },
+          {
+            "code": "NR",
+            "label": "나우루"
+          },
+          {
+            "code": "NU",
+            "label": "니우에"
+          },
+          {
+            "code": "NZ",
+            "label": "뉴질랜드"
+          },
+          {
+            "code": "OM",
+            "label": "오만"
+          },
+          {
+            "code": "PA",
+            "label": "파나마"
+          },
+          {
+            "code": "PE",
+            "label": "페루"
+          },
+          {
+            "code": "PF",
+            "label": "프랑스령 폴리네시아"
+          },
+          {
+            "code": "PG",
+            "label": "파푸아뉴기니"
+          },
+          {
+            "code": "PH",
+            "label": "필리핀"
+          },
+          {
+            "code": "PK",
+            "label": "파키스탄"
+          },
+          {
+            "code": "PL",
+            "label": "폴란드"
+          },
+          {
+            "code": "PM",
+            "label": "생피에르 미클롱"
+          },
+          {
+            "code": "PN",
+            "label": "핏케언 제도"
+          },
+          {
+            "code": "PR",
+            "label": "푸에르토리코"
+          },
+          {
+            "code": "PS",
+            "label": "팔레스타인 지구"
+          },
+          {
+            "code": "PT",
+            "label": "포르투갈"
+          },
+          {
+            "code": "PW",
+            "label": "팔라우"
+          },
+          {
+            "code": "PY",
+            "label": "파라과이"
+          },
+          {
+            "code": "QA",
+            "label": "카타르"
+          },
+          {
+            "code": "RE",
+            "label": "레위니옹"
+          },
+          {
+            "code": "RO",
+            "label": "루마니아"
+          },
+          {
+            "code": "RS",
+            "label": "세르비아"
+          },
+          {
+            "code": "RU",
+            "label": "러시아"
+          },
+          {
+            "code": "RW",
+            "label": "르완다"
+          },
+          {
+            "code": "SA",
+            "label": "사우디아라비아"
+          },
+          {
+            "code": "SB",
+            "label": "솔로몬 제도"
+          },
+          {
+            "code": "SC",
+            "label": "세이셸"
+          },
+          {
+            "code": "SD",
+            "label": "수단"
+          },
+          {
+            "code": "SE",
+            "label": "스웨덴"
+          },
+          {
+            "code": "SG",
+            "label": "싱가포르"
+          },
+          {
+            "code": "SH",
+            "label": "세인트헬레나"
+          },
+          {
+            "code": "SI",
+            "label": "슬로베니아"
+          },
+          {
+            "code": "SJ",
+            "label": "스발바르제도-얀마웬섬"
+          },
+          {
+            "code": "SK",
+            "label": "슬로바키아"
+          },
+          {
+            "code": "SL",
+            "label": "시에라리온"
+          },
+          {
+            "code": "SM",
+            "label": "산마리노"
+          },
+          {
+            "code": "SN",
+            "label": "세네갈"
+          },
+          {
+            "code": "SO",
+            "label": "소말리아"
+          },
+          {
+            "code": "SR",
+            "label": "수리남"
+          },
+          {
+            "code": "SS",
+            "label": "남수단"
+          },
+          {
+            "code": "ST",
+            "label": "상투메 프린시페"
+          },
+          {
+            "code": "SV",
+            "label": "엘살바도르"
+          },
+          {
+            "code": "SX",
+            "label": "신트마르턴"
+          },
+          {
+            "code": "SY",
+            "label": "시리아"
+          },
+          {
+            "code": "SZ",
+            "label": "에스와티니"
+          },
+          {
+            "code": "TC",
+            "label": "터크스 케이커스 제도"
+          },
+          {
+            "code": "TD",
+            "label": "차드"
+          },
+          {
+            "code": "TF",
+            "label": "프랑스령 남방 지역"
+          },
+          {
+            "code": "TG",
+            "label": "토고"
+          },
+          {
+            "code": "TH",
+            "label": "태국"
+          },
+          {
+            "code": "TJ",
+            "label": "타지키스탄"
+          },
+          {
+            "code": "TK",
+            "label": "토켈라우"
+          },
+          {
+            "code": "TL",
+            "label": "동티모르"
+          },
+          {
+            "code": "TM",
+            "label": "투르크메니스탄"
+          },
+          {
+            "code": "TN",
+            "label": "튀니지"
+          },
+          {
+            "code": "TO",
+            "label": "통가"
+          },
+          {
+            "code": "TR",
+            "label": "튀르키예"
+          },
+          {
+            "code": "TT",
+            "label": "트리니다드 토바고"
+          },
+          {
+            "code": "TV",
+            "label": "투발루"
+          },
+          {
+            "code": "TW",
+            "label": "대만"
+          },
+          {
+            "code": "TZ",
+            "label": "탄자니아"
+          },
+          {
+            "code": "UA",
+            "label": "우크라이나"
+          },
+          {
+            "code": "UG",
+            "label": "우간다"
+          },
+          {
+            "code": "UM",
+            "label": "미국령 해외 제도"
+          },
+          {
+            "code": "US",
+            "label": "미국"
+          },
+          {
+            "code": "UY",
+            "label": "우루과이"
+          },
+          {
+            "code": "UZ",
+            "label": "우즈베키스탄"
+          },
+          {
+            "code": "VA",
+            "label": "바티칸 시국"
+          },
+          {
+            "code": "VC",
+            "label": "세인트빈센트그레나딘"
+          },
+          {
+            "code": "VE",
+            "label": "베네수엘라"
+          },
+          {
+            "code": "VG",
+            "label": "영국령 버진아일랜드"
+          },
+          {
+            "code": "VI",
+            "label": "미국령 버진아일랜드"
+          },
+          {
+            "code": "VN",
+            "label": "베트남"
+          },
+          {
+            "code": "VU",
+            "label": "바누아투"
+          },
+          {
+            "code": "WF",
+            "label": "왈리스-푸투나 제도"
+          },
+          {
+            "code": "WS",
+            "label": "사모아"
+          },
+          {
+            "code": "YE",
+            "label": "예멘"
+          },
+          {
+            "code": "YT",
+            "label": "마요트"
+          },
+          {
+            "code": "ZA",
+            "label": "남아프리카"
+          },
+          {
+            "code": "ZM",
+            "label": "잠비아"
+          },
+          {
+            "code": "ZW",
+            "label": "짐바브웨"
+          }
+        ]
       },
       "story": {
         "kicker": "ABOUT DREAMLAND",
         "mark": "meet DREAMLAND",
         "title": "meet DREAMLAND",
         "body": "DREAMLAND는 수작업 조각 캔들을 중심으로 전개됩니다. 배색, 향, 왁스 레이어를 바탕으로, 왁스가 아직 따뜻할 때 직접 자르고 말고 형태를 다듬습니다.",
-        "note": "캔들은 단순한 물건이 아니라 시간과 빛을 담는 그릇이라고 믿습니다.",
+        "note": "DREAMLAND의 핸드카빙 캔들은 불을 밝히는 용도와 디스플레이 모두를 고려해 만듭니다.",
         "eyebrow": "DREAMLAND 소개"
       }
     }

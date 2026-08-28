@@ -261,3 +261,30 @@
     font-size:12px;
   }
 }
+
+
+/* --------------------------------------------------------------------------
+ * B7-00B.4F R1.1 — Country / Region Selector
+ * ------------------------------------------------------------------------ */
+@media (min-width:1024px){
+  .desktop-contact-page[data-desktop-contact-presentation="B7-00B.4F-R1.1"]
+  .desktop-contact-field select{
+    width:100%;
+    min-height:52px;
+    padding:0 42px 0 14px;
+    border:1px solid var(--dw-color-line-strong);
+    border-radius:5px;
+    background-color:var(--dw-color-paper);
+    color:var(--dw-color-ink);
+    font:inherit;
+    font-size:12px;
+  }
+
+  .desktop-contact-page[data-desktop-contact-presentation="B7-00B.4F-R1.1"]
+  .desktop-contact-field select:focus{
+    outline:2px solid color-mix(in srgb,var(--dw-color-ink) 14%,transparent);
+    outline-offset:2px;
+    border-color:var(--dw-color-ink);
+  }
+}
+
