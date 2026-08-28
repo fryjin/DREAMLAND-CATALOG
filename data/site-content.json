@@ -352,7 +352,8 @@
             "value": "待沟通确认",
             "label": "Discuss With Us"
           }
-        ]
+        ],
+        "collectionResetHint": "Choose multiple scents within one collection. Switching collections resets the current scent selection."
       },
       "inquiryFlow": {
         "progressLabel": "Inquiry progress",
@@ -843,7 +844,8 @@
             "value": "待沟通确认",
             "label": "待沟通确认"
           }
-        ]
+        ],
+        "collectionResetHint": "香型可在同一系列中多选；切换系列后需重新选择香型。"
       },
       "inquiryFlow": {
         "progressLabel": "询价进度",
@@ -1334,7 +1336,8 @@
             "value": "待沟通确认",
             "label": "상담 후 결정"
           }
-        ]
+        ],
+        "collectionResetHint": "한 컬렉션 안에서 여러 향을 선택할 수 있습니다. 컬렉션을 변경하면 향 선택이 초기화됩니다."
       },
       "inquiryFlow": {
         "progressLabel": "문의 진행",

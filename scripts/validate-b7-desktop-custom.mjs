@@ -187,9 +187,9 @@ try{
     read('index.html');
 
   for(const required of [
-    "window.DREAMLAND_RELEASE='b7-00b4d-r1.5.1-v116';",
-    './src/ui/desktop/styles/custom.css?release=b7-00b4d-r1.5.1-v116',
-    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4d-r1.5.1-v116',
+    "window.DREAMLAND_RELEASE='b7-00b4e-r1-v117';",
+    './src/ui/desktop/styles/custom.css?release=b7-00b4e-r1-v117',
+    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4e-r1-v117',
     'ensureCustomFeatureRuntime();',
     'customState:',
     'customFeature,',
@@ -209,7 +209,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/styles/custom.css?release=b7-00b4d-r1.5.1-v116'
+      './src/ui/desktop/styles/custom.css?release=b7-00b4e-r1-v117'
     )!==1
   ){
     fail(
@@ -220,7 +220,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4d-r1.5.1-v116'
+      './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4e-r1-v117'
     )!==1
   ){
     fail(
@@ -415,10 +415,10 @@ try{
     );
 
   for(const required of [
-    "const CACHE_VERSION = 'dreamland-pwa-v116';",
-    "'b7-00b4d-r1.5.1-v116'",
-    './src/ui/desktop/styles/custom.css?release=b7-00b4d-r1.5.1-v116',
-    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4d-r1.5.1-v116',
+    "const CACHE_VERSION = 'dreamland-pwa-v117';",
+    "'b7-00b4e-r1-v117'",
+    './src/ui/desktop/styles/custom.css?release=b7-00b4e-r1-v117',
+    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4e-r1-v117',
     "'./src/ui/desktop/styles/custom.css'",
     "'./src/ui/desktop/custom/runtime-desktop-custom.js'"
   ]){
@@ -431,7 +431,7 @@ try{
 
   if(
     !pwa.includes(
-      "'b7-00b4d-r1.5.1-v116'"
+      "'b7-00b4e-r1-v117'"
     )
   ){
     fail(
@@ -491,6 +491,80 @@ try{
   fail(
     `Desktop Custom package validation failed: ${error.message}`
   );
+}
+
+/* Gate 4E-R1 — Editorial Brief Builder + persistent Live Project Brief. */
+try{
+  const runtime=read('src/ui/desktop/custom/runtime-desktop-custom.js');
+  const css=read('src/ui/desktop/styles/custom.css');
+  const site=JSON.parse(read('data/site-content.json'));
+
+  for(const required of [
+    "const PRESENTATION_VERSION='B7-00B.4E-R1';",
+    'data-desktop-custom-presentation=',
+    'desktop-custom-brief-builder',
+    'desktop-custom-live-brief',
+    'desktop-custom-fragrance-matrix',
+    'function renderLiveBrief()',
+    'function syncChoiceState(field)',
+    'function syncValidationUi()',
+    'function renderFragrancePanel()',
+    'syncFieldError(field);',
+    'renderLiveBrief();'
+  ]){
+    if(!runtime.includes(required)){
+      fail(`Desktop Custom 4E R1 runtime is missing: ${required}`);
+    }
+  }
+
+  for(const required of [
+    'B7-00B.4E R1 — Custom Project Editorial Intake + Guided Brief Recomposition',
+    '[data-desktop-custom-presentation="B7-00B.4E-R1"]',
+    '.desktop-custom-live-brief__rows{',
+    '.desktop-custom-fragrance-matrix',
+    'grid-template-columns:minmax(0,1fr) minmax(380px,420px);',
+    'border-radius:0;',
+    'position:sticky;'
+  ]){
+    if(!css.includes(required)){
+      fail(`Desktop Custom 4E R1 CSS is missing: ${required}`);
+    }
+  }
+
+  if(/font-size:(?:8|9|10)px;/.test(css)){
+    fail('Desktop Custom 4E R1 readability regression: custom.css contains visible 8/9/10px text.');
+  }
+
+  for(const lang of ['en','zh','ko']){
+    const custom=site?.languages?.[lang]?.customProject;
+    if(!custom?.collectionResetHint){
+      fail(`Desktop Custom 4E R1 collection-reset microcopy is missing for ${lang}.`);
+    }
+  }
+
+  const clickStart=runtime.indexOf('function onClick(event)');
+  const clickEnd=runtime.indexOf('function onInput(event)',clickStart);
+  const clickBody=
+    clickStart>=0&&clickEnd>clickStart
+      ? runtime.slice(clickStart,clickEnd)
+      : '';
+
+  if(clickBody.includes('render({')){
+    fail('Desktop Custom 4E R1 interaction regression: choice clicks still trigger full page render().');
+  }
+
+  const submitStart=runtime.indexOf('function submit()');
+  const submitEnd=runtime.indexOf('function onClick(event)',submitStart);
+  const submitBody=
+    submitStart>=0&&submitEnd>submitStart
+      ? runtime.slice(submitStart,submitEnd)
+      : '';
+
+  if(submitBody.includes('render({')){
+    fail('Desktop Custom 4E R1 submit regression: validation/success still rebuilds the whole page.');
+  }
+}catch(error){
+  fail(`Desktop Custom 4E R1 successor validation failed: ${error.message}`);
 }
 
 if(errors.length){
