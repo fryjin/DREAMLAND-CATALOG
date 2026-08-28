@@ -2879,3 +2879,204 @@
     justify-self:start!important;
   }
 }
+
+/* --------------------------------------------------------------------------
+ * B7-00B.4B R4.2.4 — Canonical Craft Container + Directional Typography System
+ *
+ * 01 Craft owns the same canonical Desktop container as Header / Story /
+ *    Custom / Wholesale. The inner editorial grid is now 100% of that owner.
+ * 02 Four Collections uses rotated western annotation with one coherent
+ *    reading direction and hierarchy through scale / length / offset / tone.
+ * ------------------------------------------------------------------------ */
+@media (min-width:1024px){
+  /* ----------------------------------------------------------------------
+   * Four Collections — directional typography, not three equal vertical bars.
+   * -------------------------------------------------------------------- */
+  .desktop-home-collections{
+    grid-template-columns:clamp(116px,8.8vw,142px) minmax(0,1120px)!important;
+    column-gap:clamp(18px,1.8vw,26px)!important;
+    justify-content:center!important;
+    align-items:center!important;
+  }
+
+  .desktop-home-collections::before{
+    content:none!important;
+  }
+
+  .desktop-home-collections__body{
+    width:100%!important;
+    max-width:1120px!important;
+    margin:0!important;
+  }
+
+  .desktop-home-collections__intro{
+    width:min(100%,520px)!important;
+    margin:0 0 28px auto!important;
+  }
+
+  .desktop-home-collections__grid{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+  }
+
+  .desktop-home-collections__annotation{
+    position:relative!important;
+    display:block!important;
+    width:100%!important;
+    height:390px!important;
+    min-height:390px!important;
+    align-self:center!important;
+    transform:none!important;
+    overflow:visible!important;
+  }
+
+  .desktop-home-collections__annotation::after{
+    content:"";
+    position:absolute;
+    left:10px;
+    top:62px;
+    width:28px;
+    height:1px;
+    background:rgba(167,67,55,.34);
+  }
+
+  .desktop-home-collections__annotation-index{
+    position:absolute;
+    left:8px;
+    top:22px;
+    color:var(--dw-home-accent);
+    font-family:var(--dw-home-serif);
+    font-size:20px;
+    line-height:1;
+    font-weight:500;
+    letter-spacing:0;
+  }
+
+  .desktop-home-collections__annotation-line{
+    position:absolute;
+    display:block;
+    width:max-content;
+    white-space:nowrap;
+    transform-origin:left top;
+    text-transform:uppercase;
+    pointer-events:none;
+  }
+
+  .desktop-home-collections__annotation-line--primary{
+    left:40px;
+    top:350px;
+    color:var(--dw-home-accent);
+    font-size:clamp(22px,1.55vw,27px);
+    line-height:1;
+    font-weight:780;
+    letter-spacing:.035em;
+    transform:rotate(-90deg) scaleX(.97);
+  }
+
+  .desktop-home-collections__annotation-line--secondary{
+    left:82px;
+    top:310px;
+    color:rgba(167,67,55,.66);
+    font-size:var(--dw-type-support-size);
+    line-height:1;
+    font-weight:760;
+    letter-spacing:.17em;
+    transform:rotate(-90deg) scaleX(.94);
+  }
+
+  .desktop-home-collections__annotation-line--tertiary{
+    left:116px;
+    top:270px;
+    color:var(--dw-color-muted);
+    font-size:var(--dw-type-support-size);
+    line-height:1;
+    font-weight:700;
+    letter-spacing:.13em;
+    transform:rotate(-90deg) scaleX(.96);
+    opacity:.78;
+  }
+
+  /* ----------------------------------------------------------------------
+   * Craft — canonical container owner. No nested 1280 / 1440 compensation.
+   * -------------------------------------------------------------------- */
+  .desktop-home-featured + .desktop-home-craft{
+    width:min(
+      calc(100% - (2 * var(--dw-gutter))),
+      var(--dw-max)
+    )!important;
+    max-width:var(--dw-max)!important;
+    margin-top:0!important;
+    margin-inline:auto!important;
+  }
+
+  .desktop-home-featured +
+  .desktop-home-craft
+  .desktop-editorial-grid{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+    grid-template-columns:repeat(12,minmax(0,1fr))!important;
+    column-gap:var(--dw-grid-gap)!important;
+    align-items:center!important;
+  }
+
+  .desktop-home-featured +
+  .desktop-home-craft
+  .desktop-editorial-media{
+    grid-column:1 / 8!important;
+    width:100%!important;
+    max-width:none!important;
+    height:auto!important;
+    aspect-ratio:4 / 3!important;
+  }
+
+  .desktop-home-featured +
+  .desktop-home-craft
+  .desktop-editorial-copy{
+    grid-column:9 / 13!important;
+    width:100%!important;
+    max-width:500px!important;
+    justify-self:start!important;
+  }
+}
+
+@media (min-width:1024px) and (max-width:1199px){
+  .desktop-home-collections{
+    grid-template-columns:106px minmax(0,1fr)!important;
+    column-gap:18px!important;
+  }
+
+  .desktop-home-collections__annotation{
+    height:340px!important;
+    min-height:340px!important;
+  }
+
+  .desktop-home-collections__annotation-line--primary{
+    left:30px;
+    top:314px;
+    font-size:20px;
+  }
+
+  .desktop-home-collections__annotation-line--secondary{
+    left:64px;
+    top:282px;
+  }
+
+  .desktop-home-collections__annotation-line--tertiary{
+    left:92px;
+    top:248px;
+  }
+
+  .desktop-home-featured +
+  .desktop-home-craft
+  .desktop-editorial-media{
+    grid-column:1 / 7!important;
+  }
+
+  .desktop-home-featured +
+  .desktop-home-craft
+  .desktop-editorial-copy{
+    grid-column:8 / 13!important;
+  }
+}

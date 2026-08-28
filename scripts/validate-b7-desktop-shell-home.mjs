@@ -459,6 +459,7 @@ try{
       'B7-00B.4B R3 — Home Editorial Structure Realignment',
       'B7-00B.4B R4 — Home Art Direction Distinction + Editorial Recomposition',
       'B7-00B.4B R4.1.1 — accepted visual runtime alignment',
+      'B7-00B.4B R4.2.4 — Canonical Craft Container + Directional Typography System',
       '.desktop-home-hero--cover',
       '.desktop-home-collections::before',
       '.desktop-home-story + .desktop-home-section',

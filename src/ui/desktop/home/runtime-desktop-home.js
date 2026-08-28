@@ -5,7 +5,7 @@
     return;
   }
 
-  const VERSION='B7-00B.4B-R4.2';
+  const VERSION='B7-00B.4B-R4.2.4';
 
   const DEFAULT_ASSETS=Object.freeze({
     hero:{
@@ -720,10 +720,14 @@
         class="desktop-home-section desktop-home-collections desktop-container desktop-reveal"
         aria-labelledby="desktopCollectionsTitle"
       >
-        <div class="desktop-home-collections__note" aria-hidden="true">
-          <span class="desktop-home-collections__note-column">HAND-CARVED / CANDLE ART</span>
-          <span class="desktop-home-collections__note-column">WARMTH IN WAX, ART IN LIGHT</span>
-          <span class="desktop-home-collections__note-column">SCULPTED SLOWLY, MADE TO STAY</span>
+        <div
+          class="desktop-home-collections__note desktop-home-collections__annotation"
+          aria-hidden="true"
+        >
+          <span class="desktop-home-collections__annotation-index">02</span>
+          <span class="desktop-home-collections__annotation-line desktop-home-collections__annotation-line--primary">HAND-CARVED</span>
+          <span class="desktop-home-collections__annotation-line desktop-home-collections__annotation-line--secondary">WAX / FORM / LIGHT</span>
+          <span class="desktop-home-collections__annotation-line desktop-home-collections__annotation-line--tertiary">COLLECTIONS / 01—04</span>
         </div>
 
         <div class="desktop-home-collections__body">
@@ -897,10 +901,10 @@
 
     return `
       <section
-        class="desktop-home-band desktop-home-band--sand desktop-reveal"
+        class="desktop-home-band desktop-home-band--sand desktop-home-craft desktop-container desktop-reveal"
         aria-labelledby="desktopCraftTitle"
       >
-        <div class="desktop-container desktop-editorial-grid">
+        <div class="desktop-editorial-grid">
           <div
             class="desktop-editorial-media media-frame desktop-media-placeholder"
           >
