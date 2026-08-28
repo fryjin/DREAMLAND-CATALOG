@@ -244,9 +244,9 @@ try{
     read('index.html');
 
   for(const required of [
-    "window.DREAMLAND_RELEASE='b7-00b4d-r1.5-v115';",
-    './src/ui/desktop/styles/detail.css?release=b7-00b4d-r1.5-v115',
-    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4d-r1.5-v115',
+    "window.DREAMLAND_RELEASE='b7-00b4d-r1.5.1-v116';",
+    './src/ui/desktop/styles/detail.css?release=b7-00b4d-r1.5.1-v116',
+    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4d-r1.5.1-v116',
     'detailState:',
     'detailFeature,',
     'productImages:',
@@ -269,7 +269,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/styles/detail.css?release=b7-00b4d-r1.5-v115'
+      './src/ui/desktop/styles/detail.css?release=b7-00b4d-r1.5.1-v116'
     )!==1
   ){
     fail(
@@ -280,7 +280,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4d-r1.5-v115'
+      './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4d-r1.5.1-v116'
     )!==1
   ){
     fail(
@@ -441,10 +441,10 @@ try{
     );
 
   for(const required of [
-    "const CACHE_VERSION = 'dreamland-pwa-v115';",
-    "'b7-00b4d-r1.5-v115'",
-    './src/ui/desktop/styles/detail.css?release=b7-00b4d-r1.5-v115',
-    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4d-r1.5-v115',
+    "const CACHE_VERSION = 'dreamland-pwa-v116';",
+    "'b7-00b4d-r1.5.1-v116'",
+    './src/ui/desktop/styles/detail.css?release=b7-00b4d-r1.5.1-v116',
+    './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4d-r1.5.1-v116',
     "'./src/ui/desktop/styles/detail.css'",
     "'./src/ui/desktop/detail/runtime-desktop-detail.js'"
   ]){
@@ -457,7 +457,7 @@ try{
 
   if(
     !pwa.includes(
-      "'b7-00b4d-r1.5-v115'"
+      "'b7-00b4d-r1.5.1-v116'"
     )
   ){
     fail(
@@ -606,6 +606,34 @@ try{
   }
 }catch(error){
   fail(`4D R1.5 persistent PDP commerce validation failed: ${error.message}`);
+}
+
+
+/* Gate 4D-R1.5.1 — repeat Add + in-place Dock interaction semantics. */
+try{
+  const runtime=read('src/ui/desktop/detail/runtime-desktop-detail.js');
+
+  for(const required of [
+    "const INTERACTION_VERSION='B7-00B.4D-R1.5.1';",
+    'function currentInquiryItem(',
+    'function commitDockQuantity()',
+    'function syncDock(',
+    'data-desktop-detail-dock-add-label',
+    "r15UiCopy('addAgain')",
+    "r15UiCopy('addedAgain')",
+    "event.target.closest?.(\n        '[data-desktop-detail-dock-quantity]'",
+    "detailRoot.addEventListener(\n        'input',\n        onInput"
+  ]){
+    if(!runtime.includes(required)){
+      fail(`4D R1.5.1 Detail interaction is missing: ${required}`);
+    }
+  }
+
+  if(runtime.includes('dock.outerHTML=dockHtml(view);')){
+    fail('4D R1.5.1 regression: Persistent Dock must update in place rather than replace its outerHTML.');
+  }
+}catch(error){
+  fail(`4D R1.5.1 Dock interaction validation failed: ${error.message}`);
 }
 
 if(errors.length){

@@ -8,6 +8,7 @@
   const VERSION='B7-00B.3B';
   const PRESENTATION_VERSION='B7-00B.4D-R1';
   const POLISH_VERSION='B7-00B.4D-R1.5';
+  const INTERACTION_VERSION='B7-00B.4D-R1.5.1';
 
   const FALLBACK_COPY=Object.freeze({
     en:Object.freeze({
@@ -382,7 +383,11 @@
         mainView:'Main view',
         galleryView:'View {index}',
         currentConfiguration:'Current configuration',
-        currentItemQuantity:'Current item quantity',
+        currentItemQuantity:'Add quantity',
+        addAgain:'Add {count} more',
+        inInquiryQuantity:'In inquiry · {count} pcs',
+        addedFirst:'Added {count} pcs',
+        addedAgain:'Added {count} pcs · {total} pcs in inquiry',
         moqRuleHeading:'MOQ rule',
         moqRuleCompact:'Same series + size · {count} pcs combined',
         moqRuleText:'Items in the same series and size can be combined. Ordering starts when the combined quantity reaches {count} pcs.',
@@ -406,7 +411,11 @@
         mainView:'主展示图',
         galleryView:'展示图 {index}',
         currentConfiguration:'当前配置',
-        currentItemQuantity:'当前款数量',
+        currentItemQuantity:'本次加入数量',
+        addAgain:'再加入 {count} 件',
+        inInquiryQuantity:'询价单内已有 {count} 件',
+        addedFirst:'已加入 {count} 件',
+        addedAgain:'已追加 {count} 件 · 询价单内共 {total} 件',
         moqRuleHeading:'起订规则',
         moqRuleCompact:'同系列同尺寸 · 合计 {count} 件起订',
         moqRuleText:'同系列、同尺寸商品可合并计算，合计满 {count} 件即可起订。',
@@ -430,7 +439,11 @@
         mainView:'대표 이미지',
         galleryView:'이미지 {index}',
         currentConfiguration:'현재 구성',
-        currentItemQuantity:'현재 제품 수량',
+        currentItemQuantity:'이번 추가 수량',
+        addAgain:'{count}개 더 추가',
+        inInquiryQuantity:'문의 목록에 {count}개',
+        addedFirst:'{count}개 추가됨',
+        addedAgain:'{count}개 추가 · 문의 목록 합계 {total}개',
         moqRuleHeading:'MOQ 기준',
         moqRuleCompact:'동일 시리즈·사이즈 · 합계 {count}개',
         moqRuleText:'동일 시리즈와 동일 사이즈 상품은 합산할 수 있으며, 합계 {count}개부터 주문할 수 있습니다.',
@@ -651,16 +664,201 @@
     return [...groups.values()];
   }
 
-  function dockHtml(view){
-    const data=inquiryView();
-    const count=Math.max(
-      0,
-      Number(data.summary?.itemCount||0)||0
+  function r151Format(value,replacements={}){
+    let result=text(value);
+
+    for(const [key,replacement] of Object.entries(replacements)){
+      result=result.replaceAll(
+        `{${key}}`,
+        String(replacement)
+      );
+    }
+
+    return result;
+  }
+
+  function inquiryItemConfigValue(item,key){
+    const itemConfig=
+      item?.config||
+      item||
+      {};
+
+    return text(
+      itemConfig?.[key]??
+      item?.[key]??
+      ''
     );
+  }
+
+  function currentInquiryItem(view,data=inquiryView()){
+    const productId=text(view?.product?.id);
+    const series=text(view?.product?.series);
+    const configView=view?.config||{};
+    const scentKey=text(
+      configView.scentId||
+      configView.scent
+    );
+
+    return (data?.items||[]).find(item=>{
+      if(item?.type==='custom'){
+        return false;
+      }
+
+      const itemScentKey=text(
+        inquiryItemConfigValue(item,'scentId')||
+        inquiryItemConfigValue(item,'scent')
+      );
+
+      return (
+        text(item?.productId||item?.id)===productId&&
+        text(item?.series)===series&&
+        inquiryItemConfigValue(item,'size')===text(configView.size)&&
+        itemScentKey===scentKey&&
+        inquiryItemConfigValue(item,'pattern')===text(configView.pattern)&&
+        inquiryItemConfigValue(item,'pack')===text(configView.pack)
+      );
+    })||null;
+  }
+
+  function dockCommerceState(view,data=inquiryView()){
     const quantity=currentQuantity(view);
     const unit=Number(view.pricing?.unitPrice||0)||0;
-    const total=unit*quantity;
-    const parts=currentConfigurationParts(view);
+    const existing=currentInquiryItem(view,data);
+    const existingQuantity=
+      existing
+        ? inquiryItemQuantity(existing)
+        : 0;
+
+    return {
+      count:Math.max(0,Number(data.summary?.itemCount||0)||0),
+      quantity,
+      unit,
+      total:unit*quantity,
+      parts:currentConfigurationParts(view),
+      existing,
+      existingQuantity,
+      addLabel:
+        existing
+          ? r151Format(
+              r15UiCopy('addAgain'),
+              {count:quantity}
+            )
+          : copy().addInquiry
+    };
+  }
+
+  function commitDockQuantity(){
+    const input=
+      detailRoot?.querySelector(
+        '[data-desktop-detail-dock-quantity]'
+      );
+
+    if(input){
+      quantityValidation=
+        config?.actions
+          ?.setQuantity?.(
+            input.value
+          )||
+        null;
+    }
+
+    return viewModel();
+  }
+
+  function setNodeText(selector,value){
+    const node=detailRoot?.querySelector(selector);
+    if(node){
+      node.textContent=text(value);
+    }
+    return node;
+  }
+
+  function syncDock(
+    view=viewModel(),
+    {preserveQuantityInput=false}={}
+  ){
+    const dock=
+      detailRoot?.querySelector(
+        '[data-desktop-detail-dock]'
+      );
+
+    if(!dock){
+      return false;
+    }
+
+    const state=dockCommerceState(view);
+
+    setNodeText(
+      '[data-desktop-detail-dock-config]',
+      state.parts.join(' / ')||'—'
+    );
+    setNodeText(
+      '[data-desktop-detail-dock-moq]',
+      moqRuleCompactText(view)
+    );
+    setNodeText(
+      '[data-desktop-detail-dock-unit]',
+      money(state.unit)
+    );
+    setNodeText(
+      '[data-desktop-detail-dock-amount]',
+      `${r15UiCopy('currentAmount')} · ${money(state.total)}`
+    );
+    setNodeText(
+      '[data-desktop-detail-dock-count]',
+      state.count
+    );
+    setNodeText(
+      '[data-desktop-detail-dock-add-label]',
+      state.addLabel
+    );
+
+    const existingNode=
+      dock.querySelector(
+        '[data-desktop-detail-dock-existing]'
+      );
+
+    if(existingNode){
+      existingNode.hidden=!state.existing;
+      existingNode.textContent=
+        state.existing
+          ? r151Format(
+              r15UiCopy('inInquiryQuantity'),
+              {count:state.existingQuantity}
+            )
+          : '';
+    }
+
+    const input=
+      dock.querySelector(
+        '[data-desktop-detail-dock-quantity]'
+      );
+
+    if(
+      input&&
+      !(
+        preserveQuantityInput&&
+        root.document?.activeElement===input
+      )
+    ){
+      input.value=String(state.quantity);
+    }
+
+    const inquiryButton=
+      dock.querySelector(
+        '[data-desktop-detail-action="toggle-inquiry-drawer"]'
+      );
+
+    inquiryButton?.setAttribute(
+      'aria-expanded',
+      inquiryDrawerOpen?'true':'false'
+    );
+
+    return true;
+  }
+
+  function dockHtml(view){
+    const state=dockCommerceState(view);
 
     return `
       <section
@@ -671,14 +869,29 @@
         <div class="desktop-container--wide desktop-detail-dock__inner">
           <div class="desktop-detail-dock__configuration">
             <span>${escapeHtml(r15UiCopy('currentConfiguration'))}</span>
-            <strong>${escapeHtml(parts.join(' / ')||'—')}</strong>
-            <small>${escapeHtml(moqRuleCompactText(view))}</small>
+            <strong data-desktop-detail-dock-config>${escapeHtml(state.parts.join(' / ')||'—')}</strong>
+            <small data-desktop-detail-dock-moq>${escapeHtml(moqRuleCompactText(view))}</small>
           </div>
 
           <div class="desktop-detail-dock__commercial">
             <span>${escapeHtml(r15UiCopy('unitPrice'))}</span>
-            <strong>${escapeHtml(money(unit))}</strong>
-            <small>${escapeHtml(r15UiCopy('currentAmount'))} · ${escapeHtml(money(total))}</small>
+            <strong data-desktop-detail-dock-unit>${escapeHtml(money(state.unit))}</strong>
+            <small data-desktop-detail-dock-amount>${escapeHtml(r15UiCopy('currentAmount'))} · ${escapeHtml(money(state.total))}</small>
+            <small
+              data-desktop-detail-dock-existing
+              ${state.existing?'':'hidden'}
+            >
+              ${
+                state.existing
+                  ? escapeHtml(
+                      r151Format(
+                        r15UiCopy('inInquiryQuantity'),
+                        {count:state.existingQuantity}
+                      )
+                    )
+                  : ''
+              }
+            </small>
           </div>
 
           <button
@@ -688,7 +901,7 @@
             aria-expanded="${inquiryDrawerOpen?'true':'false'}"
           >
             <span>${escapeHtml(r15UiCopy('inquiry'))}</span>
-            <strong>${escapeHtml(count)}</strong>
+            <strong data-desktop-detail-dock-count>${escapeHtml(state.count)}</strong>
           </button>
 
           <div class="desktop-detail-dock__actions">
@@ -703,12 +916,13 @@
               <label>
                 <input
                   type="number"
-                  value="${escapeHtml(quantity)}"
+                  value="${escapeHtml(state.quantity)}"
                   min="1"
                   step="1"
                   inputmode="numeric"
                   data-desktop-detail-dock-quantity
                   aria-label="${escapeHtml(r15UiCopy('currentItemQuantity'))}"
+                  title="${escapeHtml(r15UiCopy('currentItemQuantity'))}"
                 >
                 <span>${escapeHtml(qtyUnit())}</span>
               </label>
@@ -726,7 +940,7 @@
               type="button"
               data-desktop-detail-action="add-inquiry"
             >
-              ${escapeHtml(copy().addInquiry)}
+              <span data-desktop-detail-dock-add-label>${escapeHtml(state.addLabel)}</span>
               <span aria-hidden="true">→</span>
             </button>
 
@@ -949,14 +1163,7 @@
   }
 
   function syncPersistentCommerce(view=viewModel()){
-    const dock=
-      detailRoot?.querySelector(
-        '[data-desktop-detail-dock]'
-      );
-
-    if(dock){
-      dock.outerHTML=dockHtml(view);
-    }
+    syncDock(view);
 
     const layer=
       detailRoot?.querySelector(
@@ -1765,7 +1972,7 @@
       );
 
     return `
-      <div class="desktop-detail-page" data-desktop-detail-presentation="${escapeHtml(PRESENTATION_VERSION)}" data-desktop-detail-polish="${escapeHtml(POLISH_VERSION)}">
+      <div class="desktop-detail-page" data-desktop-detail-presentation="${escapeHtml(PRESENTATION_VERSION)}" data-desktop-detail-polish="${escapeHtml(POLISH_VERSION)}" data-desktop-detail-interaction="${escapeHtml(INTERACTION_VERSION)}">
         <div class="desktop-container--wide">
           <button
             class="desktop-detail-back"
@@ -2056,7 +2263,7 @@
     return true;
   }
 
-  function flashAdded(){
+  function flashAdded(message=''){
     const node=
       detailRoot?.querySelector(
         '[data-desktop-detail-dock-feedback]'
@@ -2072,6 +2279,10 @@
     root.clearTimeout?.(
       feedbackTimer
     );
+
+    if(message){
+      node.textContent=message;
+    }
 
     node.hidden=false;
 
@@ -2135,7 +2346,7 @@
           target.dataset.desktopDetailDelta||0
         )
       );
-      syncPersistentCommerce(
+      syncDock(
         viewModel()
       );
       return;
@@ -2230,12 +2441,50 @@
     }
 
     if(action==='add-inquiry'){
+      const committedView=
+        commitDockQuantity();
+      const batchQuantity=
+        currentQuantity(committedView);
+      const beforeData=
+        inquiryView();
+      const beforeItem=
+        currentInquiryItem(
+          committedView,
+          beforeData
+        );
+
       config?.actions
         ?.addInquiry?.();
 
+      const afterData=
+        inquiryView();
+      const afterItem=
+        currentInquiryItem(
+          committedView,
+          afterData
+        );
+      const afterQuantity=
+        afterItem
+          ? inquiryItemQuantity(afterItem)
+          : batchQuantity;
+
       syncPersistentCommerce(
-        viewModel()
+        committedView
       );
+
+      const feedback=
+        beforeItem
+          ? r151Format(
+              r15UiCopy('addedAgain'),
+              {
+                count:batchQuantity,
+                total:afterQuantity
+              }
+            )
+          : r151Format(
+              r15UiCopy('addedFirst'),
+              {count:batchQuantity}
+            );
 
       root.requestAnimationFrame?.(
         ()=>{
@@ -2243,7 +2492,7 @@
             detailRoot&&
             !detailRoot.hidden
           ){
-            flashAdded();
+            flashAdded(feedback);
           }
         }
       );
@@ -2255,6 +2504,37 @@
       config?.actions
         ?.customProject?.();
     }
+  }
+
+  function onInput(event){
+    const dockInput=
+      event.target.closest?.(
+        '[data-desktop-detail-dock-quantity]'
+      );
+
+    if(
+      !dockInput||
+      !detailRoot?.contains(dockInput)
+    ){
+      return;
+    }
+
+    const raw=Number(dockInput.value);
+    if(!Number.isFinite(raw)||raw<1){
+      return;
+    }
+
+    quantityValidation=
+      config?.actions
+        ?.setQuantity?.(
+          dockInput.value
+        )||
+      null;
+
+    syncDock(
+      viewModel(),
+      {preserveQuantityInput:true}
+    );
   }
 
   function onChange(event){
@@ -2274,7 +2554,7 @@
           )||
         null;
 
-      syncPersistentCommerce(
+      syncDock(
         viewModel()
       );
       return;
@@ -2337,7 +2617,7 @@
 
     const input=
       event.target.closest?.(
-        '[data-desktop-detail-quantity]'
+        '[data-desktop-detail-quantity], [data-desktop-detail-dock-quantity], [data-desktop-detail-drawer-quantity]'
       );
 
     if(
@@ -2429,6 +2709,11 @@
       detailRoot.addEventListener(
         'change',
         onChange
+      );
+
+      detailRoot.addEventListener(
+        'input',
+        onInput
       );
 
       detailRoot.addEventListener(
