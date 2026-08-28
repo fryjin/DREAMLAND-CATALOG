@@ -94,14 +94,14 @@ try{
 
 try{
   const index=read('index.html');
-  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4e-r1.2-v119';
-  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4e-r1.2-v119';
-  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4e-r1.2-v119';
+  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4f-r1-v120';
+  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4f-r1-v120';
+  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4f-r1-v120';
 
   includesAll(
     index,
     [
-      "window.DREAMLAND_RELEASE='b7-00b4e-r1.2-v119';",
+      "window.DREAMLAND_RELEASE='b7-00b4f-r1-v120';",
       tokensRef,
       primitivesRef,
       shellRef
@@ -126,15 +126,15 @@ try{
   includesAll(
     sw,
     [
-      "const CACHE_VERSION = 'dreamland-pwa-v119';",
-      "'b7-00b4e-r1.2-v119'",
-      './src/ui/desktop/styles/primitives.css?release=b7-00b4e-r1.2-v119',
+      "const CACHE_VERSION = 'dreamland-pwa-v120';",
+      "'b7-00b4f-r1-v120'",
+      './src/ui/desktop/styles/primitives.css?release=b7-00b4f-r1-v120',
       "'./src/ui/desktop/styles/primitives.css'"
     ],
     'Service Worker Foundation release'
   );
 
-  if(!pwa.includes("'b7-00b4e-r1.2-v119'")){
+  if(!pwa.includes("'b7-00b4f-r1-v120'")){
     fail('PWA runtime release tag was not advanced to B7-00B.4A R1.');
   }
 }catch(error){

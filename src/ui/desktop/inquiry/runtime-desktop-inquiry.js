@@ -6,6 +6,7 @@
   }
 
   const VERSION='B7-00B.3D';
+  const PRESENTATION_VERSION='B7-00B.4F-R1';
 
   let config=null;
   let inquiryRoot=null;
@@ -82,41 +83,130 @@
   function progress(){
     const c=copy();
     const labels=[
-      c.stepSelection||'Selection',
+      c.stepSelection||'Inquiry',
       c.stepContact||'Contact',
       c.stepReview||'Review'
     ];
 
     return `
-      <div class="desktop-flow-progress" aria-label="${escapeHtml(c.progressLabel||'Inquiry progress')}">
+      <div
+        class="desktop-flow-progress desktop-inquiry-flow"
+        aria-label="${escapeHtml(c.progressLabel||'Inquiry progress')}"
+      >
         ${labels.map((label,index)=>`
           <span class="${index===0?'is-active':''}">
             <b>${String(index+1).padStart(2,'0')}</b>
-            ${escapeHtml(label)}
+            <strong>${escapeHtml(label)}</strong>
           </span>
         `).join('')}
       </div>
     `;
   }
 
-  function productConfig(item){
+  function productConfigLine(item){
+    return [
+      text(item.size),
+      itemScent(item),
+      choice(item.pattern),
+      choice(item.pack)
+    ]
+      .filter(Boolean)
+      .join(' · ');
+  }
+
+  function deriveMoqGroups(data=view()){
+    const groups=new Map();
+
+    for(const item of data.items||[]){
+      if(item?.type!=='product'){
+        continue;
+      }
+
+      const seriesKey=text(item.series)||'unknown';
+      const sizeKey=text(item.size)||'—';
+      const key=`${seriesKey}|${sizeKey}`;
+
+      if(!groups.has(key)){
+        groups.set(key,{
+          key,
+          seriesKey,
+          seriesLabel:series(seriesKey),
+          size:sizeKey,
+          quantity:0,
+          moq:1,
+          items:[]
+        });
+      }
+
+      const group=groups.get(key);
+      group.quantity+=Number(item.normalizedQty||item.qty||0)||0;
+      group.moq=Math.max(group.moq,itemMoq(item));
+      group.items.push(item);
+    }
+
+    return [...groups.values()].map(group=>{
+      const ready=group.quantity>=group.moq;
+      return Object.freeze({
+        ...group,
+        ready,
+        remaining:Math.max(0,group.moq-group.quantity),
+        ratio:Math.min(1,group.quantity/group.moq)
+      });
+    });
+  }
+
+  function moqProgressText(group){
     const c=copy();
-    const rows=[
-      [c.size,item.size],
-      [c.scent,itemScent(item)],
-      [c.pattern,choice(item.pattern)],
-      [c.packaging,choice(item.pack)]
-    ].filter(row=>text(row[1]));
+
+    if(group.ready){
+      return text(c.moqReady||'MOQ met');
+    }
+
+    return text(c.moqRemaining||'{count} pcs remaining')
+      .replace('{count}',String(group.remaining));
+  }
+
+  function moqGroupHeader(group,index){
+    const c=copy();
+    const percent=Math.max(0,Math.min(100,group.ratio*100));
 
     return `
-      <dl class="desktop-inquiry-config">
-        ${rows.map(([label,value])=>`
+      <header
+        class="desktop-inquiry-moq-group__head ${group.ready?'is-ready':'is-pending'}"
+      >
+        <div class="desktop-inquiry-moq-group__identity">
+          <span>${String(index+1).padStart(2,'0')}</span>
           <div>
-            <dt>${escapeHtml(label)}</dt>
-            <dd>${escapeHtml(value)}</dd>
+            <div class="desktop-eyebrow">
+              ${escapeHtml(c.moqGroup||'MOQ GROUP')}
+            </div>
+            <h2>
+              ${escapeHtml(group.seriesLabel)}
+              <i aria-hidden="true">·</i>
+              ${escapeHtml(group.size)}
+            </h2>
           </div>
-        `).join('')}
-      </dl>
+        </div>
+
+        <div class="desktop-inquiry-moq-group__status">
+          <div>
+            <strong>
+              ${escapeHtml(group.quantity)}
+              <span>/ ${escapeHtml(group.moq)} ${escapeHtml(qtyUnit())}</span>
+            </strong>
+            <em>${group.ready?'✓ ':''}${escapeHtml(moqProgressText(group))}</em>
+          </div>
+
+          <div
+            class="desktop-inquiry-moq-meter"
+            aria-label="${escapeHtml(`${group.quantity} / ${group.moq}`)}"
+          >
+            <span style="width:${percent.toFixed(2)}%"></span>
+          </div>
+
+          <p>${escapeHtml(c.moqRule||'Quantities within the same series and size count together toward MOQ.')}</p>
+        </div>
+      </header>
     `;
   }
 
@@ -125,8 +215,11 @@
     const quantity=Number(item.normalizedQty||item.qty||0)||0;
 
     return `
-      <article class="desktop-inquiry-item" data-inquiry-id="${escapeHtml(item.id)}">
-        <div class="desktop-inquiry-item__media">
+      <article
+        class="desktop-inquiry-product"
+        data-inquiry-id="${escapeHtml(item.id)}"
+      >
+        <div class="desktop-inquiry-product__media">
           ${
             item.cover
               ? `<img src="${escapeHtml(item.cover)}" alt="${escapeHtml(productName(item))}" loading="lazy" decoding="async">`
@@ -134,101 +227,159 @@
           }
         </div>
 
-        <div class="desktop-inquiry-item__body">
-          <header class="desktop-inquiry-item__head">
+        <div class="desktop-inquiry-product__body">
+          <header class="desktop-inquiry-product__head">
             <div>
               <div class="desktop-eyebrow">${escapeHtml(series(item.series))}</div>
-              <h2>${escapeHtml(productName(item))}</h2>
+              <h3>${escapeHtml(productName(item))}</h3>
               <small>${escapeHtml(item.productId||'')}</small>
             </div>
 
             <button
-              class="desktop-inquiry-remove"
+              class="desktop-inquiry-edit"
               type="button"
-              data-desktop-inquiry-action="remove"
+              data-desktop-inquiry-action="edit"
               data-id="${escapeHtml(item.id)}"
-            >${escapeHtml(c.remove)}</button>
+            >
+              ${escapeHtml(c.editConfiguration)}
+              <span aria-hidden="true">→</span>
+            </button>
           </header>
 
-          ${productConfig(item)}
+          <p class="desktop-inquiry-product__config">
+            ${escapeHtml(productConfigLine(item))}
+          </p>
 
-          <div class="desktop-inquiry-item__commercial">
-            <div class="desktop-inquiry-quantity">
-              <button
-                type="button"
-                data-desktop-inquiry-action="delta"
-                data-id="${escapeHtml(item.id)}"
-                data-delta="-1"
-                aria-label="-"
-              >−</button>
+          <div class="desktop-inquiry-product__commercial">
+            <div>
+              <span class="desktop-inquiry-commercial-label">
+                ${escapeHtml(c.currentItemQuantity||c.quantity||'Current item quantity')}
+              </span>
 
-              <input
-                type="number"
-                value="${escapeHtml(quantity)}"
-                min="1"
-                step="1"
-                data-desktop-inquiry-qty="${escapeHtml(item.id)}"
-                aria-label="${escapeHtml(c.quantity||'Quantity')}"
-              >
+              <div class="desktop-inquiry-quantity">
+                <button
+                  type="button"
+                  data-desktop-inquiry-action="delta"
+                  data-id="${escapeHtml(item.id)}"
+                  data-delta="-1"
+                  aria-label="-"
+                >−</button>
 
-              <button
-                type="button"
-                data-desktop-inquiry-action="delta"
-                data-id="${escapeHtml(item.id)}"
-                data-delta="1"
-                aria-label="+"
-              >+</button>
-            </div>
+                <input
+                  type="number"
+                  value="${escapeHtml(quantity)}"
+                  min="1"
+                  step="1"
+                  data-desktop-inquiry-qty="${escapeHtml(item.id)}"
+                  aria-label="${escapeHtml(c.quantity||'Quantity')}"
+                >
 
-            <div class="desktop-inquiry-moq">
-              ${escapeHtml(c.moq||'MOQ')} ${escapeHtml(itemMoq(item))}
+                <button
+                  type="button"
+                  data-desktop-inquiry-action="delta"
+                  data-id="${escapeHtml(item.id)}"
+                  data-delta="1"
+                  aria-label="+"
+                >+</button>
+              </div>
             </div>
 
             <div class="desktop-inquiry-price">
               <span>${escapeHtml(money(item.unitPrice))} / ${escapeHtml(qtyUnit())}</span>
               <strong>${escapeHtml(money(item.subtotal))}</strong>
             </div>
-          </div>
 
-          <button
-            class="desktop-inquiry-edit"
-            type="button"
-            data-desktop-inquiry-action="edit"
-            data-id="${escapeHtml(item.id)}"
-          >
-            ${escapeHtml(c.editConfiguration)}
-            <span aria-hidden="true">→</span>
-          </button>
+            <button
+              class="desktop-inquiry-remove"
+              type="button"
+              data-desktop-inquiry-action="remove"
+              data-id="${escapeHtml(item.id)}"
+            >${escapeHtml(c.remove)}</button>
+          </div>
         </div>
       </article>
     `;
   }
 
-  function customRow(item){
+  function productGroupsHtml(data){
+    const c=copy();
+    const groups=deriveMoqGroups(data);
+
+    if(!groups.length){
+      return '';
+    }
+
+    return `
+      <section
+        class="desktop-inquiry-product-selection"
+        data-desktop-inquiry-product-selection
+      >
+        <div class="desktop-inquiry-workspace__section-head">
+          <div>
+            <div class="desktop-eyebrow">
+              ${escapeHtml(c.workspaceKicker||c.kicker||'INQUIRY REVIEW')}
+            </div>
+            <h2>${escapeHtml(c.productSelection||c.selectedProducts||'Product selection')}</h2>
+          </div>
+
+          <strong>
+            ${escapeHtml(data.summary?.productCount||0)}
+            <span>${escapeHtml(c.productConfigurations||'configurations')}</span>
+          </strong>
+        </div>
+
+        <div class="desktop-inquiry-moq-groups">
+          ${groups.map((group,index)=>`
+            <section
+              class="desktop-inquiry-moq-group"
+              data-desktop-inquiry-moq-group="${escapeHtml(group.key)}"
+            >
+              ${moqGroupHeader(group,index)}
+              <div class="desktop-inquiry-moq-group__items">
+                ${group.items.map(productRow).join('')}
+              </div>
+            </section>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }
+
+  function customConfig(item){
     const c=copy();
     const scents=Array.isArray(item.scents)
       ? item.scents.join(' / ')
       : text(item.scent);
 
-    const rows=[
-      [c.useCase,choice(item.use)],
-      [c.quantity,item.qty ? `${item.qty} ${qtyUnit()}` : ''],
-      [c.size,choice(item.sizePref)],
-      [c.fragranceCollection,series(item.scentSeries)],
-      [c.scents,scents],
-      [c.packaging,choice(item.pack)],
-      [c.branding,choice(item.branding)]
-    ].filter(row=>text(row[1]));
+    return [
+      choice(item.use),
+      item.qty ? `${item.qty} ${qtyUnit()}` : '',
+      choice(item.sizePref),
+      series(item.scentSeries),
+      scents,
+      choice(item.pack),
+      choice(item.branding)
+    ].filter(Boolean);
+  }
+
+  function customRow(item,index){
+    const c=copy();
+    const values=customConfig(item);
 
     return `
-      <article class="desktop-inquiry-item desktop-inquiry-item--custom" data-inquiry-id="${escapeHtml(item.id)}">
-        <div class="desktop-inquiry-custom-mark" aria-hidden="true">C</div>
+      <article
+        class="desktop-inquiry-custom-project"
+        data-inquiry-id="${escapeHtml(item.id)}"
+      >
+        <div class="desktop-inquiry-custom-project__index">
+          CUSTOM / ${String(index+1).padStart(2,'0')}
+        </div>
 
-        <div class="desktop-inquiry-item__body">
-          <header class="desktop-inquiry-item__head">
+        <div class="desktop-inquiry-custom-project__body">
+          <header>
             <div>
               <div class="desktop-eyebrow">${escapeHtml(c.customProject)}</div>
-              <h2>${escapeHtml(choice(item.use)||c.customProject)}</h2>
+              <h3>${escapeHtml(choice(item.use)||c.customProject)}</h3>
             </div>
 
             <button
@@ -239,17 +390,10 @@
             >${escapeHtml(c.remove)}</button>
           </header>
 
-          <dl class="desktop-inquiry-config desktop-inquiry-config--custom">
-            ${rows.map(([label,value])=>`
-              <div>
-                <dt>${escapeHtml(label)}</dt>
-                <dd>${escapeHtml(value)}</dd>
-              </div>
-            `).join('')}
-          </dl>
+          <p>${values.map(escapeHtml).join(' · ')}</p>
 
-          <div class="desktop-inquiry-custom-quote">
-            <span>${escapeHtml(c.pricing)}</span>
+          <div class="desktop-inquiry-custom-project__quote">
+            <span>${escapeHtml(c.pricing||'Pricing')}</span>
             <strong>${escapeHtml(c.customQuotedSeparately)}</strong>
           </div>
         </div>
@@ -257,55 +401,156 @@
     `;
   }
 
-  function summaryHtml(data){
+  function customProjectsHtml(data){
     const c=copy();
-    const summary=data.summary||{};
+    const items=(data.items||[]).filter(item=>item?.type==='custom');
+
+    if(!items.length){
+      return '';
+    }
 
     return `
-      <aside class="desktop-inquiry-summary">
-        <div class="desktop-eyebrow">${escapeHtml(c.summaryKicker)}</div>
-        <h2>${escapeHtml(c.summaryTitle)}</h2>
+      <section
+        class="desktop-inquiry-custom-projects"
+        data-desktop-inquiry-custom-projects
+      >
+        <div class="desktop-inquiry-workspace__section-head">
+          <div>
+            <div class="desktop-eyebrow">${escapeHtml(c.customProject)}</div>
+            <h2>${escapeHtml(c.customProjects||c.customProject)}</h2>
+          </div>
 
-        <div class="desktop-inquiry-summary__rows">
-          <div>
-            <span>${escapeHtml(c.selectedItems)}</span>
-            <strong>${escapeHtml(summary.itemCount||0)}</strong>
-          </div>
-          <div>
-            <span>${escapeHtml(c.totalQuantity)}</span>
-            <strong>${escapeHtml(summary.productQuantity||0)} ${escapeHtml(qtyUnit())}</strong>
-          </div>
-          <div>
-            <span>${escapeHtml(c.productEstimate)}</span>
-            <strong>${escapeHtml(money(summary.estimatedTotal||0))}</strong>
-          </div>
-          ${
-            Number(summary.customCount||0)>0
-              ? `<div>
-                  <span>${escapeHtml(c.customProject)}</span>
-                  <strong>${escapeHtml(c.customQuotedSeparately)}</strong>
-                </div>`
-              : ''
-          }
+          <strong>${items.length}</strong>
         </div>
 
-        <p>${escapeHtml(c.finalPricingNote)}</p>
+        <div>
+          ${items.map(customRow).join('')}
+        </div>
+      </section>
+    `;
+  }
+
+  function workspaceBody(data){
+    const c=copy();
+
+    return `
+      <div class="desktop-inquiry-workspace__head">
+        <div>
+          <span>${escapeHtml(c.selectedProducts)}</span>
+          <strong>${escapeHtml(data.summary?.itemCount||0)}</strong>
+        </div>
 
         <button
-          class="desktop-flow-primary"
+          class="desktop-inquiry-clear"
           type="button"
-          data-desktop-inquiry-action="continue"
-        >
-          ${escapeHtml(c.continueContact)}
-          <span aria-hidden="true">→</span>
-        </button>
+          data-desktop-inquiry-action="clear"
+        >${escapeHtml(c.clearInquiry||c.clearAll)}</button>
+      </div>
 
-        <button
-          class="desktop-flow-secondary"
-          type="button"
-          data-desktop-inquiry-action="explore"
-        >${escapeHtml(c.continueExploring)}</button>
-      </aside>
+      ${productGroupsHtml(data)}
+      ${customProjectsHtml(data)}
+    `;
+  }
+
+  function moqSummary(data){
+    const groups=deriveMoqGroups(data);
+    const ready=groups.filter(group=>group.ready).length;
+    const pending=groups.length-ready;
+
+    return {
+      total:groups.length,
+      ready,
+      pending
+    };
+  }
+
+  function overviewHtml(data){
+    const c=copy();
+    const summary=data.summary||{};
+    const moq=moqSummary(data);
+
+    const readyText=text(c.moqGroupsReady||'{count} groups ready')
+      .replace('{count}',String(moq.ready));
+
+    const pendingText=text(c.moqGroupsPending||'{count} groups still below MOQ')
+      .replace('{count}',String(moq.pending));
+
+    return `
+      <div class="desktop-inquiry-overview__head">
+        <div class="desktop-eyebrow">${escapeHtml(c.summaryKicker)}</div>
+        <h2>${escapeHtml(c.inquiryOverview||c.summaryTitle)}</h2>
+      </div>
+
+      <div class="desktop-inquiry-overview__metrics">
+        <div>
+          <strong>${escapeHtml(summary.productCount||0)}</strong>
+          <span>${escapeHtml(c.productConfigurations||'Product configurations')}</span>
+        </div>
+
+        <div>
+          <strong>${escapeHtml(summary.productQuantity||0)}</strong>
+          <span>${escapeHtml(c.totalQuantity)}</span>
+        </div>
+
+        ${
+          Number(summary.customCount||0)>0
+            ? `<div>
+                <strong>${escapeHtml(summary.customCount)}</strong>
+                <span>${escapeHtml(c.customProjects||c.customProject)}</span>
+              </div>`
+            : ''
+        }
+      </div>
+
+      ${
+        moq.total
+          ? `
+            <section class="desktop-inquiry-overview__moq">
+              <span>${escapeHtml(c.moqReview||'MOQ REVIEW')}</span>
+              <strong>${escapeHtml(readyText)}</strong>
+              ${
+                moq.pending
+                  ? `<p>${escapeHtml(pendingText)}</p>`
+                  : `<p>✓ ${escapeHtml(c.moqReady||'MOQ met')}</p>`
+              }
+            </section>
+          `
+          : ''
+      }
+
+      <section class="desktop-inquiry-overview__estimate">
+        <span>${escapeHtml(c.productEstimate)}</span>
+        <strong>${escapeHtml(money(summary.estimatedTotal||0))}</strong>
+
+        ${
+          Number(summary.customCount||0)>0
+            ? `<p>
+                ${escapeHtml(c.customProject)}
+                ·
+                ${escapeHtml(c.customQuotedSeparately)}
+              </p>`
+            : ''
+        }
+      </section>
+
+      <p class="desktop-inquiry-overview__note">
+        ${escapeHtml(c.finalPricingNote)}
+      </p>
+
+      <button
+        class="desktop-flow-primary"
+        type="button"
+        data-desktop-inquiry-action="continue"
+      >
+        ${escapeHtml(c.continueContact)}
+        <span aria-hidden="true">→</span>
+      </button>
+
+      <button
+        class="desktop-flow-secondary"
+        type="button"
+        data-desktop-inquiry-action="explore"
+      >${escapeHtml(c.continueExploring)}</button>
     `;
   }
 
@@ -344,18 +589,23 @@
     const c=copy();
 
     return `
-      <div class="desktop-flow-page desktop-inquiry-page">
-        <div class="desktop-container">
-          <div class="desktop-flow-empty">
+      <div
+        class="desktop-flow-page desktop-inquiry-page"
+        data-desktop-inquiry-presentation="${PRESENTATION_VERSION}"
+      >
+        <div class="desktop-container--wide desktop-inquiry-shell">
+          <div class="desktop-flow-empty desktop-inquiry-empty">
             <div class="desktop-eyebrow">${escapeHtml(c.kicker)}</div>
             <h1>${escapeHtml(c.emptyTitle)}</h1>
             <p>${escapeHtml(c.emptyBody)}</p>
+
             <div>
               <button
                 class="desktop-flow-primary"
                 type="button"
                 data-desktop-inquiry-action="explore"
               >${escapeHtml(c.exploreCollection)} <span aria-hidden="true">→</span></button>
+
               <button
                 class="desktop-flow-secondary"
                 type="button"
@@ -364,6 +614,8 @@
             </div>
           </div>
         </div>
+
+        <div data-desktop-inquiry-dialog-host></div>
       </div>
     `;
   }
@@ -377,42 +629,42 @@
     }
 
     return `
-      <div class="desktop-flow-page desktop-inquiry-page">
-        <div class="desktop-container">
-          <header class="desktop-flow-hero">
-            <div class="desktop-eyebrow">${escapeHtml(c.kicker)}</div>
-            <h1>${escapeHtml(c.title)}</h1>
-            <p>${escapeHtml(c.body)}</p>
+      <div
+        class="desktop-flow-page desktop-inquiry-page"
+        data-desktop-inquiry-presentation="${PRESENTATION_VERSION}"
+      >
+        <div class="desktop-container--wide desktop-inquiry-shell">
+          <header class="desktop-flow-hero desktop-inquiry-hero">
+            <div>
+              <div class="desktop-eyebrow">${escapeHtml(c.kicker)} / 01</div>
+              <h1>${escapeHtml(c.workspaceTitle||c.title)}</h1>
+            </div>
+
+            <p>${escapeHtml(c.workspaceBody||c.body)}</p>
+
             ${progress()}
           </header>
 
           <div class="desktop-inquiry-layout">
-            <section class="desktop-inquiry-list">
-              <div class="desktop-inquiry-list__head">
-                <div>
-                  <span>${escapeHtml(c.selectedProducts)}</span>
-                  <strong>${escapeHtml(data.summary?.itemCount||0)}</strong>
-                </div>
+            <main
+              class="desktop-inquiry-workspace"
+              data-desktop-inquiry-workspace
+            >
+              ${workspaceBody(data)}
+            </main>
 
-                <button
-                  class="desktop-inquiry-clear"
-                  type="button"
-                  data-desktop-inquiry-action="clear"
-                >${escapeHtml(c.clearAll)}</button>
-              </div>
-
-              ${(data.items||[]).map(item=>
-                item.type==='custom'
-                  ? customRow(item)
-                  : productRow(item)
-              ).join('')}
-            </section>
-
-            ${summaryHtml(data)}
+            <aside
+              class="desktop-inquiry-summary desktop-inquiry-overview"
+              data-desktop-inquiry-overview
+            >
+              ${overviewHtml(data)}
+            </aside>
           </div>
         </div>
 
-        ${dialogHtml()}
+        <div data-desktop-inquiry-dialog-host>
+          ${dialogHtml()}
+        </div>
       </div>
     `;
   }
@@ -426,10 +678,52 @@
     return true;
   }
 
+  function syncOverview(data=view()){
+    const node=inquiryRoot?.querySelector('[data-desktop-inquiry-overview]');
+    if(!node){
+      return false;
+    }
+
+    node.innerHTML=overviewHtml(data);
+    return true;
+  }
+
+  function syncWorkspace(data=view()){
+    if(data.empty){
+      return render();
+    }
+
+    const node=inquiryRoot?.querySelector('[data-desktop-inquiry-workspace]');
+    if(!node){
+      return render();
+    }
+
+    node.innerHTML=workspaceBody(data);
+    syncOverview(data);
+    return true;
+  }
+
+  function renderDialog(){
+    const host=inquiryRoot?.querySelector('[data-desktop-inquiry-dialog-host]');
+    if(!host){
+      return false;
+    }
+
+    host.innerHTML=dialogHtml();
+    return true;
+  }
+
   function syncAfterMutation(){
     dialog=null;
     config?.actions?.syncInquiry?.();
-    render();
+    const data=view();
+
+    if(data.empty){
+      return render();
+    }
+
+    renderDialog();
+    return syncWorkspace(data);
   }
 
   function onClick(event){
@@ -458,19 +752,19 @@
 
     if(action==='remove'){
       dialog={type:'remove',id};
-      render();
+      renderDialog();
       return;
     }
 
     if(action==='clear'){
       dialog={type:'clear'};
-      render();
+      renderDialog();
       return;
     }
 
     if(action==='dialog-cancel'){
       dialog=null;
-      render();
+      renderDialog();
       return;
     }
 
@@ -525,9 +819,17 @@
   }
 
   function onKeyDown(event){
+    const input=event.target.closest?.('[data-desktop-inquiry-qty]');
+
+    if(event.key==='Enter'&&input&&inquiryRoot?.contains(input)){
+      event.preventDefault();
+      input.blur();
+      return;
+    }
+
     if(event.key==='Escape'&&dialog){
       dialog=null;
-      render();
+      renderDialog();
     }
   }
 
@@ -579,9 +881,11 @@
 
     return Object.freeze({
       version:VERSION,
+      presentation:PRESENTATION_VERSION,
       configured:Boolean(config),
       mounted,
-      itemCount:Number(data.summary?.itemCount||0)
+      itemCount:Number(data.summary?.itemCount||0),
+      moqGroups:deriveMoqGroups(data).length
     });
   }
 
