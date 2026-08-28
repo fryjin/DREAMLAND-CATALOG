@@ -888,7 +888,7 @@ try{
  */
 try{
   const release=
-    'b7-00b4b-r4.2.6-v111';
+    'b7-00b4c-r1-v112';
 
   const index=
     read(
@@ -1081,7 +1081,7 @@ try{
 
   if(
     !index.includes(
-      `window.DREAMLAND_RELEASE='b7-00b4b-r4.2.6-v111';`
+      `window.DREAMLAND_RELEASE='b7-00b4c-r1-v112';`
     )
   ){
     fail(
@@ -1096,17 +1096,47 @@ try{
 
   if(
     !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v111';"
+      "const CACHE_VERSION = 'dreamland-pwa-v112';"
     )
   ){
     fail(
-      'R5 requires dreamland-pwa-v111.'
+      'R5 requires dreamland-pwa-v112.'
     );
   }
 }catch(error){
   fail(
     `R5 Desktop boot cleanup validation failed: ${error.message}`
   );
+}
+
+
+/* Gate 4C-R1 — editorial presentation successor. */
+try{
+  const renderer=read('src/ui/desktop/catalog/runtime-desktop-catalog.js');
+  const css=read('src/ui/desktop/styles/catalog.css');
+  for(const required of [
+    "const PRESENTATION_VERSION='B7-00B.4C-R1';",
+    'desktop-catalog-cover',
+    'desktop-catalog-series__index',
+    'desktop-catalog-series-section',
+    'desktop-container--wide',
+    'desktop-catalog-card__identity'
+  ]){
+    if(!renderer.includes(required)) fail('Desktop Catalog 4C R1 renderer is missing: '+required);
+  }
+  for(const required of [
+    'B7-00B.4C R1 — Catalog Editorial Foundation + Product Grid Recomposition',
+    '.desktop-catalog-series-section{',
+    '.desktop-catalog-series-index{',
+    'transform:scale(1.018)!important;',
+    '-webkit-line-clamp:2;',
+    'border-radius:6px!important;',
+    '.desktop-catalog-cta > div{'
+  ]){
+    if(!css.includes(required)) fail('Desktop Catalog 4C R1 CSS is missing: '+required);
+  }
+}catch(error){
+  fail('Desktop Catalog 4C R1 successor validation failed: '+error.message);
 }
 
 if(errors.length){

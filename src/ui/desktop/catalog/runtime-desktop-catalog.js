@@ -6,6 +6,7 @@
   }
 
   const VERSION='B7-00B.3A';
+  const PRESENTATION_VERSION='B7-00B.4C-R1';
   const SEARCH_DELAY=260;
   const SIZE_OPTIONS=Object.freeze([
     'S',
@@ -193,13 +194,16 @@
   ){
     return `
       <div
-        class="desktop-catalog-series"
+        class="desktop-catalog-series desktop-catalog-series-index"
         role="tablist"
         aria-label="${escapeHtml(content().seriesNavigation||'Series')}"
       >
         ${view.availableScopes
           .map(
-            scope=>`
+            (
+              scope,
+              index
+            )=>`
               <button
                 class="desktop-catalog-series__item ${scope===view.scope?'is-active':''}"
                 type="button"
@@ -207,18 +211,16 @@
                 aria-selected="${scope===view.scope?'true':'false'}"
                 data-desktop-catalog-scope="${escapeHtml(scope)}"
               >
-                <span>
-                  ${escapeHtml(
-                    seriesLabel(scope)
-                  )}
+                <small class="desktop-catalog-series__index">
+                  ${String(index+1).padStart(2,'0')}
+                </small>
+
+                <span class="desktop-catalog-series__label">
+                  ${escapeHtml(seriesLabel(scope))}
                 </span>
-                <small>
-                  ${escapeHtml(
-                    scopeCount(
-                      view,
-                      scope
-                    )
-                  )}
+
+                <small class="desktop-catalog-series__count">
+                  ${escapeHtml(scopeCount(view,scope))}
                 </small>
               </button>
             `
@@ -337,45 +339,25 @@
     product,
     index
   ){
-    const copy=
-      content();
-
-    const id=
-      text(
-        product?.id||
-        product?.productId
-      );
-
-    const name=
-      productName(
-        product
-      );
-
-    const cover=
-      productCover(
-        product
-      );
-
-    const priority=
-      index<8
-        ? 'high'
-        : 'auto';
+    const copy=content();
+    const id=text(product?.id||product?.productId);
+    const name=productName(product);
+    const cover=productCover(product);
+    const priority=index<8?'high':'auto';
 
     return `
-      <article class="desktop-catalog-card">
+      <article
+        class="desktop-catalog-card"
+        data-desktop-catalog-card-series="${escapeHtml(product?.series||'')}"
+      >
         <button
           class="desktop-catalog-card__link"
           type="button"
           data-desktop-catalog-product="${escapeHtml(id)}"
-          aria-label="${escapeHtml(`${copy.viewDetails||'View details'}: ${name}`)}"
+          aria-label="${escapeHtml((copy.viewDetails||'View details')+': '+name)}"
         >
-          <div
-            class="desktop-catalog-card__media media-frame"
-          >
-            <span
-              class="media-skeleton"
-              aria-hidden="true"
-            ></span>
+          <div class="desktop-catalog-card__media media-frame">
+            <span class="media-skeleton" aria-hidden="true"></span>
 
             <img
               class="desktop-catalog-card__image"
@@ -389,10 +371,7 @@
               decoding="async"
             >
 
-            <span
-              class="desktop-catalog-card__overlay"
-              aria-hidden="true"
-            >
+            <span class="desktop-catalog-card__overlay" aria-hidden="true">
               <span>
                 ${escapeHtml(copy.viewDetails||'View details')}
                 <b>→</b>
@@ -401,34 +380,16 @@
           </div>
 
           <div class="desktop-catalog-card__info">
-            <h2>
-              ${escapeHtml(name)}
-            </h2>
-
-            <p>
-              ${escapeHtml(
-                seriesLabel(
-                  product?.series
-                )
-              )}
-            </p>
+            <div class="desktop-catalog-card__identity">
+              <h2>${escapeHtml(name)}</h2>
+              <p>${escapeHtml(seriesLabel(product?.series))}</p>
+            </div>
 
             <div class="desktop-catalog-card__commercial">
-              <strong>
-                ${escapeHtml(
-                  productPrice(
-                    product
-                  )
-                )}
-              </strong>
-
+              <strong>${escapeHtml(productPrice(product))}</strong>
               <span>
                 ${escapeHtml(copy.moq||'MOQ')}
-                ${escapeHtml(
-                  productMoq(
-                    product
-                  )
-                )}
+                ${escapeHtml(productMoq(product))}
               </span>
             </div>
           </div>
@@ -611,59 +572,53 @@
   }
 
   function pageHtml(view){
-    const copy=
-      content();
+    const copy=content();
 
     return `
-      <div class="desktop-catalog-page">
+      <div
+        class="desktop-catalog-page"
+        data-desktop-catalog-presentation="${escapeHtml(PRESENTATION_VERSION)}"
+      >
         <section
-          class="desktop-catalog-intro desktop-container"
+          class="desktop-catalog-intro desktop-catalog-cover desktop-container--wide"
           aria-labelledby="desktopCatalogTitle"
         >
-          <div class="desktop-eyebrow">
-            ${escapeHtml(copy.kicker||'THE COLLECTION')}
-          </div>
+          <div class="desktop-eyebrow">${escapeHtml(copy.kicker||'THE COLLECTION')}</div>
 
           <div class="desktop-catalog-intro__layout">
-            <div>
-              <h1 id="desktopCatalogTitle">
-                ${escapeHtml(copy.title||'Explore all designs')}
-              </h1>
-
-              <p>
-                ${escapeHtml(copy.body||'')}
-              </p>
+            <div class="desktop-catalog-intro__copy">
+              <h1 id="desktopCatalogTitle">${escapeHtml(copy.title||'Explore the DREAMLAND collection')}</h1>
+              <p>${escapeHtml(copy.body||'')}</p>
             </div>
 
             <div class="desktop-catalog-intro__count">
               <strong>${view.allCount}</strong>
-              <span>
-                ${escapeHtml(copy.activeDesigns||'active designs')}
-              </span>
+              <span>${escapeHtml(copy.activeDesigns||'active designs')}</span>
             </div>
           </div>
         </section>
 
-        <div class="desktop-catalog-sticky">
-          <div class="desktop-container">
+        <section class="desktop-catalog-series-section">
+          <div class="desktop-container--wide">
             ${scopeNavigationHtml(view)}
+          </div>
+        </section>
 
+        <div class="desktop-catalog-sticky desktop-catalog-browse-bar">
+          <div class="desktop-container--wide">
             <div class="desktop-catalog-utility">
               <div class="desktop-catalog-result-count">
                 <strong>${view.totalCount}</strong>
-                <span>
-                  ${escapeHtml(copy.designs||'designs')}
-                </span>
+                <span>${escapeHtml(copy.designs||'designs')}</span>
               </div>
 
               <div class="desktop-catalog-tools">
                 <label class="desktop-catalog-search">
                   <span class="desktop-catalog-search__icon" aria-hidden="true">⌕</span>
-
                   <input
                     type="search"
                     value="${escapeHtml(view.query)}"
-                    placeholder="${escapeHtml(copy.searchPlaceholder||'Search by name or product ID')}"
+                    placeholder="${escapeHtml(copy.searchPlaceholder||'Search designs or product ID')}"
                     autocomplete="off"
                     data-desktop-catalog-search
                   >
@@ -672,10 +627,7 @@
                 ${filterHtml(view)}
 
                 <label class="desktop-catalog-sort">
-                  <span class="sr-only">
-                    ${escapeHtml(copy.sort||'Sort')}
-                  </span>
-
+                  <span class="sr-only">${escapeHtml(copy.sort||'Sort')}</span>
                   <select data-desktop-catalog-sort>
                     ${sortOptionsHtml(view.sort)}
                   </select>
@@ -687,11 +639,11 @@
           </div>
         </div>
 
-        <section class="desktop-catalog-products desktop-container">
+        <section class="desktop-catalog-products desktop-container--wide">
           ${gridHtml(view)}
         </section>
 
-        <div class="desktop-container">
+        <div class="desktop-container--wide">
           ${ctaHtml()}
         </div>
       </div>
