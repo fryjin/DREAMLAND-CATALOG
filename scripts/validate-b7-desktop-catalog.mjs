@@ -888,7 +888,7 @@ try{
  */
 try{
   const release=
-    'b7-00b4c-r1.1-v113';
+    'b7-00b4d-r1-v114';
 
   const index=
     read(
@@ -1081,7 +1081,7 @@ try{
 
   if(
     !index.includes(
-      `window.DREAMLAND_RELEASE='b7-00b4c-r1.1-v113';`
+      `window.DREAMLAND_RELEASE='b7-00b4d-r1-v114';`
     )
   ){
     fail(
@@ -1096,11 +1096,11 @@ try{
 
   if(
     !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v113';"
+      "const CACHE_VERSION = 'dreamland-pwa-v114';"
     )
   ){
     fail(
-      'R5 requires dreamland-pwa-v113.'
+      'R5 requires dreamland-pwa-v114.'
     );
   }
 }catch(error){
@@ -1180,6 +1180,24 @@ try{
   if(site.languages?.zh?.catalog?.backToTop!=='返回顶部') fail('ZH Catalog Back to top copy is missing.');
 }catch(error){
   fail('Desktop Catalog 4C R1.1 successor validation failed: '+error.message);
+}
+
+
+/* Gate 4D-R1 — deferred Catalog filter applies only on Apply. */
+try{
+  const renderer=read('src/ui/desktop/catalog/runtime-desktop-catalog.js');
+  for(const required of [
+    'function syncFilterPopover(open)',
+    'function clearDraftFilterInputs()',
+    'syncFilterPopover(false);',
+    'clearDraftFilterInputs();'
+  ]){
+    if(!renderer.includes(required)){
+      fail('Catalog deferred Filter Apply Timing fix is missing: '+required);
+    }
+  }
+}catch(error){
+  fail('Catalog deferred Filter Apply Timing validation failed: '+error.message);
 }
 
 if(errors.length){

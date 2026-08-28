@@ -751,12 +751,57 @@
     return true;
   }
 
+  function syncFilterPopover(open){
+    if(!catalogRoot){
+      return false;
+    }
+
+    const button=
+      catalogRoot.querySelector(
+        '[data-desktop-catalog-action="toggle-filter"]'
+      );
+
+    const popover=
+      catalogRoot.querySelector(
+        '.desktop-catalog-filter__popover'
+      );
+
+    if(!popover){
+      return false;
+    }
+
+    popover.hidden=!open;
+    popover.classList.toggle(
+      'is-open',
+      open
+    );
+
+    button?.setAttribute(
+      'aria-expanded',
+      open
+        ? 'true'
+        : 'false'
+    );
+
+    return true;
+  }
+
+  function clearDraftFilterInputs(){
+    if(!catalogRoot){
+      return;
+    }
+
+    for(const input of catalogRoot.querySelectorAll(
+      '[data-desktop-catalog-size]'
+    )){
+      input.checked=false;
+    }
+  }
+
   function closeFilter(){
     filterOpen=false;
     draftSizes=[];
-    render({
-      preserveScroll:true
-    });
+    syncFilterPopover(false);
   }
 
   function onClick(event){
@@ -842,20 +887,16 @@
         )
       ];
 
-      render({
-        preserveScroll:true
-      });
+      syncFilterPopover(
+        filterOpen
+      );
 
       return;
     }
 
     if(action==='clear-filter-draft'){
       draftSizes=[];
-
-      render({
-        preserveScroll:true
-      });
-
+      clearDraftFilterInputs();
       return;
     }
 
