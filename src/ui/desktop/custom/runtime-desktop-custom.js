@@ -8,6 +8,7 @@
   const VERSION='B7-00B.3C';
   const PRESENTATION_VERSION='B7-00B.4E-R1';
   const INTERACTION_VERSION='B7-00B.4E-R1.1';
+  const POLISH_VERSION='B7-00B.4E-R1.2';
 
   const DEFAULT_DRAFT=Object.freeze({
     use:'',
@@ -64,6 +65,7 @@
     return Object.freeze({
       version:VERSION,
       presentation:PRESENTATION_VERSION,
+      polish:POLISH_VERSION,
       configured:Boolean(config),
       mounted,
       added,
@@ -711,10 +713,6 @@
             ${escapeHtml(c.summaryKicker)}
           </div>
           <h2>${escapeHtml(c.summaryTitle)}</h2>
-          <div class="desktop-custom-live-brief__progress">
-            <span>${escapeHtml(c.flowTitle||c.kicker||'Project flow')}</span>
-            <strong data-desktop-custom-flow-progress>${escapeHtml(requiredProgressText())}</strong>
-          </div>
         </div>
 
         <div class="desktop-custom-summary__rows desktop-custom-live-brief__rows">
@@ -980,7 +978,6 @@
   }
 
   function setupGuidedNavigation(){
-    decorateSectionContinuations();
     syncGuidedNavigation();
 
     sectionObserver?.disconnect?.();
@@ -1024,6 +1021,7 @@
         class="desktop-custom-page"
         data-desktop-custom-presentation="${PRESENTATION_VERSION}"
         data-desktop-custom-interaction="${INTERACTION_VERSION}"
+        data-desktop-custom-polish="${POLISH_VERSION}"
       >
         <div class="desktop-container--wide desktop-custom-shell">
           <header class="desktop-custom-hero">

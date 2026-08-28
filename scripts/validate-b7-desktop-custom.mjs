@@ -187,9 +187,9 @@ try{
     read('index.html');
 
   for(const required of [
-    "window.DREAMLAND_RELEASE='b7-00b4e-r1.1-v118';",
-    './src/ui/desktop/styles/custom.css?release=b7-00b4e-r1.1-v118',
-    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4e-r1.1-v118',
+    "window.DREAMLAND_RELEASE='b7-00b4e-r1.2-v119';",
+    './src/ui/desktop/styles/custom.css?release=b7-00b4e-r1.2-v119',
+    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4e-r1.2-v119',
     'ensureCustomFeatureRuntime();',
     'customState:',
     'customFeature,',
@@ -209,7 +209,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/styles/custom.css?release=b7-00b4e-r1.1-v118'
+      './src/ui/desktop/styles/custom.css?release=b7-00b4e-r1.2-v119'
     )!==1
   ){
     fail(
@@ -220,7 +220,7 @@ try{
   if(
     countOf(
       index,
-      './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4e-r1.1-v118'
+      './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4e-r1.2-v119'
     )!==1
   ){
     fail(
@@ -415,10 +415,10 @@ try{
     );
 
   for(const required of [
-    "const CACHE_VERSION = 'dreamland-pwa-v118';",
-    "'b7-00b4e-r1.1-v118'",
-    './src/ui/desktop/styles/custom.css?release=b7-00b4e-r1.1-v118',
-    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4e-r1.1-v118',
+    "const CACHE_VERSION = 'dreamland-pwa-v119';",
+    "'b7-00b4e-r1.2-v119'",
+    './src/ui/desktop/styles/custom.css?release=b7-00b4e-r1.2-v119',
+    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4e-r1.2-v119',
     "'./src/ui/desktop/styles/custom.css'",
     "'./src/ui/desktop/custom/runtime-desktop-custom.js'"
   ]){
@@ -431,7 +431,7 @@ try{
 
   if(
     !pwa.includes(
-      "'b7-00b4e-r1.1-v118'"
+      "'b7-00b4e-r1.2-v119'"
     )
   ){
     fail(
@@ -584,7 +584,6 @@ try{
     'data-desktop-custom-jump=',
     'desktop-custom-section-stack',
     'desktop-custom-section-next',
-    'desktop-custom-live-brief__progress'
   ]){
     if(!runtime.includes(required)){
       fail(`Desktop Custom 4E R1.1 runtime is missing: ${required}`);
@@ -632,6 +631,65 @@ try{
 }catch(error){
   fail(`Desktop Custom 4E R1.1 successor validation failed: ${error.message}`);
 }
+
+/* Gate 4E-R1.2 — contrast / spacing / Step Rail simplification. */
+try{
+  const runtime=read('src/ui/desktop/custom/runtime-desktop-custom.js');
+  const css=read('src/ui/desktop/styles/custom.css');
+
+  for(const required of [
+    "const POLISH_VERSION='B7-00B.4E-R1.2';",
+    'data-desktop-custom-polish=',
+    'function flowNavigatorHtml()',
+    'function setupGuidedNavigation()'
+  ]){
+    if(!runtime.includes(required)){
+      fail(`Desktop Custom 4E R1.2 runtime is missing: ${required}`);
+    }
+  }
+
+  const briefStart=runtime.indexOf('function liveBriefHtml()');
+  const briefEnd=runtime.indexOf('function chapterLabel(',briefStart);
+  const briefBody=
+    briefStart>=0&&briefEnd>briefStart
+      ? runtime.slice(briefStart,briefEnd)
+      : '';
+
+  if(briefBody.includes('desktop-custom-live-brief__progress')){
+    fail('Desktop Custom 4E R1.2 regression: Live Brief still renders duplicate flow progress.');
+  }
+
+  const setupStart=runtime.indexOf('function setupGuidedNavigation()');
+  const setupEnd=runtime.indexOf('function pageHtml()',setupStart);
+  const setupBody=
+    setupStart>=0&&setupEnd>setupStart
+      ? runtime.slice(setupStart,setupEnd)
+      : '';
+
+  if(setupBody.includes('decorateSectionContinuations();')){
+    fail('Desktop Custom 4E R1.2 regression: large continuation cards are still injected.');
+  }
+
+  for(const required of [
+    'B7-00B.4E R1.2 — Selection Contrast + Field Spacing Cleanup',
+    '[data-desktop-custom-polish="B7-00B.4E-R1.2"]',
+    'color:var(--dw-color-ink)!important;',
+    'padding:0 16px!important;',
+    '.desktop-custom-section-next,',
+    'display:none!important;'
+  ]){
+    if(!css.includes(required)){
+      fail(`Desktop Custom 4E R1.2 CSS is missing: ${required}`);
+    }
+  }
+
+  if(/font-size:(?:8|9|10)px;/.test(css)){
+    fail('Desktop Custom 4E R1.2 readability regression: custom.css contains visible 8/9/10px text.');
+  }
+}catch(error){
+  fail(`Desktop Custom 4E R1.2 successor validation failed: ${error.message}`);
+}
+
 
 if(errors.length){
   console.error(

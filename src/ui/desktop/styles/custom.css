@@ -1613,3 +1613,137 @@
     grid-template-columns:1fr!important;
   }
 }
+
+
+/* --------------------------------------------------------------------------
+ * B7-00B.4E R1.2 — Selection Contrast + Field Spacing Cleanup
+ *                  + Step Rail Simplification
+ * ------------------------------------------------------------------------ */
+@media (min-width:1024px){
+  /* Active choices keep full text contrast on the light selected surface. */
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-choice{
+    padding:18px 44px 18px 18px!important;
+  }
+
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-choice.is-active,
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-choice.is-active .desktop-custom-choice__copy,
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-choice.is-active .desktop-custom-choice__copy strong,
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-choice.is-active .desktop-custom-choice__copy > span,
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-choice.is-active .desktop-custom-choice__index,
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-choice.is-active .desktop-custom-choice__mark{
+    color:var(--dw-color-ink)!important;
+    opacity:1!important;
+  }
+
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-choice.is-active{
+    border-color:var(--dw-color-ink)!important;
+    background:var(--dw-color-surface-warm-soft)!important;
+    box-shadow:inset 3px 0 0 var(--dw-color-ink)!important;
+  }
+
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-choice__mark{
+    top:17px!important;
+    right:16px!important;
+  }
+
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-choice__copy{
+    gap:6px;
+  }
+
+  /* Size cards had the same inherited white-text problem. */
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-size-selector .desktop-custom-choice{
+    padding:16px 40px 16px 18px!important;
+  }
+
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-size-selector .desktop-custom-choice.is-active,
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-size-selector .desktop-custom-choice.is-active strong,
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-size-selector .desktop-custom-choice.is-active span{
+    color:var(--dw-color-ink)!important;
+  }
+
+  /* Fields get a consistent internal safe area instead of touching borders. */
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-two{
+    gap:18px!important;
+  }
+
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-field__head{
+    margin-bottom:12px!important;
+  }
+
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-input-wrap{
+    padding:0 16px!important;
+    gap:12px!important;
+  }
+
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-input--standalone{
+    padding-left:16px!important;
+    padding-right:16px!important;
+  }
+
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-select{
+    padding-left:16px!important;
+    padding-right:44px!important;
+    background-position:
+      calc(100% - 19px) 25px,
+      calc(100% - 14px) 25px!important;
+  }
+
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-textarea{
+    padding:16px!important;
+  }
+
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-series__button{
+    padding-inline:18px!important;
+  }
+
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-scent{
+    padding-left:14px!important;
+    padding-right:14px!important;
+  }
+
+  /* Step Rail is the single navigation/progress owner. */
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-flow-nav__item{
+    padding-right:12px!important;
+  }
+
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-flow-nav__item.is-active{
+    padding-left:10px!important;
+  }
+
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-flow-nav__item.is-complete i{
+    opacity:1!important;
+  }
+
+  /* Superseded R1.1 continuation cards and duplicate right-side progress. */
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-section-next,
+  .desktop-custom-page[data-desktop-custom-polish="B7-00B.4E-R1.2"]
+  .desktop-custom-live-brief__progress{
+    display:none!important;
+  }
+}
