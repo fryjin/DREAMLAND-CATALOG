@@ -6,7 +6,7 @@
   }
 
   const VERSION='B7-00B.3A';
-  const PRESENTATION_VERSION='B7-00B.4C-R1';
+  const PRESENTATION_VERSION='B7-00B.4C-R1.1';
   const SEARCH_DELAY=260;
   const SIZE_OPTIONS=Object.freeze([
     'S',
@@ -194,16 +194,13 @@
   ){
     return `
       <div
-        class="desktop-catalog-series desktop-catalog-series-index"
+        class="desktop-catalog-series desktop-catalog-series-index desktop-catalog-series-tabs"
         role="tablist"
         aria-label="${escapeHtml(content().seriesNavigation||'Series')}"
       >
         ${view.availableScopes
           .map(
-            (
-              scope,
-              index
-            )=>`
+            scope=>`
               <button
                 class="desktop-catalog-series__item ${scope===view.scope?'is-active':''}"
                 type="button"
@@ -211,14 +208,9 @@
                 aria-selected="${scope===view.scope?'true':'false'}"
                 data-desktop-catalog-scope="${escapeHtml(scope)}"
               >
-                <small class="desktop-catalog-series__index">
-                  ${String(index+1).padStart(2,'0')}
-                </small>
-
                 <span class="desktop-catalog-series__label">
                   ${escapeHtml(seriesLabel(scope))}
                 </span>
-
                 <small class="desktop-catalog-series__count">
                   ${escapeHtml(scopeCount(view,scope))}
                 </small>
@@ -593,45 +585,52 @@
 
             <div class="desktop-catalog-intro__count">
               <strong>${view.allCount}</strong>
-              <span>${escapeHtml(copy.activeDesigns||'active designs')}</span>
+              <span>${escapeHtml(copy.activeDesigns||'DREAMS')}</span>
             </div>
-          </div>
-        </section>
-
-        <section class="desktop-catalog-series-section">
-          <div class="desktop-container--wide">
-            ${scopeNavigationHtml(view)}
           </div>
         </section>
 
         <div class="desktop-catalog-sticky desktop-catalog-browse-bar">
           <div class="desktop-container--wide">
-            <div class="desktop-catalog-utility">
-              <div class="desktop-catalog-result-count">
-                <strong>${view.totalCount}</strong>
-                <span>${escapeHtml(copy.designs||'designs')}</span>
-              </div>
+            <div class="desktop-catalog-browse-layout">
+              ${scopeNavigationHtml(view)}
 
-              <div class="desktop-catalog-tools">
-                <label class="desktop-catalog-search">
-                  <span class="desktop-catalog-search__icon" aria-hidden="true">⌕</span>
-                  <input
-                    type="search"
-                    value="${escapeHtml(view.query)}"
-                    placeholder="${escapeHtml(copy.searchPlaceholder||'Search designs or product ID')}"
-                    autocomplete="off"
-                    data-desktop-catalog-search
+              <div class="desktop-catalog-browse-actions">
+                <div class="desktop-catalog-result-count">
+                  <strong>${view.totalCount}</strong>
+                  <span>${escapeHtml(copy.designs||'designs')}</span>
+                </div>
+
+                <div class="desktop-catalog-tools">
+                  <label class="desktop-catalog-search">
+                    <span class="desktop-catalog-search__icon" aria-hidden="true">⌕</span>
+                    <input
+                      type="search"
+                      value="${escapeHtml(view.query)}"
+                      placeholder="${escapeHtml(copy.searchPlaceholder||'Search designs or product ID')}"
+                      autocomplete="off"
+                      data-desktop-catalog-search
+                    >
+                  </label>
+
+                  ${filterHtml(view)}
+
+                  <label class="desktop-catalog-sort">
+                    <span class="sr-only">${escapeHtml(copy.sort||'Sort')}</span>
+                    <select data-desktop-catalog-sort>
+                      ${sortOptionsHtml(view.sort)}
+                    </select>
+                  </label>
+
+                  <button
+                    class="desktop-catalog-back-top"
+                    type="button"
+                    data-desktop-catalog-action="back-top"
                   >
-                </label>
-
-                ${filterHtml(view)}
-
-                <label class="desktop-catalog-sort">
-                  <span class="sr-only">${escapeHtml(copy.sort||'Sort')}</span>
-                  <select data-desktop-catalog-sort>
-                    ${sortOptionsHtml(view.sort)}
-                  </select>
-                </label>
+                    <span>${escapeHtml(copy.backToTop||'Back to top')}</span>
+                    <b aria-hidden="true">↑</b>
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -885,6 +884,18 @@
 
       config?.actions
         ?.clearBrowse?.();
+
+      return;
+    }
+
+    if(action==='back-top'){
+      filterOpen=false;
+      draftSizes=[];
+
+      root.scrollTo?.({
+        top:0,
+        behavior:'smooth'
+      });
 
       return;
     }

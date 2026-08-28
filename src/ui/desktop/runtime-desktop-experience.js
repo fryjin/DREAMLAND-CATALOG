@@ -176,11 +176,20 @@
         '#desktopCatalogRoot'
       );
 
+    const browseBar=
+      catalogRoot?.querySelector?.(
+        '.desktop-catalog-browse-bar'
+      );
+
+    const target=
+      browseBar||
+      catalogRoot;
+
     const top=
       Math.max(
         0,
         (
-          catalogRoot
+          target
             ?.getBoundingClientRect?.()
             .top||
           0

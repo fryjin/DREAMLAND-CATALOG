@@ -113,7 +113,7 @@
         "title": "Explore the DREAMLAND collection",
         "body": "Hand-carved candle designs across four series, available for wholesale and project inquiries.",
         "all": "All",
-        "activeDesigns": "active designs",
+        "activeDesigns": "DREAMS",
         "designs": "designs",
         "seriesNavigation": "Collection index",
         "searchPlaceholder": "Search designs or product ID",
@@ -142,7 +142,8 @@
         "ctaEmptyBody": "Open any design to choose size, scent and packaging, then add it to your inquiry.",
         "ctaReadyTitle": "Your selection is taking shape.",
         "ctaReadyBody": "{count} selected designs are ready to review.",
-        "reviewInquiry": "Review inquiry"
+        "reviewInquiry": "Review inquiry",
+        "backToTop": "Back to top"
       },
       "detail": {
         "back": "Back to collection",
@@ -603,7 +604,7 @@
         "title": "浏览 DREAMLAND 全部作品",
         "body": "从手工雕刻、色彩层次到节日表达，浏览当前开放批发与项目询价的完整作品系列。",
         "all": "全部",
-        "activeDesigns": "件开放作品",
+        "activeDesigns": "个梦境",
         "designs": "件作品",
         "seriesNavigation": "作品系列",
         "searchPlaceholder": "搜索作品名称或编号",
@@ -632,7 +633,8 @@
         "ctaEmptyBody": "进入作品详情选择尺寸、香型与包装，再加入询价项目。",
         "ctaReadyTitle": "你的作品清单正在成形。",
         "ctaReadyBody": "已有 {count} 件作品等待确认。",
-        "reviewInquiry": "查看询价"
+        "reviewInquiry": "查看询价",
+        "backToTop": "返回顶部"
       },
       "detail": {
         "back": "返回产品系列",
@@ -1093,7 +1095,7 @@
         "title": "DREAMLAND 전체 컬렉션 보기",
         "body": "핸드 카빙, 컬러 레이어, 시즌 표현까지 현재 도매 및 프로젝트 문의가 가능한 전체 디자인을 살펴보세요.",
         "all": "전체",
-        "activeDesigns": "개 운영 디자인",
+        "activeDesigns": "개의 꿈",
         "designs": "개 디자인",
         "seriesNavigation": "컬렉션 시리즈",
         "searchPlaceholder": "디자인명 또는 제품 번호 검색",
@@ -1122,7 +1124,8 @@
         "ctaEmptyBody": "제품 상세에서 사이즈, 향, 패키지를 선택한 뒤 문의에 추가하세요.",
         "ctaReadyTitle": "선택한 디자인이 모이고 있습니다.",
         "ctaReadyBody": "{count}개 디자인을 검토할 수 있습니다.",
-        "reviewInquiry": "문의 검토"
+        "reviewInquiry": "문의 검토",
+        "backToTop": "맨 위로"
       },
       "detail": {
         "back": "컬렉션으로 돌아가기",
