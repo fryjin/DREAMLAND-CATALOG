@@ -2680,3 +2680,112 @@
     min-height:320px!important;
   }
 }
+
+/* --------------------------------------------------------------------------
+ * B7-00B.4B R4.2.1 — Current Picks Flow + Craft Alignment Repair
+ *
+ * 01 Remove the R4.1.1 fixed 286px grid rows/card heights so the taller R4.2
+ *    media can participate in normal grid sizing instead of overflowing into
+ *    the second row.
+ * 02 Give Craft the same Desktop container edges as Story / Custom / Wholesale
+ *    and keep only one vertical-spacing owner between Current Picks and Craft.
+ * ------------------------------------------------------------------------ */
+@media (min-width:1024px){
+  /* Current Picks — true auto-height 3 + 2 rows, no cross-row overlap. */
+  .desktop-home-story +
+  .desktop-home-featured
+  .desktop-home-featured__grid{
+    grid-template-rows:none!important;
+    grid-auto-rows:auto!important;
+    align-items:start!important;
+  }
+
+  .desktop-home-story +
+  .desktop-home-featured
+  .desktop-home-featured__card{
+    height:auto!important;
+    min-height:0!important;
+  }
+
+  .desktop-home-story +
+  .desktop-home-featured
+  .desktop-home-featured__card
+  .desktop-product-link{
+    height:auto!important;
+    min-height:0!important;
+    display:block!important;
+    grid-template-rows:none!important;
+  }
+
+  /* Let each row be sized by media + product metadata. */
+  .desktop-home-story +
+  .desktop-home-featured
+  .desktop-product-grid{
+    grid-auto-flow:row!important;
+    row-gap:72px!important;
+  }
+
+  .desktop-home-story +
+  .desktop-home-featured
+  .desktop-product-info{
+    position:relative!important;
+    margin:0!important;
+    padding-top:14px!important;
+  }
+
+  /* Craft — Current Picks already owns the outgoing bottom spacing. */
+  .desktop-home-featured +
+  .desktop-home-band{
+    margin-top:0!important;
+  }
+
+  /* Craft — use the same full desktop-container width as adjacent story blocks. */
+  .desktop-home-featured +
+  .desktop-home-band
+  .desktop-editorial-grid{
+    width:100%!important;
+    max-width:none!important;
+    grid-template-columns:repeat(12,minmax(0,1fr))!important;
+    column-gap:var(--dw-grid-gap)!important;
+    align-items:center!important;
+  }
+
+  .desktop-home-featured +
+  .desktop-home-band
+  .desktop-editorial-media{
+    grid-column:1 / 7!important;
+    width:100%!important;
+    max-width:none!important;
+    height:auto!important;
+    aspect-ratio:4 / 3!important;
+  }
+
+  .desktop-home-featured +
+  .desktop-home-band
+  .desktop-editorial-copy{
+    grid-column:8 / 13!important;
+    width:100%!important;
+    max-width:520px!important;
+    justify-self:start!important;
+  }
+}
+
+@media (min-width:1024px) and (max-width:1199px){
+  .desktop-home-story +
+  .desktop-home-featured
+  .desktop-product-grid{
+    row-gap:60px!important;
+  }
+
+  .desktop-home-featured +
+  .desktop-home-band
+  .desktop-editorial-media{
+    grid-column:1 / 7!important;
+  }
+
+  .desktop-home-featured +
+  .desktop-home-band
+  .desktop-editorial-copy{
+    grid-column:8 / 13!important;
+  }
+}
