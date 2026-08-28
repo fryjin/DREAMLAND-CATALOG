@@ -7,6 +7,7 @@
 
   const VERSION='B7-00B.3B';
   const PRESENTATION_VERSION='B7-00B.4D-R1';
+  const POLISH_VERSION='B7-00B.4D-R1.5';
 
   const FALLBACK_COPY=Object.freeze({
     en:Object.freeze({
@@ -105,6 +106,7 @@
   let activeImageIndex=0;
   let quantityValidation=null;
   let feedbackTimer=null;
+  let inquiryDrawerOpen=false;
 
   function text(value){
     return String(
@@ -374,6 +376,597 @@
     `;
   }
 
+  function r15UiCopy(key){
+    const table={
+      en:{
+        mainView:'Main view',
+        galleryView:'View {index}',
+        currentConfiguration:'Current configuration',
+        currentItemQuantity:'Current item quantity',
+        moqRuleHeading:'MOQ rule',
+        moqRuleCompact:'Same series + size · {count} pcs combined',
+        moqRuleText:'Items in the same series and size can be combined. Ordering starts when the combined quantity reaches {count} pcs.',
+        inquiry:'Inquiry',
+        inquiryQuickView:'Inquiry quick view',
+        selectedItems:'{count} selected items',
+        inquiryEmpty:'Your inquiry is empty.',
+        inquiryEmptyBody:'Add this configuration or continue exploring the collection.',
+        viewFullInquiry:'View full inquiry',
+        remove:'Remove',
+        close:'Close',
+        unitPrice:'Estimated unit price',
+        currentAmount:'Current amount',
+        moqProgress:'MOQ progress',
+        moqMet:'Requirement met',
+        moqRemaining:'{count} pcs remaining',
+        customProject:'Custom project',
+        quotedSeparately:'Quoted separately'
+      },
+      zh:{
+        mainView:'主展示图',
+        galleryView:'展示图 {index}',
+        currentConfiguration:'当前配置',
+        currentItemQuantity:'当前款数量',
+        moqRuleHeading:'起订规则',
+        moqRuleCompact:'同系列同尺寸 · 合计 {count} 件起订',
+        moqRuleText:'同系列、同尺寸商品可合并计算，合计满 {count} 件即可起订。',
+        inquiry:'询价单',
+        inquiryQuickView:'当前询价单',
+        selectedItems:'已选 {count} 项',
+        inquiryEmpty:'询价单里还没有作品',
+        inquiryEmptyBody:'可以先加入当前配置，或继续浏览其他作品。',
+        viewFullInquiry:'查看完整询价单',
+        remove:'删除',
+        close:'关闭',
+        unitPrice:'预估单价',
+        currentAmount:'当前金额',
+        moqProgress:'起订进度',
+        moqMet:'已满足起订要求',
+        moqRemaining:'还差 {count} 件',
+        customProject:'定制项目',
+        quotedSeparately:'单独报价'
+      },
+      ko:{
+        mainView:'대표 이미지',
+        galleryView:'이미지 {index}',
+        currentConfiguration:'현재 구성',
+        currentItemQuantity:'현재 제품 수량',
+        moqRuleHeading:'MOQ 기준',
+        moqRuleCompact:'동일 시리즈·사이즈 · 합계 {count}개',
+        moqRuleText:'동일 시리즈와 동일 사이즈 상품은 합산할 수 있으며, 합계 {count}개부터 주문할 수 있습니다.',
+        inquiry:'문의 목록',
+        inquiryQuickView:'현재 문의 목록',
+        selectedItems:'선택 {count}개',
+        inquiryEmpty:'문의 목록이 비어 있습니다.',
+        inquiryEmptyBody:'현재 구성을 추가하거나 다른 작품을 계속 둘러보세요.',
+        viewFullInquiry:'전체 문의 목록 보기',
+        remove:'삭제',
+        close:'닫기',
+        unitPrice:'예상 단가',
+        currentAmount:'현재 금액',
+        moqProgress:'MOQ 진행',
+        moqMet:'MOQ 충족',
+        moqRemaining:'{count}개 남음',
+        customProject:'커스텀 프로젝트',
+        quotedSeparately:'별도 견적'
+      }
+    };
+
+    const lang=language();
+    return text(
+      table[lang]?.[key]||
+      table.en[key]||
+      ''
+    );
+  }
+
+  function r15ReplaceCount(value,count){
+    return text(value)
+      .replace(
+        '{count}',
+        String(count)
+      );
+  }
+
+  function galleryCaptionContent(view,images){
+    const total=Math.max(1,images?.length||1);
+    const current=Math.max(
+      0,
+      Math.min(
+        activeImageIndex,
+        total-1
+      )
+    );
+    const descriptor=
+      current===0
+        ? r15UiCopy('mainView')
+        : r15UiCopy('galleryView')
+            .replace(
+              '{index}',
+              String(current+1)
+            );
+
+    const pad=value=>
+      String(value).padStart(2,'0');
+
+    return `
+      <span>
+        ${escapeHtml(productName(view.product))}
+        ·
+        ${escapeHtml(descriptor)}
+      </span>
+      <strong>${escapeHtml(pad(current+1))} / ${escapeHtml(pad(total))}</strong>
+    `;
+  }
+
+  function galleryCaptionHtml(view,images){
+    return `
+      <div
+        class="desktop-detail-media-caption"
+        data-desktop-detail-media-caption
+        aria-live="polite"
+      >
+        ${galleryCaptionContent(view,images)}
+      </div>
+    `;
+  }
+
+  function syncGalleryCaption(view,images){
+    const node=
+      detailRoot?.querySelector(
+        '[data-desktop-detail-media-caption]'
+      );
+
+    if(node){
+      node.innerHTML=
+        galleryCaptionContent(
+          view,
+          images
+        );
+    }
+  }
+
+  function moqRuleCompactText(view){
+    return r15ReplaceCount(
+      r15UiCopy('moqRuleCompact'),
+      Number(view.pricing?.moq||1)
+    );
+  }
+
+  function moqRuleText(view){
+    return r15ReplaceCount(
+      r15UiCopy('moqRuleText'),
+      Number(view.pricing?.moq||1)
+    );
+  }
+
+  function inquiryView(){
+    return config?.inquiryViewModel?.()||{
+      empty:true,
+      items:[],
+      summary:{
+        itemCount:0,
+        productCount:0,
+        customCount:0,
+        productQuantity:0,
+        estimatedTotal:0
+      }
+    };
+  }
+
+  function inquiryItemQuantity(item){
+    return Math.max(
+      1,
+      Number(
+        item?.normalizedQty||
+        item?.qty||
+        1
+      )||1
+    );
+  }
+
+  function inquiryItemMoq(item){
+    return Math.max(
+      1,
+      Number(
+        config?.itemMoq?.(item)||
+        item?.moq||
+        1
+      )||1
+    );
+  }
+
+  function inquiryItemScent(item){
+    return text(
+      config?.itemScentLabel?.(item)||
+      item?.scent||
+      ''
+    );
+  }
+
+  function selectedScentLabel(view){
+    const selectedId=
+      text(view.config?.scentId);
+    const scents=view.options?.scents||[];
+    const selected=
+      scents.find(
+        scent=>text(scent?.id)===selectedId
+      );
+
+    return text(
+      selected
+        ? scentLabel(selected)
+        : view.config?.scent||
+          ''
+    );
+  }
+
+  function currentConfigurationParts(view){
+    return [
+      text(view.config?.size),
+      selectedScentLabel(view),
+      choiceLabel(view.config?.pattern),
+      choiceLabel(view.config?.pack)
+    ].filter(Boolean);
+  }
+
+  function currentQuantity(view){
+    return Math.max(
+      1,
+      Number(
+        view.pricing?.quantity||
+        view.config?.qty||
+        1
+      )||1
+    );
+  }
+
+  function inquiryMoqGroups(data){
+    const groups=new Map();
+
+    for(const item of data?.items||[]){
+      if(item?.type==='custom'){
+        continue;
+      }
+
+      const series=text(item?.series);
+      const size=text(item?.size);
+      const key=`${series}::${size}`;
+      const current=groups.get(key)||{
+        series,
+        size,
+        quantity:0,
+        moq:inquiryItemMoq(item)
+      };
+
+      current.quantity+=
+        inquiryItemQuantity(item);
+      current.moq=Math.max(
+        current.moq,
+        inquiryItemMoq(item)
+      );
+      groups.set(key,current);
+    }
+
+    return [...groups.values()];
+  }
+
+  function dockHtml(view){
+    const data=inquiryView();
+    const count=Math.max(
+      0,
+      Number(data.summary?.itemCount||0)||0
+    );
+    const quantity=currentQuantity(view);
+    const unit=Number(view.pricing?.unitPrice||0)||0;
+    const total=unit*quantity;
+    const parts=currentConfigurationParts(view);
+
+    return `
+      <section
+        class="desktop-detail-dock"
+        data-desktop-detail-dock
+        aria-label="${escapeHtml(r15UiCopy('currentConfiguration'))}"
+      >
+        <div class="desktop-container--wide desktop-detail-dock__inner">
+          <div class="desktop-detail-dock__configuration">
+            <span>${escapeHtml(r15UiCopy('currentConfiguration'))}</span>
+            <strong>${escapeHtml(parts.join(' / ')||'—')}</strong>
+            <small>${escapeHtml(moqRuleCompactText(view))}</small>
+          </div>
+
+          <div class="desktop-detail-dock__commercial">
+            <span>${escapeHtml(r15UiCopy('unitPrice'))}</span>
+            <strong>${escapeHtml(money(unit))}</strong>
+            <small>${escapeHtml(r15UiCopy('currentAmount'))} · ${escapeHtml(money(total))}</small>
+          </div>
+
+          <button
+            class="desktop-detail-dock__inquiry"
+            type="button"
+            data-desktop-detail-action="toggle-inquiry-drawer"
+            aria-expanded="${inquiryDrawerOpen?'true':'false'}"
+          >
+            <span>${escapeHtml(r15UiCopy('inquiry'))}</span>
+            <strong>${escapeHtml(count)}</strong>
+          </button>
+
+          <div class="desktop-detail-dock__actions">
+            <div class="desktop-detail-dock__quantity">
+              <button
+                type="button"
+                data-desktop-detail-action="dock-quantity-delta"
+                data-desktop-detail-delta="-1"
+                aria-label="-"
+              >−</button>
+
+              <label>
+                <input
+                  type="number"
+                  value="${escapeHtml(quantity)}"
+                  min="1"
+                  step="1"
+                  inputmode="numeric"
+                  data-desktop-detail-dock-quantity
+                  aria-label="${escapeHtml(r15UiCopy('currentItemQuantity'))}"
+                >
+                <span>${escapeHtml(qtyUnit())}</span>
+              </label>
+
+              <button
+                type="button"
+                data-desktop-detail-action="dock-quantity-delta"
+                data-desktop-detail-delta="1"
+                aria-label="+"
+              >+</button>
+            </div>
+
+            <button
+              class="desktop-detail-add desktop-detail-dock__add"
+              type="button"
+              data-desktop-detail-action="add-inquiry"
+            >
+              ${escapeHtml(copy().addInquiry)}
+              <span aria-hidden="true">→</span>
+            </button>
+
+            <div
+              class="desktop-detail-add-feedback desktop-detail-dock__feedback"
+              data-desktop-detail-dock-feedback
+              role="status"
+              aria-live="polite"
+              hidden
+            >
+              ${escapeHtml(copy().added)}
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function inquiryItemConfigText(item){
+    return [
+      text(item?.size),
+      inquiryItemScent(item),
+      choiceLabel(item?.pattern),
+      choiceLabel(item?.pack)
+    ].filter(Boolean).join(' / ');
+  }
+
+  function inquiryDrawerProductRow(item){
+    const quantity=inquiryItemQuantity(item);
+
+    return `
+      <article class="desktop-detail-drawer-item" data-inquiry-id="${escapeHtml(item?.id||'')}">
+        <div class="desktop-detail-drawer-item__media">
+          ${
+            item?.cover
+              ? `<img src="${escapeHtml(item.cover)}" alt="${escapeHtml(productName(item))}" loading="lazy" decoding="async">`
+              : '<span aria-hidden="true"></span>'
+          }
+        </div>
+
+        <div class="desktop-detail-drawer-item__body">
+          <div class="desktop-detail-drawer-item__head">
+            <div>
+              <small>${escapeHtml(seriesLabel(item?.series))}</small>
+              <strong>${escapeHtml(productName(item))}</strong>
+            </div>
+
+            <button
+              type="button"
+              data-desktop-detail-action="drawer-remove"
+              data-desktop-detail-inquiry-id="${escapeHtml(item?.id||'')}"
+            >${escapeHtml(r15UiCopy('remove'))}</button>
+          </div>
+
+          <p>${escapeHtml(inquiryItemConfigText(item))}</p>
+
+          <div class="desktop-detail-drawer-item__commercial">
+            <div class="desktop-detail-drawer-quantity">
+              <button
+                type="button"
+                data-desktop-detail-action="drawer-delta"
+                data-desktop-detail-inquiry-id="${escapeHtml(item?.id||'')}"
+                data-desktop-detail-delta="-1"
+                aria-label="-"
+              >−</button>
+
+              <input
+                type="number"
+                min="1"
+                step="1"
+                value="${escapeHtml(quantity)}"
+                data-desktop-detail-drawer-quantity="${escapeHtml(item?.id||'')}"
+              >
+
+              <button
+                type="button"
+                data-desktop-detail-action="drawer-delta"
+                data-desktop-detail-inquiry-id="${escapeHtml(item?.id||'')}"
+                data-desktop-detail-delta="1"
+                aria-label="+"
+              >+</button>
+            </div>
+
+            <div>
+              <span>${escapeHtml(money(item?.unitPrice||0))} / ${escapeHtml(qtyUnit())}</span>
+              <strong>${escapeHtml(money(item?.subtotal||0))}</strong>
+            </div>
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
+  function inquiryDrawerCustomRow(item){
+    return `
+      <article class="desktop-detail-drawer-item desktop-detail-drawer-item--custom" data-inquiry-id="${escapeHtml(item?.id||'')}">
+        <div class="desktop-detail-drawer-item__custom-mark" aria-hidden="true">C</div>
+        <div class="desktop-detail-drawer-item__body">
+          <div class="desktop-detail-drawer-item__head">
+            <div>
+              <small>${escapeHtml(r15UiCopy('customProject'))}</small>
+              <strong>${escapeHtml(choiceLabel(item?.use)||r15UiCopy('customProject'))}</strong>
+            </div>
+            <button
+              type="button"
+              data-desktop-detail-action="drawer-remove"
+              data-desktop-detail-inquiry-id="${escapeHtml(item?.id||'')}"
+            >${escapeHtml(r15UiCopy('remove'))}</button>
+          </div>
+          <p>${escapeHtml(r15UiCopy('quotedSeparately'))}</p>
+        </div>
+      </article>
+    `;
+  }
+
+  function inquiryDrawerMoqHtml(data){
+    const groups=inquiryMoqGroups(data);
+
+    if(!groups.length){
+      return '';
+    }
+
+    return `
+      <section class="desktop-detail-drawer-moq">
+        <span>${escapeHtml(r15UiCopy('moqProgress'))}</span>
+        ${groups.map(group=>{
+          const met=group.quantity>=group.moq;
+          const remaining=Math.max(0,group.moq-group.quantity);
+
+          return `
+            <div>
+              <p>
+                <strong>${escapeHtml(seriesLabel(group.series))}</strong>
+                ${group.size?`<small>· ${escapeHtml(group.size)}</small>`:''}
+              </p>
+              <p>
+                <b>${escapeHtml(group.quantity)} / ${escapeHtml(group.moq)} ${escapeHtml(qtyUnit())}</b>
+                <small>${escapeHtml(
+                  met
+                    ? r15UiCopy('moqMet')
+                    : r15ReplaceCount(r15UiCopy('moqRemaining'),remaining)
+                )}</small>
+              </p>
+            </div>
+          `;
+        }).join('')}
+      </section>
+    `;
+  }
+
+  function inquiryDrawerHtml(){
+    const data=inquiryView();
+    const items=data.items||[];
+    const count=Math.max(0,Number(data.summary?.itemCount||0)||0);
+
+    return `
+      <div
+        class="desktop-detail-inquiry-layer ${inquiryDrawerOpen?'is-open':''}"
+        data-desktop-detail-inquiry-layer
+        ${inquiryDrawerOpen?'':'hidden'}
+      >
+        <button
+          class="desktop-detail-inquiry-backdrop"
+          type="button"
+          data-desktop-detail-action="close-inquiry-drawer"
+          aria-label="${escapeHtml(r15UiCopy('close'))}"
+        ></button>
+
+        <aside
+          class="desktop-detail-inquiry-drawer"
+          role="dialog"
+          aria-modal="true"
+          aria-label="${escapeHtml(r15UiCopy('inquiryQuickView'))}"
+        >
+          <header class="desktop-detail-inquiry-drawer__head">
+            <div>
+              <span>${escapeHtml(r15UiCopy('inquiryQuickView'))}</span>
+              <strong>${escapeHtml(r15ReplaceCount(r15UiCopy('selectedItems'),count))}</strong>
+            </div>
+
+            <button
+              type="button"
+              data-desktop-detail-action="close-inquiry-drawer"
+              aria-label="${escapeHtml(r15UiCopy('close'))}"
+            >×</button>
+          </header>
+
+          <div class="desktop-detail-inquiry-drawer__body">
+            ${
+              items.length
+                ? items.map(item=>
+                    item?.type==='custom'
+                      ? inquiryDrawerCustomRow(item)
+                      : inquiryDrawerProductRow(item)
+                  ).join('')
+                : `
+                  <div class="desktop-detail-inquiry-empty">
+                    <strong>${escapeHtml(r15UiCopy('inquiryEmpty'))}</strong>
+                    <p>${escapeHtml(r15UiCopy('inquiryEmptyBody'))}</p>
+                  </div>
+                `
+            }
+
+            ${inquiryDrawerMoqHtml(data)}
+          </div>
+
+          <footer class="desktop-detail-inquiry-drawer__footer">
+            <button
+              class="desktop-detail-inquiry-full"
+              type="button"
+              data-desktop-detail-action="open-inquiry"
+            >
+              ${escapeHtml(r15UiCopy('viewFullInquiry'))}
+              <span aria-hidden="true">→</span>
+            </button>
+          </footer>
+        </aside>
+      </div>
+    `;
+  }
+
+  function syncPersistentCommerce(view=viewModel()){
+    const dock=
+      detailRoot?.querySelector(
+        '[data-desktop-detail-dock]'
+      );
+
+    if(dock){
+      dock.outerHTML=dockHtml(view);
+    }
+
+    const layer=
+      detailRoot?.querySelector(
+        '[data-desktop-detail-inquiry-layer]'
+      );
+
+    if(layer){
+      layer.outerHTML=inquiryDrawerHtml();
+    }
+  }
   function galleryHtml(
     view,
     images
@@ -408,6 +1001,8 @@
               `
           }
         </div>
+
+        ${galleryCaptionHtml(view,images)}
 
         ${
           images.length>1
@@ -1081,7 +1676,7 @@
 
           ${
             description
-              ? `<p>${escapeHtml(description)}</p>`
+              ? `<p class="desktop-detail-heading__description">${escapeHtml(description)}</p>`
               : ''
           }
 
@@ -1098,10 +1693,7 @@
               )}
             </strong>
 
-            <span>
-              ${escapeHtml(c.moq)}
-              ${escapeHtml(view.pricing?.moq||1)}
-            </span>
+            <span>${escapeHtml(moqRuleCompactText(view))}</span>
           </div>
 
           <div class="desktop-detail-product-id">
@@ -1122,10 +1714,25 @@
             c.pattern
           )}
           ${packagingHtml(view)}
-          ${quantityHtml(view)}
         </div>
 
-        ${summaryHtml(view)}
+        <div class="desktop-detail-config-footer">
+          <div class="desktop-detail-moq-rule">
+            <strong>${escapeHtml(r15UiCopy('moqRuleHeading'))}</strong>
+            <span>${escapeHtml(moqRuleText(view))}</span>
+          </div>
+
+          <p>${escapeHtml(c.pricingNote)}</p>
+
+          <button
+            class="desktop-detail-custom-link"
+            type="button"
+            data-desktop-detail-action="custom-project"
+          >
+            ${escapeHtml(c.customProject)}
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
       </aside>
     `;
   }
@@ -1158,7 +1765,7 @@
       );
 
     return `
-      <div class="desktop-detail-page" data-desktop-detail-presentation="${escapeHtml(PRESENTATION_VERSION)}">
+      <div class="desktop-detail-page" data-desktop-detail-presentation="${escapeHtml(PRESENTATION_VERSION)}" data-desktop-detail-polish="${escapeHtml(POLISH_VERSION)}">
         <div class="desktop-container--wide">
           <button
             class="desktop-detail-back"
@@ -1176,7 +1783,9 @@
           </div>
         </div>
 
-        ${informationHtml(view)}
+        ${dockHtml(view)}
+        ${inquiryDrawerHtml()}
+        <!-- B7-00B.4D R1.5 — duplicate lower Product Details / Current Configuration removed. -->
       </div>
     `;
   }
@@ -1270,6 +1879,11 @@
       );
     }
 
+    syncGalleryCaption(
+      view,
+      images
+    );
+
     return true;
   }
 
@@ -1307,6 +1921,9 @@
       );
 
     loadResponsiveMedia(next);
+    syncPersistentCommerce(
+      viewModel()
+    );
 
     if(
       preserveScroll&&
@@ -1442,6 +2059,9 @@
   function flashAdded(){
     const node=
       detailRoot?.querySelector(
+        '[data-desktop-detail-dock-feedback]'
+      )||
+      detailRoot?.querySelector(
         '.desktop-detail-add-feedback'
       );
 
@@ -1460,7 +2080,7 @@
         ()=>{
           node.hidden=true;
         },
-        2200
+        1800
       );
   }
 
@@ -1483,6 +2103,62 @@
 
     if(action==='back'){
       config?.actions?.back?.();
+      return;
+    }
+
+    if(action==='toggle-inquiry-drawer'){
+      inquiryDrawerOpen=!inquiryDrawerOpen;
+      syncPersistentCommerce(
+        viewModel()
+      );
+      return;
+    }
+
+    if(action==='close-inquiry-drawer'){
+      inquiryDrawerOpen=false;
+      syncPersistentCommerce(
+        viewModel()
+      );
+      return;
+    }
+
+    if(action==='open-inquiry'){
+      inquiryDrawerOpen=false;
+      config?.actions?.openInquiry?.();
+      return;
+    }
+
+    if(action==='dock-quantity-delta'){
+      quantityValidation=null;
+      config?.actions?.adjustQuantity?.(
+        Number(
+          target.dataset.desktopDetailDelta||0
+        )
+      );
+      syncPersistentCommerce(
+        viewModel()
+      );
+      return;
+    }
+
+    if(action==='drawer-delta'){
+      config?.actions?.adjustInquiryQuantity?.(
+        target.dataset.desktopDetailInquiryId,
+        Number(target.dataset.desktopDetailDelta||0)
+      );
+      syncPersistentCommerce(
+        viewModel()
+      );
+      return;
+    }
+
+    if(action==='drawer-remove'){
+      config?.actions?.removeInquiryItem?.(
+        target.dataset.desktopDetailInquiryId
+      );
+      syncPersistentCommerce(
+        viewModel()
+      );
       return;
     }
 
@@ -1557,6 +2233,10 @@
       config?.actions
         ?.addInquiry?.();
 
+      syncPersistentCommerce(
+        viewModel()
+      );
+
       root.requestAnimationFrame?.(
         ()=>{
           if(
@@ -1578,6 +2258,47 @@
   }
 
   function onChange(event){
+    const dockInput=
+      event.target.closest?.(
+        '[data-desktop-detail-dock-quantity]'
+      );
+
+    if(
+      dockInput&&
+      detailRoot?.contains(dockInput)
+    ){
+      quantityValidation=
+        config?.actions
+          ?.setQuantity?.(
+            dockInput.value
+          )||
+        null;
+
+      syncPersistentCommerce(
+        viewModel()
+      );
+      return;
+    }
+
+    const drawerInput=
+      event.target.closest?.(
+        '[data-desktop-detail-drawer-quantity]'
+      );
+
+    if(
+      drawerInput&&
+      detailRoot?.contains(drawerInput)
+    ){
+      config?.actions?.setInquiryQuantity?.(
+        drawerInput.dataset.desktopDetailDrawerQuantity,
+        drawerInput.value
+      );
+      syncPersistentCommerce(
+        viewModel()
+      );
+      return;
+    }
+
     const input=
       event.target.closest?.(
         '[data-desktop-detail-quantity]'
@@ -1603,6 +2324,17 @@
   }
 
   function onKeyDown(event){
+    if(
+      event.key==='Escape'&&
+      inquiryDrawerOpen
+    ){
+      inquiryDrawerOpen=false;
+      syncPersistentCommerce(
+        viewModel()
+      );
+      return;
+    }
+
     const input=
       event.target.closest?.(
         '[data-desktop-detail-quantity]'
@@ -1663,6 +2395,14 @@
         typeof options.media==='function'
           ? options.media
           : ()=>null,
+      inquiryViewModel:
+        typeof options.inquiryViewModel==='function'
+          ? options.inquiryViewModel
+          : ()=>({empty:true,items:[],summary:{itemCount:0}}),
+      itemScentLabel:
+        options.itemScentLabel,
+      itemMoq:
+        options.itemMoq,
       actions:
         options.actions||
         {}
@@ -1709,6 +2449,14 @@
   }
 
   function syncInquiry(){
+    if(
+      detailRoot&&
+      !detailRoot.hidden
+    ){
+      syncPersistentCommerce(
+        viewModel()
+      );
+    }
     return true;
   }
 
