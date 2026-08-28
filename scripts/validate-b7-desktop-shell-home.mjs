@@ -461,6 +461,7 @@ try{
       'B7-00B.4B R4.1.1 — accepted visual runtime alignment',
       'B7-00B.4B R4.2.4 — Canonical Craft Container + Directional Typography System',
       'B7-00B.4B R4.2.5 — Home Editorial Grid Unification + Typography Rail + Hero Asset Cleanup',
+      'B7-00B.4B R4.2.6 — Hero Dual Asset Renewal + Collections Left-Line Recomposition',
       '.desktop-home-hero--cover',
       '.desktop-home-collections::before',
       '.desktop-home-story + .desktop-home-section',

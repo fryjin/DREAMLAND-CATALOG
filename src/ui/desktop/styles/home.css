@@ -3290,3 +3290,205 @@
     grid-column:8 / 13!important;
   }
 }
+
+/* --------------------------------------------------------------------------
+ * B7-00B.4B R4.2.6 — Hero Dual Asset Renewal + Collections Left-Line Recomposition
+ * ------------------------------------------------------------------------ */
+@media (min-width:1200px){
+  /* Four Collections now owns the same 1600px Home editorial line. */
+  .desktop-home-collections.desktop-home-editorial-wide{
+    width:min(
+      calc(100% - (2 * var(--dw-gutter))),
+      var(--dw-container-wide)
+    )!important;
+    max-width:var(--dw-container-wide)!important;
+    margin-inline:auto!important;
+    display:grid!important;
+    grid-template-columns:minmax(300px,1fr) minmax(0,1160px)!important;
+    column-gap:clamp(28px,2vw,36px)!important;
+    justify-content:stretch!important;
+    align-items:center!important;
+  }
+
+  /* Keep the already-correct right edge by anchoring the card body right. */
+  .desktop-home-collections.desktop-home-editorial-wide
+  .desktop-home-collections__body{
+    width:100%!important;
+    max-width:1160px!important;
+    margin:0!important;
+    justify-self:end!important;
+  }
+
+  .desktop-home-collections.desktop-home-editorial-wide
+  .desktop-home-collections__intro{
+    width:min(100%,520px)!important;
+    margin:0 0 28px auto!important;
+  }
+
+  /* Typography Rail V3: asymmetric poster-like annotation inside real space. */
+  .desktop-home-collections__typography-rail--v3{
+    position:relative!important;
+    display:grid!important;
+    grid-template-rows:auto 1fr!important;
+    width:100%!important;
+    max-width:340px!important;
+    height:390px!important;
+    min-height:390px!important;
+    overflow:hidden!important;
+    justify-self:start!important;
+    align-self:center!important;
+    padding:8px 0 6px 0!important;
+  }
+
+  .desktop-home-collections__typography-rail--v3
+  .desktop-home-collections__rail-head{
+    display:grid!important;
+    grid-template-columns:auto 1fr!important;
+    align-items:center!important;
+    gap:18px!important;
+    padding:0!important;
+    min-height:30px!important;
+  }
+
+  .desktop-home-collections__typography-rail--v3
+  .desktop-home-collections__annotation-index{
+    position:static!important;
+    font-family:var(--dw-home-serif)!important;
+    font-size:22px!important;
+    line-height:1!important;
+    font-weight:500!important;
+    color:var(--dw-home-accent)!important;
+  }
+
+  .desktop-home-collections__rail-eyebrow{
+    display:block;
+    color:var(--dw-color-muted);
+    font-size:11px;
+    line-height:1;
+    font-weight:700;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+
+  .desktop-home-collections__rail-stage{
+    position:relative;
+    display:grid;
+    grid-template-columns:64px 46px minmax(0,1fr);
+    align-items:end;
+    gap:16px;
+    min-height:338px;
+    padding-top:22px;
+  }
+
+  .desktop-home-collections__typography-rail--v3
+  .desktop-home-collections__rail-track{
+    position:relative!important;
+    display:block!important;
+    width:100%!important;
+    overflow:visible!important;
+  }
+
+  .desktop-home-collections__typography-rail--v3
+  .desktop-home-collections__rail-track--primary{
+    height:304px!important;
+  }
+
+  .desktop-home-collections__typography-rail--v3
+  .desktop-home-collections__rail-track--secondary{
+    height:252px!important;
+  }
+
+  .desktop-home-collections__typography-rail--v3
+  .desktop-home-collections__rail-label{
+    position:absolute!important;
+    left:50%!important;
+    top:50%!important;
+    width:max-content!important;
+    max-width:none!important;
+    white-space:nowrap!important;
+    transform:translate(-50%,-50%) rotate(-90deg)!important;
+    transform-origin:center!important;
+    text-transform:uppercase!important;
+  }
+
+  .desktop-home-collections__typography-rail--v3
+  .desktop-home-collections__rail-track--primary
+  .desktop-home-collections__rail-label{
+    color:var(--dw-home-accent)!important;
+    font-size:clamp(24px,1.55vw,28px)!important;
+    line-height:1!important;
+    font-weight:800!important;
+    letter-spacing:.025em!important;
+  }
+
+  .desktop-home-collections__typography-rail--v3
+  .desktop-home-collections__rail-track--secondary
+  .desktop-home-collections__rail-label{
+    color:rgba(167,67,55,.72)!important;
+    font-size:11px!important;
+    line-height:1!important;
+    font-weight:760!important;
+    letter-spacing:.17em!important;
+  }
+
+  .desktop-home-collections__rail-meta{
+    align-self:end;
+    display:grid;
+    gap:7px;
+    padding:0 0 22px 4px;
+    color:var(--dw-color-muted);
+    font-size:11px;
+    line-height:1.15;
+    font-weight:700;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+
+  .desktop-home-collections__rail-meta::before{
+    content:"";
+    display:block;
+    width:48px;
+    height:1px;
+    margin-bottom:5px;
+    background:rgba(167,67,55,.34);
+  }
+}
+
+@media (min-width:1024px) and (max-width:1199px){
+  .desktop-home-collections.desktop-home-editorial-wide{
+    width:min(calc(100% - (2 * var(--dw-gutter))),var(--dw-container-wide))!important;
+    max-width:var(--dw-container-wide)!important;
+    margin-inline:auto!important;
+    grid-template-columns:150px minmax(0,1fr)!important;
+    column-gap:20px!important;
+  }
+
+  .desktop-home-collections__typography-rail--v3{
+    max-width:150px!important;
+    height:342px!important;
+    min-height:342px!important;
+  }
+
+  .desktop-home-collections__rail-eyebrow,
+  .desktop-home-collections__rail-meta{
+    display:none!important;
+  }
+
+  .desktop-home-collections__rail-stage{
+    grid-template-columns:48px 36px!important;
+    gap:12px!important;
+    min-height:286px!important;
+  }
+
+  .desktop-home-collections__typography-rail--v3
+  .desktop-home-collections__rail-track--primary{height:270px!important;}
+
+  .desktop-home-collections__typography-rail--v3
+  .desktop-home-collections__rail-track--secondary{height:226px!important;}
+
+  .desktop-home-collections__typography-rail--v3
+  .desktop-home-collections__rail-track--primary
+  .desktop-home-collections__rail-label{font-size:20px!important;}
+}

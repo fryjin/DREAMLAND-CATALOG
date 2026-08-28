@@ -94,14 +94,14 @@ try{
 
 try{
   const index=read('index.html');
-  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4b-r4.2.5-v110';
-  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4b-r4.2.5-v110';
-  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4b-r4.2.5-v110';
+  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4b-r4.2.6-v111';
+  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4b-r4.2.6-v111';
+  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4b-r4.2.6-v111';
 
   includesAll(
     index,
     [
-      "window.DREAMLAND_RELEASE='b7-00b4b-r4.2.5-v110';",
+      "window.DREAMLAND_RELEASE='b7-00b4b-r4.2.6-v111';",
       tokensRef,
       primitivesRef,
       shellRef
@@ -126,15 +126,15 @@ try{
   includesAll(
     sw,
     [
-      "const CACHE_VERSION = 'dreamland-pwa-v110';",
-      "'b7-00b4b-r4.2.5-v110'",
-      './src/ui/desktop/styles/primitives.css?release=b7-00b4b-r4.2.5-v110',
+      "const CACHE_VERSION = 'dreamland-pwa-v111';",
+      "'b7-00b4b-r4.2.6-v111'",
+      './src/ui/desktop/styles/primitives.css?release=b7-00b4b-r4.2.6-v111',
       "'./src/ui/desktop/styles/primitives.css'"
     ],
     'Service Worker Foundation release'
   );
 
-  if(!pwa.includes("'b7-00b4b-r4.2.5-v110'")){
+  if(!pwa.includes("'b7-00b4b-r4.2.6-v111'")){
     fail('PWA runtime release tag was not advanced to B7-00B.4A R1.');
   }
 }catch(error){
@@ -475,6 +475,7 @@ try{
       'B7-00B.4B R4.2 — Hero Graffiti Rebalance + Current Picks Height Recomposition',
       'B7-00B.4B R4.2.4 — Canonical Craft Container + Directional Typography System',
       'B7-00B.4B R4.2.5 — Home Editorial Grid Unification + Typography Rail + Hero Asset Cleanup',
+      'B7-00B.4B R4.2.6 — Hero Dual Asset Renewal + Collections Left-Line Recomposition',
       '.desktop-home-hero--cover{',
       '.desktop-home-collections::before{',
       '.desktop-home-story + .desktop-home-section',
@@ -493,7 +494,7 @@ try{
   includesAll(
     runtime,
     [
-      "const VERSION='B7-00B.4B-R4.2.5';",
+      "const VERSION='B7-00B.4B-R4.2.6';",
       'desktop-home-editorial-wide',
       'desktop-home-collections__typography-rail',
       'desktop-home-collections__annotation-index',

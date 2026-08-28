@@ -5,7 +5,7 @@
     return;
   }
 
-  const VERSION='B7-00B.4B-R4.2.5';
+  const VERSION='B7-00B.4B-R4.2.6';
 
   const DEFAULT_ASSETS=Object.freeze({
     hero:{
@@ -717,27 +717,28 @@
 
     return `
       <section
-        class="desktop-home-section desktop-home-collections desktop-container desktop-reveal"
+        class="desktop-home-section desktop-home-collections desktop-home-editorial-wide desktop-container desktop-reveal"
         aria-labelledby="desktopCollectionsTitle"
       >
         <div
-          class="desktop-home-collections__note desktop-home-collections__annotation desktop-home-collections__typography-rail"
+          class="desktop-home-collections__note desktop-home-collections__annotation desktop-home-collections__typography-rail desktop-home-collections__typography-rail--v3"
           aria-hidden="true"
         >
           <div class="desktop-home-collections__rail-head">
             <span class="desktop-home-collections__annotation-index">02</span>
-            <span class="desktop-home-collections__rail-rule"></span>
+            <span class="desktop-home-collections__rail-eyebrow">FOUR COLLECTIONS</span>
           </div>
 
-          <div class="desktop-home-collections__rail-tracks">
+          <div class="desktop-home-collections__rail-stage">
             <span class="desktop-home-collections__rail-track desktop-home-collections__rail-track--primary">
               <span class="desktop-home-collections__rail-label">HAND-CARVED</span>
             </span>
             <span class="desktop-home-collections__rail-track desktop-home-collections__rail-track--secondary">
               <span class="desktop-home-collections__rail-label">WAX / FORM / LIGHT</span>
             </span>
-            <span class="desktop-home-collections__rail-track desktop-home-collections__rail-track--tertiary">
-              <span class="desktop-home-collections__rail-label">COLLECTIONS / 01—04</span>
+            <span class="desktop-home-collections__rail-meta">
+              <span>COLLECTIONS</span>
+              <span>01—04</span>
             </span>
           </div>
         </div>
