@@ -2789,3 +2789,54 @@
     grid-column:8 / 13!important;
   }
 }
+
+/* --------------------------------------------------------------------------
+ * B7-00B.4B R4.2.2 — Craft Width Rebalance
+ *
+ * R4.2.1 correctly aligned Craft to the shared editorial grid, but its
+ * width:100% / max-width:none override unintentionally bypassed the normal
+ * Desktop container measure. Keep the solved spacing and 1/7 + 8/13 layout,
+ * while restoring a centered editorial measure comparable to Story / Custom /
+ * Wholesale.
+ * ------------------------------------------------------------------------ */
+@media (min-width:1024px){
+  .desktop-home-featured +
+  .desktop-home-band
+  .desktop-editorial-grid{
+    width:min(
+      calc(100% - (2 * var(--dw-gutter))),
+      1280px
+    )!important;
+    max-width:1280px!important;
+    margin-inline:auto!important;
+  }
+
+  .desktop-home-featured +
+  .desktop-home-band
+  .desktop-editorial-media{
+    grid-column:1 / 7!important;
+    width:100%!important;
+    max-width:none!important;
+  }
+
+  .desktop-home-featured +
+  .desktop-home-band
+  .desktop-editorial-copy{
+    grid-column:8 / 13!important;
+    width:100%!important;
+    max-width:500px!important;
+    justify-self:start!important;
+  }
+}
+
+@media (min-width:1024px) and (max-width:1199px){
+  .desktop-home-featured +
+  .desktop-home-band
+  .desktop-editorial-grid{
+    width:min(
+      calc(100% - (2 * var(--dw-gutter))),
+      1080px
+    )!important;
+    max-width:1080px!important;
+  }
+}
