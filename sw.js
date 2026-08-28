@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'dreamland-pwa-v109';
+const CACHE_VERSION = 'dreamland-pwa-v110';
 
 const APP_CACHE = `${CACHE_VERSION}-app`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
@@ -7,42 +7,42 @@ const FULL_IMAGE_CACHE = `${CACHE_VERSION}-full-images`;
 const OTHER_IMAGE_CACHE = `${CACHE_VERSION}-other-images`;
 
 const RELEASE_TAG =
-  'b7-00b4b-r4.2.4-v109';
+  'b7-00b4b-r4.2.5-v110';
 
 const RELEASE_ASSETS = [
-  './startup-loader.css?release=b7-00b4b-r4.2.4-v109',
-  './startup-loader.js?release=b7-00b4b-r4.2.4-v109',
-  './catalog-data.js?release=b7-00b4b-r4.2.4-v109',
-  './src/services/pwa/runtime-pwa.js?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/styles/tokens.css?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/styles/primitives.css?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/styles/shell.css?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/styles/home.css?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/styles/catalog.css?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/styles/detail.css?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/styles/custom.css?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/styles/inquiry.css?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/styles/contact.css?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/styles/review.css?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/styles/success.css?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/shell/runtime-desktop-shell.js?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/home/runtime-desktop-home.js?release=b7-00b4b-r4.2.4-v109',
-  './src/features/catalog/runtime-desktop-catalog-view.js?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/catalog/runtime-desktop-catalog.js?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4b-r4.2.4-v109',
-  './src/ui/desktop/runtime-desktop-experience.js?release=b7-00b4b-r4.2.4-v109',
-  './copy-polish.js?release=b7-00b4b-r4.2.4-v109',
-  './src/app/runtime-hooks.js?release=b7-00b4b-r4.2.4-v109',
-  './src/services/media/runtime-media.js?release=b7-00b4b-r4.2.4-v109',
-  './image-manager.js?release=b7-00b4b-r4.2.4-v109',
-  './image-variants.js?release=b7-00b4b-r4.2.4-v109',
-  './detail-progressive.js?release=b7-00b4b-r4.2.4-v109',
-  './pattern-preview-swipe.js?release=b7-00b4b-r4.2.4-v109'
+  './startup-loader.css?release=b7-00b4b-r4.2.5-v110',
+  './startup-loader.js?release=b7-00b4b-r4.2.5-v110',
+  './catalog-data.js?release=b7-00b4b-r4.2.5-v110',
+  './src/services/pwa/runtime-pwa.js?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/styles/tokens.css?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/styles/primitives.css?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/styles/shell.css?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/styles/home.css?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/styles/catalog.css?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/styles/detail.css?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/styles/custom.css?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/styles/inquiry.css?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/styles/contact.css?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/styles/review.css?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/styles/success.css?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/shell/runtime-desktop-shell.js?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/home/runtime-desktop-home.js?release=b7-00b4b-r4.2.5-v110',
+  './src/features/catalog/runtime-desktop-catalog-view.js?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/catalog/runtime-desktop-catalog.js?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4b-r4.2.5-v110',
+  './src/ui/desktop/runtime-desktop-experience.js?release=b7-00b4b-r4.2.5-v110',
+  './copy-polish.js?release=b7-00b4b-r4.2.5-v110',
+  './src/app/runtime-hooks.js?release=b7-00b4b-r4.2.5-v110',
+  './src/services/media/runtime-media.js?release=b7-00b4b-r4.2.5-v110',
+  './image-manager.js?release=b7-00b4b-r4.2.5-v110',
+  './image-variants.js?release=b7-00b4b-r4.2.5-v110',
+  './detail-progressive.js?release=b7-00b4b-r4.2.5-v110',
+  './pattern-preview-swipe.js?release=b7-00b4b-r4.2.5-v110'
 ];
 
 const APP_SHELL = [

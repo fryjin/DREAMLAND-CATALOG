@@ -5,7 +5,7 @@
     return;
   }
 
-  const VERSION='B7-00B.4B-R4.2.4';
+  const VERSION='B7-00B.4B-R4.2.5';
 
   const DEFAULT_ASSETS=Object.freeze({
     hero:{
@@ -672,7 +672,7 @@
 
     return `
       <section
-        class="desktop-home-story desktop-container desktop-reveal"
+        class="desktop-home-story desktop-home-editorial-wide desktop-container desktop-reveal"
         aria-labelledby="desktopStoryTitle"
       >
         <div
@@ -721,13 +721,25 @@
         aria-labelledby="desktopCollectionsTitle"
       >
         <div
-          class="desktop-home-collections__note desktop-home-collections__annotation"
+          class="desktop-home-collections__note desktop-home-collections__annotation desktop-home-collections__typography-rail"
           aria-hidden="true"
         >
-          <span class="desktop-home-collections__annotation-index">02</span>
-          <span class="desktop-home-collections__annotation-line desktop-home-collections__annotation-line--primary">HAND-CARVED</span>
-          <span class="desktop-home-collections__annotation-line desktop-home-collections__annotation-line--secondary">WAX / FORM / LIGHT</span>
-          <span class="desktop-home-collections__annotation-line desktop-home-collections__annotation-line--tertiary">COLLECTIONS / 01—04</span>
+          <div class="desktop-home-collections__rail-head">
+            <span class="desktop-home-collections__annotation-index">02</span>
+            <span class="desktop-home-collections__rail-rule"></span>
+          </div>
+
+          <div class="desktop-home-collections__rail-tracks">
+            <span class="desktop-home-collections__rail-track desktop-home-collections__rail-track--primary">
+              <span class="desktop-home-collections__rail-label">HAND-CARVED</span>
+            </span>
+            <span class="desktop-home-collections__rail-track desktop-home-collections__rail-track--secondary">
+              <span class="desktop-home-collections__rail-label">WAX / FORM / LIGHT</span>
+            </span>
+            <span class="desktop-home-collections__rail-track desktop-home-collections__rail-track--tertiary">
+              <span class="desktop-home-collections__rail-label">COLLECTIONS / 01—04</span>
+            </span>
+          </div>
         </div>
 
         <div class="desktop-home-collections__body">
@@ -901,7 +913,7 @@
 
     return `
       <section
-        class="desktop-home-band desktop-home-band--sand desktop-home-craft desktop-container desktop-reveal"
+        class="desktop-home-band desktop-home-band--sand desktop-home-craft desktop-home-editorial-wide desktop-container desktop-reveal"
         aria-labelledby="desktopCraftTitle"
       >
         <div class="desktop-editorial-grid">
@@ -949,7 +961,7 @@
 
     return `
       <section
-        class="desktop-home-section desktop-container desktop-reveal"
+        class="desktop-home-section desktop-home-custom desktop-home-editorial-wide desktop-container desktop-reveal"
         aria-labelledby="desktopCustomTitle"
       >
         <div class="desktop-custom-card">
@@ -1014,7 +1026,7 @@
 
     return `
       <section
-        class="desktop-home-section desktop-container desktop-reveal"
+        class="desktop-home-section desktop-home-wholesale desktop-home-editorial-wide desktop-container desktop-reveal"
         aria-labelledby="desktopWholesaleTitle"
       >
         <div class="desktop-wholesale-layout">

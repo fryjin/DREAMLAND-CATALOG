@@ -150,7 +150,8 @@ try{
       'B7-00B.4B-R4',
       'B7-00B.4B-R4.1',
       'B7-00B.4B-R4.2',
-      'B7-00B.4B-R4.2.4'
+      'B7-00B.4B-R4.2.4',
+      'B7-00B.4B-R4.2.5'
     ]);
 
   if(
@@ -172,7 +173,11 @@ try{
     'resolveFeaturedProduct(',
     'desktop-wholesale-media',
     'desktop-home-collections__annotation-index',
-    'desktop-home-craft desktop-container'
+    'desktop-home-craft',
+    'desktop-container',
+    'desktop-home-editorial-wide',
+    'desktop-home-collections__typography-rail',
+    'desktop-home-collections__rail-track--primary'
   ]){
     if(!runtime.includes(required)){
       fail(
@@ -206,6 +211,9 @@ try{
     'B7-00B.4B R4.1.1 — accepted visual runtime alignment',
     'B7-00B.4B R4.2 — Hero Graffiti Rebalance + Current Picks Height Recomposition',
     'B7-00B.4B R4.2.4 — Canonical Craft Container + Directional Typography System',
+    'B7-00B.4B R4.2.5 — Home Editorial Grid Unification + Typography Rail + Hero Asset Cleanup',
+    '.desktop-home-editorial-wide',
+    '.desktop-home-collections__rail-tracks',
     '.desktop-home-collections__annotation-line--primary',
     '.desktop-home-craft',
     '.desktop-home-hero--cover{',

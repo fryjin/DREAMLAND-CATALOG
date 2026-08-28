@@ -94,14 +94,14 @@ try{
 
 try{
   const index=read('index.html');
-  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4b-r4.2.4-v109';
-  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4b-r4.2.4-v109';
-  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4b-r4.2.4-v109';
+  const tokensRef='./src/ui/desktop/styles/tokens.css?release=b7-00b4b-r4.2.5-v110';
+  const primitivesRef='./src/ui/desktop/styles/primitives.css?release=b7-00b4b-r4.2.5-v110';
+  const shellRef='./src/ui/desktop/styles/shell.css?release=b7-00b4b-r4.2.5-v110';
 
   includesAll(
     index,
     [
-      "window.DREAMLAND_RELEASE='b7-00b4b-r4.2.4-v109';",
+      "window.DREAMLAND_RELEASE='b7-00b4b-r4.2.5-v110';",
       tokensRef,
       primitivesRef,
       shellRef
@@ -126,15 +126,15 @@ try{
   includesAll(
     sw,
     [
-      "const CACHE_VERSION = 'dreamland-pwa-v109';",
-      "'b7-00b4b-r4.2.4-v109'",
-      './src/ui/desktop/styles/primitives.css?release=b7-00b4b-r4.2.4-v109',
+      "const CACHE_VERSION = 'dreamland-pwa-v110';",
+      "'b7-00b4b-r4.2.5-v110'",
+      './src/ui/desktop/styles/primitives.css?release=b7-00b4b-r4.2.5-v110',
       "'./src/ui/desktop/styles/primitives.css'"
     ],
     'Service Worker Foundation release'
   );
 
-  if(!pwa.includes("'b7-00b4b-r4.2.4-v109'")){
+  if(!pwa.includes("'b7-00b4b-r4.2.5-v110'")){
     fail('PWA runtime release tag was not advanced to B7-00B.4A R1.');
   }
 }catch(error){
@@ -474,6 +474,7 @@ try{
       'B7-00B.4B R4.1.1 — accepted visual runtime alignment',
       'B7-00B.4B R4.2 — Hero Graffiti Rebalance + Current Picks Height Recomposition',
       'B7-00B.4B R4.2.4 — Canonical Craft Container + Directional Typography System',
+      'B7-00B.4B R4.2.5 — Home Editorial Grid Unification + Typography Rail + Hero Asset Cleanup',
       '.desktop-home-hero--cover{',
       '.desktop-home-collections::before{',
       '.desktop-home-story + .desktop-home-section',
@@ -492,9 +493,12 @@ try{
   includesAll(
     runtime,
     [
-      "const VERSION='B7-00B.4B-R4.2.4';",
+      "const VERSION='B7-00B.4B-R4.2.5';",
+      'desktop-home-editorial-wide',
+      'desktop-home-collections__typography-rail',
       'desktop-home-collections__annotation-index',
-      'desktop-home-craft desktop-container',
+      'desktop-home-craft',
+      'desktop-container',
       'desktop-home-hero--cover',
       'function storyHtml(view)',
       '${collectionsHtml(view)}',
