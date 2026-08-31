@@ -38,9 +38,9 @@ try{
     [
       '<title>DREAMLAND 手工雕刻蜡烛｜批发与定制</title>',
       'DREAMLAND 手工雕刻蜡烛系列，了解工艺、产品与定制能力',
-      "window.DREAMLAND_RELEASE='b7-00b4i-r1-v123';",
+      "window.DREAMLAND_RELEASE='b7-00b4j-r2-v124';",
       'dreamland-desktop-boot',
-      './images/desktop/home/hero/hero-main.webp?release=b7-00b4i-r1-v123',
+      './images/desktop/home/hero/hero-main.webp?release=b7-00b4j-r2-v124',
       'media="(min-width: 1024px)"',
       '右滑浏览产品系列',
       '<div class="page-title">产品系列</div>',
@@ -354,15 +354,15 @@ try{
 
   requireIncludes(
     pwa,
-    ["'b7-00b4i-r1-v123'"],
+    ["'b7-00b4j-r2-v124'"],
     'PWA runtime'
   );
 
   requireIncludes(
     sw,
     [
-      "const CACHE_VERSION = 'dreamland-pwa-v123';",
-      "'b7-00b4i-r1-v123'"
+      "const CACHE_VERSION = 'dreamland-pwa-v124';",
+      "'b7-00b4j-r2-v124'"
     ],
     'Service Worker'
   );

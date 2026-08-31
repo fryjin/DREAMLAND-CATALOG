@@ -1204,10 +1204,23 @@
   }
 
   function applyMode(){
+    const profile=
+      root.DREAMLAND_MPA_ACTIVE===true
+        ? (
+            root.DreamlandDeviceProfile
+              ?.refresh?.()||
+            root.DreamlandDeviceProfile
+              ?.snapshot?.()||
+            null
+          )
+        : null;
+
     const desktop=
-      Boolean(
-        mediaQuery?.matches
-      );
+      profile
+        ? profile?.presentation==='desktop'
+        : Boolean(
+            mediaQuery?.matches
+          );
 
     mode=
       desktop

@@ -3,8 +3,11 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<base href="/">
 <title>DREAMLAND 手工雕刻蜡烛｜批发与定制</title>
 <meta name="description" content="浏览 DREAMLAND 手工雕刻蜡烛系列，了解工艺、产品与定制能力，完成产品配置并提交批发或定制项目询价。"/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://dreamland-catalog.pages.dev/"/>
  <!-- DREAMLAND share metadata: add after the existing description meta -->
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="DREAMLAND"/>
@@ -28,15 +31,29 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="DREAMLAND"/>
-<!-- DREAMLAND B7-00B.3A R4 release bootstrap -->
+<script src="/src/site/runtime/runtime-device-profile.js?release=b7-00b4j-r2-v124"></script>
+<!-- DREAMLAND B7-00B.4J R2 release bootstrap -->
 <script>
-window.DREAMLAND_RELEASE='b7-00b4i-r1-v123';
+window.DREAMLAND_RELEASE='b7-00b4j-r2-v124';
+window.DREAMLAND_MPA_ACTIVE=false;
+window.DREAMLAND_PUBLIC_ROUTE_ENTRY=Object.freeze({page:'home',productId:'',pathname:'/'});
+
+if(window.DreamlandDeviceProfile){
+  const profile=
+    window.DreamlandDeviceProfile
+      .configure();
+
+  window.DREAMLAND_PRESENTATION_BOOT=
+    profile.presentation;
+}
 
 (function(){
   const desktop=
-    window.matchMedia?.(
-      '(min-width: 1024px)'
-    )?.matches===true;
+    window.DREAMLAND_MPA_ACTIVE===true
+      ? window.DREAMLAND_PRESENTATION_BOOT==='desktop'
+      : window.matchMedia?.(
+          '(min-width: 1024px)'
+        )?.matches===true;
 
   if(!desktop){
     return;
@@ -113,9 +130,11 @@ window.DREAMLAND_RELEASE='b7-00b4i-r1-v123';
 <script>
 (function(){
   const desktop=
-    window.matchMedia?.(
-      '(min-width: 1024px)'
-    )?.matches===true;
+    window.DREAMLAND_MPA_ACTIVE===true
+      ? window.DREAMLAND_PRESENTATION_BOOT==='desktop'
+      : window.matchMedia?.(
+          '(min-width: 1024px)'
+        )?.matches===true;
 
   if(desktop){
     return;
@@ -141,10 +160,10 @@ window.DREAMLAND_RELEASE='b7-00b4i-r1-v123';
 </script>
 <link
   rel="stylesheet"
-  href="./startup-loader.css?release=b7-00b4i-r1-v123"
+  href="./startup-loader.css?release=b7-00b4j-r2-v124"
   media="(max-width: 1023.98px)"
 />
-<script src="./startup-loader.js?release=b7-00b4i-r1-v123"></script> 
+<script src="./startup-loader.js?release=b7-00b4j-r2-v124"></script> 
 <link rel="manifest" href="./manifest.webmanifest"/>
 <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png"/>
@@ -159,7 +178,7 @@ window.DREAMLAND_RELEASE='b7-00b4i-r1-v123';
 <link
   rel="preload"
   as="image"
-  href="./images/desktop/home/hero/hero-main.webp?release=b7-00b4i-r1-v123"
+  href="./images/desktop/home/hero/hero-main.webp?release=b7-00b4j-r2-v124"
   type="image/webp"
   fetchpriority="high"
   media="(min-width: 1024px)"
@@ -1227,19 +1246,19 @@ body[data-lang="ko"] .option-grid-scroll .option{
   overflow:visible;
 }
 </style>
-<link rel="stylesheet" href="./src/ui/desktop/styles/tokens.css?release=b7-00b4i-r1-v123"/>
-<link rel="stylesheet" href="./src/ui/desktop/styles/primitives.css?release=b7-00b4i-r1-v123"/>
-<link rel="stylesheet" href="./src/ui/desktop/styles/shell.css?release=b7-00b4i-r1-v123"/>
-<link rel="stylesheet" href="./src/ui/desktop/styles/home.css?release=b7-00b4i-r1-v123"/>
-<link rel="stylesheet" href="./src/ui/desktop/styles/catalog.css?release=b7-00b4i-r1-v123"/>
-<link rel="stylesheet" href="./src/ui/desktop/styles/detail.css?release=b7-00b4i-r1-v123"/>
-<link rel="stylesheet" href="./src/ui/desktop/styles/custom.css?release=b7-00b4i-r1-v123"/>
-<link rel="stylesheet" href="./src/ui/desktop/styles/inquiry.css?release=b7-00b4i-r1-v123"/>
-<link rel="stylesheet" href="./src/ui/desktop/styles/contact.css?release=b7-00b4i-r1-v123"/>
-<link rel="stylesheet" href="./src/ui/desktop/styles/review.css?release=b7-00b4i-r1-v123"/>
-<link rel="stylesheet" href="./src/ui/desktop/styles/success.css?release=b7-00b4i-r1-v123"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/tokens.css?release=b7-00b4j-r2-v124"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/primitives.css?release=b7-00b4j-r2-v124"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/shell.css?release=b7-00b4j-r2-v124"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/home.css?release=b7-00b4j-r2-v124"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/catalog.css?release=b7-00b4j-r2-v124"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/detail.css?release=b7-00b4j-r2-v124"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/custom.css?release=b7-00b4j-r2-v124"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/inquiry.css?release=b7-00b4j-r2-v124"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/contact.css?release=b7-00b4j-r2-v124"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/review.css?release=b7-00b4j-r2-v124"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/success.css?release=b7-00b4j-r2-v124"/>
 </head>
-<body>
+<body data-dreamland-page="home" data-product-id="">
 <div id="desktopExperience" class="desktop-experience" aria-hidden="true"></div>
 <main class="phone" id="app">
 <section class="screen active" data-screen="home"><div class="hero"><div class="hero-product media-frame">
@@ -1308,10 +1327,16 @@ body[data-lang="ko"] .option-grid-scroll .option{
   </div>
 </div>
 </main>
+<script src="/src/site/runtime/runtime-route.js?release=b7-00b4j-r2-v124"></script>
+<script src="/src/site/runtime/runtime-page-context.js?release=b7-00b4j-r2-v124"></script>
+<script src="/src/site/runtime/runtime-navigation-context.js?release=b7-00b4j-r2-v124"></script>
+<script src="/src/site/runtime/runtime-site-bootstrap.js?release=b7-00b4j-r2-v124"></script>
+<script src="/src/site/runtime/runtime-public-navigation.js?release=b7-00b4j-r2-v124"></script>
+<script src="/src/site/runtime/runtime-catalog-url-state.js?release=b7-00b4j-r2-v124"></script>
 <script src="./src/data/product-data-contract.js"></script>
-<script src="./catalog-data.js?release=b7-00b4i-r1-v123"></script>
+<script src="./catalog-data.js?release=b7-00b4j-r2-v124"></script>
 <script src="./src/services/storage/runtime-storage.js"></script>
-<script src="./src/services/pwa/runtime-pwa.js?release=b7-00b4i-r1-v123"></script>
+<script src="./src/services/pwa/runtime-pwa.js?release=b7-00b4j-r2-v124"></script>
 <script src="./src/services/submission/runtime-submission.js"></script>
 <script src="./src/services/risk/runtime-risk.js"></script>
 <script src="./src/features/catalog/runtime-catalog.js"></script>
@@ -1322,17 +1347,17 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./src/ui/catalog/runtime-catalog-renderer.js"></script>
 <script src="./src/ui/detail/runtime-detail-renderer.js"></script>
 <script src="./src/ui/inquiry/runtime-inquiry-renderer.js"></script>
-<script src="./src/ui/desktop/shell/runtime-desktop-shell.js?release=b7-00b4i-r1-v123"></script>
-<script src="./src/ui/desktop/home/runtime-desktop-home.js?release=b7-00b4i-r1-v123"></script>
-<script src="./src/features/catalog/runtime-desktop-catalog-view.js?release=b7-00b4i-r1-v123"></script>
-<script src="./src/ui/desktop/catalog/runtime-desktop-catalog.js?release=b7-00b4i-r1-v123"></script>
-<script src="./src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4i-r1-v123"></script>
-<script src="./src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4i-r1-v123"></script>
-<script src="./src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4i-r1-v123"></script>
-<script src="./src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4i-r1-v123"></script>
-<script src="./src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4i-r1-v123"></script>
-<script src="./src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4i-r1-v123"></script>
-<script src="./src/ui/desktop/runtime-desktop-experience.js?release=b7-00b4i-r1-v123"></script>
+<script src="./src/ui/desktop/shell/runtime-desktop-shell.js?release=b7-00b4j-r2-v124"></script>
+<script src="./src/ui/desktop/home/runtime-desktop-home.js?release=b7-00b4j-r2-v124"></script>
+<script src="./src/features/catalog/runtime-desktop-catalog-view.js?release=b7-00b4j-r2-v124"></script>
+<script src="./src/ui/desktop/catalog/runtime-desktop-catalog.js?release=b7-00b4j-r2-v124"></script>
+<script src="./src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4j-r2-v124"></script>
+<script src="./src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4j-r2-v124"></script>
+<script src="./src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4j-r2-v124"></script>
+<script src="./src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4j-r2-v124"></script>
+<script src="./src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4j-r2-v124"></script>
+<script src="./src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4j-r2-v124"></script>
+<script src="./src/ui/desktop/runtime-desktop-experience.js?release=b7-00b4j-r2-v124"></script>
 <script src="./src/app/runtime-inquiry-submission-flow.js"></script>
 <script src="./custom-scent-multi.js"></script>
 <script>
@@ -2134,6 +2159,11 @@ catalogRenderer.configure({
 
         renderTabs();
         renderProducts();
+
+        window.DreamlandCatalogUrlState
+          ?.syncMobileSeries?.(
+            series
+          );
       },
 
     openDetail:
@@ -2312,6 +2342,169 @@ inquiryRenderer.configure({
  * No App-level Detail/Inquiry compatibility snapshots are retained.
  */
 let activeScreen='home',detailSlideIndex=0,detailTimer=null,editingItemId='';
+
+async function applyPublicRouteEntry(){
+  if(
+    window.DREAMLAND_MPA_ACTIVE!==true
+  ){
+    return true;
+  }
+
+  const entry=
+    window.DREAMLAND_PUBLIC_ROUTE_ENTRY||
+    {
+      page:'home',
+      productId:'',
+      pathname:'/'
+    };
+
+  window.__DREAMLAND_ROUTE_INITIALIZING=true;
+
+  try{
+    if(entry.page==='product'){
+      const requested=
+        String(
+          entry.productId||
+          ''
+        )
+          .trim()
+          .toUpperCase();
+
+      const exact=
+        products.find(product=>{
+          const status=
+            String(
+              product?.status||
+              ''
+            )
+              .trim()
+              .toLowerCase();
+
+          const active=
+            !status||
+            status==='active';
+
+          const id=
+            String(
+              product?.productId||
+              product?.id||
+              ''
+            )
+              .trim()
+              .toUpperCase();
+
+          return (
+            active&&
+            id===requested
+          );
+        })||
+        null;
+
+      if(!exact){
+        window.location.replace(
+          '/404/'
+        );
+
+        return false;
+      }
+
+      const context=
+        window.DreamlandNavigationContext
+          ?.read?.()||
+        null;
+
+      const editItem=
+        context?.mode==='edit-inquiry-item'&&
+        String(context.productId||'')
+          .trim()
+          .toUpperCase()===requested
+          ? inquiryFeature
+              .items()
+              .find(
+                item=>
+                  item.id===
+                    context.itemId&&
+                  String(
+                    item.productId||
+                    item.id||
+                    ''
+                  )
+                    .trim()
+                    .toUpperCase()===
+                    requested
+              )||
+            null
+          : null;
+
+      if(editItem){
+        const opened=
+          detailFeature
+            .openItem(
+              editItem
+            );
+
+        if(opened){
+          editingItemId=
+            editItem.id;
+
+          window.DreamlandNavigationContext
+            ?.consume?.(
+              'edit-inquiry-item'
+            );
+        }else{
+          editingItemId='';
+          detailFeature
+            .openProduct(
+              exact.id
+            );
+        }
+      }else{
+        editingItemId='';
+
+        detailFeature
+          .openProduct(
+            exact.id
+          );
+      }
+
+      detailSlideIndex=0;
+      renderDetail();
+      go('detail');
+      resetDetailScroll();
+
+      return true;
+    }
+
+    const screen=
+      entry.page==='review'
+        ? 'preview'
+        : entry.page;
+
+    if(
+      [
+        'home',
+        'catalog',
+        'custom',
+        'inquiry',
+        'contact',
+        'preview',
+        'success'
+      ].includes(screen)
+    ){
+      go(screen);
+      return true;
+    }
+
+    window.location.replace(
+      '/404/'
+    );
+
+    return false;
+  }finally{
+    window.__DREAMLAND_ROUTE_INITIALIZING=false;
+  }
+}
+
 
 function detailProduct(){
   return detailFeature.product();
@@ -3199,6 +3392,17 @@ function toastText(key){return ui(key)}
 function chooseLang(lang){closeLangSheet();if(lang!==currentLang)setLang(lang)}
 function toggleLang(){openLangSheet()}
 function go(n){
+  if(
+    window.DREAMLAND_MPA_ACTIVE===true&&
+    window.__DREAMLAND_ROUTE_INITIALIZING!==true&&
+    window.DreamlandPublicNavigation
+      ?.navigateScreen?.(
+        n
+      )
+  ){
+    return;
+  }
+
   closePreviewImage();
 
   if(n!=='catalog'){
@@ -3853,6 +4057,22 @@ function resetDetailScroll(){
 }
   
 function openDetail(id){
+  if(
+    window.DREAMLAND_MPA_ACTIVE===true&&
+    window.__DREAMLAND_ROUTE_INITIALIZING!==true&&
+    window.DreamlandPublicNavigation
+      ?.openProduct?.(
+        id,
+        {
+          returnTo:
+            window.location.pathname+
+            window.location.search
+        }
+      )
+  ){
+    return;
+  }
+
   editingItemId='';
   cancelCatalogRender();
 
@@ -4713,6 +4933,20 @@ function openEditProductItem(id){
 
   if(!item)return;
 
+  if(
+    window.DREAMLAND_MPA_ACTIVE===true&&
+    window.__DREAMLAND_ROUTE_INITIALIZING!==true&&
+    window.DreamlandPublicNavigation
+      ?.editInquiryItem?.(
+        id,
+        item.productId||
+        item.id,
+        '/inquiry/'
+      )
+  ){
+    return;
+  }
+
   const view=
   detailFeature
     .openItem(
@@ -4734,6 +4968,16 @@ resetDetailScroll();
 }
 
 function detailBack(){
+  if(
+    !editingItemId&&
+    window.DREAMLAND_MPA_ACTIVE===true&&
+    window.__DREAMLAND_ROUTE_INITIALIZING!==true&&
+    window.DreamlandPublicNavigation
+      ?.productBack?.()
+  ){
+    return;
+  }
+
   if(editingItemId){
     editingItemId='';
     return go('inquiry');
@@ -7036,6 +7280,23 @@ pwaService.configure({
 
 document.addEventListener('click',e=>{let w=document.getElementById('langWrap');if(w&&!w.contains(e.target))closeLangSheet()});
 async function bootstrap(){
+  if(
+    window.DREAMLAND_MPA_ACTIVE===true
+  ){
+    await window.DreamlandSiteBootstrap
+      .mount();
+
+    window.DreamlandPublicNavigation
+      .configure({
+        route:
+          window.DreamlandRoute,
+        navigationContext:
+          window.DreamlandNavigationContext,
+        locationRef:
+          window.location
+      });
+  }
+
   initHeroImage();
   initUnlock();
 
@@ -7438,6 +7699,36 @@ async function bootstrap(){
   });
 
   desktopExperience.mount();
+
+  if(
+    window.DREAMLAND_MPA_ACTIVE===true
+  ){
+    window.DreamlandCatalogUrlState
+      .mount({
+        route:
+          window.DreamlandRoute,
+
+        setMobileSeries:
+          series=>{
+            if(
+              !series||
+              series==='all'
+            ){
+              return;
+            }
+
+            catalogFeature
+              .setActiveSeries(
+                series
+              );
+
+            renderTabs();
+            renderProducts();
+          }
+      });
+
+    await applyPublicRouteEntry();
+  }
 
   applyRuntimeLimits();
   bindCtaReveal();

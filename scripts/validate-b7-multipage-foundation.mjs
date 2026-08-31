@@ -416,12 +416,23 @@ try{
     "product?.status==='active'",
     "path.join(ROOT,'dist')",
     "'multipage-build-manifest.json'",
-    "productPages:activeProducts.length",
     "const notFoundFile=path.join("
   ]){
     if(!build.includes(marker)){
       fail('Page builder is missing: '+marker);
     }
+  }
+
+  // B7-00B.4J R2.3 — Builder semantic compatibility.
+  // R2 reformatted the production manifest but preserved the R1 invariant:
+  // generated product page count is owned by activeProducts.length.
+  if(
+    !/productPages\s*:\s*activeProducts\.length/
+      .test(build)
+  ){
+    fail(
+      'Page builder is missing productPages: activeProducts.length semantics.'
+    );
   }
 
   const packageJson=loadJson('package.json');

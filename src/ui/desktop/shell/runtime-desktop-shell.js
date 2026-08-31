@@ -343,6 +343,104 @@
     `;
   }
 
+  function publicShellHref(
+    node
+  ){
+    const navigation=
+      root.DreamlandPublicNavigation;
+
+    if(!navigation){
+      return '';
+    }
+
+    if(
+      node?.dataset
+        ?.desktopSeries
+    ){
+      return navigation.href(
+        'catalog',
+        {
+          query:{
+            series:
+              node.dataset
+                .desktopSeries
+          }
+        }
+      );
+    }
+
+    const action=
+      node?.dataset
+        ?.desktopShellAction;
+
+    if(
+      action==='language-toggle'||
+      !action
+    ){
+      return '';
+    }
+
+    return navigation.href(
+      action
+    );
+  }
+
+  function upgradePublicShellLinks(
+    container
+  ){
+    if(
+      root.DREAMLAND_MPA_ACTIVE!==true||
+      !container
+    ){
+      return;
+    }
+
+    container
+      .querySelectorAll(
+        'button[data-desktop-shell-action],button[data-desktop-series]'
+      )
+      .forEach(button=>{
+        const href=
+          publicShellHref(
+            button
+          );
+
+        if(!href){
+          return;
+        }
+
+        const anchor=
+          root.document
+            .createElement(
+              'a'
+            );
+
+        for(const attribute of [
+          ...button.attributes
+        ]){
+          if(
+            attribute.name==='type'
+          ){
+            continue;
+          }
+
+          anchor.setAttribute(
+            attribute.name,
+            attribute.value
+          );
+        }
+
+        anchor.href=href;
+        anchor.innerHTML=
+          button.innerHTML;
+
+        button.replaceWith(
+          anchor
+        );
+      });
+  }
+
+
   function renderHeader(){
     if(!headerRoot){
       return;
@@ -350,6 +448,10 @@
 
     headerRoot.innerHTML=
       headerHtml();
+
+    upgradePublicShellLinks(
+      headerRoot
+    );
   }
 
   function renderFooter(){
@@ -359,6 +461,10 @@
 
     footerRoot.innerHTML=
       footerHtml();
+
+    upgradePublicShellLinks(
+      footerRoot
+    );
   }
 
   function render(){
@@ -423,6 +529,13 @@
       );
 
     if(!actionButton){
+      return;
+    }
+
+    if(
+      actionButton.tagName==='A'&&
+      root.DREAMLAND_MPA_ACTIVE===true
+    ){
       return;
     }
 
