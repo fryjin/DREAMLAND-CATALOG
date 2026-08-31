@@ -1,7 +1,5 @@
 {
-  "schemaVersion": 1,
-  "web3formsSubmitUrl": "https://api.web3forms.com/submit",
-  "web3formsAccessKey": "e364fde5-21d8-44e7-b3d9-18993e0ad643",
+  "schemaVersion": 2,
   "hcaptcha": {
     "enabled": true,
     "mode": "adaptive-risk",
@@ -26,7 +24,7 @@
     "installFallbackDelayMs": 15000,
     "installFallbackMode": "browser-menu-guide"
   },
-  "submissionEndpoint": "./api/submit",
+  "submissionEndpoint": "/api/risk",
   "riskControl": {
     "enabled": true,
     "threshold": 3,
@@ -37,5 +35,7 @@
     "repeatLimit": 2,
     "maximumUrls": 2,
     "kvBinding": "RISK_STORE"
-  }
+  },
+  "inquiryEndpoint": "/api/inquiry",
+  "riskEndpoint": "/api/risk"
 }

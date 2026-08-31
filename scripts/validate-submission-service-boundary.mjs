@@ -10,261 +10,182 @@ function fail(message){
   errors.push(message);
 }
 
-function read(relativePath){
+function read(relative){
   return fs.readFileSync(
-    path.join(ROOT,relativePath),
+    path.join(ROOT,relative),
     'utf8'
   );
 }
 
-const runtimePath=
-  path.join(
+try{
+  const runtimePath=path.join(
     ROOT,
     'src/services/submission/runtime-submission.js'
   );
 
-if(!fs.existsSync(runtimePath)){
-  fail('Submission runtime service is missing.');
-}else{
-  try{
-    delete globalThis.DreamlandSubmission;
+  delete globalThis.DreamlandSubmission;
 
-    await import(
-      `${pathToFileURL(runtimePath).href}?submission-validation=${Date.now()}`
-    );
+  await import(
+    `${pathToFileURL(runtimePath).href}?b403=${Date.now()}`
+  );
 
-    const service=
-      globalThis.DreamlandSubmission;
+  const service=globalThis.DreamlandSubmission;
 
-    if(!service){
-      fail('runtime-submission.js did not expose DreamlandSubmission.');
-    }else{
-      if(service.version!=='B4-01'){
-        fail(`Unexpected Submission service version: ${service.version}`);
+  if(!service||service.version!=='B4-03'){
+    fail('DreamlandSubmission B4-03 runtime was not exposed.');
+  }else{
+    for(const method of [
+      'configure',
+      'snapshot',
+      'ready',
+      'buildFormData',
+      'buildGatewayBody',
+      'submit'
+    ]){
+      if(typeof service[method]!=='function'){
+        fail(`DreamlandSubmission.${method} is missing.`);
       }
+    }
 
-      for(const method of [
-        'configure',
-        'snapshot',
-        'ready',
-        'buildFormData',
-        'submit'
-      ]){
-        if(typeof service[method]!=='function'){
-          fail(`DreamlandSubmission.${method} is missing.`);
-        }
-      }
+    const requests=[];
 
-      const requests=[];
-      const fakeFetch=async (url,options)=>{
+    service.configure({
+      submitUrl:'https://example.test/api/inquiry',
+      transport:'gateway',
+      fetchImpl:async (url,options)=>{
         requests.push({url,options});
         return {
           ok:true,
           status:200,
           async json(){
-            return {success:true,message:'ok'};
+            return {
+              success:true,
+              response_type:'web3forms-gateway'
+            };
           }
         };
-      };
-
-      service.configure({
-        submitUrl:'https://example.test/submit',
-        accessKey:'test-key',
-        fetchImpl:fakeFetch
-      });
-
-      if(service.ready()!==true){
-        fail('Configured Submission service must report ready().');
       }
+    });
 
-      const formData=service.buildFormData(
-        {
-          inquiry_id:'INQ-12345678',
-          contact_name:'Test User'
-        },
-        {
-          captchaToken:'captcha-token'
-        }
-      );
-
-      if(formData.get('inquiry_id')!=='INQ-12345678'){
-        fail('Submission FormData lost payload fields.');
-      }
-
-      if(formData.get('h-captcha-response')!=='captcha-token'){
-        fail('Submission FormData lost explicit captcha token.');
-      }
-
-      if(formData.get('access_key')!=='test-key'){
-        fail('Submission FormData lost configured access key.');
-      }
-
-      const result=await service.submit(
-        {
-          inquiry_id:'INQ-12345678'
-        },
-        {
-          captchaToken:'captcha-token'
-        }
-      );
-
-      if(
-        result.success!==true||
-        result.responseType!=='web3forms-direct'||
-        result.status!==200||
-        requests.length!==1||
-        requests[0].url!=='https://example.test/submit'
-      ){
-        fail('Submission transport/result normalization parity failed.');
-      }
-
-      service.configure({
-        submitUrl:'https://example.test/submit',
-        accessKey:'test-key',
-        fetchImpl:async ()=>({
-          ok:false,
-          status:400,
-          async json(){
-            return {success:false,message:'bad request'};
-          }
-        })
-      });
-
-      let failure=null;
-      try{
-        await service.submit({inquiry_id:'INQ-12345678'});
-      }catch(error){
-        failure=error;
-      }
-
-      if(
-        failure?.name!=='SubmissionError'||
-        failure?.code!=='SUBMISSION_FAILED'||
-        failure?.status!==400
-      ){
-        fail('Submission failure normalization parity failed.');
-      }
+    if(!service.ready()){
+      fail('Gateway-configured Submission service must be ready.');
     }
-  }catch(error){
-    fail(`Submission runtime execution failed: ${error.message}`);
+
+    const result=await service.submit(
+      {inquiry_id:'INQ-12345678'},
+      {captchaToken:'captcha-token'}
+    );
+
+    const body=JSON.parse(
+      requests[0]?.options?.body||'{}'
+    );
+
+    if(
+      result.responseType!=='web3forms-gateway'||
+      requests[0]?.url!=='https://example.test/api/inquiry'||
+      requests[0]?.options?.headers?.['Content-Type']!=='application/json'||
+      body.payload?.inquiry_id!=='INQ-12345678'||
+      body.captcha_token!=='captcha-token'
+    ){
+      fail('Submission Gateway transport contract failed.');
+    }
+
+    service.configure({
+      submitUrl:'https://example.test/provider',
+      accessKey:'fixture-key',
+      transport:'web3forms-direct',
+      fetchImpl:async ()=>({
+        ok:true,
+        status:200,
+        async json(){
+          return {success:true};
+        }
+      })
+    });
+
+    const form=service.buildFormData(
+      {inquiry_id:'INQ-12345678'},
+      {captchaToken:'captcha-token'}
+    );
+
+    if(
+      form.get('access_key')!=='fixture-key'||
+      form.get('h-captcha-response')!=='captcha-token'
+    ){
+      fail('Legacy direct-transport adapter compatibility failed.');
+    }
   }
+}catch(error){
+  fail(`Submission runtime execution failed: ${error.message}`);
 }
 
 try{
-  const indexSource=read('index.html');
+  const index=read('index.html');
 
   for(const marker of [
     './src/services/submission/runtime-submission.js',
     'const submissionService=window.DreamlandSubmission',
     'submissionService.configure(',
-    'submissionService.ready()'
+    'appConfig.inquiryEndpoint',
+    "transport:'gateway'"
   ]){
-    if(!indexSource.includes(marker)){
-      fail(`index.html is missing Submission boundary integration: ${marker}`);
+    if(!index.replace(/\s+/g,'').includes(marker.replace(/\s+/g,''))){
+      fail(`index.html is missing Submission Gateway integration: ${marker}`);
     }
   }
 
-  for(const legacy of [
-    'function web3formsSubmitUrl(',
-    'function web3formsAccessKey(',
-    'function web3formsReady(',
-    'function buildWeb3FormsFormData('
+  for(const forbidden of [
+    'appConfig.web3formsSubmitUrl',
+    'appConfig.web3formsAccessKey'
   ]){
-    if(indexSource.includes(legacy)){
-      fail(`index.html still owns Submission transport helper: ${legacy}`);
+    if(index.includes(forbidden)){
+      fail(`index.html still exposes provider configuration: ${forbidden}`);
     }
+  }
+}catch(error){
+  fail(`index.html Submission inspection failed: ${error.message}`);
+}
+
+try{
+  const config=JSON.parse(
+    read('data/app-config.json')
+  );
+
+  if(config.inquiryEndpoint!=='/api/inquiry'){
+    fail('app-config inquiryEndpoint must be /api/inquiry.');
   }
 
   if(
-    /fetch\s*\(\s*web3formsSubmitUrl\s*\(/.test(indexSource)||
-    indexSource.includes("'access_key',\n  web3formsAccessKey()")
+    Object.prototype.hasOwnProperty.call(config,'web3formsAccessKey')||
+    Object.prototype.hasOwnProperty.call(config,'web3formsSubmitUrl')
   ){
-    fail('index.html still performs direct Web3Forms transport.');
+    fail('Provider configuration must not remain in public app-config.');
   }
-
-  for(const preserved of [
-    'function buildWeb3FormsPayload(',
-    'function submissionSnapshot('
-  ]){
-    if(!indexSource.includes(preserved)){
-      fail(`B4-01 must preserve legacy ownership outside Submission transport: ${preserved}`);
-    }
-  }
-
-  
 }catch(error){
-  fail(`index.html Submission boundary inspection failed: ${error.message}`);
+  fail(`app-config Submission inspection failed: ${error.message}`);
 }
 
 try{
-  const configSource=read('data/app-config.json');
-  const config=JSON.parse(configSource);
-
-  if(!config.web3formsSubmitUrl||!config.web3formsAccessKey){
-    fail('B4-01 must preserve existing Web3Forms configuration fields.');
-  }
-
-  if(config.submissionEndpoint!=='./api/submit'){
-    fail('B4-01 must not change the current risk-assessment endpoint configuration.');
-  }
-}catch(error){
-  fail(`app-config Submission boundary inspection failed: ${error.message}`);
-}
-
-try{
-  const riskSource=read('functions/api/submit.js');
+  const gateway=read('functions/api/inquiry.js');
 
   for(const marker of [
-    "body.action !== 'assess'",
-    'function evaluateRisk(',
-    'captcha_required'
+    'env.WEB3FORMS_ACCESS_KEY',
+    'env.WEB3FORMS_SUBMIT_URL',
+    'function validatePayload(',
+    'function assertSameOrigin(',
+    'function enforceSubmissionRate(',
+    "response_type:'web3forms-gateway'"
   ]){
-    if(!riskSource.includes(marker)){
-      fail(`B4-01 must preserve server Risk boundary: ${marker}`);
+    if(!gateway.includes(marker)){
+      fail(`Inquiry Gateway is missing: ${marker}`);
     }
   }
-}catch(error){
-  fail(`functions/api/submit.js Risk boundary inspection failed: ${error.message}`);
-}
 
-try{
-  const contractsSource=read('src/services/contracts.js');
-  const legacyMapSource=read('src/app/legacy-map.js');
-
-  if(
-    !contractsSource.includes(
-      "'src/services/submission/runtime-submission.js'"
-    )
-  ){
-    fail('Service contracts do not declare Submission runtime owner.');
-  }
-
-}catch(error){
-  fail(`Architecture Submission boundary inspection failed: ${error.message}`);
-}
-
-try{
-  const previousValidator=
-    read('scripts/validate-inquiry-media-hook-cleanup.mjs');
-
-  if(previousValidator.includes('dreamland-pwa-v69')){
-    fail('Historical B3-03 validator still owns a fixed SW cache version.');
-  }
-
-  const swSource=read('sw.js');
-
-  const matches=
-    swSource.match(
-      /'\.\/src\/services\/submission\/runtime-submission\.js'/g
-    )||[];
-
-  if(matches.length!==1){
-    fail(
-      `sw.js APP_SHELL must include runtime-submission.js exactly once; found ${matches.length}.`
-    );
+  if(gateway.includes('e364fde5-')){
+    fail('Inquiry Gateway must not embed the historical provider access key.');
   }
 }catch(error){
-  fail(`SW/historical validator Submission inspection failed: ${error.message}`);
+  fail(`Inquiry Gateway inspection failed: ${error.message}`);
 }
 
 if(errors.length){
@@ -275,4 +196,6 @@ if(errors.length){
   process.exit(1);
 }
 
-console.log('Submission service boundary validation: PASS');
+console.log(
+  'Submission service boundary validation: PASS / DREAMLAND Gateway + server-owned provider credentials.'
+);

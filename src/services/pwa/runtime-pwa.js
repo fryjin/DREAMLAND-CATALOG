@@ -12,7 +12,7 @@
     'dreamlandPwaUpdateDeferred';
 
   const RELEASE_TAG=
-    'b7-00b4j-r2-v124';
+    'b7-00b4j-r3-v125';
 
   const PWA_COPY=Object.freeze({
     zh:Object.freeze({

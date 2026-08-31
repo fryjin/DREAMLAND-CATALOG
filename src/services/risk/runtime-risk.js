@@ -6,7 +6,7 @@
   }
 
   const DEFAULT_ENDPOINT=
-    './api/submit';
+    '/api/risk';
 
   const DEFAULT_STORAGE_KEY=
     'dreamlandRiskAttempts';

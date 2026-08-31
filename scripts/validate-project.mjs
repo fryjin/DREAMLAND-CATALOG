@@ -269,6 +269,8 @@ const requiredFiles = [
   'catalog-data.js',
   'image-manager.js',
   'functions/api/submit.js',
+  'functions/api/risk.js',
+  'functions/api/inquiry.js',
   'data/products.csv',
   'data/products.json',
   'data/shared-assets.csv',

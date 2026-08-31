@@ -74,14 +74,14 @@ try{
     read('index.html');
 
   for(const marker of [
-    "window.DREAMLAND_RELEASE='b7-00b4j-r2-v124';",
+    "window.DREAMLAND_RELEASE='b7-00b4j-r3-v125';",
     'window.DREAMLAND_MPA_ACTIVE=false;',
     "window.DREAMLAND_PUBLIC_ROUTE_ENTRY=Object.freeze({page:'home',productId:'',pathname:'/'});",
     '<base href="/">',
     '<meta name="robots" content="index,follow"/>',
     '<link rel="canonical" href="https://dreamland-catalog.pages.dev/"/>',
-    'runtime-public-navigation.js?release=b7-00b4j-r2-v124',
-    'runtime-catalog-url-state.js?release=b7-00b4j-r2-v124',
+    'runtime-public-navigation.js?release=b7-00b4j-r3-v125',
+    'runtime-catalog-url-state.js?release=b7-00b4j-r3-v125',
     'window.DreamlandPublicNavigation',
     'navigateScreen?.(',
     'openProduct?.(',
@@ -379,8 +379,8 @@ try{
     read('sw.js');
 
   for(const marker of [
-    "const CACHE_VERSION = 'dreamland-pwa-v124';",
-    "'b7-00b4j-r2-v124'"
+    "const CACHE_VERSION = 'dreamland-pwa-v125';",
+    "'b7-00b4j-r3-v125'"
   ]){
     if(!sw.includes(marker)){
       fail(
@@ -428,8 +428,8 @@ try{
     );
 
   for(const marker of [
-    "const RELEASE='b7-00b4j-r2-v124';",
-    "const PWA='dreamland-pwa-v124';",
+    "const RELEASE='b7-00b4j-r3-v125';",
+    "const PWA='dreamland-pwa-v125';",
     'function rewriteProductionAppConfig(){',
     "productionConfig.privacyUrl=",
     "'/privacy/'",
@@ -471,11 +471,11 @@ try{
     );
 
   const expectedOrder=
-    'npm run multipage:foundation && npm run public-route:migration && npm run desktop:home';
+    'npm run multipage:foundation && npm run public-route:migration && npm run conversion-route:gateway && npm run desktop:home';
 
   if(!validate.includes(expectedOrder)){
     fail(
-      'R2 validator must run after multipage:foundation and before the Desktop aggregate chain.'
+      'R2 validator must run after multipage:foundation, before the R3 conversion gate, and before the Desktop aggregate chain.'
     );
   }
 
