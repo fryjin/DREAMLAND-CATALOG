@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <base href="/">
+  <title>{{TITLE}}</title>
+  <meta name="description" content="{{DESCRIPTION}}">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="dreamland-foundation" content="B7-00B.4J-R1">
+  <meta name="dreamland-route" content="{{ROUTE_PATH}}">
+  <style>
+    html,body{margin:0;min-height:100%;font-family:Arial,sans-serif;background:#faf8f4;color:#171717}
+    .foundation-preview{max-width:980px;margin:0 auto;padding:72px 28px}
+    .foundation-preview span{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#777}
+    .foundation-preview h1{margin:14px 0 12px;font-size:clamp(38px,6vw,78px);line-height:.95;letter-spacing:-.05em}
+    .foundation-preview p{max-width:650px;line-height:1.65;color:#666}
+    .foundation-preview code{display:inline-block;margin-top:18px;padding:8px 10px;background:#fff;border:1px solid #ddd}
+  </style>
+</head>
+<body
+  data-dreamland-page="{{PAGE}}"
+  data-product-id="{{PRODUCT_ID}}"
+>
+  <div id="desktopPageRoot" hidden></div>
+  <div id="mobilePageRoot" hidden></div>
+
+  <main class="foundation-preview">
+    <span>DREAMLAND MULTI-PAGE FOUNDATION</span>
+    <h1>{{HEADING}}</h1>
+    <p>
+      B7-00B.4J R1 generated page shell. Production UI migration begins in R2.
+      This document intentionally does not replace the current website yet.
+    </p>
+    <code>{{ROUTE_PATH}}</code>
+  </main>
+
+  <script src="/src/site/runtime/runtime-route.js"></script>
+  <script src="/src/site/runtime/runtime-page-context.js"></script>
+  <script src="/src/site/runtime/runtime-device-profile.js"></script>
+  <script src="/src/site/runtime/runtime-navigation-context.js"></script>
+  <script src="/src/site/runtime/runtime-site-bootstrap.js"></script>
+  <script>
+    DreamlandSiteBootstrap.mount().catch(function(error){
+      console.error('[DREAMLAND 4J R1]',error);
+    });
+  </script>
+</body>
+</html>
