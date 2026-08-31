@@ -190,8 +190,8 @@ try{
   const compact=index.replace(/\s+/g,'');
 
   for(const marker of [
-    "window.DREAMLAND_RELEASE='b7-00b4j-r3-v125';",
-    'runtime-page-guards.js?release=b7-00b4j-r3-v125',
+    "window.DREAMLAND_RELEASE='b7-00b4j-r3-v126';",
+    'runtime-page-guards.js?release=b7-00b4j-r3-v126',
     'const pageGuards=window.DreamlandPageGuards',
     'pageGuards',
     'evaluate?.(',
@@ -244,6 +244,24 @@ try{
     }
   }
 
+  const flow=read(
+    'src/app/runtime-inquiry-submission-flow.js'
+  );
+
+  for(const marker of [
+    'Connectivity probe is advisory',
+    'let advisoryReachable=true;',
+    'Successful Gateway delivery is definitive proof',
+    'error?.status'
+  ]){
+    if(!flow.includes(marker)){
+      fail(
+        'R3.2 Submission reachability contract is missing: '+
+        marker
+      );
+    }
+  }
+
   const risk=read(
     'src/services/risk/runtime-risk.js'
   );
@@ -285,10 +303,10 @@ try{
 
   if(
     !build.includes(
-      "const RELEASE='b7-00b4j-r3-v125';"
+      "const RELEASE='b7-00b4j-r3-v126';"
     )||
     !build.includes(
-      "const PWA='dreamland-pwa-v125';"
+      "const PWA='dreamland-pwa-v126';"
     )
   ){
     fail('Production Builder release convergence failed.');
@@ -298,7 +316,7 @@ try{
 
   if(
     !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v125';"
+      "const CACHE_VERSION = 'dreamland-pwa-v126';"
     )
   ){
     fail('PWA cache did not converge on v125.');

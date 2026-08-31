@@ -350,6 +350,23 @@
   async function failureReachability(
     error
   ){
+    /*
+     * B7-00B.4J R3.2
+     *
+     * Any HTTP response proves the server was reachable even when the
+     * provider rejected the request. Do not let a second connectivity probe
+     * misclassify a real 4xx/5xx Gateway response as "offline".
+     */
+    if(
+      Number(
+        error?.status||
+        error?.cause?.status||
+        0
+      )>0
+    ){
+      return true;
+    }
+
     if(
       error?.code==='OFFLINE'
     ){
@@ -416,33 +433,36 @@
     inFlight=true;
 
     try{
-      const reachable=
-        await config.pwa
-          .probeReachability(
-            true
-          );
+      /*
+       * B7-00B.4J R3.2 — Connectivity probe is advisory.
+       *
+       * A reachability probe is useful for PWA UX but must never be the
+       * authority that blocks a real inquiry. Cloudflare / Service Worker /
+       * browser scheduling can occasionally abort this lightweight probe
+       * even while the real /api/inquiry request is perfectly reachable.
+       *
+       * The actual Submission Gateway request below is the authoritative
+       * connectivity test.
+       */
+      let advisoryReachable=true;
 
-      if(!reachable){
-        config.pwa
-          .applyReachability(
-            false,
-            false
-          );
-
-        throw createError(
-          'Submission service is unreachable.',
-          'OFFLINE',
-          {
-            reachable:false
-          }
-        );
+      try{
+        advisoryReachable=
+          await config.pwa
+            .probeReachability(
+              true
+            );
+      }catch(_){
+        advisoryReachable=true;
       }
 
-      config.pwa
-        .applyReachability(
-          true,
-          false
-        );
+      if(advisoryReachable){
+        config.pwa
+          .applyReachability(
+            true,
+            false
+          );
+      }
 
       lastAttemptAt=
         now();
@@ -458,6 +478,16 @@
               captchaToken
             }
           );
+
+      /*
+       * Successful Gateway delivery is definitive proof that the network and
+       * server are reachable, regardless of the advisory probe result.
+       */
+      config.pwa
+        .applyReachability(
+          true,
+          false
+        );
 
       const reference=
         text(
