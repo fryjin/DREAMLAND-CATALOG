@@ -6,6 +6,7 @@
   }
 
   const VERSION='B7-00B.3D';
+  const PRESENTATION_VERSION='B7-00B.4I-R1';
 
   let config=null;
   let successRoot=null;
@@ -51,44 +52,48 @@
     const snapshot=data();
 
     return `
-      <div class="desktop-success-page">
-        <div class="desktop-container desktop-success-container">
-          <div class="desktop-success-mark" aria-hidden="true">✓</div>
-          <div class="desktop-eyebrow">${escapeHtml(c.successKicker)}</div>
-          <h1>${escapeHtml(c.successTitle)}</h1>
-          <p class="desktop-success-lead">${escapeHtml(c.successBody)}</p>
+      <div
+        class="desktop-success-page desktop-submission-confirmation"
+        data-desktop-success-presentation="${PRESENTATION_VERSION}"
+      >
+        <div class="desktop-container desktop-container--wide desktop-success-container">
+          <header class="desktop-success-hero">
+            <div class="desktop-eyebrow">${escapeHtml(c.successKicker)}</div>
+            <h1>${escapeHtml(c.successTitle)}</h1>
+            <p class="desktop-success-lead">${escapeHtml(c.successBody)}</p>
 
-          <dl class="desktop-success-details">
-            <div>
-              <dt>${escapeHtml(c.inquiryNumber)}</dt>
-              <dd>${escapeHtml(snapshot.inquiryId||'—')}</dd>
+            <div class="desktop-success-reference">
+              <span>${escapeHtml(c.inquiryNumber)}</span>
+              <strong>${escapeHtml(snapshot.inquiryId||'—')}</strong>
+              <em>${escapeHtml(dateText(snapshot.submittedAt))}</em>
             </div>
-            <div>
-              <dt>${escapeHtml(c.submitted)}</dt>
-              <dd>${escapeHtml(dateText(snapshot.submittedAt))}</dd>
-            </div>
-            <div>
-              <dt>${escapeHtml(c.productEstimate)}</dt>
-              <dd>${escapeHtml(snapshot.amountDisplay||'—')}</dd>
-            </div>
-            <div>
-              <dt>${escapeHtml(c.status)}</dt>
-              <dd>${escapeHtml(c.awaitingReview)}</dd>
-            </div>
-          </dl>
+          </header>
 
-          <section class="desktop-success-next">
-            <div class="desktop-eyebrow">${escapeHtml(c.whatNextKicker)}</div>
-            <h2>${escapeHtml(c.whatNextTitle)}</h2>
-            <ol>
-              ${(c.whatNextSteps||[]).map((step,index)=>`
-                <li>
-                  <b>${String(index+1).padStart(2,'0')}</b>
-                  <span>${escapeHtml(step)}</span>
-                </li>
-              `).join('')}
-            </ol>
-          </section>
+          <div class="desktop-success-layout">
+            <section class="desktop-success-next">
+              <div class="desktop-eyebrow">${escapeHtml(c.whatNextKicker)}</div>
+              <h2>${escapeHtml(c.whatNextTitle)}</h2>
+              <ol>
+                ${(c.whatNextSteps||[]).map((step,index)=>`
+                  <li>
+                    <b>${String(index+1).padStart(2,'0')}</b>
+                    <span>${escapeHtml(step)}</span>
+                  </li>
+                `).join('')}
+              </ol>
+            </section>
+
+            <dl class="desktop-success-details">
+              <div>
+                <dt>${escapeHtml(c.productEstimate)}</dt>
+                <dd>${escapeHtml(snapshot.amountDisplay||'—')}</dd>
+              </div>
+              <div>
+                <dt>${escapeHtml(c.status)}</dt>
+                <dd>${escapeHtml(c.awaitingReview)}</dd>
+              </div>
+            </dl>
+          </div>
 
           <div class="desktop-success-actions">
             <button
@@ -175,6 +180,7 @@
 
     return Object.freeze({
       version:VERSION,
+      presentation:PRESENTATION_VERSION,
       configured:Boolean(config),
       mounted,
       inquiryId:text(snapshot.inquiryId)

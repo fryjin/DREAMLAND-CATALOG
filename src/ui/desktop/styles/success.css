@@ -162,3 +162,134 @@
     font-size:12px;
   }
 }
+
+/* --------------------------------------------------------------------------
+ * B7-00B.4I R1 — Submission Confirmation
+ * ------------------------------------------------------------------------ */
+@media (min-width:1024px){
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"]{
+    padding:clamp(72px,7vw,110px) 0 var(--dw-section);
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-container{
+    max-width:1280px;
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-hero{
+    max-width:940px;
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-hero h1{
+    max-width:900px;
+    margin-top:8px;
+    font-size:clamp(42px,5vw,72px);
+    line-height:.98;
+    letter-spacing:-.045em;
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-lead{
+    max-width:620px;
+    margin-top:18px;
+    font-size:14px;
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-reference{
+    margin-top:36px;
+    padding:20px 0;
+    display:grid;
+    grid-template-columns:160px minmax(0,1fr) auto;
+    gap:28px;
+    align-items:baseline;
+    border-top:1px solid var(--dw-color-line-strong);
+    border-bottom:1px solid var(--dw-color-line);
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-reference span,
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-reference em{
+    color:var(--dw-color-muted);
+    font-size:11px;
+    font-style:normal;
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-reference strong{
+    color:var(--dw-color-ink);
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:-.02em;
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-layout{
+    margin-top:52px;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(300px,360px);
+    gap:70px;
+    align-items:start;
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-next{
+    margin:0;
+    padding:0;
+    border:0;
+    border-radius:0;
+    background:transparent;
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-next h2{
+    margin-top:7px;
+    font-size:28px;
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-next ol{
+    margin-top:24px;
+    gap:28px;
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-next li{
+    padding-top:15px;
+    border-top:1px solid var(--dw-color-line);
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-next b{
+    font-size:11px;
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-next span{
+    margin-top:9px;
+    font-size:12px;
+    line-height:1.6;
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-details{
+    margin:0;
+    display:block;
+    border-top:1px solid var(--dw-color-line-strong);
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-details > div{
+    min-height:58px;
+    padding:14px 0;
+    border-left:0;
+    border-bottom:1px solid var(--dw-color-line);
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-details > div:nth-child(odd),
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-details > div:nth-child(even){
+    padding-left:0;
+    padding-right:0;
+    border-left:0;
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-details dt{
+    font-size:11px;
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-details dd{
+    font-size:12px;
+  }
+
+  .desktop-success-page[data-desktop-success-presentation="B7-00B.4I-R1"] .desktop-success-actions{
+    margin-top:42px;
+    padding-top:24px;
+    border-top:1px solid var(--dw-color-line);
+  }
+}

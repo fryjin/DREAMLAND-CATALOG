@@ -827,6 +827,24 @@
       content:
         localizedContent,
 
+      budgetOptions:
+        config.budgetOptions,
+
+      qtyUnit:
+        config.qtyUnit,
+
+      choiceLabel:
+        config.choiceLabel,
+
+      seriesLabel:
+        config.seriesLabel,
+
+      itemScentLabel:
+        config.itemScentLabel,
+
+      itemMoq:
+        config.itemMoq,
+
       projection:
         ()=>config.actions
           ?.reviewProjection?.()||
