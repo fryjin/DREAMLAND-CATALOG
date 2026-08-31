@@ -190,8 +190,8 @@ try{
   const compact=index.replace(/\s+/g,'');
 
   for(const marker of [
-    "window.DREAMLAND_RELEASE='b7-00b4j-r3-v126';",
-    'runtime-page-guards.js?release=b7-00b4j-r3-v126',
+    "window.DREAMLAND_RELEASE='b7-00b4j-r3-v127';",
+    'runtime-page-guards.js?release=b7-00b4j-r3-v127',
     'const pageGuards=window.DreamlandPageGuards',
     'pageGuards',
     'evaluate?.(',
@@ -241,6 +241,85 @@ try{
   ]){
     if(!submission.includes(marker)){
       fail(`Submission B4-03 is missing: ${marker}`);
+    }
+  }
+
+  // R3.3a — Desktop submission semantic bridge validation.
+  //
+  // The R3.3 APPLY post-check incorrectly compared literal "\\n" source
+  // formatting, and its validator also expected the bridge comment inside
+  // the desktopSubmitInquiry() slice even though the comment lives above it.
+  //
+  // Validate behavior independent of whitespace/source formatting instead.
+  if(
+    !index.includes(
+      'Desktop Review owns its native submission bridge'
+    )
+  ){
+    fail(
+      'R3.3 Desktop native submission bridge ownership marker is missing.'
+    );
+  }
+
+  const desktopSubmitStart=
+    index.indexOf(
+      'async function desktopSubmitInquiry('
+    );
+
+  const desktopSubmitEnd=
+    index.indexOf(
+      'function desktopLastSubmission()',
+      desktopSubmitStart
+    );
+
+  const desktopSubmitSource=
+    desktopSubmitStart>=0&&
+    desktopSubmitEnd>desktopSubmitStart
+      ? index.slice(
+          desktopSubmitStart,
+          desktopSubmitEnd
+        )
+      : '';
+
+  const compactDesktopSubmit=
+    desktopSubmitSource.replace(
+      /\s+/g,
+      ''
+    );
+
+  for(const marker of [
+    'submissionFlow.preflight()',
+    'awaitsubmissionFlow.submit({',
+    'buildWeb3FormsPayload(',
+    'submissionSnapshot(',
+    "go('success')"
+  ]){
+    if(
+      !compactDesktopSubmit.includes(
+        marker
+      )
+    ){
+      fail(
+        'R3.3 Desktop native submission bridge is missing: '+
+        marker
+      );
+    }
+  }
+
+  for(const forbidden of [
+    'awaitsubmitInquiry();',
+    "getElementById('submitBtn')",
+    "getElementById('privacyConsent')"
+  ]){
+    if(
+      compactDesktopSubmit.includes(
+        forbidden
+      )
+    ){
+      fail(
+        'R3.3 Desktop submission still depends on Legacy Preview DOM: '+
+        forbidden
+      );
     }
   }
 
@@ -303,10 +382,10 @@ try{
 
   if(
     !build.includes(
-      "const RELEASE='b7-00b4j-r3-v126';"
+      "const RELEASE='b7-00b4j-r3-v127';"
     )||
     !build.includes(
-      "const PWA='dreamland-pwa-v126';"
+      "const PWA='dreamland-pwa-v127';"
     )
   ){
     fail('Production Builder release convergence failed.');
@@ -316,7 +395,7 @@ try{
 
   if(
     !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v126';"
+      "const CACHE_VERSION = 'dreamland-pwa-v127';"
     )
   ){
     fail('PWA cache did not converge on v125.');

@@ -74,14 +74,14 @@ try{
     read('index.html');
 
   for(const marker of [
-    "window.DREAMLAND_RELEASE='b7-00b4j-r3-v126';",
+    "window.DREAMLAND_RELEASE='b7-00b4j-r3-v127';",
     'window.DREAMLAND_MPA_ACTIVE=false;',
     "window.DREAMLAND_PUBLIC_ROUTE_ENTRY=Object.freeze({page:'home',productId:'',pathname:'/'});",
     '<base href="/">',
     '<meta name="robots" content="index,follow"/>',
     '<link rel="canonical" href="https://dreamland-catalog.pages.dev/"/>',
-    'runtime-public-navigation.js?release=b7-00b4j-r3-v126',
-    'runtime-catalog-url-state.js?release=b7-00b4j-r3-v126',
+    'runtime-public-navigation.js?release=b7-00b4j-r3-v127',
+    'runtime-catalog-url-state.js?release=b7-00b4j-r3-v127',
     'window.DreamlandPublicNavigation',
     'navigateScreen?.(',
     'openProduct?.(',
@@ -379,8 +379,8 @@ try{
     read('sw.js');
 
   for(const marker of [
-    "const CACHE_VERSION = 'dreamland-pwa-v126';",
-    "'b7-00b4j-r3-v126'"
+    "const CACHE_VERSION = 'dreamland-pwa-v127';",
+    "'b7-00b4j-r3-v127'"
   ]){
     if(!sw.includes(marker)){
       fail(
@@ -428,8 +428,8 @@ try{
     );
 
   for(const marker of [
-    "const RELEASE='b7-00b4j-r3-v126';",
-    "const PWA='dreamland-pwa-v126';",
+    "const RELEASE='b7-00b4j-r3-v127';",
+    "const PWA='dreamland-pwa-v127';",
     'function rewriteProductionAppConfig(){',
     "productionConfig.privacyUrl=",
     "'/privacy/'",
