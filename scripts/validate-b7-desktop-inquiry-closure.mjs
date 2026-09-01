@@ -165,15 +165,15 @@ try{
   const index=read('index.html');
 
   for(const required of [
-    "window.DREAMLAND_RELEASE='b7-00b4j-r3-v127';",
-    './src/ui/desktop/styles/inquiry.css?release=b7-00b4j-r3-v127',
-    './src/ui/desktop/styles/contact.css?release=b7-00b4j-r3-v127',
-    './src/ui/desktop/styles/review.css?release=b7-00b4j-r3-v127',
-    './src/ui/desktop/styles/success.css?release=b7-00b4j-r3-v127',
-    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4j-r3-v127',
-    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4j-r3-v127',
-    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4j-r3-v127',
-    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4j-r3-v127',
+    "window.DREAMLAND_RELEASE='b7-00b4j-r3-v128';",
+    './src/ui/desktop/styles/inquiry.css?release=b7-00b4j-r3-v128',
+    './src/ui/desktop/styles/contact.css?release=b7-00b4j-r3-v128',
+    './src/ui/desktop/styles/review.css?release=b7-00b4j-r3-v128',
+    './src/ui/desktop/styles/success.css?release=b7-00b4j-r3-v128',
+    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4j-r3-v128',
+    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4j-r3-v128',
+    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4j-r3-v128',
+    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4j-r3-v128',
     'inquiryState:',
     'inquiryFeature,',
     'contactState:',
@@ -307,16 +307,16 @@ try{
   );
 
   for(const required of [
-    "const CACHE_VERSION = 'dreamland-pwa-v127';",
-    "'b7-00b4j-r3-v127'",
-    './src/ui/desktop/styles/inquiry.css?release=b7-00b4j-r3-v127',
-    './src/ui/desktop/styles/contact.css?release=b7-00b4j-r3-v127',
-    './src/ui/desktop/styles/review.css?release=b7-00b4j-r3-v127',
-    './src/ui/desktop/styles/success.css?release=b7-00b4j-r3-v127',
-    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4j-r3-v127',
-    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4j-r3-v127',
-    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4j-r3-v127',
-    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4j-r3-v127',
+    "const CACHE_VERSION = 'dreamland-pwa-v128';",
+    "'b7-00b4j-r3-v128'",
+    './src/ui/desktop/styles/inquiry.css?release=b7-00b4j-r3-v128',
+    './src/ui/desktop/styles/contact.css?release=b7-00b4j-r3-v128',
+    './src/ui/desktop/styles/review.css?release=b7-00b4j-r3-v128',
+    './src/ui/desktop/styles/success.css?release=b7-00b4j-r3-v128',
+    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4j-r3-v128',
+    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4j-r3-v128',
+    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4j-r3-v128',
+    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4j-r3-v128',
     "'./src/ui/desktop/inquiry/runtime-desktop-inquiry.js'",
     "'./src/ui/desktop/contact/runtime-desktop-contact.js'",
     "'./src/ui/desktop/review/runtime-desktop-review.js'",
@@ -327,7 +327,7 @@ try{
     }
   }
 
-  if(!pwa.includes("'b7-00b4j-r3-v127'")){
+  if(!pwa.includes("'b7-00b4j-r3-v128'")){
     fail('PWA runtime was not advanced to B7-00B.3D.');
   }
 }catch(error){
@@ -622,7 +622,9 @@ try{
         'function deriveMoqGroups(data=projection())',
         'function budgetDisplay(value)',
         'function syncSubmitState()',
-        'if(!state.requiresCaptcha)'
+        'data-desktop-review-risk-status',
+        'data-desktop-review-captcha-section',
+        'data-desktop-review-captcha'
       ]
     ],
     [
@@ -645,6 +647,58 @@ try{
 
   if(review.includes('previewValue}</p>')){
     fail('Desktop Review 4I R1 must not use canonical previewValue as the primary product UI.');
+  }
+
+  /*
+   * B7-00B.4J R3.4a — Review security ownership successor.
+   *
+   * R3.4 intentionally removes the old:
+   *   if(!state.requiresCaptcha) return '';
+   *
+   * The Risk/CAPTCHA mount must exist before the async assessment starts.
+   */
+  const reviewSecurityStart=
+    review.indexOf(
+      'function securityHtml(){'
+    );
+
+  const reviewSecurityEnd=
+    review.indexOf(
+      'function summaryHtml(data)',
+      reviewSecurityStart
+    );
+
+  const reviewSecurityBody=
+    reviewSecurityStart>=0&&
+    reviewSecurityEnd>reviewSecurityStart
+      ? review.slice(
+          reviewSecurityStart,
+          reviewSecurityEnd
+        )
+      : '';
+
+  for(const marker of [
+    'data-desktop-review-risk-status',
+    'data-desktop-review-captcha-section',
+    'data-desktop-review-captcha',
+    'hidden'
+  ]){
+    if(!reviewSecurityBody.includes(marker)){
+      fail(
+        'Desktop Review R3.4 native security mount is missing: '+
+        marker
+      );
+    }
+  }
+
+  if(
+    reviewSecurityBody.includes(
+      'if(!state.requiresCaptcha)'
+    )
+  ){
+    fail(
+      'Desktop Review R3.4 security mount must not depend on requiresCaptcha before Risk assessment.'
+    );
   }
 
   const contactClickStart=contact.indexOf('function onClick(event)');

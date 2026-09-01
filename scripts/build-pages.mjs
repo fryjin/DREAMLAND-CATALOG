@@ -19,8 +19,8 @@ if(!WRITE&&!CHECK){
   process.exit(1);
 }
 
-const RELEASE='b7-00b4j-r3-v127';
-const PWA='dreamland-pwa-v127';
+const RELEASE='b7-00b4j-r3-v128';
+const PWA='dreamland-pwa-v128';
 const SITE_ORIGIN='https://dreamland-catalog.pages.dev';
 
 const routes=JSON.parse(

@@ -594,3 +594,43 @@
     }
   }
 }
+
+
+/* B7-00B.4J R3.4 — native Desktop Risk / hCaptcha */
+.desktop-review-security-stage{
+  margin-top:18px;
+}
+
+.desktop-review-risk-status{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  overflow:hidden!important;
+  clip:rect(0 0 0 0)!important;
+  clip-path:inset(50%)!important;
+  white-space:nowrap!important;
+}
+
+.desktop-review-captcha-section[hidden]{
+  display:none!important;
+}
+
+.desktop-review-captcha-section{
+  display:grid;
+  gap:14px;
+  padding-top:2px;
+}
+
+.desktop-review-captcha-section .desktop-review-security{
+  margin:0;
+}
+
+.desktop-review-captcha{
+  min-height:78px;
+  max-width:100%;
+  overflow:visible;
+}
+
+.desktop-review-captcha iframe{
+  max-width:100%;
+}

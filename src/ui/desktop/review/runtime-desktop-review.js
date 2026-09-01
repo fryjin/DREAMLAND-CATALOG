@@ -312,20 +312,48 @@
 
   function securityHtml(){
     const c=copy();
-    const state=config?.riskState?.()||{};
 
-    if(!state.requiresCaptcha){
-      return '';
-    }
-
-    const label=state.verified
-      ? c.securityVerified
-      : c.securityAdditional;
-
+    /*
+     * B7-00B.4J R3.4
+     *
+     * The native Desktop Review must always own the Risk/CAPTCHA mount.
+     * Risk assessment runs asynchronously after Review is rendered, so the
+     * mount cannot be conditional on requiresCaptcha — that state does not
+     * exist until the assessment itself completes.
+     *
+     * The stage stays visually hidden until captchaSection(true) is called.
+     */
     return `
-      <div class="desktop-review-security ${state.verified?'is-verified':'is-required'}">
-        <span>${escapeHtml(c.security)}</span>
-        <strong>${escapeHtml(label)}</strong>
+      <div
+        class="desktop-review-security-stage"
+        data-desktop-review-security-stage
+      >
+        <div
+          class="risk-status desktop-review-risk-status"
+          data-desktop-review-risk-status
+          aria-live="polite"
+        ></div>
+
+        <div
+          class="captcha-section desktop-review-captcha-section"
+          data-desktop-review-captcha-section
+          hidden
+        >
+          <div
+            class="desktop-review-security is-required"
+            data-desktop-review-security-summary
+          >
+            <span>${escapeHtml(c.security)}</span>
+            <strong data-desktop-review-security-label>
+              ${escapeHtml(c.securityAdditional)}
+            </strong>
+          </div>
+
+          <div
+            class="desktop-review-captcha"
+            data-desktop-review-captcha
+          ></div>
+        </div>
       </div>
     `;
   }

@@ -190,8 +190,8 @@ try{
   const compact=index.replace(/\s+/g,'');
 
   for(const marker of [
-    "window.DREAMLAND_RELEASE='b7-00b4j-r3-v127';",
-    'runtime-page-guards.js?release=b7-00b4j-r3-v127',
+    "window.DREAMLAND_RELEASE='b7-00b4j-r3-v128';",
+    'runtime-page-guards.js?release=b7-00b4j-r3-v128',
     'const pageGuards=window.DreamlandPageGuards',
     'pageGuards',
     'evaluate?.(',
@@ -323,6 +323,52 @@ try{
     }
   }
 
+  // R3.4 — Native Desktop Risk / CAPTCHA ownership.
+  const reviewRuntime=read(
+    'src/ui/desktop/review/runtime-desktop-review.js'
+  );
+
+  for(const marker of [
+    'data-desktop-review-risk-status',
+    'data-desktop-review-captcha-section',
+    'data-desktop-review-captcha',
+    'The native Desktop Review must always own the Risk/CAPTCHA mount.'
+  ]){
+    if(!reviewRuntime.includes(marker)){
+      fail(
+        'R3.4 Desktop Review native Risk/CAPTCHA mount is missing: '+
+        marker
+      );
+    }
+  }
+
+  for(const marker of [
+    "document.querySelector(\n      '[data-desktop-review-risk-status]'",
+    "document.querySelector(\n      '[data-desktop-review-captcha-section]'",
+    "document.querySelector(\n      '[data-desktop-review-captcha]'"
+  ]){
+    if(!index.includes(marker)){
+      fail(
+        'R3.4 Desktop-first Risk UI bridge is missing: '+
+        marker
+      );
+    }
+  }
+
+  const reviewCss=read(
+    'src/ui/desktop/styles/review.css'
+  );
+
+  if(
+    !reviewCss.includes(
+      'B7-00B.4J R3.4 — native Desktop Risk / hCaptcha'
+    )
+  ){
+    fail(
+      'R3.4 Desktop Review CAPTCHA presentation CSS is missing.'
+    );
+  }
+
   const flow=read(
     'src/app/runtime-inquiry-submission-flow.js'
   );
@@ -382,10 +428,10 @@ try{
 
   if(
     !build.includes(
-      "const RELEASE='b7-00b4j-r3-v127';"
+      "const RELEASE='b7-00b4j-r3-v128';"
     )||
     !build.includes(
-      "const PWA='dreamland-pwa-v127';"
+      "const PWA='dreamland-pwa-v128';"
     )
   ){
     fail('Production Builder release convergence failed.');
@@ -395,7 +441,7 @@ try{
 
   if(
     !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v127';"
+      "const CACHE_VERSION = 'dreamland-pwa-v128';"
     )
   ){
     fail('PWA cache did not converge on v125.');
