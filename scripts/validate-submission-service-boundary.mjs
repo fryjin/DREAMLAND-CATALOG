@@ -90,29 +90,69 @@ try{
       fail('Submission Gateway transport contract failed.');
     }
 
+    const directRequests=[];
+
     service.configure({
-      submitUrl:'https://example.test/provider',
-      accessKey:'fixture-key',
+      submitUrl:'/api/inquiry',
+      accessKeyEndpoint:
+        'https://example.test/api/inquiry?client_config=1',
       transport:'web3forms-direct',
-      fetchImpl:async ()=>({
-        ok:true,
-        status:200,
-        async json(){
-          return {success:true};
+      fetchImpl:async (url,options={})=>{
+        directRequests.push({url,options});
+
+        if(
+          String(url).includes(
+            'client_config=1'
+          )
+        ){
+          return {
+            ok:true,
+            status:200,
+            async json(){
+              return {
+                success:true,
+                transport:'web3forms-direct',
+                submit_url:
+                  'https://api.web3forms.com/submit',
+                access_key:'fixture-key'
+              };
+            }
+          };
         }
-      })
+
+        return {
+          ok:true,
+          status:200,
+          async json(){
+            return {success:true};
+          }
+        };
+      }
     });
 
-    const form=service.buildFormData(
-      {inquiry_id:'INQ-12345678'},
-      {captchaToken:'captcha-token'}
-    );
+    if(!service.ready()){
+      fail('Browser-direct Submission service must be ready from its lazy client-config endpoint.');
+    }
+
+    const directResult=
+      await service.submit(
+        {inquiry_id:'INQ-12345678'},
+        {captchaToken:'captcha-token'}
+      );
+
+    const directForm=
+      directRequests[1]?.options?.body;
 
     if(
-      form.get('access_key')!=='fixture-key'||
-      form.get('h-captcha-response')!=='captcha-token'
+      directResult.responseType!=='web3forms-direct'||
+      directRequests.length!==2||
+      directRequests[0]?.options?.method!=='GET'||
+      directRequests[1]?.url!==
+        'https://api.web3forms.com/submit'||
+      directForm?.get?.('access_key')!=='fixture-key'||
+      directForm?.get?.('h-captcha-response')!=='captcha-token'
     ){
-      fail('Legacy direct-transport adapter compatibility failed.');
+      fail('Browser-direct lazy provider-config transport contract failed.');
     }
   }
 }catch(error){
@@ -127,10 +167,11 @@ try{
     'const submissionService=window.DreamlandSubmission',
     'submissionService.configure(',
     'appConfig.inquiryEndpoint',
-    "transport:'gateway'"
+    'appConfig.inquiryClientConfigEndpoint',
+    'appConfig.submissionTransport'
   ]){
     if(!index.replace(/\s+/g,'').includes(marker.replace(/\s+/g,''))){
-      fail(`index.html is missing Submission Gateway integration: ${marker}`);
+      fail(`index.html is missing Submission transport integration: ${marker}`);
     }
   }
 
@@ -152,7 +193,16 @@ try{
   );
 
   if(config.inquiryEndpoint!=='/api/inquiry'){
-    fail('app-config inquiryEndpoint must be /api/inquiry.');
+    fail('app-config inquiryEndpoint must remain /api/inquiry for Gateway fallback and client config.');
+  }
+
+  if(
+    config.submissionTransport!==
+      'web3forms-direct'||
+    config.inquiryClientConfigEndpoint!==
+      '/api/inquiry?client_config=1'
+  ){
+    fail('app-config browser-direct transport contract is missing.');
   }
 
   if(
@@ -171,6 +221,10 @@ try{
   for(const marker of [
     'env.WEB3FORMS_ACCESS_KEY',
     'env.WEB3FORMS_SUBMIT_URL',
+    "service:'dreamland-inquiry-client-config'",
+    "transport:'web3forms-direct'",
+    'access_key:accessKey',
+    'submit_url:providerUrl',
     'function validatePayload(',
     'function assertSameOrigin(',
     'function enforceSubmissionRate(',
@@ -197,5 +251,5 @@ if(errors.length){
 }
 
 console.log(
-  'Submission service boundary validation: PASS / DREAMLAND Gateway + server-owned provider credentials.'
+  'Submission service boundary validation: PASS / browser-direct production transport + dormant DREAMLAND Gateway fallback.'
 );

@@ -197,7 +197,8 @@ try{
     'evaluate?.(',
     'appConfig.inquiryEndpoint',
     'appConfig.riskEndpoint',
-    "transport:'gateway'"
+    'appConfig.inquiryClientConfigEndpoint',
+    "appConfig.submissionTransport||'gateway'"
   ]){
     if(!compact.includes(marker.replace(/\s+/g,''))){
       fail(`index.html is missing R3 integration: ${marker}`);
@@ -210,7 +211,10 @@ try{
     Number(config.schemaVersion)!==2||
     config.inquiryEndpoint!=='/api/inquiry'||
     config.riskEndpoint!=='/api/risk'||
-    config.submissionEndpoint!=='/api/risk'
+    config.submissionEndpoint!=='/api/risk'||
+    config.submissionTransport!=='web3forms-direct'||
+    config.inquiryClientConfigEndpoint!==
+      '/api/inquiry?client_config=1'
   ){
     fail('R3 app-config endpoint contract is incorrect.');
   }
@@ -236,6 +240,10 @@ try{
     "const VERSION='B4-03';",
     "const DEFAULT_SUBMIT_URL='/api/inquiry';",
     "const DEFAULT_TRANSPORT='gateway';",
+    'accessKeyEndpoint',
+    'resolveDirectProviderConfig',
+    "'web3forms-direct'",
+    'DIRECT_CONFIG_FAILED',
     'function buildGatewayBody(',
     'async function submitGateway('
   ]){
@@ -376,7 +384,7 @@ try{
   for(const marker of [
     'Connectivity probe is advisory',
     'let advisoryReachable=true;',
-    'Successful Gateway delivery is definitive proof',
+    'Successful submission delivery is definitive proof',
     'error?.status'
   ]){
     if(!flow.includes(marker)){
@@ -413,6 +421,10 @@ try{
 
   for(const marker of [
     "service:'dreamland-inquiry-gateway'",
+    "service:'dreamland-inquiry-client-config'",
+    "transport:'web3forms-direct'",
+    'access_key:accessKey',
+    'submit_url:providerUrl',
     'env.WEB3FORMS_ACCESS_KEY',
     'function validatePayload(',
     'function assertSameOrigin(',
@@ -502,6 +514,6 @@ console.log(
   'DREAMLAND B7-00B.4J R3 Conversion Route + Submission Gateway: PASS'
 );
 console.log(
-  'Custom / Inquiry route guards / DREAMLAND /api/risk / /api/inquiry gateway / server-owned provider credentials / release v125 verified.'
+  'Custom / Inquiry route guards / DREAMLAND /api/risk / browser-direct Web3Forms transport / dormant /api/inquiry gateway fallback / release v129 verified.'
 );
 console.log('');

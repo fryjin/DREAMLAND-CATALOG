@@ -393,8 +393,58 @@ function providerFormData(payload,accessKey,captchaToken){
 export async function onRequestGet(
   context
 ){
+  const request=
+    context?.request;
+
   const env=
     context?.env||{};
+
+  const accessKey=
+    asText(
+      env.WEB3FORMS_ACCESS_KEY,
+      500
+    );
+
+  const providerUrl=
+    asText(
+      env.WEB3FORMS_SUBMIT_URL,
+      1000
+    )||
+    DEFAULT_PROVIDER_URL;
+
+  const clientConfig=
+    request&&
+    new URL(
+      request.url
+    ).searchParams.get(
+      'client_config'
+    )==='1';
+
+  if(clientConfig){
+    if(!accessKey){
+      return json(
+        {
+          success:false,
+          code:'PROVIDER_NOT_CONFIGURED',
+          message:'Inquiry delivery service is not configured.'
+        },
+        503
+      );
+    }
+
+    /*
+     * Browser-direct Web3Forms transport requires the access key in the
+     * browser request. It is a provider routing credential, not a server
+     * secret. Keep hCaptcha secret / KV / other server credentials private.
+     */
+    return json({
+      success:true,
+      service:'dreamland-inquiry-client-config',
+      transport:'web3forms-direct',
+      submit_url:providerUrl,
+      access_key:accessKey
+    });
+  }
 
   return json({
     success:true,
@@ -402,10 +452,7 @@ export async function onRequestGet(
     status:'ready',
     provider_configured:
       Boolean(
-        asText(
-          env.WEB3FORMS_ACCESS_KEY,
-          500
-        )
+        accessKey
       ),
     hcaptcha_secret_configured:
       Boolean(

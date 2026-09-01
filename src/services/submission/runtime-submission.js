@@ -12,9 +12,12 @@
   let config={
     submitUrl:DEFAULT_SUBMIT_URL,
     accessKey:'',
+    accessKeyEndpoint:'',
     transport:DEFAULT_TRANSPORT,
     fetchImpl:null
   };
+
+  let directConfigPromise=null;
 
   function text(value){
     return String(value??'').trim();
@@ -32,6 +35,7 @@
   function configure({
     submitUrl=DEFAULT_SUBMIT_URL,
     accessKey='',
+    accessKeyEndpoint='',
     transport=DEFAULT_TRANSPORT,
     fetchImpl=null
   }={}){
@@ -40,6 +44,8 @@
     config={
       submitUrl:text(submitUrl)||DEFAULT_SUBMIT_URL,
       accessKey:text(accessKey),
+      accessKeyEndpoint:
+        text(accessKeyEndpoint),
       transport:
         nextTransport==='web3forms-direct'
           ? 'web3forms-direct'
@@ -50,6 +56,8 @@
           : null
     };
 
+    directConfigPromise=null;
+
     return snapshot();
   }
 
@@ -57,6 +65,8 @@
     return Object.freeze({
       version:VERSION,
       submitUrl:config.submitUrl,
+      accessKeyEndpoint:
+        config.accessKeyEndpoint,
       transport:config.transport,
       configured:ready()
     });
@@ -82,7 +92,10 @@
     }
 
     if(config.transport==='web3forms-direct'){
-      return Boolean(config.accessKey);
+      return Boolean(
+        config.accessKey||
+        config.accessKeyEndpoint
+      );
     }
 
     return true;
@@ -154,7 +167,103 @@
     return data;
   }
 
+  async function resolveDirectProviderConfig({
+    signal
+  }={}){
+    if(config.accessKey){
+      return Object.freeze({
+        submitUrl:config.submitUrl,
+        accessKey:config.accessKey
+      });
+    }
+
+    const endpoint=
+      text(
+        config.accessKeyEndpoint
+      );
+
+    if(!endpoint){
+      throw createError(
+        'Browser-direct submission configuration is unavailable.',
+        'DIRECT_CONFIG_NOT_CONFIGURED'
+      );
+    }
+
+    if(!directConfigPromise){
+      directConfigPromise=
+        (async()=>{
+          const response=
+            await fetcher()(
+              endpoint,
+              {
+                method:'GET',
+                headers:{
+                  Accept:'application/json'
+                },
+                cache:'no-store',
+                ...(signal?{signal}:{})
+              }
+            );
+
+          const data=
+            await parseResponse(
+              response
+            );
+
+          const accessKey=
+            text(
+              data.access_key
+            );
+
+          const submitUrl=
+            text(
+              data.submit_url
+            );
+
+          if(
+            !response.ok||
+            data.success!==true||
+            data.transport!==
+              'web3forms-direct'||
+            !accessKey||
+            !submitUrl
+          ){
+            throw createError(
+              data.message||
+              'Browser-direct submission configuration is unavailable.',
+              text(data.code)||
+              'DIRECT_CONFIG_FAILED',
+              {
+                status:response.status,
+                data
+              }
+            );
+          }
+
+          config={
+            ...config,
+            submitUrl,
+            accessKey
+          };
+
+          return Object.freeze({
+            submitUrl,
+            accessKey
+          });
+        })()
+          .catch(error=>{
+            directConfigPromise=null;
+            throw error;
+          });
+    }
+
+    return directConfigPromise;
+  }
+
   async function submitDirect(payload,{captchaToken='',signal}={}){
+    await resolveDirectProviderConfig(
+      {signal}
+    );
     const response=await fetcher()(
       config.submitUrl,
       {

@@ -12,6 +12,8 @@
   "maxQuantity": 1000000,
   "archiveLimit": 20,
   "submitCooldownMs": 10000,
+  "submissionTransport": "web3forms-direct",
+  "inquiryClientConfigEndpoint": "/api/inquiry?client_config=1",
   "pwa": {
     "offlineStrategy": "on-demand",
     "installPromptDelayMs": 5000,

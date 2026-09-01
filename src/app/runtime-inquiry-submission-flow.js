@@ -439,9 +439,9 @@
        * A reachability probe is useful for PWA UX but must never be the
        * authority that blocks a real inquiry. Cloudflare / Service Worker /
        * browser scheduling can occasionally abort this lightweight probe
-       * even while the real /api/inquiry request is perfectly reachable.
+       * even while the real submission request is perfectly reachable.
        *
-       * The actual Submission Gateway request below is the authoritative
+       * The actual submission transport request below is authoritative
        * connectivity test.
        */
       let advisoryReachable=true;
@@ -480,7 +480,7 @@
           );
 
       /*
-       * Successful Gateway delivery is definitive proof that the network and
+       * Successful submission delivery is definitive proof that the network and
        * server are reachable, regardless of the advisory probe result.
        */
       config.pwa

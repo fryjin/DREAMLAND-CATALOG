@@ -1338,7 +1338,7 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./catalog-data.js?release=b7-00b4j-r3-v129"></script>
 <script src="./src/services/storage/runtime-storage.js"></script>
 <script src="./src/services/pwa/runtime-pwa.js?release=b7-00b4j-r3-v129"></script>
-<script src="./src/services/submission/runtime-submission.js"></script>
+<script src="./src/services/submission/runtime-submission.js?patch=b7-00b4j-r3-web3forms-direct"></script>
 <script src="./src/services/risk/runtime-risk.js"></script>
 <script src="./src/features/catalog/runtime-catalog.js"></script>
 <script src="./src/features/detail/runtime-detail.js"></script>
@@ -1936,7 +1936,12 @@ indexScents(scents);
     submitUrl:
       appConfig.inquiryEndpoint||
       '/api/inquiry',
+    accessKeyEndpoint:
+      appConfig
+        .inquiryClientConfigEndpoint||
+      '',
     transport:
+      appConfig.submissionTransport||
       'gateway'
   });
 
