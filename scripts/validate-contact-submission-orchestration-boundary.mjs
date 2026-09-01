@@ -330,6 +330,7 @@ if(!fs.existsSync(flowPath)){
 
       let clock=50000;
       let reachable=true;
+      let submissionShouldFail=false;
       let recordAttemptCount=0;
       let clearItemsCount=0;
       let persistCount=0;
@@ -377,10 +378,22 @@ if(!fs.existsSync(flowPath)){
             options
           });
 
+          if(submissionShouldFail){
+            const error=
+              new Error(
+                'Fixture network failure'
+              );
+
+            error.code=
+              'SUBMISSION_FAILED';
+
+            throw error;
+          }
+
           return Object.freeze({
             success:true,
             responseType:
-              'web3forms-direct'
+              'web3forms-gateway'
           });
         }
       };
@@ -500,7 +513,7 @@ if(!fs.existsSync(flowPath)){
         last.clientInquiryId!=='INQ-1'||
         last.duplicate!==false||
         last.submissionResponseType!==
-          'web3forms-direct'
+          'web3forms-gateway'
       ){
         fail(
           'Submission archive/final record parity failed.'
@@ -516,12 +529,14 @@ if(!fs.existsSync(flowPath)){
         );
       }
 
+      /*
+       * R3.2: an advisory probe false-negative must not block a real
+       * Submission Gateway request.
+       */
       clock+=1001;
       reachable=false;
 
-      let offline=null;
-
-      try{
+      const advisoryResult=
         await flow.submit({
           inquiryId:'INQ-2',
           payload:{
@@ -532,22 +547,72 @@ if(!fs.existsSync(flowPath)){
             inquiryId:'INQ-2'
           }
         });
+
+      if(
+        advisoryResult.success!==true||
+        submissions.length!==2||
+        clearItemsCount!==2||
+        persistCount!==2||
+        clearContactCount!==2||
+        !reachability.some(
+          item=>
+            item[0]===true
+        )
+      ){
+        fail(
+          'Advisory reachability false-negative incorrectly blocked submission.'
+        );
+      }
+
+      /*
+       * A genuine Gateway/network failure must still preserve submitted state
+       * and report unreachable only after the actual submission fails.
+       */
+      clock+=1001;
+      submissionShouldFail=true;
+
+      const clearsBeforeFailure=
+        clearItemsCount;
+      const persistsBeforeFailure=
+        persistCount;
+      const contactsBeforeFailure=
+        clearContactCount;
+
+      let offline=null;
+
+      try{
+        await flow.submit({
+          inquiryId:'INQ-3',
+          payload:{
+            inquiry_id:
+              'INQ-3'
+          },
+          submissionSnapshot:{
+            inquiryId:'INQ-3'
+          }
+        });
       }catch(error){
         offline=error;
       }
 
       if(
         offline?.code!==
-          'OFFLINE'||
+          'SUBMISSION_FAILED'||
         offline?.reachable!==
           false||
+        clearItemsCount!==
+          clearsBeforeFailure||
+        persistCount!==
+          persistsBeforeFailure||
+        clearContactCount!==
+          contactsBeforeFailure||
         !reachability.some(
           item=>
             item[0]===false
         )
       ){
         fail(
-          'Submission offline orchestration parity failed.'
+          'Actual Submission Gateway failure orchestration parity failed.'
         );
       }
     }

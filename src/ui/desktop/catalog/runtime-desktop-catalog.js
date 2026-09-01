@@ -661,6 +661,65 @@
     });
   }
 
+
+  function upgradePublicProductLinks(){
+    if(
+      root.DREAMLAND_MPA_ACTIVE!==true||
+      !catalogRoot
+    ){
+      return;
+    }
+
+    catalogRoot
+      .querySelectorAll(
+        'button[data-desktop-catalog-product]'
+      )
+      .forEach(button=>{
+        const productId=
+          button.dataset
+            .desktopCatalogProduct;
+
+        const href=
+          root.DreamlandPublicNavigation
+            ?.productHref?.(
+              productId
+            );
+
+        if(!href){
+          return;
+        }
+
+        const anchor=
+          root.document
+            .createElement(
+              'a'
+            );
+
+        for(const attribute of [
+          ...button.attributes
+        ]){
+          if(
+            attribute.name==='type'
+          ){
+            continue;
+          }
+
+          anchor.setAttribute(
+            attribute.name,
+            attribute.value
+          );
+        }
+
+        anchor.href=href;
+        anchor.innerHTML=
+          button.innerHTML;
+
+        button.replaceWith(
+          anchor
+        );
+      });
+  }
+
   function render({
     preserveSearchFocus=false,
     preserveScroll=false
@@ -701,6 +760,8 @@
 
     catalogRoot.innerHTML=
       pageHtml(view);
+
+    upgradePublicProductLinks();
 
     if(filterOpen){
       draftSizes=[
@@ -827,6 +888,13 @@
       event.target.closest?.(
         '[data-desktop-catalog-product]'
       );
+    if(
+      productButton&&
+      productButton.tagName==='A'&&
+      root.DREAMLAND_MPA_ACTIVE===true
+    ){
+      return;
+    }
 
     if(productButton){
       config?.actions

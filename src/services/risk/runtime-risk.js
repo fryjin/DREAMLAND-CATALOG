@@ -6,7 +6,7 @@
   }
 
   const DEFAULT_ENDPOINT=
-    './api/submit';
+    '/api/risk';
 
   const DEFAULT_STORAGE_KEY=
     'dreamlandRiskAttempts';
@@ -16,6 +16,9 @@
 
   const DEFAULT_CAPTCHA_LOAD_TIMEOUT_MS=
     12000;
+
+  const DEFAULT_CONTEXT_TTL_MS=
+    30*60*1000;
 
   const INTERACTION_EVENTS=Object.freeze([
     'pointerdown',
@@ -36,7 +39,7 @@
     navigatorRef:null
   };
 
-  const sessionStartedAt=
+  let sessionStartedAt=
     Date.now();
 
   let formStartedAt=0;
@@ -122,6 +125,105 @@
     return config.storage;
   }
 
+  function contextStorageKey(){
+    return (
+      config.storageKey+
+      ':context'
+    );
+  }
+
+  function persistContext(){
+    const storage=
+      storageRef();
+
+    if(!storage){
+      return false;
+    }
+
+    try{
+      storage.setItem(
+        contextStorageKey(),
+        JSON.stringify({
+          sessionStartedAt,
+          formStartedAt,
+          interactionCount,
+          updatedAt:
+            Date.now()
+        })
+      );
+
+      return true;
+    }catch(_){
+      return false;
+    }
+  }
+
+  function hydrateContext(){
+    const storage=
+      storageRef();
+
+    if(!storage){
+      return false;
+    }
+
+    try{
+      const value=
+        JSON.parse(
+          storage.getItem(
+            contextStorageKey()
+          )||
+          'null'
+        );
+
+      const updatedAt=
+        number(
+          value?.updatedAt,
+          0
+        );
+
+      const fresh=
+        updatedAt>0&&
+        Date.now()-updatedAt<=
+          DEFAULT_CONTEXT_TTL_MS;
+
+      if(!fresh){
+        persistContext();
+        return false;
+      }
+
+      sessionStartedAt=
+        number(
+          value?.sessionStartedAt,
+          sessionStartedAt
+        );
+
+      formStartedAt=
+        number(
+          value?.formStartedAt,
+          0
+        );
+
+      interactionCount=
+        Math.max(
+          0,
+          Math.min(
+            1000,
+            number(
+              value?.interactionCount,
+              0
+            )
+          )
+        );
+
+      persistContext();
+
+      return true;
+    }catch(_){
+      persistContext();
+      return false;
+    }
+  }
+
   function fetcher(){
     if(
       typeof config.fetchImpl===
@@ -197,6 +299,8 @@
         null
     };
 
+    hydrateContext();
+
     return snapshot();
   }
 
@@ -240,6 +344,8 @@
         Date.now();
     }
 
+    persistContext();
+
     return formStartedAt;
   }
 
@@ -255,6 +361,8 @@
         1000,
         interactionCount+1
       );
+
+    persistContext();
 
     return interactionCount;
   }

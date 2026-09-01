@@ -888,7 +888,7 @@ try{
  */
 try{
   const release=
-    'b7-00b4h-r1-v122';
+    'b7-00b4j-r3-v129';
 
   const index=
     read(
@@ -964,7 +964,7 @@ try{
     `./startup-loader.js?release=${release}`,
     `./image-variants.js?release=${release}`,
     "url.searchParams.get(\n      'release'\n    )===RELEASE_TAG",
-    'cache.addAll(\n              RELEASE_ASSETS'
+    'async function cacheAvailableAssets('
   ]){
     if(!sw.includes(marker)){
       fail(
@@ -1081,7 +1081,7 @@ try{
 
   if(
     !index.includes(
-      `window.DREAMLAND_RELEASE='b7-00b4h-r1-v122';`
+      `window.DREAMLAND_RELEASE='b7-00b4j-r3-v129';`
     )
   ){
     fail(
@@ -1096,11 +1096,11 @@ try{
 
   if(
     !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v122';"
+      "const CACHE_VERSION = 'dreamland-pwa-v129';"
     )
   ){
     fail(
-      'R5 requires dreamland-pwa-v122.'
+      'R5 requires dreamland-pwa-v129.'
     );
   }
 }catch(error){
@@ -1202,6 +1202,54 @@ try{
   }
 }catch(error){
   fail('Catalog deferred Filter Apply Timing validation failed: '+error.message);
+}
+
+/*
+ * B7-00B.4J R3.5c — resilient release preload semantic gate.
+ *
+ * R3.5 intentionally replaced all-or-nothing cache.addAll(RELEASE_ASSETS)
+ * with per-asset tolerant preloading. Validate the behavior, not the retired
+ * implementation syntax.
+ */
+try{
+  const sw=
+    read(
+      'sw.js'
+    );
+
+  const compactSw=
+    compact(
+      sw
+    );
+
+  if(
+    !compactSw.includes(
+      compact(
+        'cacheAvailableAssets(RUNTIME_CACHE,RELEASE_ASSETS)'
+      )
+    )
+  ){
+    fail(
+      'R3.5 Service Worker must preload RELEASE_ASSETS through resilient cacheAvailableAssets().'
+    );
+  }
+
+  if(
+    compactSw.includes(
+      compact(
+        'cache.addAll(RELEASE_ASSETS)'
+      )
+    )
+  ){
+    fail(
+      'R3.5 Service Worker must not restore all-or-nothing cache.addAll(RELEASE_ASSETS).'
+    );
+  }
+}catch(error){
+  fail(
+    'R3.5 resilient Service Worker release preload validation crashed: '+
+    error.message
+  );
 }
 
 if(errors.length){

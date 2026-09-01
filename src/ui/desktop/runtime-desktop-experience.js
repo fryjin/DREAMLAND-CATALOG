@@ -827,6 +827,24 @@
       content:
         localizedContent,
 
+      budgetOptions:
+        config.budgetOptions,
+
+      qtyUnit:
+        config.qtyUnit,
+
+      choiceLabel:
+        config.choiceLabel,
+
+      seriesLabel:
+        config.seriesLabel,
+
+      itemScentLabel:
+        config.itemScentLabel,
+
+      itemMoq:
+        config.itemMoq,
+
       projection:
         ()=>config.actions
           ?.reviewProjection?.()||
@@ -1186,10 +1204,23 @@
   }
 
   function applyMode(){
+    const profile=
+      root.DREAMLAND_MPA_ACTIVE===true
+        ? (
+            root.DreamlandDeviceProfile
+              ?.refresh?.()||
+            root.DreamlandDeviceProfile
+              ?.snapshot?.()||
+            null
+          )
+        : null;
+
     const desktop=
-      Boolean(
-        mediaQuery?.matches
-      );
+      profile
+        ? profile?.presentation==='desktop'
+        : Boolean(
+            mediaQuery?.matches
+          );
 
     mode=
       desktop

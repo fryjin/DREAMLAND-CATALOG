@@ -1167,6 +1167,100 @@
     `;
   }
 
+  function publicActionHref(
+    actionNode
+  ){
+    const navigation=
+      root.DreamlandPublicNavigation;
+
+    if(!navigation){
+      return '';
+    }
+
+    const action=
+      actionNode?.dataset
+        ?.desktopHomeAction;
+
+    if(action==='series'){
+      return navigation.href(
+        'catalog',
+        {
+          query:{
+            series:
+              actionNode.dataset
+                .desktopSeries
+          }
+        }
+      );
+    }
+
+    if(action==='product'){
+      return navigation
+        .productHref(
+          actionNode.dataset
+            .desktopProduct
+        );
+    }
+
+    return navigation.href(
+      action
+    );
+  }
+
+  function upgradePublicLinks(){
+    if(
+      root.DREAMLAND_MPA_ACTIVE!==true||
+      !homeRoot
+    ){
+      return;
+    }
+
+    homeRoot
+      .querySelectorAll(
+        'button[data-desktop-home-action]'
+      )
+      .forEach(button=>{
+        const href=
+          publicActionHref(
+            button
+          );
+
+        if(!href){
+          return;
+        }
+
+        const anchor=
+          root.document
+            .createElement(
+              'a'
+            );
+
+        for(const attribute of [
+          ...button.attributes
+        ]){
+          if(
+            attribute.name==='type'
+          ){
+            continue;
+          }
+
+          anchor.setAttribute(
+            attribute.name,
+            attribute.value
+          );
+        }
+
+        anchor.href=href;
+        anchor.innerHTML=
+          button.innerHTML;
+
+        button.replaceWith(
+          anchor
+        );
+      });
+  }
+
+
   function render(view){
     if(!homeRoot){
       return false;
@@ -1185,6 +1279,7 @@
       </div>
     `;
 
+    upgradePublicLinks();
     mountImages();
     mountReveal();
 
@@ -1371,6 +1466,13 @@
       return;
     }
 
+    if(
+      actionNode.tagName==='A'&&
+      root.DREAMLAND_MPA_ACTIVE===true
+    ){
+      return;
+    }
+
     const action=
       actionNode.dataset
         .desktopHomeAction;
@@ -1530,6 +1632,16 @@
       count>0
         ? 'inquiry'
         : 'catalog';
+
+    if(
+      button.tagName==='A'&&
+      root.DREAMLAND_MPA_ACTIVE===true
+    ){
+      button.href=
+        publicActionHref(
+          button
+        );
+    }
 
     button.innerHTML=
       count>0

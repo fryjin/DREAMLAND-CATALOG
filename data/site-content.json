@@ -1525,7 +1525,17 @@
             "code": "ZW",
             "label": "Zimbabwe"
           }
-        ]
+        ],
+        "contactChapterPerson": "Contact person",
+        "contactChapterRegion": "Location",
+        "contactChapterChannels": "Contact details",
+        "contactChapterNotes": "Additional information",
+        "requiredLabel": "Required",
+        "optionalLabel": "Optional",
+        "selectBuyerType": "Select buyer type",
+        "contactSnapshotTitle": "Inquiry snapshot",
+        "reviewMoqStatus": "MOQ status",
+        "reviewMoqGroupsReady": "{ready} / {total} groups ready"
       },
       "story": {
         "kicker": "ABOUT DREAMLAND",
@@ -3044,7 +3054,17 @@
             "code": "ZW",
             "label": "津巴布韦"
           }
-        ]
+        ],
+        "contactChapterPerson": "联系人",
+        "contactChapterRegion": "所在地区",
+        "contactChapterChannels": "联系方式",
+        "contactChapterNotes": "补充信息",
+        "requiredLabel": "必填",
+        "optionalLabel": "选填",
+        "selectBuyerType": "请选择采购 / 合作类型",
+        "contactSnapshotTitle": "询价概要",
+        "reviewMoqStatus": "起订状态",
+        "reviewMoqGroupsReady": "{ready} / {total} 个组合已满足"
       },
       "story": {
         "kicker": "关于 DREAMLAND",
@@ -4563,7 +4583,17 @@
             "code": "ZW",
             "label": "짐바브웨"
           }
-        ]
+        ],
+        "contactChapterPerson": "담당자",
+        "contactChapterRegion": "지역",
+        "contactChapterChannels": "연락처",
+        "contactChapterNotes": "추가 정보",
+        "requiredLabel": "필수",
+        "optionalLabel": "선택",
+        "selectBuyerType": "구매 / 협업 유형 선택",
+        "contactSnapshotTitle": "문의 요약",
+        "reviewMoqStatus": "MOQ 상태",
+        "reviewMoqGroupsReady": "{ready} / {total}개 그룹 충족"
       },
       "story": {
         "kicker": "ABOUT DREAMLAND",

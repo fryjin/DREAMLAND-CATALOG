@@ -6,7 +6,7 @@
   }
 
   const VERSION='B7-00B.3D';
-  const PRESENTATION_VERSION='B7-00B.4F-R1.1';
+  const PRESENTATION_VERSION='B7-00B.4I-R1';
 
   let config=null;
   let contactRoot=null;
@@ -55,17 +55,20 @@
   function progress(){
     const c=copy();
     const labels=[
-      c.stepSelection||'Selection',
+      c.stepSelection||'Inquiry',
       c.stepContact||'Contact',
       c.stepReview||'Review'
     ];
 
     return `
-      <div class="desktop-flow-progress" aria-label="${escapeHtml(c.progressLabel||'Inquiry progress')}">
+      <div
+        class="desktop-flow-progress desktop-contact-flow"
+        aria-label="${escapeHtml(c.progressLabel||'Inquiry progress')}"
+      >
         ${labels.map((label,index)=>`
           <span class="${index===1?'is-active':''} ${index<1?'is-complete':''}">
             <b>${String(index+1).padStart(2,'0')}</b>
-            ${escapeHtml(label)}
+            <strong>${escapeHtml(label)}</strong>
           </span>
         `).join('')}
       </div>
@@ -88,22 +91,33 @@
     );
   }
 
+  function requirementLabel(required){
+    const c=copy();
+    return required
+      ? text(c.requiredLabel||'Required')
+      : text(c.optionalLabel||'Optional');
+  }
+
   function field({
     key,
     label,
     placeholder='',
     type='text',
     autocomplete='',
-    required=false
+    required=false,
+    wide=false
   }){
     const error=fieldError(key);
 
     return `
-      <div class="desktop-contact-field ${error?'is-invalid':''}">
-        <label for="desktopContact_${escapeHtml(key)}">
-          ${escapeHtml(label)}
-          ${required?' *':''}
-        </label>
+      <div
+        class="desktop-contact-field ${wide?'desktop-contact-field--wide':''} ${error?'is-invalid':''}"
+        data-desktop-contact-field-shell="${escapeHtml(key)}"
+      >
+        <div class="desktop-contact-field__head">
+          <label for="desktopContact_${escapeHtml(key)}">${escapeHtml(label)}</label>
+          <span>${escapeHtml(requirementLabel(required))}</span>
+        </div>
 
         <input
           id="desktopContact_${escapeHtml(key)}"
@@ -115,11 +129,10 @@
           ${required?'required':''}
         >
 
-        ${error?`<p>${escapeHtml(error)}</p>`:''}
+        <p class="desktop-contact-field__error" ${error?'':'hidden'}>${escapeHtml(error)}</p>
       </div>
     `;
   }
-
 
   function countryRegions(){
     const c=copy();
@@ -153,10 +166,14 @@
         : '';
 
     return `
-      <div class="desktop-contact-field desktop-contact-field--country ${error?'is-invalid':''}">
-        <label for="desktopContact_country">
-          ${escapeHtml(c.country)} *
-        </label>
+      <div
+        class="desktop-contact-field desktop-contact-field--country ${error?'is-invalid':''}"
+        data-desktop-contact-field-shell="country"
+      >
+        <div class="desktop-contact-field__head">
+          <label for="desktopContact_country">${escapeHtml(c.country)}</label>
+          <span>${escapeHtml(requirementLabel(true))}</span>
+        </div>
 
         <select
           id="desktopContact_country"
@@ -169,8 +186,54 @@
           ${optionHtml}
         </select>
 
-        ${error?`<p>${escapeHtml(error)}</p>`:''}
+        <p class="desktop-contact-field__error" ${error?'':'hidden'}>${escapeHtml(error)}</p>
       </div>
+    `;
+  }
+
+  function buyerTypeField(){
+    const c=copy();
+    const current=text(contact.buyerType);
+
+    return `
+      <div
+        class="desktop-contact-field"
+        data-desktop-contact-field-shell="buyerType"
+      >
+        <div class="desktop-contact-field__head">
+          <label for="desktopContact_buyerType">${escapeHtml(c.buyerType)}</label>
+          <span>${escapeHtml(requirementLabel(false))}</span>
+        </div>
+
+        <select
+          id="desktopContact_buyerType"
+          data-desktop-contact-field="buyerType"
+        >
+          <option value="" ${current?'':'selected'}>
+            ${escapeHtml(c.selectBuyerType||c.buyerType)}
+          </option>
+          ${(c.buyerTypes||[]).map(row=>`
+            <option
+              value="${escapeHtml(row.value)}"
+              ${current===text(row.value)?'selected':''}
+            >${escapeHtml(row.label)}</option>
+          `).join('')}
+        </select>
+      </div>
+    `;
+  }
+
+  function chapter(index,title,body){
+    return `
+      <section class="desktop-contact-chapter">
+        <header class="desktop-contact-chapter__head">
+          <span>${String(index).padStart(2,'0')}</span>
+          <h2>${escapeHtml(title)}</h2>
+        </header>
+        <div class="desktop-contact-chapter__fields">
+          ${body}
+        </div>
+      </section>
     `;
   }
 
@@ -185,78 +248,76 @@
           <p>${escapeHtml(c.contactDetailsBody)}</p>
         </header>
 
-        <div class="desktop-contact-grid">
-          ${field({
-            key:'name',
-            label:c.name,
-            placeholder:c.namePlaceholder,
-            autocomplete:'name',
-            required:true
-          })}
+        <div class="desktop-contact-brief__chapters">
+          ${chapter(1,c.contactChapterPerson||c.contactDetailsTitle,`
+            ${field({
+              key:'name',
+              label:c.name,
+              placeholder:c.namePlaceholder,
+              autocomplete:'name',
+              required:true
+            })}
+            ${field({
+              key:'company',
+              label:c.company,
+              placeholder:c.companyPlaceholder,
+              autocomplete:'organization'
+            })}
+            ${buyerTypeField()}
+          `)}
 
-          ${field({
-            key:'company',
-            label:c.company,
-            placeholder:c.companyPlaceholder,
-            autocomplete:'organization'
-          })}
+          ${chapter(2,c.contactChapterRegion||c.country,`
+            ${countryField()}
+            ${field({
+              key:'city',
+              label:c.city,
+              placeholder:c.cityPlaceholder,
+              autocomplete:'address-level2'
+            })}
+          `)}
 
-          ${countryField()}
+          ${chapter(3,c.contactChapterChannels||c.email,`
+            ${field({
+              key:'email',
+              label:c.email,
+              placeholder:c.emailPlaceholder,
+              type:'email',
+              autocomplete:'email',
+              required:true
+            })}
+            ${field({
+              key:'phone',
+              label:c.phone,
+              placeholder:c.phonePlaceholder,
+              autocomplete:'tel',
+              required:true
+            })}
+          `)}
 
-          ${field({
-            key:'city',
-            label:c.city,
-            placeholder:c.cityPlaceholder,
-            autocomplete:'address-level2'
-          })}
-
-          ${field({
-            key:'email',
-            label:c.email,
-            placeholder:c.emailPlaceholder,
-            type:'email',
-            autocomplete:'email',
-            required:true
-          })}
-
-          ${field({
-            key:'phone',
-            label:c.phone,
-            placeholder:c.phonePlaceholder,
-            autocomplete:'tel',
-            required:true
-          })}
-
-          <div class="desktop-contact-field">
-            <label for="desktopContact_buyerType">${escapeHtml(c.buyerType)}</label>
-            <select
-              id="desktopContact_buyerType"
-              data-desktop-contact-field="buyerType"
+          ${chapter(4,c.contactChapterNotes||c.message,`
+            <div
+              class="desktop-contact-field desktop-contact-field--wide"
+              data-desktop-contact-field-shell="message"
             >
-              ${(c.buyerTypes||[]).map(row=>`
-                <option
-                  value="${escapeHtml(row.value)}"
-                  ${text(contact.buyerType)===text(row.value)?'selected':''}
-                >${escapeHtml(row.label)}</option>
-              `).join('')}
-            </select>
-          </div>
-
-          <div class="desktop-contact-field desktop-contact-field--wide">
-            <label for="desktopContact_message">${escapeHtml(c.message)}</label>
-            <textarea
-              id="desktopContact_message"
-              placeholder="${escapeHtml(c.messagePlaceholder)}"
-              data-desktop-contact-field="message"
-            >${escapeHtml(contact.message||'')}</textarea>
-          </div>
+              <div class="desktop-contact-field__head">
+                <label for="desktopContact_message">${escapeHtml(c.message)}</label>
+                <span>${escapeHtml(requirementLabel(false))}</span>
+              </div>
+              <textarea
+                id="desktopContact_message"
+                placeholder="${escapeHtml(c.messagePlaceholder)}"
+                data-desktop-contact-field="message"
+              >${escapeHtml(contact.message||'')}</textarea>
+            </div>
+          `)}
         </div>
 
-        ${
-          validation?.global
-            ? `<div class="desktop-contact-global-error" role="alert">${escapeHtml(validation.global)}</div>`
-            : ''
-        }
+        <div
+          class="desktop-contact-global-error"
+          role="alert"
+          data-desktop-contact-global-error
+          hidden
+        ></div>
 
         <div class="desktop-contact-actions">
           <button
@@ -283,31 +344,33 @@
     const data=summary();
 
     return `
-      <aside class="desktop-contact-aside">
+      <aside class="desktop-contact-aside desktop-contact-rail">
         <section class="desktop-contact-summary">
           <div class="desktop-eyebrow">${escapeHtml(c.summaryKicker)}</div>
-          <h2>${escapeHtml(c.summaryTitle)}</h2>
+          <h2>${escapeHtml(c.contactSnapshotTitle||c.summaryTitle)}</h2>
 
-          <div>
-            <span>${escapeHtml(c.selectedItems)}</span>
-            <strong>${escapeHtml(data.itemCount||0)}</strong>
+          <div class="desktop-contact-summary__rows">
+            <div>
+              <span>${escapeHtml(c.selectedItems)}</span>
+              <strong>${escapeHtml(data.itemCount||0)}</strong>
+            </div>
+            <div>
+              <span>${escapeHtml(c.totalQuantity)}</span>
+              <strong>${escapeHtml(data.productQuantity||0)} ${escapeHtml(qtyUnit())}</strong>
+            </div>
+            <div>
+              <span>${escapeHtml(c.productEstimate)}</span>
+              <strong>${escapeHtml(money(data.estimatedTotal||0))}</strong>
+            </div>
+            ${
+              Number(data.customCount||0)>0
+                ? `<div>
+                    <span>${escapeHtml(c.customProject)}</span>
+                    <strong>${escapeHtml(c.customQuotedSeparately)}</strong>
+                  </div>`
+                : ''
+            }
           </div>
-          <div>
-            <span>${escapeHtml(c.totalQuantity)}</span>
-            <strong>${escapeHtml(data.productQuantity||0)} ${escapeHtml(qtyUnit())}</strong>
-          </div>
-          <div>
-            <span>${escapeHtml(c.productEstimate)}</span>
-            <strong>${escapeHtml(money(data.estimatedTotal||0))}</strong>
-          </div>
-          ${
-            Number(data.customCount||0)>0
-              ? `<div>
-                  <span>${escapeHtml(c.customProject)}</span>
-                  <strong>${escapeHtml(c.customQuotedSeparately)}</strong>
-                </div>`
-              : ''
-          }
         </section>
 
         <section class="desktop-contact-next">
@@ -331,9 +394,12 @@
     const c=copy();
 
     return `
-      <div class="desktop-flow-page desktop-contact-page" data-desktop-contact-presentation="${PRESENTATION_VERSION}">
-        <div class="desktop-container">
-          <header class="desktop-flow-hero">
+      <div
+        class="desktop-flow-page desktop-contact-page desktop-contact-brief"
+        data-desktop-contact-presentation="${PRESENTATION_VERSION}"
+      >
+        <div class="desktop-container desktop-container--wide">
+          <header class="desktop-flow-hero desktop-contact-hero">
             <div class="desktop-eyebrow">${escapeHtml(c.contactKicker)}</div>
             <h1>${escapeHtml(c.contactTitle)}</h1>
             <p>${escapeHtml(c.contactBody)}</p>
@@ -414,19 +480,64 @@
     );
   }
 
+  function syncFieldError(field){
+    const shell=contactRoot?.querySelector(
+      `[data-desktop-contact-field-shell="${field}"]`
+    );
 
-  function clearFieldErrorUi(target){
-    const wrapper=target?.closest?.('.desktop-contact-field');
-
-    if(!wrapper){
+    if(!shell){
       return false;
     }
 
-    wrapper.classList.remove('is-invalid');
-    wrapper.querySelector(':scope > p')?.remove?.();
+    const message=fieldError(field);
+    const error=shell.querySelector('.desktop-contact-field__error');
+
+    shell.classList.toggle('is-invalid',Boolean(message));
+
+    if(error){
+      error.textContent=message;
+      error.hidden=!message;
+    }
+
     return true;
   }
 
+  function syncValidationUi(){
+    for(const field of [
+      'name',
+      'company',
+      'country',
+      'city',
+      'email',
+      'phone',
+      'buyerType',
+      'message'
+    ]){
+      syncFieldError(field);
+    }
+
+    const globalError=contactRoot?.querySelector(
+      '[data-desktop-contact-global-error]'
+    );
+
+    if(globalError){
+      const message=text(validation?.global);
+      globalError.textContent=message;
+      globalError.hidden=!message;
+    }
+
+    return true;
+  }
+
+  function clearFieldErrorUi(target){
+    const field=text(target?.dataset?.desktopContactField);
+
+    if(!field){
+      return false;
+    }
+
+    return syncFieldError(field);
+  }
 
   function onInput(event){
     const target=event.target.closest?.('[data-desktop-contact-field]');
@@ -442,7 +553,6 @@
 
     clearFieldErrorUi(target);
   }
-
 
   function onChange(event){
     const target=event.target.closest?.('[data-desktop-contact-field]');
@@ -488,7 +598,7 @@
       }
 
       validation=result;
-      render({preserveScroll:true});
+      syncValidationUi();
       focusFirstError();
     }
   }

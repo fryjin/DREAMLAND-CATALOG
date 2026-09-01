@@ -165,15 +165,15 @@ try{
   const index=read('index.html');
 
   for(const required of [
-    "window.DREAMLAND_RELEASE='b7-00b4h-r1-v122';",
-    './src/ui/desktop/styles/inquiry.css?release=b7-00b4h-r1-v122',
-    './src/ui/desktop/styles/contact.css?release=b7-00b4h-r1-v122',
-    './src/ui/desktop/styles/review.css?release=b7-00b4h-r1-v122',
-    './src/ui/desktop/styles/success.css?release=b7-00b4h-r1-v122',
-    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4h-r1-v122',
-    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4h-r1-v122',
-    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4h-r1-v122',
-    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4h-r1-v122',
+    "window.DREAMLAND_RELEASE='b7-00b4j-r3-v129';",
+    './src/ui/desktop/styles/inquiry.css?release=b7-00b4j-r3-v129',
+    './src/ui/desktop/styles/contact.css?release=b7-00b4j-r3-v129',
+    './src/ui/desktop/styles/review.css?release=b7-00b4j-r3-v129',
+    './src/ui/desktop/styles/success.css?release=b7-00b4j-r3-v129',
+    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4j-r3-v129',
+    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4j-r3-v129',
+    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4j-r3-v129',
+    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4j-r3-v129',
     'inquiryState:',
     'inquiryFeature,',
     'contactState:',
@@ -307,16 +307,16 @@ try{
   );
 
   for(const required of [
-    "const CACHE_VERSION = 'dreamland-pwa-v122';",
-    "'b7-00b4h-r1-v122'",
-    './src/ui/desktop/styles/inquiry.css?release=b7-00b4h-r1-v122',
-    './src/ui/desktop/styles/contact.css?release=b7-00b4h-r1-v122',
-    './src/ui/desktop/styles/review.css?release=b7-00b4h-r1-v122',
-    './src/ui/desktop/styles/success.css?release=b7-00b4h-r1-v122',
-    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4h-r1-v122',
-    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4h-r1-v122',
-    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4h-r1-v122',
-    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4h-r1-v122',
+    "const CACHE_VERSION = 'dreamland-pwa-v129';",
+    "'b7-00b4j-r3-v129'",
+    './src/ui/desktop/styles/inquiry.css?release=b7-00b4j-r3-v129',
+    './src/ui/desktop/styles/contact.css?release=b7-00b4j-r3-v129',
+    './src/ui/desktop/styles/review.css?release=b7-00b4j-r3-v129',
+    './src/ui/desktop/styles/success.css?release=b7-00b4j-r3-v129',
+    './src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4j-r3-v129',
+    './src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4j-r3-v129',
+    './src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4j-r3-v129',
+    './src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4j-r3-v129',
     "'./src/ui/desktop/inquiry/runtime-desktop-inquiry.js'",
     "'./src/ui/desktop/contact/runtime-desktop-contact.js'",
     "'./src/ui/desktop/review/runtime-desktop-review.js'",
@@ -327,7 +327,7 @@ try{
     }
   }
 
-  if(!pwa.includes("'b7-00b4h-r1-v122'")){
+  if(!pwa.includes("'b7-00b4j-r3-v129'")){
     fail('PWA runtime was not advanced to B7-00B.3D.');
   }
 }catch(error){
@@ -482,8 +482,11 @@ try{
     }
   }
 
+  // B7-00B.4I R1.2 — Contact presentation compatibility.
+  // Country/region behavior remains the 4F R1.1 contract; only the Desktop
+  // Contact presentation owner advanced to 4I.
   for(const required of [
-    "const PRESENTATION_VERSION='B7-00B.4F-R1.1';",
+    "const PRESENTATION_VERSION='B7-00B.4I-R1';",
     'function countryRegions()',
     'function countryField()',
     'data-desktop-contact-field="country"',
@@ -582,6 +585,208 @@ try{
   }
 }catch(error){
   fail('4F R1.1 + 4G R1 successor validation failed: '+error.message);
+}
+
+
+/* Gate 4I-R1 — Contact Brief + Final Review + Submission Confirmation. */
+try{
+  const contact=read('src/ui/desktop/contact/runtime-desktop-contact.js');
+  const review=read('src/ui/desktop/review/runtime-desktop-review.js');
+  const success=read('src/ui/desktop/success/runtime-desktop-success.js');
+  const contactCss=read('src/ui/desktop/styles/contact.css');
+  const reviewCss=read('src/ui/desktop/styles/review.css');
+  const successCss=read('src/ui/desktop/styles/success.css');
+  const experience=read('src/ui/desktop/runtime-desktop-experience.js');
+  const site=JSON.parse(read('data/site-content.json'));
+
+  for(const [source,label,markers] of [
+    [
+      contact,
+      'Contact',
+      [
+        "const PRESENTATION_VERSION='B7-00B.4I-R1';",
+        'desktop-contact-brief',
+        'desktop-contact-chapter',
+        'function syncValidationUi()',
+        'function syncFieldError(field)',
+        'data-desktop-contact-field-shell='
+      ]
+    ],
+    [
+      review,
+      'Review',
+      [
+        "const PRESENTATION_VERSION='B7-00B.4I-R1';",
+        'desktop-final-review',
+        'desktop-review-product',
+        'function deriveMoqGroups(data=projection())',
+        'function budgetDisplay(value)',
+        'function syncSubmitState()',
+        'data-desktop-review-risk-status',
+        'data-desktop-review-captcha-section',
+        'data-desktop-review-captcha'
+      ]
+    ],
+    [
+      success,
+      'Success',
+      [
+        "const PRESENTATION_VERSION='B7-00B.4I-R1';",
+        'desktop-submission-confirmation',
+        'desktop-success-reference',
+        'data-desktop-success-presentation='
+      ]
+    ]
+  ]){
+    for(const marker of markers){
+      if(!source.includes(marker)){
+        fail('Desktop '+label+' 4I R1 runtime is missing: '+marker);
+      }
+    }
+  }
+
+  if(review.includes('previewValue}</p>')){
+    fail('Desktop Review 4I R1 must not use canonical previewValue as the primary product UI.');
+  }
+
+  /*
+   * B7-00B.4J R3.4a — Review security ownership successor.
+   *
+   * R3.4 intentionally removes the old:
+   *   if(!state.requiresCaptcha) return '';
+   *
+   * The Risk/CAPTCHA mount must exist before the async assessment starts.
+   */
+  const reviewSecurityStart=
+    review.indexOf(
+      'function securityHtml(){'
+    );
+
+  const reviewSecurityEnd=
+    review.indexOf(
+      'function summaryHtml(data)',
+      reviewSecurityStart
+    );
+
+  const reviewSecurityBody=
+    reviewSecurityStart>=0&&
+    reviewSecurityEnd>reviewSecurityStart
+      ? review.slice(
+          reviewSecurityStart,
+          reviewSecurityEnd
+        )
+      : '';
+
+  for(const marker of [
+    'data-desktop-review-risk-status',
+    'data-desktop-review-captcha-section',
+    'data-desktop-review-captcha',
+    'hidden'
+  ]){
+    if(!reviewSecurityBody.includes(marker)){
+      fail(
+        'Desktop Review R3.4 native security mount is missing: '+
+        marker
+      );
+    }
+  }
+
+  if(
+    reviewSecurityBody.includes(
+      'if(!state.requiresCaptcha)'
+    )
+  ){
+    fail(
+      'Desktop Review R3.4 security mount must not depend on requiresCaptcha before Risk assessment.'
+    );
+  }
+
+  const contactClickStart=contact.indexOf('function onClick(event)');
+  const contactClickEnd=contact.indexOf('function loadDraft()',contactClickStart);
+  const contactClickBody=
+    contactClickStart>=0&&contactClickEnd>contactClickStart
+      ? contact.slice(contactClickStart,contactClickEnd)
+      : '';
+
+  if(contactClickBody.includes('render({preserveScroll:true})')){
+    fail('Desktop Contact 4I R1 validation must update locally without full render.');
+  }
+
+  const reviewChangeStart=review.indexOf('function onChange(event)');
+  const reviewChangeEnd=review.indexOf('function onClick(event)',reviewChangeStart);
+  const reviewChangeBody=
+    reviewChangeStart>=0&&reviewChangeEnd>reviewChangeStart
+      ? review.slice(reviewChangeStart,reviewChangeEnd)
+      : '';
+
+  if(reviewChangeBody.includes('render(')){
+    fail('Desktop Review 4I R1 privacy changes must not rebuild the page.');
+  }
+
+  const reviewSubmitStart=review.indexOf('async function submit()');
+  const reviewSubmitEnd=review.indexOf('function onChange(event)',reviewSubmitStart);
+  const reviewSubmitBody=
+    reviewSubmitStart>=0&&reviewSubmitEnd>reviewSubmitStart
+      ? review.slice(reviewSubmitStart,reviewSubmitEnd)
+      : '';
+
+  if(reviewSubmitBody.includes('render(')){
+    fail('Desktop Review 4I R1 submit state must update locally without full render.');
+  }
+
+  for(const [css,label,marker] of [
+    [contactCss,'Contact','B7-00B.4I R1 — Business Contact Brief'],
+    [reviewCss,'Review','B7-00B.4I R1 — Final Inquiry Review'],
+    [successCss,'Success','B7-00B.4I R1 — Submission Confirmation']
+  ]){
+    if(!css.includes(marker)){
+      fail('Desktop '+label+' 4I R1 CSS marker is missing.');
+    }
+
+    if(/font-size:(?:8|9|10)px;/.test(css.slice(css.indexOf(marker)))){
+      fail('Desktop '+label+' 4I R1 readability regression: visible 8/9/10px text.');
+    }
+  }
+
+  for(const required of [
+    'budgetOptions:',
+    'config.budgetOptions',
+    'choiceLabel:',
+    'config.choiceLabel',
+    'seriesLabel:',
+    'config.seriesLabel',
+    'itemScentLabel:',
+    'config.itemScentLabel',
+    'itemMoq:',
+    'config.itemMoq'
+  ]){
+    if(!experience.includes(required)){
+      fail('Desktop Experience 4I Review bridge is missing: '+required);
+    }
+  }
+
+  for(const lang of ['en','zh','ko']){
+    const flow=site?.languages?.[lang]?.inquiryFlow;
+
+    for(const key of [
+      'contactChapterPerson',
+      'contactChapterRegion',
+      'contactChapterChannels',
+      'contactChapterNotes',
+      'requiredLabel',
+      'optionalLabel',
+      'selectBuyerType',
+      'contactSnapshotTitle',
+      'reviewMoqStatus',
+      'reviewMoqGroupsReady'
+    ]){
+      if(!flow?.[key]){
+        fail('Desktop 4I R1 copy is missing for '+lang+'.'+key+'.');
+      }
+    }
+  }
+}catch(error){
+  fail('Desktop 4I R1 conversion-flow validation failed: '+error.message);
 }
 
 if(errors.length){
