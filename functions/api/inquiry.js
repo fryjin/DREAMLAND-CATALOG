@@ -126,6 +126,81 @@ async function submissionKeys(request,payload){
   };
 }
 
+async function assessmentDecisionKey(
+  payload
+){
+  const inquiryId=
+    normalizeInquiryId(
+      payload?.inquiry_id
+    );
+
+  if(!inquiryId){
+    return '';
+  }
+
+  return (
+    'assessment:'+
+    await sha256(
+      inquiryId
+    )
+  );
+}
+
+async function readAssessmentDecision(
+  env,
+  payload
+){
+  const store=
+    env.RISK_STORE;
+
+  if(
+    !store||
+    typeof store.get!=='function'
+  ){
+    return null;
+  }
+
+  try{
+    const key=
+      await assessmentDecisionKey(
+        payload
+      );
+
+    if(!key){
+      return null;
+    }
+
+    const raw=
+      await store.get(
+        key
+      );
+
+    if(!raw){
+      return null;
+    }
+
+    const value=
+      JSON.parse(raw);
+
+    return {
+      captchaRequired:
+        value?.captcha_required===true,
+      recordedAt:
+        asNumber(
+          value?.recorded_at,
+          0
+        )
+    };
+  }catch(error){
+    console.error(
+      'Risk assessment decision read failed:',
+      error
+    );
+
+    return null;
+  }
+}
+
 async function enforceSubmissionRate(env,request,payload){
   const store=env.RISK_STORE;
 
@@ -219,13 +294,34 @@ async function recordSubmissionRate(rate){
 }
 
 async function verifyCaptcha(env,token,request){
-  const secret=asText(env.HCAPTCHA_SECRET,300);
-  const value=asText(token,5000);
+  const secret=
+    asText(
+      env.HCAPTCHA_SECRET,
+      300
+    );
 
-  if(!secret||!value){
+  const value=
+    asText(
+      token,
+      5000
+    );
+
+  if(!secret){
     return {
       checked:false,
-      success:true
+      success:false,
+      configured:false,
+      missingToken:
+        !value
+    };
+  }
+
+  if(!value){
+    return {
+      checked:false,
+      success:false,
+      configured:true,
+      missingToken:true
     };
   }
 
@@ -294,11 +390,35 @@ function providerFormData(payload,accessKey,captchaToken){
   return formData;
 }
 
-export async function onRequestGet(){
+export async function onRequestGet(
+  context
+){
+  const env=
+    context?.env||{};
+
   return json({
     success:true,
     service:'dreamland-inquiry-gateway',
-    status:'ready'
+    status:'ready',
+    provider_configured:
+      Boolean(
+        asText(
+          env.WEB3FORMS_ACCESS_KEY,
+          500
+        )
+      ),
+    hcaptcha_secret_configured:
+      Boolean(
+        asText(
+          env.HCAPTCHA_SECRET,
+          300
+        )
+      ),
+    risk_store_configured:
+      Boolean(
+        env.RISK_STORE&&
+        typeof env.RISK_STORE.get==='function'
+      )
   });
 }
 
@@ -368,21 +488,60 @@ export async function onRequestPost(context){
     );
   }
 
-  const captcha=await verifyCaptcha(
-    env,
-    captchaToken,
-    request
-  );
+  const assessment=
+    await readAssessmentDecision(
+      env,
+      payload
+    );
 
-  if(captcha.checked&&!captcha.success){
+  if(
+    assessment?.captchaRequired===true&&
+    !captchaToken
+  ){
     return json(
       {
         success:false,
-        code:'CAPTCHA_FAILED',
-        message:'Security verification failed.'
+        code:'CAPTCHA_REQUIRED',
+        message:'Security verification is required.'
       },
       403
     );
+  }
+
+  if(
+    assessment?.captchaRequired===true||
+    captchaToken
+  ){
+    const captcha=
+      await verifyCaptcha(
+        env,
+        captchaToken,
+        request
+      );
+
+    if(
+      captcha.configured===false
+    ){
+      return json(
+        {
+          success:false,
+          code:'CAPTCHA_NOT_CONFIGURED',
+          message:'Security verification service is not configured.'
+        },
+        503
+      );
+    }
+
+    if(!captcha.success){
+      return json(
+        {
+          success:false,
+          code:'CAPTCHA_FAILED',
+          message:'Security verification failed.'
+        },
+        403
+      );
+    }
   }
 
   const accessKey=

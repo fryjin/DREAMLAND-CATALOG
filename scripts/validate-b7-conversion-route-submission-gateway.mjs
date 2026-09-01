@@ -190,8 +190,8 @@ try{
   const compact=index.replace(/\s+/g,'');
 
   for(const marker of [
-    "window.DREAMLAND_RELEASE='b7-00b4j-r3-v128';",
-    'runtime-page-guards.js?release=b7-00b4j-r3-v128',
+    "window.DREAMLAND_RELEASE='b7-00b4j-r3-v129';",
+    'runtime-page-guards.js?release=b7-00b4j-r3-v129',
     'const pageGuards=window.DreamlandPageGuards',
     'pageGuards',
     'evaluate?.(',
@@ -428,10 +428,10 @@ try{
 
   if(
     !build.includes(
-      "const RELEASE='b7-00b4j-r3-v128';"
+      "const RELEASE='b7-00b4j-r3-v129';"
     )||
     !build.includes(
-      "const PWA='dreamland-pwa-v128';"
+      "const PWA='dreamland-pwa-v129';"
     )
   ){
     fail('Production Builder release convergence failed.');
@@ -441,7 +441,7 @@ try{
 
   if(
     !sw.includes(
-      "const CACHE_VERSION = 'dreamland-pwa-v128';"
+      "const CACHE_VERSION = 'dreamland-pwa-v129';"
     )
   ){
     fail('PWA cache did not converge on v125.');
@@ -452,7 +452,7 @@ try{
   if(
     packageJson.scripts
       ?.['conversion-route:gateway']!==
-    'node scripts/validate-b7-conversion-route-submission-gateway.mjs'
+    'node scripts/validate-b7-conversion-route-submission-gateway.mjs && npm run mpa-inquiry:closure'
   ){
     fail('package.json conversion-route:gateway script is missing.');
   }

@@ -613,16 +613,54 @@
     }
   }
 
-  function onChange(event){
-    const input=event.target.closest?.('[data-desktop-review-privacy]');
+  async function onChange(event){
+    const input=
+      event.target.closest?.(
+        '[data-desktop-review-privacy]'
+      );
 
-    if(!input||!reviewRoot?.contains(input)){
+    if(
+      !input||
+      !reviewRoot?.contains(input)
+    ){
       return;
     }
 
-    privacyAccepted=Boolean(input.checked);
-    config?.actions?.privacyChanged?.(privacyAccepted);
+    privacyAccepted=
+      Boolean(
+        input.checked
+      );
+
     syncConsent();
+
+    try{
+      const ready=
+        await config
+          ?.actions
+          ?.privacyChanged?.(
+            privacyAccepted
+          );
+
+      if(
+        privacyAccepted&&
+        ready===false
+      ){
+        submitError=
+          copy().submitFailed;
+
+        syncSubmitError();
+      }
+    }catch(error){
+      console.error(
+        'Desktop Review security verification failed:',
+        error
+      );
+
+      submitError=
+        copy().submitFailed;
+
+      syncSubmitError();
+    }
   }
 
   function onClick(event){

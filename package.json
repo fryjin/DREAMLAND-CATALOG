@@ -45,7 +45,8 @@
     "build": "npm run data:build && npm run build:pages",
     "multipage:foundation": "node scripts/validate-b7-multipage-foundation.mjs && node scripts/build-pages.mjs --check",
     "public-route:migration": "node scripts/validate-b7-public-route-migration.mjs",
-    "conversion-route:gateway": "node scripts/validate-b7-conversion-route-submission-gateway.mjs"
+    "conversion-route:gateway": "node scripts/validate-b7-conversion-route-submission-gateway.mjs && npm run mpa-inquiry:closure",
+    "mpa-inquiry:closure": "node scripts/validate-b7-mpa-inquiry-submission-closure.mjs"
   },
   "engines": {
     "node": ">=24"

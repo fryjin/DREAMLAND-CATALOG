@@ -19,8 +19,8 @@ if(!WRITE&&!CHECK){
   process.exit(1);
 }
 
-const RELEASE='b7-00b4j-r3-v128';
-const PWA='dreamland-pwa-v128';
+const RELEASE='b7-00b4j-r3-v129';
+const PWA='dreamland-pwa-v129';
 const SITE_ORIGIN='https://dreamland-catalog.pages.dev';
 
 const routes=JSON.parse(
@@ -518,6 +518,46 @@ function localRootAssetPaths(){
   ];
 }
 
+function absoluteRootRuntimeAssetPaths(){
+  const values=[];
+
+  for(const pattern of [
+    /<script\b[^>]*\bsrc="\/([^"?#\/]+\.(?:js|mjs))(?:\?[^"]*)?"[^>]*>/gi,
+    /<link\b[^>]*\bhref="\/([^"?#\/]+\.(?:css|webmanifest))(?:\?[^"]*)?"[^>]*>/gi
+  ]){
+    for(
+      const match of
+      sourceIndex.matchAll(
+        pattern
+      )
+    ){
+      const relative=
+        text(
+          match[1]
+        );
+
+      if(relative){
+        values.push(
+          relative
+        );
+      }
+    }
+  }
+
+  return [
+    ...new Set(values)
+  ];
+}
+
+function productionRootAssetPaths(){
+  return [
+    ...new Set([
+      ...localRootAssetPaths(),
+      ...absoluteRootRuntimeAssetPaths()
+    ])
+  ];
+}
+
 /*
  * B7-00B.4J R2.1 — Build asset ownership.
  *
@@ -537,7 +577,7 @@ function isOptionalMediaAsset(relative){
 }
 
 function requiredRootAssetPaths(){
-  return localRootAssetPaths()
+  return productionRootAssetPaths()
     .filter(
       relative=>
         !isOptionalMediaAsset(
@@ -599,7 +639,7 @@ function copyStaticSite(){
   }
 
   for(const relative of [
-    ...localRootAssetPaths(),
+    ...productionRootAssetPaths(),
     'sw.js',
     'offline.html',
     'privacy.html',

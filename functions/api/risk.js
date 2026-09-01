@@ -2,6 +2,7 @@ const DEFAULT_RISK_THRESHOLD=3;
 const IP_WINDOW_SECONDS=600;
 const CONTENT_RISK_WINDOW_SECONDS=3600;
 const RAPID_CONTENT_WINDOW_SECONDS=60;
+const ASSESSMENT_TTL_SECONDS=600;
 
 function json(data,status=200){
   return new Response(
@@ -233,6 +234,76 @@ async function readPersistentRisk(env,request,body,result){
   return result;
 }
 
+async function assessmentDecisionKey(
+  payload
+){
+  const inquiryId=
+    normalizeInquiryId(
+      payload?.inquiry_id
+    );
+
+  if(!inquiryId){
+    return '';
+  }
+
+  return (
+    'assessment:'+
+    await sha256(
+      inquiryId
+    )
+  );
+}
+
+async function recordAssessmentDecision(
+  env,
+  payload,
+  captchaRequired
+){
+  const store=
+    env.RISK_STORE;
+
+  if(
+    !store||
+    typeof store.put!=='function'
+  ){
+    return null;
+  }
+
+  try{
+    const key=
+      await assessmentDecisionKey(
+        payload
+      );
+
+    if(!key){
+      return false;
+    }
+
+    await store.put(
+      key,
+      JSON.stringify({
+        captcha_required:
+          captchaRequired===true,
+        recorded_at:
+          Date.now()
+      }),
+      {
+        expirationTtl:
+          ASSESSMENT_TTL_SECONDS
+      }
+    );
+
+    return true;
+  }catch(error){
+    console.error(
+      'Risk assessment decision write failed:',
+      error
+    );
+
+    return false;
+  }
+}
+
 async function recordPersistentRisk(env,result){
   const store=env.RISK_STORE;
 
@@ -275,11 +346,36 @@ async function recordPersistentRisk(env,result){
   return true;
 }
 
-export async function onRequestGet(){
+export async function onRequestGet(
+  context
+){
+  const env=
+    context?.env||{};
+
   return json({
     success:true,
     service:'dreamland-risk-assessment',
-    status:'ready'
+    status:'ready',
+    hcaptcha_site_key_configured:
+      Boolean(
+        asText(
+          env.HCAPTCHA_SITE_KEY,
+          200
+        )
+      ),
+    hcaptcha_secret_configured:
+      Boolean(
+        asText(
+          env.HCAPTCHA_SECRET,
+          300
+        )
+      ),
+    risk_store_configured:
+      Boolean(
+        env.RISK_STORE&&
+        typeof env.RISK_STORE.get==='function'&&
+        typeof env.RISK_STORE.put==='function'
+      )
   });
 }
 
@@ -338,8 +434,21 @@ export async function onRequestPost(context){
     asNumber(env.RISK_THRESHOLD,DEFAULT_RISK_THRESHOLD)
   );
 
-  const riskRecorded=await recordPersistentRisk(env,result);
-  const captchaRequired=result.score>=threshold;
+  const riskRecorded=
+    await recordPersistentRisk(
+      env,
+      result
+    );
+
+  const captchaRequired=
+    result.score>=threshold;
+
+  const assessmentRecorded=
+    await recordAssessmentDecision(
+      env,
+      body.payload,
+      captchaRequired
+    );
 
   return json({
     success:true,
@@ -348,9 +457,16 @@ export async function onRequestPost(context){
     reasons:result.reasons,
     site_key:
       captchaRequired
-        ? asText(env.HCAPTCHA_SITE_KEY,200)
+        ? asText(
+            env.HCAPTCHA_SITE_KEY,
+            200
+          )
         : '',
-    risk_store_read:result.riskStoreRead,
-    risk_recorded:riskRecorded
+    risk_store_read:
+      result.riskStoreRead,
+    risk_recorded:
+      riskRecorded,
+    assessment_recorded:
+      assessmentRecorded
   });
 }
