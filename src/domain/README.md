@@ -32,3 +32,17 @@ implemented directly inside `index.html`.
 
 The legacy page keeps thin wrapper functions during migration so existing
 Features, Presentations and validators retain their current contracts.
+
+
+## R4.2B owner
+
+```text
+src/domain/submission/runtime-submission-payload.js
+```
+
+Owns deterministic provider-delivery payload mapping and payload validation
+previously implemented inside `index.html`.
+
+The Domain receives a canonical `DreamlandInquiry.buildProjection()` result and
+returns the existing delivery payload shape. It does not perform network
+transport, Risk assessment, CAPTCHA handling, persistence or DOM feedback.

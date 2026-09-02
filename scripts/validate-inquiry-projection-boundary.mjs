@@ -602,11 +602,7 @@ try{
       payloadSource,
       [
         'inquiryFeature.buildProjection(',
-        'projection.itemsSummary',
-        'projection.rawProductItems',
-        'projection.rawCustomItems',
-        'projection.estimatedTotal',
-        'projection.estimatedTotalDisplay'
+        'submissionPayloadPolicy.build('
       ]
     ],
     [

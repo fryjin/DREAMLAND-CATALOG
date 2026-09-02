@@ -63,12 +63,36 @@ Those functions no longer own the underlying policy.
 - Astro Production ownership;
 - PWA strategy.
 
-### Remaining R4.2 work
+## R4.2B — Canonical Submission Payload Mapping
 
-R4.2B:
-- canonical submission payload mapping.
+Status: migration stage.
+
+### New canonical owner
+
+```text
+src/domain/submission/runtime-submission-payload.js
+→ DreamlandSubmissionPayload
+```
+
+It owns:
+
+- provider delivery field mapping from the canonical Inquiry Projection;
+- email/contact delivery aliases;
+- payload JSON serialization for Contact/Product/Custom snapshots;
+- provider subject/from-name fallbacks;
+- final delivery-payload validation codes.
+
+`DreamlandInquiry` remains the Projection owner.
+`DreamlandSubmission` remains the browser-direct/Gateway transport owner.
+`DreamlandInquirySubmissionFlow` remains the submission transaction owner.
+
+`index.html` keeps only thin compatibility wrappers for
+`submissionEmailValid()`, `validateSubmissionPayload()` and
+`buildWeb3FormsPayload()` during Legacy Presentation migration.
+
+### Remaining R4.2 work
 
 R4.2C:
 - localization/content-formatting boundary cleanup.
 
-R4.2A must pass the historical pricing validators plus the new Domain pricing gate.
+R4.2A and R4.2B must both pass before the Astro Foundation gate.

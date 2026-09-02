@@ -42,6 +42,19 @@ CNY/base conversion, localized money formatting and Catalog reference pricing.
 The Domain runtime is DOM/storage/network free. Legacy page functions remain as
 thin adapters until the Astro Presentation migration retires the old App shell.
 
+### R4.2B — Submission Payload Domain
+
+Runtime active:
+
+```text
+src/domain/submission/runtime-submission-payload.js
+```
+
+Owns deterministic provider-delivery payload mapping and validation. The
+canonical Inquiry Projection remains the input owner, DreamlandSubmission
+remains the transport owner, and DreamlandInquirySubmissionFlow remains the
+transaction/orchestration owner.
+
 ### B1-02 — Product data contract
 
 Runtime active:

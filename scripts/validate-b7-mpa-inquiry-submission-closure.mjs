@@ -179,17 +179,50 @@ try{
       : '';
 
   for(const marker of [
-    'contact_name:c.name',
-    'country_or_region:c.country',
-    'email_address:c.email',
-    'phone_or_wechat:c.phone',
+    'inquiryFeature.buildProjection(',
+    'submissionPayloadPolicy.build('
+  ]){
+    if(
+      !compact(
+        payloadSource
+      ).includes(
+        compact(
+          marker
+        )
+      )
+    ){
+      fail(
+        'Submission payload bridge is missing: '+
+        marker
+      );
+    }
+  }
+
+  const payloadDomain=
+    read(
+      'src/domain/submission/runtime-submission-payload.js'
+    );
+
+  for(const marker of [
+    'contact_name:',
+    'country_or_region:',
+    'email_address:',
+    'phone_or_wechat:',
     'product_count:',
     'custom_count:',
     'items_summary:'
   ]){
-    if(!compact(payloadSource).includes(compact(marker))){
+    if(
+      !compact(
+        payloadDomain
+      ).includes(
+        compact(
+          marker
+        )
+      )
+    ){
       fail(
-        'Submission payload mapping is missing: '+
+        'Canonical Submission Payload Domain mapping is missing: '+
         marker
       );
     }

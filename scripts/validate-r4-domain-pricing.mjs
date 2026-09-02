@@ -575,9 +575,26 @@ try{
       ''
     );
 
+  const desktop=
+    validate.indexOf(
+      'npm run desktop:catalog'
+    );
+
+  const pricing=
+    validate.indexOf(
+      'npm run r4:domain:pricing'
+    );
+
+  const astro=
+    validate.indexOf(
+      'npm run r4:astro:foundation'
+    );
+
   if(
-    !validate.includes(
-      'npm run desktop:catalog && npm run r4:domain:pricing && npm run r4:astro:foundation'
+    !(
+      desktop>=0&&
+      pricing>desktop&&
+      astro>pricing
     )
   ){
     fail(

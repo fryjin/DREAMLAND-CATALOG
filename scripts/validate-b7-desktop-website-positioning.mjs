@@ -44,8 +44,8 @@ try{
       'media="(min-width: 1024px)"',
       '右滑浏览产品系列',
       '<div class="page-title">产品系列</div>',
-      'DREAMLAND 批发与定制询价',
-      "from_name:c.name||'DREAMLAND 官网访客'"
+      './src/domain/submission/runtime-submission-payload.js',
+      'const submissionPayloadPolicy=window.DreamlandSubmissionPayload;'
     ],
     'index.html'
   );
@@ -83,6 +83,35 @@ try{
   }
 }catch(error){
   fail(`index inspection failed: ${error.message}`);
+}
+
+/*
+ * R4.2B compatibility:
+ * provider delivery copy moved from index.html into the canonical
+ * DreamlandSubmissionPayload Domain owner.
+ */
+try{
+  const payloadDomain=
+    read('src/domain/submission/runtime-submission-payload.js');
+
+  requireIncludes(
+    payloadDomain,
+    [
+      'DREAMLAND 批发与定制询价',
+      'DREAMLAND 官网访客'
+    ],
+    'Submission Payload Domain'
+  );
+
+  requirePattern(
+    payloadDomain,
+    /from_name\s*:\s*c\.name\s*\|\|\s*'DREAMLAND 官网访客'/m,
+    'Submission Payload Domain is missing the DREAMLAND website sender-name fallback.'
+  );
+}catch(error){
+  fail(
+    `Submission Payload Domain website-positioning inspection failed: ${error.message}`
+  );
 }
 
 try{

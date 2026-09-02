@@ -168,6 +168,22 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     }
   ),
   entry(
+    'submission-payload-domain',
+    [
+      'index.html'
+    ],
+    'domain',
+    'submission',
+    'Provider delivery payload mapping and payload validation are routed through DreamlandSubmissionPayload. index.html retains thin compatibility wrappers while Legacy Review and Risk orchestration remain active.',
+    {
+      status:'migrated',
+      runtimeMigrated:true,
+      runtimeOwners:[
+        'src/domain/submission/runtime-submission-payload.js'
+      ]
+    }
+  ),
+  entry(
     'media',
     [
       'image-manager.js',
@@ -213,7 +229,7 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'services',
     'submission',
-    'Client Web3Forms transport, FormData assembly and response normalization are routed through DreamlandSubmission. Final submission transaction orchestration, reachability gating, attempt recording, archive persistence and success-state cleanup are routed through DreamlandInquirySubmissionFlow. Payload/snapshot composition and DOM feedback remain App/index concerns.',
+    'Client Web3Forms transport, FormData assembly and response normalization are routed through DreamlandSubmission. Final submission transaction orchestration, reachability gating, attempt recording, archive persistence and success-state cleanup are routed through DreamlandInquirySubmissionFlow. Provider delivery payload mapping and payload validation are routed through DreamlandSubmissionPayload. Archive snapshot composition and DOM feedback remain App/index concerns.',
     {
       status:'partial',
       runtimeMigrated:false,
