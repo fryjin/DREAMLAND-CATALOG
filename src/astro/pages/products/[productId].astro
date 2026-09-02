@@ -1,0 +1,45 @@
+---
+import FoundationLayout from '../../layouts/FoundationLayout.astro';
+import productsDocument from '../../../../data/products.json';
+import routes from '../../../../data/page-routes.json';
+
+export function getStaticPaths(){
+  return (productsDocument.products||[])
+    .filter(product=>product?.status==='active')
+    .map(product=>{
+      const productId=String(product?.productId||product?.id||'')
+        .trim()
+        .toUpperCase();
+
+      return {
+        params:{productId},
+        props:{product}
+      };
+    });
+}
+
+if(routes.routes?.product?.path!=='/products/{productId}/'){
+  throw new Error('R4 Astro foundation expected product route contract.');
+}
+
+const {product}=Astro.props;
+const productId=String(product?.productId||product?.id||'')
+  .trim()
+  .toUpperCase();
+
+const title=
+  product?.names?.en||
+  product?.names?.zh||
+  product?.name||
+  productId;
+---
+<FoundationLayout
+  title={`${title} · DREAMLAND R4 Foundation`}
+  description="Static product-detail route proof of concept."
+  page="product"
+  productId={productId}
+>
+  <p class="r4-foundation-kicker">DREAMLAND · R4.1</p>
+  <h1>{title}</h1>
+  <p>Static product route: /products/{productId}/</p>
+</FoundationLayout>

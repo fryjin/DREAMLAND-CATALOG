@@ -479,14 +479,35 @@ try{
     );
   }
 
-  if(
-    !validate.endsWith(
-      'npm run desktop:catalog'
-    )
-  ){
-    fail(
-      'desktop:catalog must remain the final Desktop aggregate gate.'
+  const desktopCatalogGate=
+    'npm run desktop:catalog';
+
+  const desktopCatalogIndex=
+    validate.lastIndexOf(
+      desktopCatalogGate
     );
+
+  if(desktopCatalogIndex<0){
+    fail(
+      'desktop:catalog aggregate gate is missing.'
+    );
+  }else{
+    const afterDesktopCatalog=
+      validate.slice(
+        desktopCatalogIndex+
+        desktopCatalogGate.length
+      );
+
+    if(
+      /npm run desktop:[a-z0-9:-]+/i
+        .test(
+          afterDesktopCatalog
+        )
+    ){
+      fail(
+        'desktop:catalog must remain the final Desktop aggregate gate.'
+      );
+    }
   }
 
   if(

@@ -30,6 +30,9 @@ jobs:
 
       # Direct pushes to develop may be followed by the generated-data sync
       # workflow. PRs and main must always be fully synchronized.
+
+      - name: Install project dependencies
+        run: npm ci
       - name: Check generated product fallback
         if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
         run: npm run data:check

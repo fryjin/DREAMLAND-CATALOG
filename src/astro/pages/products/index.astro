@@ -1,0 +1,21 @@
+---
+import FoundationLayout from '../../layouts/FoundationLayout.astro';
+import productsDocument from '../../../../data/products.json';
+import routes from '../../../../data/page-routes.json';
+
+if(routes.routes?.catalog?.path!=='/products/'){
+  throw new Error('R4 Astro foundation expected catalog route /products/.');
+}
+
+const products=(productsDocument.products||[])
+  .filter(product=>product?.status==='active');
+---
+<FoundationLayout
+  title="DREAMLAND R4 Catalog Foundation"
+  description="Static catalog route proof of concept."
+  page="catalog"
+>
+  <p class="r4-foundation-kicker">DREAMLAND · R4.1</p>
+  <h1>Catalog route</h1>
+  <p>Astro resolved {products.length} active products at build time.</p>
+</FoundationLayout>

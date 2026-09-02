@@ -401,9 +401,17 @@ try{
   }
 
   if(
-    !validate.endsWith(
-      'npm run desktop:catalog'
-    )
+    !(()=>{
+      const gate='npm run desktop:catalog';
+      const gateIndex=validate.lastIndexOf(gate);
+
+      return (
+        gateIndex>=0&&
+        !/npm run desktop:[a-z0-9:-]+/i.test(
+          validate.slice(gateIndex+gate.length)
+        )
+      );
+    })()
   ){
     fail(
       'desktop:catalog must remain the final Desktop validation gate.'

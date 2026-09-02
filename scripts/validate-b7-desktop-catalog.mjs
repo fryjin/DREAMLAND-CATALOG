@@ -822,10 +822,20 @@ try{
     !validate.includes(
       'npm run desktop:home-assets'
     )||
-    !validate.trim()
-      .endsWith(
-        'npm run desktop:catalog'
-      )
+    !(()=>{
+      const gate='npm run desktop:catalog';
+      const gateIndex=validate.lastIndexOf(gate);
+
+      return (
+        gateIndex>=0&&
+        !/npm run desktop:[a-z0-9:-]+/i.test(
+          validate.slice(
+            gateIndex+
+            gate.length
+          )
+        )
+      );
+    })()
   ){
     fail(
       'npm run validate must preserve Desktop Home gates and finish with desktop:catalog.'

@@ -551,7 +551,17 @@ try{
     fail('Desktop Visual Foundation gate must run after Home Assets and before Inquiry Closure.');
   }
 
-  if(!validate.endsWith('npm run desktop:catalog')){
+  if(!(()=>{
+      const gate='npm run desktop:catalog';
+      const gateIndex=validate.lastIndexOf(gate);
+
+      return (
+        gateIndex>=0&&
+        !/npm run desktop:[a-z0-9:-]+/i.test(
+          validate.slice(gateIndex+gate.length)
+        )
+      );
+    })()){
     fail('desktop:catalog must remain the final Desktop aggregate gate.');
   }
 }catch(error){

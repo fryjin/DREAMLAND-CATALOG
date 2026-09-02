@@ -36,6 +36,9 @@ jobs:
         with:
           node-version: 24
 
+
+      - name: Install project dependencies
+        run: npm ci
       - name: Generate active-only products.json fallback
         run: npm run data:build
 
