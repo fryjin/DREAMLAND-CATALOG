@@ -10,20 +10,37 @@ src/
 ├─ features/
 ├─ ui/
 ├─ services/
+├─ domain/
 └─ data/
 ```
 
 Dependency direction:
 
 ```text
-app       → features / ui / services / data
-features  → ui / services / data
-services  → data
+app       → features / ui / services / domain / data
+features  → ui / services / domain / data
+services  → domain / data
+domain    → no higher-layer dependency
 ui        → no higher-layer dependency
 data      → no higher-layer dependency
 ```
 
 ## Runtime migration status
+
+### R4.2A — Pricing / MOQ / Currency Domain
+
+Runtime active:
+
+```text
+src/domain/pricing/runtime-pricing-policy.js
+```
+
+Owns deterministic shared commerce policy previously implemented directly in
+`index.html`: tier selection, packaging surcharge, MOQ, quantity normalization,
+CNY/base conversion, localized money formatting and Catalog reference pricing.
+
+The Domain runtime is DOM/storage/network free. Legacy page functions remain as
+thin adapters until the Astro Presentation migration retires the old App shell.
 
 ### B1-02 — Product data contract
 

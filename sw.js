@@ -65,6 +65,7 @@ const APP_SHELL = [
   './src/ui/desktop/home/runtime-desktop-home.js',
   './src/ui/desktop/runtime-desktop-experience.js',
   './src/data/product-data-contract.js',
+  './src/domain/pricing/runtime-pricing-policy.js',
   './catalog-data.js',
   './src/services/storage/runtime-storage.js',
   './src/services/pwa/runtime-pwa.js',

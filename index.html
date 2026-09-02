@@ -1335,6 +1335,7 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="/src/site/runtime/runtime-catalog-url-state.js?release=b7-00b4j-r3-v129"></script>
 <script src="/src/site/runtime/runtime-page-guards.js?release=b7-00b4j-r3-v129"></script>
 <script src="./src/data/product-data-contract.js"></script>
+<script src="./src/domain/pricing/runtime-pricing-policy.js"></script>
 <script src="./catalog-data.js?release=b7-00b4j-r3-v129"></script>
 <script src="./src/services/storage/runtime-storage.js"></script>
 <script src="./src/services/pwa/runtime-pwa.js?release=b7-00b4j-r3-v129"></script>
@@ -1377,7 +1378,14 @@ const customScentUi=window.DreamlandCustomScent;
 const submissionFlow=window.DreamlandInquirySubmissionFlow;
 const pageGuards=window.DreamlandPageGuards;
 const detailFeature=window.DreamlandDetail;
+const pricingPolicy=window.DreamlandPricingPolicy;
 const desktopExperience=window.DreamlandDesktopExperience;
+
+if(!pricingPolicy){
+  throw new Error(
+    'DreamlandPricingPolicy must load before pricing policy initialization.'
+  );
+}
 
 if(!desktopExperience){
   throw new Error(
@@ -2642,22 +2650,11 @@ function uid(){
 }
 
 function money(value){
-  const currency=
-    currencyMap[currentLang]||
-    currencyMap.zh;
-
-  const amount=
-    Number(value||0)*
-    currency.rate;
-
-  return currency.prefix+
-    amount.toLocaleString(
-      currency.locale,
-      {
-        minimumFractionDigits:currency.digits,
-        maximumFractionDigits:currency.digits
-      }
-    );
+  return pricingPolicy.money(
+    value,
+    currentLang,
+    currencyMap
+  );
 }
 
 function fromPrice(value){
@@ -2669,18 +2666,19 @@ function fromPrice(value){
 } 
   
 function currencyUnit(){
-  return (
-    currencyMap[currentLang]||
-    currencyMap.zh
-  ).unit;
+  return pricingPolicy
+    .currencyUnit(
+      currentLang,
+      currencyMap
+    );
 }
 
 function cnyToBase(cny){
-  const cnyRate=
-    Number(currencyMap.zh?.rate)||
-    7.2;
-
-  return Number(cny||0)/cnyRate;
+  return pricingPolicy
+    .cnyToBase(
+      cny,
+      currencyMap
+    );
 }
 
 function seriesQty(series){
@@ -2691,16 +2689,11 @@ function seriesQty(series){
 }
 
 function pricingSeriesFor(item){
-  if(item?.series==='holiday'){
-    return (
-      item.scentSeries||
-      seriesMeta.holiday
-        ?.scentSeriesOptions?.[0]||
-      'classic'
+  return pricingPolicy
+    .pricingSeriesFor(
+      item,
+      seriesMeta
     );
-  }
-
-  return item?.series||'';
 }
 
 function pricingGroupQty(item){
@@ -2710,82 +2703,47 @@ function pricingGroupQty(item){
     );
 }
 
-function tierFor(seriesKey,quantity){
-  const tiers=
-    seriesMeta[seriesKey]?.priceTiers||
-    [];
-
-  return (
-    tiers.find(tier=>{
-      const min=
-        Number(tier.minQty)||0;
-
-      const max=
-        tier.maxQty==null
-          ? Infinity
-          : Number(tier.maxQty);
-
-      return (
-        quantity>=min&&
-        quantity<=max
-      );
-    })||
-    tiers[tiers.length-1]||
-    null
-  );
+function tierFor(
+  seriesKey,
+  quantity
+){
+  return pricingPolicy
+    .tierFor(
+      seriesKey,
+      quantity,
+      seriesMeta
+    );
 }
+
 function tierRangeLabel(tier){
-  const min=Number(tier?.minQty)||1;
-  const max=tier?.maxQty;
-
-  if(max==null){
-    return `${min}+`;
-  }
-
-  return `${min}-${max}`;
+  return pricingPolicy
+    .tierRangeLabel(
+      tier
+    );
 }
 
 function currentTierIndex(
   seriesKey,
   quantity
 ){
-  const tiers=
-    seriesMeta[seriesKey]
-      ?.priceTiers||
-    [];
-
-  return Math.max(
-    0,
-    tiers.findIndex(tier=>{
-      const min=
-        Number(tier.minQty)||0;
-
-      const max=
-        tier.maxQty==null
-          ? Infinity
-          : Number(tier.maxQty);
-
-      return (
-        quantity>=min&&
-        quantity<=max
-      );
-    })
-  );
+  return pricingPolicy
+    .currentTierIndex(
+      seriesKey,
+      quantity,
+      seriesMeta
+    );
 }
 
 function nextTierFor(
   seriesKey,
   quantity
 ){
-  const tiers=
-    seriesMeta[seriesKey]
-      ?.priceTiers||
-    [];
-
-  return tiers.find(
-    tier=>
-      Number(tier.minQty)>quantity
-  )||null;
+  return pricingPolicy
+    .nextTierFor(
+      seriesKey,
+      quantity,
+      seriesMeta
+    );
 }
 
 function configPricingSeries(){
@@ -3017,43 +2975,41 @@ function tierUnitCny(
   size,
   quantity
 ){
-  const tier=
-    tierFor(seriesKey,quantity);
-
-  return Number(
-    tier?.pricesCny?.[size]||0
-  );
+  return pricingPolicy
+    .tierUnitCny(
+      seriesKey,
+      size,
+      quantity,
+      seriesMeta
+    );
 }
 
 function packOptions(series){
-  return (
-    seriesMeta[series]
-      ?.packaging
-      ?.options||
-    ['批发包装']
-  );
+  return pricingPolicy
+    .packOptions(
+      series,
+      seriesMeta
+    );
 }
 
 function defaultPack(series){
-  return (
-    seriesMeta[series]
-      ?.packaging
-      ?.default||
-    packOptions(series)[0]||
-    '批发包装'
-  );
+  return pricingPolicy
+    .defaultPack(
+      series,
+      seriesMeta
+    );
 }
 
 function packSurchargeCny(
   series,
   pack
 ){
-  return Number(
-    seriesMeta[series]
-      ?.packaging
-      ?.surchargesCny?.[pack]||
-    0
-  );
+  return pricingPolicy
+    .packSurchargeCny(
+      series,
+      pack,
+      seriesMeta
+    );
 }
 
 function packSurchargeBase(
@@ -3162,44 +3118,14 @@ function total(){
 }
 
 function catalogUnit(product){
-  if(!product)return 0;
-
-  const pricingSeries=
-    product.series==='holiday'
-      ? (
-          seriesMeta.holiday
-            ?.scentSeriesOptions?.[0]||
-          'classic'
-        )
-      : product.series;
-
- const size=
-    defaultProductSize(product);
-
-  const quantity=
-    moqForSeriesSize(
-      product.series,
-      size
+  return pricingPolicy
+    .catalogUnit(
+      product,
+      seriesMeta,
+      currencyMap
     );
-
-  const priceCny=
-    tierUnitCny(
-      pricingSeries,
-      size,
-      quantity
-    );
-
-  const packageCny=
-    packSurchargeCny(
-      product.series,
-      defaultPack(product.series)
-    );
-
-  return cnyToBase(
-    priceCny+
-    packageCny
-  );
 }
+
 function refreshBudgetOptions(){let el=document.getElementById('customBudget');if(!el)return;let previous=el.selectedIndex<0?0:el.selectedIndex;el.innerHTML=currencyMap[currentLang].budget.map(x=>`<option>${x}</option>`).join('');el.selectedIndex=Math.min(previous,el.options.length-1)}
 function desktopCustomBudgetOptions(){
   const currency=
@@ -3292,46 +3218,27 @@ function moqForSeriesSize(
   series,
   size
 ){
-  const value=
-    Number(
-      seriesMeta[series]
-        ?.moqBySize?.[size]
+  return pricingPolicy
+    .moqForSeriesSize(
+      series,
+      size,
+      seriesMeta
     );
-
-  return (
-    Number.isInteger(value)&&
-    value>0
-  )
-    ? value
-    : 1;
 }
 
 function defaultProductSize(product){
-  return product?.defaultSize||'S';
-}
-  
-function productMoq(product){
-  if(!product)return 1;
-
-  const configured=
-    moqForSeriesSize(
-      product.series,
-      product.size
+  return pricingPolicy
+    .defaultProductSize(
+      product
     );
+}
 
-  if(configured>1){
-    return configured;
-  }
-
-  const own=
-    Number(product.moq);
-
-  return (
-    Number.isInteger(own)&&
-    own>0
-  )
-    ? own
-    : 1;
+function productMoq(product){
+  return pricingPolicy
+    .productMoq(
+      product,
+      seriesMeta
+    );
 }
 
 function itemMoq(item){
@@ -3374,12 +3281,18 @@ function configMoq(){
 
 function maximumQuantity(){return Math.max(1,Number(appConfig.maxQuantity)||1000000)}
 function customMoq(){return Math.max(1,Number(appConfig.customMoq)||50)}
-function normalizeQty(value,min=1){
-  let quantity=Number(value);
-  if(!Number.isFinite(quantity))quantity=min;
-  quantity=Math.trunc(quantity);
-  return Math.min(maximumQuantity(),Math.max(min,quantity));
+function normalizeQty(
+  value,
+  min=1
+){
+  return pricingPolicy
+    .normalizeQuantity(
+      value,
+      min,
+      maximumQuantity()
+    );
 }
+
 function generateInquiryId(){
   const now=new Date();
   const date=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('');

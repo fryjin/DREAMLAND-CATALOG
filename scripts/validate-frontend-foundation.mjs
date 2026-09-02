@@ -45,6 +45,7 @@ const requiredFiles=[
   'src/app/runtime-hooks.js',
   'src/services/submission/runtime-submission.js',
   'src/services/risk/runtime-risk.js',
+  'src/domain/pricing/runtime-pricing-policy.js',
   'src/features/inquiry/runtime-inquiry.js',
   'src/features/contact/runtime-contact.js',
   'src/features/catalog/runtime-catalog.js',
@@ -480,7 +481,8 @@ const architectureFiles=[
   ...walkJs(path.join(SRC_ROOT,'app')),
   ...walkJs(path.join(SRC_ROOT,'features')),
   ...walkJs(path.join(SRC_ROOT,'ui')),
-  ...walkJs(path.join(SRC_ROOT,'services'))
+  ...walkJs(path.join(SRC_ROOT,'services')),
+  ...walkJs(path.join(SRC_ROOT,'domain'))
 ];
 
 
