@@ -845,3 +845,77 @@ The isolated PDP remains `noindex,nofollow`. Production ownership is unchanged:
 ```
 
 R4.5C will perform the Production PDP cutover.
+
+
+## R4.5C — Production PDP Cutover
+
+Status: Production migration stage.
+
+R4.5C promotes all 89 already-validated Astro PDP documents into the final
+Production `dist/products/{productId}/index.html` while preserving Astro Home,
+Astro Catalog and the remaining Legacy Custom/Inquiry routes.
+
+The transitional Production build becomes:
+
+```text
+data:build
+→ Legacy build-pages.mjs
+→ isolated Astro build
+→ promote Astro Home
+→ promote Astro Catalog
+→ promote Astro PDP × 89
+→ validate Home
+→ validate Catalog
+→ validate PDP
+```
+
+Final route ownership after R4.5C:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Astro PDP × 89
+/custom/                  → Legacy MPA
+/inquiry/**               → Legacy MPA
+```
+
+PDP promotion is route-scoped. It copies only:
+
+```text
+/products/{activeProductId}/index.html × 89
+/r4-pdp-runtime.js
+PDP-referenced Astro CSS/assets
+PDP-referenced /images/products/... media
+```
+
+Before promotion every target PDP must still be the Legacy MPA. Home, Catalog,
+Custom and Inquiry documents are hash-snapshotted and must remain unchanged by
+the PDP promotion step.
+
+All 89 isolated PDP documents become indexable at this stage:
+
+```text
+robots=index,follow
+canonical=https://dreamland-catalog.pages.dev/products/{productId}/
+```
+
+Each Production PDP must keep:
+
+```text
+exactly one executable /r4-pdp-runtime.js
+one non-executable pdpRuntimeState
+R4.5B runtime-state ownership parity with its route Product ID
+no Legacy Desktop / Risk / Submission / PWA bootstrap
+```
+
+The Production build manifest records:
+
+```text
+pdpOwner=astro
+pdpCutover=B7-00B.4J-R4.5C
+presentationOverrides.pdp=astro-r4.5c
+```
+
+R4.5C intentionally does not modify Service Worker PDP ownership. The current
+Service Worker remains because Custom/Inquiry are still Legacy-owned and its
+PDP navigation/cache boundary will be migrated separately in R4.5D.

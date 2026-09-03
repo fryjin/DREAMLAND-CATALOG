@@ -1333,11 +1333,11 @@ if(DIST_MODE){
           pdp,
           'utf8'
         ).includes(
-          'window.DREAMLAND_MPA_ACTIVE=true;'
+          'data-r4-astro-product="true"'
         )
       ){
         fail(
-          'R4.4D must preserve Legacy PDP ownership under /products/{ID}/.'
+          'R4.4D Catalog hardening must coexist with the Astro PDP owner after R4.5C.'
         );
       }
     }

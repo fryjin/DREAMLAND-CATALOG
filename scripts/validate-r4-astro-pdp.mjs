@@ -147,7 +147,7 @@ try{
       'href="/products/"',
       'href="/custom/"',
       'href="/inquiry/"',
-      'name="robots" content="noindex,nofollow"'
+      'name="robots" content="index,follow"'
     ]){
       if(!html.includes(marker)){
         fail(
@@ -373,7 +373,7 @@ try{
     /pdpRuntimeState/,
     /r4-pdp-runtime\.js/,
     /languageEnabled=\{true\}/,
-    /robots="noindex,nofollow"/
+    /robots="index,follow"/
   ]){
     if(!pattern.test(page)){
       fail(
@@ -492,10 +492,10 @@ try{
 
   if(
     pkg.scripts?.build!==
-    'npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:home:validate && npm run r4:production:catalog:validate'
+    'npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate'
   ){
     fail(
-      'R4.5B must not change Production PDP ownership.'
+      'R4.5C Production build must append route-scoped PDP promotion without changing the isolated PDP contract.'
     );
   }
 }catch(error){

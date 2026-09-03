@@ -81,7 +81,7 @@ function expectFile(
 }
 
 const EXPECTED_BUILD=
-  'npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:home:validate && npm run r4:production:catalog:validate';
+  'npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate';
 
 try{
   const pkg=
@@ -94,7 +94,7 @@ try{
     EXPECTED_BUILD
   ){
     fail(
-      'Production build must preserve Home promotion and append the route-scoped Catalog promotion before final validation.'
+      'Production build must preserve Home/Catalog promotion and append the route-scoped PDP promotion before final validation.'
     );
   }
 
@@ -513,15 +513,15 @@ if(DIST_MODE){
         pdp&&
         (
           !pdp.includes(
-            'window.DREAMLAND_MPA_ACTIVE=true;'
+            'data-r4-astro-product="true"'
           )||
           !pdp.includes(
-            'data-dreamland-page="product"'
+            'src="/r4-pdp-runtime.js"'
           )
         )
       ){
         fail(
-          'Production PDP must remain Legacy MPA during R4.3C.'
+          'Production PDP must be Astro-owned after the R4.5C cutover.'
         );
       }
     }
@@ -618,6 +618,6 @@ console.log(
 console.log(
   SOURCE_MODE
     ? 'Production pipeline / SEO / isolated Home promotion contract verified.'
-    : 'dist/ owns Astro Home + Astro Catalog while PDP/Custom/Inquiry remain Legacy MPA.'
+    : 'dist/ owns Astro Home + Astro Catalog + Astro PDPs while Custom/Inquiry remain Legacy MPA.'
 );
 console.log('');
