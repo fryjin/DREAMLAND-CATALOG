@@ -1,0 +1,119 @@
+---
+interface Props {
+  title:string;
+  description:string;
+  page:string;
+  lang?:string;
+  robots?:string;
+}
+
+const {
+  title,
+  description,
+  page,
+  lang='en',
+  robots='noindex,nofollow'
+}=Astro.props;
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1"
+    />
+    <meta name="robots" content={robots} />
+    <meta name="description" content={description} />
+    <meta
+      name="dreamland-r4-presentation"
+      content="astro-home-static"
+    />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#f8f5ef" />
+    <title>{title}</title>
+  </head>
+  <body
+    data-r4-astro-home="true"
+    data-r4-home-static="true"
+    data-dreamland-page={page}
+  >
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --home-canvas:#f8f5ef;
+    --home-surface:#fffdf9;
+    --home-sand:#ede4d8;
+    --home-ink:#181512;
+    --home-muted:#6e665f;
+    --home-soft:#928981;
+    --home-line:rgba(24,21,18,.13);
+    --home-radius:24px;
+    --home-max:1440px;
+    --home-gutter:clamp(20px,4vw,64px);
+    --home-section:clamp(88px,10vw,156px);
+    --home-serif:Georgia,"Times New Roman",serif;
+    --home-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  }
+
+  * {
+    box-sizing:border-box;
+  }
+
+  html {
+    margin:0;
+    background:var(--home-canvas);
+    color:var(--home-ink);
+    scroll-behavior:smooth;
+  }
+
+  body {
+    min-width:320px;
+    min-height:100vh;
+    margin:0;
+    background:var(--home-canvas);
+    color:var(--home-ink);
+    font-family:var(--home-sans);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  a {
+    color:inherit;
+    text-decoration:none;
+  }
+
+  img {
+    max-width:100%;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font:inherit;
+  }
+
+  .home-container {
+    width:min(
+      calc(100% - (2 * var(--home-gutter))),
+      var(--home-max)
+    );
+    margin-inline:auto;
+  }
+
+  .home-sr-only {
+    position:absolute!important;
+    width:1px!important;
+    height:1px!important;
+    padding:0!important;
+    margin:-1px!important;
+    overflow:hidden!important;
+    clip:rect(0,0,0,0)!important;
+    white-space:nowrap!important;
+    border:0!important;
+  }
+</style>

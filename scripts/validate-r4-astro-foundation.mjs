@@ -16,7 +16,10 @@ function fail(message){
 }
 
 function read(relative){
-  return fs.readFileSync(path.join(ROOT,relative),'utf8');
+  return fs.readFileSync(
+    path.join(ROOT,relative),
+    'utf8'
+  );
 }
 
 function loadJson(relative){
@@ -38,19 +41,38 @@ try{
   const packageJson=loadJson('package.json');
 
   if(packageJson.devDependencies?.astro!=='7.2.10'){
-    fail('Astro dependency must stay pinned to 7.2.10 in R4.1.');
+    fail('Astro dependency must stay pinned to 7.2.10.');
   }
 
-  if(packageJson.scripts?.build!=='npm run data:build && npm run build:pages'){
-    fail('R4.1 must not replace the Production build command.');
+  if(
+    packageJson.scripts?.build!==
+    'npm run data:build && npm run build:pages'
+  ){
+    fail(
+      'R4.3A must not replace the Production build command.'
+    );
   }
 
-  if(packageJson.scripts?.['r4:astro:build']!=='astro build --config astro.config.mjs'){
-    fail('R4 Astro build script is missing.');
+  if(
+    packageJson.scripts?.['r4:astro:build']!==
+    'astro build --config astro.config.mjs && node scripts/r4-copy-astro-home-assets.mjs'
+  ){
+    fail('R4 Astro build/copy contract is missing.');
   }
 
-  if(!String(packageJson.scripts?.validate||'').includes('npm run r4:astro:foundation')){
-    fail('Main validation chain must include R4 Astro foundation.');
+  const validate=
+    String(
+      packageJson.scripts?.validate||
+      ''
+    );
+
+  if(
+    !validate.includes('npm run r4:astro:foundation')||
+    !validate.includes('npm run r4:astro:home')
+  ){
+    fail(
+      'Main validation chain must include Astro foundation and Home gates.'
+    );
   }
 
   const config=read('astro.config.mjs');
@@ -65,66 +87,108 @@ try{
     }
   }
 
-  const legacyBuild=read('scripts/build-pages.mjs');
+  const legacyBuild=
+    read('scripts/build-pages.mjs');
 
   if(!legacyBuild.includes("path.join(ROOT,'dist')")){
-    fail('Legacy Production builder changed unexpectedly in R4.1.');
+    fail(
+      'Legacy Production builder changed unexpectedly during R4.3A.'
+    );
   }
 
   const home=expectFile('index.html');
-  const catalog=expectFile(path.join('products','index.html'));
 
-  for(const [name,html] of [
-    ['home',home],
-    ['catalog',catalog]
-  ]){
-    if(!html.includes('data-r4-astro-foundation="true"')){
-      fail(name+' Astro output lacks the foundation marker.');
-    }
-
-    for(const legacyMarker of [
-      'id="app"',
-      'runtime-desktop-experience.js',
-      'catalog-data.js'
-    ]){
-      if(html.includes(legacyMarker)){
-        fail(name+' Astro output unexpectedly contains legacy marker '+legacyMarker+'.');
-      }
-    }
-
-    if(/<script/i.test(html)){
-      fail(name+' foundation output must remain zero-client-JS.');
-    }
+  if(
+    !home.includes(
+      'data-r4-astro-home="true"'
+    )
+  ){
+    fail(
+      'Astro Home output is missing the R4.3A migration marker.'
+    );
   }
 
-  const products=loadJson('data/products.json')
-    .products
-    .filter(product=>product?.status==='active');
+  const catalog=
+    expectFile(
+      path.join(
+        'products',
+        'index.html'
+      )
+    );
 
-  if(!products.length){
-    fail('R4 Astro foundation found no active products.');
+  if(
+    !catalog.includes(
+      'data-r4-astro-foundation="true"'
+    )
+  ){
+    fail(
+      'Catalog proof page lost the R4.1 foundation marker.'
+    );
+  }
+
+  if(/<script\b/i.test(catalog)){
+    fail(
+      'Catalog foundation output must remain zero-client-JS.'
+    );
+  }
+
+  const products=
+    loadJson('data/products.json')
+      .products
+      .filter(
+        product=>
+          product?.status==='active'
+      );
+
+  if(products.length!==89){
+    fail(
+      'R4 foundation expected 89 active products; found '+
+      products.length+
+      '.'
+    );
   }
 
   for(const product of products){
-    const productId=String(product?.productId||product?.id||'')
-      .trim()
-      .toUpperCase();
+    const productId=
+      String(
+        product?.productId||
+        product?.id||
+        ''
+      )
+        .trim()
+        .toUpperCase();
 
-    if(!productId){
-      fail('Active product has no route id.');
-      continue;
+    const html=
+      expectFile(
+        path.join(
+          'products',
+          productId,
+          'index.html'
+        )
+      );
+
+    if(
+      html&&
+      !html.includes(
+        `data-product-id="${productId}"`
+      )
+    ){
+      fail(
+        'Product output marker mismatch for '+
+        productId+
+        '.'
+      );
     }
 
-    const html=expectFile(
-      path.join('products',productId,'index.html')
-    );
-
-    if(html&&!html.includes(`data-product-id="${productId}"`)){
-      fail('Product output marker mismatch for '+productId+'.');
-    }
-
-    if(html&&/<script/i.test(html)){
-      fail('Product foundation output must remain zero-client-JS: '+productId+'.');
+    if(
+      html&&
+      /<script\b/i.test(html)
+    ){
+      fail(
+        'Product foundation output must remain zero-client-JS: '+
+        productId+
+        '.'
+      );
     }
   }
 
@@ -133,26 +197,40 @@ try{
   if(
     routes.routes?.home?.path!=='/'||
     routes.routes?.catalog?.path!=='/products/'||
-    routes.routes?.product?.path!=='/products/{productId}/'
+    routes.routes?.product?.path!==
+      '/products/{productId}/'
   ){
-    fail('Existing route contract changed during R4.1.');
+    fail(
+      'Existing route contract changed during R4.3A.'
+    );
   }
 
   for(const workflow of [
     '.github/workflows/quality-check.yml',
     '.github/workflows/sync-products-json.yml'
   ]){
-    if(!read(workflow).includes('run: npm ci')){
-      fail(workflow+' must install pinned project dependencies.');
+    if(
+      !read(workflow)
+        .includes('run: npm ci')
+    ){
+      fail(
+        workflow+
+        ' must install pinned project dependencies.'
+      );
     }
   }
 }catch(error){
-  fail('R4 Astro foundation validation crashed: '+error.message);
+  fail(
+    'R4 Astro foundation validation crashed: '+
+    error.message
+  );
 }
 
 if(errors.length){
   console.error('');
-  console.error('DREAMLAND B7-00B.4J R4.1 Astro foundation: FAIL');
+  console.error(
+    'DREAMLAND B7-00B.4J R4.1/R4.3A Astro foundation: FAIL'
+  );
 
   for(const error of errors){
     console.error('- '+error);
@@ -163,6 +241,10 @@ if(errors.length){
 }
 
 console.log('');
-console.log('DREAMLAND B7-00B.4J R4.1 Astro foundation: PASS');
-console.log('Isolated static build, route contract, active-product SSG and zero-client-JS baseline verified.');
+console.log(
+  'DREAMLAND B7-00B.4J R4.1/R4.3A Astro foundation: PASS'
+);
+console.log(
+  'Catalog/PDP foundation remains static while Home has graduated to the R4.3A Astro presentation.'
+);
 console.log('');

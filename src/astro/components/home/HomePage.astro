@@ -1,0 +1,320 @@
+---
+interface Props {
+  view:Record<string,any>;
+}
+
+const {view}=Astro.props;
+const content=view.content||{};
+const story=content.story||{};
+const collections=content.collections||{};
+const featured=content.featured||{};
+const craft=content.craft||{};
+const custom=content.custom||{};
+const wholesale=content.wholesale||{};
+const cta=content.cta||{};
+---
+<main class="home-main" data-home-static-presentation>
+  <section
+    class="home-hero home-container"
+    data-home-section="hero"
+    aria-labelledby="homeHeroTitle"
+  >
+    <h1
+      id="homeHeroTitle"
+      class="home-sr-only"
+    >
+      DREAMLAND
+    </h1>
+    <img
+      src={view.hero.image}
+      alt=""
+      width="1920"
+      height="1080"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </section>
+
+  <section
+    class="home-story home-container"
+    data-home-section="story"
+    aria-labelledby="homeStoryTitle"
+  >
+    <div class="home-story__media">
+      <img
+        src={view.story.image}
+        alt=""
+        width="1400"
+        height="1050"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="home-story__copy">
+      {(story.eyebrow||story.kicker) && (
+        <p class="home-eyebrow">
+          {story.eyebrow||story.kicker}
+        </p>
+      )}
+      <h2 id="homeStoryTitle">
+        {story.title||story.mark||'meet DREAMLAND'}
+      </h2>
+      {story.body && <p>{story.body}</p>}
+      {story.note && (
+        <p class="home-story__note">
+          {story.note}
+        </p>
+      )}
+    </div>
+  </section>
+
+  <section
+    class="home-section home-container"
+    data-home-section="collections"
+    aria-labelledby="homeCollectionsTitle"
+  >
+    <div class="home-section__head">
+      <div>
+        <p class="home-eyebrow">
+          {collections.kicker||'THE COLLECTION'}
+        </p>
+        <h2 id="homeCollectionsTitle">
+          {collections.title||'Four collections'}
+        </h2>
+      </div>
+      {collections.body && (
+        <p class="home-section__body">
+          {collections.body}
+        </p>
+      )}
+    </div>
+
+    <div class="home-collections">
+      {view.collections.map((item:any)=>(
+        <a
+          class:list={[
+            'home-collection-card',
+            item.layout==='wide'&&
+              'is-wide'
+          ]}
+          href={item.href}
+          data-home-collection={item.id}
+        >
+          <div class="home-collection-card__media">
+            <img
+              src={item.image}
+              alt=""
+              width="1400"
+              height="1050"
+              loading="lazy"
+            />
+          </div>
+          <div class="home-collection-card__meta">
+            <div>
+              <h3>{item.label}</h3>
+              <p>
+                {item.count}{' '}
+                {
+                  item.count===1
+                    ? (
+                        collections.designSingular||
+                        collections.designPlural||
+                        'design'
+                      )
+                    : (
+                        collections.designPlural||
+                        collections.designSingular||
+                        'designs'
+                      )
+                }
+              </p>
+            </div>
+            <span>
+              {collections.explore||'Explore'} →
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section
+    class="home-section home-container"
+    data-home-section="featured"
+    aria-labelledby="homeFeaturedTitle"
+  >
+    <div class="home-featured-head">
+      <div>
+        <p class="home-eyebrow">
+          {featured.kicker||'CURATED NOW'}
+        </p>
+        <h2 id="homeFeaturedTitle">
+          {featured.title||'Current Picks'}
+        </h2>
+        {featured.body && (
+          <p class="home-section__body">
+            {featured.body}
+          </p>
+        )}
+      </div>
+      <a href="/products/" class="home-text-link">
+        {featured.viewAll||'View all'} →
+      </a>
+    </div>
+
+    <div class="home-featured-grid">
+      {view.featuredProducts.map((product:any)=>(
+        <a
+          class:list={[
+            'home-product-card',
+            product.layout==='wide'&&
+              'is-wide'
+          ]}
+          href={product.href}
+          data-home-featured-product={product.id}
+        >
+          <div class="home-product-card__media">
+            <img
+              src={product.image}
+              alt={product.name}
+              width="1200"
+              height="1200"
+              loading="lazy"
+            />
+            <span>
+              {featured.viewDetails||'View details'} →
+            </span>
+          </div>
+
+          <div class="home-product-card__copy">
+            <h3>{product.name}</h3>
+            <p>{product.seriesLabel}</p>
+            <div class="home-product-card__commercial">
+              <strong>{product.price}</strong>
+              <span>
+                {featured.moq||'MOQ'} {product.moq}
+              </span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section
+    class="home-editorial-band"
+    data-home-section="craft"
+  >
+    <div class="home-editorial home-container">
+      <div class="home-editorial__media">
+        <img
+          src={view.craft.image}
+          alt=""
+          width="1400"
+          height="1050"
+          loading="lazy"
+        />
+      </div>
+
+      <div class="home-editorial__copy">
+        <p class="home-eyebrow">
+          {craft.kicker||'THE CRAFT'}
+        </p>
+        <h2>
+          {craft.title||'Shaped while the wax is warm.'}
+        </h2>
+        {craft.body && <p>{craft.body}</p>}
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="home-section home-container"
+    data-home-section="custom"
+  >
+    <div class="home-custom">
+      <div class="home-custom__copy">
+        <p class="home-eyebrow">
+          {custom.kicker||'CUSTOM MADE'}
+        </p>
+        <h2>
+          {custom.title||'Made for your project.'}
+        </h2>
+        {custom.body && <p>{custom.body}</p>}
+
+        {Array.isArray(custom.features) && (
+          <ul>
+            {custom.features.map((item:string)=>(
+              <li>{item}</li>
+            ))}
+          </ul>
+        )}
+
+        <a href="/custom/" class="home-text-link">
+          {custom.action||'Start a custom project'} →
+        </a>
+      </div>
+
+      <div class="home-custom__media">
+        <img
+          src={view.custom.image}
+          alt=""
+          width="1600"
+          height="1000"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="home-section home-container"
+    data-home-section="wholesale"
+  >
+    <div class="home-wholesale__head">
+      <p class="home-eyebrow">
+        {wholesale.kicker||'WHOLESALE / PROJECT SUPPORT'}
+      </p>
+      <h2>
+        {wholesale.title||'From selection to delivery.'}
+      </h2>
+    </div>
+
+    {Array.isArray(wholesale.facts) && (
+      <div class="home-wholesale__facts">
+        {wholesale.facts.map((fact:any)=>(
+          <article>
+            <h3>{fact.title}</h3>
+            <p>{fact.body}</p>
+          </article>
+        ))}
+      </div>
+    )}
+  </section>
+
+  <section
+    class="home-cta"
+    data-home-section="cta"
+  >
+    <div class="home-container home-cta__inner">
+      <div>
+        <p class="home-eyebrow">
+          {cta.kicker||'YOUR NEXT PROJECT'}
+        </p>
+        <h2>
+          {cta.title||'Planning a new project?'}
+        </h2>
+        {cta.body && <p>{cta.body}</p>}
+      </div>
+
+      <div class="home-cta__actions">
+        <a href="/products/">
+          {cta.explore||'Explore collection'}
+        </a>
+        <a href="/custom/">
+          {cta.custom||'Start custom project'}
+        </a>
+      </div>
+    </div>
+  </section>
+</main>

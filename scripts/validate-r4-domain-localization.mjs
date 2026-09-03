@@ -19,9 +19,10 @@ try{
   await import(pathToFileURL(path.join(ROOT,'src/domain/localization/runtime-localization-policy.js')).href+'?r4='+Date.now());
   const p=globalThis.DreamlandLocalizationPolicy;
   const i18n=json('data/i18n.json');
+  const siteContent=json('data/site-content.json');
   if(!p||p.version!=='R4.2C')fail('DreamlandLocalizationPolicy R4.2C was not exposed.');
   else{
-    for(const m of ['uiText','choiceLabel','seriesLabel','productName','productDescription','scentText','fromPrice','localeFor','formatDate']){
+    for(const m of ['uiText','choiceLabel','seriesLabel','productName','productDescription','scentText','fromPrice','localeFor','formatDate','localizedContent']){
       if(typeof p[m]!=='function')fail('DreamlandLocalizationPolicy.'+m+' is missing.');
     }
     if(p.uiText('en','catalogTitle',i18n.ui)!==i18n.ui.en.catalogTitle)fail('UI text lookup parity failed.');
@@ -35,6 +36,11 @@ try{
     if(p.localeFor('en',i18n.currencyMap)!==i18n.currencyMap.en.locale||p.localeFor('missing',i18n.currencyMap)!=='zh-CN')fail('Locale fallback parity failed.');
     const d=new Date(2026,8,2);
     if(p.formatDate(d,'en',i18n.currencyMap)!==d.toLocaleDateString(i18n.currencyMap.en.locale))fail('Date formatting parity failed.');
+    if(p.localizedContent('en',siteContent)!==siteContent.languages.en)fail('Site-content language lookup parity failed.');
+    if(
+      p.localizedContent('__missing__',siteContent)!==
+      (siteContent.languages.en||siteContent.languages.zh)
+    )fail('Site-content fallback parity failed.');
   }
 }catch(error){fail('Localization Domain execution failed: '+error.message);}
 
@@ -60,7 +66,7 @@ try{
     ['scentDisplayText','scentSafeText','scentText']
   ]){
     const slice=functionSlice(index,name,nextName);
-    if(!slice||!new RegExp('localizationPolicy\s*\.\s*'+method).test(slice))fail('Legacy localization bridge is not delegated: '+name);
+    if(!slice||!new RegExp('localizationPolicy\\s*\\.\\s*'+method).test(slice))fail('Legacy localization bridge is not delegated: '+name);
   }
   const success=functionSlice(index,'renderSuccess','inquiryBadgeCount');
   if(!/localizationPolicy\s*\.\s*formatDate/.test(success))fail('Success date formatting is not delegated.');
@@ -95,4 +101,4 @@ if(errors.length){
   process.exit(1);
 }
 console.log('\nDREAMLAND B7-00B.4J R4.2C Localization Domain: PASS');
-console.log('Shared UI/choice/series/product/scent/price-label/locale/date fallback policy extracted with parity verified.\n');
+console.log('Shared UI/choice/series/product/scent/price-label/locale/date/site-content fallback policy extracted with parity verified.\n');

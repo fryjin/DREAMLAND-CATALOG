@@ -1,12 +1,19 @@
-# DREAMLAND R4.1 — Astro Build Foundation
+# DREAMLAND R4 — Astro Migration
 
-## Status
+## R4.1 — Astro Build Foundation
 
-This is an isolated build proof of concept.
+R4.1 proved that Astro can coexist with the repository without replacing the
+current Production builder.
 
-It does **not** replace the current Production build.
+The isolated Astro build remains:
 
-Production remains:
+```text
+npm run r4:astro:foundation
+→ Astro static build
+→ .r4-astro-dist/
+```
+
+Production still remains:
 
 ```text
 npm run build
@@ -15,37 +22,114 @@ npm run build
 → dist/
 ```
 
-R4 Astro proof:
+## R4.3A — Astro Home Static Presentation
+
+Status: migration stage.
+
+The isolated `/` route is no longer a Foundation placeholder. It now renders the
+real DREAMLAND Home presentation at build time.
+
+### New Astro Home ownership
 
 ```text
-npm run r4:astro:foundation
-→ Astro static build
-→ .r4-astro-dist/
-→ foundation validator
+src/astro/pages/index.astro
+src/astro/layouts/SiteLayout.astro
+src/astro/components/site/
+src/astro/components/home/
+src/astro/lib/home-view-model.mjs
+src/astro/styles/home.css
 ```
 
-## Proven in R4.1
+### Build-time inputs
 
-- Astro can coexist with the current repository.
-- Astro builds static HTML with no client JavaScript for static pages.
-- Existing data/page-routes.json remains the URL contract.
-- Existing generated data/products.json can drive build-time product routes.
-- Every active product gets a static /products/{ID}/ proof page.
-- Existing Production build and Cloudflare deployment output remain untouched.
-- GitHub validation workflows install project dependencies through npm ci.
+The Home uses the existing canonical data/contracts:
 
-## Explicitly not migrated
+```text
+data/site-content.json
+data/desktop-home-assets.json
+data/products.json
+data/series.json
+data/i18n.json
 
-- Production Home UI
-- Catalog UI
-- Product Detail UI
-- Custom
-- Inquiry / Contact / Review / Success
-- Pricing / MOQ / Currency
-- Risk / hCaptcha
-- Web3Forms Browser Direct
-- Service Worker / PWA
-- scripts/build-pages.mjs
-- index.html
+DreamlandPricingPolicy
+DreamlandLocalizationPolicy
+```
 
-The next architecture phase is Domain Core Extraction.
+Current Picks preserve the existing Home rule:
+
+```text
+3 Masterpiece
++ 2 Advanced
+= 5 Current Picks
+```
+
+The four collection cards use canonical Catalog deep links:
+
+```text
+/products/?series=masterpiece
+/products/?series=advanced
+/products/?series=holiday
+/products/?series=classic
+```
+
+### Asset ownership
+
+R4.3A does not duplicate binary Home assets in the Astro source tree.
+
+After the isolated Astro build:
+
+```text
+scripts/r4-copy-astro-home-assets.mjs
+```
+
+copies the existing Home marketing asset tree into:
+
+```text
+.r4-astro-dist/images/desktop/home/
+```
+
+This preserves the current image-path contract while keeping one binary source
+of truth.
+
+### Zero-client-JS baseline
+
+R4.3A Home is deliberately static.
+
+It uses standard document links and contains no Home client runtime.
+
+The following are **not** loaded by the isolated Home:
+
+```text
+Legacy index.html application
+DreamlandDesktopExperience
+DreamlandDesktopHome runtime renderer
+Catalog runtime
+Detail runtime
+Custom runtime
+Risk / hCaptcha
+Submission runtime
+startup-loader
+```
+
+### Not Production yet
+
+R4.3A does **not** switch `npm run build`, Cloudflare output, Service Worker
+ownership, or the Production `/` route.
+
+That cutover belongs to a later R4.3 stage after Home-only client behavior is
+defined and validated.
+
+## Next
+
+R4.3B — Home Minimal Runtime
+
+Only genuine Home client behavior should be added there:
+
+```text
+language preference / localized Home content
+Inquiry badge
+small navigation behavior if required
+```
+
+No Catalog/Detail/Custom/Risk/Submission application bootstrap should return to
+the Home route.

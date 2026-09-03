@@ -1,0 +1,52 @@
+---
+interface Props {
+  content:Record<string,any>;
+}
+
+const {content}=Astro.props;
+const nav=content?.navigation||{};
+---
+<header class="home-header" data-home-header>
+  <div class="home-header__inner home-container">
+    <a
+      class="home-wordmark"
+      href="/"
+      aria-label="DREAMLAND home"
+    >
+      DREAMLAND
+    </a>
+
+    <nav
+      class="home-nav"
+      aria-label="Primary navigation"
+    >
+      <a href="/products/">
+        {nav.collection||'Collection'}
+      </a>
+      <a href="/custom/">
+        {nav.custom||'Custom'}
+      </a>
+      <a
+        class="home-nav__inquiry"
+        href="/inquiry/"
+      >
+        <span>{nav.inquiry||'Inquiry'}</span>
+        <span
+          class="home-nav__count"
+          data-home-inquiry-count
+          aria-label="0 inquiry items"
+        >
+          0
+        </span>
+      </a>
+    </nav>
+
+    <div
+      class="home-language-static"
+      data-home-language-static
+      aria-label={nav.language||'Language'}
+    >
+      EN
+    </div>
+  </div>
+</header>

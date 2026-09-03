@@ -1,0 +1,55 @@
+---
+interface Props {
+  content:Record<string,any>;
+}
+
+const {content}=Astro.props;
+const footer=content?.footer||{};
+---
+<footer class="home-footer" data-home-footer>
+  <div class="home-container home-footer__grid">
+    <div class="home-footer__brand">
+      <div class="home-wordmark">DREAMLAND</div>
+      <p>
+        {footer.description||'Hand-carved candles for wholesale and custom projects.'}
+      </p>
+    </div>
+
+    <div class="home-footer__links">
+      <div>
+        <strong>{footer.explore||'Explore'}</strong>
+        <a href="/products/">
+          {footer.collection||'Collection'}
+        </a>
+        <a href="/products/?series=masterpiece">
+          {footer.masterpiece||'Masterpiece'}
+        </a>
+        <a href="/products/?series=advanced">
+          {footer.advanced||'Advanced'}
+        </a>
+      </div>
+
+      <div>
+        <strong>{footer.projects||'Projects'}</strong>
+        <a href="/custom/">
+          {footer.custom||'Custom'}
+        </a>
+        <a href="/inquiry/">
+          {footer.inquiry||'Inquiry'}
+        </a>
+      </div>
+
+      <div>
+        <strong>{footer.legal||'Legal'}</strong>
+        <a href="/privacy/">
+          {footer.privacy||'Privacy'}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-container home-footer__bottom">
+    <span>{footer.copyright||'© DREAMLAND'}</span>
+    <span>Hand-carved candle art</span>
+  </div>
+</footer>

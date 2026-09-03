@@ -74,6 +74,19 @@
     return date.toLocaleDateString(localeFor(language,currencyMap));
   }
 
+  function localizedContent(language,siteContent={}){
+    const languages=
+      siteContent?.languages||
+      {};
+
+    return (
+      languages?.[language]||
+      languages?.en||
+      languages?.zh||
+      {}
+    );
+  }
+
   root.DreamlandLocalizationPolicy=Object.freeze({
     version:VERSION,
     uiText,
@@ -84,6 +97,7 @@
     scentText,
     fromPrice,
     localeFor,
-    formatDate
+    formatDate,
+    localizedContent
   });
 })(typeof globalThis!=='undefined'?globalThis:this);
