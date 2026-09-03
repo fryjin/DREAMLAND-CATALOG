@@ -133,3 +133,112 @@ small navigation behavior if required
 
 No Catalog/Detail/Custom/Risk/Submission application bootstrap should return to
 the Home route.
+
+## R4.3B — Home Minimal Runtime
+
+Status: migration stage.
+
+R4.3B adds only two client-side responsibilities to the isolated Astro Home:
+
+```text
+1. Shared EN / ZH / KO language preference
+2. Inquiry badge count
+```
+
+### Shared language key
+
+The Home uses the existing Legacy language preference key:
+
+```text
+productManualLang
+```
+
+The static Home fallback remains English. On first Home runtime mount, English is
+persisted if no supported language preference already exists. This means the
+remaining Legacy routes read the same selected language after normal document
+navigation.
+
+All three Home language views are generated at build time from:
+
+```text
+data/site-content.json
+data/products.json
+data/series.json
+data/i18n.json
+DreamlandPricingPolicy
+DreamlandLocalizationPolicy
+```
+
+The browser runtime does not fetch Catalog/Product/i18n data and does not execute
+Pricing or Localization Domain logic.
+
+### Inquiry badge parity
+
+The Home reads only the existing Inquiry persistence record:
+
+```text
+productManualV2State
+```
+
+Badge semantics intentionally match the Legacy application:
+
+```text
+product item → quantity
+non-product item → 1
+```
+
+The runtime refreshes on:
+
+```text
+initial mount
+pageshow
+storage event
+document visibility return
+```
+
+It does not load `DreamlandInquiry`.
+
+### Runtime budget / boundary
+
+Canonical owner:
+
+```text
+src/astro/runtime/home-runtime.js
+→ DreamlandHomeRuntime
+```
+
+The isolated output receives exactly one executable Home script:
+
+```text
+/r4-home-runtime.js
+```
+
+The runtime is explicitly forbidden from loading or depending on:
+
+```text
+Catalog
+Detail
+Custom
+Risk / hCaptcha
+Submission
+DreamlandDesktopExperience
+Service Worker bootstrap
+network fetches
+```
+
+Normal Home navigation remains standard document links and requires no client
+router.
+
+### Still not Production
+
+R4.3B does not change:
+
+```text
+npm run build
+dist/
+Cloudflare Production /
+Service Worker ownership
+```
+
+Production Home cutover remains a later R4.3 stage.
+

@@ -3,7 +3,10 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import SiteHeader from '../components/site/SiteHeader.astro';
 import SiteFooter from '../components/site/SiteFooter.astro';
 import HomePage from '../components/home/HomePage.astro';
-import {buildHomeViewModel} from '../lib/home-view-model.mjs';
+import {
+  buildHomeViewModel,
+  buildHomeRuntimeState
+} from '../lib/home-view-model.mjs';
 import '../styles/home.css';
 
 import routes from '../../../data/page-routes.json';
@@ -18,7 +21,7 @@ import '../../domain/localization/runtime-localization-policy.js';
 
 if(routes.routes?.home?.path!=='/'){
   throw new Error(
-    'R4.3A expected canonical Home route /.'
+    'R4.3B expected canonical Home route /.'
   );
 }
 
@@ -33,28 +36,68 @@ if(
   !localizationPolicy
 ){
   throw new Error(
-    'R4.3A Home requires canonical Pricing and Localization Domain policies.'
+    'R4.3B Home requires canonical Pricing and Localization Domain policies.'
   );
 }
 
 const language='en';
 
+const supportedLanguages=[
+  'en',
+  'zh',
+  'ko'
+];
+
+const sharedInput={
+  siteContent,
+  homeAssets,
+  products:
+    productsDocument.products||[],
+  seriesMeta:
+    seriesDocument.series||{},
+  currencyMap:
+    i18n.currencyMap||{},
+  localizationPolicy,
+  pricingPolicy
+};
+
 const view=
   buildHomeViewModel({
     language,
-    siteContent,
-    homeAssets,
-    products:
-      productsDocument.products||[],
-    seriesMeta:
-      seriesDocument.series||{},
-    currencyMap:
-      i18n.currencyMap||{},
-    localizationPolicy,
-    pricingPolicy
+    ...sharedInput
   });
 
+const runtimeState=
+  buildHomeRuntimeState({
+    languages:
+      supportedLanguages,
+    defaultLanguage:
+      language,
+    ...sharedInput
+  });
+
+const runtimeStateJson=
+  JSON.stringify(
+    runtimeState
+  )
+    .replace(
+      /</g,
+      '\\u003c'
+    );
+
 const content=view.content||{};
+
+const languageOptions=
+  supportedLanguages.map(
+    value=>({
+      value,
+      label:
+        i18n.currencyMap
+          ?.[value]
+          ?.label||
+        value.toUpperCase()
+    })
+  );
 ---
 <SiteLayout
   title="DREAMLAND — Hand-carved candles for wholesale and custom projects"
@@ -63,7 +106,23 @@ const content=view.content||{};
   lang={language}
   robots="noindex,nofollow"
 >
-  <SiteHeader content={content} />
+  <SiteHeader
+    content={content}
+    languageOptions={languageOptions}
+    initialLanguage={language}
+  />
   <HomePage view={view} />
   <SiteFooter content={content} />
+
+  <script
+    is:inline
+    id="homeRuntimeState"
+    type="application/json"
+    set:html={runtimeStateJson}
+  ></script>
+  <script
+    is:inline
+    type="module"
+    src="/r4-home-runtime.js"
+  ></script>
 </SiteLayout>

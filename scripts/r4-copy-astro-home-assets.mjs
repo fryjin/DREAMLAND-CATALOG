@@ -30,6 +30,21 @@ const target=
     'home'
   );
 
+const runtimeSource=
+  path.join(
+    ROOT,
+    'src',
+    'astro',
+    'runtime',
+    'home-runtime.js'
+  );
+
+const runtimeTarget=
+  path.join(
+    outputRoot,
+    'r4-home-runtime.js'
+  );
+
 if(!fs.existsSync(outputRoot)){
   console.error(
     '[R4 Astro Home Assets] output directory is missing: .r4-astro-dist'
@@ -40,6 +55,13 @@ if(!fs.existsSync(outputRoot)){
 if(!fs.existsSync(source)){
   console.error(
     '[R4 Astro Home Assets] source directory is missing: images/desktop/home'
+  );
+  process.exit(1);
+}
+
+if(!fs.existsSync(runtimeSource)){
+  console.error(
+    '[R4 Astro Home Assets] Home runtime source is missing: src/astro/runtime/home-runtime.js'
   );
   process.exit(1);
 }
@@ -68,6 +90,15 @@ fs.cpSync(
   }
 );
 
+fs.copyFileSync(
+  runtimeSource,
+  runtimeTarget
+);
+
 console.log(
   '[R4 Astro Home Assets] copied images/desktop/home → .r4-astro-dist/images/desktop/home'
+);
+
+console.log(
+  '[R4 Astro Home Runtime] copied src/astro/runtime/home-runtime.js → .r4-astro-dist/r4-home-runtime.js'
 );

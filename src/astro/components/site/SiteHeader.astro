@@ -1,9 +1,19 @@
 ---
 interface Props {
   content:Record<string,any>;
+  languageOptions:Array<{
+    value:string;
+    label:string;
+  }>;
+  initialLanguage:string;
 }
 
-const {content}=Astro.props;
+const {
+  content,
+  languageOptions,
+  initialLanguage
+}=Astro.props;
+
 const nav=content?.navigation||{};
 ---
 <header class="home-header" data-home-header>
@@ -21,16 +31,22 @@ const nav=content?.navigation||{};
       aria-label="Primary navigation"
     >
       <a href="/products/">
-        {nav.collection||'Collection'}
+        <span data-home-bind="navigation.collection">
+          {nav.collection||'Collection'}
+        </span>
       </a>
       <a href="/custom/">
-        {nav.custom||'Custom'}
+        <span data-home-bind="navigation.custom">
+          {nav.custom||'Custom'}
+        </span>
       </a>
       <a
         class="home-nav__inquiry"
         href="/inquiry/"
       >
-        <span>{nav.inquiry||'Inquiry'}</span>
+        <span data-home-bind="navigation.inquiry">
+          {nav.inquiry||'Inquiry'}
+        </span>
         <span
           class="home-nav__count"
           data-home-inquiry-count
@@ -41,12 +57,26 @@ const nav=content?.navigation||{};
       </a>
     </nav>
 
-    <div
-      class="home-language-static"
-      data-home-language-static
-      aria-label={nav.language||'Language'}
-    >
-      EN
-    </div>
+    <label class="home-language-control">
+      <span
+        class="home-sr-only"
+        data-home-bind="navigation.language"
+      >
+        {nav.language||'Language'}
+      </span>
+      <select
+        data-home-language-select
+        aria-label={nav.language||'Language'}
+      >
+        {languageOptions.map(option=>(
+          <option
+            value={option.value}
+            selected={option.value===initialLanguage}
+          >
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </label>
   </div>
 </header>

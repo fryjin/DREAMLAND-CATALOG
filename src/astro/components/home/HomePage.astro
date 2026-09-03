@@ -51,20 +51,27 @@ const cta=content.cta||{};
     </div>
 
     <div class="home-story__copy">
-      {(story.eyebrow||story.kicker) && (
-        <p class="home-eyebrow">
-          {story.eyebrow||story.kicker}
-        </p>
-      )}
-      <h2 id="homeStoryTitle">
-        {story.title||story.mark||'meet DREAMLAND'}
+      <p
+        class="home-eyebrow"
+        data-home-bind="story.kicker"
+      >
+        {story.kicker}
+      </p>
+      <h2
+        id="homeStoryTitle"
+        data-home-bind="story.title"
+      >
+        {story.title}
       </h2>
-      {story.body && <p>{story.body}</p>}
-      {story.note && (
-        <p class="home-story__note">
-          {story.note}
-        </p>
-      )}
+      <p data-home-bind="story.body">
+        {story.body}
+      </p>
+      <p
+        class="home-story__note"
+        data-home-bind="story.note"
+      >
+        {story.note}
+      </p>
     </div>
   </section>
 
@@ -75,18 +82,25 @@ const cta=content.cta||{};
   >
     <div class="home-section__head">
       <div>
-        <p class="home-eyebrow">
-          {collections.kicker||'THE COLLECTION'}
+        <p
+          class="home-eyebrow"
+          data-home-bind="collections.kicker"
+        >
+          {collections.kicker}
         </p>
-        <h2 id="homeCollectionsTitle">
-          {collections.title||'Four collections'}
+        <h2
+          id="homeCollectionsTitle"
+          data-home-bind="collections.title"
+        >
+          {collections.title}
         </h2>
       </div>
-      {collections.body && (
-        <p class="home-section__body">
-          {collections.body}
-        </p>
-      )}
+      <p
+        class="home-section__body"
+        data-home-bind="collections.body"
+      >
+        {collections.body}
+      </p>
     </div>
 
     <div class="home-collections">
@@ -111,26 +125,23 @@ const cta=content.cta||{};
           </div>
           <div class="home-collection-card__meta">
             <div>
-              <h3>{item.label}</h3>
-              <p>
+              <h3 data-home-collection-label>
+                {item.label}
+              </h3>
+              <p data-home-collection-count>
                 {item.count}{' '}
                 {
                   item.count===1
-                    ? (
-                        collections.designSingular||
-                        collections.designPlural||
-                        'design'
-                      )
-                    : (
-                        collections.designPlural||
-                        collections.designSingular||
-                        'designs'
-                      )
+                    ? collections.designSingular
+                    : collections.designPlural
                 }
               </p>
             </div>
-            <span>
-              {collections.explore||'Explore'} →
+            <span
+              data-home-bind="collections.explore"
+              data-home-suffix=" →"
+            >
+              {collections.explore} →
             </span>
           </div>
         </a>
@@ -145,20 +156,32 @@ const cta=content.cta||{};
   >
     <div class="home-featured-head">
       <div>
-        <p class="home-eyebrow">
-          {featured.kicker||'CURATED NOW'}
+        <p
+          class="home-eyebrow"
+          data-home-bind="featured.kicker"
+        >
+          {featured.kicker}
         </p>
-        <h2 id="homeFeaturedTitle">
-          {featured.title||'Current Picks'}
+        <h2
+          id="homeFeaturedTitle"
+          data-home-bind="featured.title"
+        >
+          {featured.title}
         </h2>
-        {featured.body && (
-          <p class="home-section__body">
-            {featured.body}
-          </p>
-        )}
+        <p
+          class="home-section__body"
+          data-home-bind="featured.body"
+        >
+          {featured.body}
+        </p>
       </div>
       <a href="/products/" class="home-text-link">
-        {featured.viewAll||'View all'} →
+        <span
+          data-home-bind="featured.viewAll"
+          data-home-suffix=" →"
+        >
+          {featured.viewAll} →
+        </span>
       </a>
     </div>
 
@@ -181,18 +204,24 @@ const cta=content.cta||{};
               height="1200"
               loading="lazy"
             />
-            <span>
-              {featured.viewDetails||'View details'} →
+            <span data-home-product-details>
+              {featured.viewDetails} →
             </span>
           </div>
 
           <div class="home-product-card__copy">
-            <h3>{product.name}</h3>
-            <p>{product.seriesLabel}</p>
+            <h3 data-home-product-name>
+              {product.name}
+            </h3>
+            <p data-home-product-series>
+              {product.seriesLabel}
+            </p>
             <div class="home-product-card__commercial">
-              <strong>{product.price}</strong>
-              <span>
-                {featured.moq||'MOQ'} {product.moq}
+              <strong data-home-product-price>
+                {product.price}
+              </strong>
+              <span data-home-product-moq>
+                {featured.moq} {product.moq}
               </span>
             </div>
           </div>
@@ -217,13 +246,18 @@ const cta=content.cta||{};
       </div>
 
       <div class="home-editorial__copy">
-        <p class="home-eyebrow">
-          {craft.kicker||'THE CRAFT'}
+        <p
+          class="home-eyebrow"
+          data-home-bind="craft.kicker"
+        >
+          {craft.kicker}
         </p>
-        <h2>
-          {craft.title||'Shaped while the wax is warm.'}
+        <h2 data-home-bind="craft.title">
+          {craft.title}
         </h2>
-        {craft.body && <p>{craft.body}</p>}
+        <p data-home-bind="craft.body">
+          {craft.body}
+        </p>
       </div>
     </div>
   </section>
@@ -234,24 +268,37 @@ const cta=content.cta||{};
   >
     <div class="home-custom">
       <div class="home-custom__copy">
-        <p class="home-eyebrow">
-          {custom.kicker||'CUSTOM MADE'}
+        <p
+          class="home-eyebrow"
+          data-home-bind="custom.kicker"
+        >
+          {custom.kicker}
         </p>
-        <h2>
-          {custom.title||'Made for your project.'}
+        <h2 data-home-bind="custom.title">
+          {custom.title}
         </h2>
-        {custom.body && <p>{custom.body}</p>}
+        <p data-home-bind="custom.body">
+          {custom.body}
+        </p>
 
-        {Array.isArray(custom.features) && (
-          <ul>
-            {custom.features.map((item:string)=>(
-              <li>{item}</li>
-            ))}
-          </ul>
-        )}
+        <ul>
+          {custom.features.map((item:string,index:number)=>(
+            <li
+              data-home-custom-feature
+              data-home-array-index={index}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
 
         <a href="/custom/" class="home-text-link">
-          {custom.action||'Start a custom project'} →
+          <span
+            data-home-bind="custom.action"
+            data-home-suffix=" →"
+          >
+            {custom.action} →
+          </span>
         </a>
       </div>
 
@@ -272,24 +319,35 @@ const cta=content.cta||{};
     data-home-section="wholesale"
   >
     <div class="home-wholesale__head">
-      <p class="home-eyebrow">
-        {wholesale.kicker||'WHOLESALE / PROJECT SUPPORT'}
+      <p
+        class="home-eyebrow"
+        data-home-bind="wholesale.kicker"
+      >
+        {wholesale.kicker}
       </p>
-      <h2>
-        {wholesale.title||'From selection to delivery.'}
+      <h2 data-home-bind="wholesale.title">
+        {wholesale.title}
       </h2>
     </div>
 
-    {Array.isArray(wholesale.facts) && (
-      <div class="home-wholesale__facts">
-        {wholesale.facts.map((fact:any)=>(
-          <article>
-            <h3>{fact.title}</h3>
-            <p>{fact.body}</p>
-          </article>
-        ))}
-      </div>
-    )}
+    <div class="home-wholesale__facts">
+      {wholesale.facts.map((fact:any,index:number)=>(
+        <article>
+          <h3
+            data-home-wholesale-title
+            data-home-array-index={index}
+          >
+            {fact.title}
+          </h3>
+          <p
+            data-home-wholesale-body
+            data-home-array-index={index}
+          >
+            {fact.body}
+          </p>
+        </article>
+      ))}
+    </div>
   </section>
 
   <section
@@ -298,21 +356,30 @@ const cta=content.cta||{};
   >
     <div class="home-container home-cta__inner">
       <div>
-        <p class="home-eyebrow">
-          {cta.kicker||'YOUR NEXT PROJECT'}
+        <p
+          class="home-eyebrow"
+          data-home-bind="cta.kicker"
+        >
+          {cta.kicker}
         </p>
-        <h2>
-          {cta.title||'Planning a new project?'}
+        <h2 data-home-bind="cta.title">
+          {cta.title}
         </h2>
-        {cta.body && <p>{cta.body}</p>}
+        <p data-home-bind="cta.body">
+          {cta.body}
+        </p>
       </div>
 
       <div class="home-cta__actions">
         <a href="/products/">
-          {cta.explore||'Explore collection'}
+          <span data-home-bind="cta.explore">
+            {cta.explore}
+          </span>
         </a>
         <a href="/custom/">
-          {cta.custom||'Start custom project'}
+          <span data-home-bind="cta.custom">
+            {cta.custom}
+          </span>
         </a>
       </div>
     </div>

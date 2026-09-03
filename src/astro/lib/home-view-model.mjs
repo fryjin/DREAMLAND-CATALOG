@@ -150,6 +150,225 @@ function productPrice(
     );
 }
 
+
+function normalizeHomeContent(
+  content={}
+){
+  const navigation=
+    content?.navigation||
+    {};
+  const story=
+    content?.story||
+    {};
+  const collections=
+    content?.collections||
+    {};
+  const featured=
+    content?.featured||
+    {};
+  const craft=
+    content?.craft||
+    {};
+  const custom=
+    content?.custom||
+    {};
+  const wholesale=
+    content?.wholesale||
+    {};
+  const cta=
+    content?.cta||
+    {};
+  const footer=
+    content?.footer||
+    {};
+
+  return Object.freeze({
+    navigation:Object.freeze({
+      collection:
+        navigation.collection||
+        'Collection',
+      custom:
+        navigation.custom||
+        'Custom',
+      inquiry:
+        navigation.inquiry||
+        'Inquiry',
+      language:
+        navigation.language||
+        'Language'
+    }),
+    story:Object.freeze({
+      kicker:
+        story.eyebrow||
+        story.kicker||
+        '',
+      title:
+        story.title||
+        story.mark||
+        'meet DREAMLAND',
+      body:
+        story.body||
+        '',
+      note:
+        story.note||
+        ''
+    }),
+    collections:Object.freeze({
+      kicker:
+        collections.kicker||
+        'THE COLLECTION',
+      title:
+        collections.title||
+        'Four collections',
+      body:
+        collections.body||
+        '',
+      designSingular:
+        collections.designSingular||
+        collections.designPlural||
+        'design',
+      designPlural:
+        collections.designPlural||
+        collections.designSingular||
+        'designs',
+      explore:
+        collections.explore||
+        'Explore'
+    }),
+    featured:Object.freeze({
+      kicker:
+        featured.kicker||
+        'CURATED NOW',
+      title:
+        featured.title||
+        'Current Picks',
+      body:
+        featured.body||
+        '',
+      viewAll:
+        featured.viewAll||
+        'View all',
+      viewDetails:
+        featured.viewDetails||
+        'View details',
+      moq:
+        featured.moq||
+        'MOQ'
+    }),
+    craft:Object.freeze({
+      kicker:
+        craft.kicker||
+        'THE CRAFT',
+      title:
+        craft.title||
+        'Shaped while the wax is warm.',
+      body:
+        craft.body||
+        ''
+    }),
+    custom:Object.freeze({
+      kicker:
+        custom.kicker||
+        'CUSTOM MADE',
+      title:
+        custom.title||
+        'Made for your project.',
+      body:
+        custom.body||
+        '',
+      features:Object.freeze(
+        Array.isArray(
+          custom.features
+        )
+          ? custom.features.slice()
+          : []
+      ),
+      action:
+        custom.action||
+        'Start a custom project'
+    }),
+    wholesale:Object.freeze({
+      kicker:
+        wholesale.kicker||
+        'WHOLESALE / PROJECT SUPPORT',
+      title:
+        wholesale.title||
+        'From selection to delivery.',
+      facts:Object.freeze(
+        (
+          Array.isArray(
+            wholesale.facts
+          )
+            ? wholesale.facts
+            : []
+        ).map(
+          fact=>
+            Object.freeze({
+              title:
+                fact?.title||
+                '',
+              body:
+                fact?.body||
+                ''
+            })
+        )
+      )
+    }),
+    cta:Object.freeze({
+      kicker:
+        cta.kicker||
+        'YOUR NEXT PROJECT',
+      title:
+        cta.title||
+        'Planning a new project?',
+      body:
+        cta.body||
+        '',
+      explore:
+        cta.explore||
+        'Explore collection',
+      custom:
+        cta.custom||
+        'Start custom project'
+    }),
+    footer:Object.freeze({
+      description:
+        footer.description||
+        'Hand-carved candles for wholesale and custom projects.',
+      explore:
+        footer.explore||
+        'Explore',
+      projects:
+        footer.projects||
+        'Projects',
+      legal:
+        footer.legal||
+        'Legal',
+      collection:
+        footer.collection||
+        'Collection',
+      masterpiece:
+        footer.masterpiece||
+        'Masterpiece',
+      advanced:
+        footer.advanced||
+        'Advanced',
+      custom:
+        footer.custom||
+        'Custom',
+      inquiry:
+        footer.inquiry||
+        'Inquiry',
+      privacy:
+        footer.privacy||
+        'Privacy',
+      copyright:
+        footer.copyright||
+        '© DREAMLAND'
+    })
+  });
+}
+
 export function buildHomeViewModel({
   language='en',
   siteContent={},
@@ -170,11 +389,13 @@ export function buildHomeViewModel({
   }
 
   const content=
-    localizationPolicy
-      .localizedContent(
-        language,
-        siteContent
-      );
+    normalizeHomeContent(
+      localizationPolicy
+        .localizedContent(
+          language,
+          siteContent
+        )
+    );
 
   const homeConfig=
     siteContent?.home||
@@ -390,3 +611,109 @@ export function buildHomeViewModel({
     })
   });
 }
+
+function runtimeView(view){
+  return Object.freeze({
+    content:view.content,
+    collections:Object.freeze(
+      view.collections.map(
+        item=>
+          Object.freeze({
+            id:item.id,
+            label:item.label,
+            count:item.count
+          })
+      )
+    ),
+    featuredProducts:Object.freeze(
+      view.featuredProducts.map(
+        item=>
+          Object.freeze({
+            id:item.id,
+            name:item.name,
+            seriesLabel:
+              item.seriesLabel,
+            price:item.price,
+            moq:item.moq
+          })
+      )
+    )
+  });
+}
+
+export function buildHomeRuntimeState({
+  languages=[
+    'en',
+    'zh',
+    'ko'
+  ],
+  defaultLanguage='en',
+  siteContent={},
+  homeAssets={},
+  products=[],
+  seriesMeta={},
+  currencyMap={},
+  localizationPolicy,
+  pricingPolicy
+}={}){
+  const supported=
+    Array.from(
+      new Set(
+        languages
+          .map(
+            value=>
+              String(
+                value||
+                ''
+              )
+                .trim()
+                .toLowerCase()
+          )
+          .filter(Boolean)
+      )
+    );
+
+  const languageViews={};
+
+  supported.forEach(
+    language=>{
+      languageViews[language]=
+        runtimeView(
+          buildHomeViewModel({
+            language,
+            siteContent,
+            homeAssets,
+            products,
+            seriesMeta,
+            currencyMap,
+            localizationPolicy,
+            pricingPolicy
+          })
+        );
+    }
+  );
+
+  return Object.freeze({
+    version:'R4.3B',
+    defaultLanguage:
+      supported.includes(
+        defaultLanguage
+      )
+        ? defaultLanguage
+        : (
+            supported[0]||
+            'en'
+          ),
+    storage:Object.freeze({
+      languageKey:
+        'productManualLang',
+      inquiryKey:
+        'productManualV2State',
+      inquiryVersion:2
+    }),
+    languages:Object.freeze(
+      languageViews
+    )
+  });
+}
+

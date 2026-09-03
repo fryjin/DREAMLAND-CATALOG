@@ -10,46 +10,66 @@ const footer=content?.footer||{};
   <div class="home-container home-footer__grid">
     <div class="home-footer__brand">
       <div class="home-wordmark">DREAMLAND</div>
-      <p>
+      <p data-home-bind="footer.description">
         {footer.description||'Hand-carved candles for wholesale and custom projects.'}
       </p>
     </div>
 
     <div class="home-footer__links">
       <div>
-        <strong>{footer.explore||'Explore'}</strong>
+        <strong data-home-bind="footer.explore">
+          {footer.explore||'Explore'}
+        </strong>
         <a href="/products/">
-          {footer.collection||'Collection'}
+          <span data-home-bind="footer.collection">
+            {footer.collection||'Collection'}
+          </span>
         </a>
         <a href="/products/?series=masterpiece">
-          {footer.masterpiece||'Masterpiece'}
+          <span data-home-bind="footer.masterpiece">
+            {footer.masterpiece||'Masterpiece'}
+          </span>
         </a>
         <a href="/products/?series=advanced">
-          {footer.advanced||'Advanced'}
+          <span data-home-bind="footer.advanced">
+            {footer.advanced||'Advanced'}
+          </span>
         </a>
       </div>
 
       <div>
-        <strong>{footer.projects||'Projects'}</strong>
+        <strong data-home-bind="footer.projects">
+          {footer.projects||'Projects'}
+        </strong>
         <a href="/custom/">
-          {footer.custom||'Custom'}
+          <span data-home-bind="footer.custom">
+            {footer.custom||'Custom'}
+          </span>
         </a>
         <a href="/inquiry/">
-          {footer.inquiry||'Inquiry'}
+          <span data-home-bind="footer.inquiry">
+            {footer.inquiry||'Inquiry'}
+          </span>
         </a>
       </div>
 
       <div>
-        <strong>{footer.legal||'Legal'}</strong>
+        <strong data-home-bind="footer.legal">
+          {footer.legal||'Legal'}
+        </strong>
         <a href="/privacy/">
-          {footer.privacy||'Privacy'}
+          <span data-home-bind="footer.privacy">
+            {footer.privacy||'Privacy'}
+          </span>
         </a>
       </div>
     </div>
   </div>
 
   <div class="home-container home-footer__bottom">
-    <span>{footer.copyright||'© DREAMLAND'}</span>
+    <span data-home-bind="footer.copyright">
+      {footer.copyright||'© DREAMLAND'}
+    </span>
     <span>Hand-carved candle art</span>
   </div>
 </footer>

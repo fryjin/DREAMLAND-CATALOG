@@ -51,7 +51,7 @@ try{
 
   if(!fs.existsSync(homeFile)){
     fail(
-      'R4.3A Astro Home output is missing.'
+      'R4.3B Astro Home output is missing.'
     );
   }else{
     const html=
@@ -102,9 +102,30 @@ try{
       }
     }
 
-    if(/<script\b/i.test(html)){
+    if(
+      !html.includes(
+        'id="homeRuntimeState"'
+      )||
+      !html.includes(
+        'src="/r4-home-runtime.js"'
+      )
+    ){
       fail(
-        'R4.3A Home must remain zero-client-JS.'
+        'R4.3B Home must expose the dedicated minimal runtime/state contract.'
+      );
+    }
+
+    const executableScripts=[
+      ...html.matchAll(
+        /<script\b(?![^>]*type="application\/json")[^>]*>/gi
+      )
+    ];
+
+    if(executableScripts.length!==1){
+      fail(
+        'R4.3B Home must contain exactly one executable client script; found '+
+        executableScripts.length+
+        '.'
       );
     }
 
@@ -129,7 +150,7 @@ try{
 
     if(collectionCount!==4){
       fail(
-        'R4.3A Home expected 4 collection cards; found '+
+        'R4.3B Home expected 4 collection cards; found '+
         collectionCount+
         '.'
       );
@@ -143,7 +164,7 @@ try{
 
     if(featuredCount!==5){
       fail(
-        'R4.3A Home expected 5 Current Picks; found '+
+        'R4.3B Home expected 5 Current Picks; found '+
         featuredCount+
         '.'
       );
@@ -162,7 +183,7 @@ try{
         )
       ){
         fail(
-          'R4.3A Home is missing collection deep link: '+
+          'R4.3B Home is missing collection deep link: '+
           series
         );
       }
@@ -178,7 +199,7 @@ try{
 
     if(imagePaths.length<12){
       fail(
-        'R4.3A Home expected at least 12 Home marketing image references; found '+
+        'R4.3B Home expected at least 12 Home marketing image references; found '+
         imagePaths.length+
         '.'
       );
@@ -192,7 +213,7 @@ try{
 
       if(!fs.existsSync(file)){
         fail(
-          'R4.3A Home output asset is missing: '+
+          'R4.3B Home output asset is missing: '+
           src
         );
       }
@@ -214,10 +235,13 @@ try{
   for(const marker of [
     "import SiteLayout from '../layouts/SiteLayout.astro';",
     "import HomePage from '../components/home/HomePage.astro';",
-    "import {buildHomeViewModel} from '../lib/home-view-model.mjs';",
+    "from '../lib/home-view-model.mjs';",
     "import '../../domain/pricing/runtime-pricing-policy.js';",
     "import '../../domain/localization/runtime-localization-policy.js';",
-    "const language='en';"
+    "const language='en';",
+    "buildHomeRuntimeState",
+    "homeRuntimeState",
+    "r4-home-runtime.js"
   ]){
     if(!source.includes(marker)){
       fail(
@@ -244,7 +268,7 @@ try{
     'npm run data:build && npm run build:pages'
   ){
     fail(
-      'R4.3A must not change Production build ownership.'
+      'R4.3B must not change Production build ownership.'
     );
   }
 
@@ -278,7 +302,7 @@ try{
     home<=foundation
   ){
     fail(
-      'R4.3A Home gate must run after the Astro foundation gate.'
+      'R4.3A/R4.3B Home gate must run after the Astro foundation gate.'
     );
   }
 }catch(error){
@@ -340,7 +364,7 @@ try{
 if(errors.length){
   console.error('');
   console.error(
-    'DREAMLAND B7-00B.4J R4.3A Astro Home Static Presentation: FAIL'
+    'DREAMLAND B7-00B.4J R4.3A/R4.3B Astro Home Presentation: FAIL'
   );
 
   for(const error of errors){
@@ -356,9 +380,9 @@ if(errors.length){
 
 console.log('');
 console.log(
-  'DREAMLAND B7-00B.4J R4.3A Astro Home Static Presentation: PASS'
+  'DREAMLAND B7-00B.4J R4.3A/R4.3B Astro Home Presentation: PASS'
 );
 console.log(
-  'Real Home content / 4 collections / 5 Current Picks / marketing assets / canonical Domain build-time adapters / responsive static presentation / zero-client-JS verified.'
+  'Real Home content / 4 collections / 5 Current Picks / marketing assets / canonical Domain build-time adapters / responsive static presentation / one dedicated minimal Home runtime verified.'
 );
 console.log('');
