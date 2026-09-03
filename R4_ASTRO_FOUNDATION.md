@@ -514,3 +514,65 @@ Production ownership remains:
 ```
 
 R4.4C will perform the Production Catalog route cutover.
+
+
+## R4.4C — Production Catalog Cutover
+
+Status: Production migration stage.
+
+R4.4C promotes the already-validated Astro Catalog into the final Production
+`dist/products/index.html` while preserving the existing Astro Home and all
+remaining Legacy routes.
+
+The transitional Production build becomes:
+
+```text
+data:build
+→ Legacy build-pages.mjs
+→ isolated Astro build
+→ promote Astro Home
+→ promote Astro Catalog
+→ validate Home
+→ validate Catalog
+```
+
+Final route ownership after R4.4C:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Legacy MPA
+/custom/                  → Legacy MPA
+/inquiry/**               → Legacy MPA
+```
+
+Catalog promotion is route-scoped. It copies only:
+
+```text
+/products/index.html
+/r4-catalog-runtime.js
+Catalog-referenced Astro CSS/assets
+89 Catalog cover images referenced by catalogRuntimeState
+```
+
+Before promotion the script snapshots Home, one active PDP, Custom and Inquiry
+documents and rejects the build if any sentinel changes.
+
+The Catalog becomes indexable at this stage:
+
+```text
+robots=index,follow
+canonical=https://dreamland-catalog.pages.dev/products/
+```
+
+The Production build manifest records:
+
+```text
+catalogOwner=astro
+catalogCutover=B7-00B.4J-R4.4C
+presentationOverrides.catalog=astro-r4.4c
+```
+
+R4.4C intentionally does not change Service Worker ownership. The existing
+Service Worker asset remains because PDP/Custom/Inquiry are still Legacy-owned.
+Catalog cache/PWA detachment and Production payload hardening are R4.4D.

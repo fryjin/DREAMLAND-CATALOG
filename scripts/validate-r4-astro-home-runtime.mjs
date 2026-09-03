@@ -458,10 +458,10 @@ try{
 
   if(
     pkg.scripts?.build!==
-    "npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:home:validate"
+    "npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:home:validate && npm run r4:production:catalog:validate"
   ){
     fail(
-      'R4.3C Production build must use the staged Astro Home cutover pipeline.'
+      'R4.4C Production build must preserve the staged Home cutover and append the Catalog cutover pipeline.'
     );
   }
 }catch(error){
