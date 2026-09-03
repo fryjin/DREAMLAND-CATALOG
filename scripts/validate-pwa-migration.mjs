@@ -412,6 +412,41 @@ try{
         `sw.js must preserve runtime-storage.js exactly once; found ${storageMatches.length}.`
       );
     }
+
+    for(const forbiddenHomeEntry of [
+      "'./',",
+      "'./index.html'"
+    ]){
+      if(
+        appShell.includes(
+          forbiddenHomeEntry
+        )
+      ){
+        fail(
+          'R4.3D Astro Home must not remain in the Legacy PWA APP_SHELL: '+
+          forbiddenHomeEntry
+        );
+      }
+    }
+  }
+
+  for(const marker of [
+    'function isHomeNavigation(',
+    'function purgeLegacyHomeEntries(',
+    'function homeNetworkOnly(',
+    "cache:'no-store'",
+    'purgeLegacyHomeEntries()'
+  ]){
+    if(
+      !swSource.includes(
+        marker
+      )
+    ){
+      fail(
+        'R4.3D Service Worker Home isolation is missing: '+
+        marker
+      );
+    }
   }
 }catch(error){
   fail(

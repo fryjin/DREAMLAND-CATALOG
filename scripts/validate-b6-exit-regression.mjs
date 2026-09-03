@@ -1787,8 +1787,46 @@ try{
         appShellEnd+2
       );
 
+    /*
+     * R4.3D compatibility:
+     *
+     * B6 originally required ./index.html in APP_SHELL because Home and all
+     * other routes shared the Legacy PWA shell. Production Home is now
+     * Astro-owned. When the R4.3D Service Worker ownership markers are
+     * present, B6 must require Home to be absent from APP_SHELL instead of
+     * requiring the old Legacy document.
+     *
+     * If R4.3D markers are not present, preserve the historical B6 invariant.
+     */
+    const homeEntryMatches=
+      appShell.match(
+        /'\.\/index\.html'/g
+      )||[];
+
+    const r43dHomeDetached=
+      sw.includes(
+        'const HOME_NAVIGATION_PATHS='
+      )&&
+      sw.includes(
+        'function homeNetworkOnly('
+      )&&
+      sw.includes(
+        'function purgeLegacyHomeEntries('
+      );
+
+    if(r43dHomeDetached){
+      if(homeEntryMatches.length!==0){
+        fail(
+          `R4.3D Astro Home must be absent from sw.js APP_SHELL; found ${homeEntryMatches.length} ./index.html entries.`
+        );
+      }
+    }else if(homeEntryMatches.length!==1){
+      fail(
+        `sw.js APP_SHELL must include ./index.html exactly once before the R4.3D Home detachment; found ${homeEntryMatches.length} inside APP_SHELL.`
+      );
+    }
+
     for(const entry of [
-      './index.html',
       './src/features/inquiry/runtime-inquiry.js',
       './src/features/custom/runtime-custom.js',
       './custom-scent-multi.js'

@@ -274,3 +274,77 @@ Legacy/PWA-owned. The Astro Home does not bootstrap that Service Worker.
 R4.3D will harden Home detachment and measure the Production Home payload before
 Catalog migration begins.
 
+
+## R4.3D — Home Legacy Detachment / Production Payload Hardening
+
+Status: Production hardening stage.
+
+R4.3C moved Production `/` to Astro. R4.3D closes the remaining indirect
+Legacy ownership paths.
+
+### Service Worker split ownership
+
+The existing Service Worker is still required by Legacy routes, but Home is
+removed from its application shell:
+
+```text
+APP_SHELL
+- ./
+- ./index.html
+```
+
+The Service Worker now treats `/` and `/index.html` as explicit
+network-owned Home navigations:
+
+```text
+Home navigation
+→ network only / no-store
+→ offline.html only when the network is unavailable
+```
+
+It also purges historical Home entries from both APP and RUNTIME caches during
+install and activate. This prevents the former giant Legacy Home document from
+being revived as an offline/cache fallback after the Astro cutover.
+
+The Astro Home runtime still does not register, update or control the Service
+Worker.
+
+### Production payload budgets
+
+The R4.3D final `dist/` validator enforces budgets for the Home critical path:
+
+```text
+HTML raw                 <= 128 KiB
+Home runtime raw         <= 12 KiB
+Astro stylesheet raw     <= 64 KiB
+Hero image raw           <= 256 KiB
+HTML+JS+CSS gzip proxy   <= 64 KiB
+Critical raw + hero      <= 384 KiB
+```
+
+It also requires:
+
+```text
+exactly 1 executable script
+script = /r4-home-runtime.js
+1-2 Astro stylesheets
+exactly 1 eager image
+hero fetchpriority=high
+no Legacy/PWA bootstrap references in Home HTML
+```
+
+These are architecture budgets, not synthetic Lighthouse scores. They are
+designed to stop the Astro Home from gradually absorbing the old SPA payload.
+
+### R4.3 exit
+
+After R4.3D passes:
+
+```text
+R4.3A Static Home        CLOSED
+R4.3B Minimal Runtime    CLOSED
+R4.3C Production Cutover CLOSED
+R4.3D Detachment         CLOSED
+```
+
+The next migration target is Catalog Presentation.

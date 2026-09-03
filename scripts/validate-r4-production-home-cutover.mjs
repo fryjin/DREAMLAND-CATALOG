@@ -121,10 +121,10 @@ try{
   if(
     pkg.scripts
       ?.['r4:production:home:validate']!==
-    'node scripts/validate-r4-production-home-cutover.mjs --dist'
+    'node scripts/validate-r4-production-home-cutover.mjs --dist && node scripts/validate-r4-production-home-detachment.mjs --dist'
   ){
     fail(
-      'package.json is missing r4:production:home:validate.'
+      'package.json final Production Home validation must preserve the R4.3C cutover gate and append the R4.3D detachment gate.'
     );
   }
 
