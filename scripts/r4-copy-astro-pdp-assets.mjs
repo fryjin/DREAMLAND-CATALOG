@@ -30,6 +30,13 @@ function fail(message){
   process.exit(1);
 }
 
+function read(file){
+  return fs.readFileSync(
+    file,
+    'utf8'
+  );
+}
+
 const products=
   JSON.parse(
     fs.readFileSync(
@@ -49,7 +56,7 @@ const products=
 
 if(products.length!==89){
   fail(
-    'R4.5A expected 89 active products; found '+
+    'R4.5B expected 89 active products; found '+
     products.length+
     '.'
   );
@@ -87,9 +94,8 @@ for(const product of products){
   }
 
   const html=
-    fs.readFileSync(
-      page,
-      'utf8'
+    read(
+      page
     );
 
   const paths=[
@@ -154,8 +160,72 @@ for(const pathname of referenced){
   );
 }
 
+const runtimeSources=[
+  path.join(
+    ROOT,
+    'src',
+    'features',
+    'detail',
+    'runtime-detail.js'
+  ),
+  path.join(
+    ROOT,
+    'src',
+    'domain',
+    'pricing',
+    'runtime-pricing-policy.js'
+  ),
+  path.join(
+    ROOT,
+    'src',
+    'features',
+    'inquiry',
+    'runtime-inquiry.js'
+  ),
+  path.join(
+    ROOT,
+    'src',
+    'astro',
+    'runtime',
+    'pdp-runtime.js'
+  )
+];
+
+for(const source of runtimeSources){
+  if(!fs.existsSync(source)){
+    fail(
+      'PDP runtime source is missing: '+
+      path.relative(
+        ROOT,
+        source
+      )
+    );
+  }
+}
+
+const runtimeTarget=
+  path.join(
+    OUT,
+    'r4-pdp-runtime.js'
+  );
+
+fs.writeFileSync(
+  runtimeTarget,
+  runtimeSources
+    .map(read)
+    .join(
+      '\n;\n'
+    )+
+  '\n',
+  'utf8'
+);
+
 console.log(
   '[R4 Astro PDP Assets] copied '+
   referenced.size+
   ' referenced product images into .r4-astro-dist.'
+);
+
+console.log(
+  '[R4 Astro PDP Runtime] bundled Detail + Pricing + Inquiry + minimal Astro adapter → .r4-astro-dist/r4-pdp-runtime.js'
 );

@@ -202,15 +202,28 @@ try{
       }
     }
 
-    if(
-      html&&
-      /<script\b/i.test(html)
-    ){
-      fail(
-        'R4.5A Product presentation must remain zero-client-JS: '+
-        productId+
-        '.'
-      );
+    if(html){
+      const productExecutableScripts=[
+        ...html.matchAll(
+          /<script\b(?![^>]*type="application\/json")[^>]*>/gi
+        )
+      ];
+
+      if(
+        productExecutableScripts.length!==1||
+        !html.includes(
+          'src="/r4-pdp-runtime.js"'
+        )||
+        !html.includes(
+          'id="pdpRuntimeState"'
+        )
+      ){
+        fail(
+          'R4.5B Product presentation must expose exactly one dedicated PDP runtime plus non-executable state: '+
+          productId+
+          '.'
+        );
+      }
     }
   }
 
@@ -267,6 +280,6 @@ console.log(
   'DREAMLAND B7-00B.4J R4.1/R4.3A Astro foundation: PASS'
 );
 console.log(
-  'PDP has graduated to the R4.5A static Astro presentation; Home and Catalog remain Production Astro owners.'
+  'PDP has graduated to the R4.5B minimal-runtime Astro presentation; Home and Catalog remain Production Astro owners.'
 );
 console.log('');

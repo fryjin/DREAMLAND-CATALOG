@@ -739,3 +739,109 @@ Production ownership is unchanged:
 
 All isolated PDP documents remain `noindex,nofollow` until the R4.5C
 Production cutover.
+
+
+## R4.5B — PDP Minimal Runtime
+
+Status: isolated runtime migration stage.
+
+R4.5B keeps Production `/products/{productId}/` on the Legacy MPA. The 89
+isolated Astro PDP documents gain interactive configuration through one
+route-scoped executable asset:
+
+```text
+/r4-pdp-runtime.js
+```
+
+That file is assembled by the PDP asset step from canonical runtime owners:
+
+```text
+src/features/detail/runtime-detail.js
+src/domain/pricing/runtime-pricing-policy.js
+src/features/inquiry/runtime-inquiry.js
+src/astro/runtime/pdp-runtime.js
+```
+
+The Astro adapter owns DOM, language preference and presentation updates.
+Configuration state and derived pricing remain owned by `DreamlandDetail` and
+`DreamlandPricingPolicy`. Inquiry add/merge/persist semantics remain owned by
+`DreamlandInquiry`.
+
+### Interactive contract
+
+R4.5B activates:
+
+```text
+Size
+Holiday scent-series
+Scent
+Pattern
+Packaging
+Quantity +/- and direct input
+Dynamic unit price
+Current size MOQ
+Primary-image size preview
+Gallery image selection
+EN / ZH / KO preference
+Inquiry badge
+Add to Inquiry
+```
+
+The runtime reuses cross-route storage:
+
+```text
+productManualLang
+productManualV2State
+```
+
+Add-to-Inquiry creates the same product configuration identity fields consumed
+by the canonical Inquiry service:
+
+```text
+productId
+series
+size
+scentSeries
+scentId / scent
+pattern
+pack
+qty
+```
+
+Duplicate configurations therefore merge through
+`DreamlandInquiry.addOrMergeProduct()` instead of a second Astro merge
+implementation.
+
+### Runtime data
+
+Each PDP embeds one non-executable `pdpRuntimeState` JSON document containing
+only the active product's configuration inputs, relevant scents, series pricing
+metadata, size/pattern metadata, currency map and compact EN/ZH/KO display
+strings.
+
+The browser performs no data fetch.
+
+### Boundaries
+
+R4.5B does not load:
+
+```text
+DreamlandDesktopExperience
+Risk / hCaptcha
+Submission
+PWA bootstrap
+catalog-data.js
+startup-loader.js
+```
+
+The isolated PDP remains `noindex,nofollow`. Production ownership is unchanged:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Legacy MPA
+/custom/                  → Legacy MPA
+/inquiry/**               → Legacy MPA
+```
+
+R4.5C will perform the Production PDP cutover.

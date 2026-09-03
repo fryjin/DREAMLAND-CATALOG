@@ -187,6 +187,253 @@ function detailCopy(
   });
 }
 
+function compactContent(
+  localized={}
+){
+  return Object.freeze({
+    navigation:Object.freeze({
+      ...(
+        localized.navigation||
+        {}
+      )
+    }),
+    footer:Object.freeze({
+      ...(
+        localized.footer||
+        {}
+      )
+    }),
+    detail:Object.freeze({
+      ...(
+        localized.detail||
+        {}
+      )
+    })
+  });
+}
+
+function compactUi(
+  ui={}
+){
+  const keys=[
+    'detailTitle',
+    'detailSub',
+    'addInquiry',
+    'addedInquiry',
+    'size',
+    'scent',
+    'scentSeries',
+    'scentSeriesHint',
+    'pattern',
+    'pack',
+    'quantity',
+    'currentUnitPrice',
+    'currentSizeMoq',
+    'submitMoqCheck',
+    'moq',
+    'moqHint',
+    'minQtyError',
+    'quantityTooLarge',
+    'pieces',
+    'switched',
+    'custom',
+    'inquiry',
+    'viewTierPrice',
+    'tierUnavailable'
+  ];
+
+  return Object.freeze(
+    Object.fromEntries(
+      keys.map(
+        key=>[
+          key,
+          text(
+            ui?.[key]
+          )
+        ]
+      )
+    )
+  );
+}
+
+function runtimeProduct(product){
+  return Object.freeze({
+    id:
+      productId(
+        product
+      ),
+    productId:
+      productId(
+        product
+      ),
+    series:
+      text(
+        product?.series
+      ),
+    status:'active',
+    name:
+      text(
+        product?.name
+      ),
+    names:Object.freeze({
+      ...(
+        product?.names||
+        {}
+      )
+    }),
+    descriptions:Object.freeze({
+      ...(
+        product?.descriptions||
+        {}
+      )
+    }),
+    color:
+      text(
+        product?.color
+      ),
+    colorCode:
+      text(
+        product?.colorCode
+      ),
+    cover:
+      webPath(
+        product?.cover_image
+      ),
+    defaultSize:
+      text(
+        product?.defaultSize||
+        product?.size
+      )
+        .toUpperCase(),
+    size:
+      text(
+        product?.defaultSize||
+        product?.size
+      )
+        .toUpperCase(),
+    availableSizes:Object.freeze(
+      (
+        Array.isArray(
+          product?.availableSizes
+        )
+          ? product.availableSizes
+          : []
+      )
+        .map(
+          value=>
+            text(value)
+              .toUpperCase()
+        )
+        .filter(Boolean)
+    ),
+    availableScentSeries:Object.freeze(
+      (
+        Array.isArray(
+          product?.availableScentSeries
+        )
+          ? product.availableScentSeries
+          : [
+              product?.series
+            ]
+      )
+        .map(text)
+        .filter(Boolean)
+    ),
+    sizeImages:Object.freeze({
+      S:webPath(product?.size_s_image),
+      M:webPath(product?.size_m_image),
+      L:webPath(product?.size_l_image),
+      XL:webPath(product?.size_xl_image)
+    })
+  });
+}
+
+export function mapPdpScents(
+  records=[]
+){
+  return Object.freeze(
+    records
+      .map(row=>
+        Object.freeze({
+          id:
+            text(
+              row?.scent_id
+            ),
+          series:
+            text(
+              row?.series
+            ),
+          status:
+            text(
+              row?.status
+            )
+              .toLowerCase(),
+          sortOrder:
+            Number(
+              row?.sort_order
+            )||
+            999,
+          name:Object.freeze({
+            zh:
+              text(
+                row?.name_zh
+              ),
+            en:
+              text(
+                row?.name_en
+              ),
+            ko:
+              text(
+                row?.name_ko
+              )
+          }),
+          notes:Object.freeze({
+            top:Object.freeze({
+              zh:text(row?.top_zh),
+              en:text(row?.top_en),
+              ko:text(row?.top_ko)
+            }),
+            heart:Object.freeze({
+              zh:text(row?.heart_zh),
+              en:text(row?.heart_en),
+              ko:text(row?.heart_ko)
+            }),
+            base:Object.freeze({
+              zh:text(row?.base_zh),
+              en:text(row?.base_en),
+              ko:text(row?.base_ko)
+            })
+          }),
+          fragranceRatio:
+            text(
+              row?.fragrance_ratio
+            )
+        })
+      )
+      .filter(
+        scent=>
+          scent.id&&
+          scent.status===
+            'active'
+      )
+      .sort(
+        (
+          a,
+          b
+        )=>
+          a.series===
+          b.series
+            ? (
+                a.sortOrder-
+                b.sortOrder
+              )
+            : a.series.localeCompare(
+                b.series
+              )
+      )
+  );
+}
+
 export function buildPdpViewModel({
   language='en',
   product,
@@ -343,5 +590,150 @@ export function buildPdpViewModel({
       custom:'/custom/',
       inquiry:'/inquiry/'
     })
+  });
+}
+
+export function buildPdpRuntimeState({
+  product,
+  languages=[
+    'en',
+    'zh',
+    'ko'
+  ],
+  defaultLanguage='en',
+  seriesDocument={},
+  siteContent={},
+  ui={},
+  currencyMap={},
+  scents=[],
+  pricingPolicy,
+  localizationPolicy
+}={}){
+  if(
+    !product||
+    !pricingPolicy||
+    !localizationPolicy
+  ){
+    throw new Error(
+      'PDP Runtime State requires one product plus canonical Pricing and Localization policies.'
+    );
+  }
+
+  const runtime=
+    runtimeProduct(
+      product
+    );
+
+  const allowedSeries=
+    new Set(
+      runtime
+        .availableScentSeries
+        .length
+          ? runtime
+              .availableScentSeries
+          : [
+              runtime.series
+            ]
+    );
+
+  const runtimeScents=
+    scents
+      .filter(
+        scent=>
+          allowedSeries.has(
+            scent.series
+          )
+      );
+
+  const languageViews=
+    Object.freeze(
+      Object.fromEntries(
+        languages.map(language=>{
+          const localized=
+            localizationPolicy
+              .localizedContent(
+                language,
+                siteContent
+              );
+
+          return [
+            language,
+            Object.freeze({
+              content:
+                compactContent(
+                  localized
+                ),
+              ui:
+                compactUi(
+                  ui?.[language]||
+                  {}
+                ),
+              name:
+                localizationPolicy
+                  .productName(
+                    language,
+                    product
+                  ),
+              description:
+                localizationPolicy
+                  .productDescription(
+                    language,
+                    product
+                  ),
+              seriesLabel:
+                seriesLabel(
+                  product,
+                  language,
+                  seriesDocument.series||
+                  {}
+                )
+            })
+          ];
+        })
+      )
+    );
+
+  return Object.freeze({
+    version:'R4.5B',
+    defaultLanguage,
+    storage:Object.freeze({
+      languageKey:
+        'productManualLang',
+      inquiryKey:
+        'productManualV2State',
+      inquiryVersion:2
+    }),
+    quantity:Object.freeze({
+      min:1,
+      step:1,
+      max:1000000
+    }),
+    product:runtime,
+    sizes:Object.freeze({
+      ...(
+        seriesDocument.sizes||
+        {}
+      )
+    }),
+    patternsBySize:Object.freeze({
+      ...(
+        seriesDocument.patternsBySize||
+        {}
+      )
+    }),
+    seriesMeta:Object.freeze({
+      ...(
+        seriesDocument.series||
+        {}
+      )
+    }),
+    currencies:Object.freeze({
+      ...currencyMap
+    }),
+    scents:Object.freeze(
+      runtimeScents
+    ),
+    languages:
+      languageViews
   });
 }
