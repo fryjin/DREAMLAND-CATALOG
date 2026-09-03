@@ -1,0 +1,232 @@
+---
+interface Props {
+  view:Record<string,any>;
+}
+
+const {view}=Astro.props;
+const copy=view.copy||{};
+const navigation=view.content?.navigation||{};
+---
+<main
+  class="pdp-main"
+  data-pdp-static-presentation
+>
+  <div class="home-container pdp-back-row">
+    <a
+      class="pdp-back"
+      href={view.routes.collection}
+    >
+      <span aria-hidden="true">←</span>
+      {copy.back||'Back to collection'}
+    </a>
+  </div>
+
+  <section
+    class="pdp-hero home-container"
+    aria-labelledby="pdpTitle"
+  >
+    <div
+      class="pdp-gallery"
+      data-pdp-gallery
+    >
+      {view.gallery.map(
+        (
+          image:any,
+          index:number
+        )=>(
+          <figure
+            class:list={[
+              'pdp-gallery__item',
+              image.primary&&
+                'pdp-gallery__item--primary'
+            ]}
+            data-pdp-gallery-item={index}
+          >
+            <img
+              src={image.src}
+              alt={
+                index===0
+                  ? view.name
+                  : `${view.name} — ${index+1}`
+              }
+              width="1200"
+              height="1500"
+              loading={image.loading}
+              fetchpriority={image.priority}
+              decoding="async"
+              data-pdp-primary-image={
+                image.primary
+                  ? 'true'
+                  : undefined
+              }
+            />
+          </figure>
+        )
+      )}
+    </div>
+
+    <aside class="pdp-summary">
+      <div class="pdp-summary__identity">
+        <p class="pdp-eyebrow">
+          {view.seriesLabel}
+        </p>
+
+        <h1 id="pdpTitle">
+          {view.name}
+        </h1>
+
+        <p class="pdp-description">
+          {view.description}
+        </p>
+
+        <dl class="pdp-meta">
+          <div>
+            <dt>{copy.productId||'Product ID'}</dt>
+            <dd>{view.id}</dd>
+          </div>
+
+          {view.colorCode&&(
+            <div>
+              <dt>Color</dt>
+              <dd>{view.colorCode}</dd>
+            </div>
+          )}
+        </dl>
+      </div>
+
+      <div class="pdp-commerce">
+        <div class="pdp-commerce__price">
+          <span>{copy.unitPrice||'Estimated unit price'}</span>
+          <strong>{view.price}</strong>
+        </div>
+
+        <div class="pdp-commerce__moq">
+          <span>{copy.moq||'MOQ'}</span>
+          <strong>
+            {view.moq}
+            <small> pcs</small>
+          </strong>
+        </div>
+
+        <p class="pdp-commerce__note">
+          {copy.moqNote||'Combined quantities within the same series and size count toward MOQ.'}
+        </p>
+      </div>
+
+      <div
+        class="pdp-sizes"
+        aria-label={copy.availableSizes||'Available sizes'}
+      >
+        <div class="pdp-section-heading">
+          <span>{copy.availableSizes||'Available sizes'}</span>
+          <small>
+            {copy.size||'Size'} · {view.defaultSize}
+          </small>
+        </div>
+
+        <div class="pdp-size-list">
+          {view.sizes.map((item:any)=>(
+            <span
+              class:list={[
+                'pdp-size-chip',
+                item.size===view.defaultSize&&
+                  'is-default'
+              ]}
+            >
+              <strong>{item.size}</strong>
+              {item.dimension&&(
+                <small>{item.dimension}</small>
+              )}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {view.tags.length>0&&(
+        <div class="pdp-tags">
+          {view.tags.map((tag:string)=>(
+            <span>{tag}</span>
+          ))}
+        </div>
+      )}
+
+      <div class="pdp-actions">
+        <button
+          type="button"
+          disabled
+          data-pdp-static-add-inquiry
+        >
+          {copy.addInquiry||'Add to Inquiry'}
+        </button>
+
+        <a href={view.routes.custom}>
+          {copy.customProject||'Start a custom project'}
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <p class="pdp-static-note">
+        {copy.pricingNote||'Estimated pricing updates with configuration and quantity. Final pricing is confirmed in the quotation.'}
+      </p>
+    </aside>
+  </section>
+
+  <section
+    class="pdp-details"
+    data-pdp-section="details"
+  >
+    <div class="home-container pdp-details__grid">
+      <div>
+        <p class="pdp-eyebrow">
+          {copy.productDetails||'Product details'}
+        </p>
+        <h2>{view.name}</h2>
+      </div>
+
+      <dl>
+        <div>
+          <dt>{copy.series||'Series'}</dt>
+          <dd>{view.seriesLabel}</dd>
+        </div>
+        <div>
+          <dt>{copy.availableSizes||'Available sizes'}</dt>
+          <dd>
+            {view.sizes
+              .map((item:any)=>item.size)
+              .join(' / ')}
+          </dd>
+        </div>
+        <div>
+          <dt>{copy.wholesale||'Wholesale'}</dt>
+          <dd>
+            {copy.moq||'MOQ'} {view.moq} · {view.price}
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section
+    class="pdp-cta"
+    data-pdp-section="inquiry-cta"
+  >
+    <div class="home-container pdp-cta__inner">
+      <div>
+        <p class="pdp-eyebrow">
+          {copy.wholesale||'Wholesale'}
+        </p>
+        <h2>
+          {copy.addInquiry||'Add to Inquiry'}
+        </h2>
+        <p>
+          {copy.pricingNote||'Final pricing is confirmed in the quotation.'}
+        </p>
+      </div>
+
+      <a href={view.routes.inquiry}>
+        {navigation.inquiry||'Inquiry'}
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+</main>

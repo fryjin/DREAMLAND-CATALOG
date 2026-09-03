@@ -1,45 +1,160 @@
 ---
-import FoundationLayout from '../../layouts/FoundationLayout.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import SiteHeader from '../../components/site/SiteHeader.astro';
+import SiteFooter from '../../components/site/SiteFooter.astro';
+import PdpPage from '../../components/product/PdpPage.astro';
+import {
+  buildPdpViewModel
+} from '../../lib/pdp-view-model.mjs';
+
+import '../../styles/home.css';
+import '../../styles/pdp.css';
+
 import productsDocument from '../../../../data/products.json';
+import seriesDocument from '../../../../data/series.json';
+import siteContent from '../../../../data/site-content.json';
+import i18n from '../../../../data/i18n.json';
 import routes from '../../../../data/page-routes.json';
 
+import '../../../domain/pricing/runtime-pricing-policy.js';
+import '../../../domain/localization/runtime-localization-policy.js';
+
 export function getStaticPaths(){
-  return (productsDocument.products||[])
-    .filter(product=>product?.status==='active')
+  return (
+    productsDocument.products||
+    []
+  )
+    .filter(
+      product=>
+        product?.status===
+        'active'
+    )
     .map(product=>{
-      const productId=String(product?.productId||product?.id||'')
-        .trim()
-        .toUpperCase();
+      const productId=
+        String(
+          product?.productId||
+          product?.id||
+          ''
+        )
+          .trim()
+          .toUpperCase();
 
       return {
-        params:{productId},
-        props:{product}
+        params:{
+          productId
+        },
+        props:{
+          product
+        }
       };
     });
 }
 
-if(routes.routes?.product?.path!=='/products/{productId}/'){
-  throw new Error('R4 Astro foundation expected product route contract.');
+if(
+  routes.routes
+    ?.product
+    ?.path!==
+  '/products/{productId}/'
+){
+  throw new Error(
+    'R4.5A expected canonical PDP route /products/{productId}/.'
+  );
 }
 
-const {product}=Astro.props;
-const productId=String(product?.productId||product?.id||'')
-  .trim()
-  .toUpperCase();
+const {
+  product
+}=Astro.props;
 
-const title=
-  product?.names?.en||
-  product?.names?.zh||
-  product?.name||
-  productId;
+const productId=
+  String(
+    product?.productId||
+    product?.id||
+    ''
+  )
+    .trim()
+    .toUpperCase();
+
+const pricingPolicy=
+  globalThis
+    .DreamlandPricingPolicy;
+
+const localizationPolicy=
+  globalThis
+    .DreamlandLocalizationPolicy;
+
+if(
+  !pricingPolicy||
+  !localizationPolicy
+){
+  throw new Error(
+    'R4.5A PDP requires canonical Pricing and Localization policies.'
+  );
+}
+
+const language='en';
+
+const view=
+  buildPdpViewModel({
+    language,
+    product,
+    seriesDocument,
+    siteContent,
+    ui:
+      i18n.ui||
+      {},
+    currencyMap:
+      i18n.currencyMap||
+      {},
+    pricingPolicy,
+    localizationPolicy
+  });
+
+const languageOptions=[
+  'en',
+  'zh',
+  'ko'
+].map(
+  value=>({
+    value,
+    label:
+      i18n.currencyMap
+        ?.[value]
+        ?.label||
+      value.toUpperCase()
+  })
+);
+
+const canonical=
+  `https://dreamland-catalog.pages.dev/products/${encodeURIComponent(productId)}/`;
+
+const ogImage=
+  view.gallery?.[0]?.src
+    ? (
+        'https://dreamland-catalog.pages.dev'+
+        view.gallery[0].src
+      )
+    : 'https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg';
 ---
-<FoundationLayout
-  title={`${title} · DREAMLAND R4 Foundation`}
-  description="Static product-detail route proof of concept."
+<SiteLayout
+  title={`${view.name} — DREAMLAND`}
+  description={view.description}
   page="product"
   productId={productId}
+  lang={language}
+  robots="noindex,nofollow"
+  canonical={canonical}
+  ogImage={ogImage}
 >
-  <p class="r4-foundation-kicker">DREAMLAND · R4.1</p>
-  <h1>{title}</h1>
-  <p>Static product route: /products/{productId}/</p>
-</FoundationLayout>
+  <SiteHeader
+    content={view.content}
+    languageOptions={languageOptions}
+    initialLanguage={language}
+    languageEnabled={false}
+  />
+
+  <PdpPage view={view} />
+
+  <SiteFooter
+    content={view.content}
+  />
+</SiteLayout>

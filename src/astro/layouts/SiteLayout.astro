@@ -7,6 +7,7 @@ interface Props {
   robots?:string;
   canonical?:string;
   ogImage?:string;
+  productId?:string;
 }
 
 const {
@@ -16,7 +17,8 @@ const {
   lang='en',
   robots='noindex,nofollow',
   canonical='https://dreamland-catalog.pages.dev/',
-  ogImage='https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg'
+  ogImage='https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg',
+  productId=''
 }=Astro.props;
 
 const isHome=
@@ -25,12 +27,17 @@ const isHome=
 const isCatalog=
   page==='catalog';
 
+const isProduct=
+  page==='product';
+
 const presentation=
   isHome
     ? 'astro-home-production'
     : isCatalog
       ? 'astro-catalog-static'
-      : 'astro-static';
+      : isProduct
+        ? 'astro-pdp-static'
+        : 'astro-static';
 ---
 <!doctype html>
 <html lang={lang}>
@@ -64,9 +71,12 @@ const presentation=
     data-r4-astro-home={isHome?'true':undefined}
     data-r4-home-static={isHome?'true':undefined}
     data-r4-production-home={isHome?'true':undefined}
-    data-r4-astro-foundation={isCatalog?'true':undefined}
+    data-r4-astro-foundation={(isCatalog||isProduct)?'true':undefined}
     data-r4-astro-catalog={isCatalog?'true':undefined}
     data-r4-catalog-static={isCatalog?'true':undefined}
+    data-r4-astro-product={isProduct?'true':undefined}
+    data-r4-pdp-static={isProduct?'true':undefined}
+    data-product-id={isProduct?productId:undefined}
     data-dreamland-page={page}
   >
     <slot />

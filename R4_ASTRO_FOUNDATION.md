@@ -673,3 +673,69 @@ R4.4 Catalog Migration             CLOSED
 ```
 
 The next migration target is R4.5 — PDP Presentation Migration.
+
+
+## R4.5A — Astro PDP Static Presentation
+
+Status: isolated presentation migration stage.
+
+R4.5A replaces all 89 R4.1 Product foundation proof documents inside
+`.r4-astro-dist/products/{productId}/` with real zero-client-JS PDP
+presentations.
+
+Build-time ownership:
+
+```text
+data/products.json
+data/series.json
+data/site-content.json
+data/i18n.json
+        ↓
+DreamlandPricingPolicy
+DreamlandLocalizationPolicy
+        ↓
+src/astro/lib/pdp-view-model.mjs
+        ↓
+Astro static PDP × 89
+```
+
+The static presentation includes:
+
+```text
+Product gallery
+Series / Product ID
+Localized product name + description
+Canonical default-size MOQ
+Canonical from-price
+Available sizes + dimensions
+Product tags
+Custom-project link
+Inquiry link
+Add-to-Inquiry control rendered but disabled
+```
+
+Pricing is not reimplemented in Astro. Default-size MOQ and displayed starting
+price delegate to the canonical R4.2A Pricing Domain. Product identity and
+description delegate to the R4.2C Localization Domain.
+
+PDP media remains route-scoped. After Astro renders the 89 pages,
+`scripts/r4-copy-astro-pdp-assets.mjs` scans the actual Product image
+references and copies only those referenced files into the isolated Astro
+output.
+
+R4.5A intentionally remains zero-client-JS. Product configuration, image
+interaction, quantity/pricing mutations, language preference and Add-to-Inquiry
+belong to R4.5B.
+
+Production ownership is unchanged:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Legacy MPA
+/custom/                  → Legacy MPA
+/inquiry/**               → Legacy MPA
+```
+
+All isolated PDP documents remain `noindex,nofollow` until the R4.5C
+Production cutover.

@@ -55,7 +55,7 @@ try{
 
   if(
     packageJson.scripts?.['r4:astro:build']!==
-    'astro build --config astro.config.mjs && node scripts/r4-copy-astro-home-assets.mjs && node scripts/r4-copy-astro-catalog-assets.mjs'
+    'astro build --config astro.config.mjs && node scripts/r4-copy-astro-home-assets.mjs && node scripts/r4-copy-astro-catalog-assets.mjs && node scripts/r4-copy-astro-pdp-assets.mjs'
   ){
     fail('R4 Astro build/copy contract is missing.');
   }
@@ -181,17 +181,25 @@ try{
         )
       );
 
-    if(
-      html&&
-      !html.includes(
-        `data-product-id="${productId}"`
-      )
-    ){
-      fail(
-        'Product output marker mismatch for '+
-        productId+
-        '.'
-      );
+    for(const marker of [
+      'data-r4-astro-foundation="true"',
+      'data-r4-astro-product="true"',
+      'data-r4-pdp-static="true"',
+      `data-product-id="${productId}"`
+    ]){
+      if(
+        html&&
+        !html.includes(
+          marker
+        )
+      ){
+        fail(
+          'R4.5A Product output marker mismatch for '+
+          productId+
+          ': '+
+          marker
+        );
+      }
     }
 
     if(
@@ -199,7 +207,7 @@ try{
       /<script\b/i.test(html)
     ){
       fail(
-        'Product foundation output must remain zero-client-JS: '+
+        'R4.5A Product presentation must remain zero-client-JS: '+
         productId+
         '.'
       );
@@ -259,6 +267,6 @@ console.log(
   'DREAMLAND B7-00B.4J R4.1/R4.3A Astro foundation: PASS'
 );
 console.log(
-  'PDP foundation remains static; Home is Production Astro and Catalog has graduated to the R4.4B minimal-runtime presentation.'
+  'PDP has graduated to the R4.5A static Astro presentation; Home and Catalog remain Production Astro owners.'
 );
 console.log('');
