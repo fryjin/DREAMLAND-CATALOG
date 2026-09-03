@@ -371,7 +371,7 @@ try{
     ],
     [
       'r4:production:pdp:validate',
-      'node scripts/validate-r4-production-pdp-cutover.mjs --dist'
+      'node scripts/validate-r4-production-pdp-cutover.mjs --dist && node scripts/validate-r4-production-pdp-detachment.mjs --dist'
     ]
   ]){
     if(

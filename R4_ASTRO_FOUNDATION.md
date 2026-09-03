@@ -919,3 +919,122 @@ presentationOverrides.pdp=astro-r4.5c
 R4.5C intentionally does not modify Service Worker PDP ownership. The current
 Service Worker remains because Custom/Inquiry are still Legacy-owned and its
 PDP navigation/cache boundary will be migrated separately in R4.5D.
+
+
+## R4.5D — PDP Legacy Detachment / Production Payload Hardening
+
+Status: Production hardening stage.
+
+R4.5C moved all 89 Production Product detail documents to Astro. R4.5D closes
+the remaining indirect Legacy ownership path through the existing Service
+Worker while retaining that Service Worker for Custom and Inquiry routes.
+
+### Exact PDP document ownership
+
+The Service Worker now treats Product detail navigation as an Astro-owned route
+family:
+
+```text
+/products/ADV001
+/products/ADV001/
+/products/ADV001/index.html
+```
+
+The ownership pattern is intentionally constrained to the Product-ID shape:
+
+```text
+/products/{AAA000}
+/products/{AAA000}/
+/products/{AAA000}/index.html
+```
+
+It does not match the Catalog index and does not absorb Custom/Inquiry routes.
+
+Existing APP/RUNTIME cache entries matching the PDP document pattern are purged
+on both Service Worker install and activate. PDP navigations are intercepted
+after Home and Catalog ownership checks but before the remaining Legacy
+`networkFirst` branch:
+
+```text
+Home
+→ Catalog
+→ PDP
+→ remaining Legacy routes
+```
+
+PDP navigation uses:
+
+```text
+network-only
+cache=no-store
+offline.html only when the network is unavailable
+```
+
+This prevents any previously cached Legacy PDP document from being revived after
+the Astro cutover.
+
+The historical `dreamland-pwa-v129` cache/release version remains unchanged.
+R4.5D uses explicit route-family purge instead of widening this stage into a PWA
+release-version migration.
+
+### Production PDP payload budgets
+
+R4.5D validates all 89 final Production PDP documents:
+
+```text
+Per-PDP HTML raw                 <= 256 KiB
+pdpRuntimeState raw              <= 72 KiB
+Shared PDP runtime raw           <= 104 KiB
+Per-PDP Astro styles raw         <= 128 KiB
+HTML + JS + CSS gzip proxy       <= 128 KiB
+Primary eager image              <= 2.5 MiB
+Critical raw + primary image     <= 3 MiB
+Rendered Product images          = 1-10
+Eager/high-priority images       = 1
+Remaining rendered images        = lazy
+PDP routes validated             = 89
+```
+
+The validator reports worst-case Production measurements, including the Product
+ID responsible for maximum HTML, state, CSS, gzip, primary-image and critical
+payload.
+
+### Runtime boundary
+
+The shared `/r4-pdp-runtime.js` remains detached from:
+
+```text
+Service Worker registration
+DreamlandPwa
+DreamlandRisk / hCaptcha
+DreamlandSubmission
+DreamlandDesktopExperience
+client data fetches
+```
+
+Configuration, pricing and Inquiry persistence remain delegated to the existing
+canonical owners introduced in R4.5B.
+
+### R4.5 exit
+
+After R4.5D passes:
+
+```text
+R4.5A Static PDP Presentation    CLOSED
+R4.5B PDP Minimal Runtime        CLOSED
+R4.5C Production PDP Cutover     CLOSED
+R4.5D Legacy Detachment          CLOSED
+R4.5 PDP Migration               CLOSED
+```
+
+Production ownership is then:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Astro PDP × 89
+/custom/                  → Legacy MPA
+/inquiry/**               → Legacy MPA
+```
+
+The next migration target is R4.6 — Custom Presentation Migration.

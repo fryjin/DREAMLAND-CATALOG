@@ -10,11 +10,11 @@ const RELEASE_TAG =
   'b7-00b4j-r3-v129';
 
 /*
- * R4.3D / R4.4D document ownership boundary.
+ * R4.3D / R4.4D / R4.5D document ownership boundary.
  *
- * The registered Service Worker remains required by the Legacy PDP/Custom/
- * Inquiry routes. Production Home and Catalog are Astro-owned and must never
- * be served from cached Legacy documents.
+ * The registered Service Worker remains required by the Legacy Custom/Inquiry
+ * routes. Production Home, Catalog and PDP documents are Astro-owned and must
+ * never be served from cached Legacy documents.
  */
 const HOME_NAVIGATION_PATHS=
   new Set([
@@ -27,6 +27,9 @@ const CATALOG_NAVIGATION_PATHS=
     '/products/',
     '/products/index.html'
   ]);
+
+const PDP_NAVIGATION_PATTERN=
+  /^\/products\/[A-Z]{3}\d{3}(?:\/(?:index\.html)?)?$/i;
 
 const RELEASE_ASSETS = [
   './startup-loader.css?release=b7-00b4j-r3-v129',
@@ -364,6 +367,84 @@ async function catalogNetworkOnly(
   }
 }
 
+function isPdpNavigation(
+  url
+){
+  return (
+    url.origin===
+      self.location.origin&&
+    PDP_NAVIGATION_PATTERN
+      .test(
+        url.pathname
+      )
+  );
+}
+
+async function purgeLegacyPdpEntries(){
+  for(const cacheName of [
+    APP_CACHE,
+    RUNTIME_CACHE
+  ]){
+    const cache=
+      await caches.open(
+        cacheName
+      );
+
+    const requests=
+      await cache.keys();
+
+    await Promise.all(
+      requests.map(
+        async request=>{
+          try{
+            const url=
+              new URL(
+                request.url
+              );
+
+            if(
+              isPdpNavigation(
+                url
+              )
+            ){
+              await cache.delete(
+                request
+              );
+            }
+          }catch(_){
+          }
+        }
+      )
+    );
+  }
+}
+
+async function pdpNetworkOnly(
+  request
+){
+  try{
+    return await fetch(
+      request,
+      {
+        cache:'no-store'
+      }
+    );
+  }catch{
+    return (
+      await caches.match(
+        './offline.html'
+      )
+    )||
+    new Response(
+      'Offline',
+      {
+        status:503,
+        statusText:'Offline'
+      }
+    );
+  }
+}
+
 self.addEventListener('install', event => {
   event.waitUntil(
     Promise.all([
@@ -376,7 +457,8 @@ self.addEventListener('install', event => {
         RELEASE_ASSETS
       ),
       purgeLegacyHomeEntries(),
-      purgeLegacyCatalogEntries()
+      purgeLegacyCatalogEntries(),
+      purgeLegacyPdpEntries()
     ])
   );
 });
@@ -400,7 +482,8 @@ self.addEventListener('activate', event => {
       .then(
         ()=>Promise.all([
           purgeLegacyHomeEntries(),
-          purgeLegacyCatalogEntries()
+          purgeLegacyCatalogEntries(),
+          purgeLegacyPdpEntries()
         ])
       )
       .then(
@@ -552,6 +635,19 @@ self.addEventListener('fetch', event => {
     ){
       event.respondWith(
         catalogNetworkOnly(
+          request
+        )
+      );
+      return;
+    }
+
+    if(
+      isPdpNavigation(
+        url
+      )
+    ){
+      event.respondWith(
+        pdpNetworkOnly(
           request
         )
       );

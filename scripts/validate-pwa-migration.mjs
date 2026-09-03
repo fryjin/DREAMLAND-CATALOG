@@ -518,7 +518,81 @@ try{
       )
     ){
       fail(
-        'R4.4D Catalog navigation must use exact Set membership so PDP routes remain Legacy-owned.'
+        'R4.4D Catalog navigation must use exact Set membership so Catalog ownership remains index-only.'
+      );
+    }
+  }
+
+  for(const marker of [
+    'function isPdpNavigation(',
+    'function purgeLegacyPdpEntries(',
+    'function pdpNetworkOnly(',
+    'PDP_NAVIGATION_PATTERN',
+    'purgeLegacyPdpEntries()'
+  ]){
+    if(
+      !swSource.includes(
+        marker
+      )
+    ){
+      fail(
+        'R4.5D Service Worker PDP isolation is missing: '+
+        marker
+      );
+    }
+  }
+
+  const pdpNavigationContract=
+    /const\s+PDP_NAVIGATION_PATTERN\s*=\s*\/\^\\\/products\\\/\[A-Z\]\{3\}\\d\{3\}\(\?:\\\/\(\?:index\\\.html\)\?\)\?\$\/i\s*;/m;
+
+  if(
+    !pdpNavigationContract.test(
+      swSource
+    )
+  ){
+    fail(
+      'R4.5D PDP Service Worker ownership must match only /products/{AAA000}, /products/{AAA000}/ and /products/{AAA000}/index.html.'
+    );
+  }
+
+  const pdpMatcherStart=
+    swSource.search(
+      /function\s+isPdpNavigation\s*\(/
+    );
+
+  const pdpMatcherEnd=
+    swSource.search(
+      /async\s+function\s+purgeLegacyPdpEntries\s*\(/
+    );
+
+  if(
+    pdpMatcherStart<0||
+    pdpMatcherEnd<=pdpMatcherStart
+  ){
+    fail(
+      'R4.5D could not isolate isPdpNavigation().'
+    );
+  }else{
+    const pdpMatcher=
+      swSource.slice(
+        pdpMatcherStart,
+        pdpMatcherEnd
+      );
+
+    if(
+      !/PDP_NAVIGATION_PATTERN\s*\.\s*test\s*\(\s*url\.pathname\s*\)/
+        .test(
+          pdpMatcher
+        )||
+      pdpMatcher.includes(
+        'startsWith('
+      )||
+      pdpMatcher.includes(
+        'includes('
+      )
+    ){
+      fail(
+        'R4.5D PDP navigation must use the exact PDP route-pattern owner.'
       );
     }
   }
