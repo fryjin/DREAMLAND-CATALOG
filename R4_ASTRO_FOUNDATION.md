@@ -576,3 +576,100 @@ presentationOverrides.catalog=astro-r4.4c
 R4.4C intentionally does not change Service Worker ownership. The existing
 Service Worker asset remains because PDP/Custom/Inquiry are still Legacy-owned.
 Catalog cache/PWA detachment and Production payload hardening are R4.4D.
+
+
+## R4.4D — Catalog Legacy Detachment / Production Payload Hardening
+
+Status: Production hardening stage.
+
+R4.4C moved Production `/products/` to Astro. R4.4D closes the remaining
+indirect Legacy ownership path through the existing Service Worker.
+
+### Exact Catalog document ownership
+
+The Service Worker remains installed because PDP, Custom and Inquiry routes are
+still Legacy-owned. Only the Catalog index document is detached:
+
+```text
+/products/
+/products/index.html
+```
+
+The matcher uses exact pathname Set membership. It intentionally does not match:
+
+```text
+/products/{productId}/
+```
+
+so PDP documents continue through the Legacy navigation path.
+
+Existing APP/RUNTIME cache entries for the two Catalog index paths are purged on
+both install and activate. Catalog navigation is intercepted before the generic
+Legacy `networkFirst` branch and uses:
+
+```text
+network-only
+cache=no-store
+offline.html only when the network is unavailable
+```
+
+This prevents an older cached Legacy Catalog document from being revived after
+the Astro cutover.
+
+The historical `dreamland-pwa-v129` cache/release version remains unchanged.
+R4.4D uses explicit document purge instead of widening the migration into a PWA
+release-version change.
+
+### Production Catalog payload budgets
+
+R4.4D adds final `dist/` budgets:
+
+```text
+Catalog HTML raw                 <= 256 KiB
+catalogRuntimeState raw          <= 128 KiB
+Catalog executable runtime raw   <= 56 KiB
+Astro styles raw                 <= 96 KiB
+HTML + JS + CSS gzip proxy       <= 96 KiB
+SSR cards                        = 24
+Initial cover images             = 24
+Eager/high-priority covers       = 4
+Lazy initial covers              = 20
+Eager covers combined            <= 4 MiB
+Single eager cover               <= 1.5 MiB
+Runtime products                 = 89
+```
+
+All 89 runtime cover files must exist in Production, but only the 24 SSR cards
+are present in the initial document and only four are eager/high-priority.
+
+The validator reports the measured HTML, state, runtime, CSS, gzip proxy and
+initial/eager image payloads on every Production build.
+
+### Runtime boundary
+
+The Catalog route runtime remains detached from:
+
+```text
+Service Worker registration
+DreamlandPwa
+DesktopExperience
+Detail
+Custom
+Risk / hCaptcha
+Submission
+client fetches
+```
+
+### R4.4 exit
+
+After R4.4D passes:
+
+```text
+R4.4A Static Catalog Presentation  CLOSED
+R4.4B Catalog Minimal Runtime      CLOSED
+R4.4C Production Catalog Cutover   CLOSED
+R4.4D Legacy Detachment            CLOSED
+R4.4 Catalog Migration             CLOSED
+```
+
+The next migration target is R4.5 — PDP Presentation Migration.

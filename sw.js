@@ -10,16 +10,22 @@ const RELEASE_TAG =
   'b7-00b4j-r3-v129';
 
 /*
- * R4.3D Home ownership boundary.
+ * R4.3D / R4.4D document ownership boundary.
  *
- * The registered Service Worker remains required by the Legacy Catalog/PDP/
- * Custom/Inquiry routes. Production Home, however, is now Astro-owned and
- * must never be served from a cached Legacy index document.
+ * The registered Service Worker remains required by the Legacy PDP/Custom/
+ * Inquiry routes. Production Home and Catalog are Astro-owned and must never
+ * be served from cached Legacy documents.
  */
 const HOME_NAVIGATION_PATHS=
   new Set([
     '/',
     '/index.html'
+  ]);
+
+const CATALOG_NAVIGATION_PATHS=
+  new Set([
+    '/products/',
+    '/products/index.html'
   ]);
 
 const RELEASE_ASSETS = [
@@ -277,6 +283,87 @@ async function homeNetworkOnly(
   }
 }
 
+function isCatalogNavigation(
+  url
+){
+  return (
+    url.origin===
+      self.location.origin&&
+    CATALOG_NAVIGATION_PATHS
+      .has(
+        url.pathname
+      )
+  );
+}
+
+async function purgeLegacyCatalogEntries(){
+  for(const cacheName of [
+    APP_CACHE,
+    RUNTIME_CACHE
+  ]){
+    const cache=
+      await caches.open(
+        cacheName
+      );
+
+    const requests=
+      await cache.keys();
+
+    await Promise.all(
+      requests.map(
+        async request=>{
+          try{
+            const url=
+              new URL(
+                request.url
+              );
+
+            if(
+              url.origin===
+                self.location.origin&&
+              CATALOG_NAVIGATION_PATHS
+                .has(
+                  url.pathname
+                )
+            ){
+              await cache.delete(
+                request
+              );
+            }
+          }catch(_){
+          }
+        }
+      )
+    );
+  }
+}
+
+async function catalogNetworkOnly(
+  request
+){
+  try{
+    return await fetch(
+      request,
+      {
+        cache:'no-store'
+      }
+    );
+  }catch{
+    return (
+      await caches.match(
+        './offline.html'
+      )
+    )||
+    new Response(
+      'Offline',
+      {
+        status:503,
+        statusText:'Offline'
+      }
+    );
+  }
+}
+
 self.addEventListener('install', event => {
   event.waitUntil(
     Promise.all([
@@ -288,7 +375,8 @@ self.addEventListener('install', event => {
         RUNTIME_CACHE,
         RELEASE_ASSETS
       ),
-      purgeLegacyHomeEntries()
+      purgeLegacyHomeEntries(),
+      purgeLegacyCatalogEntries()
     ])
   );
 });
@@ -310,7 +398,10 @@ self.addEventListener('activate', event => {
           .map(key => caches.delete(key))
       ))
       .then(
-        ()=>purgeLegacyHomeEntries()
+        ()=>Promise.all([
+          purgeLegacyHomeEntries(),
+          purgeLegacyCatalogEntries()
+        ])
       )
       .then(
         ()=>self.clients.claim()
@@ -448,6 +539,19 @@ self.addEventListener('fetch', event => {
     ){
       event.respondWith(
         homeNetworkOnly(
+          request
+        )
+      );
+      return;
+    }
+
+    if(
+      isCatalogNavigation(
+        url
+      )
+    ){
+      event.respondWith(
+        catalogNetworkOnly(
           request
         )
       );

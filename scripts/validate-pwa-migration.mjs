@@ -448,6 +448,80 @@ try{
       );
     }
   }
+
+  for(const marker of [
+    'function isCatalogNavigation(',
+    'function purgeLegacyCatalogEntries(',
+    'function catalogNetworkOnly(',
+    'CATALOG_NAVIGATION_PATHS',
+    'purgeLegacyCatalogEntries()'
+  ]){
+    if(
+      !swSource.includes(
+        marker
+      )
+    ){
+      fail(
+        'R4.4D Service Worker Catalog isolation is missing: '+
+        marker
+      );
+    }
+  }
+
+  const catalogNavigationContract=
+    /const\s+CATALOG_NAVIGATION_PATHS\s*=\s*new\s+Set\s*\(\s*\[\s*['"]\/products\/['"]\s*,\s*['"]\/products\/index\.html['"]\s*\]\s*\)/m;
+
+  if(
+    !catalogNavigationContract.test(
+      swSource
+    )
+  ){
+    fail(
+      'R4.4D Catalog Service Worker ownership must match only /products/ and /products/index.html.'
+    );
+  }
+
+  const catalogMatcherStart=
+    swSource.search(
+      /function\s+isCatalogNavigation\s*\(/
+    );
+
+  const catalogMatcherEnd=
+    swSource.search(
+      /async\s+function\s+purgeLegacyCatalogEntries\s*\(/
+    );
+
+  if(
+    catalogMatcherStart<0||
+    catalogMatcherEnd<=catalogMatcherStart
+  ){
+    fail(
+      'R4.4D could not isolate isCatalogNavigation().'
+    );
+  }else{
+    const catalogMatcher=
+      swSource.slice(
+        catalogMatcherStart,
+        catalogMatcherEnd
+      );
+
+    if(
+      !/CATALOG_NAVIGATION_PATHS\s*\.\s*has\s*\(\s*url\.pathname\s*\)/
+        .test(
+          catalogMatcher
+        )||
+      catalogMatcher.includes(
+        'startsWith('
+      )||
+      catalogMatcher.includes(
+        'includes('
+      )
+    ){
+      fail(
+        'R4.4D Catalog navigation must use exact Set membership so PDP routes remain Legacy-owned.'
+      );
+    }
+  }
 }catch(error){
   fail(
     `sw.js PWA migration inspection failed: ${error.message}`

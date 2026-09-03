@@ -145,7 +145,7 @@ try{
     ],
     [
       'r4:production:catalog:validate',
-      'node scripts/validate-r4-production-catalog-cutover.mjs --dist'
+      'node scripts/validate-r4-production-catalog-cutover.mjs --dist && node scripts/validate-r4-production-catalog-detachment.mjs --dist'
     ]
   ]){
     if(
