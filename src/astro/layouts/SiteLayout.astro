@@ -18,6 +18,19 @@ const {
   canonical='https://dreamland-catalog.pages.dev/',
   ogImage='https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg'
 }=Astro.props;
+
+const isHome=
+  page==='home';
+
+const isCatalog=
+  page==='catalog';
+
+const presentation=
+  isHome
+    ? 'astro-home-production'
+    : isCatalog
+      ? 'astro-catalog-static'
+      : 'astro-static';
 ---
 <!doctype html>
 <html lang={lang}>
@@ -41,16 +54,19 @@ const {
     <meta name="twitter:image" content={ogImage} />
     <meta
       name="dreamland-r4-presentation"
-      content="astro-home-production"
+      content={presentation}
     />
     <meta name="color-scheme" content="light" />
     <meta name="theme-color" content="#f8f5ef" />
     <title>{title}</title>
   </head>
   <body
-    data-r4-astro-home="true"
-    data-r4-home-static="true"
-    data-r4-production-home="true"
+    data-r4-astro-home={isHome?'true':undefined}
+    data-r4-home-static={isHome?'true':undefined}
+    data-r4-production-home={isHome?'true':undefined}
+    data-r4-astro-foundation={isCatalog?'true':undefined}
+    data-r4-astro-catalog={isCatalog?'true':undefined}
+    data-r4-catalog-static={isCatalog?'true':undefined}
     data-dreamland-page={page}
   >
     <slot />

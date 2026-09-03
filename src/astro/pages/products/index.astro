@@ -1,21 +1,115 @@
 ---
-import FoundationLayout from '../../layouts/FoundationLayout.astro';
-import productsDocument from '../../../../data/products.json';
-import routes from '../../../../data/page-routes.json';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import SiteHeader from '../../components/site/SiteHeader.astro';
+import SiteFooter from '../../components/site/SiteFooter.astro';
+import CatalogPage from '../../components/catalog/CatalogPage.astro';
+import {
+  buildCatalogViewModel
+} from '../../lib/catalog-view-model.mjs';
 
-if(routes.routes?.catalog?.path!=='/products/'){
-  throw new Error('R4 Astro foundation expected catalog route /products/.');
+import '../../styles/home.css';
+import '../../styles/catalog.css';
+
+import routes from '../../../../data/page-routes.json';
+import productsDocument from '../../../../data/products.json';
+import seriesDocument from '../../../../data/series.json';
+import siteContent from '../../../../data/site-content.json';
+import i18n from '../../../../data/i18n.json';
+
+import '../../../features/catalog/runtime-desktop-catalog-view.js';
+import '../../../domain/pricing/runtime-pricing-policy.js';
+import '../../../domain/localization/runtime-localization-policy.js';
+
+if(
+  routes.routes
+    ?.catalog
+    ?.path!==
+  '/products/'
+){
+  throw new Error(
+    'R4.4A expected canonical Catalog route /products/.'
+  );
 }
 
-const products=(productsDocument.products||[])
-  .filter(product=>product?.status==='active');
+const catalogPolicy=
+  globalThis
+    .DreamlandDesktopCatalogView;
+
+const pricingPolicy=
+  globalThis
+    .DreamlandPricingPolicy;
+
+const localizationPolicy=
+  globalThis
+    .DreamlandLocalizationPolicy;
+
+if(
+  !catalogPolicy||
+  !pricingPolicy||
+  !localizationPolicy
+){
+  throw new Error(
+    'R4.4A Catalog requires Desktop Catalog ViewState plus canonical Pricing and Localization policies.'
+  );
+}
+
+const language='en';
+
+const seriesMeta=
+  seriesDocument.series||
+  {};
+
+const view=
+  buildCatalogViewModel({
+    language,
+    products:
+      productsDocument.products||
+      [],
+    seriesMeta,
+    siteContent,
+    currencyMap:
+      i18n.currencyMap||
+      {},
+    catalogPolicy,
+    pricingPolicy,
+    localizationPolicy,
+    batchSize:24
+  });
+
+const languageOptions=[
+  'en',
+  'zh',
+  'ko'
+].map(
+  value=>({
+    value,
+    label:
+      i18n.currencyMap
+        ?.[value]
+        ?.label||
+      value.toUpperCase()
+  })
+);
 ---
-<FoundationLayout
-  title="DREAMLAND R4 Catalog Foundation"
-  description="Static catalog route proof of concept."
+<SiteLayout
+  title="DREAMLAND Collection — Hand-carved candles"
+  description="Browse the DREAMLAND collection of hand-carved candles for wholesale, gifting, retail and custom projects."
   page="catalog"
+  lang={language}
+  robots="noindex,nofollow"
+  canonical="https://dreamland-catalog.pages.dev/products/"
+  ogImage="https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg"
 >
-  <p class="r4-foundation-kicker">DREAMLAND · R4.1</p>
-  <h1>Catalog route</h1>
-  <p>Astro resolved {products.length} active products at build time.</p>
-</FoundationLayout>
+  <SiteHeader
+    content={view.content}
+    languageOptions={languageOptions}
+    initialLanguage={language}
+    languageEnabled={false}
+  />
+
+  <CatalogPage view={view} />
+
+  <SiteFooter
+    content={view.content}
+  />
+</SiteLayout>

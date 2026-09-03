@@ -55,7 +55,7 @@ try{
 
   if(
     packageJson.scripts?.['r4:astro:build']!==
-    'astro build --config astro.config.mjs && node scripts/r4-copy-astro-home-assets.mjs'
+    'astro build --config astro.config.mjs && node scripts/r4-copy-astro-home-assets.mjs && node scripts/r4-copy-astro-catalog-assets.mjs'
   ){
     fail('R4 Astro build/copy contract is missing.');
   }
@@ -122,13 +122,13 @@ try{
     )
   ){
     fail(
-      'Catalog proof page lost the R4.1 foundation marker.'
+      'Catalog compatibility foundation marker was lost during R4.4A.'
     );
   }
 
   if(/<script\b/i.test(catalog)){
     fail(
-      'Catalog foundation output must remain zero-client-JS.'
+      'R4.4A Catalog presentation must remain zero-client-JS.'
     );
   }
 
@@ -245,6 +245,6 @@ console.log(
   'DREAMLAND B7-00B.4J R4.1/R4.3A Astro foundation: PASS'
 );
 console.log(
-  'Catalog/PDP foundation remains static while Home has graduated to the R4.3A Astro presentation.'
+  'PDP foundation remains static; Home is Production Astro and Catalog has graduated to the R4.4A static presentation.'
 );
 console.log('');

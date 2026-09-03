@@ -239,7 +239,7 @@ try{
     'property="og:url"',
     'property="og:image"',
     'name="twitter:card"',
-    'data-r4-production-home="true"'
+    'data-r4-production-home='
   ]){
     if(
       !layout.includes(

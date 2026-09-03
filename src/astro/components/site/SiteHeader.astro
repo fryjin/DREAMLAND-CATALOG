@@ -6,12 +6,14 @@ interface Props {
     label:string;
   }>;
   initialLanguage:string;
+  languageEnabled?:boolean;
 }
 
 const {
   content,
   languageOptions,
-  initialLanguage
+  initialLanguage,
+  languageEnabled=true
 }=Astro.props;
 
 const nav=content?.navigation||{};
@@ -66,7 +68,9 @@ const nav=content?.navigation||{};
       </span>
       <select
         data-home-language-select
+        data-site-language-enabled={languageEnabled?'true':'false'}
         aria-label={nav.language||'Language'}
+        disabled={!languageEnabled}
       >
         {languageOptions.map(option=>(
           <option

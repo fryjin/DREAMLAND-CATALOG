@@ -1,0 +1,246 @@
+---
+interface Props {
+  view:Record<string,any>;
+}
+
+const {view}=Astro.props;
+const copy=view.catalog||{};
+const navigation=view.content?.navigation||{};
+---
+<main
+  class="catalog-main"
+  data-catalog-static-presentation
+>
+  <section
+    class="catalog-intro home-container"
+    data-catalog-section="intro"
+    aria-labelledby="catalogTitle"
+  >
+    <p class="catalog-eyebrow">
+      {copy.kicker}
+    </p>
+
+    <div class="catalog-intro__layout">
+      <div class="catalog-intro__copy">
+        <h1 id="catalogTitle">
+          {copy.title}
+        </h1>
+        <p>
+          {copy.body}
+        </p>
+      </div>
+
+      <div
+        class="catalog-intro__count"
+        data-catalog-all-count={view.allCount}
+      >
+        <strong>
+          {view.allCount}
+        </strong>
+        <span>
+          {copy.activeDesigns}
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="catalog-browse"
+    data-catalog-section="browse"
+    aria-label={copy.seriesNavigation}
+  >
+    <div class="home-container">
+      <div
+        class="catalog-series"
+        role="tablist"
+        aria-label={copy.seriesNavigation}
+      >
+        {view.scopes.map((scope:any)=>(
+          <button
+            class:list={[
+              'catalog-series__item',
+              scope.id===view.scope&&
+                'is-active'
+            ]}
+            type="button"
+            role="tab"
+            aria-selected={
+              scope.id===view.scope
+                ? 'true'
+                : 'false'
+            }
+            data-catalog-static-series={scope.id}
+            disabled
+          >
+            <span>
+              {scope.label}
+            </span>
+            <small>
+              {scope.count}
+            </small>
+          </button>
+        ))}
+      </div>
+
+      <div class="catalog-tools">
+        <div class="catalog-result-count">
+          <strong>
+            {view.totalCount}
+          </strong>
+          <span>
+            {copy.designs}
+          </span>
+        </div>
+
+        <label class="catalog-search">
+          <span class="home-sr-only">
+            {copy.searchPlaceholder}
+          </span>
+          <input
+            type="search"
+            placeholder={copy.searchPlaceholder}
+            data-catalog-static-search
+            disabled
+          />
+        </label>
+
+        <button
+          class="catalog-tool-button"
+          type="button"
+          data-catalog-static-filter
+          disabled
+        >
+          {copy.filters}
+        </button>
+
+        <label class="catalog-sort">
+          <span class="home-sr-only">
+            {copy.sort}
+          </span>
+          <select
+            data-catalog-static-sort
+            disabled
+          >
+            <option value="featured">
+              {copy.sortFeatured}
+            </option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="catalog-products home-container"
+    data-catalog-section="products"
+    aria-label={copy.title}
+  >
+    <div
+      class="catalog-grid"
+      data-catalog-product-grid
+    >
+      {view.products.map((product:any)=>(
+        <article
+          class="catalog-card"
+          data-catalog-product={product.id}
+        >
+          <a
+            class="catalog-card__link"
+            href={product.href}
+            aria-label={`${copy.viewDetails}: ${product.name}`}
+          >
+            <div class="catalog-card__media">
+              <img
+                src={product.cover}
+                alt={product.name}
+                width="720"
+                height="900"
+                loading={product.loading}
+                fetchpriority={product.priority}
+                decoding="async"
+              />
+
+              <span
+                class="catalog-card__overlay"
+                aria-hidden="true"
+              >
+                {copy.viewDetails}
+                <b>→</b>
+              </span>
+            </div>
+
+            <div class="catalog-card__copy">
+              <div>
+                <h2>
+                  {product.name}
+                </h2>
+                <p>
+                  {product.seriesLabel}
+                </p>
+              </div>
+
+              <div class="catalog-card__commercial">
+                <strong>
+                  {product.price}
+                </strong>
+                <span>
+                  {copy.moq} {product.moq}
+                </span>
+              </div>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+
+    <div class="catalog-pagination">
+      <p>
+        {copy.showing}
+        <strong>
+          {view.renderedCount}
+        </strong>
+        {copy.of}
+        <strong>
+          {view.totalCount}
+        </strong>
+      </p>
+
+      {view.hasMore&&(
+        <button
+          class="catalog-load-more"
+          type="button"
+          data-catalog-static-load-more
+          disabled
+        >
+          {copy.loadMore}
+        </button>
+      )}
+    </div>
+  </section>
+
+  <section
+    class="catalog-cta"
+    data-catalog-section="inquiry-cta"
+  >
+    <div class="home-container catalog-cta__inner">
+      <div>
+        <p class="catalog-eyebrow">
+          {copy.ctaKicker}
+        </p>
+        <h2>
+          {copy.ctaEmptyTitle}
+        </h2>
+        <p>
+          {copy.ctaEmptyBody}
+        </p>
+      </div>
+
+      <a href="/inquiry/">
+        {navigation.inquiry||'Inquiry'}
+        <span aria-hidden="true">
+          →
+        </span>
+      </a>
+    </div>
+  </section>
+</main>

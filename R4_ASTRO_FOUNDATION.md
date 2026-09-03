@@ -348,3 +348,64 @@ R4.3D Detachment         CLOSED
 ```
 
 The next migration target is Catalog Presentation.
+
+
+## R4.4A — Astro Catalog Static Presentation
+
+Status: isolated presentation migration stage.
+
+R4.4A replaces the R4.1 Catalog proof page inside `.r4-astro-dist/products/`
+with a real Catalog presentation while keeping Production `/products/` on the
+Legacy MPA.
+
+Build-time ownership:
+
+```text
+data/products.json
+data/series.json
+data/site-content.json
+data/i18n.json
+        ↓
+DreamlandDesktopCatalogView
+DreamlandPricingPolicy
+DreamlandLocalizationPolicy
+        ↓
+src/astro/lib/catalog-view-model.mjs
+        ↓
+Astro static Catalog HTML
+```
+
+The initial presentation preserves the existing Catalog behavior contract
+without activating client interactions yet:
+
+```text
+89 active products
+All + four series counts
+24-card initial featured page
+direct MPA PDP links
+price + MOQ display
+Search / Filter / Sort / Load More controls rendered but disabled
+EN static build
+zero client JavaScript
+```
+
+R4.4A intentionally does not create a second Catalog filtering/sorting
+implementation. The existing DOM-free `DreamlandDesktopCatalogView` is used as
+a build-time adapter.
+
+Catalog product media is route-scoped. After Astro renders the 24 initial
+cards, `scripts/r4-copy-astro-catalog-assets.mjs` parses those exact cover
+references and copies only those 24 product covers into the isolated Astro
+output.
+
+Production ownership remains unchanged:
+
+```text
+/                         → Astro Home
+/products/                → Legacy MPA
+/products/{productId}/    → Legacy MPA
+/custom/                  → Legacy MPA
+/inquiry/**               → Legacy MPA
+```
+
+R4.4B will add the dedicated Catalog minimal runtime and URL-owned browse state.
