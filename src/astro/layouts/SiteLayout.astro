@@ -5,6 +5,8 @@ interface Props {
   page:string;
   lang?:string;
   robots?:string;
+  canonical?:string;
+  ogImage?:string;
 }
 
 const {
@@ -12,7 +14,9 @@ const {
   description,
   page,
   lang='en',
-  robots='noindex,nofollow'
+  robots='noindex,nofollow',
+  canonical='https://dreamland-catalog.pages.dev/',
+  ogImage='https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg'
 }=Astro.props;
 ---
 <!doctype html>
@@ -25,9 +29,19 @@ const {
     />
     <meta name="robots" content={robots} />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <meta
       name="dreamland-r4-presentation"
-      content="astro-home-static"
+      content="astro-home-production"
     />
     <meta name="color-scheme" content="light" />
     <meta name="theme-color" content="#f8f5ef" />
@@ -36,6 +50,7 @@ const {
   <body
     data-r4-astro-home="true"
     data-r4-home-static="true"
+    data-r4-production-home="true"
     data-dreamland-page={page}
   >
     <slot />

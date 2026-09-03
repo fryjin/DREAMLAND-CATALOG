@@ -193,7 +193,6 @@ try{
         required
       );
     }
-  }
 
   for(const [label,pattern] of [
     [
@@ -215,6 +214,7 @@ try{
         label
       );
     }
+  }
   }
 }catch(error){
   fail(
@@ -458,10 +458,10 @@ try{
 
   if(
     pkg.scripts?.build!==
-    'npm run data:build && npm run build:pages'
+    "npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:home:validate"
   ){
     fail(
-      'R4.3B must not change Production build ownership.'
+      'R4.3C Production build must use the staged Astro Home cutover pipeline.'
     );
   }
 }catch(error){

@@ -445,11 +445,37 @@ try{
     fail('package.json build:pages script is missing.');
   }
 
+  /*
+   * R4.3C compatibility:
+   * R1 owns the invariant that Production data build runs before the Legacy
+   * Multi-Page route builder. Later stages may append route-scoped
+   * presentation promotion/validation after build:pages.
+   */
+  const productionBuild=
+    String(
+      scripts.build||
+      ''
+    );
+
+  const dataBuildIndex=
+    productionBuild.indexOf(
+      'npm run data:build'
+    );
+
+  const pageBuildIndex=
+    productionBuild.indexOf(
+      'npm run build:pages'
+    );
+
   if(
-    scripts.build!==
-    'npm run data:build && npm run build:pages'
+    dataBuildIndex<0||
+    pageBuildIndex<0||
+    pageBuildIndex<=
+      dataBuildIndex
   ){
-    fail('package.json build script is missing.');
+    fail(
+      'package.json build must preserve data:build -> build:pages ordering.'
+    );
   }
 
   if(

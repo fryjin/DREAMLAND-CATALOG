@@ -46,10 +46,10 @@ try{
 
   if(
     packageJson.scripts?.build!==
-    'npm run data:build && npm run build:pages'
+    "npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:home:validate"
   ){
     fail(
-      'R4.3A must not replace the Production build command.'
+      'R4.3C Production build must promote only the Astro Home after the Legacy route build.'
     );
   }
 

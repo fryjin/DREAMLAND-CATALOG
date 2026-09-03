@@ -229,16 +229,48 @@ network fetches
 Normal Home navigation remains standard document links and requires no client
 router.
 
-### Still not Production
+### Historical R4.3B boundary
 
-R4.3B does not change:
+R4.3B intentionally did not change Production ownership. That boundary is
+superseded by R4.3C below.
+
+## R4.3C — Production Home Cutover
+
+Status: Production migration stage.
+
+The Production build is now transitional and route-scoped:
 
 ```text
 npm run build
-dist/
-Cloudflare Production /
-Service Worker ownership
+→ data:build
+→ Legacy build-pages.mjs
+→ Astro isolated build
+→ promote Astro Home only
+→ validate final dist/
 ```
 
-Production Home cutover remains a later R4.3 stage.
+Final Production ownership after R4.3C:
+
+```text
+/                         → Astro Home
+/products/                → Legacy MPA
+/products/{productId}/    → Legacy MPA
+/custom/                  → Legacy MPA
+/inquiry/**               → Legacy MPA
+/privacy/                 → Legacy static page
+```
+
+`scripts/r4-promote-astro-home.mjs` replaces only `dist/index.html` and the
+assets directly required by that Home document. It snapshots non-Home route
+sentinels and rejects the build if any are modified.
+
+The Astro Home is now indexable and owns canonical/OpenGraph/Twitter metadata.
+The source Legacy `index.html` remains in the repository as the staged migration
+fallback and as the Presentation source for routes not yet moved.
+
+The existing `sw.js` asset remains in `dist/` because non-Home routes are still
+Legacy/PWA-owned. The Astro Home does not bootstrap that Service Worker.
+
+R4.3D will harden Home detachment and measure the Production Home payload before
+Catalog migration begins.
 
