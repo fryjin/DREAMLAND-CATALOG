@@ -47,6 +47,7 @@ const requiredFiles=[
   'src/services/risk/runtime-risk.js',
   'src/domain/pricing/runtime-pricing-policy.js',
   'src/domain/submission/runtime-submission-payload.js',
+  'src/domain/localization/runtime-localization-policy.js',
   'src/features/inquiry/runtime-inquiry.js',
   'src/features/contact/runtime-contact.js',
   'src/features/catalog/runtime-catalog.js',

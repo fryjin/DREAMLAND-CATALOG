@@ -46,3 +46,14 @@ previously implemented inside `index.html`.
 The Domain receives a canonical `DreamlandInquiry.buildProjection()` result and
 returns the existing delivery payload shape. It does not perform network
 transport, Risk assessment, CAPTCHA handling, persistence or DOM feedback.
+
+
+## R4.2C owner
+
+```text
+src/domain/localization/runtime-localization-policy.js
+```
+
+Owns deterministic shared language fallback and formatting policy for UI text, choice/series labels, localized product/scent fields, from-price ordering, locale resolution and date formatting.
+
+It does not own DOM mutation, language persistence, SEO/meta updates, currency conversion/money formatting, PWA-specific copy, Risk/CAPTCHA copy or page-specific sentence templates.

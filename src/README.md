@@ -55,6 +55,16 @@ canonical Inquiry Projection remains the input owner, DreamlandSubmission
 remains the transport owner, and DreamlandInquirySubmissionFlow remains the
 transaction/orchestration owner.
 
+### R4.2C — Localization / Content Formatting Domain
+
+Runtime active:
+
+```text
+src/domain/localization/runtime-localization-policy.js
+```
+
+Owns deterministic shared language fallback for UI text, choice/series labels, localized product/scent fields, from-price ordering, locale resolution and date formatting. DOM language application remains an App/Presentation responsibility; currency conversion/money formatting remains owned by DreamlandPricingPolicy.
+
 ### B1-02 — Product data contract
 
 Runtime active:

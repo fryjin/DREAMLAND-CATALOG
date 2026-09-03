@@ -67,6 +67,7 @@ const APP_SHELL = [
   './src/data/product-data-contract.js',
   './src/domain/pricing/runtime-pricing-policy.js',
   './src/domain/submission/runtime-submission-payload.js',
+  './src/domain/localization/runtime-localization-policy.js',
   './catalog-data.js',
   './src/services/storage/runtime-storage.js',
   './src/services/pwa/runtime-pwa.js',

@@ -1337,6 +1337,7 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="./src/data/product-data-contract.js"></script>
 <script src="./src/domain/pricing/runtime-pricing-policy.js"></script>
 <script src="./src/domain/submission/runtime-submission-payload.js"></script>
+<script src="./src/domain/localization/runtime-localization-policy.js"></script>
 <script src="./catalog-data.js?release=b7-00b4j-r3-v129"></script>
 <script src="./src/services/storage/runtime-storage.js"></script>
 <script src="./src/services/pwa/runtime-pwa.js?release=b7-00b4j-r3-v129"></script>
@@ -1381,6 +1382,7 @@ const pageGuards=window.DreamlandPageGuards;
 const detailFeature=window.DreamlandDetail;
 const pricingPolicy=window.DreamlandPricingPolicy;
 const submissionPayloadPolicy=window.DreamlandSubmissionPayload;
+const localizationPolicy=window.DreamlandLocalizationPolicy;
 const desktopExperience=window.DreamlandDesktopExperience;
 
 if(!pricingPolicy){
@@ -1392,6 +1394,12 @@ if(!pricingPolicy){
 if(!submissionPayloadPolicy){
   throw new Error(
     'DreamlandSubmissionPayload must load before submission payload initialization.'
+  );
+}
+
+if(!localizationPolicy){
+  throw new Error(
+    'DreamlandLocalizationPolicy must load before localization policy initialization.'
   );
 }
 
@@ -2094,8 +2102,9 @@ riskService.bindInteractionTracking(
 }
 
 function seriesTabLabel(key){
-  return seriesTabLabels[currentLang]?.[key]||seriesTabLabels.zh?.[key]||seriesMeta[key]?.name||key;
+  return localizationPolicy.seriesLabel(currentLang,key,seriesTabLabels,seriesMeta);
 }
+
 function riskAssessmentEndpoint(){
   return appConfig.submissionEndpoint||'./api/submit'
 }
@@ -2666,13 +2675,9 @@ function money(value){
 }
 
 function fromPrice(value){
-  const amount=money(value);
+  return localizationPolicy.fromPrice(currentLang,ui('priceFrom'),money(value));
+}
 
-  return currentLang==='en'
-    ? `${ui('priceFrom')} ${amount}`
-    : `${amount} ${ui('priceFrom')}`;
-} 
-  
 function currencyUnit(){
   return pricingPolicy
     .currencyUnit(
@@ -3208,20 +3213,22 @@ function rerenderCurrent(){
   }
 }
 function ui(key){
-  return uiDict[currentLang]?.[key]||uiDict.zh?.[key]||key;
+  return localizationPolicy.uiText(currentLang,key,uiDict);
 }
+
 function choiceLabel(value){
-  return choiceMaps[currentLang]?.[value]||value;
+  return localizationPolicy.choiceLabel(currentLang,value,choiceMaps);
 }
+
 function seriesLabel(key){return seriesTabLabel(key)}
 function productDisplayName(product){
-  if(!product)return '';
-  return product.names?.[currentLang]||product.names?.zh||product.name||product.id||'';
+  return localizationPolicy.productName(currentLang,product);
 }
+
 function productDesc(product){
-  if(!product)return '';
-  return product.descriptions?.[currentLang]||product.descriptions?.zh||product.desc||'';
+  return localizationPolicy.productDescription(currentLang,product);
 }
+
 function moqForSeriesSize(
   series,
   size
@@ -4356,14 +4363,7 @@ function captureDetailOptionScrollState(){
 }
   
 function scentDisplayText(value){
-  if(!value)return '';
-
-  return (
-    value[currentLang]||
-    value.en||
-    value.zh||
-    ''
-  );
+  return localizationPolicy.scentText(currentLang,value);
 }
 
 function scentSafeText(value){
@@ -7409,10 +7409,13 @@ async function submitInquiry(){
 function renderSuccess(){
   let snapshot={};try{snapshot=JSON.parse(appStorage.local.getItem(LAST_SUBMISSION_KEY)||'{}')}catch(_){}
   let d=snapshot.submittedAt?new Date(snapshot.submittedAt):new Date();
-  successId.textContent=snapshot.inquiryId||'—';successDate.textContent=d.toLocaleDateString(currencyMap[currentLang]?.locale||'zh-CN');successAmount.textContent=snapshot.amountDisplay||money(0);
+  successId.textContent=snapshot.inquiryId||'—';
+  successDate.textContent=localizationPolicy.formatDate(d,currentLang,currencyMap);
+  successAmount.textContent=snapshot.amountDisplay||money(0);
   let sub=document.querySelector('.success-sub');if(sub)sub.innerHTML=`${ui('successSub1')}<br>${ui('successSub2')}`;
   let actions=document.querySelector('.success-actions');if(actions&&!actions.querySelector('.archive-note'))actions.insertAdjacentHTML('afterbegin',`<p class="archive-note">${ui('submissionArchived')}</p>`)
 }
+
 function inquiryBadgeCount(){
   return inquiryFeature.items().reduce((sum,item)=>{
     if(item.type==='product')return sum+(Number(item.qty)||0);
@@ -8004,9 +8007,10 @@ async function bootstrap(){
           desktopLastSubmission(),
 
       locale:
-        ()=>currencyMap[
-          currentLang
-        ]?.locale,
+        ()=>localizationPolicy.localeFor(
+          currentLang,
+          currencyMap
+        ),
 
       feedback:
         message=>

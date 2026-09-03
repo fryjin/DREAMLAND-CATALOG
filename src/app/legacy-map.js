@@ -184,6 +184,22 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     }
   ),
   entry(
+    'localization-domain',
+    [
+      'index.html'
+    ],
+    'domain',
+    'localization',
+    'Shared UI/choice/series/product/scent lookup, from-price ordering, locale resolution and date formatting are routed through DreamlandLocalizationPolicy. DOM language application, page-specific copy composition, PWA copy, Risk copy and SEO/meta mutation remain Presentation/App concerns.',
+    {
+      status:'migrated',
+      runtimeMigrated:true,
+      runtimeOwners:[
+        'src/domain/localization/runtime-localization-policy.js'
+      ]
+    }
+  ),
+  entry(
     'media',
     [
       'image-manager.js',

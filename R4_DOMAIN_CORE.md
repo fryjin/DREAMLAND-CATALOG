@@ -90,9 +90,30 @@ It owns:
 `submissionEmailValid()`, `validateSubmissionPayload()` and
 `buildWeb3FormsPayload()` during Legacy Presentation migration.
 
-### Remaining R4.2 work
+## R4.2C — Localization / Content Formatting Boundary
 
-R4.2C:
-- localization/content-formatting boundary cleanup.
+Status: migration stage.
 
-R4.2A and R4.2B must both pass before the Astro Foundation gate.
+### New canonical owner
+
+```text
+src/domain/localization/runtime-localization-policy.js
+→ DreamlandLocalizationPolicy
+```
+
+It owns shared deterministic UI/choice/series/product/scent fallback policy, language-specific from-price ordering, locale resolution and date formatting.
+
+It deliberately does not own language persistence, DOM application, SEO/meta mutation, currency conversion/money formatting, PWA copy, Risk/CAPTCHA copy or page-specific sentence composition.
+
+### R4.2 Exit
+
+R4.2 Domain Core Extraction is ready to close when all gates pass:
+
+```text
+r4:domain:pricing
+→ r4:domain:submission-payload
+→ r4:domain:localization
+→ r4:astro:foundation
+```
+
+The next architecture stage is R4.3 Home migration into Astro.
