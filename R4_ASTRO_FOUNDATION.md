@@ -409,3 +409,108 @@ Production ownership remains unchanged:
 ```
 
 R4.4B will add the dedicated Catalog minimal runtime and URL-owned browse state.
+
+
+## R4.4B — Catalog Minimal Runtime
+
+Status: isolated runtime migration stage.
+
+R4.4B keeps Production `/products/` on the Legacy MPA. Only the isolated
+Astro Catalog gains client interaction.
+
+### Runtime ownership
+
+The browser route contains one executable Catalog asset:
+
+```text
+/r4-catalog-runtime.js
+```
+
+That output is assembled by the route-scoped Catalog copy step from two source
+owners:
+
+```text
+src/features/catalog/runtime-desktop-catalog-view.js
+  → canonical DOM-free Catalog state/filter/sort policy
+
+src/astro/runtime/catalog-runtime.js
+  → URL / DOM / language / Inquiry-badge adapter
+```
+
+Filtering and sorting are therefore not reimplemented in Astro.
+
+### URL-owned browse state
+
+R4.4B makes the Catalog URL authoritative for shareable browse conditions:
+
+```text
+?series=masterpiece
+?query=...
+?sizes=S,M
+?sort=price-low
+?page=2
+```
+
+Discrete Series / Size / Sort / Load More actions use History state. Search
+typing is debounced and uses replaceState to avoid one history entry per
+keystroke. `popstate` rebuilds the Catalog from the URL.
+
+### Language / Inquiry compatibility
+
+The Catalog reuses the same cross-route storage keys as Home and the remaining
+Legacy routes:
+
+```text
+productManualLang
+productManualV2State
+```
+
+EN / ZH / KO display strings, product names, series labels and formatted prices
+are generated at build time. The browser does not fetch product, pricing or i18n
+data.
+
+Inquiry badge semantics remain:
+
+```text
+product item → quantity
+non-product item → 1
+```
+
+### Compact runtime data / assets
+
+The static HTML still contains 24 server-rendered cards for the default Catalog
+view. A compact non-executable JSON state contains all 89 active products so the
+route runtime can search, sort, filter and load additional cards.
+
+The isolated output copies all 89 Catalog cover images because any of them may
+become visible after a client-side browse-state change. They remain route-scoped
+assets and are not all requested on initial load.
+
+### Boundaries
+
+R4.4B Catalog does not load:
+
+```text
+DreamlandDesktopExperience
+Detail
+Custom
+Risk / hCaptcha
+Submission
+PWA bootstrap
+catalog-data.js
+startup-loader.js
+```
+
+It performs no client fetch and introduces no SPA/client router.
+
+Production ownership remains:
+
+```text
+/                         → Astro Home
+/products/                → Legacy MPA
+/products/{productId}/    → Legacy MPA
+/custom/                  → Legacy MPA
+/inquiry/**               → Legacy MPA
+```
+
+R4.4C will perform the Production Catalog route cutover.

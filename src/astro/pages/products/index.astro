@@ -4,7 +4,8 @@ import SiteHeader from '../../components/site/SiteHeader.astro';
 import SiteFooter from '../../components/site/SiteFooter.astro';
 import CatalogPage from '../../components/catalog/CatalogPage.astro';
 import {
-  buildCatalogViewModel
+  buildCatalogViewModel,
+  buildCatalogRuntimeState
 } from '../../lib/catalog-view-model.mjs';
 
 import '../../styles/home.css';
@@ -27,7 +28,7 @@ if(
   '/products/'
 ){
   throw new Error(
-    'R4.4A expected canonical Catalog route /products/.'
+    'R4.4B expected canonical Catalog route /products/.'
   );
 }
 
@@ -49,47 +50,72 @@ if(
   !localizationPolicy
 ){
   throw new Error(
-    'R4.4A Catalog requires Desktop Catalog ViewState plus canonical Pricing and Localization policies.'
+    'R4.4B Catalog requires Desktop Catalog ViewState plus canonical Pricing and Localization policies.'
   );
 }
 
 const language='en';
 
+const supportedLanguages=[
+  'en',
+  'zh',
+  'ko'
+];
+
 const seriesMeta=
   seriesDocument.series||
   {};
 
+const sharedInput={
+  products:
+    productsDocument.products||
+    [],
+  seriesMeta,
+  siteContent,
+  currencyMap:
+    i18n.currencyMap||
+    {},
+  catalogPolicy,
+  pricingPolicy,
+  localizationPolicy,
+  batchSize:24
+};
+
 const view=
   buildCatalogViewModel({
     language,
-    products:
-      productsDocument.products||
-      [],
-    seriesMeta,
-    siteContent,
-    currencyMap:
-      i18n.currencyMap||
-      {},
-    catalogPolicy,
-    pricingPolicy,
-    localizationPolicy,
-    batchSize:24
+    ...sharedInput
   });
 
-const languageOptions=[
-  'en',
-  'zh',
-  'ko'
-].map(
-  value=>({
-    value,
-    label:
-      i18n.currencyMap
-        ?.[value]
-        ?.label||
-      value.toUpperCase()
-  })
-);
+const runtimeState=
+  buildCatalogRuntimeState({
+    languages:
+      supportedLanguages,
+    defaultLanguage:
+      language,
+    ...sharedInput
+  });
+
+const runtimeStateJson=
+  JSON.stringify(
+    runtimeState
+  )
+    .replace(
+      /</g,
+      '\\u003c'
+    );
+
+const languageOptions=
+  supportedLanguages.map(
+    value=>({
+      value,
+      label:
+        i18n.currencyMap
+          ?.[value]
+          ?.label||
+        value.toUpperCase()
+    })
+  );
 ---
 <SiteLayout
   title="DREAMLAND Collection — Hand-carved candles"
@@ -104,12 +130,28 @@ const languageOptions=[
     content={view.content}
     languageOptions={languageOptions}
     initialLanguage={language}
-    languageEnabled={false}
+    languageEnabled={true}
   />
 
-  <CatalogPage view={view} />
+  <CatalogPage
+    view={view}
+    sizeOptions={runtimeState.sizeOptions}
+  />
 
   <SiteFooter
     content={view.content}
   />
+
+  <script
+    is:inline
+    id="catalogRuntimeState"
+    type="application/json"
+    set:html={runtimeStateJson}
+  ></script>
+
+  <script
+    is:inline
+    type="module"
+    src="/r4-catalog-runtime.js"
+  ></script>
 </SiteLayout>

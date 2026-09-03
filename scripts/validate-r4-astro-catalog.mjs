@@ -47,6 +47,35 @@ function output(relative){
   );
 }
 
+function stateFromHtml(html){
+  const match=
+    html.match(
+      /<script[^>]*id="catalogRuntimeState"[^>]*type="application\/json"[^>]*>([\s\S]*?)<\/script>/i
+    )||
+    html.match(
+      /<script[^>]*type="application\/json"[^>]*id="catalogRuntimeState"[^>]*>([\s\S]*?)<\/script>/i
+    );
+
+  if(!match){
+    fail(
+      'R4.4B Catalog runtime state is missing.'
+    );
+    return null;
+  }
+
+  try{
+    return JSON.parse(
+      match[1]
+    );
+  }catch(error){
+    fail(
+      'R4.4B Catalog runtime state JSON is invalid: '+
+      error.message
+    );
+    return null;
+  }
+}
+
 try{
   const file=
     output(
@@ -58,7 +87,7 @@ try{
 
   if(!fs.existsSync(file)){
     fail(
-      'R4.4A Astro Catalog output is missing.'
+      'R4.4B Astro Catalog output is missing.'
     );
   }else{
     const html=
@@ -71,16 +100,19 @@ try{
       'data-r4-astro-foundation="true"',
       'data-r4-astro-catalog="true"',
       'data-r4-catalog-static="true"',
-      'data-catalog-static-presentation',
+      'data-catalog-runtime-presentation',
       'data-catalog-section="intro"',
       'data-catalog-section="browse"',
       'data-catalog-section="products"',
       'data-catalog-section="inquiry-cta"',
       'data-catalog-product-grid',
-      'data-catalog-static-search',
-      'data-catalog-static-filter',
-      'data-catalog-static-sort',
-      'data-catalog-static-load-more',
+      'data-catalog-search',
+      'data-catalog-filter-panel',
+      'data-catalog-sort',
+      'data-catalog-load-more',
+      'data-catalog-empty',
+      'id="catalogRuntimeState"',
+      'src="/r4-catalog-runtime.js"',
       'href="/inquiry/"'
     ]){
       if(!html.includes(marker)){
@@ -110,22 +142,17 @@ try{
       }
     }
 
-    if(/<script\b/i.test(html)){
-      fail(
-        'R4.4A Catalog must remain zero-client-JS.'
-      );
-    }
-
-    if(
-      html.includes(
-        'DREAMLAND R4 Catalog Foundation'
-      )||
-      html.includes(
-        'Astro resolved 89 active products at build time.'
+    const executableScripts=[
+      ...html.matchAll(
+        /<script\b(?![^>]*type="application\/json")[^>]*>/gi
       )
-    ){
+    ];
+
+    if(executableScripts.length!==1){
       fail(
-        'R4.1 Catalog proof copy still appears in R4.4A output.'
+        'R4.4B Catalog must contain exactly one executable route runtime; found '+
+        executableScripts.length+
+        '.'
       );
     }
 
@@ -139,13 +166,13 @@ try{
 
     if(allCount!==89){
       fail(
-        'R4.4A Catalog expected 89 active products; found '+
+        'R4.4B Catalog expected 89 active products; found '+
         allCount+
         '.'
       );
     }
 
-    const productIds=[
+    const initialIds=[
       ...html.matchAll(
         /data-catalog-product="([A-Z0-9]+)"/g
       )
@@ -154,111 +181,199 @@ try{
     );
 
     if(
-      productIds.length!==24||
-      new Set(productIds).size!==24
+      initialIds.length!==24||
+      new Set(initialIds).size!==24
     ){
       fail(
-        'R4.4A Catalog expected 24 unique initial product cards; found '+
-        productIds.length+
+        'R4.4B Catalog expected 24 unique static initial cards; found '+
+        initialIds.length+
         '.'
       );
     }
 
-    const scopes=[
-      ...html.matchAll(
-        /data-catalog-static-series="([^"]+)"/g
-      )
-    ].map(
-      match=>match[1]
-    );
-
-    for(const scope of [
-      'all',
-      'advanced',
-      'masterpiece',
-      'holiday',
-      'classic'
-    ]){
-      if(!scopes.includes(scope)){
-        fail(
-          'R4.4A Catalog scope is missing: '+
-          scope
-        );
-      }
-    }
-
-    const coverPaths=[
-      ...new Set(
-        [
-          ...html.matchAll(
-            /src="(\/images\/products\/[^"]+\/cover\.webp)"/g
-          )
-        ].map(
-          match=>match[1]
-        )
-      )
-    ];
-
-    if(coverPaths.length!==24){
-      fail(
-        'R4.4A Catalog expected 24 route-scoped cover images; found '+
-        coverPaths.length+
-        '.'
-      );
-    }
-
-    for(const pathname of coverPaths){
-      const file=
-        output(
-          pathname.replace(
-            /^\/+/,
-            ''
-          )
-        );
-
-      if(!fs.existsSync(file)){
-        fail(
-          'R4.4A Catalog output cover is missing: '+
-          pathname
-        );
-      }
-    }
-
-    for(const id of productIds){
+    for(const id of initialIds){
       if(
         !html.includes(
           `href="/products/${id}/"`
         )
       ){
         fail(
-          'Catalog product must use a direct MPA PDP link: '+
+          'Static Catalog card must preserve a direct MPA PDP link: '+
           id
         );
       }
     }
 
-    const inertPatterns=[
-      /<select\b(?=[^>]*data-site-language-enabled="false")(?=[^>]*\bdisabled\b)[^>]*>/i,
-      /<input\b(?=[^>]*data-catalog-static-search)(?=[^>]*\bdisabled\b)[^>]*>/i,
-      /<button\b(?=[^>]*data-catalog-static-filter)(?=[^>]*\bdisabled\b)[^>]*>/i,
-      /<select\b(?=[^>]*data-catalog-static-sort)(?=[^>]*\bdisabled\b)[^>]*>/i,
-      /<button\b(?=[^>]*data-catalog-static-load-more)(?=[^>]*\bdisabled\b)[^>]*>/i
-    ];
-
-    if(
-      inertPatterns.some(
-        pattern=>
-          !pattern.test(html)
-      )
-    ){
+    if(/\bdisabled(?:=|>|\s)/i.test(html)){
       fail(
-        'R4.4A interactive controls must remain explicitly inert.'
+        'R4.4B Catalog controls must be active; disabled controls remain in output.'
       );
+    }
+
+    const state=
+      stateFromHtml(
+        html
+      );
+
+    if(state){
+      if(
+        state.version!=='R4.4B'||
+        state.defaultLanguage!=='en'||
+        state.batchSize!==24||
+        state.storage?.languageKey!=='productManualLang'||
+        state.storage?.inquiryKey!=='productManualV2State'
+      ){
+        fail(
+          'R4.4B Catalog runtime state contract changed.'
+        );
+      }
+
+      for(const language of [
+        'en',
+        'zh',
+        'ko'
+      ]){
+        if(
+          !state.languages?.[language]?.catalog||
+          !state.languages?.[language]?.navigation||
+          !state.languages?.[language]?.footer
+        ){
+          fail(
+            'Catalog runtime state is missing compact language content: '+
+            language
+          );
+        }
+      }
+
+      for(const [key,value] of Object.entries({
+        series:'series',
+        query:'query',
+        sizes:'sizes',
+        sort:'sort',
+        page:'page'
+      })){
+        if(state.url?.[key]!==value){
+          fail(
+            'Catalog URL state contract is missing: '+
+            key
+          );
+        }
+      }
+
+      if(
+        state.products?.length!==89||
+        new Set(
+          state.products.map(
+            product=>product.id
+          )
+        ).size!==89
+      ){
+        fail(
+          'Catalog runtime state must contain 89 unique compact products.'
+        );
+      }
+
+      if(
+        !Array.isArray(
+          state.sizeOptions
+        )||
+        !state.sizeOptions.length
+      ){
+        fail(
+          'Catalog runtime state is missing size filter options.'
+        );
+      }
+
+      for(const sort of [
+        'featured',
+        'name',
+        'price-low',
+        'price-high',
+        'moq-low'
+      ]){
+        if(!state.sorts?.includes(sort)){
+          fail(
+            'Catalog runtime state is missing sort: '+
+            sort
+          );
+        }
+      }
+
+      for(const product of state.products||[]){
+        for(const language of [
+          'en',
+          'zh',
+          'ko'
+        ]){
+          if(
+            !product.names?.[language]||
+            !product.seriesLabels?.[language]||
+            !product.prices?.[language]
+          ){
+            fail(
+              `Catalog runtime product ${product.id} is missing localized display data for ${language}.`
+            );
+            break;
+          }
+        }
+
+        const cover=
+          String(
+            product.cover||
+            ''
+          )
+            .replace(
+              /^\/+/,
+              ''
+            );
+
+        if(
+          !cover||
+          !fs.existsSync(
+            output(cover)
+          )
+        ){
+          fail(
+            'Catalog runtime cover output is missing: '+
+            product.id
+          );
+        }
+      }
+    }
+
+    const bundle=
+      output(
+        'r4-catalog-runtime.js'
+      );
+
+    if(!fs.existsSync(bundle)){
+      fail(
+        'R4.4B Catalog runtime bundle output is missing.'
+      );
+    }else{
+      const source=
+        fs.readFileSync(
+          bundle,
+          'utf8'
+        );
+
+      for(const marker of [
+        'DreamlandDesktopCatalogView',
+        'DREAMLAND_R4_CATALOG_RUNTIME_R4_4B',
+        "const VERSION='R4.4B';"
+      ]){
+        if(!source.includes(marker)){
+          fail(
+            'Catalog runtime bundle is missing: '+
+            marker
+          );
+        }
+      }
     }
   }
 }catch(error){
   fail(
-    'R4.4A output inspection crashed: '+
+    'R4.4B output inspection crashed: '+
     error.message
   );
 }
@@ -270,12 +385,11 @@ try{
     );
 
   for(const pattern of [
-    /components\/catalog\/CatalogPage\.astro/,
-    /lib\/catalog-view-model\.mjs/,
-    /features\/catalog\/runtime-desktop-catalog-view\.js/,
-    /domain\/pricing\/runtime-pricing-policy\.js/,
-    /domain\/localization\/runtime-localization-policy\.js/,
     /buildCatalogViewModel/,
+    /buildCatalogRuntimeState/,
+    /catalogRuntimeState/,
+    /r4-catalog-runtime\.js/,
+    /languageEnabled=\{true\}/,
     /batchSize\s*:\s*24/
   ]){
     if(!pattern.test(source)){
@@ -294,10 +408,12 @@ try{
   for(const pattern of [
     /catalogPolicy\s*\.\s*configure/,
     /catalogPolicy\s*\.\s*buildViewModel/,
+    /catalogPolicy\s*\.\s*loadMore/,
     /pricingPolicy\s*\.\s*catalogUnit/,
     /pricingPolicy\s*\.\s*productMoq/,
     /localizationPolicy\s*\.\s*localizedContent/,
-    /localizationPolicy\s*\.\s*productName/
+    /localizationPolicy\s*\.\s*productName/,
+    /buildCatalogRuntimeState/
   ]){
     if(!pattern.test(viewModel)){
       fail(
@@ -319,14 +435,14 @@ try{
   ]){
     if(viewModel.includes(forbidden)){
       fail(
-        'R4.4A Catalog ViewModel crossed a boundary: '+
+        'Catalog build-time ViewModel crossed a boundary: '+
         forbidden
       );
     }
   }
 }catch(error){
   fail(
-    'R4.4A source inspection crashed: '+
+    'R4.4B source inspection crashed: '+
     error.message
   );
 }
@@ -339,21 +455,21 @@ try{
 
   if(
     packageJson.scripts
-      ?.['r4:astro:build']!==
-    'astro build --config astro.config.mjs && node scripts/r4-copy-astro-home-assets.mjs && node scripts/r4-copy-astro-catalog-assets.mjs'
+      ?.['r4:astro:catalog']!==
+    'node scripts/validate-r4-astro-catalog.mjs'
   ){
     fail(
-      'R4 Astro build must copy Home assets and route-scoped Catalog covers.'
+      'package.json lost r4:astro:catalog.'
     );
   }
 
   if(
     packageJson.scripts
-      ?.['r4:astro:catalog']!==
-    'node scripts/validate-r4-astro-catalog.mjs'
+      ?.['r4:astro:catalog-runtime']!==
+    'node scripts/validate-r4-astro-catalog-runtime.mjs'
   ){
     fail(
-      'package.json is missing r4:astro:catalog.'
+      'package.json is missing r4:astro:catalog-runtime.'
     );
   }
 
@@ -364,14 +480,14 @@ try{
       ''
     );
 
-  const homeRuntime=
-    validate.indexOf(
-      'npm run r4:astro:home-runtime'
-    );
-
   const catalog=
     validate.indexOf(
       'npm run r4:astro:catalog'
+    );
+
+  const runtime=
+    validate.indexOf(
+      'npm run r4:astro:catalog-runtime'
     );
 
   const productionHome=
@@ -380,12 +496,12 @@ try{
     );
 
   if(
-    homeRuntime<0||
-    catalog<=homeRuntime||
-    productionHome<=catalog
+    catalog<0||
+    runtime<=catalog||
+    productionHome<=runtime
   ){
     fail(
-      'R4.4A Catalog gate must run after Home Runtime and before Production Home contract.'
+      'R4.4B Catalog Runtime gate must run after Catalog Presentation and before Production Home contract.'
     );
   }
 
@@ -394,12 +510,12 @@ try{
     'npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:home:validate'
   ){
     fail(
-      'R4.4A must not change Production route ownership.'
+      'R4.4B must not change Production route ownership.'
     );
   }
 }catch(error){
   fail(
-    'R4.4A package inspection crashed: '+
+    'R4.4B package inspection crashed: '+
     error.message
   );
 }
@@ -411,30 +527,23 @@ try{
     );
 
   if(
-    !promotion.includes(
-      'copyFile(\n  SOURCE_HOME,\n  TARGET_HOME'
-    )
-  ){
-    fail(
-      'R4.4A expected the existing Home-only Production promotion contract.'
-    );
-  }
-
-  if(
     promotion.includes(
       'SOURCE_CATALOG'
     )||
     promotion.includes(
       'TARGET_CATALOG'
+    )||
+    promotion.includes(
+      'r4-catalog-runtime.js'
     )
   ){
     fail(
-      'R4.4A must not promote Astro Catalog into Production.'
+      'R4.4B must not promote Astro Catalog into Production.'
     );
   }
 }catch(error){
   fail(
-    'R4.4A Production ownership inspection crashed: '+
+    'R4.4B Production ownership inspection crashed: '+
     error.message
   );
 }
@@ -442,7 +551,7 @@ try{
 if(errors.length){
   console.error('');
   console.error(
-    'DREAMLAND B7-00B.4J R4.4A Astro Catalog Static Presentation: FAIL'
+    'DREAMLAND B7-00B.4J R4.4A/R4.4B Astro Catalog Presentation: FAIL'
   );
 
   for(const error of errors){
@@ -457,9 +566,9 @@ if(errors.length){
 
 console.log('');
 console.log(
-  'DREAMLAND B7-00B.4J R4.4A Astro Catalog Static Presentation: PASS'
+  'DREAMLAND B7-00B.4J R4.4A/R4.4B Astro Catalog Presentation: PASS'
 );
 console.log(
-  '89-product catalog contract / 24-card initial grid / canonical Catalog ViewState + Pricing + Localization build-time ownership / route-scoped covers / direct PDP links / zero-client-JS verified.'
+  '89-product compact runtime state / 24-card SSR baseline / direct PDP links / EN-ZH-KO build-time display data / canonical Catalog ViewState browser adapter / active controls verified.'
 );
 console.log('');

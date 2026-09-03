@@ -1,31 +1,42 @@
 ---
 interface Props {
   view:Record<string,any>;
+  sizeOptions:string[];
 }
 
-const {view}=Astro.props;
+const {
+  view,
+  sizeOptions
+}=Astro.props;
+
 const copy=view.catalog||{};
 const navigation=view.content?.navigation||{};
 ---
 <main
   class="catalog-main"
-  data-catalog-static-presentation
+  data-catalog-runtime-presentation
 >
   <section
     class="catalog-intro home-container"
     data-catalog-section="intro"
     aria-labelledby="catalogTitle"
   >
-    <p class="catalog-eyebrow">
+    <p
+      class="catalog-eyebrow"
+      data-catalog-bind="catalog.kicker"
+    >
       {copy.kicker}
     </p>
 
     <div class="catalog-intro__layout">
       <div class="catalog-intro__copy">
-        <h1 id="catalogTitle">
+        <h1
+          id="catalogTitle"
+          data-catalog-bind="catalog.title"
+        >
           {copy.title}
         </h1>
-        <p>
+        <p data-catalog-bind="catalog.body">
           {copy.body}
         </p>
       </div>
@@ -34,10 +45,10 @@ const navigation=view.content?.navigation||{};
         class="catalog-intro__count"
         data-catalog-all-count={view.allCount}
       >
-        <strong>
+        <strong data-catalog-all-count-value>
           {view.allCount}
         </strong>
-        <span>
+        <span data-catalog-bind="catalog.activeDesigns">
           {copy.activeDesigns}
         </span>
       </div>
@@ -54,6 +65,7 @@ const navigation=view.content?.navigation||{};
         class="catalog-series"
         role="tablist"
         aria-label={copy.seriesNavigation}
+        data-catalog-series-list
       >
         {view.scopes.map((scope:any)=>(
           <button
@@ -69,13 +81,12 @@ const navigation=view.content?.navigation||{};
                 ? 'true'
                 : 'false'
             }
-            data-catalog-static-series={scope.id}
-            disabled
+            data-catalog-series={scope.id}
           >
-            <span>
+            <span data-catalog-series-label>
               {scope.label}
             </span>
-            <small>
+            <small data-catalog-series-count>
               {scope.count}
             </small>
           </button>
@@ -84,45 +95,113 @@ const navigation=view.content?.navigation||{};
 
       <div class="catalog-tools">
         <div class="catalog-result-count">
-          <strong>
+          <strong data-catalog-result-count>
             {view.totalCount}
           </strong>
-          <span>
+          <span data-catalog-bind="catalog.designs">
             {copy.designs}
           </span>
         </div>
 
         <label class="catalog-search">
-          <span class="home-sr-only">
+          <span
+            class="home-sr-only"
+            data-catalog-bind="catalog.searchPlaceholder"
+          >
             {copy.searchPlaceholder}
           </span>
           <input
             type="search"
             placeholder={copy.searchPlaceholder}
-            data-catalog-static-search
-            disabled
+            data-catalog-search
+            autocomplete="off"
+            enterkeyhint="search"
           />
         </label>
 
-        <button
-          class="catalog-tool-button"
-          type="button"
-          data-catalog-static-filter
-          disabled
+        <details
+          class="catalog-filter"
+          data-catalog-filter-panel
         >
-          {copy.filters}
-        </button>
+          <summary data-catalog-bind="catalog.filters">
+            {copy.filters}
+          </summary>
+
+          <div class="catalog-filter__panel">
+            <div class="catalog-filter__head">
+              <strong data-catalog-bind="catalog.size">
+                {copy.size}
+              </strong>
+              <button
+                type="button"
+                data-catalog-size-clear
+                data-catalog-bind="catalog.clear"
+              >
+                {copy.clear}
+              </button>
+            </div>
+
+            <div class="catalog-filter__sizes">
+              {sizeOptions.map(size=>(
+                <label>
+                  <input
+                    type="checkbox"
+                    value={size}
+                    data-catalog-size
+                  />
+                  <span>{size}</span>
+                </label>
+              ))}
+            </div>
+
+            <button
+              class="catalog-filter__apply"
+              type="button"
+              data-catalog-size-apply
+              data-catalog-bind="catalog.apply"
+            >
+              {copy.apply}
+            </button>
+          </div>
+        </details>
 
         <label class="catalog-sort">
-          <span class="home-sr-only">
+          <span
+            class="home-sr-only"
+            data-catalog-bind="catalog.sort"
+          >
             {copy.sort}
           </span>
-          <select
-            data-catalog-static-sort
-            disabled
-          >
-            <option value="featured">
+          <select data-catalog-sort>
+            <option
+              value="featured"
+              data-catalog-sort-option="featured"
+            >
               {copy.sortFeatured}
+            </option>
+            <option
+              value="name"
+              data-catalog-sort-option="name"
+            >
+              {copy.sortName}
+            </option>
+            <option
+              value="price-low"
+              data-catalog-sort-option="price-low"
+            >
+              {copy.sortPriceLow}
+            </option>
+            <option
+              value="price-high"
+              data-catalog-sort-option="price-high"
+            >
+              {copy.sortPriceHigh}
+            </option>
+            <option
+              value="moq-low"
+              data-catalog-sort-option="moq-low"
+            >
+              {copy.sortMoq}
             </option>
           </select>
         </label>
@@ -193,14 +272,44 @@ const navigation=view.content?.navigation||{};
       ))}
     </div>
 
+    <div
+      class="catalog-empty"
+      data-catalog-empty
+      hidden
+    >
+      <p
+        class="catalog-eyebrow"
+        data-catalog-bind="catalog.emptyKicker"
+      >
+        {copy.emptyKicker}
+      </p>
+      <h2 data-catalog-empty-title>
+        {copy.emptyTitle}
+      </h2>
+      <p data-catalog-bind="catalog.emptyBody">
+        {copy.emptyBody}
+      </p>
+      <button
+        type="button"
+        data-catalog-clear-filters
+        data-catalog-bind="catalog.clearFilters"
+      >
+        {copy.clearFilters}
+      </button>
+    </div>
+
     <div class="catalog-pagination">
-      <p>
-        {copy.showing}
-        <strong>
+      <p data-catalog-pagination-copy>
+        <span data-catalog-bind="catalog.showing">
+          {copy.showing}
+        </span>
+        <strong data-catalog-rendered-count>
           {view.renderedCount}
         </strong>
-        {copy.of}
-        <strong>
+        <span data-catalog-bind="catalog.of">
+          {copy.of}
+        </span>
+        <strong data-catalog-total-count>
           {view.totalCount}
         </strong>
       </p>
@@ -209,8 +318,8 @@ const navigation=view.content?.navigation||{};
         <button
           class="catalog-load-more"
           type="button"
-          data-catalog-static-load-more
-          disabled
+          data-catalog-load-more
+          data-catalog-bind="catalog.loadMore"
         >
           {copy.loadMore}
         </button>
@@ -224,19 +333,24 @@ const navigation=view.content?.navigation||{};
   >
     <div class="home-container catalog-cta__inner">
       <div>
-        <p class="catalog-eyebrow">
+        <p
+          class="catalog-eyebrow"
+          data-catalog-bind="catalog.ctaKicker"
+        >
           {copy.ctaKicker}
         </p>
-        <h2>
+        <h2 data-catalog-bind="catalog.ctaEmptyTitle">
           {copy.ctaEmptyTitle}
         </h2>
-        <p>
+        <p data-catalog-bind="catalog.ctaEmptyBody">
           {copy.ctaEmptyBody}
         </p>
       </div>
 
       <a href="/inquiry/">
-        {navigation.inquiry||'Inquiry'}
+        <span data-home-bind="navigation.inquiry">
+          {navigation.inquiry||'Inquiry'}
+        </span>
         <span aria-hidden="true">
           →
         </span>

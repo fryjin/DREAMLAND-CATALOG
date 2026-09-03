@@ -37,6 +37,40 @@ function fail(message){
   process.exit(1);
 }
 
+function read(file){
+  return fs.readFileSync(
+    file,
+    'utf8'
+  );
+}
+
+function runtimeState(html){
+  const match=
+    html.match(
+      /<script[^>]*id="catalogRuntimeState"[^>]*type="application\/json"[^>]*>([\s\S]*?)<\/script>/i
+    )||
+    html.match(
+      /<script[^>]*type="application\/json"[^>]*id="catalogRuntimeState"[^>]*>([\s\S]*?)<\/script>/i
+    );
+
+  if(!match){
+    fail(
+      'Catalog runtime state is missing from isolated output.'
+    );
+  }
+
+  try{
+    return JSON.parse(
+      match[1]
+    );
+  }catch(error){
+    fail(
+      'Catalog runtime state JSON is invalid: '+
+      error.message
+    );
+  }
+}
+
 if(
   !fs.existsSync(
     catalogFile
@@ -48,26 +82,45 @@ if(
 }
 
 const html=
-  fs.readFileSync(
-    catalogFile,
-    'utf8'
+  read(
+    catalogFile
+  );
+
+const state=
+  runtimeState(
+    html
   );
 
 const covers=[
   ...new Set(
-    [
-      ...html.matchAll(
-        /src="(\/images\/products\/[^"]+\/cover\.webp)"/g
+    (
+      Array.isArray(
+        state?.products
       )
-    ].map(
-      match=>match[1]
+        ? state.products
+        : []
     )
+      .map(
+        product=>
+          String(
+            product?.cover||
+            ''
+          )
+            .trim()
+      )
+      .filter(
+        pathname=>
+          /^\/images\/products\/[^/]+\/cover\.webp$/
+            .test(
+              pathname
+            )
+      )
   )
 ];
 
-if(covers.length!==24){
+if(covers.length!==89){
   fail(
-    'R4.4A expected exactly 24 initial Catalog cover references; found '+
+    'R4.4B expected 89 runtime Catalog cover references; found '+
     covers.length+
     '.'
   );
@@ -112,6 +165,58 @@ for(const pathname of covers){
   );
 }
 
+const policySource=
+  path.join(
+    ROOT,
+    'src',
+    'features',
+    'catalog',
+    'runtime-desktop-catalog-view.js'
+  );
+
+const adapterSource=
+  path.join(
+    ROOT,
+    'src',
+    'astro',
+    'runtime',
+    'catalog-runtime.js'
+  );
+
+for(const source of [
+  policySource,
+  adapterSource
+]){
+  if(!fs.existsSync(source)){
+    fail(
+      'Catalog runtime source is missing: '+
+      path.relative(
+        ROOT,
+        source
+      )
+    );
+  }
+}
+
+const runtimeTarget=
+  path.join(
+    OUT,
+    'r4-catalog-runtime.js'
+  );
+
+fs.writeFileSync(
+  runtimeTarget,
+  read(policySource)+
+  '\n;\n'+
+  read(adapterSource)+
+  '\n',
+  'utf8'
+);
+
 console.log(
-  '[R4 Astro Catalog Assets] copied 24 route-scoped product covers into .r4-astro-dist.'
+  '[R4 Astro Catalog Assets] copied 89 route-scoped product covers into .r4-astro-dist.'
+);
+
+console.log(
+  '[R4 Astro Catalog Runtime] bundled canonical Catalog ViewState + minimal Astro adapter → .r4-astro-dist/r4-catalog-runtime.js'
 );

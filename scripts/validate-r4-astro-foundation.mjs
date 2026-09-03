@@ -126,9 +126,23 @@ try{
     );
   }
 
-  if(/<script\b/i.test(catalog)){
+  const catalogExecutableScripts=[
+    ...catalog.matchAll(
+      /<script\b(?![^>]*type="application\/json")[^>]*>/gi
+    )
+  ];
+
+  if(
+    catalogExecutableScripts.length!==1||
+    !catalog.includes(
+      'src="/r4-catalog-runtime.js"'
+    )||
+    !catalog.includes(
+      'id="catalogRuntimeState"'
+    )
+  ){
     fail(
-      'R4.4A Catalog presentation must remain zero-client-JS.'
+      'R4.4B Catalog foundation must expose exactly one dedicated route runtime plus non-executable state.'
     );
   }
 
@@ -245,6 +259,6 @@ console.log(
   'DREAMLAND B7-00B.4J R4.1/R4.3A Astro foundation: PASS'
 );
 console.log(
-  'PDP foundation remains static; Home is Production Astro and Catalog has graduated to the R4.4A static presentation.'
+  'PDP foundation remains static; Home is Production Astro and Catalog has graduated to the R4.4B minimal-runtime presentation.'
 );
 console.log('');
