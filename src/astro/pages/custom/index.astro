@@ -1,0 +1,139 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import SiteHeader from '../../components/site/SiteHeader.astro';
+import SiteFooter from '../../components/site/SiteFooter.astro';
+import CustomPage from '../../components/custom/CustomPage.astro';
+
+import {
+  buildCustomViewModel,
+  mapCustomScents,
+  groupCustomScents
+} from '../../lib/custom-view-model.mjs';
+
+import '../../styles/home.css';
+import '../../styles/custom.css';
+
+import siteContent from '../../../../data/site-content.json';
+import i18n from '../../../../data/i18n.json';
+import seriesDocument from '../../../../data/series.json';
+import appConfig from '../../../../data/app-config.json';
+import routes from '../../../../data/page-routes.json';
+
+import '../../../data/product-data-contract.js';
+import '../../../domain/localization/runtime-localization-policy.js';
+import '../../../features/custom/runtime-custom.js';
+
+if(
+  routes.routes?.custom?.path!==
+  '/custom/'
+){
+  throw new Error(
+    'R4.6A expected canonical Custom route /custom/.'
+  );
+}
+
+const productDataContract=
+  globalThis.DreamlandProductDataContract;
+
+const localizationPolicy=
+  globalThis.DreamlandLocalizationPolicy;
+
+const customFeature=
+  globalThis.DreamlandCustom;
+
+if(
+  !productDataContract||
+  !localizationPolicy||
+  !customFeature
+){
+  throw new Error(
+    'R4.6A Custom requires Product Data, Localization and DreamlandCustom canonical owners.'
+  );
+}
+
+const scentRows=
+  productDataContract.parseCsv(
+    fs.readFileSync(
+      path.resolve(
+        process.cwd(),
+        'data/scents.csv'
+      ),
+      'utf8'
+    )
+  );
+
+const scents=
+  mapCustomScents(
+    scentRows
+  );
+
+const scentsBySeries=
+  groupCustomScents(
+    scents
+  );
+
+customFeature.configure({
+  scentsBySeries,
+  seriesOrder:[
+    'classic',
+    'advanced',
+    'masterpiece'
+  ],
+  defaultSeries:'classic',
+  customMoq:()=>
+    Number(appConfig.customMoq)||
+    1,
+  maximumQuantity:()=>
+    Number(appConfig.maxQuantity)||
+    1000000
+});
+
+customFeature.reset();
+
+const language='en';
+
+const view=
+  buildCustomViewModel({
+    language,
+    siteContent,
+    i18n,
+    seriesDocument,
+    appConfig,
+    localizationPolicy,
+    customFeature
+  });
+
+const languageOptions=[
+  'en',
+  'zh',
+  'ko'
+].map(value=>({
+  value,
+  label:
+    i18n.currencyMap?.[value]?.label||
+    value.toUpperCase()
+}));
+---
+<SiteLayout
+  title="Custom Project — DREAMLAND"
+  description={view.copy.body}
+  page="custom"
+  lang={language}
+  robots="noindex,nofollow"
+  canonical="https://dreamland-catalog.pages.dev/custom/"
+  ogImage="https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg"
+>
+  <SiteHeader
+    content={view.content}
+    languageOptions={languageOptions}
+    initialLanguage={language}
+    languageEnabled={false}
+  />
+
+  <CustomPage view={view} />
+
+  <SiteFooter content={view.content} />
+</SiteLayout>

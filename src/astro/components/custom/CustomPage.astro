@@ -1,0 +1,353 @@
+---
+interface Props {
+  view:Record<string,any>;
+}
+
+const {view}=Astro.props;
+const c=view.copy||{};
+
+const summaryRows=[
+  {label:c.useCase||'Use Case',value:c.notSelected||'Not selected'},
+  {
+    label:c.quantity||'Estimated Quantity',
+    value:`${c.minimumQuantity||'Custom MOQ'} · ${view.minimumQuantity} ${c.pieces||'pcs'}`
+  },
+  {
+    label:c.budget||'Budget Range',
+    value:view.budgets?.[0]?.label||c.notSelected||'Not selected'
+  },
+  {label:c.delivery||'Preferred Delivery',value:c.notSelected||'Not selected'},
+  {
+    label:c.size||'Size Preference',
+    value:view.sizes?.[0]?.label||c.notSelected||'Not selected'
+  },
+  {label:c.fragranceCollection||'Fragrance Collection',value:c.notSelected||'Not selected'},
+  {
+    label:c.packaging||'Packaging',
+    value:view.packages?.[0]?.label||c.notSelected||'Not selected'
+  },
+  {
+    label:c.branding||'Branding',
+    value:view.brandingOptions?.[0]?.label||c.notSelected||'Not selected'
+  }
+];
+---
+<main class="custom-main" data-custom-static-presentation>
+  <section class="custom-hero" aria-labelledby="customTitle">
+    <div class="home-container custom-hero__inner">
+      <div>
+        <p class="custom-eyebrow">{c.kicker||'CUSTOM PROJECT'}</p>
+        <h1 id="customTitle">
+          {c.title||'Custom products for brands, events and gifting.'}
+        </h1>
+      </div>
+      <p class="custom-hero__body">
+        {c.body||'Tell us the intended use, quantity and product requirements.'}
+      </p>
+    </div>
+  </section>
+
+  <div class="custom-flow home-container" aria-label={c.flowTitle||'Project flow'}>
+    <span>{c.flowTitle||'Project flow'}</span>
+    <ol>
+      <li class="is-active">
+        <strong>01</strong>
+        <span>{c.sectionBasicsTitle||'Project basics'}</span>
+      </li>
+      <li>
+        <strong>02</strong>
+        <span>{c.sectionProductTitle||'Product direction'}</span>
+      </li>
+      <li>
+        <strong>03</strong>
+        <span>{c.sectionPackagingTitle||'Packaging & branding'}</span>
+      </li>
+    </ol>
+  </div>
+
+  <section class="custom-workspace home-container">
+    <div class="custom-editor">
+      <fieldset
+        class="custom-static-fieldset"
+        disabled
+        aria-label="Static Custom Project presentation"
+      >
+        <section class="custom-section" data-custom-section="basics">
+          <header class="custom-section__header">
+            <p class="custom-eyebrow">{c.sectionBasicsKicker||'01 / PROJECT BASICS'}</p>
+            <h2>{c.sectionBasicsTitle||'Add the project basics.'}</h2>
+            <p>{c.sectionBasicsBody||''}</p>
+          </header>
+
+          <div class="custom-field">
+            <div class="custom-field__head">
+              <strong>{c.useCase||'Use Case *'}</strong>
+            </div>
+            <div
+              class="custom-choice-grid custom-choice-grid--use"
+              data-custom-use-options
+            >
+              {view.useCases.map((option:any,index:number)=>(
+                <button
+                  type="button"
+                  class="custom-choice"
+                  data-custom-use-option={option.value}
+                  disabled
+                >
+                  <span>{String(index+1).padStart(2,'0')}</span>
+                  <strong>{option.label}</strong>
+                  {option.body&&(<small>{option.body}</small>)}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div class="custom-two">
+            <label class="custom-field">
+              <span class="custom-field__head">
+                <strong>{c.quantity||'Estimated Quantity *'}</strong>
+                <small>
+                  {c.minimumQuantity||'Custom MOQ'} · {view.minimumQuantity} {c.pieces||'pcs'}
+                </small>
+              </span>
+              <div class="custom-input-wrap">
+                <input
+                  type="number"
+                  min={String(view.minimumQuantity)}
+                  max={String(view.maximumQuantity)}
+                  step="1"
+                  placeholder={c.quantityPlaceholder||'e.g. 500'}
+                  disabled
+                  data-custom-quantity
+                />
+                <span>{c.pieces||'pcs'}</span>
+              </div>
+            </label>
+
+            <label class="custom-field">
+              <span class="custom-field__head">
+                <strong>{c.budget||'Budget Range'}</strong>
+              </span>
+              <select disabled data-custom-budget>
+                {view.budgets.map((option:any)=>(
+                  <option value={option.value}>{option.label}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <label class="custom-field">
+            <span class="custom-field__head">
+              <strong>{c.delivery||'Preferred Delivery'}</strong>
+              <small>{c.deliveryHint||''}</small>
+            </span>
+            <input
+              type="text"
+              placeholder={c.deliveryPlaceholder||''}
+              disabled
+              data-custom-delivery
+            />
+          </label>
+        </section>
+
+        <section class="custom-section" data-custom-section="product">
+          <header class="custom-section__header">
+            <p class="custom-eyebrow">{c.sectionProductKicker||'02 / PRODUCT DIRECTION'}</p>
+            <h2>{c.sectionProductTitle||'Choose product and fragrance.'}</h2>
+            <p>{c.sectionProductBody||''}</p>
+          </header>
+
+          <div class="custom-field">
+            <div class="custom-field__head">
+              <strong>{c.size||'Size Preference'}</strong>
+            </div>
+            <div
+              class="custom-choice-grid custom-choice-grid--sizes"
+              data-custom-size-options
+            >
+              {view.sizes.map((option:any)=>(
+                <button
+                  type="button"
+                  class="custom-choice custom-choice--compact"
+                  data-custom-size-option={option.value}
+                  disabled
+                >
+                  <strong>{option.label}</strong>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div class="custom-field custom-fragrance">
+            <div class="custom-field__head">
+              <strong>{c.fragranceCollection||'Fragrance Collection'}</strong>
+              <small>{c.collectionResetHint||''}</small>
+            </div>
+
+            <div class="custom-series" data-custom-fragrance-series-options>
+              {view.fragranceSeries.map((series:any,index:number)=>(
+                <button
+                  type="button"
+                  class:list={['custom-series__button',index===0&&'is-active']}
+                  data-custom-fragrance-series={series.key}
+                  disabled
+                >
+                  {series.label}
+                </button>
+              ))}
+            </div>
+
+            <div class="custom-fragrance-groups">
+              {view.fragranceSeries.map((series:any,seriesIndex:number)=>(
+                <section
+                  class:list={['custom-fragrance-group',seriesIndex===0&&'is-featured']}
+                  data-custom-fragrance-group={series.key}
+                >
+                  <div>
+                    <span>{series.label}</span>
+                    <small>{series.scents.length} {c.scents||'Scents'}</small>
+                  </div>
+
+                  <div
+                    class="custom-scents"
+                    data-custom-scent-options={series.key}
+                  >
+                    {series.scents.map((scent:any)=>(
+                      <button
+                        type="button"
+                        class="custom-scent"
+                        data-custom-scent-option={scent.id}
+                        disabled
+                      >
+                        <span aria-hidden="true">○</span>
+                        <strong>{scent.name}</strong>
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+
+            <p class="custom-field__note">
+              {(c.scentsHint||'{count} selected').replace('{count}','0')}
+            </p>
+          </div>
+
+          <label class="custom-field">
+            <span class="custom-field__head">
+              <strong>{c.color||'Color preference'}</strong>
+              <small>{c.optional||'Optional'}</small>
+            </span>
+            <input
+              type="text"
+              placeholder={c.colorPlaceholder||''}
+              disabled
+              data-custom-color
+            />
+          </label>
+        </section>
+
+        <section class="custom-section" data-custom-section="packaging">
+          <header class="custom-section__header">
+            <p class="custom-eyebrow">{c.sectionPackagingKicker||'03 / PACKAGING & BRANDING'}</p>
+            <h2>{c.sectionPackagingTitle||'Choose packaging and branding.'}</h2>
+            <p>{c.sectionPackagingBody||''}</p>
+          </header>
+
+          <div class="custom-field">
+            <div class="custom-field__head">
+              <strong>{c.packaging||'Packaging'}</strong>
+            </div>
+            <div
+              class="custom-choice-grid custom-choice-grid--packaging"
+              data-custom-packaging-options
+            >
+              {view.packages.map((option:any)=>(
+                <button
+                  type="button"
+                  class="custom-choice"
+                  data-custom-packaging-option={option.value}
+                  disabled
+                >
+                  <strong>{option.label}</strong>
+                  {option.body&&(<small>{option.body}</small>)}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div class="custom-field">
+            <div class="custom-field__head">
+              <strong>{c.branding||'Branding'}</strong>
+            </div>
+            <div
+              class="custom-choice-grid custom-choice-grid--branding"
+              data-custom-branding-options
+            >
+              {view.brandingOptions.map((option:any)=>(
+                <button
+                  type="button"
+                  class="custom-choice custom-choice--compact"
+                  data-custom-branding-option={option.value}
+                  disabled
+                >
+                  <strong>{option.label}</strong>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <label class="custom-field">
+            <span class="custom-field__head">
+              <strong>{c.notes||'Project Notes'}</strong>
+              <small>{c.optional||'Optional'}</small>
+            </span>
+            <textarea
+              placeholder={c.notesPlaceholder||''}
+              disabled
+              data-custom-notes
+            ></textarea>
+          </label>
+        </section>
+      </fieldset>
+    </div>
+
+    <aside class="custom-brief" data-custom-static-brief>
+      <p class="custom-eyebrow">{c.summaryKicker||'YOUR PROJECT'}</p>
+      <h2>{c.summaryTitle||'Project brief'}</h2>
+
+      <div class="custom-brief__rows">
+        {summaryRows.map((row:any)=>(
+          <div>
+            <span>{row.label}</span>
+            <strong>{row.value}</strong>
+          </div>
+        ))}
+      </div>
+
+      <div class="custom-brief__quote">
+        <span>{c.customization||'CUSTOMIZATION'}</span>
+        <strong>{c.quotedAfterReview||'Quoted separately after review'}</strong>
+        <p>{c.summaryNote||''}</p>
+      </div>
+
+      <button
+        type="button"
+        class="custom-submit"
+        disabled
+        data-custom-static-add-inquiry
+      >
+        {c.addInquiry||'Add Custom Project to Inquiry'}
+      </button>
+
+      <div class="custom-brief__links">
+        <a href={view.routes.collection}>
+          {c.exploreCollection||'Explore Collection'}
+        </a>
+        <a href={view.routes.inquiry}>
+          {c.reviewInquiry||'Review Inquiry'}
+        </a>
+      </div>
+    </aside>
+  </section>
+</main>

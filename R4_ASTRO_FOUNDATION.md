@@ -1038,3 +1038,82 @@ Production ownership is then:
 ```
 
 The next migration target is R4.6 — Custom Presentation Migration.
+
+
+## R4.6A — Astro Custom Static Presentation
+
+Status: isolated presentation migration stage.
+
+R4.6A adds a real Astro `/custom/` document to the isolated
+`.r4-astro-dist/` build while Production Custom remains Legacy-owned.
+
+Build-time ownership:
+
+```text
+data/site-content.json
+data/i18n.json
+data/scents.csv
+data/series.json
+data/app-config.json
+        ↓
+DreamlandProductDataContract
+DreamlandLocalizationPolicy
+DreamlandCustom
+        ↓
+src/astro/lib/custom-view-model.mjs
+        ↓
+Astro static Custom Project presentation
+```
+
+The static presentation preserves the current editorial three-part brief:
+
+```text
+01 / Project Basics
+- Use Case
+- Estimated Quantity
+- FX-localized Budget Range
+- Preferred Delivery
+
+02 / Product Direction
+- Size Preference
+- Fragrance Collection
+- Available scents
+- Color preference
+
+03 / Packaging & Branding
+- Packaging
+- Branding
+- Project Notes
+
+Sticky Project Brief
+- Custom pricing quoted after review
+- Explore Collection
+- Review Inquiry
+```
+
+Custom MOQ and maximum quantity are sourced from `data/app-config.json`.
+Fragrance availability is delegated to canonical `DreamlandCustom` at build
+time after `scents.csv` is parsed through `DreamlandProductDataContract`.
+Localized site copy is delegated to `DreamlandLocalizationPolicy`.
+
+R4.6A intentionally remains zero-client-JS. Every editor control is rendered
+but inert, language switching is disabled and Add Custom Project to Inquiry is
+disabled. Draft state, validation, scent interaction, Live Brief updates,
+EN/ZH/KO preference and canonical Inquiry persistence belong to R4.6B.
+
+The isolated Custom route remains:
+
+```text
+robots=noindex,nofollow
+canonical=https://dreamland-catalog.pages.dev/custom/
+```
+
+Production ownership is unchanged:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Astro PDP × 89
+/custom/                  → Legacy MPA
+/inquiry/**               → Legacy MPA
+```

@@ -227,13 +227,53 @@ try{
     }
   }
 
+  const custom=
+    expectFile(
+      path.join(
+        'custom',
+        'index.html'
+      )
+    );
+
+  if(custom){
+    for(const marker of [
+      'data-r4-astro-foundation="true"',
+      'data-r4-astro-custom="true"',
+      'data-r4-custom-static="true"',
+      'data-custom-static-presentation'
+    ]){
+      if(
+        !custom.includes(
+          marker
+        )
+      ){
+        fail(
+          'R4.6A Custom output marker mismatch: '+
+          marker
+        );
+      }
+    }
+
+    if(
+      /<script\b/i.test(
+        custom
+      )
+    ){
+      fail(
+        'R4.6A Custom presentation must remain zero-client-JS.'
+      );
+    }
+  }
+
   const routes=loadJson('data/page-routes.json');
 
   if(
     routes.routes?.home?.path!=='/'||
     routes.routes?.catalog?.path!=='/products/'||
     routes.routes?.product?.path!==
-      '/products/{productId}/'
+      '/products/{productId}/'||
+    routes.routes?.custom?.path!==
+      '/custom/'
   ){
     fail(
       'Existing route contract changed during R4.3A.'
@@ -280,6 +320,6 @@ console.log(
   'DREAMLAND B7-00B.4J R4.1/R4.3A Astro foundation: PASS'
 );
 console.log(
-  'PDP has graduated to the R4.5B minimal-runtime Astro presentation; Home and Catalog remain Production Astro owners.'
+  'Custom has graduated to the R4.6A static isolated Astro presentation; Home, Catalog and PDP remain Production Astro owners.'
 );
 console.log('');
