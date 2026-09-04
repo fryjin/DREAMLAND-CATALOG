@@ -81,7 +81,7 @@ function expectFile(
 }
 
 const EXPECTED_BUILD=
-  'npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate';
+  'npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:custom && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate && npm run r4:production:custom:validate';
 
 try{
   const pkg=
@@ -94,7 +94,7 @@ try{
     EXPECTED_BUILD
   ){
     fail(
-      'Production build must preserve Home/Catalog promotion and append the route-scoped PDP promotion before final validation.'
+      'Production build must preserve Home/Catalog/PDP promotion and append the route-scoped Custom promotion before final validation.'
     );
   }
 
@@ -526,8 +526,32 @@ if(DIST_MODE){
       }
     }
 
+    const custom=
+      expectFile(
+        root,
+        'custom/index.html'
+      );
+
+    if(
+      custom&&
+      (
+        !custom.includes(
+          'data-r4-astro-custom="true"'
+        )||
+        !custom.includes(
+          'src="/r4-custom-runtime.js"'
+        )||
+        custom.includes(
+          'DREAMLAND_MPA_ACTIVE'
+        )
+      )
+    ){
+      fail(
+        'Production Custom must be Astro-owned after the R4.6C cutover.'
+      );
+    }
+
     for(const relative of [
-      'custom/index.html',
       'inquiry/index.html',
       'inquiry/contact/index.html',
       'inquiry/review/index.html'
@@ -618,6 +642,6 @@ console.log(
 console.log(
   SOURCE_MODE
     ? 'Production pipeline / SEO / isolated Home promotion contract verified.'
-    : 'dist/ owns Astro Home + Astro Catalog + Astro PDPs while Custom/Inquiry remain Legacy MPA.'
+    : 'dist/ owns Astro Home + Astro Catalog + Astro PDPs while Custom is Astro-owned and Inquiry remains Legacy MPA.'
 );
 console.log('');

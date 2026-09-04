@@ -46,10 +46,10 @@ try{
 
   if(
     packageJson.scripts?.build!==
-    "npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate"
+    "npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:custom && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate && npm run r4:production:custom:validate"
   ){
     fail(
-      'R4.5C Production build must promote Astro Home + Catalog + PDP as staged route owners after the Legacy route build.'
+      'R4.6C Production build must promote Astro Home + Catalog + PDP + Custom as staged route owners after the Legacy route build.'
     );
   }
 
@@ -330,6 +330,6 @@ console.log(
   'DREAMLAND B7-00B.4J R4.1/R4.3A Astro foundation: PASS'
 );
 console.log(
-  'Custom has graduated to the R4.6B minimal-runtime isolated Astro presentation; Home, Catalog and PDP remain Production Astro owners.'
+  'Custom has graduated to the R4.6C Production Astro owner; Home, Catalog and PDP remain Production Astro owners.'
 );
 console.log('');

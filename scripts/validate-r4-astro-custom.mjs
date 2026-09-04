@@ -25,7 +25,7 @@ try{
       'data-r4-astro-foundation="true"','data-r4-astro-custom="true"','data-r4-custom-static="true"','data-custom-runtime-presentation',
       'data-custom-section="basics"','data-custom-section="product"','data-custom-section="packaging"','data-custom-runtime-brief','data-custom-add-inquiry',
       'data-custom-quantity','data-custom-budget','data-custom-delivery','data-custom-color','data-custom-notes','data-custom-error="use"','data-custom-error="qty"','data-custom-error="scents"',
-      'id="customRuntimeState"','src="/r4-custom-runtime.js"','href="/products/"','href="/inquiry/"','name="robots" content="noindex,nofollow"',
+      'id="customRuntimeState"','src="/r4-custom-runtime.js"','href="/products/"','href="/inquiry/"','name="robots" content="index,follow"',
       'rel="canonical" href="https://dreamland-catalog.pages.dev/custom/"','data-site-language-enabled="true"'
     ]) if(!html.includes(marker)) fail('R4.6B Custom output is missing: '+marker);
 
@@ -105,7 +105,7 @@ try{
 
 try{
   const page=read('src/astro/pages/custom/index.astro');
-  for(const pattern of [/buildCustomRuntimeState/,/languageEnabled=\{true\}/,/id="customRuntimeState"/,/src="\/r4-custom-runtime\.js"/,/robots="noindex,nofollow"/]) if(!pattern.test(page)) fail('R4.6B Custom source contract is incomplete: '+pattern);
+  for(const pattern of [/buildCustomRuntimeState/,/languageEnabled=\{true\}/,/id="customRuntimeState"/,/src="\/r4-custom-runtime\.js"/,/robots="index,follow"/]) if(!pattern.test(page)) fail('R4.6B Custom source contract is incomplete: '+pattern);
   const viewModel=read('src/astro/lib/custom-view-model.mjs');
   for(const pattern of [/localizationPolicy\s*\.\s*localizedContent/,/customFeature\s*\.\s*snapshot/,/customFeature\s*\.\s*availableSeries/,/customFeature\s*\.\s*availableScents/,/buildCustomRuntimeState/]) if(!pattern.test(viewModel)) fail('R4.6B Custom ViewModel delegation is missing: '+pattern);
   for(const forbidden of ['document.','querySelector(','localStorage','sessionStorage','fetch(','DreamlandInquiry','DreamlandRisk','DreamlandSubmission']) if(viewModel.includes(forbidden)) fail('R4.6B Custom build-time ViewModel crossed a boundary: '+forbidden);
@@ -120,10 +120,10 @@ try{
   const validate=String(pkg.scripts?.validate||'');
   const a=validate.indexOf('npm run r4:astro:custom');const b=validate.indexOf('npm run r4:astro:custom-runtime');const c=validate.indexOf('npm run r4:production:home:contract');
   if(a<0||b<=a||c<=b) fail('R4.6B Custom Runtime gate must run after Custom Presentation and before Production Home contract.');
-  if(pkg.scripts?.build!=='npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate') fail('R4.6B must not change Production Custom ownership.');
+  if(pkg.scripts?.build!=='npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:custom && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate && npm run r4:production:custom:validate') fail('R4.6B must not change Production Custom ownership.');
 }catch(error){fail('R4.6B package inspection crashed: '+error.message);}
 
 if(errors.length){
   console.error('');console.error('DREAMLAND B7-00B.4J R4.6A/R4.6B Astro Custom Presentation: FAIL');for(const error of errors)console.error('- '+error);console.error('');process.exit(1);
 }
-console.log('');console.log('DREAMLAND B7-00B.4J R4.6A/R4.6B Astro Custom Presentation: PASS');console.log('Interactive isolated Custom / canonical validateDraft + buildIntent / multi-scent selection / EN-ZH-KO state / Live Brief / Inquiry persistence hooks / no Production cutover verified.');console.log('');
+console.log('');console.log('DREAMLAND B7-00B.4J R4.6A/R4.6B Astro Custom Presentation: PASS');console.log('Interactive isolated Custom / canonical validateDraft + buildIntent / multi-scent selection / EN-ZH-KO state / Live Brief / Inquiry persistence hooks / Production-ready isolated runtime contract verified.');console.log('');

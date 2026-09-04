@@ -507,10 +507,10 @@ try{
 
   if(
     packageJson.scripts?.build!==
-    'npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate'
+    'npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:custom && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate && npm run r4:production:custom:validate'
   ){
     fail(
-      'R4.4C Production build must preserve the isolated Catalog contract while adding route-scoped Production promotion.'
+      'R4.6C Production build must preserve the isolated Catalog contract while appending the staged Custom cutover.'
     );
   }
 }catch(error){

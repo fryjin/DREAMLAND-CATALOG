@@ -265,10 +265,10 @@ try{
 
   if(
     pkg.scripts?.build!==
-    "npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate"
+    "npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:custom && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate && npm run r4:production:custom:validate"
   ){
     fail(
-      'R4.5C Production build must preserve Home/Catalog cutover and append the staged PDP cutover pipeline.'
+      'R4.6C Production build must preserve Home/Catalog/PDP cutover and append the staged Custom cutover pipeline.'
     );
   }
 

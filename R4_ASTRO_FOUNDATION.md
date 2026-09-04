@@ -1167,3 +1167,55 @@ R4.6B keeps /custom/ noindex,nofollow and leaves Production ownership unchanged:
 ```
 
 Production Custom cutover belongs to R4.6C.
+
+
+## R4.6C — Production Custom Cutover
+
+Status: Production migration stage.
+
+R4.6C promotes the already-validated Astro Custom Project document into the final Production `dist/custom/index.html` while preserving Astro Home, Catalog and all 89 PDPs plus the remaining Legacy Inquiry routes.
+
+The Production build becomes:
+
+```text
+data:build
+→ Legacy build-pages.mjs
+→ isolated Astro build
+→ promote Astro Home
+→ promote Astro Catalog
+→ promote Astro PDP × 89
+→ promote Astro Custom
+→ validate Home
+→ validate Catalog
+→ validate PDP
+→ validate Custom
+```
+
+Final route ownership after R4.6C:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Astro PDP × 89
+/custom/                  → Astro Custom
+/inquiry/**               → Legacy MPA
+```
+
+Custom promotion is route-scoped. It copies only `/custom/index.html`, `/r4-custom-runtime.js` and the hashed Astro assets referenced by the Custom document. Home, Catalog, a Production PDP sentinel and the Inquiry route family are hash-protected during the promotion step.
+
+The Custom route becomes indexable at this stage:
+
+```text
+robots=index,follow
+canonical=https://dreamland-catalog.pages.dev/custom/
+```
+
+The Production build manifest records:
+
+```text
+customOwner=astro
+customCutover=B7-00B.4J-R4.6C
+presentationOverrides.custom=astro-r4.6c
+```
+
+R4.6C intentionally does not modify Service Worker Custom ownership or APP/RUNTIME cache cleanup. The Service Worker remains because Inquiry is still Legacy-owned; Custom cache detachment and Production payload hardening belong to R4.6D.

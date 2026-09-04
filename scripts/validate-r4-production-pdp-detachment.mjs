@@ -1360,8 +1360,45 @@ if(DIST_MODE){
       );
     }
 
+    const customRoute=
+      path.join(
+        root,
+        'custom/index.html'
+      );
+
+    if(
+      !fs.existsSync(
+        customRoute
+      )
+    ){
+      fail(
+        'R4.5D downstream Custom route is missing after the R4.6C cutover.'
+      );
+    }else{
+      const custom=
+        fs.readFileSync(
+          customRoute,
+          'utf8'
+        );
+
+      if(
+        !custom.includes(
+          'data-r4-astro-custom="true"'
+        )||
+        !custom.includes(
+          'src="/r4-custom-runtime.js"'
+        )||
+        custom.includes(
+          'DREAMLAND_MPA_ACTIVE'
+        )
+      ){
+        fail(
+          'R4.5D downstream owner compatibility requires Astro Custom after R4.6C.'
+        );
+      }
+    }
+
     for(const relative of [
-      'custom/index.html',
       'inquiry/index.html',
       'inquiry/contact/index.html',
       'inquiry/review/index.html'
