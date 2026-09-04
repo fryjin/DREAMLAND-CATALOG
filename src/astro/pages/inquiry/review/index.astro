@@ -1,0 +1,127 @@
+---
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+import SiteHeader from '../../../components/site/SiteHeader.astro';
+import SiteFooter from '../../../components/site/SiteFooter.astro';
+import ReviewPage from '../../../components/review/ReviewPage.astro';
+
+import {
+  buildReviewStaticView
+} from '../../../lib/review-view-model.mjs';
+
+import '../../../styles/home.css';
+import '../../../styles/review.css';
+
+import siteContent from '../../../../../data/site-content.json';
+import i18n from '../../../../../data/i18n.json';
+import routes from '../../../../../data/page-routes.json';
+
+import '../../../../domain/localization/runtime-localization-policy.js';
+import '../../../../features/inquiry/runtime-inquiry.js';
+import '../../../../features/contact/runtime-contact.js';
+import '../../../../site/runtime/runtime-page-guards.js';
+
+if(
+  routes.routes
+    ?.inquiry
+    ?.path!==
+  '/inquiry/'||
+  routes.routes
+    ?.contact
+    ?.path!==
+  '/inquiry/contact/'||
+  routes.routes
+    ?.review
+    ?.path!==
+  '/inquiry/review/'||
+  routes.routes
+    ?.review
+    ?.public!==
+  false||
+  routes.routes
+    ?.review
+    ?.guard!==
+  'hasValidContact'||
+  routes.routes
+    ?.success
+    ?.path!==
+  '/inquiry/success/'
+){
+  throw new Error(
+    'R4.9A expected canonical Inquiry → Contact → Review → Success route contract.'
+  );
+}
+
+const localizationPolicy=
+  globalThis
+    .DreamlandLocalizationPolicy;
+
+const inquiryFeature=
+  globalThis
+    .DreamlandInquiry;
+
+const contactFeature=
+  globalThis
+    .DreamlandContact;
+
+const pageGuards=
+  globalThis
+    .DreamlandPageGuards;
+
+if(
+  !localizationPolicy||
+  !inquiryFeature||
+  !contactFeature||
+  !pageGuards
+){
+  throw new Error(
+    'R4.9A Review requires Localization, Inquiry, Contact and PageGuards canonical owners.'
+  );
+}
+
+const language='en';
+
+const view=
+  buildReviewStaticView({
+    language,
+    siteContent,
+    localizationPolicy,
+    inquiryFeature,
+    contactFeature,
+    pageGuards
+  });
+
+const languageOptions=[
+  'en',
+  'zh',
+  'ko'
+].map(
+  value=>({
+    value,
+    label:
+      i18n.currencyMap
+        ?.[value]
+        ?.label||
+      value.toUpperCase()
+  })
+);
+---
+<SiteLayout
+  title="Review Inquiry — DREAMLAND"
+  description={view.copy.reviewBody||'Review the inquiry before submission.'}
+  page="review"
+  lang={language}
+  robots="noindex,nofollow"
+  canonical="https://dreamland-catalog.pages.dev/inquiry/review/"
+  ogImage="https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg"
+>
+  <SiteHeader
+    content={view.content}
+    languageOptions={languageOptions}
+    initialLanguage={language}
+    languageEnabled={false}
+  />
+
+  <ReviewPage view={view} />
+
+  <SiteFooter content={view.content} />
+</SiteLayout>

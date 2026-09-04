@@ -2354,3 +2354,133 @@ Production ownership is then:
 ```
 
 The next migration target is the downstream Review conversion route.
+
+## R4.9A — Astro Review Static Presentation
+
+Status: isolated presentation migration stage.
+
+R4.9A adds a real Astro `/inquiry/review/` document to the isolated
+`.r4-astro-dist/` build while Production Review and Success remain Legacy-owned.
+
+### Canonical build-time ownership
+
+The static Review view is derived from:
+
+```text
+data/site-content.json
+        ↓
+DreamlandLocalizationPolicy
+DreamlandInquiry (storage=null, version=2)
+DreamlandContact (storage=null, 24h contract)
+DreamlandPageGuards
+        ↓
+src/astro/lib/review-view-model.mjs
+        ↓
+Astro static Review presentation
+```
+
+Browser Inquiry and Contact state are intentionally unavailable during the
+static build. R4.9A therefore preserves an honest empty projection:
+
+```text
+Inquiry items          = 0
+Product quantity       = 0
+Custom projects        = 0
+Estimated total        = 0
+Inquiry ID             = empty
+Contact fields         = empty × 8
+```
+
+No fake buyer, Product or submission data is introduced.
+
+### Guard metadata
+
+The canonical route remains:
+
+```text
+/inquiry/review/
+public=false
+guard=hasValidContact
+```
+
+DreamlandPageGuards evaluates the empty build-time state as:
+
+```text
+allowed=false
+code=INQUIRY_REQUIRED
+target=/inquiry/
+```
+
+R4.9A records this result as presentation metadata only. It does not execute a
+browser redirect; Review route guard activation belongs to R4.9B.
+
+### Static presentation
+
+The page preserves the existing Review information architecture:
+
+```text
+01 Inquiry      complete
+02 Contact      complete
+03 Review       active
+
+01 Contact details
+- canonical eight-field Contact snapshot
+- Edit → /inquiry/contact/
+
+02 Inquiry items
+- honest empty state
+- Edit → /inquiry/
+
+03 Before submission
+- existing localized quotation/order notice
+
+Inquiry overview rail
+- Inquiry ID: —
+- Estimated product amount: —
+- Privacy consent: disabled
+- Submit Inquiry: disabled
+```
+
+The language control is rendered but disabled.
+
+The route remains:
+
+```text
+robots=noindex,nofollow
+canonical=https://dreamland-catalog.pages.dev/inquiry/review/
+```
+
+### Explicit boundaries
+
+R4.9A is zero-client-JS and does not load or execute:
+
+```text
+DreamlandRisk / hCaptcha
+DreamlandSubmission
+DreamlandInquirySubmissionFlow
+Service Worker registration
+DesktopExperience / DesktopReview
+startup-loader
+browser data fetches
+Success navigation
+```
+
+Production ownership remains:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Astro PDP × 89
+/custom/                  → Astro Custom
+/inquiry/                 → Astro Inquiry
+/inquiry/contact/         → Astro Contact
+/inquiry/review/          → Legacy MPA
+/inquiry/success/         → Legacy MPA
+```
+
+R4.9B will activate only the Review-route browser responsibilities: shared
+Inquiry + Contact hydration, canonical `hasValidContact` guard execution,
+EN/ZH/KO presentation and Review projection refresh.
+
+Risk/hCaptcha, privacy-consent submission orchestration, final Submission and
+Success navigation remain downstream and are not activated by R4.9B.
