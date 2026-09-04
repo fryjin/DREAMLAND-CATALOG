@@ -55,7 +55,7 @@ try{
 
   if(
     packageJson.scripts?.['r4:astro:build']!==
-    'astro build --config astro.config.mjs && node scripts/r4-copy-astro-home-assets.mjs && node scripts/r4-copy-astro-catalog-assets.mjs && node scripts/r4-copy-astro-pdp-assets.mjs && node scripts/r4-copy-astro-custom-assets.mjs'
+    'astro build --config astro.config.mjs && node scripts/r4-copy-astro-home-assets.mjs && node scripts/r4-copy-astro-catalog-assets.mjs && node scripts/r4-copy-astro-pdp-assets.mjs && node scripts/r4-copy-astro-custom-assets.mjs && node scripts/r4-copy-astro-inquiry-assets.mjs'
   ){
     fail('R4 Astro build/copy contract is missing.');
   }
@@ -302,13 +302,26 @@ try{
       }
     }
 
+    const inquiryExecutableScripts=[
+      ...inquiry.matchAll(
+        /<script\b(?![^>]*type="application\/json")[^>]*>/gi
+      )
+    ];
+
     if(
-      /<script\b/i.test(
-        inquiry
+      inquiryExecutableScripts.length!==1||
+      !inquiry.includes(
+        'src="/r4-inquiry-runtime.js"'
+      )||
+      !inquiry.includes(
+        'id="inquiryRuntimeState"'
+      )||
+      !inquiry.includes(
+        'data-inquiry-runtime-presentation'
       )
     ){
       fail(
-        'R4.7A Inquiry presentation must remain zero-client-JS.'
+        'R4.7B Inquiry presentation must expose exactly one dedicated Inquiry runtime plus non-executable state.'
       );
     }
   }
@@ -372,6 +385,6 @@ console.log(
   'DREAMLAND B7-00B.4J R4.1/R4.3A Astro foundation: PASS'
 );
 console.log(
-  'Inquiry has graduated to the R4.7A isolated static Astro presentation; Home, Catalog, PDP and Custom remain Production Astro owners.'
+  'Inquiry has graduated to the R4.7B isolated minimal runtime; Home, Catalog, PDP and Custom remain Production Astro owners and Production Inquiry remains Legacy.'
 );
 console.log('');

@@ -23,6 +23,12 @@ const OUT=
 
 const errors=[];
 
+const EXPECTED_BUILD=
+  'npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:custom && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate && npm run r4:production:custom:validate';
+
+const EXPECTED_ASTRO_BUILD=
+  'astro build --config astro.config.mjs && node scripts/r4-copy-astro-home-assets.mjs && node scripts/r4-copy-astro-catalog-assets.mjs && node scripts/r4-copy-astro-pdp-assets.mjs && node scripts/r4-copy-astro-custom-assets.mjs && node scripts/r4-copy-astro-inquiry-assets.mjs';
+
 function fail(message){
   errors.push(message);
 }
@@ -43,15 +49,18 @@ function json(relative){
   );
 }
 
-function count(
-  source,
-  pattern
-){
-  return [
-    ...source.matchAll(
-      pattern
-    )
-  ].length;
+function stateText(html){
+  const match=
+    html.match(
+      /<script[^>]*id="inquiryRuntimeState"[^>]*type="application\/json"[^>]*>([\s\S]*?)<\/script>/i
+    )||
+    html.match(
+      /<script[^>]*type="application\/json"[^>]*id="inquiryRuntimeState"[^>]*>([\s\S]*?)<\/script>/i
+    );
+
+  return match
+    ? match[1]
+    : '';
 }
 
 try{
@@ -68,7 +77,7 @@ try{
     )
   ){
     fail(
-      'R4.7A Inquiry output is missing: inquiry/index.html'
+      'R4.7B Inquiry output is missing: inquiry/index.html'
     );
   }else{
     const html=
@@ -82,17 +91,21 @@ try{
       'data-r4-astro-inquiry="true"',
       'data-r4-inquiry-static="true"',
       'data-inquiry-static-presentation',
+      'data-inquiry-runtime-presentation',
       'data-inquiry-static-progress',
       'data-inquiry-static-empty',
+      'data-inquiry-items',
+      'data-inquiry-clear',
       'data-inquiry-static-summary',
       'data-inquiry-static-continue',
-      'data-inquiry-static-explore',
-      'data-inquiry-static-custom',
+      'data-inquiry-continue',
+      'id="inquiryRuntimeState"',
+      'src="/r4-inquiry-runtime.js"',
       'href="/products/"',
       'href="/custom/"',
       'name="robots" content="noindex,nofollow"',
       'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/"',
-      'data-site-language-enabled="false"'
+      'data-site-language-enabled="true"'
     ]){
       if(
         !html.includes(
@@ -100,84 +113,137 @@ try{
         )
       ){
         fail(
-          'R4.7A Inquiry output is missing: '+
+          'R4.7B Inquiry output is missing: '+
           marker
         );
       }
     }
 
-    for(const [key,expected] of [
-      [
-        'items',
-        '0'
-      ],
-      [
-        'quantity',
-        '0'
-      ],
-      [
-        'custom',
-        '0'
-      ],
-      [
-        'estimate',
-        '—'
-      ]
-    ]){
-      const pattern=
-        new RegExp(
-          'data-inquiry-static-summary-value="'+
-          key+
-          '"[^>]*>\\s*'+
-          expected
-            .replace(
-              /[.*+?^${}()|[\]\\]/g,
-              '\\$&'
-            )+
-          '\\s*<',
-          'i'
-        );
-
-      if(
-        !pattern.test(
-          html
-        )
-      ){
-        fail(
-          'R4.7A Inquiry static summary must remain an honest empty shell: '+
-          key+
-          '='+
-          expected
-        );
-      }
-    }
-
-    const continueTag=
-      (
-        html.match(
-          /<button\b[^>]*data-inquiry-static-continue[^>]*>/i
-        )||
-        []
-      )[0]||
-      '';
+    const executable=[
+      ...html.matchAll(
+        /<script\b(?![^>]*type="application\/json")[^>]*>/gi
+      )
+    ];
 
     if(
-      !continueTag||
-      !/\bdisabled(?:=""|="disabled"|\s|>)/i
-        .test(
-          continueTag
-        )
+      executable.length!==1
     ){
       fail(
-        'R4.7A Continue-to-Contact control must remain disabled until R4.7B.'
+        'R4.7B Inquiry must expose exactly one executable route runtime; found '+
+        executable.length+
+        '.'
       );
+    }
+
+    const scriptSources=[
+      ...html.matchAll(
+        /<script\b[^>]*\bsrc="([^"]+)"[^>]*>/gi
+      )
+    ].map(
+      match=>match[1]
+    );
+
+    if(
+      scriptSources.length!==1||
+      scriptSources[0]!==
+        '/r4-inquiry-runtime.js'
+    ){
+      fail(
+        'R4.7B Inquiry executable graph must contain only /r4-inquiry-runtime.js.'
+      );
+    }
+
+    const raw=
+      stateText(
+        html
+      );
+
+    if(!raw){
+      fail(
+        'R4.7B inquiryRuntimeState is missing.'
+      );
+    }else{
+      try{
+        const state=
+          JSON.parse(
+            raw
+          );
+
+        if(
+          state.version!=='R4.7B'||
+          state.storage?.languageKey!==
+            'productManualLang'||
+          state.storage?.inquiryKey!==
+            'productManualV2State'||
+          state.storage?.inquiryVersion!==2||
+          state.routes?.contact!==
+            '/inquiry/contact/'||
+          state.products?.length!==89
+        ){
+          fail(
+            'R4.7B Inquiry runtime-state contract is incorrect.'
+          );
+        }
+
+        for(const language of [
+          'en',
+          'zh',
+          'ko'
+        ]){
+          const view=
+            state.languages
+              ?.[language];
+
+          if(
+            !view?.content
+              ?.navigation||
+            !view?.content
+              ?.footer||
+            !view?.copy
+              ?.title||
+            !view?.copy
+              ?.continueContact
+          ){
+            fail(
+              'R4.7B Inquiry localized runtime state is incomplete: '+
+              language
+            );
+          }
+
+          for(const downstream of [
+            'contactTitle',
+            'reviewTitle',
+            'confirmSubmit',
+            'captchaLabel'
+          ]){
+            if(
+              Object.prototype
+                .hasOwnProperty
+                .call(
+                  view?.copy||
+                  {},
+                  downstream
+                )
+            ){
+              fail(
+                'R4.7B Inquiry state leaked downstream Contact/Review/Submission copy: '+
+                downstream
+              );
+            }
+          }
+        }
+      }catch(error){
+        fail(
+          'R4.7B inquiryRuntimeState JSON is invalid: '+
+          error.message
+        );
+      }
     }
 
     for(const forbidden of [
       'DREAMLAND_MPA_ACTIVE',
       'runtime-desktop-experience.js',
       'runtime-desktop-inquiry.js',
-      'runtime-inquiry.js',
       'runtime-contact.js',
       'runtime-risk.js',
       'runtime-submission.js',
@@ -185,11 +251,10 @@ try{
       'runtime-inquiry-submission-flow.js',
       'hcaptcha',
       'startup-loader.js',
-      'localStorage',
-      'sessionStorage',
+      'DreamlandContact',
       'DreamlandRisk',
       'DreamlandSubmission',
-      'DreamlandContact'
+      'DreamlandInquirySubmissionFlow'
     ]){
       if(
         html.includes(
@@ -197,36 +262,15 @@ try{
         )
       ){
         fail(
-          'R4.7A Inquiry output crossed a Legacy/submission/runtime boundary: '+
+          'R4.7B Inquiry output crossed a Legacy/downstream boundary: '+
           forbidden
         );
       }
     }
-
-    if(
-      /<script\b/i.test(
-        html
-      )
-    ){
-      fail(
-        'R4.7A Inquiry presentation must remain zero-client-JS.'
-      );
-    }
-
-    if(
-      count(
-        html,
-        /<li\b[^>]*class="is-active"[^>]*>/gi
-      )!==1
-    ){
-      fail(
-        'R4.7A Inquiry progress must expose exactly one active step.'
-      );
-    }
   }
 }catch(error){
   fail(
-    'R4.7A output inspection crashed: '+
+    'R4.7B Inquiry output inspection crashed: '+
     error.message
   );
 }
@@ -245,7 +289,7 @@ try{
         'src/domain/localization/runtime-localization-policy.js'
       )
     ).href+
-    '?r47a-localization='+
+    '?r47b-localization='+
     Date.now()
   );
 
@@ -256,7 +300,7 @@ try{
         'src/features/inquiry/runtime-inquiry.js'
       )
     ).href+
-    '?r47a-inquiry='+
+    '?r47b-inquiry='+
     Date.now()
   );
 
@@ -275,7 +319,7 @@ try{
       'B5-05'
   ){
     fail(
-      'R4.7A canonical Localization/Inquiry build-time owners are unavailable.'
+      'R4.7B canonical Localization/Inquiry build-time owners are unavailable.'
     );
   }else{
     inquiry.configure({
@@ -291,44 +335,31 @@ try{
 
     if(
       !view?.empty||
-      view.summary?.itemCount!==0||
-      view.summary?.productCount!==0||
-      view.summary?.customCount!==0||
-      view.summary?.productQuantity!==0
+      view.summary?.itemCount!==0
     ){
       fail(
-        'R4.7A canonical DreamlandInquiry empty-state parity failed.'
+        'R4.7B static fallback must preserve canonical empty-state parity.'
       );
     }
 
-    const localized=
-      localization
-        .localizedContent(
-          'en',
-          json(
-            'data/site-content.json'
-          )
+    for(const method of [
+      'productMoqGroups',
+      'firstUnmetProductMoqGroup'
+    ]){
+      if(
+        typeof inquiry[method]!==
+        'function'
+      ){
+        fail(
+          'R4.7B canonical DreamlandInquiry MOQ group owner is missing: '+
+          method
         );
-
-    if(
-      !localized
-        ?.inquiryFlow
-        ?.title||
-      !localized
-        ?.inquiryFlow
-        ?.emptyTitle||
-      !localized
-        ?.inquiryFlow
-        ?.continueContact
-    ){
-      fail(
-        'R4.7A localized Inquiry presentation copy is unavailable.'
-      );
+      }
     }
   }
 }catch(error){
   fail(
-    'R4.7A canonical owner validation failed: '+
+    'R4.7B canonical owner validation failed: '+
     error.message
   );
 }
@@ -340,15 +371,14 @@ try{
     );
 
   for(const pattern of [
-    /SiteLayout/,
-    /SiteHeader/,
-    /SiteFooter/,
-    /InquiryPage/,
-    /buildInquiryStaticView/,
+    /buildInquiryRuntimeState/,
+    /mapInquiryScents/,
+    /product-data-contract\.js/,
     /runtime-localization-policy\.js/,
     /features\/inquiry\/runtime-inquiry\.js/,
-    /page="inquiry"/,
-    /languageEnabled=\{false\}/,
+    /languageEnabled=\{true\}/,
+    /id="inquiryRuntimeState"/,
+    /src="\/r4-inquiry-runtime\.js"/,
     /robots="noindex,nofollow"/
   ]){
     if(
@@ -357,7 +387,7 @@ try{
       )
     ){
       fail(
-        'R4.7A Inquiry source contract is incomplete: '+
+        'R4.7B Inquiry source contract is incomplete: '+
         pattern
       );
     }
@@ -376,7 +406,7 @@ try{
       )
     ){
       fail(
-        'R4.7A Inquiry source crossed a downstream conversion boundary: '+
+        'R4.7B Inquiry source crossed a downstream conversion boundary: '+
         forbidden
       );
     }
@@ -387,21 +417,24 @@ try{
       'src/astro/lib/inquiry-view-model.mjs'
     );
 
-  for(const pattern of [
-    /localizationPolicy\s*\.\s*localizedContent/,
-    /inquiryFeature\s*\.\s*configure/,
-    /inquiryFeature\s*\.\s*buildViewModel/,
-    /storage\s*:\s*null/,
-    /productManualV2State/
+  for(const marker of [
+    "version:'R4.7B'",
+    "languageKey:",
+    "'productManualLang'",
+    "inquiryKey:",
+    "'productManualV2State'",
+    'buildInquiryRuntimeState',
+    'mapInquiryScents',
+    'compactInquiryCopy'
   ]){
     if(
-      !pattern.test(
-        viewModel
+      !viewModel.includes(
+        marker
       )
     ){
       fail(
-        'R4.7A Inquiry ViewModel delegation is missing: '+
-        pattern
+        'R4.7B Inquiry ViewModel/runtime-state source is missing: '+
+        marker
       );
     }
   }
@@ -422,14 +455,14 @@ try{
       )
     ){
       fail(
-        'R4.7A Inquiry ViewModel crossed a browser/submission boundary: '+
+        'R4.7B Inquiry build-time ViewModel crossed a browser/downstream boundary: '+
         forbidden
       );
     }
   }
 }catch(error){
   fail(
-    'R4.7A source inspection crashed: '+
+    'R4.7B source inspection crashed: '+
     error.message
   );
 }
@@ -447,18 +480,20 @@ try{
       false||
     routes.routes?.contact?.path!==
       '/inquiry/contact/'||
+    routes.routes?.contact?.guard!==
+      'hasInquiry'||
     routes.routes?.review?.path!==
       '/inquiry/review/'||
     routes.routes?.success?.path!==
       '/inquiry/success/'
   ){
     fail(
-      'R4.7A Inquiry/Contact/Review/Success route contract changed.'
+      'R4.7B Inquiry/Contact/Review/Success route contract changed.'
     );
   }
 }catch(error){
   fail(
-    'R4.7A route inspection crashed: '+
+    'R4.7B route inspection crashed: '+
     error.message
   );
 }
@@ -472,10 +507,32 @@ try{
   if(
     pkg.scripts
       ?.['r4:astro:inquiry']!==
-    'node scripts/validate-r4-astro-inquiry.mjs'
+    'node scripts/validate-r4-astro-inquiry.mjs'||
+    pkg.scripts
+      ?.['r4:astro:inquiry-runtime']!==
+    'node scripts/validate-r4-astro-inquiry-runtime.mjs'
   ){
     fail(
-      'package.json is missing r4:astro:inquiry.'
+      'package.json is missing R4.7B Inquiry presentation/runtime gates.'
+    );
+  }
+
+  if(
+    pkg.scripts
+      ?.['r4:astro:build']!==
+    EXPECTED_ASTRO_BUILD
+  ){
+    fail(
+      'R4.7B isolated Astro build must append the Inquiry runtime asset copier.'
+    );
+  }
+
+  if(
+    pkg.scripts?.build!==
+    EXPECTED_BUILD
+  ){
+    fail(
+      'R4.7B must not change Production Inquiry ownership.'
     );
   }
 
@@ -485,14 +542,14 @@ try{
       ''
     );
 
-  const customRuntime=
-    validate.indexOf(
-      'npm run r4:astro:custom-runtime'
-    );
-
   const inquiry=
     validate.indexOf(
       'npm run r4:astro:inquiry'
+    );
+
+  const runtime=
+    validate.indexOf(
+      'npm run r4:astro:inquiry-runtime'
     );
 
   const productionHome=
@@ -501,21 +558,12 @@ try{
     );
 
   if(
-    customRuntime<0||
-    inquiry<=customRuntime||
-    productionHome<=inquiry
+    inquiry<0||
+    runtime<=inquiry||
+    productionHome<=runtime
   ){
     fail(
-      'R4.7A Inquiry gate must run after Custom Runtime and before Production source contracts.'
-    );
-  }
-
-  if(
-    pkg.scripts?.build!==
-    'npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:custom && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate && npm run r4:production:custom:validate'
-  ){
-    fail(
-      'R4.7A must not change Production Inquiry ownership.'
+      'R4.7B Inquiry Runtime gate must run after Inquiry presentation and before Production source contracts.'
     );
   }
 
@@ -526,12 +574,12 @@ try{
       ?.['r4:production:inquiry:validate']
   ){
     fail(
-      'R4.7A must not add a Production Inquiry promotion script.'
+      'R4.7B must not add Production Inquiry promotion/cutover scripts.'
     );
   }
 }catch(error){
   fail(
-    'R4.7A package inspection crashed: '+
+    'R4.7B package inspection crashed: '+
     error.message
   );
 }
@@ -551,7 +599,7 @@ try{
     )
   ){
     fail(
-      'R4.7A must not change Service Worker Inquiry ownership.'
+      'R4.7B must not change Service Worker Inquiry ownership.'
     );
   }
 
@@ -561,12 +609,12 @@ try{
     )
   ){
     fail(
-      'R4.7A unexpectedly changed the PWA cache/release baseline.'
+      'R4.7B unexpectedly changed the PWA cache/release baseline.'
     );
   }
 }catch(error){
   fail(
-    'R4.7A Service Worker ownership inspection crashed: '+
+    'R4.7B Service Worker ownership inspection crashed: '+
     error.message
   );
 }
@@ -574,7 +622,7 @@ try{
 if(errors.length){
   console.error('');
   console.error(
-    'DREAMLAND B7-00B.4J R4.7A Astro Inquiry Static Presentation: FAIL'
+    'DREAMLAND B7-00B.4J R4.7B Inquiry Minimal Runtime Presentation: FAIL'
   );
 
   for(const error of errors){
@@ -589,9 +637,9 @@ if(errors.length){
 
 console.log('');
 console.log(
-  'DREAMLAND B7-00B.4J R4.7A Astro Inquiry Static Presentation: PASS'
+  'DREAMLAND B7-00B.4J R4.7B Inquiry Minimal Runtime Presentation: PASS'
 );
 console.log(
-  'Canonical zero-item Inquiry ViewModel / localized Inquiry copy / selection-flow shell / honest empty summary / inert Contact continuation / zero-client-JS / no Production cutover verified.'
+  'Isolated Inquiry owns one route runtime + non-executable state, real shared Inquiry hydration, localized presentation contract and Legacy downstream conversion boundary.'
 );
 console.log('');

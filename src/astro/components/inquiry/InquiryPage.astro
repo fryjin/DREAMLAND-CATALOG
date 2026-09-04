@@ -10,21 +10,25 @@ const summary=view.summary||{};
 const rows=[
   {
     key:'items',
+    bind:'selectedItems',
     label:c.selectedItems||'Items',
     value:summary.itemCount??0
   },
   {
     key:'quantity',
+    bind:'totalQuantity',
     label:c.totalQuantity||'Total Quantity',
     value:summary.productQuantity??0
   },
   {
     key:'custom',
+    bind:'customProject',
     label:c.customProject||'Custom Project',
     value:summary.customCount??0
   },
   {
     key:'estimate',
+    bind:'productEstimate',
     label:c.productEstimate||'Estimated product amount',
     value:'—'
   }
@@ -33,6 +37,7 @@ const rows=[
 <main
   class="inquiry-main"
   data-inquiry-static-presentation
+  data-inquiry-runtime-presentation
 >
   <section
     class="inquiry-hero"
@@ -40,15 +45,24 @@ const rows=[
   >
     <div class="home-container inquiry-hero__inner">
       <div>
-        <p class="inquiry-eyebrow">
+        <p
+          class="inquiry-eyebrow"
+          data-inquiry-bind="kicker"
+        >
           {c.kicker||'INQUIRY'}
         </p>
-        <h1 id="inquiryTitle">
+        <h1
+          id="inquiryTitle"
+          data-inquiry-bind="title"
+        >
           {c.title||'Review inquiry'}
         </h1>
       </div>
 
-      <p class="inquiry-hero__body">
+      <p
+        class="inquiry-hero__body"
+        data-inquiry-bind="body"
+      >
         {c.body||'Check the products, quantities and custom projects before adding contact details.'}
       </p>
     </div>
@@ -58,19 +72,26 @@ const rows=[
     class="inquiry-progress home-container"
     aria-label={c.progressLabel||'Inquiry progress'}
     data-inquiry-static-progress
+    data-inquiry-progress
   >
     <ol>
       <li class="is-active">
         <strong>01</strong>
-        <span>{c.stepSelection||'Inquiry'}</span>
+        <span data-inquiry-bind="stepSelection">
+          {c.stepSelection||'Inquiry'}
+        </span>
       </li>
       <li>
         <strong>02</strong>
-        <span>{c.stepContact||'Contact'}</span>
+        <span data-inquiry-bind="stepContact">
+          {c.stepContact||'Contact'}
+        </span>
       </li>
       <li>
         <strong>03</strong>
-        <span>{c.stepReview||'Review'}</span>
+        <span data-inquiry-bind="stepReview">
+          {c.stepReview||'Review'}
+        </span>
       </li>
     </ol>
   </nav>
@@ -78,17 +99,34 @@ const rows=[
   <section class="inquiry-workspace home-container">
     <div class="inquiry-selection">
       <header class="inquiry-section__header">
-        <p class="inquiry-eyebrow">
-          {c.selectedProducts||'Inquiry items'}
-        </p>
-        <h2>
-          {c.selectedProducts||'Inquiry items'}
-        </h2>
+        <div>
+          <p
+            class="inquiry-eyebrow"
+            data-inquiry-bind="selectedProducts"
+          >
+            {c.selectedProducts||'Inquiry items'}
+          </p>
+          <h2 data-inquiry-bind="selectedProducts">
+            {c.selectedProducts||'Inquiry items'}
+          </h2>
+        </div>
+
+        <button
+          type="button"
+          class="inquiry-clear"
+          data-inquiry-clear
+          hidden
+        >
+          <span data-inquiry-bind="clearAll">
+            {c.clearAll||'Clear all'}
+          </span>
+        </button>
       </header>
 
       <section
         class="inquiry-empty"
         data-inquiry-static-empty
+        data-inquiry-empty
       >
         <span
           class="inquiry-empty__mark"
@@ -98,10 +136,10 @@ const rows=[
         </span>
 
         <div>
-          <h3>
+          <h3 data-inquiry-bind="emptyTitle">
             {c.emptyTitle||'No items in this inquiry.'}
           </h3>
-          <p>
+          <p data-inquiry-bind="emptyBody">
             {c.emptyBody||'Add products from the collection or start a custom project.'}
           </p>
         </div>
@@ -112,7 +150,9 @@ const rows=[
             href={view.routes.collection}
             data-inquiry-static-explore
           >
-            {c.exploreCollection||'Explore Collection'}
+            <span data-inquiry-bind="exploreCollection">
+              {c.exploreCollection||'Explore Collection'}
+            </span>
           </a>
 
           <a
@@ -120,30 +160,45 @@ const rows=[
             href={view.routes.custom}
             data-inquiry-static-custom
           >
-            {c.startCustom||'Start a Custom Project'}
+            <span data-inquiry-bind="startCustom">
+              {c.startCustom||'Start a Custom Project'}
+            </span>
           </a>
         </div>
       </section>
+
+      <div
+        class="inquiry-items"
+        data-inquiry-items
+        hidden
+      ></div>
     </div>
 
     <aside
       class="inquiry-summary"
       data-inquiry-static-summary
+      data-inquiry-summary
     >
-      <p class="inquiry-eyebrow">
+      <p
+        class="inquiry-eyebrow"
+        data-inquiry-bind="summaryKicker"
+      >
         {c.summaryKicker||'YOUR INQUIRY'}
       </p>
 
-      <h2>
+      <h2 data-inquiry-bind="summaryTitle">
         {c.summaryTitle||'Inquiry overview'}
       </h2>
 
       <div class="inquiry-summary__rows">
         {rows.map((row:any)=>(
           <div>
-            <span>{row.label}</span>
+            <span data-inquiry-bind={row.bind}>
+              {row.label}
+            </span>
             <strong
               data-inquiry-static-summary-value={row.key}
+              data-inquiry-summary-value={row.key}
             >
               {row.value}
             </strong>
@@ -151,25 +206,48 @@ const rows=[
         ))}
       </div>
 
-      <p class="inquiry-summary__note">
+      <p
+        class="inquiry-summary__note"
+        data-inquiry-bind="finalPricingNote"
+      >
         {c.finalPricingNote||'Final pricing, lead time and delivery will be confirmed in the formal quotation.'}
       </p>
+
+      <p
+        class="inquiry-validation"
+        data-inquiry-validation
+        role="status"
+        aria-live="polite"
+        hidden
+      ></p>
 
       <button
         type="button"
         class="inquiry-continue"
         disabled
         data-inquiry-static-continue
+        data-inquiry-continue
       >
-        {c.continueContact||'Continue to Contact Details'}
+        <span data-inquiry-bind="continueContact">
+          {c.continueContact||'Continue to Contact Details'}
+        </span>
       </button>
 
       <a
         class="inquiry-summary__explore"
         href={view.routes.collection}
       >
-        {c.continueExploring||'Continue Exploring'}
+        <span data-inquiry-bind="continueExploring">
+          {c.continueExploring||'Continue Exploring'}
+        </span>
       </a>
+
+      <p
+        class="inquiry-runtime-status"
+        data-inquiry-runtime-status
+        role="status"
+        aria-live="polite"
+      ></p>
     </aside>
   </section>
 </main>

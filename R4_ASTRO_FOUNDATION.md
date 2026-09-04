@@ -1424,3 +1424,153 @@ Production and Service Worker ownership remain unchanged:
 
 R4.7B will activate the Inquiry selection runtime without moving the
 Contact/Risk/Submission chain.
+
+
+## R4.7B — Inquiry Minimal Runtime
+
+Status: isolated runtime migration stage.
+
+R4.7B activates the isolated Astro `/inquiry/` selection route while keeping
+Production `/inquiry/**` on the Legacy MPA.
+
+### Runtime ownership
+
+The isolated Inquiry document contains exactly one executable route asset:
+
+```text
+/r4-inquiry-runtime.js
+```
+
+The bundle is assembled route-by-route from:
+
+```text
+DreamlandPricingPolicy
++
+DreamlandInquiry
++
+src/astro/runtime/inquiry-runtime.js
+```
+
+The browser adapter owns DOM, language preference and route navigation only.
+Shared item state, mutations, product estimate and product MOQ grouping remain
+canonical behavior.
+
+### Shared state
+
+R4.7B uses the existing cross-route storage contracts:
+
+```text
+language = productManualLang
+inquiry  = productManualV2State
+version  = 2
+```
+
+DreamlandInquiry hydrates the real browser state through `configure()`. Item
+changes continue through canonical methods:
+
+```text
+setProductQuantity()
+removeItem()
+clearItems()
+persist()
+buildViewModel()
+```
+
+The header badge is derived from the canonical Inquiry summary:
+
+```text
+product quantity + custom project count
+```
+
+### Product MOQ ownership
+
+The old Legacy Inquiry page already grouped Product MOQ by:
+
+```text
+series + size
+```
+
+R4.7B moves that state-derived grouping into DreamlandInquiry as:
+
+```text
+productMoqGroups(itemMoq)
+firstUnmetProductMoqGroup(itemMoq)
+```
+
+The actual MOQ value remains owned by DreamlandPricingPolicy
+`moqForSeriesSize()`. This avoids creating a second Astro-only business rule.
+
+Continue-to-Contact is enabled only when the Inquiry is non-empty and no Product
+series+size group is below its canonical MOQ. Custom-only inquiries remain
+eligible because Custom validation occurred when the Custom intent was created.
+
+### Pricing
+
+DreamlandInquiry is configured with adapters backed by DreamlandPricingPolicy:
+
+```text
+normalizeQuantity
+pricingSeriesFor
+tierUnitCny
+packSurchargeCny
+cnyToBase
+```
+
+The Product estimate therefore re-derives from the same pricing tiers when
+quantity changes. Custom projects remain quoted separately.
+
+### EN / ZH / KO
+
+The browser uses the shared `productManualLang` preference. Compact localized
+Inquiry/Header/Footer views are generated at build time. Product names, series
+labels, scent names and currency presentation update without browser data
+fetches.
+
+### Mutation behavior
+
+R4.7B activates:
+
+```text
+real Inquiry hydration
+product quantity +/- and direct numeric edit
+remove item
+clear all
+live Product estimate
+live item/quantity/custom summary
+MOQ continuation guard
+Inquiry badge synchronization
+storage / pageshow / visibility refresh
+Continue to /inquiry/contact/
+```
+
+The downstream Contact page is still Legacy-owned.
+
+### Boundaries
+
+R4.7B does not load or migrate:
+
+```text
+DreamlandContact
+DreamlandRisk / hCaptcha
+DreamlandSubmission
+DreamlandInquirySubmissionFlow
+Service Worker registration
+DesktopExperience
+startup-loader
+browser data fetches
+```
+
+The isolated Inquiry remains `noindex,nofollow`.
+
+Production ownership remains:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Astro PDP × 89
+/custom/                  → Astro Custom
+/inquiry/**               → Legacy MPA
+```
+
+R4.7C will perform the Production `/inquiry/` selection-route cutover without
+prematurely migrating Contact/Review/Success.

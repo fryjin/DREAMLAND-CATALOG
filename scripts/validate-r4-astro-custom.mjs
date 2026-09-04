@@ -113,8 +113,17 @@ try{
 
 try{
   const pkg=json('package.json');
-  const isolated='astro build --config astro.config.mjs && node scripts/r4-copy-astro-home-assets.mjs && node scripts/r4-copy-astro-catalog-assets.mjs && node scripts/r4-copy-astro-pdp-assets.mjs && node scripts/r4-copy-astro-custom-assets.mjs';
-  if(pkg.scripts?.['r4:astro:build']!==isolated) fail('R4.6B isolated Astro build must append the route-scoped Custom runtime assembly step.');
+  const isolated=String(pkg.scripts?.['r4:astro:build']||'');
+  const customStep='node scripts/r4-copy-astro-custom-assets.mjs';
+  const pdpStep='node scripts/r4-copy-astro-pdp-assets.mjs';
+  const pdpIndex=isolated.indexOf(pdpStep);
+  const customIndex=isolated.indexOf(customStep);
+  if(
+    pdpIndex<0||
+    customIndex<=pdpIndex
+  ){
+    fail('R4.6B isolated Astro build must include the route-scoped Custom runtime assembly step after PDP assets.');
+  }
   if(pkg.scripts?.['r4:astro:custom']!=='node scripts/validate-r4-astro-custom.mjs') fail('package.json lost r4:astro:custom.');
   if(pkg.scripts?.['r4:astro:custom-runtime']!=='node scripts/validate-r4-astro-custom-runtime.mjs') fail('package.json is missing r4:astro:custom-runtime.');
   const validate=String(pkg.scripts?.validate||'');

@@ -565,6 +565,113 @@
     return item;
   }
 
+  function productMoqGroups(
+    itemMoq=()=>1
+  ){
+    const groups=
+      new Map();
+
+    state.items.forEach(
+      item=>{
+        if(
+          item?.type!==
+          'product'
+        ){
+          return;
+        }
+
+        const series=
+          String(
+            item?.series||
+            ''
+          );
+
+        const size=
+          String(
+            item?.size||
+            ''
+          );
+
+        const key=
+          series+
+          '|'+
+          size;
+
+        const moq=
+          Math.max(
+            1,
+            Math.trunc(
+              number(
+                itemMoq(
+                  item
+                ),
+                1
+              )
+            )
+          );
+
+        if(
+          !groups.has(
+            key
+          )
+        ){
+          groups.set(
+            key,
+            {
+              key,
+              series,
+              size,
+              qty:0,
+              moq
+            }
+          );
+        }
+
+        const group=
+          groups.get(
+            key
+          );
+
+        group.qty+=
+          number(
+            item?.qty,
+            0
+          );
+
+        group.moq=
+          Math.max(
+            group.moq,
+            moq
+          );
+      }
+    );
+
+    return [
+      ...groups.values()
+    ].map(
+      group=>
+        Object.freeze({
+          ...group
+        })
+    );
+  }
+
+  function firstUnmetProductMoqGroup(
+    itemMoq=()=>1
+  ){
+    return (
+      productMoqGroups(
+        itemMoq
+      )
+        .find(
+          group=>
+            group.qty<
+            group.moq
+        )||
+      null
+    );
+  }
+
   function pricingReady(){
     return Boolean(
       config.pricingSeriesFor&&
@@ -1410,6 +1517,8 @@
       removeItem,
       clearItems,
       addCustom,
+      productMoqGroups,
+      firstUnmetProductMoqGroup,
       pricingReady,
       seriesQuantity,
       pricingGroupQuantity,

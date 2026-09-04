@@ -1,11 +1,16 @@
 ---
+import fs from 'node:fs';
+import path from 'node:path';
+
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import SiteHeader from '../../components/site/SiteHeader.astro';
 import SiteFooter from '../../components/site/SiteFooter.astro';
 import InquiryPage from '../../components/inquiry/InquiryPage.astro';
 
 import {
-  buildInquiryStaticView
+  buildInquiryStaticView,
+  buildInquiryRuntimeState,
+  mapInquiryScents
 } from '../../lib/inquiry-view-model.mjs';
 
 import '../../styles/home.css';
@@ -13,8 +18,12 @@ import '../../styles/inquiry.css';
 
 import siteContent from '../../../../data/site-content.json';
 import i18n from '../../../../data/i18n.json';
+import productsDocument from '../../../../data/products.json';
+import seriesDocument from '../../../../data/series.json';
+import appConfig from '../../../../data/app-config.json';
 import routes from '../../../../data/page-routes.json';
 
+import '../../../data/product-data-contract.js';
 import '../../../domain/localization/runtime-localization-policy.js';
 import '../../../features/inquiry/runtime-inquiry.js';
 
@@ -26,12 +35,20 @@ if(
   routes.routes
     ?.inquiry
     ?.public!==
-  false
+  false||
+  routes.routes
+    ?.contact
+    ?.path!==
+  '/inquiry/contact/'
 ){
   throw new Error(
-    'R4.7A expected canonical non-public Inquiry route /inquiry/.'
+    'R4.7B expected canonical Inquiry → Contact route contract.'
   );
 }
+
+const productDataContract=
+  globalThis
+    .DreamlandProductDataContract;
 
 const localizationPolicy=
   globalThis
@@ -42,15 +59,38 @@ const inquiryFeature=
     .DreamlandInquiry;
 
 if(
+  !productDataContract||
   !localizationPolicy||
   !inquiryFeature
 ){
   throw new Error(
-    'R4.7A Inquiry requires canonical Localization and DreamlandInquiry owners.'
+    'R4.7B Inquiry requires Product Data, Localization and DreamlandInquiry canonical owners.'
   );
 }
 
+const scentRows=
+  productDataContract
+    .parseCsv(
+      fs.readFileSync(
+        path.resolve(
+          process.cwd(),
+          'data/scents.csv'
+        ),
+        'utf8'
+      )
+    );
+
+const scents=
+  mapInquiryScents(
+    scentRows
+  );
+
 const language='en';
+const supportedLanguages=[
+  'en',
+  'zh',
+  'ko'
+];
 
 const view=
   buildInquiryStaticView({
@@ -60,20 +100,41 @@ const view=
     inquiryFeature
   });
 
-const languageOptions=[
-  'en',
-  'zh',
-  'ko'
-].map(
-  value=>({
-    value,
-    label:
-      i18n.currencyMap
-        ?.[value]
-        ?.label||
-      value.toUpperCase()
-  })
-);
+const runtimeState=
+  buildInquiryRuntimeState({
+    languages:
+      supportedLanguages,
+    defaultLanguage:
+      language,
+    siteContent,
+    i18n,
+    productsDocument,
+    seriesDocument,
+    scents,
+    appConfig,
+    localizationPolicy
+  });
+
+const runtimeStateJson=
+  JSON.stringify(
+    runtimeState
+  )
+    .replace(
+      /</g,
+      '\\u003c'
+    );
+
+const languageOptions=
+  supportedLanguages.map(
+    value=>({
+      value,
+      label:
+        i18n.currencyMap
+          ?.[value]
+          ?.label||
+        value.toUpperCase()
+    })
+  );
 ---
 <SiteLayout
   title="Inquiry — DREAMLAND"
@@ -88,10 +149,22 @@ const languageOptions=[
     content={view.content}
     languageOptions={languageOptions}
     initialLanguage={language}
-    languageEnabled={false}
+    languageEnabled={true}
   />
 
   <InquiryPage view={view} />
 
   <SiteFooter content={view.content} />
+
+  <script
+    is:inline
+    id="inquiryRuntimeState"
+    type="application/json"
+    set:html={runtimeStateJson}
+  ></script>
+  <script
+    is:inline
+    type="module"
+    src="/r4-inquiry-runtime.js"
+  ></script>
 </SiteLayout>
