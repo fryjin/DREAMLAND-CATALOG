@@ -1779,3 +1779,140 @@ Production ownership is then:
 ```
 
 The next migration target is the downstream Contact conversion route.
+
+## R4.8A — Astro Contact Static Presentation
+
+Status: isolated presentation migration stage.
+
+R4.8A adds a real Astro `/inquiry/contact/` document to the isolated
+`.r4-astro-dist/` build while Production Contact, Review and Success remain
+Legacy-owned.
+
+Build-time ownership is:
+
+```text
+data/site-content.json
+data/i18n.json
+        ↓
+DreamlandLocalizationPolicy
+DreamlandContact (storage=null)
+DreamlandInquiry (storage=null, version=2)
+        ↓
+src/astro/lib/contact-view-model.mjs
+        ↓
+Astro static Contact presentation
+```
+
+The real Contact draft and Inquiry selection exist only in browser state.
+R4.8A therefore does not invent either. DreamlandContact is configured without
+storage and must produce an empty eight-field draft:
+
+```text
+name
+company
+country
+city
+email
+phone
+buyerType
+message
+```
+
+DreamlandInquiry is also configured without storage and must preserve its honest
+empty build-time summary:
+
+```text
+itemCount=0
+productCount=0
+customCount=0
+productQuantity=0
+estimatedTotal=0
+```
+
+The static presentation preserves the current business-contact structure:
+
+```text
+01 Inquiry      complete
+02 Contact      active
+03 Review
+
+Contact person
+- Contact Name        required
+- Company / Brand     optional
+- Buyer Type          optional
+
+Location
+- Country / Region    required
+- City                optional
+
+Contact details
+- Email               required
+- WhatsApp / Phone / WeChat required
+
+Additional information
+- Other Notes         optional
+
+Inquiry snapshot
+- Items: 0
+- Total Quantity: 0
+- Estimated product amount: —
+
+What happens after submission
+- existing localized three-step copy
+```
+
+All eight form controls and Review Inquiry are rendered but disabled. Back to
+Inquiry remains a normal document link to `/inquiry/`.
+
+R4.8A is intentionally zero-client-JS. It does not read localStorage, restore
+the Contact draft, execute `hasInquiry`, validate fields or navigate to Review.
+Those behaviors belong to R4.8B.
+
+The canonical route guard remains unchanged:
+
+```text
+/inquiry/contact/
+public=false
+guard=hasInquiry
+```
+
+The isolated Contact route remains:
+
+```text
+robots=noindex,nofollow
+canonical=https://dreamland-catalog.pages.dev/inquiry/contact/
+```
+
+R4.8A does not migrate or load:
+
+```text
+Review
+Success
+DreamlandRisk / hCaptcha
+DreamlandSubmission
+DreamlandInquirySubmissionFlow
+Service Worker registration
+DesktopExperience
+startup-loader
+browser data fetches
+```
+
+Production ownership remains unchanged:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Astro PDP × 89
+/custom/                  → Astro Custom
+/inquiry/                 → Astro Inquiry
+/inquiry/contact/         → Legacy MPA
+/inquiry/review/          → Legacy MPA
+/inquiry/success/         → Legacy MPA
+```
+
+R4.8B will activate only the Contact-route browser responsibilities: the shared
+`dreamlandContactDraftV1` draft with its existing 24-hour TTL, the canonical
+`hasInquiry` route guard, Contact field validation, EN/ZH/KO presentation,
+Inquiry snapshot hydration and navigation to the still-Legacy Review route.
+Risk/hCaptcha and final Submission remain downstream and are not part of the
+Contact runtime migration.

@@ -1,0 +1,361 @@
+---
+interface Props {
+  view:Record<string,any>;
+}
+
+const {view}=Astro.props;
+const c=view.copy||{};
+const contact=view.contact||{};
+const summary=view.summary||{};
+const countries=Array.isArray(view.countryRegions)?view.countryRegions:[];
+const buyerTypes=Array.isArray(view.buyerTypes)?view.buyerTypes:[];
+
+const requiredLabel=c.requiredLabel||'Required';
+const optionalLabel=c.optionalLabel||'Optional';
+
+const chapters=[
+  {
+    index:'01',
+    title:c.contactChapterPerson||'Contact person',
+    fields:['name','company','buyerType']
+  },
+  {
+    index:'02',
+    title:c.contactChapterRegion||'Location',
+    fields:['country','city']
+  },
+  {
+    index:'03',
+    title:c.contactChapterChannels||'Contact details',
+    fields:['email','phone']
+  },
+  {
+    index:'04',
+    title:c.contactChapterNotes||'Additional information',
+    fields:['message']
+  }
+];
+
+const fieldConfig:Record<string,any>={
+  name:{
+    label:c.name||'Contact Name',
+    placeholder:c.namePlaceholder||'Your name',
+    required:true,
+    type:'text',
+    autocomplete:'name'
+  },
+  company:{
+    label:c.company||'Company / Brand',
+    placeholder:c.companyPlaceholder||'Company or brand',
+    required:false,
+    type:'text',
+    autocomplete:'organization'
+  },
+  country:{
+    label:c.country||'Country / Region',
+    placeholder:c.countryPlaceholder||'Select country / region',
+    required:true,
+    type:'country'
+  },
+  city:{
+    label:c.city||'City',
+    placeholder:c.cityPlaceholder||'City',
+    required:false,
+    type:'text',
+    autocomplete:'address-level2'
+  },
+  email:{
+    label:c.email||'Email',
+    placeholder:c.emailPlaceholder||'name@example.com',
+    required:true,
+    type:'email',
+    autocomplete:'email'
+  },
+  phone:{
+    label:c.phone||'WhatsApp / Phone / WeChat',
+    placeholder:c.phonePlaceholder||'Preferred contact method',
+    required:true,
+    type:'tel',
+    autocomplete:'tel'
+  },
+  buyerType:{
+    label:c.buyerType||'Buyer Type',
+    placeholder:c.selectBuyerType||c.buyerType||'Select buyer type',
+    required:false,
+    type:'buyerType'
+  },
+  message:{
+    label:c.message||'Other Notes',
+    placeholder:c.messagePlaceholder||'Anything else we should know about the project?',
+    required:false,
+    type:'textarea'
+  }
+};
+
+const summaryRows=[
+  {
+    key:'items',
+    label:c.selectedItems||'Items',
+    value:summary.itemCount??0
+  },
+  {
+    key:'quantity',
+    label:c.totalQuantity||'Total Quantity',
+    value:`${summary.productQuantity??0} ${view.qtyUnit||'pcs'}`
+  },
+  {
+    key:'estimate',
+    label:c.productEstimate||'Estimated product amount',
+    value:'—'
+  }
+];
+---
+<main
+  class="contact-main"
+  data-contact-static-presentation
+>
+  <section
+    class="contact-hero"
+    aria-labelledby="contactTitle"
+  >
+    <div class="home-container contact-hero__inner">
+      <div>
+        <p class="contact-eyebrow">
+          {c.contactKicker||'CONTACT'}
+        </p>
+        <h1 id="contactTitle">
+          {c.contactTitle||'Add contact details'}
+        </h1>
+      </div>
+
+      <p class="contact-hero__body">
+        {c.contactBody||'We will use these details to confirm the quotation and project requirements.'}
+      </p>
+    </div>
+  </section>
+
+  <nav
+    class="contact-progress home-container"
+    aria-label={c.progressLabel||'Inquiry progress'}
+    data-contact-static-progress
+  >
+    <ol>
+      <li
+        class="is-complete"
+        data-contact-static-step="selection"
+      >
+        <strong>01</strong>
+        <span>{c.stepSelection||'Inquiry'}</span>
+      </li>
+      <li
+        class="is-active"
+        data-contact-static-step="contact"
+      >
+        <strong>02</strong>
+        <span>{c.stepContact||'Contact'}</span>
+      </li>
+      <li data-contact-static-step="review">
+        <strong>03</strong>
+        <span>{c.stepReview||'Review'}</span>
+      </li>
+    </ol>
+  </nav>
+
+  <section class="contact-workspace home-container">
+    <section
+      class="contact-form-shell"
+      data-contact-static-form
+    >
+      <header class="contact-form__header">
+        <p class="contact-eyebrow">
+          {c.contactDetailsKicker||'CONTACT DETAILS'}
+        </p>
+        <h2>
+          {c.contactDetailsTitle||'Contact details'}
+        </h2>
+        <p>
+          {c.contactDetailsBody||'These details are used only to reply to this inquiry and follow up on the project.'}
+        </p>
+      </header>
+
+      <form
+        class="contact-form"
+        aria-label={c.contactDetailsTitle||'Contact details'}
+        novalidate
+      >
+        {chapters.map((chapter:any)=>(
+          <section
+            class="contact-chapter"
+            data-contact-static-chapter={chapter.index}
+          >
+            <header class="contact-chapter__header">
+              <span>{chapter.index}</span>
+              <h3>{chapter.title}</h3>
+            </header>
+
+            <div class="contact-chapter__fields">
+              {chapter.fields.map((key:string)=>{
+                const field=fieldConfig[key]||{};
+                const required=Boolean(field.required);
+                const requirement=required?requiredLabel:optionalLabel;
+
+                if(field.type==='country'){
+                  return (
+                    <label class="contact-field">
+                      <span class="contact-field__head">
+                        <b>{field.label}</b>
+                        <small>{requirement}</small>
+                      </span>
+                      <select
+                        disabled
+                        required
+                        autocomplete="country-name"
+                        data-contact-static-field="country"
+                      >
+                        <option value="">
+                          {field.placeholder}
+                        </option>
+                        {countries.map((row:any)=>(
+                          <option
+                            value={row.code}
+                            data-contact-static-country-option
+                          >
+                            {row.label} ({row.code})
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  );
+                }
+
+                if(field.type==='buyerType'){
+                  return (
+                    <label class="contact-field">
+                      <span class="contact-field__head">
+                        <b>{field.label}</b>
+                        <small>{requirement}</small>
+                      </span>
+                      <select
+                        disabled
+                        data-contact-static-field="buyerType"
+                      >
+                        <option value="">
+                          {field.placeholder}
+                        </option>
+                        {buyerTypes.map((row:any)=>(
+                          <option
+                            value={row.value}
+                            data-contact-static-buyer-option
+                          >
+                            {row.label}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  );
+                }
+
+                if(field.type==='textarea'){
+                  return (
+                    <label class="contact-field contact-field--wide">
+                      <span class="contact-field__head">
+                        <b>{field.label}</b>
+                        <small>{requirement}</small>
+                      </span>
+                      <textarea
+                        disabled
+                        placeholder={field.placeholder}
+                        data-contact-static-field={key}
+                      >{contact[key]||''}</textarea>
+                    </label>
+                  );
+                }
+
+                return (
+                  <label class="contact-field">
+                    <span class="contact-field__head">
+                      <b>{field.label}</b>
+                      <small>{requirement}</small>
+                    </span>
+                    <input
+                      disabled
+                      required={required}
+                      type={field.type}
+                      autocomplete={field.autocomplete}
+                      placeholder={field.placeholder}
+                      value={contact[key]||''}
+                      data-contact-static-field={key}
+                    />
+                  </label>
+                );
+              })}
+            </div>
+          </section>
+        ))}
+
+        <div class="contact-actions">
+          <a
+            class="contact-action contact-action--secondary"
+            href={view.routes.inquiry}
+            data-contact-static-back
+          >
+            {c.backInquiry||'Back to Inquiry'}
+          </a>
+
+          <button
+            class="contact-action contact-action--primary"
+            type="button"
+            disabled
+            data-contact-static-continue
+          >
+            {c.reviewInquiry||'Review Inquiry'}
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <aside
+      class="contact-rail"
+      data-contact-static-summary
+    >
+      <section class="contact-summary">
+        <p class="contact-eyebrow">
+          {c.summaryKicker||'YOUR INQUIRY'}
+        </p>
+        <h2>
+          {c.contactSnapshotTitle||c.summaryTitle||'Inquiry snapshot'}
+        </h2>
+
+        <div class="contact-summary__rows">
+          {summaryRows.map((row:any)=>(
+            <div>
+              <span>{row.label}</span>
+              <strong data-contact-static-summary-value={row.key}>
+                {row.value}
+              </strong>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="contact-next">
+        <p class="contact-eyebrow">
+          {c.whatNextKicker||'AFTER SUBMISSION'}
+        </p>
+        <h2>
+          {c.whatNextTitle||'What happens after submission'}
+        </h2>
+
+        <ol>
+          {(c.whatNextSteps||[]).map((step:string,index:number)=>(
+            <li>
+              <b>{String(index+1).padStart(2,'0')}</b>
+              <span>{step}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+    </aside>
+  </section>
+</main>

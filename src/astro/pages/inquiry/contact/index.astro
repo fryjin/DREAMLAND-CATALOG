@@ -1,0 +1,117 @@
+---
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+import SiteHeader from '../../../components/site/SiteHeader.astro';
+import SiteFooter from '../../../components/site/SiteFooter.astro';
+import ContactPage from '../../../components/contact/ContactPage.astro';
+
+import {
+  buildContactStaticView
+} from '../../../lib/contact-view-model.mjs';
+
+import '../../../styles/home.css';
+import '../../../styles/contact.css';
+
+import siteContent from '../../../../../data/site-content.json';
+import i18n from '../../../../../data/i18n.json';
+import routes from '../../../../../data/page-routes.json';
+
+import '../../../../domain/localization/runtime-localization-policy.js';
+import '../../../../features/inquiry/runtime-inquiry.js';
+import '../../../../features/contact/runtime-contact.js';
+
+if(
+  routes.routes
+    ?.contact
+    ?.path!==
+  '/inquiry/contact/'||
+  routes.routes
+    ?.contact
+    ?.public!==
+  false||
+  routes.routes
+    ?.contact
+    ?.guard!==
+  'hasInquiry'||
+  routes.routes
+    ?.inquiry
+    ?.path!==
+  '/inquiry/'||
+  routes.routes
+    ?.review
+    ?.path!==
+  '/inquiry/review/'
+){
+  throw new Error(
+    'R4.8A expected canonical Inquiry → Contact → Review route contract.'
+  );
+}
+
+const localizationPolicy=
+  globalThis
+    .DreamlandLocalizationPolicy;
+
+const inquiryFeature=
+  globalThis
+    .DreamlandInquiry;
+
+const contactFeature=
+  globalThis
+    .DreamlandContact;
+
+if(
+  !localizationPolicy||
+  !inquiryFeature||
+  !contactFeature
+){
+  throw new Error(
+    'R4.8A Contact requires Localization, Inquiry and Contact canonical owners.'
+  );
+}
+
+const language='en';
+
+const view=
+  buildContactStaticView({
+    language,
+    siteContent,
+    i18n,
+    localizationPolicy,
+    contactFeature,
+    inquiryFeature
+  });
+
+const languageOptions=[
+  'en',
+  'zh',
+  'ko'
+].map(
+  value=>({
+    value,
+    label:
+      i18n.currencyMap
+        ?.[value]
+        ?.label||
+      value.toUpperCase()
+  })
+);
+---
+<SiteLayout
+  title="Contact Details — DREAMLAND"
+  description={view.copy.contactBody}
+  page="contact"
+  lang={language}
+  robots="noindex,nofollow"
+  canonical="https://dreamland-catalog.pages.dev/inquiry/contact/"
+  ogImage="https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg"
+>
+  <SiteHeader
+    content={view.content}
+    languageOptions={languageOptions}
+    initialLanguage={language}
+    languageEnabled={false}
+  />
+
+  <ContactPage view={view} />
+
+  <SiteFooter content={view.content} />
+</SiteLayout>
