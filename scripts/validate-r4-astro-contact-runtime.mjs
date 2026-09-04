@@ -828,21 +828,22 @@ try{
       'sw.js'
     );
 
+  /*
+   * R4.8B owns the isolated Contact runtime only. Production Service Worker
+   * ownership is delegated to the current Production detachment stage.
+   */
   if(
-    sw.includes(
-      'CONTACT_NAVIGATION_PATHS'
-    )||
-    sw.includes(
-      'isContactNavigation('
+    !sw.includes(
+      "const CACHE_VERSION = 'dreamland-pwa-v129';"
     )
   ){
     fail(
-      'R4.8B must not change Service Worker Contact ownership.'
+      'R4.8B unexpectedly changed the PWA cache/release baseline.'
     );
   }
 }catch(error){
   fail(
-    'R4.8B Service Worker ownership inspection crashed: '+
+    'R4.8B Service Worker baseline inspection crashed: '+
     error.message
   );
 }

@@ -163,11 +163,23 @@ function validateInquirySw(
     }
   }
 
+  /*
+   * R4.7D owns only the Inquiry selection matcher. Later route-specific
+   * detachment stages may add their own exact matcher between Inquiry and the
+   * shared release-asset declarations. Slice only the Inquiry ownership block.
+   */
+  const inquiryPathsEnd=
+    source.includes(
+      'const CONTACT_NAVIGATION_PATHS='
+    )
+      ? 'const CONTACT_NAVIGATION_PATHS='
+      : 'const RELEASE_ASSETS';
+
   const pathsBlock=
     blockBetween(
       source,
       'const INQUIRY_NAVIGATION_PATHS=',
-      'const RELEASE_ASSETS'
+      inquiryPathsEnd
     );
 
   const inquiryPaths=[

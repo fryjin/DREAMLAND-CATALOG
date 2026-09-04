@@ -2202,3 +2202,155 @@ both pass with Production Contact Astro-owned and Review/Success still
 Legacy-owned.
 
 R4.8D will perform Contact Legacy Detachment / Production Payload Hardening.
+
+## R4.8D — Contact Legacy Detachment / Production Payload Hardening
+
+Status: Production hardening stage.
+
+R4.8C moved the Production `/inquiry/contact/` document to Astro. R4.8D closes
+its remaining indirect Legacy document path through the existing Service Worker
+while preserving that Service Worker for Review, Success, Risk/hCaptcha and
+Submission.
+
+### Exact Contact document ownership
+
+The Service Worker treats only these Contact document navigation variants as
+Astro-owned:
+
+```text
+/inquiry/contact
+/inquiry/contact/
+/inquiry/contact/index.html
+```
+
+The matcher uses exact pathname Set membership and explicitly does not absorb:
+
+```text
+/inquiry/review/
+/inquiry/success/
+```
+
+Existing APP/RUNTIME cache entries matching the Contact document are purged on
+both Service Worker install and activate.
+
+Navigation ownership becomes:
+
+```text
+Home
+→ Catalog
+→ PDP
+→ Custom
+→ Inquiry selection
+→ Contact
+→ remaining Legacy Review / Success
+```
+
+Contact navigation uses:
+
+```text
+network-only
+cache=no-store
+offline.html only when the network is unavailable
+```
+
+The historical `dreamland-pwa-v129` cache/release version remains unchanged.
+R4.8D performs exact route cleanup rather than widening this stage into a global
+PWA release migration.
+
+### Remaining Legacy conversion shell
+
+R4.8D does not remove the shared Contact domain/desktop assets from the existing
+Legacy APP_SHELL. Review and Success still run through the Legacy
+DesktopExperience conversion family, whose configuration requires the Contact
+presentation module as a dependency.
+
+The remaining Review/Success shell therefore continues to retain:
+
+```text
+runtime-pwa
+runtime-page-guards
+DreamlandContact
+DesktopExperience
+DesktopContact
+DesktopReview
+DesktopSuccess
+Risk
+Submission
+InquirySubmissionFlow
+```
+
+This is a downstream compatibility requirement, not Contact document ownership.
+
+### Production Contact payload budgets
+
+R4.8D validates the final Production Contact route against:
+
+```text
+Contact HTML raw                 <= 256 KiB
+contactRuntimeState raw          <= 192 KiB
+Shared Contact runtime raw       <= 160 KiB
+Astro styles raw                 <= 160 KiB
+HTML + JS + CSS gzip proxy       <= 144 KiB
+Critical HTML + JS + CSS raw     <= 640 KiB
+Executable route runtimes        = 1
+```
+
+The executable graph must contain only `/r4-contact-runtime.js`.
+
+The R4.8B runtime-state contract remains authoritative:
+
+```text
+version=R4.8B
+languages=en,zh,ko
+language=productManualLang
+inquiry=productManualV2State
+inquiryVersion=2
+contact=dreamlandContactDraftV1
+contactTTL=24 hours
+guard=hasInquiry
+review=/inquiry/review/
+```
+
+### Runtime boundary
+
+The Contact runtime remains detached from:
+
+```text
+Service Worker registration
+DreamlandPwa
+DreamlandRisk / hCaptcha
+DreamlandSubmission
+DreamlandInquirySubmissionFlow
+startup-loader
+browser data fetches
+```
+
+Review and Success remain Legacy-owned. Risk/hCaptcha and final Submission are
+not migrated or rewritten by R4.8D.
+
+### R4.8 exit
+
+After R4.8D passes:
+
+```text
+R4.8A Astro Contact Static Presentation       CLOSED
+R4.8B Contact Minimal Runtime                 CLOSED
+R4.8C Production Contact Cutover              CLOSED
+R4.8D Contact Legacy Detachment / Hardening   CLOSED
+R4.8 Contact Migration                        CLOSED
+```
+
+Production ownership is then:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Astro PDP × 89
+/custom/                  → Astro Custom
+/inquiry/                 → Astro Inquiry
+/inquiry/contact/         → Astro Contact
+/inquiry/review/          → Legacy MPA
+/inquiry/success/         → Legacy MPA
+```
+
+The next migration target is the downstream Review conversion route.

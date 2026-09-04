@@ -507,7 +507,7 @@ try{
     ],
     [
       'r4:production:contact:validate',
-      'node scripts/validate-r4-production-contact-cutover.mjs --dist'
+      'node scripts/validate-r4-production-contact-cutover.mjs --dist && node scripts/validate-r4-production-contact-detachment.mjs --dist'
     ]
   ]){
     if(
@@ -693,18 +693,10 @@ try{
     );
   }
 
-  if(
-    sw.includes(
-      'CONTACT_NAVIGATION_PATHS'
-    )||
-    sw.includes(
-      'isContactNavigation('
-    )
-  ){
-    fail(
-      'R4.8C must not detach Contact from Service Worker ownership; that belongs to R4.8D.'
-    );
-  }
+  /*
+   * R4.8C owns the route promotion. Exact Contact Service Worker ownership is
+   * delegated to the R4.8D detachment gate.
+   */
 }catch(error){
   fail(
     'R4.8C Service Worker boundary inspection failed: '+
@@ -1020,20 +1012,12 @@ if(DIST_MODE){
 
   if(
     sw&&
-    (
-      !sw.includes(
-        "const CACHE_VERSION = 'dreamland-pwa-v129';"
-      )||
-      sw.includes(
-        'CONTACT_NAVIGATION_PATHS'
-      )||
-      sw.includes(
-        'isContactNavigation('
-      )
+    !sw.includes(
+      "const CACHE_VERSION = 'dreamland-pwa-v129';"
     )
   ){
     fail(
-      'R4.8C dist/ must retain the pre-R4.8D Service Worker Contact ownership boundary.'
+      'R4.8C dist/ unexpectedly changed the PWA cache/release baseline.'
     );
   }
 }
@@ -1061,7 +1045,7 @@ console.log(
 );
 console.log(
   SOURCE_MODE
-    ? 'Production pipeline / noindex Contact route contract / route-scoped promotion / pre-R4.8D SW boundary verified.'
+    ? 'Production pipeline / noindex Contact route contract / route-scoped promotion verified; final SW ownership is delegated to the R4.8D gate.'
     : 'dist/ owns Astro Home + Catalog + 89 PDPs + Custom + Inquiry + Contact while Review/Success remain Legacy.'
 );
 console.log('');
