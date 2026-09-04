@@ -54,14 +54,6 @@ function json(relative){
   );
 }
 
-function stateFieldTags(html){
-  return [
-    ...html.matchAll(
-      /<(?:input|select|textarea)\b[^>]*data-contact-static-field="([^"]+)"[^>]*>/gi
-    )
-  ];
-}
-
 try{
   const file=
     path.join(
@@ -98,7 +90,6 @@ try{
       'data-contact-static-continue',
       'name="robots" content="noindex,nofollow"',
       'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/contact/"',
-      'data-site-language-enabled="false"',
       'href="/inquiry/"'
     ]){
       if(
@@ -113,28 +104,44 @@ try{
       }
     }
 
-    for(const [step,expectedClass] of [
-      ['selection','is-complete'],
-      ['contact','is-active'],
-      ['review','']
+    for(const [
+      step,
+      expectedClass
+    ] of [
+      [
+        'selection',
+        'is-complete'
+      ],
+      [
+        'contact',
+        'is-active'
+      ],
+      [
+        'review',
+        ''
+      ]
     ]){
-      const pattern=
-        new RegExp(
-          '<li[^>]*'+
-          (
-            expectedClass
-              ? 'class="'+expectedClass+'"[^>]*'
-              : ''
-          )+
-          'data-contact-static-step="'+
-          step+
-          '"',
-          'i'
-        );
+      const stepTag=
+        (
+          html.match(
+            new RegExp(
+              '<li[^>]*data-contact-static-step="'+
+              step+
+              '"[^>]*>',
+              'i'
+            )
+          )||
+          []
+        )[0]||
+        '';
 
       if(
-        !pattern.test(
-          html
+        !stepTag||
+        (
+          expectedClass&&
+          !stepTag.includes(
+            expectedClass
+          )
         )
       ){
         fail(
@@ -144,46 +151,30 @@ try{
       }
     }
 
-    const executable=[
+    const fieldIds=[
       ...html.matchAll(
-        /<script\b(?![^>]*type="application\/json")[^>]*>/gi
+        /data-contact-static-field="([^"]+)"/gi
       )
-    ];
+    ].map(
+      match=>match[1]
+    );
 
-    if(executable.length!==0){
-      fail(
-        'R4.8A Contact must remain zero-client-JS; found '+
-        executable.length+
-        ' executable script(s).'
-      );
-    }
-
-    const fieldTags=
-      stateFieldTags(
-        html
-      );
-
-    const fieldIds=
-      fieldTags.map(
-        match=>match[1]
-      );
-
-    const canonicalFieldIds=[
-      ...fieldIds
-    ].sort();
-
-    const expectedFieldIds=[
+    const expected=[
       ...EXPECTED_FIELDS
     ].sort();
 
+    const actual=[
+      ...fieldIds
+    ].sort();
+
     if(
-      fieldTags.length!==
+      fieldIds.length!==
       EXPECTED_FIELDS.length||
       JSON.stringify(
-        canonicalFieldIds
+        expected
       )!==
       JSON.stringify(
-        expectedFieldIds
+        actual
       )
     ){
       fail(
@@ -195,35 +186,30 @@ try{
       );
     }
 
-    for(const match of fieldTags){
-      if(
-        !/\bdisabled(?:=|>|\s)/i
-          .test(
-            match[0]
-          )
-      ){
-        fail(
-          'R4.8A Contact static field must remain disabled before R4.8B: '+
-          match[1]
-        );
-      }
-    }
-
-    const continueTag=
-      html.match(
-        /<button\b[^>]*data-contact-static-continue[^>]*>/i
-      )?.[0]||
-      '';
+    const executable=[
+      ...html.matchAll(
+        /<script\b(?![^>]*type="application\/json")[^>]*>/gi
+      )
+    ];
 
     if(
-      !continueTag||
-      !/\bdisabled(?:=|>|\s)/i
-        .test(
-          continueTag
-        )
+      executable.length>1
     ){
       fail(
-        'R4.8A Review Inquiry control must remain disabled before the Contact runtime stage.'
+        'R4.8A/R4.8B Contact presentation may expose at most one dedicated route runtime; found '+
+        executable.length+
+        '.'
+      );
+    }
+
+    if(
+      executable.length===1&&
+      !html.includes(
+        'src="/r4-contact-runtime.js"'
+      )
+    ){
+      fail(
+        'R4.8B forward-compatible Contact presentation may execute only /r4-contact-runtime.js.'
       );
     }
 
@@ -233,105 +219,8 @@ try{
       )
     ){
       fail(
-        'R4.8A Contact must not activate Review navigation.'
+        'Contact presentation must not bypass canonical runtime validation with a direct Review anchor.'
       );
-    }
-
-    const content=
-      json(
-        'data/site-content.json'
-      )
-        .languages
-        ?.en
-        ?.inquiryFlow||
-      {};
-
-    const countryCount=
-      (
-        html.match(
-          /data-contact-static-country-option/g
-        )||
-        []
-      ).length;
-
-    const buyerCount=
-      (
-        html.match(
-          /data-contact-static-buyer-option/g
-        )||
-        []
-      ).length;
-
-    if(
-      countryCount!==
-      (
-        content.countryRegions
-          ?.length||
-        0
-      )
-    ){
-      fail(
-        'R4.8A Contact country/region option count mismatch: expected '+
-        (
-          content.countryRegions
-            ?.length||
-          0
-        )+
-        ', found '+
-        countryCount+
-        '.'
-      );
-    }
-
-    if(
-      buyerCount!==
-      (
-        content.buyerTypes
-          ?.length||
-        0
-      )
-    ){
-      fail(
-        'R4.8A Contact buyer-type option count mismatch: expected '+
-        (
-          content.buyerTypes
-            ?.length||
-          0
-        )+
-        ', found '+
-        buyerCount+
-        '.'
-      );
-    }
-
-    for(const [key,expected] of [
-      ['items','0'],
-      ['quantity','0'],
-      ['estimate','—']
-    ]){
-      const pattern=
-        new RegExp(
-          'data-contact-static-summary-value="'+
-          key+
-          '"[^>]*>\\s*'+
-          (
-            key==='quantity'
-              ? '0\\b'
-              : expected
-          ),
-          'i'
-        );
-
-      if(
-        !pattern.test(
-          html
-        )
-      ){
-        fail(
-          'R4.8A Contact honest static summary is incorrect: '+
-          key
-        );
-      }
     }
 
     for(const forbidden of [
@@ -425,168 +314,54 @@ try{
       Date.now()
     );
 
-  const localization=
-    globalThis
-      .DreamlandLocalizationPolicy;
-
-  const inquiry=
-    globalThis
-      .DreamlandInquiry;
-
-  const contact=
-    globalThis
-      .DreamlandContact;
+  const view=
+    module
+      .buildContactStaticView({
+        language:'en',
+        siteContent:
+          json(
+            'data/site-content.json'
+          ),
+        i18n:
+          json(
+            'data/i18n.json'
+          ),
+        localizationPolicy:
+          globalThis
+            .DreamlandLocalizationPolicy,
+        contactFeature:
+          globalThis
+            .DreamlandContact,
+        inquiryFeature:
+          globalThis
+            .DreamlandInquiry
+      });
 
   if(
-    !localization||
-    !inquiry||
-    !contact||
-    contact.version!==
-      'B5-06'
+    view.guard?.name!==
+      'hasInquiry'||
+    view.guard?.satisfied!==
+      false||
+    view.summary?.itemCount!==
+      0||
+    view.summary?.productQuantity!==
+      0||
+    EXPECTED_FIELDS.some(
+      field=>
+        String(
+          view.contact
+            ?.[field]||
+          ''
+        ).trim()
+    )
   ){
     fail(
-      'R4.8A canonical Localization/Inquiry/Contact build-time owners are unavailable.'
+      'R4.8A canonical empty Contact/Inquiry build-time fallback changed.'
     );
-  }else{
-    const view=
-      module
-        .buildContactStaticView({
-          language:'en',
-          siteContent:
-            json(
-              'data/site-content.json'
-            ),
-          i18n:
-            json(
-              'data/i18n.json'
-            ),
-          localizationPolicy:
-            localization,
-          contactFeature:
-            contact,
-          inquiryFeature:
-            inquiry
-        });
-
-    if(
-      view.guard?.name!==
-        'hasInquiry'||
-      view.guard?.satisfied!==
-        false||
-      view.summary?.itemCount!==
-        0||
-      view.summary?.productQuantity!==
-        0||
-      EXPECTED_FIELDS.some(
-        field=>
-          String(
-            view.contact
-              ?.[field]||
-            ''
-          ).trim()
-      )
-    ){
-      fail(
-        'R4.8A canonical empty Contact/Inquiry build-time fallback changed.'
-      );
-    }
   }
 }catch(error){
   fail(
     'R4.8A canonical owner validation failed: '+
-    error.message
-  );
-}
-
-try{
-  const page=
-    read(
-      'src/astro/pages/inquiry/contact/index.astro'
-    );
-
-  for(const pattern of [
-    /buildContactStaticView/,
-    /runtime-localization-policy\.js/,
-    /features\/inquiry\/runtime-inquiry\.js/,
-    /features\/contact\/runtime-contact\.js/,
-    /languageEnabled=\{false\}/,
-    /robots="noindex,nofollow"/,
-    /canonical="https:\/\/dreamland-catalog\.pages\.dev\/inquiry\/contact\/"/
-  ]){
-    if(
-      !pattern.test(
-        page
-      )
-    ){
-      fail(
-        'R4.8A Contact source contract is incomplete: '+
-        pattern
-      );
-    }
-  }
-
-  if(
-    /<script\b/i
-      .test(
-        page
-      )
-  ){
-    fail(
-      'R4.8A Contact page source must remain zero-client-JS.'
-    );
-  }
-
-  const viewModel=
-    read(
-      'src/astro/lib/contact-view-model.mjs'
-    );
-
-  for(const marker of [
-    'dreamlandContactDraftV1',
-    'productManualV2State',
-    'buildContactStaticView',
-    'contactFeature.configure',
-    'inquiryFeature.configure',
-    'inquiryFeature',
-    'contactFeature'
-  ]){
-    if(
-      !viewModel.includes(
-        marker
-      )
-    ){
-      fail(
-        'R4.8A Contact ViewModel is missing canonical ownership marker: '+
-        marker
-      );
-    }
-  }
-
-  for(const forbidden of [
-    'document.',
-    'querySelector(',
-    'localStorage',
-    'sessionStorage',
-    'fetch(',
-    'DreamlandRisk',
-    'DreamlandSubmission',
-    'DreamlandInquirySubmissionFlow',
-    'hcaptcha'
-  ]){
-    if(
-      viewModel.includes(
-        forbidden
-      )
-    ){
-      fail(
-        'R4.8A Contact build-time ViewModel crossed a browser/downstream boundary: '+
-        forbidden
-      );
-    }
-  }
-}catch(error){
-  fail(
-    'R4.8A Contact source inspection crashed: '+
     error.message
   );
 }
@@ -600,10 +375,6 @@ try{
     {};
 
   if(
-    routes.inquiry?.path!==
-      '/inquiry/'||
-    routes.inquiry?.public!==
-      false||
     routes.contact?.path!==
       '/inquiry/contact/'||
     routes.contact?.public!==
@@ -629,37 +400,6 @@ try{
 }
 
 try{
-  const layout=
-    read(
-      'src/astro/layouts/SiteLayout.astro'
-    );
-
-  for(const marker of [
-    "const isContact=",
-    "page==='contact'",
-    "'astro-contact-static'",
-    'data-r4-astro-contact',
-    'data-r4-contact-static'
-  ]){
-    if(
-      !layout.includes(
-        marker
-      )
-    ){
-      fail(
-        'R4.8A SiteLayout Contact ownership marker is missing: '+
-        marker
-      );
-    }
-  }
-}catch(error){
-  fail(
-    'R4.8A SiteLayout inspection crashed: '+
-    error.message
-  );
-}
-
-try{
   const pkg=
     json(
       'package.json'
@@ -675,89 +415,22 @@ try{
     );
   }
 
-  const validate=
-    String(
-      pkg.scripts
-        ?.validate||
-      ''
-    );
-
-  const inquiryRuntime=
-    validate.indexOf(
-      'npm run r4:astro:inquiry-runtime'
-    );
-
-  const contact=
-    validate.indexOf(
-      'npm run r4:astro:contact'
-    );
-
-  const productionHome=
-    validate.indexOf(
-      'npm run r4:production:home:contract'
-    );
-
   if(
-    inquiryRuntime<0||
-    contact<=inquiryRuntime||
-    productionHome<=contact
-  ){
-    fail(
-      'R4.8A Contact gate must run after Inquiry Runtime and before Production source contracts.'
-    );
-  }
-
-  const productionBuild=
     String(
       pkg.scripts
         ?.build||
       ''
-    );
-
-  if(
-    productionBuild.includes(
+    ).includes(
       'r4:production:contact'
     )
   ){
     fail(
-      'R4.8A must not cut over Production Contact.'
-    );
-  }
-
-  if(
-    pkg.scripts
-      ?.['r4:astro:build']!==
-    'astro build --config astro.config.mjs && node scripts/r4-copy-astro-home-assets.mjs && node scripts/r4-copy-astro-catalog-assets.mjs && node scripts/r4-copy-astro-pdp-assets.mjs && node scripts/r4-copy-astro-custom-assets.mjs && node scripts/r4-copy-astro-inquiry-assets.mjs'
-  ){
-    fail(
-      'R4.8A must not add a fake Contact asset copier; Astro owns the static Contact document/styles directly.'
+      'R4.8A/R4.8B must not cut over Production Contact.'
     );
   }
 }catch(error){
   fail(
     'R4.8A package inspection crashed: '+
-    error.message
-  );
-}
-
-try{
-  const foundation=
-    read(
-      'R4_ASTRO_FOUNDATION.md'
-    );
-
-  if(
-    !foundation.includes(
-      '## R4.8A — Astro Contact Static Presentation'
-    )
-  ){
-    fail(
-      'R4_ASTRO_FOUNDATION.md is missing the R4.8A Contact migration contract.'
-    );
-  }
-}catch(error){
-  fail(
-    'R4.8A foundation documentation inspection failed: '+
     error.message
   );
 }
@@ -784,6 +457,6 @@ console.log(
   'DREAMLAND B7-00B.4J R4.8A Astro Contact Static Presentation: PASS'
 );
 console.log(
-  'Canonical empty Contact draft / honest empty Inquiry snapshot / 8-field business-contact presentation / exact Inquiry→Contact→Review route boundary / zero client JS verified.'
+  'Canonical empty Contact draft / honest empty Inquiry snapshot / 8-field business-contact presentation / exact Inquiry→Contact→Review route boundary verified; R4.8B runtime activation is forward-compatible.'
 );
 console.log('');

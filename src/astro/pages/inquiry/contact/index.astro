@@ -5,7 +5,8 @@ import SiteFooter from '../../../components/site/SiteFooter.astro';
 import ContactPage from '../../../components/contact/ContactPage.astro';
 
 import {
-  buildContactStaticView
+  buildContactStaticView,
+  buildContactRuntimeState
 } from '../../../lib/contact-view-model.mjs';
 
 import '../../../styles/home.css';
@@ -13,6 +14,7 @@ import '../../../styles/contact.css';
 
 import siteContent from '../../../../../data/site-content.json';
 import i18n from '../../../../../data/i18n.json';
+import seriesDocument from '../../../../../data/series.json';
 import routes from '../../../../../data/page-routes.json';
 
 import '../../../../domain/localization/runtime-localization-policy.js';
@@ -42,7 +44,7 @@ if(
   '/inquiry/review/'
 ){
   throw new Error(
-    'R4.8A expected canonical Inquiry → Contact → Review route contract.'
+    'R4.8B expected canonical Inquiry → Contact → Review route contract.'
   );
 }
 
@@ -64,7 +66,7 @@ if(
   !contactFeature
 ){
   throw new Error(
-    'R4.8A Contact requires Localization, Inquiry and Contact canonical owners.'
+    'R4.8B Contact requires Localization, Inquiry and Contact canonical owners.'
   );
 }
 
@@ -79,6 +81,30 @@ const view=
     contactFeature,
     inquiryFeature
   });
+
+const runtimeState=
+  buildContactRuntimeState({
+    languages:[
+      'en',
+      'zh',
+      'ko'
+    ],
+    defaultLanguage:
+      language,
+    siteContent,
+    i18n,
+    seriesDocument,
+    localizationPolicy
+  });
+
+const runtimeStateJson=
+  JSON.stringify(
+    runtimeState
+  )
+    .replace(
+      /</g,
+      '\\u003c'
+    );
 
 const languageOptions=[
   'en',
@@ -108,10 +134,22 @@ const languageOptions=[
     content={view.content}
     languageOptions={languageOptions}
     initialLanguage={language}
-    languageEnabled={false}
+    languageEnabled={true}
   />
 
   <ContactPage view={view} />
 
   <SiteFooter content={view.content} />
+
+  <script
+    is:inline
+    id="contactRuntimeState"
+    type="application/json"
+    set:html={runtimeStateJson}
+  ></script>
+  <script
+    is:inline
+    type="module"
+    src="/r4-contact-runtime.js"
+  ></script>
 </SiteLayout>

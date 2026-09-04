@@ -9,6 +9,53 @@ const FIELD_IDS=Object.freeze([
   'message'
 ]);
 
+const CONTACT_COPY_KEYS=Object.freeze([
+  'progressLabel',
+  'stepSelection',
+  'stepContact',
+  'stepReview',
+  'contactKicker',
+  'contactTitle',
+  'contactBody',
+  'contactDetailsKicker',
+  'contactDetailsTitle',
+  'contactDetailsBody',
+  'contactChapterPerson',
+  'contactChapterRegion',
+  'contactChapterChannels',
+  'contactChapterNotes',
+  'requiredLabel',
+  'optionalLabel',
+  'selectBuyerType',
+  'contactSnapshotTitle',
+  'name',
+  'company',
+  'country',
+  'city',
+  'email',
+  'phone',
+  'buyerType',
+  'message',
+  'namePlaceholder',
+  'companyPlaceholder',
+  'countryPlaceholder',
+  'cityPlaceholder',
+  'emailPlaceholder',
+  'phonePlaceholder',
+  'messagePlaceholder',
+  'backInquiry',
+  'reviewInquiry',
+  'selectedItems',
+  'totalQuantity',
+  'summaryKicker',
+  'summaryTitle',
+  'productEstimate',
+  'customProject',
+  'customQuotedSeparately',
+  'whatNextKicker',
+  'whatNextTitle'
+]);
+
 function text(value){
   return String(
     value??
@@ -27,6 +74,70 @@ function frozenRows(value){
         ...row
       })
     )
+  );
+}
+
+function compactContent(localized={}){
+  return Object.freeze({
+    navigation:Object.freeze({
+      ...(
+        localized.navigation||
+        {}
+      )
+    }),
+    footer:Object.freeze({
+      ...(
+        localized.footer||
+        {}
+      )
+    })
+  });
+}
+
+function compactContactCopy(copy={}){
+  const output=
+    Object.fromEntries(
+      CONTACT_COPY_KEYS.map(
+        key=>[
+          key,
+          text(
+            copy?.[key]
+          )
+        ]
+      )
+    );
+
+  output.validation=
+    Object.freeze({
+      ...(
+        copy.validation||
+        {}
+      )
+    });
+
+  output.countryRegions=
+    frozenRows(
+      copy.countryRegions
+    );
+
+  output.buyerTypes=
+    frozenRows(
+      copy.buyerTypes
+    );
+
+  output.whatNextSteps=
+    Object.freeze(
+      (
+        Array.isArray(
+          copy.whatNextSteps
+        )
+          ? copy.whatNextSteps
+          : []
+      ).map(text)
+    );
+
+  return Object.freeze(
+    output
   );
 }
 
@@ -179,6 +290,130 @@ export function buildContactStaticView({
         'hasInquiry',
       satisfied:
         false
+    })
+  });
+}
+
+export function buildContactRuntimeState({
+  languages=[
+    'en',
+    'zh',
+    'ko'
+  ],
+  defaultLanguage='en',
+  siteContent={},
+  i18n={},
+  seriesDocument={},
+  localizationPolicy
+}={}){
+  if(!localizationPolicy){
+    throw new Error(
+      'Contact Runtime State requires canonical Localization ownership.'
+    );
+  }
+
+  const supported=
+    languages.filter(
+      language=>
+        [
+          'en',
+          'zh',
+          'ko'
+        ].includes(
+          language
+        )
+    );
+
+  const locales=
+    Object.freeze(
+      Object.fromEntries(
+        supported.map(
+          language=>{
+            const localized=
+              localizationPolicy
+                .localizedContent(
+                  language,
+                  siteContent
+                );
+
+            return [
+              language,
+              Object.freeze({
+                content:
+                  compactContent(
+                    localized
+                  ),
+                copy:
+                  compactContactCopy(
+                    localized.inquiryFlow||
+                    {}
+                  ),
+                ui:Object.freeze({
+                  pieces:
+                    text(
+                      i18n.ui
+                        ?.[language]
+                        ?.pieces
+                    )||
+                    'pcs'
+                })
+              })
+            ];
+          }
+        )
+      )
+    );
+
+  return Object.freeze({
+    version:
+      'R4.8B',
+    languages:
+      Object.freeze([
+        ...supported
+      ]),
+    defaultLanguage:
+      supported.includes(
+        defaultLanguage
+      )
+        ? defaultLanguage
+        : (
+            supported[0]||
+            'en'
+          ),
+    storage:Object.freeze({
+      languageKey:
+        'productManualLang',
+      inquiryKey:
+        'productManualV2State',
+      inquiryVersion:
+        2,
+      contactKey:
+        'dreamlandContactDraftV1',
+      contactTtlMs:
+        24*60*60*1000,
+      contactFieldIds:
+        FIELD_IDS
+    }),
+    routes:Object.freeze({
+      inquiry:
+        '/inquiry/',
+      review:
+        '/inquiry/review/'
+    }),
+    guard:
+      'hasInquiry',
+    locales,
+    seriesMeta:Object.freeze({
+      ...(
+        seriesDocument.series||
+        {}
+      )
+    }),
+    currencyMap:Object.freeze({
+      ...(
+        i18n.currencyMap||
+        {}
+      )
     })
   });
 }

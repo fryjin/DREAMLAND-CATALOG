@@ -1916,3 +1916,167 @@ R4.8B will activate only the Contact-route browser responsibilities: the shared
 Inquiry snapshot hydration and navigation to the still-Legacy Review route.
 Risk/hCaptcha and final Submission remain downstream and are not part of the
 Contact runtime migration.
+
+## R4.8B — Contact Minimal Runtime
+
+Status: isolated runtime migration stage.
+
+R4.8B activates the isolated Astro `/inquiry/contact/` presentation without
+changing Production Contact ownership.
+
+### Runtime ownership
+
+The isolated Contact document contains exactly one executable route asset:
+
+```text
+/r4-contact-runtime.js
+```
+
+The bundle is assembled from the existing canonical owners:
+
+```text
+DreamlandPricingPolicy
++
+DreamlandInquiry
++
+DreamlandContact
++
+src/astro/runtime/contact-runtime.js
+```
+
+DreamlandContact remains the sole owner of Contact normalization, draft
+persistence, the 24-hour draft TTL and field validation. DreamlandInquiry
+remains the owner of the shared Inquiry state and derived summary.
+DreamlandPricingPolicy remains the owner of Product estimate calculation.
+
+### Shared state and route guard
+
+R4.8B uses the existing cross-route storage contracts:
+
+```text
+language = productManualLang
+inquiry  = productManualV2State
+version  = 2
+contact  = dreamlandContactDraftV1
+TTL      = 24 hours
+```
+
+The canonical Contact route guard remains:
+
+```text
+guard=hasInquiry
+```
+
+On boot, the runtime hydrates DreamlandInquiry from the shared browser state.
+If the Inquiry is empty, Contact stays inert and navigation is replaced with
+`/inquiry/`. R4.8B does not create a second MOQ gate; the Inquiry selection
+route remains responsible for its canonical continuation/MOQ check.
+
+### Contact behavior
+
+After `hasInquiry` passes, R4.8B activates the existing eight-field draft:
+
+```text
+name
+company
+country
+city
+email
+phone
+buyerType
+message
+```
+
+DreamlandContact owns:
+
+```text
+loadDraft()
+patch()
+scheduleDraft(..., 250)
+flushDraft()
+validate()
+```
+
+The existing validation codes remain canonical:
+
+```text
+invalidName
+countryRequired
+invalidEmail
+invalidPhone
+```
+
+A valid Continue action flushes the Contact draft and navigates to the
+still-Legacy `/inquiry/review/` route. Back to Inquiry flushes the draft
+before returning to `/inquiry/`.
+
+### Real Inquiry snapshot
+
+Contact hydrates the real shared Inquiry state. The Contact rail updates:
+
+```text
+Items
+Total Quantity
+Estimated product amount
+Inquiry badge
+```
+
+Product amount is derived through DreamlandPricingPolicy using the same
+`seriesMeta` and currency contracts as the Inquiry runtime. Custom projects
+remain quoted separately through the existing Inquiry summary behavior.
+
+### EN / ZH / KO
+
+The Contact runtime uses `productManualLang` and activates the existing
+language control. Contact copy, field labels/placeholders, Country / Region,
+Buyer Type, header/footer and Inquiry summary currency presentation update from
+build-time localized runtime state without browser data fetches.
+
+### Lifecycle
+
+R4.8B refreshes shared state on:
+
+```text
+storage
+pageshow
+visibilitychange
+```
+
+and flushes the Contact draft on `pagehide` / hidden visibility.
+
+### Boundaries
+
+R4.8B does not load or migrate:
+
+```text
+DreamlandRisk / hCaptcha
+DreamlandSubmission
+DreamlandInquirySubmissionFlow
+Service Worker registration
+DesktopExperience
+startup-loader
+browser data fetches
+```
+
+The isolated Contact route remains:
+
+```text
+robots=noindex,nofollow
+canonical=https://dreamland-catalog.pages.dev/inquiry/contact/
+```
+
+Production ownership remains unchanged:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Astro PDP × 89
+/custom/                  → Astro Custom
+/inquiry/                 → Astro Inquiry
+/inquiry/contact/         → Legacy MPA
+/inquiry/review/          → Legacy MPA
+/inquiry/success/         → Legacy MPA
+```
+
+R4.8C will perform the Production Contact route cutover while preserving
+Review, Success, Risk/hCaptcha and Submission on the Legacy conversion boundary.

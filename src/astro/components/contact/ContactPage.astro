@@ -16,21 +16,29 @@ const optionalLabel=c.optionalLabel||'Optional';
 const chapters=[
   {
     index:'01',
+    key:'person',
+    titleKey:'contactChapterPerson',
     title:c.contactChapterPerson||'Contact person',
     fields:['name','company','buyerType']
   },
   {
     index:'02',
+    key:'region',
+    titleKey:'contactChapterRegion',
     title:c.contactChapterRegion||'Location',
     fields:['country','city']
   },
   {
     index:'03',
+    key:'channels',
+    titleKey:'contactChapterChannels',
     title:c.contactChapterChannels||'Contact details',
     fields:['email','phone']
   },
   {
     index:'04',
+    key:'notes',
+    titleKey:'contactChapterNotes',
     title:c.contactChapterNotes||'Additional information',
     fields:['message']
   }
@@ -38,54 +46,70 @@ const chapters=[
 
 const fieldConfig:Record<string,any>={
   name:{
+    labelKey:'name',
     label:c.name||'Contact Name',
+    placeholderKey:'namePlaceholder',
     placeholder:c.namePlaceholder||'Your name',
     required:true,
     type:'text',
     autocomplete:'name'
   },
   company:{
+    labelKey:'company',
     label:c.company||'Company / Brand',
+    placeholderKey:'companyPlaceholder',
     placeholder:c.companyPlaceholder||'Company or brand',
     required:false,
     type:'text',
     autocomplete:'organization'
   },
   country:{
+    labelKey:'country',
     label:c.country||'Country / Region',
+    placeholderKey:'countryPlaceholder',
     placeholder:c.countryPlaceholder||'Select country / region',
     required:true,
     type:'country'
   },
   city:{
+    labelKey:'city',
     label:c.city||'City',
+    placeholderKey:'cityPlaceholder',
     placeholder:c.cityPlaceholder||'City',
     required:false,
     type:'text',
     autocomplete:'address-level2'
   },
   email:{
+    labelKey:'email',
     label:c.email||'Email',
+    placeholderKey:'emailPlaceholder',
     placeholder:c.emailPlaceholder||'name@example.com',
     required:true,
     type:'email',
     autocomplete:'email'
   },
   phone:{
+    labelKey:'phone',
     label:c.phone||'WhatsApp / Phone / WeChat',
+    placeholderKey:'phonePlaceholder',
     placeholder:c.phonePlaceholder||'Preferred contact method',
     required:true,
     type:'tel',
     autocomplete:'tel'
   },
   buyerType:{
+    labelKey:'buyerType',
     label:c.buyerType||'Buyer Type',
+    placeholderKey:'selectBuyerType',
     placeholder:c.selectBuyerType||c.buyerType||'Select buyer type',
     required:false,
     type:'buyerType'
   },
   message:{
+    labelKey:'message',
     label:c.message||'Other Notes',
+    placeholderKey:'messagePlaceholder',
     placeholder:c.messagePlaceholder||'Anything else we should know about the project?',
     required:false,
     type:'textarea'
@@ -95,16 +119,19 @@ const fieldConfig:Record<string,any>={
 const summaryRows=[
   {
     key:'items',
+    labelKey:'selectedItems',
     label:c.selectedItems||'Items',
     value:summary.itemCount??0
   },
   {
     key:'quantity',
+    labelKey:'totalQuantity',
     label:c.totalQuantity||'Total Quantity',
     value:`${summary.productQuantity??0} ${view.qtyUnit||'pcs'}`
   },
   {
     key:'estimate',
+    labelKey:'productEstimate',
     label:c.productEstimate||'Estimated product amount',
     value:'—'
   }
@@ -113,6 +140,7 @@ const summaryRows=[
 <main
   class="contact-main"
   data-contact-static-presentation
+  data-contact-runtime-presentation
 >
   <section
     class="contact-hero"
@@ -120,15 +148,24 @@ const summaryRows=[
   >
     <div class="home-container contact-hero__inner">
       <div>
-        <p class="contact-eyebrow">
+        <p
+          class="contact-eyebrow"
+          data-contact-bind="contactKicker"
+        >
           {c.contactKicker||'CONTACT'}
         </p>
-        <h1 id="contactTitle">
+        <h1
+          id="contactTitle"
+          data-contact-bind="contactTitle"
+        >
           {c.contactTitle||'Add contact details'}
         </h1>
       </div>
 
-      <p class="contact-hero__body">
+      <p
+        class="contact-hero__body"
+        data-contact-bind="contactBody"
+      >
         {c.contactBody||'We will use these details to confirm the quotation and project requirements.'}
       </p>
     </div>
@@ -138,6 +175,7 @@ const summaryRows=[
     class="contact-progress home-container"
     aria-label={c.progressLabel||'Inquiry progress'}
     data-contact-static-progress
+    data-contact-progress
   >
     <ol>
       <li
@@ -145,18 +183,24 @@ const summaryRows=[
         data-contact-static-step="selection"
       >
         <strong>01</strong>
-        <span>{c.stepSelection||'Inquiry'}</span>
+        <span data-contact-bind="stepSelection">
+          {c.stepSelection||'Inquiry'}
+        </span>
       </li>
       <li
         class="is-active"
         data-contact-static-step="contact"
       >
         <strong>02</strong>
-        <span>{c.stepContact||'Contact'}</span>
+        <span data-contact-bind="stepContact">
+          {c.stepContact||'Contact'}
+        </span>
       </li>
       <li data-contact-static-step="review">
         <strong>03</strong>
-        <span>{c.stepReview||'Review'}</span>
+        <span data-contact-bind="stepReview">
+          {c.stepReview||'Review'}
+        </span>
       </li>
     </ol>
   </nav>
@@ -165,15 +209,19 @@ const summaryRows=[
     <section
       class="contact-form-shell"
       data-contact-static-form
+      data-contact-form-shell
     >
       <header class="contact-form__header">
-        <p class="contact-eyebrow">
+        <p
+          class="contact-eyebrow"
+          data-contact-bind="contactDetailsKicker"
+        >
           {c.contactDetailsKicker||'CONTACT DETAILS'}
         </p>
-        <h2>
+        <h2 data-contact-bind="contactDetailsTitle">
           {c.contactDetailsTitle||'Contact details'}
         </h2>
-        <p>
+        <p data-contact-bind="contactDetailsBody">
           {c.contactDetailsBody||'These details are used only to reply to this inquiry and follow up on the project.'}
         </p>
       </header>
@@ -181,6 +229,7 @@ const summaryRows=[
       <form
         class="contact-form"
         aria-label={c.contactDetailsTitle||'Contact details'}
+        data-contact-form
         novalidate
       >
         {chapters.map((chapter:any)=>(
@@ -190,7 +239,9 @@ const summaryRows=[
           >
             <header class="contact-chapter__header">
               <span>{chapter.index}</span>
-              <h3>{chapter.title}</h3>
+              <h3 data-contact-bind={chapter.titleKey}>
+                {chapter.title}
+              </h3>
             </header>
 
             <div class="contact-chapter__fields">
@@ -198,19 +249,29 @@ const summaryRows=[
                 const field=fieldConfig[key]||{};
                 const required=Boolean(field.required);
                 const requirement=required?requiredLabel:optionalLabel;
+                const requirementKey=required?'requiredLabel':'optionalLabel';
 
                 if(field.type==='country'){
                   return (
-                    <label class="contact-field">
+                    <label
+                      class="contact-field"
+                      data-contact-field-shell="country"
+                    >
                       <span class="contact-field__head">
-                        <b>{field.label}</b>
-                        <small>{requirement}</small>
+                        <b data-contact-bind={field.labelKey}>
+                          {field.label}
+                        </b>
+                        <small data-contact-bind={requirementKey}>
+                          {requirement}
+                        </small>
                       </span>
                       <select
                         disabled
                         required
                         autocomplete="country-name"
                         data-contact-static-field="country"
+                        data-contact-field="country"
+                        data-contact-country-select
                       >
                         <option value="">
                           {field.placeholder}
@@ -224,20 +285,34 @@ const summaryRows=[
                           </option>
                         ))}
                       </select>
+                      <p
+                        class="contact-field__error"
+                        data-contact-field-error="country"
+                        hidden
+                      ></p>
                     </label>
                   );
                 }
 
                 if(field.type==='buyerType'){
                   return (
-                    <label class="contact-field">
+                    <label
+                      class="contact-field"
+                      data-contact-field-shell="buyerType"
+                    >
                       <span class="contact-field__head">
-                        <b>{field.label}</b>
-                        <small>{requirement}</small>
+                        <b data-contact-bind={field.labelKey}>
+                          {field.label}
+                        </b>
+                        <small data-contact-bind={requirementKey}>
+                          {requirement}
+                        </small>
                       </span>
                       <select
                         disabled
                         data-contact-static-field="buyerType"
+                        data-contact-field="buyerType"
+                        data-contact-buyer-select
                       >
                         <option value="">
                           {field.placeholder}
@@ -251,31 +326,57 @@ const summaryRows=[
                           </option>
                         ))}
                       </select>
+                      <p
+                        class="contact-field__error"
+                        data-contact-field-error="buyerType"
+                        hidden
+                      ></p>
                     </label>
                   );
                 }
 
                 if(field.type==='textarea'){
                   return (
-                    <label class="contact-field contact-field--wide">
+                    <label
+                      class="contact-field contact-field--wide"
+                      data-contact-field-shell={key}
+                    >
                       <span class="contact-field__head">
-                        <b>{field.label}</b>
-                        <small>{requirement}</small>
+                        <b data-contact-bind={field.labelKey}>
+                          {field.label}
+                        </b>
+                        <small data-contact-bind={requirementKey}>
+                          {requirement}
+                        </small>
                       </span>
                       <textarea
                         disabled
                         placeholder={field.placeholder}
                         data-contact-static-field={key}
+                        data-contact-field={key}
+                        data-contact-placeholder={field.placeholderKey}
                       >{contact[key]||''}</textarea>
+                      <p
+                        class="contact-field__error"
+                        data-contact-field-error={key}
+                        hidden
+                      ></p>
                     </label>
                   );
                 }
 
                 return (
-                  <label class="contact-field">
+                  <label
+                    class="contact-field"
+                    data-contact-field-shell={key}
+                  >
                     <span class="contact-field__head">
-                      <b>{field.label}</b>
-                      <small>{requirement}</small>
+                      <b data-contact-bind={field.labelKey}>
+                        {field.label}
+                      </b>
+                      <small data-contact-bind={requirementKey}>
+                        {requirement}
+                      </small>
                     </span>
                     <input
                       disabled
@@ -285,7 +386,14 @@ const summaryRows=[
                       placeholder={field.placeholder}
                       value={contact[key]||''}
                       data-contact-static-field={key}
+                      data-contact-field={key}
+                      data-contact-placeholder={field.placeholderKey}
                     />
+                    <p
+                      class="contact-field__error"
+                      data-contact-field-error={key}
+                      hidden
+                    ></p>
                   </label>
                 );
               })}
@@ -293,13 +401,23 @@ const summaryRows=[
           </section>
         ))}
 
+        <div
+          class="contact-global-error"
+          role="alert"
+          data-contact-global-error
+          hidden
+        ></div>
+
         <div class="contact-actions">
           <a
             class="contact-action contact-action--secondary"
             href={view.routes.inquiry}
             data-contact-static-back
+            data-contact-back
           >
-            {c.backInquiry||'Back to Inquiry'}
+            <span data-contact-bind="backInquiry">
+              {c.backInquiry||'Back to Inquiry'}
+            </span>
           </a>
 
           <button
@@ -307,31 +425,50 @@ const summaryRows=[
             type="button"
             disabled
             data-contact-static-continue
+            data-contact-continue
           >
-            {c.reviewInquiry||'Review Inquiry'}
+            <span data-contact-bind="reviewInquiry">
+              {c.reviewInquiry||'Review Inquiry'}
+            </span>
             <span aria-hidden="true">→</span>
           </button>
         </div>
       </form>
+
+      <p
+        class="contact-runtime-status"
+        data-contact-runtime-status
+        role="status"
+        aria-live="polite"
+      ></p>
     </section>
 
     <aside
       class="contact-rail"
       data-contact-static-summary
+      data-contact-summary
     >
       <section class="contact-summary">
-        <p class="contact-eyebrow">
+        <p
+          class="contact-eyebrow"
+          data-contact-bind="summaryKicker"
+        >
           {c.summaryKicker||'YOUR INQUIRY'}
         </p>
-        <h2>
+        <h2 data-contact-bind="contactSnapshotTitle">
           {c.contactSnapshotTitle||c.summaryTitle||'Inquiry snapshot'}
         </h2>
 
         <div class="contact-summary__rows">
           {summaryRows.map((row:any)=>(
             <div>
-              <span>{row.label}</span>
-              <strong data-contact-static-summary-value={row.key}>
+              <span data-contact-bind={row.labelKey}>
+                {row.label}
+              </span>
+              <strong
+                data-contact-static-summary-value={row.key}
+                data-contact-summary-value={row.key}
+              >
                 {row.value}
               </strong>
             </div>
@@ -340,14 +477,17 @@ const summaryRows=[
       </section>
 
       <section class="contact-next">
-        <p class="contact-eyebrow">
+        <p
+          class="contact-eyebrow"
+          data-contact-bind="whatNextKicker"
+        >
           {c.whatNextKicker||'AFTER SUBMISSION'}
         </p>
-        <h2>
+        <h2 data-contact-bind="whatNextTitle">
           {c.whatNextTitle||'What happens after submission'}
         </h2>
 
-        <ol>
+        <ol data-contact-next-steps>
           {(c.whatNextSteps||[]).map((step:string,index:number)=>(
             <li>
               <b>{String(index+1).padStart(2,'0')}</b>

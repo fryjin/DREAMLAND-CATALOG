@@ -409,3 +409,44 @@
     grid-template-columns:1fr;
   }
 }
+/* --------------------------------------------------------------------------
+ * R4.8B — Contact Minimal Runtime
+ * ------------------------------------------------------------------------ */
+
+.contact-field.is-invalid input,
+.contact-field.is-invalid select,
+.contact-field.is-invalid textarea {
+  border-color:#8c5146;
+  box-shadow:0 0 0 3px rgba(140,81,70,.08);
+}
+
+.contact-field__error {
+  margin:7px 0 0;
+  color:#8c5146;
+  font-size:10px;
+  font-weight:760;
+  line-height:1.45;
+}
+
+.contact-global-error {
+  margin-top:18px;
+  padding:12px 14px;
+  border:1px solid rgba(140,81,70,.22);
+  background:rgba(140,81,70,.06);
+  color:#75453d;
+  font-size:11px;
+  line-height:1.5;
+}
+
+.contact-runtime-status {
+  min-height:1em;
+  margin:14px 0 0;
+  color:var(--home-muted);
+  font-size:9px;
+  text-align:center;
+}
+
+.contact-field__error[hidden],
+.contact-global-error[hidden] {
+  display:none!important;
+}

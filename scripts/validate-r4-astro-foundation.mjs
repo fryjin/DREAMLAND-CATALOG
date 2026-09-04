@@ -91,11 +91,46 @@ try{
     previousBuildStep=index;
   }
 
-  if(
-    packageJson.scripts?.['r4:astro:build']!==
-    'astro build --config astro.config.mjs && node scripts/r4-copy-astro-home-assets.mjs && node scripts/r4-copy-astro-catalog-assets.mjs && node scripts/r4-copy-astro-pdp-assets.mjs && node scripts/r4-copy-astro-custom-assets.mjs && node scripts/r4-copy-astro-inquiry-assets.mjs'
-  ){
-    fail('R4 Astro build/copy contract is missing.');
+  const isolatedBuildSteps=
+    String(
+      packageJson.scripts
+        ?.['r4:astro:build']||
+      ''
+    )
+      .split(' && ')
+      .map(step=>step.trim())
+      .filter(Boolean);
+
+  const requiredIsolatedBuildSteps=[
+    'astro build --config astro.config.mjs',
+    'node scripts/r4-copy-astro-home-assets.mjs',
+    'node scripts/r4-copy-astro-catalog-assets.mjs',
+    'node scripts/r4-copy-astro-pdp-assets.mjs',
+    'node scripts/r4-copy-astro-custom-assets.mjs',
+    'node scripts/r4-copy-astro-inquiry-assets.mjs',
+    'node scripts/r4-copy-astro-contact-assets.mjs'
+  ];
+
+  let previousIsolatedStep=-1;
+
+  for(const step of requiredIsolatedBuildSteps){
+    const index=
+      isolatedBuildSteps.indexOf(
+        step
+      );
+
+    if(
+      index<0||
+      index<=previousIsolatedStep
+    ){
+      fail(
+        'R4 isolated Astro build must preserve staged copier order through Contact: '+
+        step
+      );
+      break;
+    }
+
+    previousIsolatedStep=index;
   }
 
   const validate=
