@@ -226,12 +226,73 @@ if(DIST_MODE){
   const custom=expectFile(root,'custom/index.html');
   if(custom&&(!custom.includes('data-r4-astro-custom="true"')||!custom.includes('src="/r4-custom-runtime.js"')||custom.includes('DREAMLAND_MPA_ACTIVE')))fail('Production Custom ownership changed during R4.7C.');
 
-  for(const relative of ['inquiry/contact/index.html','inquiry/review/index.html','inquiry/success/index.html']){
-    const html=expectFile(root,relative);
-    if(html&&!html.includes('window.DREAMLAND_MPA_ACTIVE=true;'))fail('Downstream conversion route must remain Legacy MPA during R4.7C: '+relative);
-  }
+  const contactRoute=
+      path.join(
+        root,
+        'inquiry/contact/index.html'
+      );
 
-  const manifest=JSON.parse(expectFile(root,'multipage-build-manifest.json')||'{}');
+    if(
+      !fs.existsSync(
+        contactRoute
+      )
+    ){
+      fail(
+        'R4.7C downstream Contact route is missing after the R4.8C cutover.'
+      );
+    }else{
+      const contact=
+        fs.readFileSync(
+          contactRoute,
+          'utf8'
+        );
+
+      if(
+        !contact.includes(
+          'data-r4-astro-contact="true"'
+        )||
+        !contact.includes(
+          'src="/r4-contact-runtime.js"'
+        )||
+        contact.includes(
+          'DREAMLAND_MPA_ACTIVE'
+        )
+      ){
+        fail(
+          'R4.7C downstream owner compatibility requires Astro Contact after R4.8C.'
+        );
+      }
+    }
+
+    for(const relative of [
+      'inquiry/review/index.html',
+      'inquiry/success/index.html'
+    ]){
+      const route=
+        path.join(
+          root,
+          relative
+        );
+
+      if(
+        !fs.existsSync(
+          route
+        )||
+        !fs.readFileSync(
+          route,
+          'utf8'
+        ).includes(
+          'window.DREAMLAND_MPA_ACTIVE=true;'
+        )
+      ){
+        fail(
+          'R4.7C must preserve Legacy Review/Success ownership: '+
+          relative
+        );
+      }
+    }
+
+    const manifest=JSON.parse(expectFile(root,'multipage-build-manifest.json')||'{}');
   for(const [key,expected] of [
     ['homeOwner','astro'],['catalogOwner','astro'],['pdpOwner','astro'],['customOwner','astro'],['inquiryOwner','astro']
   ]) if(manifest[key]!==expected)fail('Production manifest owner mismatch: '+key);

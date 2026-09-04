@@ -815,19 +815,6 @@ try{
     );
   }
 
-  if(
-    String(
-      pkg.scripts
-        ?.build||
-      ''
-    ).includes(
-      'r4:production:contact'
-    )
-  ){
-    fail(
-      'R4.8B must not cut over Production Contact.'
-    );
-  }
 }catch(error){
   fail(
     'R4.8B package inspection crashed: '+

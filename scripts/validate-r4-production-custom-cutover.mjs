@@ -83,8 +83,73 @@ if(DIST_MODE){
   const catalog=expectFile(root,'products/index.html');if(catalog&&(!catalog.includes('data-r4-astro-catalog="true"')||!catalog.includes('src="/r4-catalog-runtime.js"')||catalog.includes('DREAMLAND_MPA_ACTIVE')))fail('Production Catalog ownership changed during R4.6C.');
   const products=json('data/products.json').products||[];const firstProduct=products.find(product=>product?.status==='active');const productId=String(firstProduct?.productId||firstProduct?.id||'').trim().toUpperCase();
   if(!productId)fail('No active Product exists for R4.6C Production sentinel validation.');else{const pdp=expectFile(root,path.join('products',productId,'index.html'));if(pdp&&(!pdp.includes('data-r4-astro-product="true"')||!pdp.includes('src="/r4-pdp-runtime.js"')||pdp.includes('DREAMLAND_MPA_ACTIVE')))fail('Production PDP ownership changed during R4.6C.');}
-  for(const relative of ['inquiry/contact/index.html','inquiry/review/index.html','inquiry/success/index.html']){const html=expectFile(root,relative);if(html&&!html.includes('window.DREAMLAND_MPA_ACTIVE=true;'))fail('Production Inquiry route must remain Legacy MPA: '+relative);}
-  const manifest=JSON.parse(expectFile(root,'multipage-build-manifest.json')||'{}');
+  const contactRoute=
+      path.join(
+        root,
+        'inquiry/contact/index.html'
+      );
+
+    if(
+      !fs.existsSync(
+        contactRoute
+      )
+    ){
+      fail(
+        'R4.6C downstream Contact route is missing after the R4.8C cutover.'
+      );
+    }else{
+      const contact=
+        fs.readFileSync(
+          contactRoute,
+          'utf8'
+        );
+
+      if(
+        !contact.includes(
+          'data-r4-astro-contact="true"'
+        )||
+        !contact.includes(
+          'src="/r4-contact-runtime.js"'
+        )||
+        contact.includes(
+          'DREAMLAND_MPA_ACTIVE'
+        )
+      ){
+        fail(
+          'R4.6C downstream owner compatibility requires Astro Contact after R4.8C.'
+        );
+      }
+    }
+
+    for(const relative of [
+      'inquiry/review/index.html',
+      'inquiry/success/index.html'
+    ]){
+      const route=
+        path.join(
+          root,
+          relative
+        );
+
+      if(
+        !fs.existsSync(
+          route
+        )||
+        !fs.readFileSync(
+          route,
+          'utf8'
+        ).includes(
+          'window.DREAMLAND_MPA_ACTIVE=true;'
+        )
+      ){
+        fail(
+          'R4.6C must preserve Legacy Review/Success ownership: '+
+          relative
+        );
+      }
+    }
+
+    const manifest=JSON.parse(expectFile(root,'multipage-build-manifest.json')||'{}');
   for(const [key,expected] of [['homeOwner','astro'],['catalogOwner','astro'],['pdpOwner','astro'],['customOwner','astro']])if(manifest[key]!==expected)fail('Production manifest owner mismatch: '+key);
   if(manifest.homeCutover!=='B7-00B.4J-R4.3C'||manifest.catalogCutover!=='B7-00B.4J-R4.4C'||manifest.pdpCutover!=='B7-00B.4J-R4.5C'||manifest.customCutover!=='B7-00B.4J-R4.6C'||manifest.presentationOverrides?.custom!=='astro-r4.6c')fail('Production manifest lost a staged route-ownership contract.');
   if(!fs.existsSync(path.join(root,'sw.js')))fail('R4.6C must preserve the existing Service Worker while Inquiry remains Legacy-owned.');
