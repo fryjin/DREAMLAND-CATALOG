@@ -2633,3 +2633,71 @@ Production ownership remains:
 The next Review stage must close the Risk/privacy/submission boundary before any
 Production Review cutover. Production Review must not move to Astro while
 Submit Inquiry is intentionally inert.
+
+## R4.9C — Review Submission Boundary Integration
+
+Status: isolated submission-boundary migration stage.
+
+R4.9C activates privacy consent, canonical Risk / adaptive hCaptcha and the
+canonical submission orchestration on isolated Astro Review while Production
+Review remains Legacy-owned.
+
+The Review bundle extends the R4.9B owners with:
+
+```text
+DreamlandSubmissionPayload
+DreamlandRisk
+DreamlandSubmission
+DreamlandPwa
+DreamlandInquirySubmissionFlow
+```
+
+Configuration remains sourced from committed `data/app-config.json`:
+
+```text
+privacyVersion=2026-07-30
+submissionTransport=web3forms-direct
+inquiryClientConfigEndpoint=/api/inquiry?client_config=1
+inquiryEndpoint=/api/inquiry
+riskEndpoint=/api/risk
+submitCooldownMs=10000
+hcaptcha.enabled=true
+hcaptcha.mode=adaptive-risk
+```
+
+Submission sequence:
+
+```text
+hasValidContact
+→ privacy consent
+→ DreamlandInquiry.buildProjection()
+→ DreamlandSubmissionPayload.build()/validate()
+→ DreamlandRisk.assess()
+→ hCaptcha only when captcha_required
+→ DreamlandInquirySubmissionFlow.submit()
+→ DreamlandSubmission
+→ archive + lastSubmission + clear submitted state
+→ /inquiry/success/
+```
+
+Success remains Legacy-owned.
+
+DreamlandInquirySubmissionFlow requires canonical DreamlandPwa reachability.
+R4.9C therefore adds a backward-compatible
+`DREAMLAND_PWA_AUTO_REGISTER=false` opt-out to the PWA owner. The isolated
+Review bundle sets it only while loading DreamlandPwa, then deletes the flag.
+Default Legacy behavior still registers the Service Worker on window load.
+
+R4.9C does not modify `sw.js` and does not cut over Production Review.
+
+Production remains:
+
+```text
+/inquiry/                 → Astro
+/inquiry/contact/         → Astro
+/inquiry/review/          → Legacy MPA
+/inquiry/success/         → Legacy MPA
+```
+
+R4.9D may perform Production Review cutover only after this isolated submission
+boundary passes check/build regression.

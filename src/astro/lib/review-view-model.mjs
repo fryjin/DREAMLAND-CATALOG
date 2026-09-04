@@ -343,7 +343,7 @@ export function buildReviewRuntimeState({
 
   return Object.freeze({
     version:
-      'R4.9B',
+      'R4.9C',
     defaultLanguage:
       supported.includes(
         defaultLanguage
@@ -385,6 +385,55 @@ export function buildReviewRuntimeState({
       text(
         appConfig.privacyVersion
       ),
+    submission:Object.freeze({
+      transport:
+        text(
+          appConfig.submissionTransport
+        )||
+        'gateway',
+      inquiryEndpoint:
+        text(
+          appConfig.inquiryEndpoint
+        )||
+        '/api/inquiry',
+      clientConfigEndpoint:
+        text(
+          appConfig.inquiryClientConfigEndpoint
+        ),
+      riskEndpoint:
+        text(
+          appConfig.riskEndpoint
+        )||
+        '/api/risk',
+      cooldownMs:
+        Number(
+          appConfig.submitCooldownMs
+        )||
+        10000,
+      archiveLimit:
+        Number(
+          appConfig.archiveLimit
+        )||
+        20,
+      riskControl:Object.freeze({
+        ...(
+          appConfig.riskControl||
+          {}
+        )
+      }),
+      hcaptcha:Object.freeze({
+        ...(
+          appConfig.hcaptcha||
+          {}
+        )
+      }),
+      pwa:Object.freeze({
+        ...(
+          appConfig.pwa||
+          {}
+        )
+      })
+    }),
     limits:
       inquiryRuntime.limits,
     products:

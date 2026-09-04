@@ -5,7 +5,7 @@
     return;
   }
 
-  const VERSION='R4.9B';
+  const VERSION='R4.9C';
 
   function text(value){
     return String(
@@ -34,7 +34,7 @@
 
     if(!node){
       throw new Error(
-        'R4.9B Review runtime state is missing.'
+        'R4.9C Review runtime state is missing.'
       );
     }
 
@@ -66,10 +66,14 @@
         ?.pendingInquiryKey!==
         'dreamlandPendingInquiryIdV1'||
       state.guard!==
-        'hasValidContact'
+        'hasValidContact'||
+      !state.submission||
+      !state.submission.inquiryEndpoint||
+      !state.submission.riskEndpoint||
+      !state.privacyVersion
     ){
       throw new Error(
-        'R4.9B Review runtime-state contract mismatch.'
+        'R4.9C Review runtime-state contract mismatch.'
       );
     }
 
@@ -1263,6 +1267,11 @@
     inquiry,
     contact,
     pageGuards,
+    submissionPayload,
+    risk,
+    submission,
+    pwa,
+    submissionFlow,
     storage
   }){
     const products=
@@ -1281,11 +1290,356 @@
         storage
       );
 
+    let privacyAccepted=false;
+    let submitting=false;
+
+    const statusCopy=Object.freeze({
+      en:Object.freeze({
+        privacy:'Please accept the Privacy Notice before submitting.',
+        submitting:'Submitting your inquiry…',
+        captcha:'Please complete the security verification.',
+        filtered:'This inquiry could not be submitted. Please review the details and try again.',
+        failed:'Submission failed. Please try again.',
+        offline:'The network appears unavailable. Your inquiry remains saved on this device.'
+      }),
+      zh:Object.freeze({
+        privacy:'提交前请先同意隐私声明。',
+        submitting:'正在提交询价…',
+        captcha:'请完成安全验证。',
+        filtered:'当前询价暂无法提交，请检查信息后重试。',
+        failed:'提交失败，请稍后重试。',
+        offline:'当前网络不可用，询价内容仍保存在本机。'
+      }),
+      ko:Object.freeze({
+        privacy:'제출하기 전에 개인정보 처리 안내에 동의해 주세요.',
+        submitting:'문의 내용을 제출하고 있습니다…',
+        captcha:'보안 인증을 완료해 주세요.',
+        filtered:'현재 문의를 제출할 수 없습니다. 내용을 확인한 뒤 다시 시도해 주세요.',
+        failed:'제출하지 못했습니다. 다시 시도해 주세요.',
+        offline:'네트워크에 연결할 수 없습니다. 문의 내용은 기기에 저장되어 있습니다.'
+      })
+    });
+
     function locale(){
       return localeFor(
         language,
         state
       );
+    }
+
+    function statusText(key){
+      return (
+        statusCopy[language]?.[key]||
+        statusCopy.en[key]||
+        key
+      );
+    }
+
+    function setStatus(message='',kind=''){
+      const node=
+        documentRef.querySelector(
+          '[data-review-runtime-status]'
+        );
+
+      if(node){
+        node.textContent=
+          text(message);
+        node.dataset.reviewStatus=
+          text(kind);
+      }
+    }
+
+    function syncSubmitUi(){
+      const privacy=
+        documentRef.querySelector(
+          '[data-review-privacy]'
+        );
+
+      const submitButton=
+        documentRef.querySelector(
+          '[data-review-submit]'
+        );
+
+      if(privacy){
+        privacy.disabled=
+          submitting;
+        privacy.checked=
+          privacyAccepted;
+      }
+
+      if(submitButton){
+        submitButton.disabled=
+          submitting||
+          !privacyAccepted;
+        submitButton.setAttribute(
+          'aria-busy',
+          submitting
+            ? 'true'
+            : 'false'
+        );
+      }
+    }
+
+    function configureSubmissionBoundary(){
+      const config=
+        state.submission||
+        {};
+
+      risk.configure({
+        endpoint:
+          config.riskEndpoint,
+        storage,
+        storageKey:
+          'dreamlandRiskAttempts',
+        repeatWindowMs:
+          config.riskControl?.repeatWindowMs,
+        hcaptcha:
+          config.hcaptcha||{},
+        documentRef,
+        navigatorRef:
+          root.navigator
+      });
+
+      submission.configure({
+        submitUrl:
+          config.inquiryEndpoint,
+        accessKeyEndpoint:
+          config.clientConfigEndpoint,
+        transport:
+          config.transport
+      });
+
+      pwa.configure({
+        storage:Object.freeze({
+          local:storage,
+          session:
+            root.sessionStorage
+        }),
+        getLanguage:
+          ()=>language,
+        getConfig:
+          ()=>config.pwa||{},
+        getActiveScreen:
+          ()=>'review',
+        getConnectivityEndpoint:
+          ()=>config.riskEndpoint
+      });
+
+      submissionFlow.configure({
+        submission,
+        risk,
+        pwa,
+        inquiry,
+        contact,
+        storage,
+        archiveKey:
+          'dreamlandInquiryArchiveV1',
+        lastSubmissionKey:
+          'dreamlandLastSubmissionV1',
+        pendingInquiryKey:
+          state.storage.pendingInquiryKey,
+        archiveLimit:
+          config.archiveLimit,
+        cooldownMs:
+          config.cooldownMs
+      });
+
+      risk.markFormStart();
+      risk.bindInteractionTracking(
+        documentRef
+      );
+
+      if(
+        config.hcaptcha?.enabled!==false
+      ){
+        risk.preloadCaptcha();
+      }
+    }
+
+    function projectionForSubmission(){
+      const inquiryId=
+        ensureInquiryId(
+          state,
+          storage
+        );
+
+      return inquiry.buildProjection({
+        contact:
+          contact.snapshot(),
+        inquiryId,
+        submittedAt:
+          new Date().toISOString(),
+        language,
+        privacyVersion:
+          state.privacyVersion
+      });
+    }
+
+    async function assessRisk(payload){
+      const assessment=
+        await risk.assess(
+          payload,
+          {
+            website:
+              root.location?.origin||'',
+            language
+          }
+        );
+
+      if(assessment.filtered){
+        const error=
+          new Error(
+            statusText('filtered')
+          );
+        error.code=
+          'RISK_FILTERED';
+        throw error;
+      }
+
+      if(!assessment.captchaRequired){
+        return '';
+      }
+
+      const security=
+        documentRef.querySelector(
+          '[data-review-security]'
+        );
+
+      const copy=
+        documentRef.querySelector(
+          '[data-review-security-copy]'
+        );
+
+      const container=
+        documentRef.querySelector(
+          '[data-review-captcha]'
+        );
+
+      if(security){
+        security.hidden=false;
+      }
+
+      if(copy){
+        copy.textContent=
+          statusText('captcha');
+      }
+
+      await risk.renderCaptcha(
+        container,
+        {
+          siteKey:
+            assessment.siteKey
+        }
+      );
+
+      return risk.ensureCaptcha({
+        required:true
+      });
+    }
+
+    async function submitReview(){
+      if(submitting){
+        return false;
+      }
+
+      if(!privacyAccepted){
+        setStatus(
+          statusText('privacy'),
+          'error'
+        );
+        syncSubmitUi();
+        return false;
+      }
+
+      if(!hydrateAndGuard()){
+        return false;
+      }
+
+      submitting=true;
+      syncSubmitUi();
+      setStatus(
+        statusText('submitting'),
+        'pending'
+      );
+
+      try{
+        const projection=
+          projectionForSubmission();
+
+        const payload=
+          submissionPayload.build(
+            projection
+          );
+
+        const validation=
+          submissionPayload.validate(
+            payload
+          );
+
+        if(!validation.ok){
+          const error=
+            new Error(
+              validation.code
+            );
+          error.code=
+            validation.code;
+          throw error;
+        }
+
+        const captchaToken=
+          await assessRisk(
+            payload
+          );
+
+        const result=
+          await submissionFlow.submit({
+            inquiryId:
+              projection.inquiryId,
+            payload,
+            submissionSnapshot:
+              projection,
+            captchaToken
+          });
+
+        if(!result?.success){
+          throw new Error(
+            'SUBMISSION_FAILED'
+          );
+        }
+
+        root.location?.assign?.(
+          '/inquiry/success/'
+        );
+
+        return true;
+      }catch(error){
+        risk.resetCaptcha();
+
+        const security=
+          documentRef.querySelector(
+            '[data-review-security]'
+        );
+
+        if(security){
+          security.hidden=true;
+        }
+
+        setStatus(
+          error?.reachable===false
+            ? statusText('offline')
+            : (
+                error?.code==='RISK_FILTERED'
+                  ? statusText('filtered')
+                  : statusText('failed')
+              ),
+          'error'
+        );
+
+        return false;
+      }finally{
+        submitting=false;
+        syncSubmitUi();
+      }
     }
 
     function redirect(guard){
@@ -1396,6 +1750,8 @@
         currentLocale
       );
 
+      syncSubmitUi();
+
       return true;
     }
 
@@ -1426,7 +1782,36 @@
         setLanguage(
           select.value
         );
+        return;
       }
+
+      const privacy=
+        event.target
+          ?.closest?.(
+            '[data-review-privacy]'
+          );
+
+      if(privacy){
+        privacyAccepted=
+          privacy.checked===true;
+        setStatus('');
+        syncSubmitUi();
+      }
+    }
+
+    function onClick(event){
+      const submitButton=
+        event.target
+          ?.closest?.(
+            '[data-review-submit]'
+          );
+
+      if(!submitButton){
+        return;
+      }
+
+      event.preventDefault();
+      submitReview();
     }
 
     function onStorage(event){
@@ -1474,13 +1859,22 @@
         select.disabled=true;
       }
 
+      configureSubmissionBoundary();
+
       if(!render()){
         return false;
       }
 
+      syncSubmitUi();
+
       documentRef.addEventListener(
         'change',
         onChange
+      );
+
+      documentRef.addEventListener(
+        'click',
+        onClick
       );
 
       root.addEventListener(
@@ -1512,7 +1906,8 @@
     return Object.freeze({
       mount,
       render,
-      setLanguage
+      setLanguage,
+      submitReview
     });
   }
 
@@ -1545,14 +1940,39 @@
       root
         .DreamlandPageGuards;
 
+    const submissionPayload=
+      root
+        .DreamlandSubmissionPayload;
+
+    const risk=
+      root
+        .DreamlandRisk;
+
+    const submission=
+      root
+        .DreamlandSubmission;
+
+    const pwa=
+      root
+        .DreamlandPwa;
+
+    const submissionFlow=
+      root
+        .DreamlandInquirySubmissionFlow;
+
     if(
       !pricing||
       !inquiry||
       !contact||
-      !pageGuards
+      !pageGuards||
+      !submissionPayload||
+      !risk||
+      !submission||
+      !pwa||
+      !submissionFlow
     ){
       throw new Error(
-        'R4.9B Review requires PricingPolicy + Inquiry + Contact + PageGuards canonical owners.'
+        'R4.9C Review requires canonical projection, risk and submission owners.'
       );
     }
 
@@ -1564,6 +1984,11 @@
         inquiry,
         contact,
         pageGuards,
+        submissionPayload,
+        risk,
+        submission,
+        pwa,
+        submissionFlow,
         storage:
           root.localStorage
       });

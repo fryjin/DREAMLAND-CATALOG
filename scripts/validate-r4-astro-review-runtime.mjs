@@ -173,8 +173,12 @@ try{
           );
 
         if(
-          state.version!==
-            'R4.9B'||
+          ![
+            'R4.9B',
+            'R4.9C'
+          ].includes(
+            state.version
+          )||
           JSON.stringify(
             state.languages
           )!==
@@ -324,18 +328,16 @@ try{
       )[0]||
       '';
 
+    /*
+     * Privacy/Submit activation is delegated to the later Review submission
+     * boundary stage. R4.9B only requires the controls to remain present.
+     */
     if(
-      !/\bdisabled(?:=|>|\s)/i
-        .test(
-          submit
-        )||
-      !/\bdisabled(?:=|>|\s)/i
-        .test(
-          consent
-        )
+      !submit||
+      !consent
     ){
       fail(
-        'R4.9B must keep privacy consent and Submit Inquiry inert.'
+        'R4.9B/later Review privacy and Submit controls are missing.'
       );
     }
 
@@ -383,29 +385,10 @@ try{
       }
     }
 
-    for(const forbidden of [
-      'DreamlandRisk',
-      'DreamlandSubmission',
-      'DreamlandInquirySubmissionFlow',
-      'hcaptcha',
-      'runtime-pwa.js',
-      'startup-loader.js',
-      'serviceWorker.register',
-      'navigator.serviceWorker',
-      'fetch(',
-      'XMLHttpRequest'
-    ]){
-      if(
-        bundle.includes(
-          forbidden
-        )
-      ){
-        fail(
-          'R4.9B Review runtime crossed a downstream/PWA/data-fetch boundary: '+
-          forbidden
-        );
-      }
-    }
+    /*
+     * Later Review stages may append canonical Risk / Submission / PWA
+     * reachability owners. R4.9B does not freeze successor bundle composition.
+     */
 
     for(const pattern of [
       /pageGuards\s*\.\s*evaluate\s*\(\s*['"]review['"]/,
@@ -424,19 +407,6 @@ try{
           pattern
         );
       }
-    }
-
-    if(
-      bundle.includes(
-        'data-review-static-submit'
-      )||
-      bundle.includes(
-        'data-review-static-consent'
-      )
-    ){
-      fail(
-        'R4.9B runtime must not activate Submit or privacy-consent controls.'
-      );
     }
 
     const raw=
@@ -473,8 +443,20 @@ try{
       'src/astro/runtime/review-runtime.js'
     );
 
+  if(
+    !runtime.includes(
+      "const VERSION='R4.9B';"
+    )&&
+    !runtime.includes(
+      "const VERSION='R4.9C';"
+    )
+  ){
+    fail(
+      'R4.9B/later Review adapter version marker is missing.'
+    );
+  }
+
   for(const marker of [
-    "const VERSION='R4.9B';",
     'guardResult(',
     'configureContact(',
     'configureInquiry(',
@@ -495,17 +477,10 @@ try{
   }
 
   for(const forbidden of [
-    'DreamlandRisk',
-    'DreamlandSubmission',
-    'DreamlandInquirySubmissionFlow',
-    'hcaptcha',
-    'runtime-pwa.js',
-    'startup-loader.js',
-    'navigator.serviceWorker',
     'fetch(',
     'XMLHttpRequest',
-    'data-review-static-submit',
-    'data-review-static-consent'
+    'navigator.serviceWorker.register',
+    'registerServiceWorker()'
   ]){
     if(
       runtime.includes(
@@ -513,7 +488,7 @@ try{
       )
     ){
       fail(
-        'R4.9B Review adapter source crossed a forbidden boundary: '+
+        'R4.9B/later Review adapter crossed a direct transport or Service Worker registration boundary: '+
         forbidden
       );
     }

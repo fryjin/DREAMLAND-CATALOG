@@ -42,6 +42,31 @@ const SOURCES=Object.freeze([
       'src/site/runtime/runtime-page-guards.js'
   }),
   Object.freeze({
+    owner:'SubmissionPayload',
+    path:
+      'src/domain/submission/runtime-submission-payload.js'
+  }),
+  Object.freeze({
+    owner:'Risk',
+    path:
+      'src/services/risk/runtime-risk.js'
+  }),
+  Object.freeze({
+    owner:'Submission',
+    path:
+      'src/services/submission/runtime-submission.js'
+  }),
+  Object.freeze({
+    owner:'Pwa',
+    path:
+      'src/services/pwa/runtime-pwa.js'
+  }),
+  Object.freeze({
+    owner:'InquirySubmissionFlow',
+    path:
+      'src/app/runtime-inquiry-submission-flow.js'
+  }),
+  Object.freeze({
     owner:'Astro Review adapter',
     path:
       'src/astro/runtime/review-runtime.js'
@@ -50,7 +75,7 @@ const SOURCES=Object.freeze([
 
 function fail(message){
   console.error(
-    '[R4.9B Review Assets] FAIL'
+    '[R4.9C Review Submission Assets] FAIL'
   );
   console.error(
     '- '+
@@ -110,16 +135,28 @@ for(const source of SOURCES){
     );
   }
 
+  const sourceText=
+    fs.readFileSync(
+      file,
+      'utf8'
+    );
+
+  const wrapped=
+    source.owner==='Pwa'
+      ? (
+          'globalThis.DREAMLAND_PWA_AUTO_REGISTER=false;\n'+
+          sourceText+
+          '\ndelete globalThis.DREAMLAND_PWA_AUTO_REGISTER;\n'
+        )
+      : sourceText;
+
   chunks.push(
-    '/* R4.9B owner: '+
+    '/* R4.9C owner: '+
     source.owner+
     ' | '+
     source.path+
     ' */\n'+
-    fs.readFileSync(
-      file,
-      'utf8'
-    )
+    wrapped
   );
 }
 
@@ -150,6 +187,26 @@ for(const [
     'DreamlandPageGuards'
   ],
   [
+    'root.DreamlandSubmissionPayload=',
+    'DreamlandSubmissionPayload'
+  ],
+  [
+    'root.DreamlandRisk=',
+    'DreamlandRisk'
+  ],
+  [
+    'root.DreamlandSubmission=',
+    'DreamlandSubmission'
+  ],
+  [
+    'root.DreamlandPwa=api;',
+    'DreamlandPwa'
+  ],
+  [
+    'root.DreamlandInquirySubmissionFlow=',
+    'DreamlandInquirySubmissionFlow'
+  ],
+  [
     'root.DreamlandReviewRuntime=',
     'DreamlandReviewRuntime'
   ]
@@ -169,26 +226,18 @@ for(const [
   }
 }
 
-for(const forbidden of [
-  'DreamlandRisk',
-  'DreamlandSubmission',
-  'DreamlandInquirySubmissionFlow',
-  'hcaptcha',
-  'runtime-pwa.js',
-  'startup-loader.js',
-  'serviceWorker.register',
-  'navigator.serviceWorker',
-  'fetch(',
-  'XMLHttpRequest'
+for(const marker of [
+  'globalThis.DREAMLAND_PWA_AUTO_REGISTER=false;',
+  'delete globalThis.DREAMLAND_PWA_AUTO_REGISTER;'
 ]){
   if(
-    bundle.includes(
-      forbidden
+    !bundle.includes(
+      marker
     )
   ){
     fail(
-      'Review bundle crossed a downstream/PWA/data-fetch boundary: '+
-      forbidden
+      'Review submission bundle is missing isolated PWA registration suppression: '+
+      marker
     );
   }
 }
@@ -203,5 +252,5 @@ fs.writeFileSync(
 );
 
 console.log(
-  '[R4.9B Review Assets] bundled PricingPolicy + Inquiry + Contact + PageGuards + minimal Astro adapter -> .r4-astro-dist/r4-review-runtime.js'
+  '[R4.9C Review Submission Assets] bundled canonical Review projection + Risk + Submission + PWA reachability + SubmissionFlow + Astro adapter -> .r4-astro-dist/r4-review-runtime.js'
 );

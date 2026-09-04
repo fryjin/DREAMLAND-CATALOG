@@ -427,3 +427,21 @@
     text-align:left;
   }
 }
+/* R4.9C — Review Submission Boundary Integration */
+.review-security {
+  margin:14px 0 4px;
+  padding:14px;
+  border:1px solid var(--home-line);
+  border-radius:14px;
+  background:var(--home-sand);
+}
+.review-security[hidden] { display:none!important; }
+.review-security__copy {
+  margin:0 0 10px;
+  color:var(--home-muted);
+  font-size:11px;
+  line-height:1.55;
+}
+.review-submit:not(:disabled) { cursor:pointer; opacity:1; }
+.review-static-status[data-review-status="error"] { color:#8c5146; }
+.review-static-status[data-review-status="pending"] { color:var(--home-ink); }

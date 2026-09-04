@@ -210,19 +210,7 @@ try{
         )||
         []
       )[0]||
-      '';
-
-    if(
-      !submitTag||
-      !/\bdisabled(?:=|>|\s)/i
-        .test(
-          submitTag
-        )
-    ){
-      fail(
-        'R4.9A Review Submit Inquiry control must remain disabled.'
-      );
-    }
+        '';
 
     const consentTag=
       (
@@ -231,17 +219,14 @@ try{
         )||
         []
       )[0]||
-      '';
+        '';
 
     if(
-      !consentTag||
-      !/\bdisabled(?:=|>|\s)/i
-        .test(
-          consentTag
-        )
+      !submitTag||
+      !consentTag
     ){
       fail(
-        'R4.9A Review privacy consent must remain inert.'
+        'R4.9A Review privacy/submit controls are missing.'
       );
     }
 
@@ -281,7 +266,6 @@ try{
       'runtime-submission.js',
       'runtime-pwa.js',
       'runtime-inquiry-submission-flow.js',
-      'hcaptcha',
       'startup-loader.js',
       'serviceWorker.register',
       'navigator.serviceWorker',
@@ -299,6 +283,25 @@ try{
           forbidden
         );
       }
+    }
+
+    /*
+     * R4.9A owns the static Review boundary, but later Review submission
+     * stages may serialize hCaptcha configuration inside reviewRuntimeState.
+     * The static validator must distinguish configuration data from direct
+     * Legacy/Risk script ownership.
+     */
+    if(
+      html.includes(
+        'hcaptcha'
+      )&&
+      !html.includes(
+        'data-review-security'
+      )
+    ){
+      fail(
+        'Pre-submission Review output unexpectedly contains hCaptcha configuration.'
+      );
     }
 
     if(

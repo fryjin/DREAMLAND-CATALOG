@@ -309,7 +309,7 @@ const notProvided=c.notProvided||'Not provided';
       >
         <input
           type="checkbox"
-          disabled
+          data-review-privacy
         />
         <span>
           <span data-review-bind="privacyPrefix">
@@ -324,11 +324,22 @@ const notProvided=c.notProvided||'Not provided';
         </span>
       </label>
 
+      <section
+        class="review-security"
+        data-review-security
+        hidden
+        aria-live="polite"
+      >
+        <p class="review-security__copy" data-review-security-copy></p>
+        <div data-review-captcha></div>
+      </section>
+
       <button
         class="review-submit"
         type="button"
         disabled
         data-review-static-submit
+        data-review-submit
       >
         <span data-review-bind="submitInquiry">
           {c.submitInquiry||'Submit Inquiry'}
