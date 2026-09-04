@@ -1,20 +1,32 @@
 ---
+import fs from 'node:fs';
+import path from 'node:path';
+
 import SiteLayout from '../../../layouts/SiteLayout.astro';
 import SiteHeader from '../../../components/site/SiteHeader.astro';
 import SiteFooter from '../../../components/site/SiteFooter.astro';
 import ReviewPage from '../../../components/review/ReviewPage.astro';
 
 import {
-  buildReviewStaticView
+  buildReviewStaticView,
+  buildReviewRuntimeState
 } from '../../../lib/review-view-model.mjs';
+
+import {
+  mapInquiryScents
+} from '../../../lib/inquiry-view-model.mjs';
 
 import '../../../styles/home.css';
 import '../../../styles/review.css';
 
 import siteContent from '../../../../../data/site-content.json';
 import i18n from '../../../../../data/i18n.json';
+import productsDocument from '../../../../../data/products.json';
+import seriesDocument from '../../../../../data/series.json';
+import appConfig from '../../../../../data/app-config.json';
 import routes from '../../../../../data/page-routes.json';
 
+import '../../../../data/product-data-contract.js';
 import '../../../../domain/localization/runtime-localization-policy.js';
 import '../../../../features/inquiry/runtime-inquiry.js';
 import '../../../../features/contact/runtime-contact.js';
@@ -47,9 +59,13 @@ if(
   '/inquiry/success/'
 ){
   throw new Error(
-    'R4.9A expected canonical Inquiry → Contact → Review → Success route contract.'
+    'R4.9B expected canonical Inquiry → Contact → Review → Success route contract.'
   );
 }
+
+const productDataContract=
+  globalThis
+    .DreamlandProductDataContract;
 
 const localizationPolicy=
   globalThis
@@ -68,17 +84,41 @@ const pageGuards=
     .DreamlandPageGuards;
 
 if(
+  !productDataContract||
   !localizationPolicy||
   !inquiryFeature||
   !contactFeature||
   !pageGuards
 ){
   throw new Error(
-    'R4.9A Review requires Localization, Inquiry, Contact and PageGuards canonical owners.'
+    'R4.9B Review requires Product Data, Localization, Inquiry, Contact and PageGuards canonical owners.'
   );
 }
 
+const scentRows=
+  productDataContract
+    .parseCsv(
+      fs.readFileSync(
+        path.resolve(
+          process.cwd(),
+          'data/scents.csv'
+        ),
+        'utf8'
+      )
+    );
+
+const scents=
+  mapInquiryScents(
+    scentRows
+  );
+
 const language='en';
+
+const supportedLanguages=[
+  'en',
+  'zh',
+  'ko'
+];
 
 const view=
   buildReviewStaticView({
@@ -90,20 +130,41 @@ const view=
     pageGuards
   });
 
-const languageOptions=[
-  'en',
-  'zh',
-  'ko'
-].map(
-  value=>({
-    value,
-    label:
-      i18n.currencyMap
-        ?.[value]
-        ?.label||
-      value.toUpperCase()
-  })
-);
+const runtimeState=
+  buildReviewRuntimeState({
+    languages:
+      supportedLanguages,
+    defaultLanguage:
+      language,
+    siteContent,
+    i18n,
+    productsDocument,
+    seriesDocument,
+    scents,
+    appConfig,
+    localizationPolicy
+  });
+
+const runtimeStateJson=
+  JSON.stringify(
+    runtimeState
+  )
+    .replace(
+      /</g,
+      '\\u003c'
+    );
+
+const languageOptions=
+  supportedLanguages.map(
+    value=>({
+      value,
+      label:
+        i18n.currencyMap
+          ?.[value]
+          ?.label||
+        value.toUpperCase()
+    })
+  );
 ---
 <SiteLayout
   title="Review Inquiry — DREAMLAND"
@@ -118,10 +179,22 @@ const languageOptions=[
     content={view.content}
     languageOptions={languageOptions}
     initialLanguage={language}
-    languageEnabled={false}
+    languageEnabled={true}
   />
 
   <ReviewPage view={view} />
 
   <SiteFooter content={view.content} />
+
+  <script
+    is:inline
+    id="reviewRuntimeState"
+    type="application/json"
+    set:html={runtimeStateJson}
+  ></script>
+  <script
+    is:inline
+    type="module"
+    src="/r4-review-runtime.js"
+  ></script>
 </SiteLayout>

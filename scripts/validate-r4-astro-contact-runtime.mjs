@@ -767,17 +767,70 @@ try{
     );
   }
 
-  if(
-    !String(
+  /*
+   * R4.8B owns the Contact copier's existence and ordering, not perpetual
+   * final-position ownership. Later isolated route stages may append their own
+   * route copier after Contact.
+   */
+  const isolatedBuildSteps=
+    String(
       pkg.scripts
         ?.['r4:astro:build']||
       ''
-    ).endsWith(
-      'node scripts/r4-copy-astro-contact-assets.mjs'
     )
+      .split(' && ')
+      .map(
+        step=>step.trim()
+      )
+      .filter(Boolean);
+
+  const inquiryCopy=
+    'node scripts/r4-copy-astro-inquiry-assets.mjs';
+
+  const contactCopy=
+    'node scripts/r4-copy-astro-contact-assets.mjs';
+
+  const reviewCopy=
+    'node scripts/r4-copy-astro-review-assets.mjs';
+
+  const inquiryIndex=
+    isolatedBuildSteps.indexOf(
+      inquiryCopy
+    );
+
+  const contactIndex=
+    isolatedBuildSteps.indexOf(
+      contactCopy
+    );
+
+  const contactCount=
+    isolatedBuildSteps.filter(
+      step=>
+        step===
+        contactCopy
+    ).length;
+
+  if(
+    inquiryIndex<0||
+    contactIndex<=inquiryIndex||
+    contactCount!==1
   ){
     fail(
-      'R4.8B Contact runtime copier must be the final isolated Astro build step.'
+      'R4.8B Contact runtime copier must remain exactly once after the Inquiry copier.'
+    );
+  }
+
+  const reviewIndex=
+    isolatedBuildSteps.indexOf(
+      reviewCopy
+    );
+
+  if(
+    reviewIndex>=0&&
+    reviewIndex<=contactIndex
+  ){
+    fail(
+      'A later Review copier must follow the Contact copier without changing R4.8B ownership.'
     );
   }
 

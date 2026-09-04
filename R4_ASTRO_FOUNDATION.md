@@ -2484,3 +2484,152 @@ EN/ZH/KO presentation and Review projection refresh.
 
 Risk/hCaptcha, privacy-consent submission orchestration, final Submission and
 Success navigation remain downstream and are not activated by R4.9B.
+
+## R4.9B — Review Minimal Runtime
+
+Status: isolated runtime migration stage.
+
+R4.9B activates the isolated Astro `/inquiry/review/` presentation without
+changing Production Review ownership.
+
+### Canonical owners
+
+The isolated Review document contains one executable route asset:
+
+```text
+/r4-review-runtime.js
+```
+
+The runtime bundle is assembled from:
+
+```text
+DreamlandPricingPolicy
+DreamlandInquiry
+DreamlandContact
+DreamlandPageGuards
+src/astro/runtime/review-runtime.js
+```
+
+DreamlandInquiry remains the sole Inquiry state, pricing-view and projection
+owner. DreamlandContact remains the Contact draft/validation owner.
+DreamlandPageGuards remains the Review route-guard owner.
+
+### Shared browser state
+
+R4.9B uses the existing contracts:
+
+```text
+language = productManualLang
+inquiry  = productManualV2State
+version  = 2
+contact  = dreamlandContactDraftV1
+TTL      = 24 hours
+pending inquiry ID = dreamlandPendingInquiryIdV1
+```
+
+No second Review state store is created.
+
+### Canonical hasValidContact guard
+
+On boot and lifecycle refresh, Review hydrates Inquiry + Contact first and calls:
+
+```text
+DreamlandPageGuards.evaluate('review', { inquiry, contact })
+```
+
+Canonical outcomes remain:
+
+```text
+no Inquiry
+→ INQUIRY_REQUIRED
+→ /inquiry/
+
+Inquiry present + invalid Contact
+→ CONTACT_REQUIRED
+→ /inquiry/contact/
+
+Inquiry present + valid Contact
+→ allowed
+```
+
+The adapter does not duplicate Contact validation rules.
+
+### Review projection
+
+After the guard passes, Review calls the canonical:
+
+```text
+DreamlandInquiry.buildProjection(...)
+```
+
+with the current Contact snapshot, language and existing pending Inquiry ID.
+Projection adapters are configured from the same Product, scent, series,
+currency and localization data already used by the Astro Inquiry runtime.
+
+The presentation refreshes:
+
+```text
+eight-field Contact snapshot
+Product projection rows
+Custom project projection rows
+Inquiry ID
+Estimated product amount
+Inquiry header badge
+EN / ZH / KO copy
+```
+
+The pending Inquiry ID uses the existing `dreamlandPendingInquiryIdV1`
+browser key and preserves the existing `DL-YYYYMMDD-XXXXXX` format.
+
+### Lifecycle
+
+Review refreshes shared state on:
+
+```text
+storage
+pageshow
+visible visibilitychange
+```
+
+Changing `productManualLang` rebuilds the canonical Inquiry projection with
+the selected locale; there are no browser data fetches.
+
+### Submission boundary remains closed
+
+R4.9B intentionally keeps both controls inert:
+
+```text
+Privacy consent = disabled
+Submit Inquiry   = disabled
+```
+
+R4.9B does not load, initialize or call:
+
+```text
+DreamlandRisk
+hCaptcha
+DreamlandSubmission
+DreamlandInquirySubmissionFlow
+Service Worker registration
+DesktopExperience / DesktopReview
+startup-loader
+Success navigation
+browser fetch / XMLHttpRequest
+```
+
+Production ownership remains:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Astro PDP × 89
+/custom/                  → Astro Custom
+/inquiry/                 → Astro Inquiry
+/inquiry/contact/         → Astro Contact
+/inquiry/review/          → Legacy MPA
+/inquiry/success/         → Legacy MPA
+```
+
+The next Review stage must close the Risk/privacy/submission boundary before any
+Production Review cutover. Production Review must not move to Astro while
+Submit Inquiry is intentionally inert.

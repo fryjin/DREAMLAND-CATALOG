@@ -94,7 +94,6 @@ try{
       'data-review-static-summary',
       'data-review-static-consent',
       'data-review-static-submit',
-      'data-site-language-enabled="false"',
       'name="robots" content="noindex,nofollow"',
       'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/review/"',
       'href="/inquiry/"',
@@ -110,6 +109,27 @@ try{
           marker
         );
       }
+    }
+
+    const runtimeActive=
+      html.includes(
+        'src="/r4-review-runtime.js"'
+      );
+
+    const languageMarker=
+      runtimeActive
+        ? 'data-site-language-enabled="true"'
+        : 'data-site-language-enabled="false"';
+
+    if(
+      !html.includes(
+        languageMarker
+      )
+    ){
+      fail(
+        'R4.9A/R4.9B Review language-control state is incorrect: '+
+        languageMarker
+      );
     }
 
     for(const [
@@ -490,20 +510,6 @@ try{
   ){
     fail(
       'R4.9A must not cut over Production Review.'
-    );
-  }
-
-  if(
-    String(
-      pkg.scripts
-        ?.['r4:astro:build']||
-      ''
-    ).includes(
-      'r4-copy-astro-review-assets'
-    )
-  ){
-    fail(
-      'R4.9A is zero-runtime static presentation and must not add a Review runtime copier.'
     );
   }
 

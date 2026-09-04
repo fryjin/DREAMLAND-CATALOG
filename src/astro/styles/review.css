@@ -342,3 +342,88 @@
     margin-left:0;
   }
 }
+/* --------------------------------------------------------------------------
+ * R4.9B — Review Minimal Runtime
+ * ------------------------------------------------------------------------ */
+
+.review-runtime-item {
+  min-height:112px;
+  margin-left:48px;
+  padding:18px 0;
+  display:grid;
+  grid-template-columns:82px minmax(0,1fr) auto;
+  gap:18px;
+  align-items:center;
+  border-top:1px solid var(--home-line);
+}
+
+.review-runtime-item__media {
+  width:82px;
+  height:94px;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  background:var(--home-sand);
+  color:var(--home-soft);
+  font-family:var(--home-serif);
+  font-size:28px;
+}
+
+.review-runtime-item__media img {
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
+
+.review-runtime-item__body h3 {
+  margin:0;
+  font-size:14px;
+  font-weight:800;
+}
+
+.review-runtime-item__body p {
+  margin:7px 0 0;
+  color:var(--home-muted);
+  font-size:11px;
+  line-height:1.6;
+}
+
+.review-runtime-item__amount {
+  font-size:12px;
+  font-weight:800;
+  text-align:right;
+}
+
+.review-runtime-item--custom {
+  grid-template-columns:82px minmax(0,1fr) auto;
+}
+
+.review-runtime-item__mark {
+  color:var(--home-soft);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.06em;
+}
+
+[data-review-custom-section][hidden],
+[data-review-custom-summary][hidden] {
+  display:none!important;
+}
+
+@media (max-width:640px) {
+  .review-runtime-item {
+    margin-left:0;
+    grid-template-columns:66px minmax(0,1fr);
+  }
+
+  .review-runtime-item__media {
+    width:66px;
+    height:76px;
+  }
+
+  .review-runtime-item__amount {
+    grid-column:2;
+    text-align:left;
+  }
+}

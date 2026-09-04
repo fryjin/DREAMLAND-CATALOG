@@ -55,6 +55,7 @@ const notProvided=c.notProvided||'Not provided';
 <main
   class="review-main"
   data-review-static-presentation
+  data-review-runtime-presentation
 >
   <section
     class="review-hero"
@@ -62,15 +63,24 @@ const notProvided=c.notProvided||'Not provided';
   >
     <div class="home-container review-hero__inner">
       <div>
-        <p class="review-eyebrow">
+        <p
+          class="review-eyebrow"
+          data-review-bind="reviewKicker"
+        >
           {c.reviewKicker||'FINAL CHECK'}
         </p>
-        <h1 id="reviewTitle">
+        <h1
+          id="reviewTitle"
+          data-review-bind="reviewTitle"
+        >
           {c.reviewTitle||'Review and submit the inquiry.'}
         </h1>
       </div>
 
-      <p class="review-hero__body">
+      <p
+        class="review-hero__body"
+        data-review-bind="reviewBody"
+      >
         {c.reviewBody||'Check the contact details, product configurations and custom project requirements.'}
       </p>
     </div>
@@ -87,21 +97,27 @@ const notProvided=c.notProvided||'Not provided';
         data-review-static-step="selection"
       >
         <strong>01</strong>
-        <span>{c.stepSelection||'Inquiry'}</span>
+        <span data-review-bind="stepSelection">
+          {c.stepSelection||'Inquiry'}
+        </span>
       </li>
       <li
         class="is-complete"
         data-review-static-step="contact"
       >
         <strong>02</strong>
-        <span>{c.stepContact||'Contact'}</span>
+        <span data-review-bind="stepContact">
+          {c.stepContact||'Contact'}
+        </span>
       </li>
       <li
         class="is-active"
         data-review-static-step="review"
       >
         <strong>03</strong>
-        <span>{c.stepReview||'Review'}</span>
+        <span data-review-bind="stepReview">
+          {c.stepReview||'Review'}
+        </span>
       </li>
     </ol>
   </nav>
@@ -115,7 +131,7 @@ const notProvided=c.notProvided||'Not provided';
         <header class="review-section__header">
           <div class="review-section__title">
             <span>01</span>
-            <h2>
+            <h2 data-review-bind="contactDetailsTitle">
               {c.contactDetailsTitle||'Contact details'}
             </h2>
           </div>
@@ -124,15 +140,22 @@ const notProvided=c.notProvided||'Not provided';
             href={view.routes.contact}
             data-review-static-edit-contact
           >
-            {c.edit||'Edit'} →
+            <span data-review-bind="edit">
+              {c.edit||'Edit'}
+            </span>
+            →
           </a>
         </header>
 
         <dl class="review-contact-grid">
           {contactRows.map((row:any)=>(
             <div data-review-static-contact-field={row.key}>
-              <dt>{row.label}</dt>
-              <dd>{row.value||notProvided||'—'}</dd>
+              <dt data-review-contact-label={row.key}>
+                {row.label}
+              </dt>
+              <dd data-review-contact-value={row.key}>
+                {row.value||notProvided||'—'}
+              </dd>
             </div>
           ))}
         </dl>
@@ -145,7 +168,7 @@ const notProvided=c.notProvided||'Not provided';
         <header class="review-section__header">
           <div class="review-section__title">
             <span>02</span>
-            <h2>
+            <h2 data-review-bind="selectedProducts">
               {c.selectedProducts||'Inquiry items'}
             </h2>
           </div>
@@ -154,13 +177,45 @@ const notProvided=c.notProvided||'Not provided';
             href={view.routes.inquiry}
             data-review-static-edit-inquiry
           >
-            {c.edit||'Edit'} →
+            <span data-review-bind="edit">
+              {c.edit||'Edit'}
+            </span>
+            →
           </a>
         </header>
 
-        <p class="review-empty">
-          {c.none||'None'}
-        </p>
+        <div data-review-products-list>
+          <p
+            class="review-empty"
+            data-review-bind="none"
+          >
+            {c.none||'None'}
+          </p>
+        </div>
+      </section>
+
+      <section
+        class="review-section"
+        data-review-custom-section
+        hidden
+      >
+        <header class="review-section__header">
+          <div class="review-section__title">
+            <span>03</span>
+            <h2 data-review-bind="customProject">
+              {c.customProject||'Custom project'}
+            </h2>
+          </div>
+
+          <a href={view.routes.inquiry}>
+            <span data-review-bind="edit">
+              {c.edit||'Edit'}
+            </span>
+            →
+          </a>
+        </header>
+
+        <div data-review-customs-list></div>
       </section>
 
       <section
@@ -168,18 +223,21 @@ const notProvided=c.notProvided||'Not provided';
         data-review-static-notice
       >
         <div class="review-section__title">
-          <span>03</span>
+          <span data-review-notice-index>03</span>
           <div>
-            <p class="review-eyebrow">
+            <p
+              class="review-eyebrow"
+              data-review-bind="beforeSubmitKicker"
+            >
               {c.beforeSubmitKicker||'BEFORE SUBMISSION'}
             </p>
-            <h2>
+            <h2 data-review-bind="beforeSubmitTitle">
               {c.beforeSubmitTitle||'Submitting an inquiry does not place an order.'}
             </h2>
           </div>
         </div>
 
-        <p>
+        <p data-review-bind="beforeSubmitBody">
           {c.beforeSubmitBody||'Pricing, production and delivery are confirmed only after the quotation is accepted.'}
         </p>
       </section>
@@ -189,35 +247,59 @@ const notProvided=c.notProvided||'Not provided';
       class="review-summary"
       data-review-static-summary
     >
-      <p class="review-eyebrow">
+      <p
+        class="review-eyebrow"
+        data-review-bind="summaryKicker"
+      >
         {c.summaryKicker||'YOUR INQUIRY'}
       </p>
 
-      <h2>
+      <h2 data-review-bind="reviewSummaryTitle">
         {c.reviewSummaryTitle||c.summaryTitle||'Inquiry overview'}
       </h2>
 
       <div class="review-summary__rows">
         <div>
-          <span>
+          <span data-review-bind="inquiryNumber">
             {c.inquiryNumber||'Inquiry ID'}
           </span>
-          <strong data-review-static-inquiry-id>
+          <strong
+            data-review-static-inquiry-id
+            data-review-inquiry-id
+          >
             —
           </strong>
         </div>
 
         <div>
-          <span>
+          <span data-review-bind="productEstimate">
             {c.productEstimate||'Estimated product amount'}
           </span>
-          <strong data-review-static-estimate>
+          <strong
+            data-review-static-estimate
+            data-review-estimate
+          >
             —
+          </strong>
+        </div>
+
+        <div
+          data-review-custom-summary
+          hidden
+        >
+          <span data-review-bind="customProject">
+            {c.customProject||'Custom project'}
+          </span>
+          <strong data-review-bind="customQuotedSeparately">
+            {c.customQuotedSeparately||'Quoted separately'}
           </strong>
         </div>
       </div>
 
-      <p class="review-summary__note">
+      <p
+        class="review-summary__note"
+        data-review-bind="beforeSubmitBody"
+      >
         {c.beforeSubmitBody||'Pricing, production and delivery are confirmed only after the quotation is accepted.'}
       </p>
 
@@ -230,8 +312,13 @@ const notProvided=c.notProvided||'Not provided';
           disabled
         />
         <span>
-          {c.privacyPrefix||'I have read and agree to the'}
-          <span class="review-consent__link">
+          <span data-review-bind="privacyPrefix">
+            {c.privacyPrefix||'I have read and agree to the'}
+          </span>
+          <span
+            class="review-consent__link"
+            data-review-bind="privacyLink"
+          >
             {c.privacyLink||'Privacy Notice'}
           </span>
         </span>
@@ -243,7 +330,7 @@ const notProvided=c.notProvided||'Not provided';
         disabled
         data-review-static-submit
       >
-        <span>
+        <span data-review-bind="submitInquiry">
           {c.submitInquiry||'Submit Inquiry'}
         </span>
         <span aria-hidden="true">→</span>
@@ -252,8 +339,10 @@ const notProvided=c.notProvided||'Not provided';
       <p
         class="review-static-status"
         data-review-static-status
-      >
-      </p>
+        data-review-runtime-status
+        role="status"
+        aria-live="polite"
+      ></p>
     </aside>
   </section>
 </main>

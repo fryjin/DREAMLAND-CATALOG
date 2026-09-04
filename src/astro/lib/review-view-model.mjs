@@ -1,3 +1,7 @@
+import {
+  buildInquiryRuntimeState
+} from './inquiry-view-model.mjs';
+
 const CONTACT_FIELDS=Object.freeze([
   'name',
   'company',
@@ -9,11 +13,89 @@ const CONTACT_FIELDS=Object.freeze([
   'message'
 ]);
 
+const REVIEW_COPY_KEYS=Object.freeze([
+  'progressLabel',
+  'stepSelection',
+  'stepContact',
+  'stepReview',
+  'reviewKicker',
+  'reviewTitle',
+  'reviewBody',
+  'contactDetailsTitle',
+  'name',
+  'company',
+  'buyerType',
+  'country',
+  'city',
+  'email',
+  'phone',
+  'message',
+  'edit',
+  'notProvided',
+  'none',
+  'selectedProducts',
+  'customProject',
+  'customQuotedSeparately',
+  'summaryKicker',
+  'reviewSummaryTitle',
+  'summaryTitle',
+  'inquiryNumber',
+  'productEstimate',
+  'beforeSubmitKicker',
+  'beforeSubmitTitle',
+  'beforeSubmitBody',
+  'privacyPrefix',
+  'privacyLink',
+  'submitInquiry'
+]);
+
 function text(value){
   return String(
     value??
     ''
   ).trim();
+}
+
+function frozenRows(value){
+  return Object.freeze(
+    (
+      Array.isArray(value)
+        ? value
+        : []
+    ).map(
+      row=>Object.freeze({
+        ...row
+      })
+    )
+  );
+}
+
+function compactReviewCopy(copy={}){
+  const output=
+    Object.fromEntries(
+      REVIEW_COPY_KEYS.map(
+        key=>[
+          key,
+          text(
+            copy?.[key]
+          )
+        ]
+      )
+    );
+
+  output.countryRegions=
+    frozenRows(
+      copy.countryRegions
+    );
+
+  output.buyerTypes=
+    frozenRows(
+      copy.buyerTypes
+    );
+
+  return Object.freeze(
+    output
+  );
 }
 
 export function buildReviewStaticView({
@@ -163,5 +245,156 @@ export function buildReviewStaticView({
       success:
         '/inquiry/success/'
     })
+  });
+}
+
+export function buildReviewRuntimeState({
+  languages=[
+    'en',
+    'zh',
+    'ko'
+  ],
+  defaultLanguage='en',
+  siteContent={},
+  i18n={},
+  productsDocument={},
+  seriesDocument={},
+  scents=[],
+  appConfig={},
+  localizationPolicy
+}={}){
+  if(!localizationPolicy){
+    throw new Error(
+      'Review Runtime State requires canonical Localization ownership.'
+    );
+  }
+
+  const inquiryRuntime=
+    buildInquiryRuntimeState({
+      languages,
+      defaultLanguage,
+      siteContent,
+      i18n,
+      productsDocument,
+      seriesDocument,
+      scents,
+      appConfig:{
+        maxQuantity:
+          appConfig.maxQuantity
+      },
+      localizationPolicy
+    });
+
+  const supported=
+    Object.keys(
+      inquiryRuntime.languages||
+      {}
+    );
+
+  const locales=
+    Object.freeze(
+      Object.fromEntries(
+        supported.map(
+          language=>{
+            const localized=
+              localizationPolicy
+                .localizedContent(
+                  language,
+                  siteContent
+                );
+
+            const inquiryLocale=
+              inquiryRuntime.languages
+                ?.[language]||
+              {};
+
+            return [
+              language,
+              Object.freeze({
+                content:
+                  inquiryLocale.content,
+                ui:Object.freeze({
+                  ...(
+                    i18n.ui
+                      ?.[language]||
+                    inquiryLocale.ui||
+                    {}
+                  )
+                }),
+                choices:Object.freeze({
+                  ...(
+                    i18n.choices
+                      ?.[language]||
+                    inquiryLocale.choices||
+                    {}
+                  )
+                }),
+                copy:
+                  compactReviewCopy(
+                    localized.inquiryFlow||
+                    {}
+                  )
+              })
+            ];
+          }
+        )
+      )
+    );
+
+  return Object.freeze({
+    version:
+      'R4.9B',
+    defaultLanguage:
+      supported.includes(
+        defaultLanguage
+      )
+        ? defaultLanguage
+        : (
+            supported[0]||
+            'en'
+          ),
+    languages:
+      Object.freeze([
+        ...supported
+      ]),
+    storage:Object.freeze({
+      languageKey:
+        'productManualLang',
+      inquiryKey:
+        'productManualV2State',
+      inquiryVersion:
+        2,
+      contactKey:
+        'dreamlandContactDraftV1',
+      contactTtlMs:
+        24*60*60*1000,
+      pendingInquiryKey:
+        'dreamlandPendingInquiryIdV1',
+      contactFieldIds:
+        CONTACT_FIELDS
+    }),
+    routes:Object.freeze({
+      inquiry:
+        '/inquiry/',
+      contact:
+        '/inquiry/contact/'
+    }),
+    guard:
+      'hasValidContact',
+    privacyVersion:
+      text(
+        appConfig.privacyVersion
+      ),
+    limits:
+      inquiryRuntime.limits,
+    products:
+      inquiryRuntime.products,
+    scents:
+      inquiryRuntime.scents,
+    seriesMeta:
+      inquiryRuntime.seriesMeta,
+    currencyMap:
+      inquiryRuntime.currencyMap,
+    locales
   });
 }
