@@ -10,11 +10,12 @@ const RELEASE_TAG =
   'b7-00b4j-r3-v129';
 
 /*
- * R4.3D / R4.4D / R4.5D / R4.6D document ownership boundary.
+ * R4.3D / R4.4D / R4.5D / R4.6D / R4.7D document ownership boundary.
  *
- * The registered Service Worker remains required by the Legacy Inquiry routes.
- * Production Home, Catalog, PDP and Custom documents are Astro-owned and must
- * never be served from cached Legacy documents.
+ * The registered Service Worker remains required by the Legacy
+ * Contact/Review/Success conversion routes. Production Home, Catalog, PDP,
+ * Custom and Inquiry selection documents are Astro-owned and must never be
+ * served from cached Legacy documents.
  */
 const HOME_NAVIGATION_PATHS=
   new Set([
@@ -36,6 +37,17 @@ const CUSTOM_NAVIGATION_PATHS=
     '/custom',
     '/custom/',
     '/custom/index.html'
+  ]);
+
+/*
+ * R4.7D owns only the Inquiry selection document. Contact, Review and Success
+ * remain in the Legacy conversion/PWA boundary.
+ */
+const INQUIRY_NAVIGATION_PATHS=
+  new Set([
+    '/inquiry',
+    '/inquiry/',
+    '/inquiry/index.html'
   ]);
 
 const RELEASE_ASSETS = [
@@ -530,6 +542,85 @@ async function customNetworkOnly(
   }
 }
 
+
+function isInquiryNavigation(
+  url
+){
+  return (
+    url.origin===
+      self.location.origin&&
+    INQUIRY_NAVIGATION_PATHS
+      .has(
+        url.pathname
+      )
+  );
+}
+
+async function purgeLegacyInquiryEntries(){
+  for(const cacheName of [
+    APP_CACHE,
+    RUNTIME_CACHE
+  ]){
+    const cache=
+      await caches.open(
+        cacheName
+      );
+
+    const requests=
+      await cache.keys();
+
+    await Promise.all(
+      requests.map(
+        async request=>{
+          try{
+            const url=
+              new URL(
+                request.url
+              );
+
+            if(
+              isInquiryNavigation(
+                url
+              )
+            ){
+              await cache.delete(
+                request
+              );
+            }
+          }catch(_){
+          }
+        }
+      )
+    );
+  }
+}
+
+async function inquiryNetworkOnly(
+  request
+){
+  try{
+    return await fetch(
+      request,
+      {
+        cache:'no-store'
+      }
+    );
+  }catch{
+    return (
+      await caches.match(
+        './offline.html'
+      )
+    )||
+    new Response(
+      'Offline',
+      {
+        status:503,
+        statusText:'Offline'
+      }
+    );
+  }
+}
+
 self.addEventListener('install', event => {
   event.waitUntil(
     Promise.all([
@@ -544,7 +635,8 @@ self.addEventListener('install', event => {
       purgeLegacyHomeEntries(),
       purgeLegacyCatalogEntries(),
       purgeLegacyPdpEntries(),
-      purgeLegacyCustomEntries()
+      purgeLegacyCustomEntries(),
+      purgeLegacyInquiryEntries()
     ])
   );
 });
@@ -570,7 +662,8 @@ self.addEventListener('activate', event => {
           purgeLegacyHomeEntries(),
           purgeLegacyCatalogEntries(),
           purgeLegacyPdpEntries(),
-          purgeLegacyCustomEntries()
+          purgeLegacyCustomEntries(),
+          purgeLegacyInquiryEntries()
         ])
       )
       .then(
@@ -748,6 +841,19 @@ self.addEventListener('fetch', event => {
     ){
       event.respondWith(
         customNetworkOnly(
+          request
+        )
+      );
+      return;
+    }
+
+    if(
+      isInquiryNavigation(
+        url
+      )
+    ){
+      event.respondWith(
+        inquiryNetworkOnly(
           request
         )
       );

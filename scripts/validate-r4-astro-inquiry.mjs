@@ -581,19 +581,11 @@ try{
       'sw.js'
     );
 
-  if(
-    sw.includes(
-      'INQUIRY_NAVIGATION_PATHS'
-    )||
-    sw.includes(
-      'isInquiryNavigation('
-    )
-  ){
-    fail(
-      'R4.7B must not change Service Worker Inquiry ownership.'
-    );
-  }
-
+  /*
+   * R4.7B owns the isolated Inquiry presentation/runtime contract only.
+   * Production Service Worker ownership is intentionally delegated to the
+   * current Production detachment stage (R4.7D and later).
+   */
   if(
     !sw.includes(
       "const CACHE_VERSION = 'dreamland-pwa-v129';"
@@ -605,7 +597,7 @@ try{
   }
 }catch(error){
   fail(
-    'R4.7B Service Worker ownership inspection crashed: '+
+    'R4.7B Service Worker baseline inspection crashed: '+
     error.message
   );
 }

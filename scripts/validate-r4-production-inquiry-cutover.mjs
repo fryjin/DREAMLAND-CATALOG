@@ -130,7 +130,7 @@ try{
   for(const [name,value] of [
     ['r4:production:inquiry','node scripts/r4-promote-astro-inquiry.mjs --write'],
     ['r4:production:inquiry:contract','node scripts/validate-r4-production-inquiry-cutover.mjs --source'],
-    ['r4:production:inquiry:validate','node scripts/validate-r4-production-inquiry-cutover.mjs --dist']
+    ['r4:production:inquiry:validate','node scripts/validate-r4-production-inquiry-cutover.mjs --dist && node scripts/validate-r4-production-inquiry-detachment.mjs --dist']
   ]) if(pkg.scripts?.[name]!==value)fail('package.json is missing '+name+'.');
 
   const validate=String(pkg.scripts?.validate||'');
@@ -191,7 +191,6 @@ try{
 try{
   const sw=read('sw.js');
   if(!sw.includes("const CACHE_VERSION = 'dreamland-pwa-v129';"))fail('R4.7C unexpectedly changed the PWA cache/release baseline.');
-  if(sw.includes('INQUIRY_NAVIGATION_PATHS')||sw.includes('isInquiryNavigation('))fail('R4.7C must not detach Inquiry selection from Service Worker ownership; that belongs to R4.7D.');
 }catch(error){
   fail('R4.7C Service Worker boundary inspection failed: '+error.message);
 }
@@ -245,8 +244,7 @@ if(DIST_MODE){
     manifest.presentationOverrides?.inquiry!=='astro-r4.7c'
   ) fail('Production manifest lost a staged route-ownership/cutover contract.');
 
-  const sw=expectFile(root,'sw.js');
-  if(sw&&(sw.includes('INQUIRY_NAVIGATION_PATHS')||sw.includes('isInquiryNavigation(')))fail('R4.7C dist/ must retain pre-R4.7D Service Worker Inquiry ownership.');
+  expectFile(root,'sw.js');
 }
 
 if(errors.length){
@@ -260,6 +258,6 @@ if(errors.length){
 console.log('');
 console.log('DREAMLAND B7-00B.4J R4.7C Production Inquiry Cutover: PASS');
 console.log(SOURCE_MODE
-  ? 'Production pipeline / noindex route contract / route-scoped promotion / pre-R4.7D SW boundary verified.'
+  ? 'Production pipeline / noindex route contract / route-scoped promotion verified; final SW ownership is delegated to the R4.7D gate.'
   : 'dist/ owns Astro Home + Catalog + 89 PDPs + Custom + Inquiry selection while Contact/Review/Success remain Legacy.');
 console.log('');

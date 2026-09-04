@@ -1649,3 +1649,133 @@ R4.7C intentionally does not modify `sw.js`, Service Worker navigation
 ownership, APP/RUNTIME cache cleanup, Contact/Review/Success, Risk/hCaptcha or
 Submission. Exact Inquiry-selection Service Worker detachment and final
 Production payload hardening belong to R4.7D.
+
+
+## R4.7D — Inquiry Legacy Detachment / Production Payload Hardening
+
+Status: Production hardening stage.
+
+R4.7C moved only the Production `/inquiry/` selection document to Astro.
+R4.7D closes its remaining indirect Legacy document path through the existing
+Service Worker while preserving that Service Worker for Contact, Review,
+Success, Risk/hCaptcha and Submission.
+
+### Exact Inquiry selection ownership
+
+The Service Worker treats only these navigation variants as Astro-owned:
+
+```text
+/inquiry
+/inquiry/
+/inquiry/index.html
+```
+
+The matcher uses exact pathname Set membership. It explicitly does not absorb:
+
+```text
+/inquiry/contact/
+/inquiry/review/
+/inquiry/success/
+```
+
+Existing APP/RUNTIME cache entries matching the Inquiry selection document are
+purged during both Service Worker install and activate. Navigation ownership is:
+
+```text
+Home
+→ Catalog
+→ PDP
+→ Custom
+→ Inquiry selection
+→ remaining Legacy Contact / Review / Success routes
+```
+
+Inquiry selection navigation uses:
+
+```text
+network-only
+cache=no-store
+offline.html only when the network is unavailable
+```
+
+The historical `dreamland-pwa-v129` cache/release version remains unchanged.
+R4.7D uses exact route cleanup rather than widening this hardening stage into a
+global PWA release migration.
+
+The remaining Legacy conversion PWA shell is intentionally preserved. R4.7D
+does not remove shared Inquiry state, Contact, Risk, Submission or
+InquirySubmissionFlow assets because the downstream conversion chain still
+depends on that boundary.
+
+### Production Inquiry payload budgets
+
+R4.7D validates the final Production Inquiry selection document:
+
+```text
+Inquiry HTML raw                 <= 256 KiB
+inquiryRuntimeState raw          <= 128 KiB
+Shared Inquiry runtime raw       <= 112 KiB
+Astro styles raw                 <= 128 KiB
+HTML + JS + CSS gzip proxy       <= 128 KiB
+Critical HTML + JS + CSS raw     <= 512 KiB
+Executable route runtimes        = 1
+Runtime Product lookup           = 89
+```
+
+The executable graph must contain only `/r4-inquiry-runtime.js`. The runtime
+state remains R4.7B-owned and continues to use:
+
+```text
+productManualLang
+productManualV2State
+version=2
+contact=/inquiry/contact/
+```
+
+Every Product cover referenced by `inquiryRuntimeState` must exist in the
+final Production output.
+
+### Runtime and conversion boundary
+
+The Inquiry runtime remains detached from:
+
+```text
+Service Worker registration
+DreamlandPwa
+DreamlandContact
+DreamlandRisk / hCaptcha
+DreamlandSubmission
+DreamlandInquirySubmissionFlow
+startup-loader
+browser data fetches
+```
+
+Contact, Review and Success remain Legacy-owned. R4.7D does not migrate or
+rewrite their Risk/hCaptcha/Submission closure.
+
+### R4.7 exit
+
+After R4.7D passes:
+
+```text
+R4.7A Astro Inquiry Static Presentation       CLOSED
+R4.7B Inquiry Minimal Runtime                 CLOSED
+R4.7C Production Inquiry Cutover              CLOSED
+R4.7D Inquiry Legacy Detachment / Hardening   CLOSED
+R4.7 Inquiry Migration                        CLOSED
+```
+
+Production ownership is then:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Astro PDP × 89
+/custom/                  → Astro Custom
+/inquiry/                 → Astro Inquiry
+/inquiry/contact/         → Legacy MPA
+/inquiry/review/          → Legacy MPA
+/inquiry/success/         → Legacy MPA
+```
+
+The next migration target is the downstream Contact conversion route.
