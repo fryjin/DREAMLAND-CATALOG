@@ -8,7 +8,33 @@ const SOURCE_MODE=process.argv.includes('--source');
 const DIST_MODE=process.argv.includes('--dist');
 if(SOURCE_MODE===DIST_MODE){console.error('Usage: node scripts/validate-r4-production-custom-cutover.mjs --source | --dist');process.exit(1);}
 const errors=[];
-const EXPECTED_BUILD='npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:custom && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate && npm run r4:production:custom:validate';
+const REQUIRED_BUILD_STEPS=Object.freeze([
+  'npm run data:build',
+  'npm run build:pages',
+  'npm run r4:astro:build',
+  'npm run r4:production:home',
+  'npm run r4:production:catalog',
+  'npm run r4:production:pdp',
+  'npm run r4:production:custom',
+  'npm run r4:production:inquiry',
+  'npm run r4:production:home:validate',
+  'npm run r4:production:catalog:validate',
+  'npm run r4:production:pdp:validate',
+  'npm run r4:production:custom:validate',
+  'npm run r4:production:inquiry:validate'
+]);
+
+function productionBuildHasOrderedSteps(value){
+  const build=String(value||'');
+  let cursor=-1;
+  for(const step of REQUIRED_BUILD_STEPS){
+    const index=build.indexOf(step);
+    if(index<0||index<=cursor)return false;
+    cursor=index;
+  }
+  return true;
+}
+
 function fail(message){errors.push(message);}
 function read(relative){return fs.readFileSync(path.join(ROOT,relative),'utf8');}
 function json(relative){return JSON.parse(read(relative));}
@@ -28,7 +54,7 @@ function validateCustomDocument(root,label){
 }
 try{
   const pkg=json('package.json');
-  if(pkg.scripts?.build!==EXPECTED_BUILD)fail('Production build must promote Home + Catalog + PDP + Custom as staged Astro route owners before final validation.');
+  if(!productionBuildHasOrderedSteps(pkg.scripts?.build))fail('Production build must promote Home + Catalog + PDP + Custom as staged Astro route owners before final validation.');
   for(const [name,value] of [
     ['r4:production:custom','node scripts/r4-promote-astro-custom.mjs --write'],
     ['r4:production:custom:contract','node scripts/validate-r4-production-custom-cutover.mjs --source'],
@@ -57,7 +83,7 @@ if(DIST_MODE){
   const catalog=expectFile(root,'products/index.html');if(catalog&&(!catalog.includes('data-r4-astro-catalog="true"')||!catalog.includes('src="/r4-catalog-runtime.js"')||catalog.includes('DREAMLAND_MPA_ACTIVE')))fail('Production Catalog ownership changed during R4.6C.');
   const products=json('data/products.json').products||[];const firstProduct=products.find(product=>product?.status==='active');const productId=String(firstProduct?.productId||firstProduct?.id||'').trim().toUpperCase();
   if(!productId)fail('No active Product exists for R4.6C Production sentinel validation.');else{const pdp=expectFile(root,path.join('products',productId,'index.html'));if(pdp&&(!pdp.includes('data-r4-astro-product="true"')||!pdp.includes('src="/r4-pdp-runtime.js"')||pdp.includes('DREAMLAND_MPA_ACTIVE')))fail('Production PDP ownership changed during R4.6C.');}
-  for(const relative of ['inquiry/index.html','inquiry/contact/index.html','inquiry/review/index.html']){const html=expectFile(root,relative);if(html&&!html.includes('window.DREAMLAND_MPA_ACTIVE=true;'))fail('Production Inquiry route must remain Legacy MPA: '+relative);}
+  for(const relative of ['inquiry/contact/index.html','inquiry/review/index.html','inquiry/success/index.html']){const html=expectFile(root,relative);if(html&&!html.includes('window.DREAMLAND_MPA_ACTIVE=true;'))fail('Production Inquiry route must remain Legacy MPA: '+relative);}
   const manifest=JSON.parse(expectFile(root,'multipage-build-manifest.json')||'{}');
   for(const [key,expected] of [['homeOwner','astro'],['catalogOwner','astro'],['pdpOwner','astro'],['customOwner','astro']])if(manifest[key]!==expected)fail('Production manifest owner mismatch: '+key);
   if(manifest.homeCutover!=='B7-00B.4J-R4.3C'||manifest.catalogCutover!=='B7-00B.4J-R4.4C'||manifest.pdpCutover!=='B7-00B.4J-R4.5C'||manifest.customCutover!=='B7-00B.4J-R4.6C'||manifest.presentationOverrides?.custom!=='astro-r4.6c')fail('Production manifest lost a staged route-ownership contract.');

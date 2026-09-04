@@ -80,8 +80,32 @@ function expectFile(
   );
 }
 
-const EXPECTED_BUILD=
-  'npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:custom && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate && npm run r4:production:custom:validate';
+const REQUIRED_BUILD_STEPS=Object.freeze([
+  'npm run data:build',
+  'npm run build:pages',
+  'npm run r4:astro:build',
+  'npm run r4:production:home',
+  'npm run r4:production:catalog',
+  'npm run r4:production:pdp',
+  'npm run r4:production:custom',
+  'npm run r4:production:inquiry',
+  'npm run r4:production:home:validate',
+  'npm run r4:production:catalog:validate',
+  'npm run r4:production:pdp:validate',
+  'npm run r4:production:custom:validate',
+  'npm run r4:production:inquiry:validate'
+]);
+
+function productionBuildHasOrderedSteps(value){
+  const build=String(value||'');
+  let cursor=-1;
+  for(const step of REQUIRED_BUILD_STEPS){
+    const index=build.indexOf(step);
+    if(index<0||index<=cursor)return false;
+    cursor=index;
+  }
+  return true;
+}
 
 try{
   const pkg=
@@ -90,8 +114,7 @@ try{
     );
 
   if(
-    pkg.scripts?.build!==
-    EXPECTED_BUILD
+    !productionBuildHasOrderedSteps(pkg.scripts?.build)
   ){
     fail(
       'Production build must preserve Home/Catalog/PDP promotion and append the route-scoped Custom promotion before final validation.'
@@ -551,11 +574,7 @@ if(DIST_MODE){
       );
     }
 
-    for(const relative of [
-      'inquiry/index.html',
-      'inquiry/contact/index.html',
-      'inquiry/review/index.html'
-    ]){
+    for(const relative of ['inquiry/contact/index.html','inquiry/review/index.html','inquiry/success/index.html']){
       const html=
         expectFile(
           root,

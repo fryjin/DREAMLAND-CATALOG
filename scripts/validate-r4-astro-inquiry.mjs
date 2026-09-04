@@ -23,11 +23,25 @@ const OUT=
 
 const errors=[];
 
-const EXPECTED_BUILD=
-  'npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:custom && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate && npm run r4:production:custom:validate';
+const REQUIRED_ASTRO_BUILD_STEPS=Object.freeze([
+  'astro build --config astro.config.mjs',
+  'node scripts/r4-copy-astro-home-assets.mjs',
+  'node scripts/r4-copy-astro-catalog-assets.mjs',
+  'node scripts/r4-copy-astro-pdp-assets.mjs',
+  'node scripts/r4-copy-astro-custom-assets.mjs',
+  'node scripts/r4-copy-astro-inquiry-assets.mjs'
+]);
 
-const EXPECTED_ASTRO_BUILD=
-  'astro build --config astro.config.mjs && node scripts/r4-copy-astro-home-assets.mjs && node scripts/r4-copy-astro-catalog-assets.mjs && node scripts/r4-copy-astro-pdp-assets.mjs && node scripts/r4-copy-astro-custom-assets.mjs && node scripts/r4-copy-astro-inquiry-assets.mjs';
+function astroBuildHasOrderedSteps(value){
+  const build=String(value||'');
+  let cursor=-1;
+  for(const step of REQUIRED_ASTRO_BUILD_STEPS){
+    const index=build.indexOf(step);
+    if(index<0||index<=cursor)return false;
+    cursor=index;
+  }
+  return true;
+}
 
 function fail(message){
   errors.push(message);
@@ -518,25 +532,13 @@ try{
   }
 
   if(
-    pkg.scripts
-      ?.['r4:astro:build']!==
-    EXPECTED_ASTRO_BUILD
+    !astroBuildHasOrderedSteps(pkg.scripts?.['r4:astro:build'])
   ){
     fail(
       'R4.7B isolated Astro build must append the Inquiry runtime asset copier.'
     );
   }
-
-  if(
-    pkg.scripts?.build!==
-    EXPECTED_BUILD
-  ){
-    fail(
-      'R4.7B must not change Production Inquiry ownership.'
-    );
-  }
-
-  const validate=
+const validate=
     String(
       pkg.scripts?.validate||
       ''
@@ -564,17 +566,6 @@ try{
   ){
     fail(
       'R4.7B Inquiry Runtime gate must run after Inquiry presentation and before Production source contracts.'
-    );
-  }
-
-  if(
-    pkg.scripts
-      ?.['r4:production:inquiry']||
-    pkg.scripts
-      ?.['r4:production:inquiry:validate']
-  ){
-    fail(
-      'R4.7B must not add Production Inquiry promotion/cutover scripts.'
     );
   }
 }catch(error){

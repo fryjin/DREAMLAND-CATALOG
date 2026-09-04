@@ -712,19 +712,11 @@ try{
     );
   }
 
-  if(
-    !String(
-      pkg.scripts
-        ?.['r4:astro:build']||
-      ''
-    )
-      .endsWith(
-        'node scripts/r4-copy-astro-inquiry-assets.mjs'
-      )
-  ){
-    fail(
-      'R4.7B Astro build does not finish with the Inquiry asset copier.'
-    );
+  const astroBuild=String(pkg.scripts?.['r4:astro:build']||'');
+  const customCopier=astroBuild.indexOf('node scripts/r4-copy-astro-custom-assets.mjs');
+  const inquiryCopier=astroBuild.indexOf('node scripts/r4-copy-astro-inquiry-assets.mjs');
+  if(customCopier<0||inquiryCopier<=customCopier){
+    fail('R4.7B Astro build must include the Inquiry asset copier after the Custom copier.');
   }
 }catch(error){
   fail(

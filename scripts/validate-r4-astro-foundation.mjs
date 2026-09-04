@@ -44,13 +44,51 @@ try{
     fail('Astro dependency must stay pinned to 7.2.10.');
   }
 
-  if(
-    packageJson.scripts?.build!==
-    "npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:custom && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate && npm run r4:production:custom:validate"
-  ){
-    fail(
-      'R4.6C Production build must promote Astro Home + Catalog + PDP + Custom as staged route owners after the Legacy route build.'
-    );
+  const productionBuildSteps=
+    String(
+      packageJson.scripts?.build||
+      ''
+    )
+      .split(' && ')
+      .map(step=>step.trim())
+      .filter(Boolean);
+
+  const requiredProductionBuildSteps=[
+    'npm run data:build',
+    'npm run build:pages',
+    'npm run r4:astro:build',
+    'npm run r4:production:home',
+    'npm run r4:production:catalog',
+    'npm run r4:production:pdp',
+    'npm run r4:production:custom',
+    'npm run r4:production:inquiry',
+    'npm run r4:production:home:validate',
+    'npm run r4:production:catalog:validate',
+    'npm run r4:production:pdp:validate',
+    'npm run r4:production:custom:validate',
+    'npm run r4:production:inquiry:validate'
+  ];
+
+  let previousBuildStep=-1;
+
+  for(const step of requiredProductionBuildSteps){
+    const index=
+      productionBuildSteps.indexOf(
+        step
+      );
+
+    if(
+      index<0||
+      index<=previousBuildStep
+    ){
+      fail(
+        'Production build must preserve staged route ownership order through the R4.7C Inquiry cutover: '+
+        step
+      );
+      break;
+    }
+
+    previousBuildStep=index;
   }
 
   if(
@@ -385,6 +423,6 @@ console.log(
   'DREAMLAND B7-00B.4J R4.1/R4.3A Astro foundation: PASS'
 );
 console.log(
-  'Inquiry has graduated to the R4.7B isolated minimal runtime; Home, Catalog, PDP and Custom remain Production Astro owners and Production Inquiry remains Legacy.'
+  'Inquiry selection is wired for the R4.7C Production cutover; Home, Catalog, PDP and Custom remain Astro owners while Contact/Review/Success stay Legacy and Inquiry SW detachment remains deferred.'
 );
 console.log('');

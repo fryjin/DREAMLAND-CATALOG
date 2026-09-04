@@ -1398,10 +1398,48 @@ if(DIST_MODE){
       }
     }
 
+    const inquirySelection=
+      path.join(
+        root,
+        'inquiry/index.html'
+      );
+
+    if(
+      !fs.existsSync(
+        inquirySelection
+      )
+    ){
+      fail(
+        'R4.5D downstream Inquiry selection route is missing after the R4.7C cutover.'
+      );
+    }else{
+      const inquiry=
+        fs.readFileSync(
+          inquirySelection,
+          'utf8'
+        );
+
+      if(
+        !inquiry.includes(
+          'data-r4-astro-inquiry="true"'
+        )||
+        !inquiry.includes(
+          'src="/r4-inquiry-runtime.js"'
+        )||
+        inquiry.includes(
+          'DREAMLAND_MPA_ACTIVE'
+        )
+      ){
+        fail(
+          'R4.5D downstream owner compatibility requires Astro Inquiry selection after R4.7C.'
+        );
+      }
+    }
+
     for(const relative of [
-      'inquiry/index.html',
       'inquiry/contact/index.html',
-      'inquiry/review/index.html'
+      'inquiry/review/index.html',
+      'inquiry/success/index.html'
     ]){
       const route=
         path.join(
@@ -1421,7 +1459,7 @@ if(DIST_MODE){
         )
       ){
         fail(
-          'R4.5D must preserve Legacy Custom/Inquiry ownership: '+
+          'R4.5D must preserve Legacy downstream Inquiry ownership: '+
           relative
         );
       }

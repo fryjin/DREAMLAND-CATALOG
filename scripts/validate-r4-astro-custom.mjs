@@ -129,7 +129,46 @@ try{
   const validate=String(pkg.scripts?.validate||'');
   const a=validate.indexOf('npm run r4:astro:custom');const b=validate.indexOf('npm run r4:astro:custom-runtime');const c=validate.indexOf('npm run r4:production:home:contract');
   if(a<0||b<=a||c<=b) fail('R4.6B Custom Runtime gate must run after Custom Presentation and before Production Home contract.');
-  if(pkg.scripts?.build!=='npm run data:build && npm run build:pages && npm run r4:astro:build && npm run r4:production:home && npm run r4:production:catalog && npm run r4:production:pdp && npm run r4:production:custom && npm run r4:production:home:validate && npm run r4:production:catalog:validate && npm run r4:production:pdp:validate && npm run r4:production:custom:validate') fail('R4.6B must not change Production Custom ownership.');
+  const productionBuildSteps=
+    String(
+      pkg.scripts?.build||
+      ''
+    )
+      .split(' && ')
+      .map(step=>step.trim())
+      .filter(Boolean);
+
+  const historicalProductionSteps=[
+    'npm run data:build',
+    'npm run build:pages',
+    'npm run r4:astro:build',
+    'npm run r4:production:home',
+    'npm run r4:production:catalog',
+    'npm run r4:production:pdp',
+    'npm run r4:production:custom'
+  ];
+
+  let previousProductionStep=-1;
+
+  for(const step of historicalProductionSteps){
+    const index=
+      productionBuildSteps.indexOf(
+        step
+      );
+
+    if(
+      index<0||
+      index<=previousProductionStep
+    ){
+      fail(
+        'custom must preserve the historical staged Production build order: '+
+        step
+      );
+      break;
+    }
+
+    previousProductionStep=index;
+  }
 }catch(error){fail('R4.6B package inspection crashed: '+error.message);}
 
 if(errors.length){

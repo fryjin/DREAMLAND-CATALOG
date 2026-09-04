@@ -1574,3 +1574,78 @@ Production ownership remains:
 
 R4.7C will perform the Production `/inquiry/` selection-route cutover without
 prematurely migrating Contact/Review/Success.
+
+
+## R4.7C — Production Inquiry Cutover
+
+Status: Production migration stage.
+
+R4.7C promotes the already-validated Astro Inquiry selection document into the
+final Production `dist/inquiry/index.html` while preserving Astro Home,
+Catalog, all 89 PDPs and Custom plus the Legacy Contact/Review/Success
+conversion chain.
+
+The Production build becomes:
+
+```text
+data:build
+→ Legacy build-pages.mjs
+→ isolated Astro build
+→ promote Astro Home
+→ promote Astro Catalog
+→ promote Astro PDP × 89
+→ promote Astro Custom
+→ promote Astro Inquiry selection
+→ validate Home
+→ validate Catalog
+→ validate PDP
+→ validate Custom
+→ validate Inquiry
+```
+
+Final route ownership after R4.7C:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Astro PDP × 89
+/custom/                  → Astro Custom
+/inquiry/                 → Astro Inquiry
+/inquiry/contact/         → Legacy MPA
+/inquiry/review/          → Legacy MPA
+/inquiry/success/         → Legacy MPA
+```
+
+Inquiry promotion is strictly selection-route scoped. It copies only:
+
+```text
+/inquiry/index.html
+/r4-inquiry-runtime.js
+Inquiry-referenced Astro CSS/assets
+Product covers referenced by inquiryRuntimeState
+```
+
+Home, Catalog, all 89 PDP documents, Custom, Contact, Review, Success and the
+Production Service Worker are hash-protected during the promotion step. The
+whole `/inquiry/**` directory is never copied.
+
+Unlike the public Catalog/PDP/Custom routes, Inquiry remains a non-public
+conversion route after Production cutover:
+
+```text
+robots=noindex,nofollow
+canonical=https://dreamland-catalog.pages.dev/inquiry/
+```
+
+The Production build manifest records:
+
+```text
+inquiryOwner=astro
+inquiryCutover=B7-00B.4J-R4.7C
+presentationOverrides.inquiry=astro-r4.7c
+```
+
+R4.7C intentionally does not modify `sw.js`, Service Worker navigation
+ownership, APP/RUNTIME cache cleanup, Contact/Review/Success, Risk/hCaptcha or
+Submission. Exact Inquiry-selection Service Worker detachment and final
+Production payload hardening belong to R4.7D.
