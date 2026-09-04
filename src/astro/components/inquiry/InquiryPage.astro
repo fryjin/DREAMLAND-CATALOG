@@ -1,0 +1,175 @@
+---
+interface Props {
+  view:Record<string,any>;
+}
+
+const {view}=Astro.props;
+const c=view.copy||{};
+const summary=view.summary||{};
+
+const rows=[
+  {
+    key:'items',
+    label:c.selectedItems||'Items',
+    value:summary.itemCount??0
+  },
+  {
+    key:'quantity',
+    label:c.totalQuantity||'Total Quantity',
+    value:summary.productQuantity??0
+  },
+  {
+    key:'custom',
+    label:c.customProject||'Custom Project',
+    value:summary.customCount??0
+  },
+  {
+    key:'estimate',
+    label:c.productEstimate||'Estimated product amount',
+    value:'—'
+  }
+];
+---
+<main
+  class="inquiry-main"
+  data-inquiry-static-presentation
+>
+  <section
+    class="inquiry-hero"
+    aria-labelledby="inquiryTitle"
+  >
+    <div class="home-container inquiry-hero__inner">
+      <div>
+        <p class="inquiry-eyebrow">
+          {c.kicker||'INQUIRY'}
+        </p>
+        <h1 id="inquiryTitle">
+          {c.title||'Review inquiry'}
+        </h1>
+      </div>
+
+      <p class="inquiry-hero__body">
+        {c.body||'Check the products, quantities and custom projects before adding contact details.'}
+      </p>
+    </div>
+  </section>
+
+  <nav
+    class="inquiry-progress home-container"
+    aria-label={c.progressLabel||'Inquiry progress'}
+    data-inquiry-static-progress
+  >
+    <ol>
+      <li class="is-active">
+        <strong>01</strong>
+        <span>{c.stepSelection||'Inquiry'}</span>
+      </li>
+      <li>
+        <strong>02</strong>
+        <span>{c.stepContact||'Contact'}</span>
+      </li>
+      <li>
+        <strong>03</strong>
+        <span>{c.stepReview||'Review'}</span>
+      </li>
+    </ol>
+  </nav>
+
+  <section class="inquiry-workspace home-container">
+    <div class="inquiry-selection">
+      <header class="inquiry-section__header">
+        <p class="inquiry-eyebrow">
+          {c.selectedProducts||'Inquiry items'}
+        </p>
+        <h2>
+          {c.selectedProducts||'Inquiry items'}
+        </h2>
+      </header>
+
+      <section
+        class="inquiry-empty"
+        data-inquiry-static-empty
+      >
+        <span
+          class="inquiry-empty__mark"
+          aria-hidden="true"
+        >
+          0
+        </span>
+
+        <div>
+          <h3>
+            {c.emptyTitle||'No items in this inquiry.'}
+          </h3>
+          <p>
+            {c.emptyBody||'Add products from the collection or start a custom project.'}
+          </p>
+        </div>
+
+        <div class="inquiry-empty__actions">
+          <a
+            class="inquiry-action inquiry-action--primary"
+            href={view.routes.collection}
+            data-inquiry-static-explore
+          >
+            {c.exploreCollection||'Explore Collection'}
+          </a>
+
+          <a
+            class="inquiry-action"
+            href={view.routes.custom}
+            data-inquiry-static-custom
+          >
+            {c.startCustom||'Start a Custom Project'}
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <aside
+      class="inquiry-summary"
+      data-inquiry-static-summary
+    >
+      <p class="inquiry-eyebrow">
+        {c.summaryKicker||'YOUR INQUIRY'}
+      </p>
+
+      <h2>
+        {c.summaryTitle||'Inquiry overview'}
+      </h2>
+
+      <div class="inquiry-summary__rows">
+        {rows.map((row:any)=>(
+          <div>
+            <span>{row.label}</span>
+            <strong
+              data-inquiry-static-summary-value={row.key}
+            >
+              {row.value}
+            </strong>
+          </div>
+        ))}
+      </div>
+
+      <p class="inquiry-summary__note">
+        {c.finalPricingNote||'Final pricing, lead time and delivery will be confirmed in the formal quotation.'}
+      </p>
+
+      <button
+        type="button"
+        class="inquiry-continue"
+        disabled
+        data-inquiry-static-continue
+      >
+        {c.continueContact||'Continue to Contact Details'}
+      </button>
+
+      <a
+        class="inquiry-summary__explore"
+        href={view.routes.collection}
+      >
+        {c.continueExploring||'Continue Exploring'}
+      </a>
+    </aside>
+  </section>
+</main>

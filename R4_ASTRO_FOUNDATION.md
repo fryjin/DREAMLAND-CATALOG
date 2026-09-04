@@ -1337,3 +1337,90 @@ Production ownership is then:
 ```
 
 The next migration target is R4.7 — Inquiry Presentation Migration.
+
+
+## R4.7A — Astro Inquiry Static Presentation
+
+Status: isolated presentation migration stage.
+
+R4.7A adds a real Astro `/inquiry/` document to the isolated
+`.r4-astro-dist/` build while Production Inquiry, Contact, Review and Success
+remain Legacy-owned.
+
+Build-time ownership:
+
+```text
+data/site-content.json
+        ↓
+DreamlandLocalizationPolicy
+DreamlandInquiry (storage=null, version=2)
+        ↓
+src/astro/lib/inquiry-view-model.mjs
+        ↓
+Astro static Inquiry presentation
+```
+
+Because the real Inquiry cart exists only in browser state, R4.7A does not
+invent Product or Custom items at build time. The canonical DreamlandInquiry
+owner is configured without storage and must produce its real empty ViewModel:
+
+```text
+empty=true
+itemCount=0
+productCount=0
+customCount=0
+productQuantity=0
+```
+
+The static presentation includes:
+
+```text
+01 Inquiry      active
+02 Contact
+03 Review
+
+Inquiry items
+- honest empty state
+- Explore Collection
+- Start a Custom Project
+
+Inquiry overview
+- Items: 0
+- Total Quantity: 0
+- Custom Project: 0
+- Estimated product amount: —
+- final pricing note
+- Continue to Contact Details rendered but disabled
+```
+
+R4.7A is intentionally zero-client-JS. It does not read localStorage and does
+not activate DreamlandInquiry in the browser. Item hydration, quantity editing,
+removal, MOQ aggregation, localized runtime state and navigation to the
+existing Legacy Contact route belong to R4.7B.
+
+R4.7A does not migrate Contact, Review, Success, Risk/hCaptcha or Submission.
+Those downstream conversion boundaries remain Legacy and are not bundled into
+the Inquiry selection presentation migration.
+
+The isolated Inquiry route remains:
+
+```text
+robots=noindex,nofollow
+canonical=https://dreamland-catalog.pages.dev/inquiry/
+```
+
+Production and Service Worker ownership remain unchanged:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Astro PDP × 89
+/custom/                  → Astro Custom
+/inquiry/                 → Legacy MPA
+/inquiry/contact/         → Legacy MPA
+/inquiry/review/          → Legacy MPA
+/inquiry/success/         → Legacy MPA
+```
+
+R4.7B will activate the Inquiry selection runtime without moving the
+Contact/Risk/Submission chain.

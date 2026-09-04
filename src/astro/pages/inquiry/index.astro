@@ -1,0 +1,97 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import SiteHeader from '../../components/site/SiteHeader.astro';
+import SiteFooter from '../../components/site/SiteFooter.astro';
+import InquiryPage from '../../components/inquiry/InquiryPage.astro';
+
+import {
+  buildInquiryStaticView
+} from '../../lib/inquiry-view-model.mjs';
+
+import '../../styles/home.css';
+import '../../styles/inquiry.css';
+
+import siteContent from '../../../../data/site-content.json';
+import i18n from '../../../../data/i18n.json';
+import routes from '../../../../data/page-routes.json';
+
+import '../../../domain/localization/runtime-localization-policy.js';
+import '../../../features/inquiry/runtime-inquiry.js';
+
+if(
+  routes.routes
+    ?.inquiry
+    ?.path!==
+  '/inquiry/'||
+  routes.routes
+    ?.inquiry
+    ?.public!==
+  false
+){
+  throw new Error(
+    'R4.7A expected canonical non-public Inquiry route /inquiry/.'
+  );
+}
+
+const localizationPolicy=
+  globalThis
+    .DreamlandLocalizationPolicy;
+
+const inquiryFeature=
+  globalThis
+    .DreamlandInquiry;
+
+if(
+  !localizationPolicy||
+  !inquiryFeature
+){
+  throw new Error(
+    'R4.7A Inquiry requires canonical Localization and DreamlandInquiry owners.'
+  );
+}
+
+const language='en';
+
+const view=
+  buildInquiryStaticView({
+    language,
+    siteContent,
+    localizationPolicy,
+    inquiryFeature
+  });
+
+const languageOptions=[
+  'en',
+  'zh',
+  'ko'
+].map(
+  value=>({
+    value,
+    label:
+      i18n.currencyMap
+        ?.[value]
+        ?.label||
+      value.toUpperCase()
+  })
+);
+---
+<SiteLayout
+  title="Inquiry — DREAMLAND"
+  description={view.copy.body}
+  page="inquiry"
+  lang={language}
+  robots="noindex,nofollow"
+  canonical="https://dreamland-catalog.pages.dev/inquiry/"
+  ogImage="https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg"
+>
+  <SiteHeader
+    content={view.content}
+    languageOptions={languageOptions}
+    initialLanguage={language}
+    languageEnabled={false}
+  />
+
+  <InquiryPage view={view} />
+
+  <SiteFooter content={view.content} />
+</SiteLayout>

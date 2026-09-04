@@ -33,6 +33,9 @@ const isProduct=
 const isCustom=
   page==='custom';
 
+const isInquiry=
+  page==='inquiry';
+
 const presentation=
   isHome
     ? 'astro-home-production'
@@ -42,7 +45,9 @@ const presentation=
         ? 'astro-pdp-static'
         : isCustom
           ? 'astro-custom-static'
-          : 'astro-static';
+          : isInquiry
+            ? 'astro-inquiry-static'
+            : 'astro-static';
 ---
 <!doctype html>
 <html lang={lang}>
@@ -76,13 +81,15 @@ const presentation=
     data-r4-astro-home={isHome?'true':undefined}
     data-r4-home-static={isHome?'true':undefined}
     data-r4-production-home={isHome?'true':undefined}
-    data-r4-astro-foundation={(isCatalog||isProduct||isCustom)?'true':undefined}
+    data-r4-astro-foundation={(isCatalog||isProduct||isCustom||isInquiry)?'true':undefined}
     data-r4-astro-catalog={isCatalog?'true':undefined}
     data-r4-catalog-static={isCatalog?'true':undefined}
     data-r4-astro-product={isProduct?'true':undefined}
     data-r4-pdp-static={isProduct?'true':undefined}
     data-r4-astro-custom={isCustom?'true':undefined}
     data-r4-custom-static={isCustom?'true':undefined}
+    data-r4-astro-inquiry={isInquiry?'true':undefined}
+    data-r4-inquiry-static={isInquiry?'true':undefined}
     data-product-id={isProduct?productId:undefined}
     data-dreamland-page={page}
   >
