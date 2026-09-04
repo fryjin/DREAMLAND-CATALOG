@@ -1117,3 +1117,53 @@ Production ownership is unchanged:
 /custom/                  → Legacy MPA
 /inquiry/**               → Legacy MPA
 ```
+
+
+## R4.6B — Custom Minimal Runtime
+
+Status: isolated runtime migration stage.
+
+R4.6B activates the R4.6A Astro Custom Project presentation without changing Production /custom/ ownership.
+
+Runtime ownership:
+
+```text
+DreamlandCustom
++ DreamlandInquiry
++ Astro Custom DOM/language adapter
+        ↓
+/r4-custom-runtime.js
+```
+
+DreamlandCustom remains the canonical owner for fragrance series, multi-scent selection, quantity bounds, validateDraft() and buildIntent(). DreamlandInquiry remains the canonical owner for addCustom(), shared Inquiry state and localStorage persistence. The Astro adapter owns only DOM interaction, the in-memory draft, Live Project Brief, EN/ZH/KO presentation and the Inquiry badge.
+
+Shared storage remains:
+
+```text
+productManualLang
+productManualV2State
+```
+
+The isolated Custom route now activates Use Case, Quantity, Budget, Preferred Delivery, Size, Fragrance Series, multi-scent selection, Color, Packaging, Branding, Notes, field validation, Live Brief and Add Custom Project to Inquiry.
+
+The runtime bundle intentionally excludes browser data fetches, Service Worker bootstrap, DreamlandRisk/hCaptcha, DreamlandSubmission and DreamlandDesktopExperience.
+
+Budgets:
+
+```text
+Astro Custom adapter source <= 36 KiB raw
+/r4-custom-runtime.js       <= 104 KiB raw
+customRuntimeState          <= 72 KiB raw
+```
+
+R4.6B keeps /custom/ noindex,nofollow and leaves Production ownership unchanged:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Astro PDP × 89
+/custom/                  → Legacy MPA
+/inquiry/**               → Legacy MPA
+```
+
+Production Custom cutover belongs to R4.6C.

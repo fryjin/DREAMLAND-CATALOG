@@ -55,7 +55,7 @@ try{
 
   if(
     packageJson.scripts?.['r4:astro:build']!==
-    'astro build --config astro.config.mjs && node scripts/r4-copy-astro-home-assets.mjs && node scripts/r4-copy-astro-catalog-assets.mjs && node scripts/r4-copy-astro-pdp-assets.mjs'
+    'astro build --config astro.config.mjs && node scripts/r4-copy-astro-home-assets.mjs && node scripts/r4-copy-astro-catalog-assets.mjs && node scripts/r4-copy-astro-pdp-assets.mjs && node scripts/r4-copy-astro-custom-assets.mjs'
   ){
     fail('R4 Astro build/copy contract is missing.');
   }
@@ -240,7 +240,7 @@ try{
       'data-r4-astro-foundation="true"',
       'data-r4-astro-custom="true"',
       'data-r4-custom-static="true"',
-      'data-custom-static-presentation'
+      'data-custom-runtime-presentation'
     ]){
       if(
         !custom.includes(
@@ -254,13 +254,23 @@ try{
       }
     }
 
+    const customExecutableScripts=[
+      ...custom.matchAll(
+        /<script\b(?![^>]*type="application\/json")[^>]*>/gi
+      )
+    ];
+
     if(
-      /<script\b/i.test(
-        custom
+      customExecutableScripts.length!==1||
+      !custom.includes(
+        'src="/r4-custom-runtime.js"'
+      )||
+      !custom.includes(
+        'id="customRuntimeState"'
       )
     ){
       fail(
-        'R4.6A Custom presentation must remain zero-client-JS.'
+        'R4.6B Custom presentation must expose exactly one dedicated route runtime plus non-executable state.'
       );
     }
   }
@@ -320,6 +330,6 @@ console.log(
   'DREAMLAND B7-00B.4J R4.1/R4.3A Astro foundation: PASS'
 );
 console.log(
-  'Custom has graduated to the R4.6A static isolated Astro presentation; Home, Catalog and PDP remain Production Astro owners.'
+  'Custom has graduated to the R4.6B minimal-runtime isolated Astro presentation; Home, Catalog and PDP remain Production Astro owners.'
 );
 console.log('');

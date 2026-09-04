@@ -9,6 +9,7 @@ import CustomPage from '../../components/custom/CustomPage.astro';
 
 import {
   buildCustomViewModel,
+  buildCustomRuntimeState,
   mapCustomScents,
   groupCustomScents
 } from '../../lib/custom-view-model.mjs';
@@ -26,95 +27,46 @@ import '../../../data/product-data-contract.js';
 import '../../../domain/localization/runtime-localization-policy.js';
 import '../../../features/custom/runtime-custom.js';
 
-if(
-  routes.routes?.custom?.path!==
-  '/custom/'
-){
-  throw new Error(
-    'R4.6A expected canonical Custom route /custom/.'
-  );
+if(routes.routes?.custom?.path!=='/custom/'){
+  throw new Error('R4.6B expected canonical Custom route /custom/.');
 }
 
-const productDataContract=
-  globalThis.DreamlandProductDataContract;
+const productDataContract=globalThis.DreamlandProductDataContract;
+const localizationPolicy=globalThis.DreamlandLocalizationPolicy;
+const customFeature=globalThis.DreamlandCustom;
 
-const localizationPolicy=
-  globalThis.DreamlandLocalizationPolicy;
-
-const customFeature=
-  globalThis.DreamlandCustom;
-
-if(
-  !productDataContract||
-  !localizationPolicy||
-  !customFeature
-){
-  throw new Error(
-    'R4.6A Custom requires Product Data, Localization and DreamlandCustom canonical owners.'
-  );
+if(!productDataContract||!localizationPolicy||!customFeature){
+  throw new Error('R4.6B Custom requires Product Data, Localization and DreamlandCustom canonical owners.');
 }
 
-const scentRows=
-  productDataContract.parseCsv(
-    fs.readFileSync(
-      path.resolve(
-        process.cwd(),
-        'data/scents.csv'
-      ),
-      'utf8'
-    )
-  );
-
-const scents=
-  mapCustomScents(
-    scentRows
-  );
-
-const scentsBySeries=
-  groupCustomScents(
-    scents
-  );
+const scentRows=productDataContract.parseCsv(
+  fs.readFileSync(path.resolve(process.cwd(),'data/scents.csv'),'utf8')
+);
+const scents=mapCustomScents(scentRows);
+const scentsBySeries=groupCustomScents(scents);
 
 customFeature.configure({
   scentsBySeries,
-  seriesOrder:[
-    'classic',
-    'advanced',
-    'masterpiece'
-  ],
+  seriesOrder:['classic','advanced','masterpiece'],
   defaultSeries:'classic',
-  customMoq:()=>
-    Number(appConfig.customMoq)||
-    1,
-  maximumQuantity:()=>
-    Number(appConfig.maxQuantity)||
-    1000000
+  customMoq:()=>Number(appConfig.customMoq)||1,
+  maximumQuantity:()=>Number(appConfig.maxQuantity)||1000000
 });
-
 customFeature.reset();
 
 const language='en';
-
-const view=
-  buildCustomViewModel({
-    language,
-    siteContent,
-    i18n,
-    seriesDocument,
-    appConfig,
-    localizationPolicy,
-    customFeature
-  });
-
-const languageOptions=[
-  'en',
-  'zh',
-  'ko'
-].map(value=>({
-  value,
-  label:
-    i18n.currencyMap?.[value]?.label||
-    value.toUpperCase()
+const supportedLanguages=['en','zh','ko'];
+const view=buildCustomViewModel({
+  language,siteContent,i18n,seriesDocument,appConfig,localizationPolicy,customFeature
+});
+const runtimeState=buildCustomRuntimeState({
+  languages:supportedLanguages,
+  defaultLanguage:language,
+  scents,siteContent,i18n,seriesDocument,appConfig,localizationPolicy,customFeature
+});
+const runtimeStateJson=JSON.stringify(runtimeState).replace(/</g,'\\u003c');
+const languageOptions=supportedLanguages.map(value=>({
+  value,label:i18n.currencyMap?.[value]?.label||value.toUpperCase()
 }));
 ---
 <SiteLayout
@@ -130,10 +82,10 @@ const languageOptions=[
     content={view.content}
     languageOptions={languageOptions}
     initialLanguage={language}
-    languageEnabled={false}
+    languageEnabled={true}
   />
-
-  <CustomPage view={view} />
-
+  <CustomPage view={view} runtimeState={runtimeState} />
   <SiteFooter content={view.content} />
+  <script is:inline id="customRuntimeState" type="application/json" set:html={runtimeStateJson}></script>
+  <script is:inline type="module" src="/r4-custom-runtime.js"></script>
 </SiteLayout>

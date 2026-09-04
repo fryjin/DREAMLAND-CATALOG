@@ -1,352 +1,191 @@
 ---
 interface Props {
   view:Record<string,any>;
+  runtimeState:Record<string,any>;
 }
-
-const {view}=Astro.props;
+const {view,runtimeState}=Astro.props;
 const c=view.copy||{};
-
+const defaultSeries=runtimeState.series?.default||view.fragranceSeries?.[0]?.key||'';
 const summaryRows=[
-  {label:c.useCase||'Use Case',value:c.notSelected||'Not selected'},
-  {
-    label:c.quantity||'Estimated Quantity',
-    value:`${c.minimumQuantity||'Custom MOQ'} · ${view.minimumQuantity} ${c.pieces||'pcs'}`
-  },
-  {
-    label:c.budget||'Budget Range',
-    value:view.budgets?.[0]?.label||c.notSelected||'Not selected'
-  },
-  {label:c.delivery||'Preferred Delivery',value:c.notSelected||'Not selected'},
-  {
-    label:c.size||'Size Preference',
-    value:view.sizes?.[0]?.label||c.notSelected||'Not selected'
-  },
-  {label:c.fragranceCollection||'Fragrance Collection',value:c.notSelected||'Not selected'},
-  {
-    label:c.packaging||'Packaging',
-    value:view.packages?.[0]?.label||c.notSelected||'Not selected'
-  },
-  {
-    label:c.branding||'Branding',
-    value:view.brandingOptions?.[0]?.label||c.notSelected||'Not selected'
-  }
+  {key:'use',copy:'useCase',label:c.useCase||'Use Case'},
+  {key:'qty',copy:'quantity',label:c.quantity||'Estimated Quantity'},
+  {key:'budget',copy:'budget',label:c.budget||'Budget Range'},
+  {key:'date',copy:'delivery',label:c.delivery||'Preferred Delivery'},
+  {key:'sizePref',copy:'size',label:c.size||'Size Preference'},
+  {key:'scents',copy:'fragranceCollection',label:c.fragranceCollection||'Fragrance Collection'},
+  {key:'pack',copy:'packaging',label:c.packaging||'Packaging'},
+  {key:'branding',copy:'branding',label:c.branding||'Branding'}
 ];
 ---
-<main class="custom-main" data-custom-static-presentation>
+<main class="custom-main" data-custom-runtime-presentation>
   <section class="custom-hero" aria-labelledby="customTitle">
     <div class="home-container custom-hero__inner">
       <div>
-        <p class="custom-eyebrow">{c.kicker||'CUSTOM PROJECT'}</p>
-        <h1 id="customTitle">
-          {c.title||'Custom products for brands, events and gifting.'}
-        </h1>
+        <p class="custom-eyebrow" data-custom-copy="kicker">{c.kicker||'CUSTOM PROJECT'}</p>
+        <h1 id="customTitle" data-custom-copy="title">{c.title||'Custom products for brands, events and gifting.'}</h1>
       </div>
-      <p class="custom-hero__body">
-        {c.body||'Tell us the intended use, quantity and product requirements.'}
-      </p>
+      <p class="custom-hero__body" data-custom-copy="body">{c.body||''}</p>
     </div>
   </section>
 
   <div class="custom-flow home-container" aria-label={c.flowTitle||'Project flow'}>
-    <span>{c.flowTitle||'Project flow'}</span>
+    <span data-custom-copy="flowTitle">{c.flowTitle||'Project flow'}</span>
     <ol>
-      <li class="is-active">
-        <strong>01</strong>
-        <span>{c.sectionBasicsTitle||'Project basics'}</span>
-      </li>
-      <li>
-        <strong>02</strong>
-        <span>{c.sectionProductTitle||'Product direction'}</span>
-      </li>
-      <li>
-        <strong>03</strong>
-        <span>{c.sectionPackagingTitle||'Packaging & branding'}</span>
-      </li>
+      <li class="is-active" data-custom-flow-step="basics"><strong>01</strong><span data-custom-copy="sectionBasicsTitle">{c.sectionBasicsTitle||'Project basics'}</span></li>
+      <li data-custom-flow-step="product"><strong>02</strong><span data-custom-copy="sectionProductTitle">{c.sectionProductTitle||'Product direction'}</span></li>
+      <li data-custom-flow-step="packaging"><strong>03</strong><span data-custom-copy="sectionPackagingTitle">{c.sectionPackagingTitle||'Packaging & branding'}</span></li>
     </ol>
   </div>
 
   <section class="custom-workspace home-container">
     <div class="custom-editor">
-      <fieldset
-        class="custom-static-fieldset"
-        disabled
-        aria-label="Static Custom Project presentation"
-      >
+      <fieldset class="custom-static-fieldset" aria-label={c.flowTitle||'Custom Project'} data-custom-editor>
         <section class="custom-section" data-custom-section="basics">
           <header class="custom-section__header">
-            <p class="custom-eyebrow">{c.sectionBasicsKicker||'01 / PROJECT BASICS'}</p>
-            <h2>{c.sectionBasicsTitle||'Add the project basics.'}</h2>
-            <p>{c.sectionBasicsBody||''}</p>
+            <p class="custom-eyebrow" data-custom-copy="sectionBasicsKicker">{c.sectionBasicsKicker||'01 / PROJECT BASICS'}</p>
+            <h2 data-custom-copy="sectionBasicsTitle">{c.sectionBasicsTitle||'Add the project basics.'}</h2>
+            <p data-custom-copy="sectionBasicsBody">{c.sectionBasicsBody||''}</p>
           </header>
 
-          <div class="custom-field">
-            <div class="custom-field__head">
-              <strong>{c.useCase||'Use Case *'}</strong>
-            </div>
-            <div
-              class="custom-choice-grid custom-choice-grid--use"
-              data-custom-use-options
-            >
+          <div class="custom-field" data-custom-field="use">
+            <div class="custom-field__head"><strong data-custom-copy="useCase">{c.useCase||'Use Case *'}</strong></div>
+            <div class="custom-choice-grid custom-choice-grid--use" data-custom-use-options>
               {view.useCases.map((option:any,index:number)=>(
-                <button
-                  type="button"
-                  class="custom-choice"
-                  data-custom-use-option={option.value}
-                  disabled
-                >
+                <button type="button" class="custom-choice" data-custom-use-option={option.value} aria-pressed="false">
                   <span>{String(index+1).padStart(2,'0')}</span>
-                  <strong>{option.label}</strong>
-                  {option.body&&(<small>{option.body}</small>)}
+                  <strong data-custom-option-label>{option.label}</strong>
+                  {option.body&&(<small data-custom-option-body>{option.body}</small>)}
                 </button>
               ))}
             </div>
+            <p class="custom-field__error" data-custom-error="use" hidden></p>
           </div>
 
           <div class="custom-two">
-            <label class="custom-field">
+            <label class="custom-field" data-custom-field="qty">
               <span class="custom-field__head">
-                <strong>{c.quantity||'Estimated Quantity *'}</strong>
-                <small>
-                  {c.minimumQuantity||'Custom MOQ'} · {view.minimumQuantity} {c.pieces||'pcs'}
-                </small>
+                <strong data-custom-copy="quantity">{c.quantity||'Estimated Quantity *'}</strong>
+                <small><span data-custom-copy="minimumQuantity">{c.minimumQuantity||'Custom MOQ'}</span> · <span data-custom-minimum-quantity>{view.minimumQuantity}</span> <span data-custom-copy="pieces">{c.pieces||'pcs'}</span></small>
               </span>
               <div class="custom-input-wrap">
-                <input
-                  type="number"
-                  min={String(view.minimumQuantity)}
-                  max={String(view.maximumQuantity)}
-                  step="1"
-                  placeholder={c.quantityPlaceholder||'e.g. 500'}
-                  disabled
-                  data-custom-quantity
-                />
-                <span>{c.pieces||'pcs'}</span>
+                <input type="number" min={String(view.minimumQuantity)} max={String(view.maximumQuantity)} step="1" placeholder={c.quantityPlaceholder||'e.g. 500'} data-custom-quantity />
+                <span data-custom-copy="pieces">{c.pieces||'pcs'}</span>
               </div>
+              <p class="custom-field__error" data-custom-error="qty" hidden></p>
             </label>
 
-            <label class="custom-field">
-              <span class="custom-field__head">
-                <strong>{c.budget||'Budget Range'}</strong>
-              </span>
-              <select disabled data-custom-budget>
-                {view.budgets.map((option:any)=>(
-                  <option value={option.value}>{option.label}</option>
-                ))}
+            <label class="custom-field" data-custom-field="budget">
+              <span class="custom-field__head"><strong data-custom-copy="budget">{c.budget||'Budget Range'}</strong></span>
+              <select data-custom-budget>
+                <option value="">{c.notSelected||'Not selected'}</option>
+                {view.budgets.map((option:any)=>(<option value={option.value}>{option.label}</option>))}
               </select>
             </label>
           </div>
 
-          <label class="custom-field">
-            <span class="custom-field__head">
-              <strong>{c.delivery||'Preferred Delivery'}</strong>
-              <small>{c.deliveryHint||''}</small>
-            </span>
-            <input
-              type="text"
-              placeholder={c.deliveryPlaceholder||''}
-              disabled
-              data-custom-delivery
-            />
+          <label class="custom-field" data-custom-field="date">
+            <span class="custom-field__head"><strong data-custom-copy="delivery">{c.delivery||'Preferred Delivery'}</strong><small data-custom-copy="deliveryHint">{c.deliveryHint||''}</small></span>
+            <input type="text" placeholder={c.deliveryPlaceholder||''} data-custom-delivery />
           </label>
         </section>
 
         <section class="custom-section" data-custom-section="product">
           <header class="custom-section__header">
-            <p class="custom-eyebrow">{c.sectionProductKicker||'02 / PRODUCT DIRECTION'}</p>
-            <h2>{c.sectionProductTitle||'Choose product and fragrance.'}</h2>
-            <p>{c.sectionProductBody||''}</p>
+            <p class="custom-eyebrow" data-custom-copy="sectionProductKicker">{c.sectionProductKicker||'02 / PRODUCT DIRECTION'}</p>
+            <h2 data-custom-copy="sectionProductTitle">{c.sectionProductTitle||'Choose product and fragrance.'}</h2>
+            <p data-custom-copy="sectionProductBody">{c.sectionProductBody||''}</p>
           </header>
 
-          <div class="custom-field">
-            <div class="custom-field__head">
-              <strong>{c.size||'Size Preference'}</strong>
-            </div>
-            <div
-              class="custom-choice-grid custom-choice-grid--sizes"
-              data-custom-size-options
-            >
+          <div class="custom-field" data-custom-field="sizePref">
+            <div class="custom-field__head"><strong data-custom-copy="size">{c.size||'Size Preference'}</strong></div>
+            <div class="custom-choice-grid custom-choice-grid--sizes" data-custom-size-options>
               {view.sizes.map((option:any)=>(
-                <button
-                  type="button"
-                  class="custom-choice custom-choice--compact"
-                  data-custom-size-option={option.value}
-                  disabled
-                >
-                  <strong>{option.label}</strong>
-                </button>
+                <button type="button" class="custom-choice custom-choice--compact" data-custom-size-option={option.value} aria-pressed="false"><strong data-custom-option-label>{option.label}</strong></button>
               ))}
             </div>
           </div>
 
-          <div class="custom-field custom-fragrance">
-            <div class="custom-field__head">
-              <strong>{c.fragranceCollection||'Fragrance Collection'}</strong>
-              <small>{c.collectionResetHint||''}</small>
-            </div>
-
+          <div class="custom-field custom-fragrance" data-custom-field="scents">
+            <div class="custom-field__head"><strong data-custom-copy="fragranceCollection">{c.fragranceCollection||'Fragrance Collection'}</strong><small data-custom-copy="collectionResetHint">{c.collectionResetHint||''}</small></div>
             <div class="custom-series" data-custom-fragrance-series-options>
-              {view.fragranceSeries.map((series:any,index:number)=>(
-                <button
-                  type="button"
-                  class:list={['custom-series__button',index===0&&'is-active']}
-                  data-custom-fragrance-series={series.key}
-                  disabled
-                >
-                  {series.label}
-                </button>
+              {view.fragranceSeries.map((series:any)=>(
+                <button type="button" class:list={['custom-series__button',series.key===defaultSeries&&'is-active']} data-custom-fragrance-series={series.key} aria-pressed={series.key===defaultSeries?'true':'false'}><span data-custom-series-label>{series.label}</span></button>
               ))}
             </div>
 
             <div class="custom-fragrance-groups">
-              {view.fragranceSeries.map((series:any,seriesIndex:number)=>(
-                <section
-                  class:list={['custom-fragrance-group',seriesIndex===0&&'is-featured']}
-                  data-custom-fragrance-group={series.key}
-                >
-                  <div>
-                    <span>{series.label}</span>
-                    <small>{series.scents.length} {c.scents||'Scents'}</small>
-                  </div>
-
-                  <div
-                    class="custom-scents"
-                    data-custom-scent-options={series.key}
-                  >
+              {view.fragranceSeries.map((series:any)=>(
+                <section class:list={['custom-fragrance-group',series.key===defaultSeries&&'is-featured']} data-custom-fragrance-group={series.key} hidden={series.key!==defaultSeries}>
+                  <div><span data-custom-series-label>{series.label}</span><small><span data-custom-scent-count>{series.scents.length}</span> <span data-custom-copy="scents">{c.scents||'Scents'}</span></small></div>
+                  <div class="custom-scents" data-custom-scent-options={series.key}>
                     {series.scents.map((scent:any)=>(
-                      <button
-                        type="button"
-                        class="custom-scent"
-                        data-custom-scent-option={scent.id}
-                        disabled
-                      >
-                        <span aria-hidden="true">○</span>
-                        <strong>{scent.name}</strong>
-                      </button>
+                      <button type="button" class="custom-scent" data-custom-scent-option={scent.id} aria-pressed="false"><span aria-hidden="true">○</span><strong data-custom-scent-label>{scent.name}</strong></button>
                     ))}
                   </div>
                 </section>
               ))}
             </div>
-
-            <p class="custom-field__note">
-              {(c.scentsHint||'{count} selected').replace('{count}','0')}
-            </p>
+            <p class="custom-field__note"><span data-custom-scents-summary>{(c.scentsHint||'{count} selected').replace('{count}','0')}</span></p>
+            <p class="custom-field__error" data-custom-error="scents" hidden></p>
           </div>
 
-          <label class="custom-field">
-            <span class="custom-field__head">
-              <strong>{c.color||'Color preference'}</strong>
-              <small>{c.optional||'Optional'}</small>
-            </span>
-            <input
-              type="text"
-              placeholder={c.colorPlaceholder||''}
-              disabled
-              data-custom-color
-            />
+          <label class="custom-field" data-custom-field="color">
+            <span class="custom-field__head"><strong data-custom-copy="color">{c.color||'Color preference'}</strong><small data-custom-copy="optional">{c.optional||'Optional'}</small></span>
+            <input type="text" placeholder={c.colorPlaceholder||''} data-custom-color />
           </label>
         </section>
 
         <section class="custom-section" data-custom-section="packaging">
           <header class="custom-section__header">
-            <p class="custom-eyebrow">{c.sectionPackagingKicker||'03 / PACKAGING & BRANDING'}</p>
-            <h2>{c.sectionPackagingTitle||'Choose packaging and branding.'}</h2>
-            <p>{c.sectionPackagingBody||''}</p>
+            <p class="custom-eyebrow" data-custom-copy="sectionPackagingKicker">{c.sectionPackagingKicker||'03 / PACKAGING & BRANDING'}</p>
+            <h2 data-custom-copy="sectionPackagingTitle">{c.sectionPackagingTitle||'Choose packaging and branding.'}</h2>
+            <p data-custom-copy="sectionPackagingBody">{c.sectionPackagingBody||''}</p>
           </header>
 
-          <div class="custom-field">
-            <div class="custom-field__head">
-              <strong>{c.packaging||'Packaging'}</strong>
-            </div>
-            <div
-              class="custom-choice-grid custom-choice-grid--packaging"
-              data-custom-packaging-options
-            >
+          <div class="custom-field" data-custom-field="pack">
+            <div class="custom-field__head"><strong data-custom-copy="packaging">{c.packaging||'Packaging'}</strong></div>
+            <div class="custom-choice-grid custom-choice-grid--packaging" data-custom-packaging-options>
               {view.packages.map((option:any)=>(
-                <button
-                  type="button"
-                  class="custom-choice"
-                  data-custom-packaging-option={option.value}
-                  disabled
-                >
-                  <strong>{option.label}</strong>
-                  {option.body&&(<small>{option.body}</small>)}
-                </button>
+                <button type="button" class="custom-choice" data-custom-packaging-option={option.value} aria-pressed="false"><strong data-custom-option-label>{option.label}</strong>{option.body&&(<small data-custom-option-body>{option.body}</small>)}</button>
               ))}
             </div>
           </div>
 
-          <div class="custom-field">
-            <div class="custom-field__head">
-              <strong>{c.branding||'Branding'}</strong>
-            </div>
-            <div
-              class="custom-choice-grid custom-choice-grid--branding"
-              data-custom-branding-options
-            >
+          <div class="custom-field" data-custom-field="branding">
+            <div class="custom-field__head"><strong data-custom-copy="branding">{c.branding||'Branding'}</strong></div>
+            <div class="custom-choice-grid custom-choice-grid--branding" data-custom-branding-options>
               {view.brandingOptions.map((option:any)=>(
-                <button
-                  type="button"
-                  class="custom-choice custom-choice--compact"
-                  data-custom-branding-option={option.value}
-                  disabled
-                >
-                  <strong>{option.label}</strong>
-                </button>
+                <button type="button" class="custom-choice custom-choice--compact" data-custom-branding-option={option.value} aria-pressed="false"><strong data-custom-option-label>{option.label}</strong></button>
               ))}
             </div>
           </div>
 
-          <label class="custom-field">
-            <span class="custom-field__head">
-              <strong>{c.notes||'Project Notes'}</strong>
-              <small>{c.optional||'Optional'}</small>
-            </span>
-            <textarea
-              placeholder={c.notesPlaceholder||''}
-              disabled
-              data-custom-notes
-            ></textarea>
+          <label class="custom-field" data-custom-field="note">
+            <span class="custom-field__head"><strong data-custom-copy="notes">{c.notes||'Project Notes'}</strong><small data-custom-copy="optional">{c.optional||'Optional'}</small></span>
+            <textarea placeholder={c.notesPlaceholder||''} data-custom-notes></textarea>
           </label>
         </section>
       </fieldset>
     </div>
 
-    <aside class="custom-brief" data-custom-static-brief>
-      <p class="custom-eyebrow">{c.summaryKicker||'YOUR PROJECT'}</p>
-      <h2>{c.summaryTitle||'Project brief'}</h2>
-
+    <aside class="custom-brief" data-custom-runtime-brief>
+      <p class="custom-eyebrow" data-custom-copy="summaryKicker">{c.summaryKicker||'YOUR PROJECT'}</p>
+      <h2 data-custom-copy="summaryTitle">{c.summaryTitle||'Project brief'}</h2>
       <div class="custom-brief__rows">
         {summaryRows.map((row:any)=>(
-          <div>
-            <span>{row.label}</span>
-            <strong>{row.value}</strong>
-          </div>
+          <div><span data-custom-summary-label={row.key} data-custom-copy={row.copy}>{row.label}</span><strong data-custom-summary={row.key}>{c.notSelected||'Not selected'}</strong></div>
         ))}
       </div>
-
       <div class="custom-brief__quote">
-        <span>{c.customization||'CUSTOMIZATION'}</span>
-        <strong>{c.quotedAfterReview||'Quoted separately after review'}</strong>
-        <p>{c.summaryNote||''}</p>
+        <span data-custom-copy="customization">{c.customization||'CUSTOMIZATION'}</span>
+        <strong data-custom-copy="quotedAfterReview">{c.quotedAfterReview||'Quoted separately after review'}</strong>
+        <p data-custom-copy="summaryNote">{c.summaryNote||''}</p>
       </div>
-
-      <button
-        type="button"
-        class="custom-submit"
-        disabled
-        data-custom-static-add-inquiry
-      >
-        {c.addInquiry||'Add Custom Project to Inquiry'}
-      </button>
-
+      <button type="button" class="custom-submit" data-custom-add-inquiry><span data-custom-copy="addInquiry">{c.addInquiry||'Add Custom Project to Inquiry'}</span></button>
+      <div class="custom-runtime-status" data-custom-runtime-status aria-live="polite" hidden></div>
       <div class="custom-brief__links">
-        <a href={view.routes.collection}>
-          {c.exploreCollection||'Explore Collection'}
-        </a>
-        <a href={view.routes.inquiry}>
-          {c.reviewInquiry||'Review Inquiry'}
-        </a>
+        <a href={view.routes.collection}><span data-custom-copy="exploreCollection">{c.exploreCollection||'Explore Collection'}</span></a>
+        <a href={view.routes.inquiry}><span data-custom-copy="reviewInquiry">{c.reviewInquiry||'Review Inquiry'}</span></a>
       </div>
     </aside>
   </section>

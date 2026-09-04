@@ -506,3 +506,54 @@
     text-align:left;
   }
 }
+
+
+/* R4.6B — Custom Minimal Runtime */
+.custom-choice,
+.custom-series__button,
+.custom-scent,
+.custom-submit { cursor:pointer; }
+
+.custom-choice:hover,
+.custom-choice:focus-visible,
+.custom-series__button:hover,
+.custom-series__button:focus-visible,
+.custom-scent:hover,
+.custom-scent:focus-visible { border-color:rgba(24,21,18,.42); }
+
+.custom-choice.is-selected {
+  border-color:var(--home-ink);
+  background:var(--home-ink);
+  color:var(--home-surface);
+}
+.custom-choice.is-selected > span,
+.custom-choice.is-selected small { color:inherit;opacity:.72; }
+
+.custom-scent.is-selected {
+  border-color:var(--home-ink);
+  background:var(--home-ink);
+  color:var(--home-surface);
+}
+.custom-scent.is-selected span { color:inherit; }
+
+.custom-field__error { margin:0;color:#7c2f25;font-size:10px;line-height:1.5; }
+.custom-field.has-error .custom-input-wrap,
+.custom-field.has-error > input,
+.custom-field.has-error > select { border-color:rgba(124,47,37,.58); }
+.custom-field.has-error [data-custom-use-options],
+.custom-field.has-error .custom-scents { outline:1px solid rgba(124,47,37,.34);outline-offset:5px; }
+
+.custom-submit { opacity:1; }
+.custom-submit:hover,
+.custom-submit:focus-visible { transform:translateY(-1px); }
+
+.custom-runtime-status {
+  padding:11px 13px;
+  border:1px solid var(--home-line);
+  background:var(--home-canvas);
+  color:var(--home-muted);
+  font-size:11px;
+  line-height:1.5;
+}
+.custom-runtime-status[data-kind="warn"] { border-color:rgba(124,47,37,.34);color:#7c2f25; }
+[data-custom-fragrance-group][hidden] { display:none; }
