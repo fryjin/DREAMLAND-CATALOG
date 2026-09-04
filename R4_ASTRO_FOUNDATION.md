@@ -1219,3 +1219,121 @@ presentationOverrides.custom=astro-r4.6c
 ```
 
 R4.6C intentionally does not modify Service Worker Custom ownership or APP/RUNTIME cache cleanup. The Service Worker remains because Inquiry is still Legacy-owned; Custom cache detachment and Production payload hardening belong to R4.6D.
+
+
+## R4.6D — Custom Legacy Detachment / Production Payload Hardening
+
+Status: Production hardening stage.
+
+R4.6C moved Production `/custom/` to Astro. R4.6D closes the remaining
+indirect Legacy Custom document ownership path through the existing Service
+Worker while retaining that Service Worker for the still-Legacy Inquiry route
+family.
+
+### Exact Custom document ownership
+
+The Service Worker now treats only the canonical Custom navigation variants as
+Astro-owned documents:
+
+```text
+/custom
+/custom/
+/custom/index.html
+```
+
+The matcher uses exact pathname Set membership. It does not absorb
+`/inquiry/**`, which continues through the remaining Legacy navigation path.
+
+Existing APP/RUNTIME cache entries for the Custom document variants are purged
+on both Service Worker install and activate. Navigation ownership becomes:
+
+```text
+Home
+→ Catalog
+→ PDP
+→ Custom
+→ remaining Legacy Inquiry routes
+```
+
+Custom navigation uses:
+
+```text
+network-only
+cache=no-store
+offline.html only when the network is unavailable
+```
+
+This prevents a previously cached Legacy Custom document from being revived
+after the Astro cutover.
+
+The historical `dreamland-pwa-v129` cache/release version remains unchanged.
+R4.6D uses an explicit Custom-document purge rather than widening this stage
+into a global PWA release migration.
+
+The remaining Inquiry PWA shell is intentionally preserved. R4.6D does not
+perform broad APP_SHELL dependency cleanup because Inquiry, Contact, Review,
+Risk and Submission still depend on the Legacy application/PWA boundary.
+
+### Production Custom payload budgets
+
+R4.6D validates the final Production Custom document:
+
+```text
+Custom HTML raw                 <= 256 KiB
+customRuntimeState raw          <= 72 KiB
+Shared Custom runtime raw       <= 104 KiB
+Astro styles raw                <= 128 KiB
+HTML + JS + CSS gzip proxy      <= 128 KiB
+Critical HTML + JS + CSS raw    <= 384 KiB
+Executable route runtimes       = 1
+```
+
+The executable graph must contain only `/r4-custom-runtime.js`. The runtime
+state remains R4.6B-owned and continues to use:
+
+```text
+productManualLang
+productManualV2State
+```
+
+### Runtime boundary
+
+The shared Custom runtime remains detached from:
+
+```text
+Service Worker registration
+DreamlandPwa
+DreamlandRisk / hCaptcha
+DreamlandSubmission
+DreamlandDesktopExperience
+catalog-data.js
+startup-loader.js
+browser data fetches
+```
+
+DreamlandCustom and DreamlandInquiry remain the canonical behavior/state owners
+introduced in R4.6B.
+
+### R4.6 exit
+
+After R4.6D passes:
+
+```text
+R4.6A Astro Custom Static Presentation  CLOSED
+R4.6B Custom Minimal Runtime            CLOSED
+R4.6C Production Custom Cutover         CLOSED
+R4.6D Custom Legacy Detachment          CLOSED
+R4.6 Custom Migration                   CLOSED
+```
+
+Production ownership is then:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Astro PDP × 89
+/custom/                  → Astro Custom
+/inquiry/**               → Legacy MPA
+```
+
+The next migration target is R4.7 — Inquiry Presentation Migration.

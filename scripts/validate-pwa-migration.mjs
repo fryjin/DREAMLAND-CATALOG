@@ -596,6 +596,79 @@ try{
       );
     }
   }
+  for(const marker of [
+    'function isCustomNavigation(',
+    'function purgeLegacyCustomEntries(',
+    'function customNetworkOnly(',
+    'CUSTOM_NAVIGATION_PATHS',
+    'purgeLegacyCustomEntries()'
+  ]){
+    if(
+      !swSource.includes(
+        marker
+      )
+    ){
+      fail(
+        'R4.6D Service Worker Custom isolation is missing: '+
+        marker
+      );
+    }
+  }
+
+  const customNavigationContract=
+    /const\s+CUSTOM_NAVIGATION_PATHS\s*=\s*new\s+Set\s*\(\s*\[\s*['"]\/custom['"]\s*,\s*['"]\/custom\/['"]\s*,\s*['"]\/custom\/index\.html['"]\s*\]\s*\)/m;
+
+  if(
+    !customNavigationContract.test(
+      swSource
+    )
+  ){
+    fail(
+      'R4.6D Custom Service Worker ownership must match only /custom, /custom/ and /custom/index.html.'
+    );
+  }
+
+  const customMatcherStart=
+    swSource.search(
+      /function\s+isCustomNavigation\s*\(/
+    );
+
+  const customMatcherEnd=
+    swSource.search(
+      /async\s+function\s+purgeLegacyCustomEntries\s*\(/
+    );
+
+  if(
+    customMatcherStart<0||
+    customMatcherEnd<=customMatcherStart
+  ){
+    fail(
+      'R4.6D could not isolate isCustomNavigation().'
+    );
+  }else{
+    const customMatcher=
+      swSource.slice(
+        customMatcherStart,
+        customMatcherEnd
+      );
+
+    if(
+      !/CUSTOM_NAVIGATION_PATHS\s*\.\s*has\s*\(\s*url\.pathname\s*\)/
+        .test(
+          customMatcher
+        )||
+      customMatcher.includes(
+        'startsWith('
+      )||
+      customMatcher.includes(
+        'includes('
+      )
+    ){
+      fail(
+        'R4.6D Custom navigation must use exact Set membership.'
+      );
+    }
+  }
 }catch(error){
   fail(
     `sw.js PWA migration inspection failed: ${error.message}`

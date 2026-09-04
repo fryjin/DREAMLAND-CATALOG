@@ -10,10 +10,10 @@ const RELEASE_TAG =
   'b7-00b4j-r3-v129';
 
 /*
- * R4.3D / R4.4D / R4.5D document ownership boundary.
+ * R4.3D / R4.4D / R4.5D / R4.6D document ownership boundary.
  *
- * The registered Service Worker remains required by the Legacy Custom/Inquiry
- * routes. Production Home, Catalog and PDP documents are Astro-owned and must
+ * The registered Service Worker remains required by the Legacy Inquiry routes.
+ * Production Home, Catalog, PDP and Custom documents are Astro-owned and must
  * never be served from cached Legacy documents.
  */
 const HOME_NAVIGATION_PATHS=
@@ -30,6 +30,13 @@ const CATALOG_NAVIGATION_PATHS=
 
 const PDP_NAVIGATION_PATTERN=
   /^\/products\/[A-Z]{3}\d{3}(?:\/(?:index\.html)?)?$/i;
+
+const CUSTOM_NAVIGATION_PATHS=
+  new Set([
+    '/custom',
+    '/custom/',
+    '/custom/index.html'
+  ]);
 
 const RELEASE_ASSETS = [
   './startup-loader.css?release=b7-00b4j-r3-v129',
@@ -445,6 +452,84 @@ async function pdpNetworkOnly(
   }
 }
 
+function isCustomNavigation(
+  url
+){
+  return (
+    url.origin===
+      self.location.origin&&
+    CUSTOM_NAVIGATION_PATHS
+      .has(
+        url.pathname
+      )
+  );
+}
+
+async function purgeLegacyCustomEntries(){
+  for(const cacheName of [
+    APP_CACHE,
+    RUNTIME_CACHE
+  ]){
+    const cache=
+      await caches.open(
+        cacheName
+      );
+
+    const requests=
+      await cache.keys();
+
+    await Promise.all(
+      requests.map(
+        async request=>{
+          try{
+            const url=
+              new URL(
+                request.url
+              );
+
+            if(
+              isCustomNavigation(
+                url
+              )
+            ){
+              await cache.delete(
+                request
+              );
+            }
+          }catch(_){
+          }
+        }
+      )
+    );
+  }
+}
+
+async function customNetworkOnly(
+  request
+){
+  try{
+    return await fetch(
+      request,
+      {
+        cache:'no-store'
+      }
+    );
+  }catch{
+    return (
+      await caches.match(
+        './offline.html'
+      )
+    )||
+    new Response(
+      'Offline',
+      {
+        status:503,
+        statusText:'Offline'
+      }
+    );
+  }
+}
+
 self.addEventListener('install', event => {
   event.waitUntil(
     Promise.all([
@@ -458,7 +543,8 @@ self.addEventListener('install', event => {
       ),
       purgeLegacyHomeEntries(),
       purgeLegacyCatalogEntries(),
-      purgeLegacyPdpEntries()
+      purgeLegacyPdpEntries(),
+      purgeLegacyCustomEntries()
     ])
   );
 });
@@ -483,7 +569,8 @@ self.addEventListener('activate', event => {
         ()=>Promise.all([
           purgeLegacyHomeEntries(),
           purgeLegacyCatalogEntries(),
-          purgeLegacyPdpEntries()
+          purgeLegacyPdpEntries(),
+          purgeLegacyCustomEntries()
         ])
       )
       .then(
@@ -648,6 +735,19 @@ self.addEventListener('fetch', event => {
     ){
       event.respondWith(
         pdpNetworkOnly(
+          request
+        )
+      );
+      return;
+    }
+
+    if(
+      isCustomNavigation(
+        url
+      )
+    ){
+      event.respondWith(
+        customNetworkOnly(
           request
         )
       );

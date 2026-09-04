@@ -32,7 +32,7 @@ try{
   for(const [name,value] of [
     ['r4:production:custom','node scripts/r4-promote-astro-custom.mjs --write'],
     ['r4:production:custom:contract','node scripts/validate-r4-production-custom-cutover.mjs --source'],
-    ['r4:production:custom:validate','node scripts/validate-r4-production-custom-cutover.mjs --dist']
+    ['r4:production:custom:validate','node scripts/validate-r4-production-custom-cutover.mjs --dist && node scripts/validate-r4-production-custom-detachment.mjs --dist']
   ]) if(pkg.scripts?.[name]!==value)fail('package.json is missing '+name+'.');
   const validate=String(pkg.scripts?.validate||'');
   const runtime=validate.indexOf('npm run r4:astro:custom-runtime');
