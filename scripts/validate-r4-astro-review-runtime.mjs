@@ -725,18 +725,75 @@ try{
     );
   }
 
-  if(
-    !String(
+  const isolatedBuildSteps=
+    String(
       pkg.scripts
         ?.['r4:astro:build']||
       ''
-    ).endsWith(
-      'node scripts/r4-copy-astro-review-assets.mjs'
     )
+      .split(' && ')
+      .map(
+        step=>step.trim()
+      )
+      .filter(Boolean);
+
+  const reviewCopier=
+    'node scripts/r4-copy-astro-review-assets.mjs';
+
+  const successCopier=
+    'node scripts/r4-copy-astro-success-assets.mjs';
+
+  const reviewCopierIndex=
+    isolatedBuildSteps.indexOf(
+      reviewCopier
+    );
+
+  const successCopierIndex=
+    isolatedBuildSteps.indexOf(
+      successCopier
+    );
+
+  if(
+    reviewCopierIndex<0
   ){
     fail(
-      'R4.9B Review runtime copier must be the final isolated Astro build step.'
+      'R4.9B Review runtime copier is missing from the isolated Astro build.'
     );
+  }
+
+  if(
+    successCopierIndex<0
+  ){
+    if(
+      reviewCopierIndex!==
+        isolatedBuildSteps.length-1
+    ){
+      fail(
+        'R4.9B Review runtime copier must remain the final isolated Astro build step before an authorized successor route exists.'
+      );
+    }
+  }else{
+    if(
+      isolatedBuildSteps.filter(
+        step=>
+          step===reviewCopier
+      ).length!==1||
+      isolatedBuildSteps.filter(
+        step=>
+          step===successCopier
+      ).length!==1||
+      successCopierIndex<=
+        reviewCopierIndex||
+      successCopierIndex!==
+        isolatedBuildSteps.length-1||
+      pkg.scripts
+        ?.['r4:astro:success-runtime']!==
+        'node scripts/validate-r4-astro-success-runtime.mjs'
+    ){
+      fail(
+        'R4.9B only permits the exact R4.10B Review → Success isolated copier successor chain.'
+      );
+    }
   }
 
   const validate=

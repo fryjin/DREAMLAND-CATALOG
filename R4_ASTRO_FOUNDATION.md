@@ -2904,4 +2904,105 @@ R4.10B may activate only the Success-route browser responsibilities:
 canonical lastSubmission loading, hasLastSubmission redirect enforcement,
 localized live projection and the two Success actions. Production cutover
 remains deferred beyond R4.10B.
+## R4.10B — Success Runtime / hasLastSubmission Guard
+
+Status: isolated browser-runtime stage.
+
+R4.10A introduced the final conversion-route Astro presentation as an honest
+build-time Success shell. R4.10B activates only the browser responsibilities
+needed to turn that shell into a real post-submission confirmation page.
+
+The canonical handoff remains owned by the existing submission flow:
+
+```text
+successful Review submission
+→ DreamlandInquirySubmissionFlow.archive(record)
+→ local storage key dreamlandLastSubmissionV1
+→ clear submitted Inquiry / Contact / pending inquiry ID
+→ navigate /inquiry/success/
+```
+
+R4.10B does not create a second Success/session model. The Success runtime reads
+the canonical `dreamlandLastSubmissionV1` record through `DreamlandStorage.local`
+and evaluates the existing `DreamlandPageGuards` Success rule.
+
+The browser guard is:
+
+```text
+page=success
+guard=hasLastSubmission
+
+valid inquiryId/clientInquiryId
+→ render Success
+
+missing/invalid lastSubmission
+→ SUBMISSION_REQUIRED
+→ location.replace('/inquiry/')
+```
+
+The isolated Success route now serializes only configuration/localized copy:
+
+```text
+version=R4.10B
+languages=en,zh,ko
+storage.languageKey=productManualLang
+storage.lastSubmissionKey=dreamlandLastSubmissionV1
+routes.inquiry=/inquiry/
+routes.catalog=/products/
+routes.custom=/custom/
+guard=hasLastSubmission
+```
+
+It does **not** serialize a synthetic submission record. The server-built HTML
+still contains `—` for inquiry number, submitted date and amount. Browser
+runtime projection replaces those placeholders only after the canonical guard
+accepts the real lastSubmission.
+
+Live projection is intentionally narrow:
+
+```text
+inquiryId
+  = lastSubmission.inquiryId
+    || lastSubmission.clientInquiryId
+
+submittedAt
+  = localized calendar date from lastSubmission.submittedAt
+
+amountDisplay
+  = lastSubmission.amountDisplay
+    || lastSubmission.estimatedTotalDisplay
+```
+
+The runtime also activates the existing language selector and updates the shared
+Header/Footer plus Success copy for English, Chinese and Korean. The two Success
+actions remain normal route links to `/products/` and `/custom/`; no submission
+or network behavior is attached to them.
+
+The isolated runtime bundle contains only:
+
+```text
+DreamlandStorage
+DreamlandPageGuards
+DreamlandSuccessRuntime
+```
+
+It must not include Risk, Submission, InquirySubmissionFlow, PWA registration or
+Legacy Desktop Success ownership.
+
+Production `/inquiry/success/` remains Legacy MPA-owned in R4.10B. `sw.js`
+remains unchanged and still owns the final Legacy Success navigation/cache
+boundary. R4.10B adds no Production Success promotion.
+
+Validation:
+
+```text
+npm run r4:astro:build
+npm run r4:astro:success
+npm run r4:astro:success-runtime
+npm run check
+npm run build
+```
+
+R4.10C may perform Production Success cutover only after the R4.10A static and
+R4.10B runtime contracts pass full regression from a committed source state.
 

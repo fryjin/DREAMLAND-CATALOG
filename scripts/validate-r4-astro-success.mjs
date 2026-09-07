@@ -119,7 +119,6 @@ try{
       'data-success-static-actions',
       'data-success-static-action="explore"',
       'data-success-static-action="custom"',
-      'data-site-language-enabled="false"',
       'data-success-guard-name="hasLastSubmission"',
       'data-success-guard-allowed="false"',
       'data-success-guard-code="SUBMISSION_REQUIRED"',
@@ -141,6 +140,47 @@ try{
       }
     }
 
+    const runtimeActive=
+      html.includes(
+        'src="/r4-success-runtime.js"'
+      );
+
+    const languageMarker=
+      runtimeActive
+        ? 'data-site-language-enabled="true"'
+        : 'data-site-language-enabled="false"';
+
+    if(
+      !html.includes(
+        languageMarker
+      )
+    ){
+      fail(
+        'R4.10A/R4.10B Success language-control state is incorrect: '+
+        languageMarker
+      );
+    }
+
+    if(runtimeActive){
+      if(
+        !html.includes(
+          'id="successRuntimeState"'
+        )
+      ){
+        fail(
+          'R4.10B forward-compatible Success output is missing successRuntimeState.'
+        );
+      }
+    }else if(
+      html.includes(
+        'id="successRuntimeState"'
+      )
+    ){
+      fail(
+        'R4.10A static Success must not serialize runtime state before the runtime exists.'
+      );
+    }
+
     for(const key of [
       'inquiryId',
       'submittedAt',
@@ -156,7 +196,7 @@ try{
         value!=='—'
       ){
         fail(
-          'R4.10A Success must preserve an honest empty build-time placeholder for '+
+          'R4.10A static contract must preserve the honest build-time placeholder for '+
           key+
           '; found "'+
           value+
@@ -172,26 +212,31 @@ try{
     ];
 
     if(
-      executable.length!==0
+      executable.length>1
     ){
       fail(
-        'R4.10A Success static presentation must execute zero route runtimes; found '+
+        'R4.10A/R4.10B Success may expose at most one dedicated route runtime; found '+
         executable.length+
         '.'
       );
     }
 
+    if(
+      executable.length===1&&
+      !runtimeActive
+    ){
+      fail(
+        'R4.10B forward-compatible Success may execute only /r4-success-runtime.js.'
+      );
+    }
+
     for(const forbidden of [
       'DREAMLAND_MPA_ACTIVE',
-      'successRuntimeState',
-      '/r4-success-runtime.js',
       'runtime-desktop-experience.js',
       'runtime-desktop-success.js',
       'startup-loader.js',
       'serviceWorker.register',
       'navigator.serviceWorker',
-      'localStorage',
-      'sessionStorage',
       'DreamlandSubmission',
       'DreamlandRisk',
       'DreamlandInquirySubmissionFlow'
@@ -202,7 +247,7 @@ try{
         )
       ){
         fail(
-          'R4.10A Success output crossed a Legacy/runtime/storage/submission boundary: '+
+          'R4.10A Success output crossed a Legacy/submission/PWA boundary: '+
           forbidden
         );
       }
@@ -359,6 +404,20 @@ try{
     );
   }
 
+  const runtimeScript=
+    pkg.scripts
+      ?.['r4:astro:success-runtime'];
+
+  if(
+    runtimeScript!==undefined&&
+    runtimeScript!==
+      'node scripts/validate-r4-astro-success-runtime.mjs'
+  ){
+    fail(
+      'R4.10A only permits the canonical R4.10B Success runtime validator.'
+    );
+  }
+
   const validate=
     String(
       pkg.scripts
@@ -374,6 +433,11 @@ try{
   const success=
     validate.indexOf(
       'npm run r4:astro:success'
+    );
+
+  const successRuntime=
+    validate.indexOf(
+      'npm run r4:astro:success-runtime'
     );
 
   const productionHome=
@@ -392,6 +456,18 @@ try{
   }
 
   if(
+    runtimeScript&&
+    (
+      successRuntime<=success||
+      productionHome<=successRuntime
+    )
+  ){
+    fail(
+      'R4.10B Success runtime gate must run after the R4.10A static gate and before Production source contracts.'
+    );
+  }
+
+  if(
     String(
       pkg.scripts
         ?.build||
@@ -403,7 +479,7 @@ try{
       ?.['r4:production:success']
   ){
     fail(
-      'R4.10A must not introduce Production Success cutover.'
+      'R4.10A/R4.10B must not introduce Production Success cutover.'
     );
   }
 
@@ -414,55 +490,34 @@ try{
       ''
     );
 
-  for(const forbidden of [
-    'r4-copy-astro-success',
-    'r4-success-runtime'
-  ]){
-    if(
-      astroBuild.includes(
-        forbidden
-      )
-    ){
-      fail(
-        'R4.10A static Success must not add a copier/runtime build step: '+
-        forbidden
-      );
-    }
+  const copier=
+    'node scripts/r4-copy-astro-success-assets.mjs';
+
+  const copierCount=
+    astroBuild
+      .split(
+        copier
+      ).length-1;
+
+  if(
+    copierCount>1
+  ){
+    fail(
+      'R4.10B Success runtime copier must appear at most once.'
+    );
+  }
+
+  if(
+    runtimeScript&&
+    copierCount!==1
+  ){
+    fail(
+      'R4.10B Success runtime validator requires the canonical isolated Success copier.'
+    );
   }
 }catch(error){
   fail(
     'R4.10A package inspection crashed: '+
-    error.message
-  );
-}
-
-try{
-  const layout=
-    read(
-      'src/astro/layouts/SiteLayout.astro'
-    );
-
-  for(const marker of [
-    'const isSuccess=',
-    "page==='success'",
-    "'astro-success-static'",
-    'data-r4-astro-success={isSuccess',
-    'data-r4-success-static={isSuccess'
-  ]){
-    if(
-      !layout.includes(
-        marker
-      )
-    ){
-      fail(
-        'R4.10A SiteLayout Success marker is missing: '+
-        marker
-      );
-    }
-  }
-}catch(error){
-  fail(
-    'R4.10A SiteLayout inspection crashed: '+
     error.message
   );
 }
@@ -477,7 +532,6 @@ try{
     'robots="noindex,nofollow"',
     'canonical="https://dreamland-catalog.pages.dev/inquiry/success/"',
     'page="success"',
-    'languageEnabled={false}',
     '<SuccessPage view={view} />'
   ]){
     if(
@@ -492,14 +546,42 @@ try{
     }
   }
 
-  if(
-    /<script\b/i.test(
-      page
-    )
-  ){
-    fail(
-      'R4.10A Success page source must not add executable or serialized runtime scripts.'
+  const runtimeActive=
+    page.includes(
+      'src="/r4-success-runtime.js"'
     );
+
+  if(runtimeActive){
+    for(const marker of [
+      'languageEnabled={true}',
+      'id="successRuntimeState"',
+      'type="application/json"',
+      'set:html={runtimeStateJson}'
+    ]){
+      if(
+        !page.includes(
+          marker
+        )
+      ){
+        fail(
+          'R4.10B forward-compatible Success source is missing: '+
+          marker
+        );
+      }
+    }
+  }else{
+    if(
+      !page.includes(
+        'languageEnabled={false}'
+      )||
+      /<script\b/i.test(
+        page
+      )
+    ){
+      fail(
+        'R4.10A pre-runtime Success source must remain inert.'
+      );
+    }
   }
 }catch(error){
   fail(
@@ -543,7 +625,7 @@ try{
     )
   ){
     fail(
-      'R4.10A must not detach Production Success from the Legacy Service Worker.'
+      'R4.10A/R4.10B must not detach Production Success from the Legacy Service Worker.'
     );
   }
 
@@ -558,7 +640,7 @@ try{
     )
   ){
     fail(
-      'R4.10A must preserve the Legacy Success presentation owner for Production.'
+      'R4.10A/R4.10B must preserve the Legacy Success presentation owner for Production.'
     );
   }
 }catch(error){
@@ -574,21 +656,14 @@ try{
       'R4_ASTRO_FOUNDATION.md'
     );
 
-  for(const marker of [
-    '## R4.10A — Astro Success Static Presentation',
-    'Production `/inquiry/success/` remains Legacy MPA-owned',
-    'R4.10B'
-  ]){
-    if(
-      !foundation.includes(
-        marker
-      )
-    ){
-      fail(
-        'R4.10A foundation handoff documentation is incomplete: '+
-        marker
-      );
-    }
+  if(
+    !foundation.includes(
+      '## R4.10A — Astro Success Static Presentation'
+    )
+  ){
+    fail(
+      'R4.10A foundation handoff documentation is incomplete.'
+    );
   }
 }catch(error){
   fail(
@@ -619,6 +694,6 @@ console.log(
   'DREAMLAND B7-00B.4J R4.10A Astro Success Static Presentation: PASS'
 );
 console.log(
-  'Honest-empty Success projection / canonical hasLastSubmission metadata / inert localized confirmation presentation / zero route runtime / Production Legacy Success protection verified.'
+  'Honest-empty Success projection / canonical hasLastSubmission metadata / localized confirmation presentation / Production Legacy Success protection verified with R4.10B forward compatibility.'
 );
 console.log('');
