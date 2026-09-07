@@ -2771,3 +2771,70 @@ R4.9D is considered CLOSED only after its patch, stage validator, full
 verification all succeed. The broader R4.9 Review migration remains OPEN until
 Review Legacy/PWA detachment and payload hardening are resolved by a later
 committed stage.
+
+## R4.9E — Review Legacy/PWA Detachment / Production Payload Hardening
+
+Status: Production hardening stage.
+
+R4.9D moved Production `/inquiry/review/` to the validated Astro Review, but
+the registered Legacy Service Worker still allowed that document to fall through
+to the generic `networkFirst` navigation path. R4.9E closes that stale-document
+ownership path without migrating Success.
+
+Exact Review document ownership is now:
+
+```text
+/inquiry/review
+/inquiry/review/
+/inquiry/review/index.html
+```
+
+These pathnames use exact Set membership. Review navigation is intercepted after
+Contact and before the remaining Legacy navigation branch, fetched network-only
+with `cache:no-store`, and falls back only to `offline.html` when the network
+is unavailable. Historical Review document entries are purged from both
+`APP_CACHE` and `RUNTIME_CACHE` during install and activate.
+
+The Service Worker cache/release identifiers remain unchanged:
+
+```text
+dreamland-pwa-v129
+b7-00b4j-r3-v129
+```
+
+Success remains Legacy-owned. The Legacy DesktopExperience mounts the historical
+Review and Success presentation modules as one conversion-family shell, so R4.9E
+intentionally does not prune shared Review/Success CSS/runtime assets from the
+Legacy application shell. This stage detaches Review document/cache ownership,
+not the still-required Success shell.
+
+The committed R4.9D Production Review baseline was measured before hardening:
+
+```text
+HTML raw                 91.4 KiB
+reviewRuntimeState raw   82.0 KiB
+r4-review-runtime.js    147.8 KiB
+Astro styles raw          19.1 KiB / 2 files
+HTML+JS+CSS gzip proxy    61.6 KiB
+Critical raw             258.3 KiB
+```
+
+R4.9E enforces budgets:
+
+```text
+HTML raw                 <= 160 KiB
+reviewRuntimeState raw   <= 128 KiB
+Review runtime raw       <= 192 KiB
+Astro styles raw         <= 96 KiB
+HTML+JS+CSS gzip proxy   <= 96 KiB
+Critical raw             <= 384 KiB
+```
+
+It also requires exactly one executable Review route runtime
+(`/r4-review-runtime.js`), preserves the R4.9C shared state / guard / privacy /
+Risk / Submission boundary, keeps the isolated PWA auto-registration suppression,
+and verifies that Production Success is still the Legacy MPA.
+
+After R4.9E passes full check/build regression and remote-HEAD verification, the
+R4.9 Review migration is closed. The next route migration target is R4.10A —
+Astro Success Static Presentation.

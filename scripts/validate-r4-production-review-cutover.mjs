@@ -133,9 +133,17 @@ try{
   const pkg=json('package.json');
   for(const [name,value] of [
     ['r4:production:review','node scripts/r4-promote-astro-review.mjs --write'],
-    ['r4:production:review:contract','node scripts/validate-r4-production-review-cutover.mjs --source'],
-    ['r4:production:review:validate','node scripts/validate-r4-production-review-cutover.mjs --dist']
+    ['r4:production:review:contract','node scripts/validate-r4-production-review-cutover.mjs --source']
   ]) if(pkg.scripts?.[name]!==value) fail('package.json is missing canonical '+name+'.');
+
+  const reviewValidate=String(pkg.scripts?.['r4:production:review:validate']||'');
+  const acceptedReviewValidators=[
+    'node scripts/validate-r4-production-review-cutover.mjs --dist',
+    'node scripts/validate-r4-production-review-cutover.mjs --dist && node scripts/validate-r4-production-review-detachment.mjs --dist'
+  ];
+  if(!acceptedReviewValidators.includes(reviewValidate)){
+    fail('package.json Production Review validation is neither the R4.9D cutover gate nor the authorized R4.9E hardened chain.');
+  }
 
   if(!ordered(pkg.scripts?.build,[
     'npm run r4:astro:build',

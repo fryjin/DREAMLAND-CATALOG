@@ -10,12 +10,12 @@ const RELEASE_TAG =
   'b7-00b4j-r3-v129';
 
 /*
- * R4.3D / R4.4D / R4.5D / R4.6D / R4.7D / R4.8D document ownership boundary.
+ * R4.3D / R4.4D / R4.5D / R4.6D / R4.7D / R4.8D / R4.9E document ownership boundary.
  *
- * The registered Service Worker remains required by the Legacy Review/Success
- * conversion routes. Production Home, Catalog, PDP, Custom, Inquiry selection
- * and Contact documents are Astro-owned and must never be served from cached
- * Legacy documents.
+ * The registered Service Worker remains required by the Legacy Success
+ * conversion route. Production Home, Catalog, PDP, Custom, Inquiry selection,
+ * Contact and Review documents are Astro-owned and must never be served from
+ * cached Legacy documents.
  */
 const HOME_NAVIGATION_PATHS=
   new Set([
@@ -59,6 +59,17 @@ const CONTACT_NAVIGATION_PATHS=
     '/inquiry/contact',
     '/inquiry/contact/',
     '/inquiry/contact/index.html'
+  ]);
+
+/*
+ * R4.9E detaches only the Astro Review document. Success remains in the
+ * Legacy conversion/PWA boundary until its own migration stage.
+ */
+const REVIEW_NAVIGATION_PATHS=
+  new Set([
+    '/inquiry/review',
+    '/inquiry/review/',
+    '/inquiry/review/index.html'
   ]);
 
 const RELEASE_ASSETS = [
@@ -711,6 +722,84 @@ async function contactNetworkOnly(
   }
 }
 
+function isReviewNavigation(
+  url
+){
+  return (
+    url.origin===
+      self.location.origin&&
+    REVIEW_NAVIGATION_PATHS
+      .has(
+        url.pathname
+      )
+  );
+}
+
+async function purgeLegacyReviewEntries(){
+  for(const cacheName of [
+    APP_CACHE,
+    RUNTIME_CACHE
+  ]){
+    const cache=
+      await caches.open(
+        cacheName
+      );
+
+    const requests=
+      await cache.keys();
+
+    await Promise.all(
+      requests.map(
+        async request=>{
+          try{
+            const url=
+              new URL(
+                request.url
+              );
+
+            if(
+              isReviewNavigation(
+                url
+              )
+            ){
+              await cache.delete(
+                request
+              );
+            }
+          }catch(_){
+          }
+        }
+      )
+    );
+  }
+}
+
+async function reviewNetworkOnly(
+  request
+){
+  try{
+    return await fetch(
+      request,
+      {
+        cache:'no-store'
+      }
+    );
+  }catch{
+    return (
+      await caches.match(
+        './offline.html'
+      )
+    )||
+    new Response(
+      'Offline',
+      {
+        status:503,
+        statusText:'Offline'
+      }
+    );
+  }
+}
+
 self.addEventListener('install', event => {
   event.waitUntil(
     Promise.all([
@@ -727,7 +816,8 @@ self.addEventListener('install', event => {
       purgeLegacyPdpEntries(),
       purgeLegacyCustomEntries(),
       purgeLegacyInquiryEntries(),
-      purgeLegacyContactEntries()
+      purgeLegacyContactEntries(),
+      purgeLegacyReviewEntries()
     ])
   );
 });
@@ -755,7 +845,8 @@ self.addEventListener('activate', event => {
           purgeLegacyPdpEntries(),
           purgeLegacyCustomEntries(),
           purgeLegacyInquiryEntries(),
-          purgeLegacyContactEntries()
+          purgeLegacyContactEntries(),
+          purgeLegacyReviewEntries()
         ])
       )
       .then(
@@ -959,6 +1050,19 @@ self.addEventListener('fetch', event => {
     ){
       event.respondWith(
         contactNetworkOnly(
+          request
+        )
+      );
+      return;
+    }
+
+    if(
+      isReviewNavigation(
+        url
+      )
+    ){
+      event.respondWith(
+        reviewNetworkOnly(
           request
         )
       );

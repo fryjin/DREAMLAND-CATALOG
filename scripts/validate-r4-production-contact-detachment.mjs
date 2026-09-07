@@ -198,11 +198,22 @@ function validateContactSw(
     }
   }
 
+  /*
+   * R4.8D owns only Contact. R4.9E may add its own exact Review matcher after
+   * Contact, so isolate the historical Contact path set from successor stages.
+   */
+  const contactPathsEnd=
+    source.includes(
+      'const REVIEW_NAVIGATION_PATHS='
+    )
+      ? 'const REVIEW_NAVIGATION_PATHS='
+      : 'const RELEASE_ASSETS';
+
   const pathsBlock=
     blockBetween(
       source,
       'const CONTACT_NAVIGATION_PATHS=',
-      'const RELEASE_ASSETS'
+      contactPathsEnd
     );
 
   const contactPaths=[
