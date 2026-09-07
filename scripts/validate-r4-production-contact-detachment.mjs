@@ -1271,7 +1271,6 @@ if(DIST_MODE){
     }
 
     for(const relative of [
-      'inquiry/review/index.html',
       'inquiry/success/index.html'
     ]){
       const file=

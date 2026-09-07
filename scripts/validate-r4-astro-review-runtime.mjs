@@ -778,10 +778,12 @@ try{
       ''
     ).includes(
       'r4:production:review'
-    )
+    )&&
+    pkg.scripts?.['r4:production:review']!==
+      'node scripts/r4-promote-astro-review.mjs --write'
   ){
     fail(
-      'R4.9B must not cut over Production Review.'
+      'R4.9B only permits the canonical R4.9D Production Review cutover.'
     );
   }
 }catch(error){

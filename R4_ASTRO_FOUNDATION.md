@@ -2701,3 +2701,73 @@ Production remains:
 
 R4.9D may perform Production Review cutover only after this isolated submission
 boundary passes check/build regression.
+
+## R4.9D — Production Review Cutover
+
+Status: Production migration stage.
+
+R4.9D promotes the already-validated R4.9C Astro Review artifact into the
+Production `/inquiry/review/` route. It does not redesign Review state, Risk,
+hCaptcha, submission payloads, or the submission flow.
+
+Production ownership after this cutover is:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/    → Astro PDP × 89
+/custom/                  → Astro Custom
+/inquiry/                 → Astro Inquiry
+/inquiry/contact/         → Astro Contact
+/inquiry/review/          → Astro Review
+/inquiry/success/         → Legacy MPA
+```
+
+The Production build now performs the Review promotion after Contact and before
+final Production validation. `scripts/r4-promote-astro-review.mjs` copies only
+the isolated Review document, its R4.9C canonical runtime bundle, and directly
+referenced Astro assets. It snapshots all previously migrated route documents,
+all 89 PDP documents, Success, existing route runtimes and `sw.js`; any
+unexpected mutation fails the promotion.
+
+The Production ownership manifest records:
+
+```text
+reviewOwner=astro
+reviewCutover=B7-00B.4J-R4.9D
+presentationOverrides.review=astro-r4.9d
+```
+
+R4.9D preserves the R4.9C browser contract:
+
+```text
+shared Inquiry + Contact state
+→ hasValidContact guard
+→ privacy consent
+→ canonical SubmissionPayload
+→ canonical Risk / adaptive hCaptcha
+→ canonical InquirySubmissionFlow
+→ successful submit only
+→ /inquiry/success/
+```
+
+Historical R4.3C-R4.8D Production validators are forward-compatible only for the
+now-authorized Review ownership change. Their former combined Review+Success
+Legacy dist gate is narrowed to Success only; all prior route, payload and PWA
+invariants remain active. R4.9A/B/C likewise permit Production Review only when
+the exact canonical R4.9D promotion script is installed.
+
+R4.9D intentionally does **not** modify `sw.js`. The Service Worker still
+contains the historical Review/Success Legacy navigation/cache ownership and is
+protected byte-for-byte during this stage. Review exact-route Service Worker
+detachment, stale-cache cleanup and payload hardening remain a separate
+successor stage.
+
+`/inquiry/success/` remains Legacy-owned and is protected by the R4.9D
+Production validator. No Success Astro page or Production promotion is added.
+
+R4.9D is considered CLOSED only after its patch, stage validator, full
+`npm run check`, full `npm run build`, commit, push and remote committed-HEAD
+verification all succeed. The broader R4.9 Review migration remains OPEN until
+Review Legacy/PWA detachment and payload hardening are resolved by a later
+committed stage.

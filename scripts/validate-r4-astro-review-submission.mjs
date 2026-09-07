@@ -101,7 +101,11 @@ try{
   const b=validate.indexOf('npm run r4:astro:review-submission');
   const c=validate.indexOf('npm run r4:production:home:contract');
   if(a<0||b<=a||c<=b) fail('R4.9C submission gate ordering is incorrect.');
-  if(String(pkg.scripts?.build||'').includes('r4:production:review')) fail('R4.9C must not cut over Production Review.');
+  if(
+  String(pkg.scripts?.build||'').includes('r4:production:review')&&
+  pkg.scripts?.['r4:production:review']!==
+    'node scripts/r4-promote-astro-review.mjs --write'
+) fail('R4.9C only permits the canonical R4.9D Production Review cutover.');
 }catch(e){fail('R4.9C source/package validation crashed: '+e.message);}
 
 if(errors.length){
