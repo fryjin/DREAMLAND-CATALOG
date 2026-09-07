@@ -467,20 +467,45 @@ try{
     );
   }
 
-  if(
+  const CANONICAL_R410C_SUCCESS_PROMOTION=
+    'node scripts/r4-promote-astro-success.mjs --write';
+
+  const productionSuccessScript=
+    pkg.scripts
+      ?.['r4:production:success'];
+
+  const productionSuccessInBuild=
     String(
       pkg.scripts
         ?.build||
       ''
     ).includes(
-      'r4:production:success'
-    )||
-    pkg.scripts
-      ?.['r4:production:success']
-  ){
-    fail(
-      'R4.10A/R4.10B must not introduce Production Success cutover.'
+      'npm run r4:production:success'
     );
+
+  if(
+    productionSuccessScript!==undefined||
+    productionSuccessInBuild
+  ){
+    if(
+      productionSuccessScript!==
+        CANONICAL_R410C_SUCCESS_PROMOTION||
+      !productionSuccessInBuild||
+      pkg.scripts
+        ?.['r4:production:success:contract']!==
+        'node scripts/validate-r4-production-success-cutover.mjs --source'||
+      ![
+        'node scripts/validate-r4-production-success-cutover.mjs --dist',
+        'node scripts/validate-r4-production-success-cutover.mjs --dist && node scripts/validate-r4-production-success-detachment.mjs --dist'
+      ].includes(
+        pkg.scripts
+          ?.['r4:production:success:validate']
+      )
+    ){
+      fail(
+        'R4.10A/R4.10B only permit the exact canonical R4.10C Production Success cutover.'
+      );
+    }
   }
 
   const astroBuild=

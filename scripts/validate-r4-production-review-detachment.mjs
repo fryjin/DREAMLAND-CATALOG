@@ -343,8 +343,45 @@ try{
     fail('R4.9E Review detachment source gate must run after the R4.9D cutover contract.');
   }
 
-  if(String(pkg.scripts?.build||'').includes('r4:production:success')||pkg.scripts?.['r4:production:success']){
-    fail('R4.9E must not introduce Production Success migration.');
+  const CANONICAL_R410C_SUCCESS_PROMOTION=
+    'node scripts/r4-promote-astro-success.mjs --write';
+
+  const productionSuccessScript=
+    pkg.scripts
+      ?.['r4:production:success'];
+
+  const productionSuccessInBuild=
+    String(
+      pkg.scripts
+        ?.build||
+      ''
+    ).includes(
+      'npm run r4:production:success'
+    );
+
+  if(
+    productionSuccessScript!==undefined||
+    productionSuccessInBuild
+  ){
+    if(
+      productionSuccessScript!==
+        CANONICAL_R410C_SUCCESS_PROMOTION||
+      !productionSuccessInBuild||
+      pkg.scripts
+        ?.['r4:production:success:contract']!==
+        'node scripts/validate-r4-production-success-cutover.mjs --source'||
+      ![
+        'node scripts/validate-r4-production-success-cutover.mjs --dist',
+        'node scripts/validate-r4-production-success-cutover.mjs --dist && node scripts/validate-r4-production-success-detachment.mjs --dist'
+      ].includes(
+        pkg.scripts
+          ?.['r4:production:success:validate']
+      )
+    ){
+      fail(
+        'R4.9E only permits the exact canonical R4.10C Production Success successor.'
+      );
+    }
   }
 }catch(error){
   fail('R4.9E package inspection failed: '+error.message);
@@ -510,7 +547,12 @@ if(DIST_MODE){
         success.includes('data-r4-astro-success="true"')||
         success.includes('src="/r4-success-runtime.js"')
       ){
-        fail('R4.9E must preserve Legacy Success ownership.');
+        if(
+        json('package.json').scripts?.['r4:production:success']!==
+          'node scripts/r4-promote-astro-success.mjs --write'
+      ){
+        fail('R4.9E must preserve Legacy Success ownership before the authorized R4.10C successor.');
+      }
       }
     }
 

@@ -3005,4 +3005,71 @@ npm run build
 
 R4.10C may perform Production Success cutover only after the R4.10A static and
 R4.10B runtime contracts pass full regression from a committed source state.
+## R4.10C — Production Success Cutover
+
+Status: Production migration stage.
+
+R4.10A created the isolated Success presentation and R4.10B activated the
+canonical `dreamlandLastSubmissionV1` + `hasLastSubmission` browser runtime.
+R4.10C promotes that already-validated artifact into Production without changing
+its state model, copy projection, language handling or actions.
+
+Production ownership after R4.10C:
+
+```text
+/                         → Astro Home
+/products/                → Astro Catalog
+/products/{productId}/  → Astro PDP × 89
+/custom/                  → Astro Custom
+/inquiry/                 → Astro Inquiry
+/inquiry/contact/         → Astro Contact
+/inquiry/review/          → Astro Review
+/inquiry/success/         → Astro Success
+```
+
+The build promotes Success after Review and before final Production validators.
+The Production Success HTML and `/r4-success-runtime.js` must be byte-identical
+to the isolated R4.10B artifact.
+
+R4.10C preserves:
+
+```text
+dreamlandLastSubmissionV1
+→ hasLastSubmission
+→ inquiryId/clientInquiryId
+→ submittedAt
+→ estimatedTotalDisplay
+→ EN / ZH / KO
+→ /products/ and /custom/ Success actions
+```
+
+Historical Production validators that previously enforced Legacy Success are
+forward-compatible only when the exact canonical R4.10C promotion script is
+installed. All other historical route, payload and PWA invariants remain active.
+
+R4.10C does **not** detach Success from the registered Service Worker. It also
+does not delete Legacy Success presentation/runtime assets. Those concerns remain
+isolated in R4.10D.
+
+R4.10D — Success Legacy/PWA Detachment + Production Payload Hardening is the
+next architecture stage.
+
+## Post-architecture visual restoration queue
+
+The architecture migration has overwritten parts of the previously approved
+visual presentation. A dedicated visual restoration stage is now formally
+queued after architecture freeze:
+
+```text
+R4.11 — Visual Restoration / Develop Parity
+reference branch: develop
+reference commit: a6039e52900d966b0f3110da8458a393434127d8
+scope: PC + Mobile
+```
+
+`develop@a6039e52900d966b0f3110da8458a393434127d8` is a visual reference, not an architecture source.
+The restoration must retain the post-refactor Astro/domain/runtime architecture
+and restore the approved rendered presentation on top of it.
+
+Detailed plan: `R4_VISUAL_RESTORATION_PLAN.md`.
 

@@ -160,8 +160,45 @@ try{
     'npm run r4:production:review:contract'
   ])) fail('R4.9D source contract must run after R4.9C and the completed Contact detachment source gate.');
 
-  if(String(pkg.scripts?.build||'').includes('r4:production:success')||pkg.scripts?.['r4:production:success']){
-    fail('R4.9D must not introduce Production Success migration.');
+  const CANONICAL_R410C_SUCCESS_PROMOTION=
+    'node scripts/r4-promote-astro-success.mjs --write';
+
+  const productionSuccessScript=
+    pkg.scripts
+      ?.['r4:production:success'];
+
+  const productionSuccessInBuild=
+    String(
+      pkg.scripts
+        ?.build||
+      ''
+    ).includes(
+      'npm run r4:production:success'
+    );
+
+  if(
+    productionSuccessScript!==undefined||
+    productionSuccessInBuild
+  ){
+    if(
+      productionSuccessScript!==
+        CANONICAL_R410C_SUCCESS_PROMOTION||
+      !productionSuccessInBuild||
+      pkg.scripts
+        ?.['r4:production:success:contract']!==
+        'node scripts/validate-r4-production-success-cutover.mjs --source'||
+      ![
+        'node scripts/validate-r4-production-success-cutover.mjs --dist',
+        'node scripts/validate-r4-production-success-cutover.mjs --dist && node scripts/validate-r4-production-success-detachment.mjs --dist'
+      ].includes(
+        pkg.scripts
+          ?.['r4:production:success:validate']
+      )
+    ){
+      fail(
+        'R4.9D only permits the exact canonical R4.10C Production Success successor.'
+      );
+    }
   }
 }catch(error){fail('R4.9D package inspection failed: '+error.message);}
 
@@ -226,11 +263,33 @@ if(DIST_MODE){
   }
 
   const success=expectFile(distRoot,'inquiry/success/index.html');
-  if(success&&(
-    !success.includes('window.DREAMLAND_MPA_ACTIVE=true;')||
-    success.includes('data-r4-astro-success="true"')||
-    success.includes('src="/r4-success-runtime.js"')
-  )) fail('Production Success must remain Legacy MPA in R4.9D.');
+  const successCutoverAuthorized=
+    json('package.json').scripts?.['r4:production:success']===
+      'node scripts/r4-promote-astro-success.mjs --write';
+
+  if(
+    !successCutoverAuthorized&&
+    success&&
+    (
+      !success.includes('window.DREAMLAND_MPA_ACTIVE=true;')||
+      success.includes('data-r4-astro-success="true"')||
+      success.includes('src="/r4-success-runtime.js"')
+    )
+  ){
+    fail('Production Success must remain Legacy MPA before the authorized R4.10C successor.');
+  }
+
+  if(
+    successCutoverAuthorized&&
+    success&&
+    (
+      !success.includes('data-r4-astro-success="true"')||
+      !success.includes('src="/r4-success-runtime.js"')||
+      success.includes('DREAMLAND_MPA_ACTIVE')
+    )
+  ){
+    fail('Authorized R4.10C Production Success ownership is incomplete.');
+  }
 
   const sourceSw=path.join(ROOT,'sw.js');
   const distSw=path.join(distRoot,'sw.js');

@@ -613,7 +613,12 @@ if(DIST_MODE){
     }
 
     for(const relative of [
-      'inquiry/success/index.html'
+      ...(
+        json('package.json').scripts?.['r4:production:success']===
+          'node scripts/r4-promote-astro-success.mjs --write'
+          ? []
+          : ['inquiry/success/index.html']
+      )
     ]){
       const route=
         path.join(
