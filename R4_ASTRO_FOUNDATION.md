@@ -2838,3 +2838,70 @@ and verifies that Production Success is still the Legacy MPA.
 After R4.9E passes full check/build regression and remote-HEAD verification, the
 R4.9 Review migration is closed. The next route migration target is R4.10A —
 Astro Success Static Presentation.
+
+## R4.10A — Astro Success Static Presentation
+
+Status: isolated presentation stage.
+
+R4.9E closed the Review migration. R4.10A starts the final conversion-route
+migration by introducing an isolated Astro candidate for
+`/inquiry/success/` without changing Production ownership.
+
+R4.10A reuses the existing canonical route contract:
+
+```text
+/inquiry/review/   guard=hasValidContact
+/inquiry/success/  public=false
+                   guard=hasLastSubmission
+```
+
+The build-time Astro Success has no browser lastSubmission by design. Its static
+view therefore records the canonical guard result honestly:
+
+```text
+guard.name=hasLastSubmission
+guard.allowed=false
+guard.code=SUBMISSION_REQUIRED
+guard.target=/inquiry/
+```
+
+The static confirmation presentation uses the existing localized
+`inquiryFlow` Success copy and the current Legacy Success information
+architecture:
+
+```text
+success acknowledgement
+→ inquiry number
+→ submitted date
+→ what happens next
+→ estimated product amount
+→ status
+→ continue exploring / start a new inquiry
+```
+
+No synthetic inquiry number, submitted date or amount is emitted at build time.
+Those fields render as `—` until a later browser-runtime stage reads the
+canonical lastSubmission.
+
+R4.10A adds no Success runtime, no serialized Success runtime state, no storage
+access, no submission behavior and no Service Worker change. The language
+control remains present but disabled in the isolated static presentation.
+
+Production `/inquiry/success/` remains Legacy MPA-owned. `sw.js`, the Legacy
+Desktop Success presentation and all R4.9 Review ownership/hardening remain
+unchanged.
+
+R4.10A is validated by:
+
+```text
+npm run r4:astro:build
+npm run r4:astro:success
+npm run check
+npm run build
+```
+
+R4.10B may activate only the Success-route browser responsibilities:
+canonical lastSubmission loading, hasLastSubmission redirect enforcement,
+localized live projection and the two Success actions. Production cutover
+remains deferred beyond R4.10B.
+
