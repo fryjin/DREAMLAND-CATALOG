@@ -72,6 +72,18 @@ const REVIEW_NAVIGATION_PATHS=
     '/inquiry/review/index.html'
   ]);
 
+/*
+ * R4.10D detaches the final conversion document. All primary conversion
+ * documents are now Astro-owned; an older registered Service Worker may still
+ * exist in clients, but it may not revive cached Success documents.
+ */
+const SUCCESS_NAVIGATION_PATHS=
+  new Set([
+    '/inquiry/success',
+    '/inquiry/success/',
+    '/inquiry/success/index.html'
+  ]);
+
 const RELEASE_ASSETS = [
   './startup-loader.css?release=b7-00b4j-r3-v129',
   './startup-loader.js?release=b7-00b4j-r3-v129',
@@ -800,6 +812,84 @@ async function reviewNetworkOnly(
   }
 }
 
+function isSuccessNavigation(
+  url
+){
+  return (
+    url.origin===
+      self.location.origin&&
+    SUCCESS_NAVIGATION_PATHS
+      .has(
+        url.pathname
+      )
+  );
+}
+
+async function purgeLegacySuccessEntries(){
+  for(const cacheName of [
+    APP_CACHE,
+    RUNTIME_CACHE
+  ]){
+    const cache=
+      await caches.open(
+        cacheName
+      );
+
+    const requests=
+      await cache.keys();
+
+    await Promise.all(
+      requests.map(
+        async request=>{
+          try{
+            const url=
+              new URL(
+                request.url
+              );
+
+            if(
+              isSuccessNavigation(
+                url
+              )
+            ){
+              await cache.delete(
+                request
+              );
+            }
+          }catch(_){
+          }
+        }
+      )
+    );
+  }
+}
+
+async function successNetworkOnly(
+  request
+){
+  try{
+    return await fetch(
+      request,
+      {
+        cache:'no-store'
+      }
+    );
+  }catch{
+    return (
+      await caches.match(
+        './offline.html'
+      )
+    )||
+    new Response(
+      'Offline',
+      {
+        status:503,
+        statusText:'Offline'
+      }
+    );
+  }
+}
+
 self.addEventListener('install', event => {
   event.waitUntil(
     Promise.all([
@@ -817,7 +907,8 @@ self.addEventListener('install', event => {
       purgeLegacyCustomEntries(),
       purgeLegacyInquiryEntries(),
       purgeLegacyContactEntries(),
-      purgeLegacyReviewEntries()
+      purgeLegacyReviewEntries(),
+      purgeLegacySuccessEntries()
     ])
   );
 });
@@ -846,7 +937,8 @@ self.addEventListener('activate', event => {
           purgeLegacyCustomEntries(),
           purgeLegacyInquiryEntries(),
           purgeLegacyContactEntries(),
-          purgeLegacyReviewEntries()
+          purgeLegacyReviewEntries(),
+          purgeLegacySuccessEntries()
         ])
       )
       .then(
@@ -1063,6 +1155,19 @@ self.addEventListener('fetch', event => {
     ){
       event.respondWith(
         reviewNetworkOnly(
+          request
+        )
+      );
+      return;
+    }
+
+    if(
+      isSuccessNavigation(
+        url
+      )
+    ){
+      event.respondWith(
+        successNetworkOnly(
           request
         )
       );

@@ -3072,4 +3072,86 @@ The restoration must retain the post-refactor Astro/domain/runtime architecture
 and restore the approved rendered presentation on top of it.
 
 Detailed plan: `R4_VISUAL_RESTORATION_PLAN.md`.
+## R4.10D — Success Legacy/PWA Detachment + Production Payload Hardening
+
+Status: final conversion-route architecture hardening stage.
+
+R4.10C moved `/inquiry/success/` to the validated Astro R4.10B document/runtime.
+R4.10D removes the final document/cache ownership ambiguity left by previously
+registered Service Workers.
+
+Success navigation ownership becomes exact:
+
+```text
+/inquiry/success
+/inquiry/success/
+/inquiry/success/index.html
+```
+
+These paths use `SUCCESS_NAVIGATION_PATHS.has(url.pathname)` only. Broad
+`startsWith()` / `includes()` route matching is forbidden.
+
+The Service Worker now resolves navigation ownership in this order:
+
+```text
+Home
+→ Catalog
+→ PDP
+→ Custom
+→ Inquiry
+→ Contact
+→ Review
+→ Success
+→ remaining non-migrated navigation fallback
+```
+
+Success navigation is network-only with `cache:'no-store'`. Network failure may
+use `offline.html`, but cached Legacy Success documents must never be revived.
+
+`purgeLegacySuccessEntries()` removes exact Success document entries from both
+`APP_CACHE` and `RUNTIME_CACHE` during install and activate.
+
+R4.10D deliberately does **not** delete the historical Legacy Success source
+module or perform broad Legacy dead-code removal. The architecture contract is
+about route/runtime ownership, not rewriting repository history in the same
+commit.
+
+Production payload hardening checks:
+
+```text
+HTML raw
+successRuntimeState raw
+r4-success-runtime.js raw
+Astro stylesheet raw
+HTML+JS+CSS gzip proxy
+critical raw payload
+```
+
+R4.10D also requires Production Success HTML/runtime to remain byte-identical to
+the isolated R4.10B artifact and preserves:
+
+```text
+dreamlandLastSubmissionV1
+hasLastSubmission
+inquiryId/clientInquiryId
+submittedAt
+estimatedTotalDisplay
+EN / ZH / KO
+/products/
+/custom/
+```
+
+When R4.10D passes full regression and its remote commit is verified, the
+**R4.10 architecture migration closes** and an architecture freeze begins.
+
+The next planned product stage is:
+
+```text
+R4.11 — Visual Restoration / Develop Parity
+reference: develop@a6039e52900d966b0f3110da8458a393434127d8
+scope: PC + Mobile
+```
+
+Visual restoration changes presentation on top of the frozen Astro architecture;
+it must not restore Legacy route/runtime ownership.
 

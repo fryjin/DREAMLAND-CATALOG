@@ -1,6 +1,9 @@
 # DREAMLAND R4.11 — Visual Restoration / Develop Parity
 
-Status: **QUEUED — execute only after architecture migration is frozen.**
+Status: **QUEUED NEXT — architecture freeze begins after R4.10D remote closure.**
+
+The R4.10D remote-verified commit is the implementation baseline for visual
+restoration. `develop` remains the visual reference only.
 
 ## Why this stage exists
 

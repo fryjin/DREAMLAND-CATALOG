@@ -638,19 +638,32 @@ try{
     }
   }
 
-  if(
-    sw.includes(
-      'SUCCESS_NAVIGATION_PATHS'
-    )||
-    sw.includes(
-      'successNetworkOnly('
-    )||
-    sw.includes(
-      'purgeLegacySuccessEntries('
+  const successDetachmentInstalled=
+    json('package.json').scripts?.['r4:production:success:detachment']===
+      'node scripts/validate-r4-production-success-detachment.mjs --source';
+
+  const successDetachmentMarkers=[
+    'SUCCESS_NAVIGATION_PATHS',
+    'successNetworkOnly(',
+    'purgeLegacySuccessEntries('
+  ];
+
+  if(successDetachmentInstalled){
+    for(const marker of successDetachmentMarkers){
+      if(!sw.includes(marker)){
+        fail(
+          'R4.10D authorized Success detachment is missing: '+
+          marker
+        );
+      }
+    }
+  }else if(
+    successDetachmentMarkers.some(
+      marker=>sw.includes(marker)
     )
   ){
     fail(
-      'R4.10A/R4.10B must not detach Production Success from the Legacy Service Worker.'
+      'R4.10A/R4.10B must not detach Production Success before the canonical R4.10D stage.'
     );
   }
 

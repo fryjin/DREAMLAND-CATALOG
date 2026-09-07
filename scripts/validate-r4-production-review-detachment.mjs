@@ -76,10 +76,17 @@ function validateReviewSw(source,label){
     }
   }
 
+  const reviewPathsEndMarker=
+    source.includes(
+      'const SUCCESS_NAVIGATION_PATHS='
+    )
+      ? 'const SUCCESS_NAVIGATION_PATHS='
+      : 'const RELEASE_ASSETS';
+
   const pathsBlock=blockBetween(
     source,
     'const REVIEW_NAVIGATION_PATHS=',
-    'const RELEASE_ASSETS'
+    reviewPathsEndMarker
   );
 
   const reviewPaths=[
@@ -215,7 +222,7 @@ function validateReviewSw(source,label){
   ){
     fail(
       label+
-      ' navigation ownership must resolve Home → Catalog → PDP → Custom → Inquiry → Contact → Review → remaining Legacy Success.'
+      ' navigation ownership must resolve Home → Catalog → PDP → Custom → Inquiry → Contact → Review before any authorized Success successor/fallback.'
     );
   }
 }
