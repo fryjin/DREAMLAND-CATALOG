@@ -62,8 +62,31 @@
 
   /* Layout */
   --dl-container-max:1440px;
+  --dl-container-wide:1600px;
+  --dl-container-reading:760px;
+  --dl-container-form:980px;
   --dl-page-gutter:clamp(20px,4vw,64px);
   --dl-section-space:clamp(88px,10vw,156px);
+  --dl-section-space-compact:clamp(56px,6vw,88px);
+  --dl-section-space-editorial:clamp(112px,12vw,176px);
+
+  /* Composition */
+  --dl-composition-gap:clamp(16px,2vw,28px);
+  --dl-composition-gap-wide:clamp(28px,4vw,64px);
+  --dl-composition-row-gap:clamp(48px,6vw,88px);
+  --dl-composition-rail:24ch;
+  --dl-reading-measure:42rem;
+  --dl-workflow-label-width:180px;
+  --dl-mobile-reading-gutter:18px;
+  --dl-mobile-chapter-space:clamp(52px,14vw,80px);
+  --dl-mobile-river-gap:14px;
+  --dl-mobile-river-lead:34px;
+
+  /* Media ratios */
+  --dl-media-ratio-product:4/5;
+  --dl-media-ratio-portrait:3/4;
+  --dl-media-ratio-landscape:4/3;
+  --dl-media-ratio-wide:16/10;
 
   /* Controlled asymmetry */
   --dl-asym-gap-sm:clamp(16px,2vw,28px);

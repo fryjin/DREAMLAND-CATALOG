@@ -1,9 +1,10 @@
 /*
  * DREAMLAND R4.11B3
- * Controlled Asymmetry Primitives
+ * Controlled Asymmetry Primitives — Low-level layout utilities
  *
- * These are opt-in layout tools. B3 intentionally does not attach them to
- * route-specific selectors. Route adoption starts in B4 / R4.11C.
+ * These remain opt-in implementation tools.
+ * R4.11B4.1A demotes them from design-language ownership: route-level
+ * composition should prefer semantic roles from composition.css.
  */
 
 /* -------------------------------------------------
