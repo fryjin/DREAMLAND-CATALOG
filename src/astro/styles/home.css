@@ -274,8 +274,8 @@
   width:100%;
   margin-inline-start:auto;
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:clamp(32px,4vw,58px) var(--dl-composition-gap);
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:var(--dl-composition-gap);
   align-items:start;
 }
 
@@ -290,27 +290,74 @@
   }
 
   .home-collections__type {
-    display:block;
+    grid-column:1 / span 3;
+    min-height:clamp(360px,32vw,470px);
+    display:grid;
+    grid-template-columns:
+      clamp(76px,6vw,96px)
+      minmax(0,1fr);
+    column-gap:clamp(18px,2vw,28px);
+    align-items:stretch;
     margin:0;
     align-self:start;
   }
 
-  .home-collections__type h2 {
-    max-width:7ch;
-    margin-top:12px;
+  .home-collections__rail {
+    position:relative;
+    width:100%;
+    min-height:clamp(360px,32vw,470px);
+    overflow:visible;
+  }
+
+  .home-collections__rail-inner {
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:max-content;
+    display:flex;
+    align-items:baseline;
+    gap:clamp(14px,1.4vw,22px);
+    white-space:nowrap;
+
+    /*
+     * Keep the text itself horizontally typeset.
+     * Rotate the COMPLETE typography block counter-clockwise.
+     */
+    transform:rotate(-90deg);
+    transform-origin:left bottom;
+  }
+
+  .home-collections__rail-inner
+  .home-eyebrow {
+    flex:0 0 auto;
+    white-space:nowrap;
+  }
+
+  .home-collections__rail-inner h2 {
+    width:auto;
+    max-width:none;
+    margin:0;
     font-size:clamp(48px,4.7vw,72px);
     line-height:.92;
+    letter-spacing:-.045em;
+    white-space:nowrap;
   }
 
   .home-collections__type
   .home-section__body {
-    max-width:30ch;
-    margin-top:26px;
+    align-self:end;
+    max-width:22ch;
+    margin:0 0 2px;
   }
 
   .home-collections {
-    width:min(100%,900px);
+    grid-column:4 / -1;
+    width:100%;
     justify-self:end;
+    grid-template-columns:
+      repeat(4,minmax(0,1fr));
+    gap:clamp(12px,1.45vw,20px);
+    align-items:start;
   }
 }
 

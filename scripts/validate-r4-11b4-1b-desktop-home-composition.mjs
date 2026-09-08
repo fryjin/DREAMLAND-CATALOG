@@ -157,6 +157,9 @@ for(const marker of [
   'data-home-hero-role="visual-end"',
   'home-collection-shelf dl-collection-shelf',
   'home-collections__type dl-collection-shelf__type',
+  'home-collections__rail',
+  'home-collections__rail-inner',
+  'data-home-collections-role="title-rail"',
   'home-collections dl-collection-shelf__items',
   'home-featured-grid dl-featured-3plus2',
   'dl-featured-3plus2__item--wide',
@@ -205,7 +208,12 @@ for(const marker of [
   '.home-hero__media',
   '.home-collection-shelf',
   '.home-collections__type',
+  '.home-collections__rail',
+  '.home-collections__rail-inner',
   '.home-collections {',
+  'grid-template-columns:repeat(4,minmax(0,1fr));',
+  'transform:rotate(-90deg);',
+  'transform-origin:left bottom;',
   '.home-featured-grid {',
   '.home-product-card.dl-featured-3plus2__item--narrow',
   '.home-product-card.dl-featured-3plus2__item--wide'
@@ -214,6 +222,12 @@ for(const marker of [
     desktopCss,
     marker,
     'B4.1B Desktop Home composition CSS changed.'
+  );
+}
+
+if(desktopCss.includes('writing-mode:')){
+  fail(
+    'B4.1B Collections title rail must rotate a horizontal text block; writing-mode is forbidden.'
   );
 }
 

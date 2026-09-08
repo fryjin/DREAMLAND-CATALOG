@@ -115,20 +115,26 @@ const cta=content.cta||{};
     aria-labelledby="homeCollectionsTitle"
   >
     <div class="home-section__head home-collections__type dl-collection-shelf__type">
-      <div>
-        <p
-          class="home-eyebrow"
-          data-home-bind="collections.kicker"
-        >
-          {collections.kicker}
-        </p>
-        <h2
-          id="homeCollectionsTitle"
-          data-home-bind="collections.title"
-        >
-          {collections.title}
-        </h2>
+      <div
+        class="home-collections__rail"
+        data-home-collections-role="title-rail"
+      >
+        <div class="home-collections__rail-inner">
+          <p
+            class="home-eyebrow"
+            data-home-bind="collections.kicker"
+          >
+            {collections.kicker}
+          </p>
+          <h2
+            id="homeCollectionsTitle"
+            data-home-bind="collections.title"
+          >
+            {collections.title}
+          </h2>
+        </div>
       </div>
+
       <p
         class="home-section__body"
         data-home-bind="collections.body"
