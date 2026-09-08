@@ -1,0 +1,585 @@
+/*
+ * DREAMLAND R4.11B4
+ * System Smoke Rollout
+ *
+ * First visible application of the R4.11 visual system.
+ *
+ * Desktop representatives:
+ *   Home + PDP
+ *
+ * Mobile representatives:
+ *   Catalog + PDP + Contact
+ *
+ * Scope is intentionally isolated by data-dreamland-page.
+ */
+
+/* ============================================================
+ * DESKTOP / HOME
+ * Editorial asymmetry: stronger split, stagger, negative space.
+ * ========================================================== */
+
+@media (min-width:901px) {
+  body[data-dreamland-page="home"] .home-story {
+    grid-template-columns:
+      minmax(0,7.6fr)
+      minmax(300px,4.4fr);
+    gap:var(--dl-asym-gap-lg);
+    align-items:start;
+  }
+
+  body[data-dreamland-page="home"] .home-story__media {
+    border-radius:
+      2px
+      var(--dl-radius-hero)
+      var(--dl-radius-hero)
+      2px;
+  }
+
+  body[data-dreamland-page="home"] .home-story__copy {
+    margin-top:var(--dl-asym-offset-md);
+  }
+
+  body[data-dreamland-page="home"] .home-section__head {
+    grid-template-columns:
+      minmax(0,8fr)
+      minmax(240px,3fr);
+    gap:var(--dl-asym-gap-lg);
+    align-items:start;
+  }
+
+  body[data-dreamland-page="home"] .home-section__head
+  > .home-section__body {
+    padding-top:var(--dl-asym-offset-sm);
+  }
+
+  body[data-dreamland-page="home"] .home-collections {
+    gap:
+      clamp(84px,8vw,124px)
+      var(--dl-asym-gap-md);
+  }
+
+  body[data-dreamland-page="home"]
+  .home-collection-card:nth-child(2) {
+    margin-top:
+      calc(
+        var(--dl-asym-offset-md) +
+        var(--dl-asym-offset-sm)
+      );
+  }
+
+  body[data-dreamland-page="home"]
+  .home-collection-card:nth-child(3) {
+    grid-column:1 / span 4;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-collection-card:nth-child(4) {
+    grid-column:7 / span 5;
+    margin-top:var(--dl-asym-offset-md);
+  }
+
+  body[data-dreamland-page="home"] .home-featured-grid {
+    gap:
+      clamp(62px,6vw,92px)
+      var(--dl-asym-gap-md);
+  }
+
+  body[data-dreamland-page="home"]
+  .home-product-card:nth-child(1) {
+    grid-column:1 / span 5;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-product-card:nth-child(2) {
+    grid-column:7 / span 3;
+    margin-top:var(--dl-asym-offset-md);
+  }
+
+  body[data-dreamland-page="home"]
+  .home-product-card:nth-child(3) {
+    grid-column:10 / span 3;
+    margin-top:var(--dl-asym-offset-sm);
+  }
+
+  body[data-dreamland-page="home"]
+  .home-product-card:nth-child(4) {
+    grid-column:2 / span 5;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-product-card:nth-child(5) {
+    grid-column:8 / span 5;
+    margin-top:var(--dl-asym-offset-sm);
+  }
+
+  body[data-dreamland-page="home"]
+  .home-product-card:nth-child(2)
+  .home-product-card__media,
+  body[data-dreamland-page="home"]
+  .home-product-card:nth-child(3)
+  .home-product-card__media {
+    aspect-ratio:3/4;
+  }
+
+  body[data-dreamland-page="home"] .home-editorial__media {
+    grid-column:1 / span 7;
+  }
+
+  body[data-dreamland-page="home"] .home-editorial__copy {
+    grid-column:9 / span 4;
+    align-self:start;
+    margin-top:var(--dl-asym-offset-md);
+  }
+
+  body[data-dreamland-page="home"] .home-custom {
+    grid-template-columns:
+      minmax(0,4fr)
+      minmax(0,8fr);
+    border-radius:
+      var(--dl-radius-hero)
+      2px
+      var(--dl-radius-hero)
+      var(--dl-radius-hero);
+  }
+}
+
+/* ============================================================
+ * DESKTOP / PDP
+ * Media-led editorial composition.
+ * ========================================================== */
+
+@media (min-width:1051px) {
+  body[data-dreamland-page="product"] .pdp-hero {
+    grid-template-columns:
+      minmax(0,8fr)
+      minmax(340px,4fr);
+    gap:var(--dl-asym-gap-lg);
+  }
+
+  body[data-dreamland-page="product"] .pdp-gallery {
+    gap:18px;
+  }
+
+  body[data-dreamland-page="product"] .pdp-summary {
+    top:96px;
+    gap:26px;
+    padding-top:var(--dl-asym-offset-md);
+  }
+
+  body[data-dreamland-page="product"] .pdp-summary h1 {
+    max-width:9ch;
+    font-size:clamp(54px,5.6vw,86px);
+  }
+
+  body[data-dreamland-page="product"] .pdp-commerce {
+    gap:20px;
+    padding:
+      22px
+      0;
+    border-right:0;
+    border-left:0;
+    background:transparent;
+  }
+
+  body[data-dreamland-page="product"]
+  .pdp-details__grid {
+    grid-template-columns:
+      minmax(0,8fr)
+      minmax(300px,4fr);
+    gap:var(--dl-asym-gap-lg);
+  }
+
+  body[data-dreamland-page="product"]
+  .pdp-details__grid > :first-child {
+    padding-left:clamp(0px,4vw,56px);
+  }
+}
+
+/* ============================================================
+ * MOBILE / CATALOG
+ * App-like surfaces + functional stagger.
+ * ========================================================== */
+
+@media (max-width:720px) {
+  body[data-dreamland-page="catalog"] .catalog-main {
+    background:var(--dl-color-mobile-canvas);
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-intro {
+    padding-top:48px;
+    padding-bottom:36px;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-intro__layout {
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:18px;
+    align-items:start;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-intro__count {
+    justify-self:end;
+    align-items:flex-end;
+    padding-top:8px;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-intro__count strong {
+    font-size:clamp(38px,12vw,52px);
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-browse {
+    background:
+      color-mix(
+        in srgb,
+        var(--dl-color-mobile-canvas) 92%,
+        transparent
+      );
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-products.home-container {
+    width:calc(100% - 28px);
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-grid {
+    gap:
+      calc(
+        var(--dl-asym-mobile-gap) +
+        var(--dl-asym-stagger-offset)
+      )
+      var(--dl-asym-mobile-gap);
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-card {
+    overflow:hidden;
+    border-radius:24px;
+    background:var(--dl-color-surface);
+    box-shadow:0 10px 28px rgba(24,21,18,.055);
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-card:nth-child(even) {
+    transform:
+      translateY(
+        var(--dl-asym-stagger-offset)
+      );
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-card__media {
+    border-radius:0;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-card:nth-child(4n + 2)
+  .catalog-card__media,
+  body[data-dreamland-page="catalog"]
+  .catalog-card:nth-child(4n + 3)
+  .catalog-card__media {
+    aspect-ratio:3/4;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-card__copy {
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:10px;
+    padding:14px 14px 16px;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-card__commercial {
+    align-items:flex-end;
+    text-align:right;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-pagination {
+    padding-top:
+      calc(
+        58px +
+        var(--dl-asym-stagger-offset)
+      );
+  }
+}
+
+/* ============================================================
+ * MOBILE / PDP
+ * Layered surface + variable media rhythm.
+ * ========================================================== */
+
+@media (max-width:720px) {
+  body[data-dreamland-page="product"] .pdp-main {
+    background:var(--dl-color-mobile-canvas);
+  }
+
+  body[data-dreamland-page="product"]
+  .pdp-hero.home-container {
+    width:100%;
+    margin-inline:0;
+  }
+
+  body[data-dreamland-page="product"] .pdp-gallery {
+    padding-left:14px;
+    padding-right:14px;
+  }
+
+  body[data-dreamland-page="product"]
+  .pdp-gallery__item,
+  body[data-dreamland-page="product"]
+  .pdp-gallery__item--primary {
+    flex-basis:86%;
+    overflow:hidden;
+    border-radius:26px;
+  }
+
+  body[data-dreamland-page="product"]
+  .pdp-gallery__item:nth-child(even) {
+    flex-basis:72%;
+  }
+
+  body[data-dreamland-page="product"]
+  .pdp-summary {
+    margin:
+      22px
+      14px
+      0;
+    padding:
+      28px
+      20px
+      22px;
+    border-radius:30px;
+    background:var(--dl-color-surface);
+    box-shadow:var(--dl-shadow-soft);
+  }
+
+  body[data-dreamland-page="product"]
+  .pdp-commerce {
+    border:0;
+    border-radius:22px;
+    background:
+      color-mix(
+        in srgb,
+        var(--dl-color-surface-soft) 58%,
+        var(--dl-color-surface)
+      );
+  }
+
+  body[data-dreamland-page="product"]
+  .pdp-size-chip,
+  body[data-dreamland-page="product"]
+  .pdp-field select,
+  body[data-dreamland-page="product"]
+  .pdp-field input,
+  body[data-dreamland-page="product"]
+  .pdp-quantity button {
+    border-radius:17px;
+  }
+
+  body[data-dreamland-page="product"]
+  .pdp-field select,
+  body[data-dreamland-page="product"]
+  .pdp-field input {
+    min-height:56px;
+  }
+
+  body[data-dreamland-page="product"]
+  .pdp-actions button,
+  body[data-dreamland-page="product"]
+  .pdp-actions a {
+    min-height:54px;
+  }
+
+  body[data-dreamland-page="product"] .pdp-details {
+    margin:
+      0
+      14px
+      14px;
+    overflow:hidden;
+    border:0;
+    border-radius:28px;
+    background:var(--dl-color-surface);
+  }
+
+  body[data-dreamland-page="product"]
+  .pdp-details__grid.home-container {
+    width:auto;
+    margin:0;
+    padding:
+      30px
+      22px;
+  }
+}
+
+/* ============================================================
+ * MOBILE / CONTACT
+ * Touch-first form, compact progress, offset supporting surface.
+ * ========================================================== */
+
+@media (max-width:760px) {
+  body[data-dreamland-page="contact"] .contact-main {
+    background:var(--dl-color-mobile-canvas);
+  }
+
+  body[data-dreamland-page="contact"] .contact-hero {
+    border-bottom:0;
+    background:var(--dl-color-mobile-canvas);
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-hero__inner {
+    gap:18px;
+    padding-top:52px;
+    padding-bottom:28px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-hero h1 {
+    font-size:clamp(44px,13vw,60px);
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-progress.home-container {
+    width:calc(100% - 28px);
+    padding:
+      0
+      0
+      18px;
+    border-bottom:0;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-progress ol {
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:6px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-progress li {
+    min-height:46px;
+    grid-template-columns:auto minmax(0,1fr);
+    gap:7px;
+    padding:0 10px;
+    border:0;
+    border-radius:999px;
+    background:
+      color-mix(
+        in srgb,
+        var(--dl-color-surface) 72%,
+        transparent
+      );
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-progress li.is-complete {
+    background:var(--dl-color-surface);
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-progress li.is-active {
+    background:var(--dl-color-action);
+    color:var(--dl-color-action-contrast);
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-workspace.home-container {
+    width:calc(100% - 28px);
+    gap:14px;
+    padding-top:0;
+    padding-bottom:84px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-form-shell {
+    padding:
+      24px
+      20px
+      20px;
+    border-radius:30px;
+    background:var(--dl-color-surface);
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-form__header {
+    margin-bottom:24px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-chapter {
+    gap:16px;
+    padding:
+      24px
+      0
+      28px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-field input,
+  body[data-dreamland-page="contact"]
+  .contact-field select {
+    height:56px;
+    border-radius:18px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-field textarea {
+    min-height:156px;
+    border-radius:20px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-actions {
+    gap:10px;
+    margin-top:24px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-action {
+    min-height:54px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-action--secondary {
+    border-color:transparent;
+    background:transparent;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-rail {
+    gap:14px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-summary,
+  body[data-dreamland-page="contact"]
+  .contact-next {
+    padding:22px;
+    border:0;
+    border-radius:28px;
+    background:var(--dl-color-surface);
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-summary > .contact-eyebrow {
+    padding-top:0;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-next {
+    width:
+      calc(
+        100% -
+        var(--dl-asym-mobile-inset)
+      );
+    margin-inline-start:auto;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  body[data-dreamland-page="catalog"]
+  .catalog-card:nth-child(even) {
+    transform:none;
+  }
+}
