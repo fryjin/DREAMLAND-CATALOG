@@ -65,6 +65,16 @@
   --dl-page-gutter:clamp(20px,4vw,64px);
   --dl-section-space:clamp(88px,10vw,156px);
 
+  /* Controlled asymmetry */
+  --dl-asym-gap-sm:clamp(16px,2vw,28px);
+  --dl-asym-gap-md:clamp(24px,3vw,48px);
+  --dl-asym-gap-lg:clamp(32px,5vw,80px);
+  --dl-asym-offset-sm:clamp(18px,2vw,32px);
+  --dl-asym-offset-md:clamp(36px,4vw,64px);
+  --dl-asym-mobile-gap:14px;
+  --dl-asym-stagger-offset:clamp(18px,5vw,36px);
+  --dl-asym-mobile-inset:22px;
+
   /* Radius */
   --dl-radius-sm:5px;
   --dl-radius-md:10px;

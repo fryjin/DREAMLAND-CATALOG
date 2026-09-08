@@ -1,0 +1,230 @@
+/*
+ * DREAMLAND R4.11B3
+ * Controlled Asymmetry Primitives
+ *
+ * These are opt-in layout tools. B3 intentionally does not attach them to
+ * route-specific selectors. Route adoption starts in B4 / R4.11C.
+ */
+
+/* -------------------------------------------------
+ * Shared rhythm
+ * ------------------------------------------------- */
+
+.dl-rhythm {
+  --dl-rhythm-gap:var(--dl-asym-gap-md);
+  display:grid;
+  gap:var(--dl-rhythm-gap);
+}
+
+.dl-rhythm--loose {
+  --dl-rhythm-gap:var(--dl-asym-gap-lg);
+}
+
+.dl-rhythm--tight {
+  --dl-rhythm-gap:var(--dl-asym-gap-sm);
+}
+
+/* -------------------------------------------------
+ * Desktop editorial asymmetry
+ * ------------------------------------------------- */
+
+.dl-editorial-grid {
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:var(--dl-asym-gap-md);
+  align-items:start;
+}
+
+.dl-editorial-grid > * {
+  min-width:0;
+}
+
+.dl-asym-split {
+  display:grid;
+  grid-template-columns:
+    minmax(0,var(--dl-asym-left,7fr))
+    minmax(0,var(--dl-asym-right,5fr));
+  gap:var(--dl-asym-gap-lg);
+  align-items:var(--dl-asym-align,start);
+}
+
+.dl-asym-split--media-heavy {
+  --dl-asym-left:7.5fr;
+  --dl-asym-right:4.5fr;
+}
+
+.dl-asym-split--copy-heavy {
+  --dl-asym-left:4.5fr;
+  --dl-asym-right:7.5fr;
+}
+
+.dl-asym-split--wide-narrow {
+  --dl-asym-left:8fr;
+  --dl-asym-right:4fr;
+}
+
+.dl-asym-split--reverse {
+  --dl-asym-left:4fr;
+  --dl-asym-right:8fr;
+}
+
+.dl-span-3 { grid-column:span 3; }
+.dl-span-4 { grid-column:span 4; }
+.dl-span-5 { grid-column:span 5; }
+.dl-span-6 { grid-column:span 6; }
+.dl-span-7 { grid-column:span 7; }
+.dl-span-8 { grid-column:span 8; }
+.dl-span-9 { grid-column:span 9; }
+
+.dl-start-2 { grid-column-start:2; }
+.dl-start-3 { grid-column-start:3; }
+.dl-start-5 { grid-column-start:5; }
+.dl-start-7 { grid-column-start:7; }
+
+.dl-offset-block--sm {
+  transform:translateY(var(--dl-asym-offset-sm));
+}
+
+.dl-offset-block--md {
+  transform:translateY(var(--dl-asym-offset-md));
+}
+
+.dl-offset-block--up {
+  transform:translateY(calc(-1 * var(--dl-asym-offset-sm)));
+}
+
+.dl-edge-caption {
+  max-width:22ch;
+  color:var(--dl-color-ink-muted);
+  font-size:var(--dl-type-caption);
+  line-height:1.55;
+  letter-spacing:.04em;
+}
+
+.dl-edge-caption--end {
+  justify-self:end;
+  text-align:right;
+}
+
+.dl-visual-anchor {
+  width:min(100%,var(--dl-visual-anchor-width,44rem));
+}
+
+.dl-visual-anchor--end {
+  margin-inline-start:auto;
+}
+
+/* -------------------------------------------------
+ * Mobile functional asymmetry
+ * ------------------------------------------------- */
+
+.dl-stagger-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:var(--dl-asym-mobile-gap);
+  align-items:start;
+}
+
+.dl-stagger-grid > :nth-child(even) {
+  transform:translateY(var(--dl-asym-stagger-offset));
+}
+
+.dl-weighted-row {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:var(--dl-space-4);
+  align-items:baseline;
+}
+
+.dl-weighted-row__label {
+  min-width:0;
+  color:var(--dl-color-ink-muted);
+}
+
+.dl-weighted-row__value {
+  justify-self:end;
+  max-width:70%;
+  color:var(--dl-color-ink);
+  font-weight:800;
+  text-align:right;
+}
+
+.dl-offset-surface {
+  width:calc(100% - var(--dl-asym-mobile-inset));
+}
+
+.dl-offset-surface--end {
+  margin-inline-start:auto;
+}
+
+.dl-offset-surface--start {
+  margin-inline-end:auto;
+}
+
+/* -------------------------------------------------
+ * Responsive convergence
+ * ------------------------------------------------- */
+
+@media (max-width:900px) {
+  .dl-editorial-grid,
+  .dl-asym-split {
+    grid-template-columns:1fr;
+  }
+
+  .dl-span-3,
+  .dl-span-4,
+  .dl-span-5,
+  .dl-span-6,
+  .dl-span-7,
+  .dl-span-8,
+  .dl-span-9 {
+    grid-column:1 / -1;
+  }
+
+  .dl-start-2,
+  .dl-start-3,
+  .dl-start-5,
+  .dl-start-7 {
+    grid-column-start:auto;
+  }
+
+  .dl-offset-block--sm,
+  .dl-offset-block--md,
+  .dl-offset-block--up {
+    transform:none;
+  }
+
+  .dl-edge-caption--end {
+    justify-self:start;
+    text-align:left;
+  }
+
+  .dl-visual-anchor,
+  .dl-visual-anchor--end {
+    width:100%;
+    margin-inline:0;
+  }
+}
+
+@media (max-width:560px) {
+  .dl-stagger-grid {
+    gap:var(--dl-asym-mobile-gap);
+  }
+
+  .dl-stagger-grid > :nth-child(even) {
+    transform:translateY(var(--dl-asym-stagger-offset));
+  }
+
+  .dl-weighted-row__value {
+    max-width:62%;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .dl-offset-block--sm,
+  .dl-offset-block--md,
+  .dl-offset-block--up,
+  .dl-stagger-grid > :nth-child(even) {
+    transition:none;
+  }
+}
