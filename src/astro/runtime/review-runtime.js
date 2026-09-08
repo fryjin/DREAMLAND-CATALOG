@@ -1480,8 +1480,7 @@
         await risk.assess(
           payload,
           {
-            website:
-              root.location?.origin||'',
+            website:'',
             language
           }
         );

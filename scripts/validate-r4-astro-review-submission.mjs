@@ -67,6 +67,47 @@ try{
     ]){
       if(!adapter.includes(marker)) fail('R4.9C Review adapter is missing: '+marker);
     }
+    /*
+     * R4.11B2-FIX1:
+     * `website` is the anti-bot honeypot value.
+     * It must never be populated from location.origin.
+     */
+    if(
+      adapter.includes(
+        "root.location?.origin||''"
+      )
+    ){
+      fail(
+        'Review must not map location.origin into the risk honeypot field.'
+      );
+    }
+
+    if(
+      !adapter.includes(
+        "website:''"
+      )
+    ){
+      fail(
+        'Review risk assessment must send a blank honeypot value.'
+      );
+    }
+
+    const riskServer=
+      read('functions/api/risk.js');
+
+    if(
+      !riskServer.includes(
+        "if(asText(body.website,500)){"
+      )||
+      !riskServer.includes(
+        "reasons:['honeypot']"
+      )
+    ){
+      fail(
+        'Canonical /api/risk honeypot behavior changed unexpectedly.'
+      );
+    }
+
     for(const forbidden of ['fetch(','XMLHttpRequest','navigator.serviceWorker.register','registerServiceWorker()']){
       if(adapter.includes(forbidden)) fail('R4.9C adapter duplicated canonical transport/PWA registration logic: '+forbidden);
     }
