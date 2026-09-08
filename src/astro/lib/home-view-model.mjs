@@ -576,6 +576,14 @@ export function buildHomeViewModel({
       image:
         webPath(
           homeAssets?.hero?.image
+        ),
+      visualLeft:
+        webPath(
+          homeAssets?.hero?.visualLeft
+        ),
+      visualRight:
+        webPath(
+          homeAssets?.hero?.visualRight
         )
     }),
     story:Object.freeze({

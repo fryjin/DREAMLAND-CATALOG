@@ -5,7 +5,8 @@
  * First visible application of the R4.11 visual system.
  *
  * Desktop representatives:
- *   Home + PDP
+ *   PDP
+ *   Home graduated to R4.11B4.1B semantic route composition.
  *
  * Mobile representatives:
  *   Catalog + PDP + Contact
@@ -15,133 +16,10 @@
 
 /* ============================================================
  * DESKTOP / HOME
- * Editorial asymmetry: stronger split, stagger, negative space.
+ * Graduated to R4.11B4.1B Desktop Home Composition Proof.
+ * Home route geometry is now owned by Home markup + home.css
+ * consuming semantic primitives from composition.css.
  * ========================================================== */
-
-@media (min-width:901px) {
-  body[data-dreamland-page="home"] .home-story {
-    grid-template-columns:
-      minmax(0,7.6fr)
-      minmax(300px,4.4fr);
-    gap:var(--dl-asym-gap-lg);
-    align-items:start;
-  }
-
-  body[data-dreamland-page="home"] .home-story__media {
-    border-radius:
-      2px
-      var(--dl-radius-hero)
-      var(--dl-radius-hero)
-      2px;
-  }
-
-  body[data-dreamland-page="home"] .home-story__copy {
-    margin-top:var(--dl-asym-offset-md);
-  }
-
-  body[data-dreamland-page="home"] .home-section__head {
-    grid-template-columns:
-      minmax(0,8fr)
-      minmax(240px,3fr);
-    gap:var(--dl-asym-gap-lg);
-    align-items:start;
-  }
-
-  body[data-dreamland-page="home"] .home-section__head
-  > .home-section__body {
-    padding-top:var(--dl-asym-offset-sm);
-  }
-
-  body[data-dreamland-page="home"] .home-collections {
-    gap:
-      clamp(84px,8vw,124px)
-      var(--dl-asym-gap-md);
-  }
-
-  body[data-dreamland-page="home"]
-  .home-collection-card:nth-child(2) {
-    margin-top:
-      calc(
-        var(--dl-asym-offset-md) +
-        var(--dl-asym-offset-sm)
-      );
-  }
-
-  body[data-dreamland-page="home"]
-  .home-collection-card:nth-child(3) {
-    grid-column:1 / span 4;
-  }
-
-  body[data-dreamland-page="home"]
-  .home-collection-card:nth-child(4) {
-    grid-column:7 / span 5;
-    margin-top:var(--dl-asym-offset-md);
-  }
-
-  body[data-dreamland-page="home"] .home-featured-grid {
-    gap:
-      clamp(62px,6vw,92px)
-      var(--dl-asym-gap-md);
-  }
-
-  body[data-dreamland-page="home"]
-  .home-product-card:nth-child(1) {
-    grid-column:1 / span 5;
-  }
-
-  body[data-dreamland-page="home"]
-  .home-product-card:nth-child(2) {
-    grid-column:7 / span 3;
-    margin-top:var(--dl-asym-offset-md);
-  }
-
-  body[data-dreamland-page="home"]
-  .home-product-card:nth-child(3) {
-    grid-column:10 / span 3;
-    margin-top:var(--dl-asym-offset-sm);
-  }
-
-  body[data-dreamland-page="home"]
-  .home-product-card:nth-child(4) {
-    grid-column:2 / span 5;
-  }
-
-  body[data-dreamland-page="home"]
-  .home-product-card:nth-child(5) {
-    grid-column:8 / span 5;
-    margin-top:var(--dl-asym-offset-sm);
-  }
-
-  body[data-dreamland-page="home"]
-  .home-product-card:nth-child(2)
-  .home-product-card__media,
-  body[data-dreamland-page="home"]
-  .home-product-card:nth-child(3)
-  .home-product-card__media {
-    aspect-ratio:3/4;
-  }
-
-  body[data-dreamland-page="home"] .home-editorial__media {
-    grid-column:1 / span 7;
-  }
-
-  body[data-dreamland-page="home"] .home-editorial__copy {
-    grid-column:9 / span 4;
-    align-self:start;
-    margin-top:var(--dl-asym-offset-md);
-  }
-
-  body[data-dreamland-page="home"] .home-custom {
-    grid-template-columns:
-      minmax(0,4fr)
-      minmax(0,8fr);
-    border-radius:
-      var(--dl-radius-hero)
-      2px
-      var(--dl-radius-hero)
-      var(--dl-radius-hero);
-  }
-}
 
 /* ============================================================
  * DESKTOP / PDP

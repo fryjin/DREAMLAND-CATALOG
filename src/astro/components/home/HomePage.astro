@@ -15,7 +15,7 @@ const cta=content.cta||{};
 ---
 <main class="home-main" data-home-static-presentation>
   <section
-    class="home-hero home-container"
+    class="home-hero home-container dl-cover-stage"
     data-home-section="hero"
     aria-labelledby="homeHeroTitle"
   >
@@ -25,14 +25,48 @@ const cta=content.cta||{};
     >
       DREAMLAND
     </h1>
-    <img
-      src={view.hero.image}
-      alt=""
-      width="1920"
-      height="1080"
-      loading="eager"
-      fetchpriority="high"
-    />
+
+    <div
+      class="home-hero__visual home-hero__visual--start dl-cover-stage__visual--start"
+      data-home-hero-role="visual-start"
+      aria-hidden="true"
+    >
+      <img
+        src={view.hero.visualLeft}
+        alt=""
+        width="760"
+        height="340"
+        loading="lazy"
+      />
+    </div>
+
+    <div
+      class="home-hero__media dl-cover-stage__media"
+      data-home-hero-role="main-media"
+    >
+      <img
+        src={view.hero.image}
+        alt=""
+        width="1920"
+        height="1080"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+
+    <div
+      class="home-hero__visual home-hero__visual--end dl-cover-stage__visual--end"
+      data-home-hero-role="visual-end"
+      aria-hidden="true"
+    >
+      <img
+        src={view.hero.visualRight}
+        alt=""
+        width="620"
+        height="340"
+        loading="lazy"
+      />
+    </div>
   </section>
 
   <section
@@ -76,11 +110,11 @@ const cta=content.cta||{};
   </section>
 
   <section
-    class="home-section home-container"
+    class="home-section home-container home-collection-shelf dl-collection-shelf"
     data-home-section="collections"
     aria-labelledby="homeCollectionsTitle"
   >
-    <div class="home-section__head">
+    <div class="home-section__head home-collections__type dl-collection-shelf__type">
       <div>
         <p
           class="home-eyebrow"
@@ -103,7 +137,7 @@ const cta=content.cta||{};
       </p>
     </div>
 
-    <div class="home-collections">
+    <div class="home-collections dl-collection-shelf__items">
       {view.collections.map((item:any)=>(
         <a
           class:list={[
@@ -185,16 +219,20 @@ const cta=content.cta||{};
       </a>
     </div>
 
-    <div class="home-featured-grid">
+    <div class="home-featured-grid dl-featured-3plus2">
       {view.featuredProducts.map((product:any)=>(
         <a
           class:list={[
             'home-product-card',
             product.layout==='wide'&&
-              'is-wide'
+              'is-wide',
+            product.layout==='wide'
+              ? 'dl-featured-3plus2__item--wide'
+              : 'dl-featured-3plus2__item--narrow'
           ]}
           href={product.href}
           data-home-featured-product={product.id}
+          data-home-featured-layout={product.layout}
         >
           <div class="home-product-card__media">
             <img

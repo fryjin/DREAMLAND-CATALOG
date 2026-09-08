@@ -49,9 +49,6 @@ const pkg=read('package.json');
  * B4 selectors may intentionally wrap across multiple lines.
  */
 for(const marker of [
-  'body[data-dreamland-page="home"] .home-story',
-  'body[data-dreamland-page="home"] .home-featured-grid',
-  '.home-product-card:nth-child(2)',
   'body[data-dreamland-page="product"] .pdp-hero',
   'body[data-dreamland-page="product"] .pdp-summary',
   'body[data-dreamland-page="catalog"] .catalog-card',
@@ -59,7 +56,6 @@ for(const marker of [
   'body[data-dreamland-page="contact"] .contact-progress ol',
   'body[data-dreamland-page="contact"] .contact-form-shell',
   'body[data-dreamland-page="contact"] .contact-next',
-  '@media (min-width:901px)',
   '@media (min-width:1051px)',
   '@media (max-width:720px)',
   '@media (max-width:760px)'
@@ -86,6 +82,7 @@ for(const marker of [
 }
 
 for(const forbiddenPage of [
+  'data-dreamland-page="home"',
   'data-dreamland-page="custom"',
   'data-dreamland-page="inquiry"',
   'data-dreamland-page="review"',
