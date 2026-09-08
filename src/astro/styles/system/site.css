@@ -1,0 +1,217 @@
+/*
+ * DREAMLAND R4.11B2 — shared Site Header / Footer.
+ * Legacy home-* classes stay as compatibility markers during migration.
+ */
+
+.dl-site-header.home-header{
+  position:sticky;
+  top:0;
+  z-index:40;
+  border-bottom:1px solid var(--dl-color-border);
+  background:color-mix(in srgb,var(--dl-color-canvas) 94%,transparent);
+  backdrop-filter:blur(18px);
+}
+.dl-site-header__inner.home-header__inner{
+  min-height:68px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  gap:clamp(20px,3vw,42px);
+  align-items:center;
+}
+.dl-wordmark.home-wordmark{
+  font-size:13px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.14em;
+}
+.dl-site-nav.home-nav{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(24px,3vw,40px);
+  font-size:12px;
+  font-weight:750;
+}
+.dl-site-nav.home-nav a{
+  position:relative;
+  transition:opacity var(--dl-motion-fast);
+}
+.dl-site-nav.home-nav a::after{
+  content:"";
+  position:absolute;
+  right:0;
+  bottom:-8px;
+  left:0;
+  height:1px;
+  background:currentColor;
+  transform:scaleX(0);
+  transform-origin:center;
+  transition:transform var(--dl-motion-fast);
+}
+.dl-site-nav.home-nav a:hover,
+.dl-site-nav.home-nav a:focus-visible{opacity:.64;}
+.dl-site-nav.home-nav a:hover::after,
+.dl-site-nav.home-nav a:focus-visible::after{transform:scaleX(1);}
+.dl-site-actions{
+  justify-self:end;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.dl-language-control.home-language-control{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+}
+.dl-language-control.home-language-control::after{
+  content:"";
+  position:absolute;
+  right:10px;
+  width:6px;
+  height:6px;
+  border-right:1.5px solid currentColor;
+  border-bottom:1.5px solid currentColor;
+  transform:translateY(-2px) rotate(45deg);
+  color:var(--dl-color-ink-muted);
+  pointer-events:none;
+}
+.dl-language-control.home-language-control select{
+  appearance:none;
+  min-height:36px;
+  padding:0 28px 0 12px;
+  border:1px solid transparent;
+  border-radius:var(--dl-radius-pill);
+  outline:0;
+  background:transparent;
+  color:var(--dl-color-ink-muted);
+  font-size:11px;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:.04em;
+  cursor:pointer;
+  transition:border-color var(--dl-motion-fast),background var(--dl-motion-fast);
+}
+.dl-language-control.home-language-control select:hover{
+  border-color:var(--dl-color-border);
+  background:color-mix(in srgb,var(--dl-color-surface) 68%,transparent);
+}
+.dl-language-control.home-language-control select:focus-visible{
+  border-color:var(--dl-color-border-strong);
+  box-shadow:0 0 0 3px var(--dl-color-focus);
+}
+.dl-inquiry-action.home-nav__inquiry{
+  min-height:38px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:0 14px 0 16px;
+  border:1px solid var(--dl-color-action);
+  border-radius:var(--dl-radius-pill);
+  background:var(--dl-color-action);
+  color:var(--dl-color-action-contrast);
+  font-size:11px;
+  font-weight:800;
+  transition:transform var(--dl-motion-fast),opacity var(--dl-motion-fast);
+}
+.dl-inquiry-action.home-nav__inquiry:hover,
+.dl-inquiry-action.home-nav__inquiry:focus-visible{opacity:.86;}
+.dl-inquiry-action.home-nav__inquiry:active{transform:translateY(1px);}
+.dl-inquiry-count.home-nav__count{
+  min-width:18px;
+  height:18px;
+  display:inline-grid;
+  place-items:center;
+  padding-inline:5px;
+  border-radius:var(--dl-radius-pill);
+  background:rgba(255,255,255,.15);
+  color:inherit;
+  font-size:9px;
+  line-height:1;
+}
+
+.dl-site-footer.home-footer{
+  padding:clamp(72px,7vw,96px) 0 32px;
+  background:var(--dl-color-footer);
+  color:var(--dl-color-canvas);
+}
+.dl-site-footer__grid.home-footer__grid{
+  display:grid;
+  grid-template-columns:minmax(0,4fr) minmax(0,8fr);
+  gap:clamp(56px,7vw,108px);
+}
+.dl-site-footer__brand.home-footer__brand p{
+  max-width:360px;
+  margin:20px 0 0;
+  color:rgba(248,245,239,.56);
+  font-size:13px;
+  line-height:1.7;
+}
+.dl-site-footer__links.home-footer__links{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(28px,4vw,54px);
+}
+.dl-site-footer__links.home-footer__links>div{
+  display:flex;
+  flex-direction:column;
+  gap:11px;
+}
+.dl-site-footer__links.home-footer__links strong{
+  margin-bottom:7px;
+  color:rgba(248,245,239,.44);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+}
+.dl-site-footer__links.home-footer__links a{
+  width:max-content;
+  max-width:100%;
+  color:rgba(248,245,239,.88);
+  font-size:13px;
+  transition:opacity var(--dl-motion-fast);
+}
+.dl-site-footer__links.home-footer__links a:hover,
+.dl-site-footer__links.home-footer__links a:focus-visible{opacity:.58;}
+.dl-site-footer__bottom.home-footer__bottom{
+  margin-top:clamp(56px,6vw,76px);
+  padding-top:22px;
+  display:flex;
+  justify-content:space-between;
+  gap:30px;
+  border-top:1px solid rgba(248,245,239,.12);
+  color:rgba(248,245,239,.4);
+  font-size:10px;
+}
+
+@media (max-width:900px){
+  .dl-site-header__inner.home-header__inner{
+    min-height:64px;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:12px 18px;
+  }
+  .dl-site-nav.home-nav{
+    order:3;
+    grid-column:1/-1;
+    width:100%;
+    justify-content:flex-start;
+    gap:22px;
+    padding:0 0 12px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .dl-site-nav.home-nav::-webkit-scrollbar{display:none;}
+  .dl-site-actions{grid-column:2;grid-row:1;}
+  .dl-site-footer__grid.home-footer__grid{grid-template-columns:1fr;}
+}
+@media (max-width:560px){
+  .dl-site-header__inner.home-header__inner{min-height:60px;}
+  .dl-wordmark.home-wordmark{font-size:12px;}
+  .dl-site-actions{gap:6px;}
+  .dl-language-control.home-language-control select{min-height:34px;padding-left:10px;}
+  .dl-inquiry-action.home-nav__inquiry{min-height:36px;padding-inline:12px;font-size:10px;}
+  .dl-site-nav.home-nav{gap:18px;font-size:11px;}
+  .dl-site-footer__links.home-footer__links{grid-template-columns:1fr 1fr;}
+  .dl-site-footer__bottom.home-footer__bottom{flex-direction:column;gap:8px;}
+}

@@ -1,75 +1,34 @@
 ---
-interface Props {
-  content:Record<string,any>;
-}
-
+interface Props {content:Record<string,any>;}
 const {content}=Astro.props;
 const footer=content?.footer||{};
 ---
-<footer class="home-footer" data-home-footer>
-  <div class="home-container home-footer__grid">
-    <div class="home-footer__brand">
-      <div class="home-wordmark">DREAMLAND</div>
-      <p data-home-bind="footer.description">
-        {footer.description||'Hand-carved candles for wholesale and custom projects.'}
-      </p>
+<footer class="dl-site-footer home-footer" data-dl-site-footer data-home-footer>
+  <div class="dl-container home-container dl-site-footer__grid home-footer__grid">
+    <div class="dl-site-footer__brand home-footer__brand">
+      <div class="dl-wordmark home-wordmark">DREAMLAND</div>
+      <p data-home-bind="footer.description">{footer.description||'Hand-carved candles for wholesale and custom projects.'}</p>
     </div>
-
-    <div class="home-footer__links">
+    <div class="dl-site-footer__links home-footer__links">
       <div>
-        <strong data-home-bind="footer.explore">
-          {footer.explore||'Explore'}
-        </strong>
-        <a href="/products/">
-          <span data-home-bind="footer.collection">
-            {footer.collection||'Collection'}
-          </span>
-        </a>
-        <a href="/products/?series=masterpiece">
-          <span data-home-bind="footer.masterpiece">
-            {footer.masterpiece||'Masterpiece'}
-          </span>
-        </a>
-        <a href="/products/?series=advanced">
-          <span data-home-bind="footer.advanced">
-            {footer.advanced||'Advanced'}
-          </span>
-        </a>
+        <strong data-home-bind="footer.explore">{footer.explore||'Explore'}</strong>
+        <a href="/products/"><span data-home-bind="footer.collection">{footer.collection||'Collection'}</span></a>
+        <a href="/products/?series=masterpiece"><span data-home-bind="footer.masterpiece">{footer.masterpiece||'Masterpiece'}</span></a>
+        <a href="/products/?series=advanced"><span data-home-bind="footer.advanced">{footer.advanced||'Advanced'}</span></a>
       </div>
-
       <div>
-        <strong data-home-bind="footer.projects">
-          {footer.projects||'Projects'}
-        </strong>
-        <a href="/custom/">
-          <span data-home-bind="footer.custom">
-            {footer.custom||'Custom'}
-          </span>
-        </a>
-        <a href="/inquiry/">
-          <span data-home-bind="footer.inquiry">
-            {footer.inquiry||'Inquiry'}
-          </span>
-        </a>
+        <strong data-home-bind="footer.projects">{footer.projects||'Projects'}</strong>
+        <a href="/custom/"><span data-home-bind="footer.custom">{footer.custom||'Custom'}</span></a>
+        <a href="/inquiry/"><span data-home-bind="footer.inquiry">{footer.inquiry||'Inquiry'}</span></a>
       </div>
-
       <div>
-        <strong data-home-bind="footer.legal">
-          {footer.legal||'Legal'}
-        </strong>
-        <a href="/privacy/">
-          <span data-home-bind="footer.privacy">
-            {footer.privacy||'Privacy'}
-          </span>
-        </a>
+        <strong data-home-bind="footer.legal">{footer.legal||'Legal'}</strong>
+        <a href="/privacy/"><span data-home-bind="footer.privacy">{footer.privacy||'Privacy'}</span></a>
       </div>
     </div>
   </div>
-
-  <div class="home-container home-footer__bottom">
-    <span data-home-bind="footer.copyright">
-      {footer.copyright||'© DREAMLAND'}
-    </span>
+  <div class="dl-container home-container dl-site-footer__bottom home-footer__bottom">
+    <span data-home-bind="footer.copyright">{footer.copyright||'© DREAMLAND'}</span>
     <span>Hand-carved candle art</span>
   </div>
 </footer>

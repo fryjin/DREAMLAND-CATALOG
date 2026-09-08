@@ -21,6 +21,8 @@
   --dl-color-action:var(--dl-color-ink);
   --dl-color-action-contrast:var(--dl-color-surface);
   --dl-color-footer:#12100e;
+  --dl-color-mobile-canvas:#f3f4f7;
+  --dl-color-focus:rgba(24,21,18,.18);
 
   /* Typography */
   --dl-font-serif:Georgia,"Times New Roman",serif;
@@ -77,6 +79,10 @@
   --dl-control-md:44px;
   --dl-control-lg:50px;
   --dl-control-xl:54px;
+
+  /* Elevation */
+  --dl-shadow-soft:0 12px 30px rgba(24,21,18,.06);
+  --dl-shadow-floating:0 18px 42px rgba(24,21,18,.12);
 
   /* Motion */
   --dl-motion-fast:.18s ease;

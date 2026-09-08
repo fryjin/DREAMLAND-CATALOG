@@ -1,86 +1,38 @@
 ---
 interface Props {
   content:Record<string,any>;
-  languageOptions:Array<{
-    value:string;
-    label:string;
-  }>;
+  languageOptions:Array<{value:string;label:string;}>;
   initialLanguage:string;
   languageEnabled?:boolean;
 }
-
-const {
-  content,
-  languageOptions,
-  initialLanguage,
-  languageEnabled=true
-}=Astro.props;
-
+const {content,languageOptions,initialLanguage,languageEnabled=true}=Astro.props;
 const nav=content?.navigation||{};
 ---
-<header class="home-header" data-home-header>
-  <div class="home-header__inner home-container">
-    <a
-      class="home-wordmark"
-      href="/"
-      aria-label="DREAMLAND home"
-    >
-      DREAMLAND
-    </a>
-
-    <nav
-      class="home-nav"
-      aria-label="Primary navigation"
-    >
-      <a href="/products/">
-        <span data-home-bind="navigation.collection">
-          {nav.collection||'Collection'}
-        </span>
-      </a>
-      <a href="/custom/">
-        <span data-home-bind="navigation.custom">
-          {nav.custom||'Custom'}
-        </span>
-      </a>
-      <a
-        class="home-nav__inquiry"
-        href="/inquiry/"
-      >
-        <span data-home-bind="navigation.inquiry">
-          {nav.inquiry||'Inquiry'}
-        </span>
-        <span
-          class="home-nav__count"
-          data-home-inquiry-count
-          aria-label="0 inquiry items"
-        >
-          0
-        </span>
-      </a>
+<header class="dl-site-header home-header" data-dl-site-header data-home-header>
+  <div class="dl-site-header__inner home-header__inner dl-container home-container">
+    <a class="dl-wordmark home-wordmark" href="/" aria-label="DREAMLAND home">DREAMLAND</a>
+    <nav class="dl-site-nav home-nav" aria-label="Primary navigation">
+      <a href="/products/"><span data-home-bind="navigation.collection">{nav.collection||'Collection'}</span></a>
+      <a href="/custom/"><span data-home-bind="navigation.custom">{nav.custom||'Custom'}</span></a>
     </nav>
-
-    <label class="home-language-control">
-      <span
-        class="home-sr-only"
-        data-home-bind="navigation.language"
-      >
-        {nav.language||'Language'}
-      </span>
-      <select
-        data-home-language-select
-        data-site-language-enabled={languageEnabled?'true':'false'}
-        aria-label={nav.language||'Language'}
-        disabled={!languageEnabled}
-      >
-        {languageOptions.map(option=>(
-          <option
-            value={option.value}
-            selected={option.value===initialLanguage}
-          >
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </label>
+    <div class="dl-site-actions">
+      <label class="dl-language-control home-language-control">
+        <span class="dl-sr-only home-sr-only" data-home-bind="navigation.language">{nav.language||'Language'}</span>
+        <select
+          data-home-language-select
+          data-site-language-enabled={languageEnabled?'true':'false'}
+          aria-label={nav.language||'Language'}
+          disabled={!languageEnabled}
+        >
+          {languageOptions.map(option=>(
+            <option value={option.value} selected={option.value===initialLanguage}>{option.label}</option>
+          ))}
+        </select>
+      </label>
+      <a class="dl-inquiry-action home-nav__inquiry" href="/inquiry/">
+        <span data-home-bind="navigation.inquiry">{nav.inquiry||'Inquiry'}</span>
+        <span class="dl-inquiry-count home-nav__count" data-home-inquiry-count aria-label="0 inquiry items">0</span>
+      </a>
+    </div>
   </div>
 </header>
