@@ -6,6 +6,7 @@ interface Props {
 
 const {view,mobileCover=''}=Astro.props;
 const content=view.content||{};
+const hero=content.hero||{};
 const story=content.story||{};
 const collections=content.collections||{};
 const featured=content.featured||{};
@@ -73,6 +74,67 @@ const cta=content.cta||{};
         loading="lazy"
       />
     </div>
+
+    <div
+      class="home-mobile-cover"
+      data-mobile-cover
+    >
+      <div class="home-mobile-cover__headline">
+        <span class="home-mobile-cover__edition">
+          DREAMLAND / 01
+        </span>
+        <p
+          class="home-mobile-cover__display"
+          data-home-bind="hero.kicker"
+        >
+          {hero.kicker}
+        </p>
+      </div>
+
+      <div class="home-mobile-cover__copy">
+        <h2 data-home-bind="hero.title">
+          {hero.title}
+        </h2>
+        <p data-home-bind="hero.body">
+          {hero.body}
+        </p>
+      </div>
+
+      <a
+        class="home-mobile-gate"
+        href="/products/"
+        data-mobile-cover-gate
+        aria-label={hero.primary||'Explore collection'}
+      >
+        <span
+          class="home-mobile-gate__track"
+          data-mobile-cover-track
+        >
+          <span
+            class="home-mobile-gate__fill"
+            aria-hidden="true"
+          ></span>
+
+          <span
+            class="home-mobile-gate__thumb"
+            data-mobile-cover-thumb
+          >
+            <span data-home-bind="hero.primary">
+              {hero.primary}
+            </span>
+            <b aria-hidden="true">→</b>
+          </span>
+
+          <span
+            class="home-mobile-gate__arrows"
+            aria-hidden="true"
+          >
+            → → →
+          </span>
+        </span>
+      </a>
+    </div>
+
   </section>
 
 <section

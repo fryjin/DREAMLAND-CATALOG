@@ -584,6 +584,45 @@
   const MOBILE_STARTUP_SESSION='dreamlandMobileStartupSeen:R4.11B4.1C';
   let mobileStartup={active:false,released:false,profile:'none',target:0,minimum:0,ready:0,settled:0,failed:0};
 
+  let mobileCatalogWarmup=null;
+  async function awaitMobileCatalogReady(timeout=1500){
+    if(mobileStartup.ready>=mobileStartup.minimum)return true;
+    if(!mobileCatalogWarmup)return false;
+    await Promise.race([mobileCatalogWarmup.waitFor(mobileStartup.minimum),wait(timeout)]);
+    return mobileStartup.ready>=mobileStartup.minimum;
+  }
+  function mountMobileCoverGate(){
+    const gate=document.querySelector('[data-mobile-cover-gate]');
+    if(!gate||root.matchMedia?.(MOBILE_STARTUP_QUERY)?.matches!==true||gate.dataset.mobileGateMounted==='true')return false;
+    const track=gate.querySelector('[data-mobile-cover-track]');
+    const thumb=gate.querySelector('[data-mobile-cover-thumb]');
+    if(!track||!thumb)return false;
+    gate.dataset.mobileGateMounted='true';
+    let dragging=false,moved=false,progress=0,start=0;
+    const paint=value=>{
+      progress=Math.max(0,Math.min(1,Number(value)||0));
+      const travel=Math.max(0,track.clientWidth-thumb.offsetWidth-8);
+      gate.style.setProperty('--dl-cover-progress',Math.round(progress*100)+'%');
+      gate.style.setProperty('--dl-cover-shift',(travel*progress)+'px');
+    };
+    const enter=async()=>{
+      if(gate.dataset.state==='entering')return;
+      gate.dataset.state='preparing';
+      await awaitMobileCatalogReady();
+      gate.dataset.state='entering';
+      document.body?.setAttribute('data-mobile-cover-leaving','true');
+      if(!root.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches)await wait(180);
+      root.location.assign(gate.href);
+    };
+    gate.addEventListener('pointerdown',e=>{if(e.button!==0)return;dragging=true;moved=false;start=e.clientX;gate.setPointerCapture?.(e.pointerId);});
+    gate.addEventListener('pointermove',e=>{if(!dragging)return;const delta=Math.max(0,e.clientX-start);const travel=Math.max(1,track.clientWidth-thumb.offsetWidth-8);if(delta>5)moved=true;paint(delta/travel);});
+    gate.addEventListener('pointerup',e=>{if(!dragging)return;dragging=false;gate.releasePointerCapture?.(e.pointerId);if(progress>=.72){e.preventDefault();enter();return;}paint(0);});
+    gate.addEventListener('pointercancel',()=>{dragging=false;paint(0);});
+    gate.addEventListener('click',e=>{e.preventDefault();if(moved){moved=false;return;}enter();});
+    root.addEventListener('pageshow',()=>{gate.dataset.state='';document.body?.removeAttribute('data-mobile-cover-leaving');paint(0);});
+    return true;
+  }
+
   function sessionStore(){
     try{return root.sessionStorage||null;}catch(_){return null;}
   }
@@ -647,7 +686,7 @@
     return {done,waitFor,target:images.length};
   }
   function releaseMobileStartup(loader,{immediate=false}={}){
-    mobileStartup.released=true;
+    mobileStartup.released=true;mobileStartup.active=false;
     try{sessionStore()?.setItem(MOBILE_STARTUP_SESSION,'1');}catch(_){}
     if(!loader)return;
     if(immediate){loader.dataset.active='false';return;}
@@ -664,12 +703,12 @@
     const profile=mobileProfile();
     mobileStartup={active:true,released:false,profile:profile.name,target:profile.target,minimum:profile.minimum,ready:0,settled:0,failed:0};
     const seen=sessionStore()?.getItem(MOBILE_STARTUP_SESSION)==='1';
-    if(seen){releaseMobileStartup(loader,{immediate:true});decodeImage(manifest.cover);startCatalogWarmup(manifest,profile);return true;}
+    if(seen){releaseMobileStartup(loader,{immediate:true});decodeImage(manifest.cover);mobileCatalogWarmup=startCatalogWarmup(manifest,profile);return true;}
     const started=root.performance?.now?.()||Date.now();
     startupPaint(loader,14,'Loading cover');
     const cover=await Promise.race([decodeImage(manifest.cover),wait(2200).then(()=>false)]);
     startupPaint(loader,cover?32:28,'Preparing collection 0 / '+Math.min(profile.target,manifest.catalogImages.length));
-    const warmup=startCatalogWarmup(manifest,profile,loader);
+    const warmup=mobileCatalogWarmup=startCatalogWarmup(manifest,profile,loader);
     const releaseCount=Math.min(warmup.target,profile.preferFull?profile.target:profile.minimum);
     const elapsed=(root.performance?.now?.()||Date.now())-started;
     await Promise.race([warmup.waitFor(releaseCount),wait(Math.max(0,3200-elapsed))]);
@@ -829,6 +868,7 @@
     'undefined'
   ){
     mountMobileStartup();
+    mountMobileCoverGate();
 
     if(
       document.readyState===
