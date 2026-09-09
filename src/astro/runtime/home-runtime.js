@@ -792,6 +792,8 @@
       }
     );
 
+    document.addEventListener('click',e=>{let b=e.target.closest?.('[data-home-language-option]');if(b){applyLanguage(b.dataset.homeLanguageOption);b.closest('details').open=false;}});
+
     root.addEventListener(
       'storage',
       event=>{

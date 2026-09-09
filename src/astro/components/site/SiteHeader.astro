@@ -4,8 +4,15 @@ interface Props {
   languageOptions:Array<{value:string;label:string;}>;
   initialLanguage:string;
   languageEnabled?:boolean;
+  coverLanguageMenu?:boolean;
 }
-const {content,languageOptions,initialLanguage,languageEnabled=true}=Astro.props;
+const {
+  content,
+  languageOptions,
+  initialLanguage,
+  languageEnabled=true,
+  coverLanguageMenu=false
+}=Astro.props;
 const nav=content?.navigation||{};
 ---
 <header class="dl-site-header home-header" data-dl-site-header data-home-header>
@@ -29,6 +36,33 @@ const nav=content?.navigation||{};
           ))}
         </select>
       </label>
+
+      {coverLanguageMenu&&(
+        <details class="home-cover-language">
+          <summary aria-label={nav.language||'Language'}>
+            <span
+              class="home-cover-language__current"
+              aria-hidden="true"
+            ></span>
+          </summary>
+
+          <div
+            class="home-cover-language__menu"
+            role="group"
+            aria-label={nav.language||'Language'}
+          >
+            {languageOptions.map(option=>(
+              <button
+                type="button"
+                data-home-language-option={option.value}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </details>
+      )}
+
       <a class="dl-inquiry-action home-nav__inquiry" href="/inquiry/">
         <span data-home-bind="navigation.inquiry">{nav.inquiry||'Inquiry'}</span>
         <span class="dl-inquiry-count home-nav__count" data-home-inquiry-count aria-label="0 inquiry items">0</span>
