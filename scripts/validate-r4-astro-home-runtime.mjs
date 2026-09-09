@@ -144,10 +144,10 @@ try{
       source,
       'utf8'
     )>
-    12000
+    20*1024
   ){
     fail(
-      'Home minimal runtime exceeds the 12 KB source budget.'
+      'Home runtime exceeds the controlled 20 KiB source budget.'
     );
   }
 

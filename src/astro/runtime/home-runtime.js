@@ -578,6 +578,106 @@
     return count;
   }
 
+
+  const MOBILE_STARTUP_VERSION='R4.11B4.1C-A';
+  const MOBILE_STARTUP_QUERY='(max-width:720px)';
+  const MOBILE_STARTUP_SESSION='dreamlandMobileStartupSeen:R4.11B4.1C';
+  let mobileStartup={active:false,released:false,profile:'none',target:0,minimum:0,ready:0,settled:0,failed:0};
+
+  function sessionStore(){
+    try{return root.sessionStorage||null;}catch(_){return null;}
+  }
+  function parseMobileStartupState(){
+    const parsed=safeJson(document.getElementById('mobileHomeStartupState')?.textContent);
+    if(!parsed||parsed.version!==MOBILE_STARTUP_VERSION||!parsed.cover||!Array.isArray(parsed.catalogImages))return null;
+    return parsed;
+  }
+  function mobileProfile(){
+    const connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection||{};
+    const type=text(connection.effectiveType).toLowerCase();
+    const memory=Number(navigator.deviceMemory||0);
+    const downlink=Number(connection.downlink||0);
+    if(connection.saveData||type.includes('2g'))return {name:'save-data',target:4,minimum:4,concurrency:2,preferFull:false};
+    if(type==='3g'||(memory>0&&memory<=2))return {name:'constrained',target:12,minimum:8,concurrency:3,preferFull:false};
+    if(type==='4g'||downlink>=5){
+      const preferFull=memory>=6;
+      return {name:preferFull?'fast-full':'fast',target:24,minimum:preferFull?24:16,concurrency:4,preferFull};
+    }
+    return {name:'normal',target:16,minimum:12,concurrency:3,preferFull:false};
+  }
+  function startupPaint(loader,progress,status){
+    if(!loader)return;
+    const next=Math.max(0,Math.min(100,Math.round(progress)));
+    loader.style.setProperty('--dl-startup-progress',next+'%');
+    loader.querySelector('[data-mobile-startup-progress]')?.setAttribute('aria-valuenow',String(next));
+    const node=loader.querySelector('[data-mobile-startup-status]');
+    if(node&&status)node.textContent=status;
+  }
+  function wait(ms){return new Promise(resolve=>root.setTimeout(resolve,Math.max(0,ms)));}
+  function decodeImage(url){
+    return new Promise(resolve=>{
+      if(!url){resolve(false);return;}
+      const image=new root.Image();
+      image.decoding='async';
+      let closed=false;
+      const done=async ok=>{
+        if(closed)return;
+        closed=true;image.onload=null;image.onerror=null;
+        if(ok&&typeof image.decode==='function'){try{await image.decode();}catch(_){}}
+        resolve(ok);
+      };
+      image.onload=()=>done(true);image.onerror=()=>done(false);image.src=url;
+      if(image.complete&&image.naturalWidth>0)done(true);
+    });
+  }
+  function startCatalogWarmup(manifest,profile,loader=null){
+    const images=manifest.catalogImages.slice(0,profile.target);
+    let cursor=0,ready=0,settled=0,failed=0;
+    const waiters=[];
+    const notify=()=>{
+      mobileStartup.ready=ready;mobileStartup.settled=settled;mobileStartup.failed=failed;
+      startupPaint(loader,32+(images.length?(settled/images.length)*60:60),'Preparing collection '+ready+' / '+images.length);
+      waiters.slice().forEach(waiter=>{if(ready>=waiter.count){waiter.resolve(ready);waiters.splice(waiters.indexOf(waiter),1);}});
+    };
+    const waitFor=count=>ready>=count?Promise.resolve(ready):new Promise(resolve=>waiters.push({count,resolve}));
+    const worker=async()=>{while(cursor<images.length){const index=cursor++;const ok=await decodeImage(images[index]);settled++;ok?ready++:failed++;notify();}};
+    const workers=Array.from({length:Math.min(profile.concurrency,Math.max(1,images.length))},()=>worker());
+    const done=Promise.all(workers).then(()=>{startupPaint(loader,96,'Collection ready');return {ready,settled,failed};});
+    notify();
+    return {done,waitFor,target:images.length};
+  }
+  function releaseMobileStartup(loader,{immediate=false}={}){
+    mobileStartup.released=true;
+    try{sessionStore()?.setItem(MOBILE_STARTUP_SESSION,'1');}catch(_){}
+    if(!loader)return;
+    if(immediate){loader.dataset.active='false';return;}
+    startupPaint(loader,100,'Collection ready');loader.classList.add('is-leaving');
+    root.setTimeout(()=>{loader.dataset.active='false';loader.classList.remove('is-leaving');},220);
+  }
+  function mobileStartupSnapshot(){return Object.freeze({...mobileStartup});}
+  async function mountMobileStartup(){
+    if(typeof document==='undefined')return false;
+    const loader=document.getElementById('dreamlandMobileStartup');
+    const manifest=parseMobileStartupState();
+    const mobile=root.matchMedia?.(MOBILE_STARTUP_QUERY)?.matches===true;
+    if(!mobile||!loader||!manifest){if(loader)loader.dataset.active='false';return false;}
+    const profile=mobileProfile();
+    mobileStartup={active:true,released:false,profile:profile.name,target:profile.target,minimum:profile.minimum,ready:0,settled:0,failed:0};
+    const seen=sessionStore()?.getItem(MOBILE_STARTUP_SESSION)==='1';
+    if(seen){releaseMobileStartup(loader,{immediate:true});decodeImage(manifest.cover);startCatalogWarmup(manifest,profile);return true;}
+    const started=root.performance?.now?.()||Date.now();
+    startupPaint(loader,14,'Loading cover');
+    const cover=await Promise.race([decodeImage(manifest.cover),wait(2200).then(()=>false)]);
+    startupPaint(loader,cover?32:28,'Preparing collection 0 / '+Math.min(profile.target,manifest.catalogImages.length));
+    const warmup=startCatalogWarmup(manifest,profile,loader);
+    const releaseCount=Math.min(warmup.target,profile.preferFull?profile.target:profile.minimum);
+    const elapsed=(root.performance?.now?.()||Date.now())-started;
+    await Promise.race([warmup.waitFor(releaseCount),wait(Math.max(0,3200-elapsed))]);
+    const visibleFor=(root.performance?.now?.()||Date.now())-started;
+    if(visibleFor<500)await wait(500-visibleFor);
+    releaseMobileStartup(loader);warmup.done.catch(()=>{});return true;
+  }
+
   function parseRuntimeState(){
     const node=
       document.getElementById(
@@ -720,13 +820,16 @@
       inquiryCount,
       mount,
       applyLanguage,
-      updateInquiryBadge
+      updateInquiryBadge,
+      mobileStartupSnapshot
     });
 
   if(
     typeof document!==
     'undefined'
   ){
+    mountMobileStartup();
+
     if(
       document.readyState===
       'loading'

@@ -3,17 +3,21 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import SiteHeader from '../components/site/SiteHeader.astro';
 import SiteFooter from '../components/site/SiteFooter.astro';
 import HomePage from '../components/home/HomePage.astro';
+import MobileStartupLoader from '../components/home/MobileStartupLoader.astro';
 import {
   buildHomeViewModel,
   buildHomeRuntimeState
 } from '../lib/home-view-model.mjs';
+import {buildMobileHomeStartupManifest} from '../lib/mobile-home-startup.mjs';
 import '../styles/home.css';
+import '../styles/mobile-home.css';
 
 import routes from '../../../data/page-routes.json';
 import productsDocument from '../../../data/products.json';
 import seriesDocument from '../../../data/series.json';
 import siteContent from '../../../data/site-content.json';
 import homeAssets from '../../../data/desktop-home-assets.json';
+import mobileHomeAssets from '../../../data/mobile-home-assets.json';
 import i18n from '../../../data/i18n.json';
 
 import '../../domain/pricing/runtime-pricing-policy.js';
@@ -76,6 +80,16 @@ const runtimeState=
     ...sharedInput
   });
 
+const mobileStartup=
+  buildMobileHomeStartupManifest({
+    products:productsDocument.products||[],
+    assets:mobileHomeAssets
+  });
+
+const mobileStartupJson=
+  JSON.stringify(mobileStartup)
+    .replace(/</g,'\\u003c');
+
 const runtimeStateJson=
   JSON.stringify(
     runtimeState
@@ -108,13 +122,32 @@ const languageOptions=
   canonical="https://dreamland-catalog.pages.dev/"
   ogImage="https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg"
 >
+  <Fragment slot="head">
+    <link
+      rel="preload"
+      as="image"
+      href={mobileStartup.cover}
+      media="(max-width:720px)"
+      fetchpriority="high"
+    />
+  </Fragment>
+
+  <MobileStartupLoader />
+
   <SiteHeader
     content={content}
     languageOptions={languageOptions}
     initialLanguage={language}
   />
-  <HomePage view={view} />
+  <HomePage view={view} mobileCover={mobileStartup.cover} />
   <SiteFooter content={content} />
+
+  <script
+    is:inline
+    id="mobileHomeStartupState"
+    type="application/json"
+    set:html={mobileStartupJson}
+  ></script>
 
   <script
     is:inline

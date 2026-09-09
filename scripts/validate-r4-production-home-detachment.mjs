@@ -33,7 +33,7 @@ const errors=[];
 
 const BUDGETS=Object.freeze({
   htmlRaw:128*1024,
-  runtimeRaw:12*1024,
+  runtimeRaw:20*1024,
   styleRaw:64*1024,
   heroRaw:256*1024,
   codeGzip:64*1024,

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "stage": "R4.11B4.1C-A",
+  "cover": {
+    "image": "./images/shared/home/HOME001/cover.webp",
+    "placeholder": "./images/shared/home/HOME001/cover-placeholder.webp"
+  },
+  "catalog": {
+    "batchSize": 24
+  }
+}

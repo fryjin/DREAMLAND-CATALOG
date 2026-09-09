@@ -1,9 +1,10 @@
 ---
 interface Props {
   view:Record<string,any>;
+  mobileCover?:string;
 }
 
-const {view}=Astro.props;
+const {view,mobileCover=''}=Astro.props;
 const content=view.content||{};
 const story=content.story||{};
 const collections=content.collections||{};
@@ -44,14 +45,19 @@ const cta=content.cta||{};
       class="home-hero__media dl-cover-stage__media"
       data-home-hero-role="main-media"
     >
-      <img
-        src={view.hero.image}
-        alt=""
-        width="1920"
-        height="1080"
-        loading="eager"
-        fetchpriority="high"
-      />
+      <picture>
+        {mobileCover&&(
+          <source media="(max-width:720px)" srcset={mobileCover} />
+        )}
+        <img
+          src={view.hero.image}
+          alt=""
+          width="1920"
+          height="1080"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </picture>
     </div>
 
     <div
