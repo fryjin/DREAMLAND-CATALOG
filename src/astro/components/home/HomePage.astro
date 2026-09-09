@@ -14,7 +14,7 @@ const wholesale=content.wholesale||{};
 const cta=content.cta||{};
 ---
 <main class="home-main" data-home-static-presentation>
-  <section
+<section
     class="home-hero home-container dl-cover-stage"
     data-home-section="hero"
     aria-labelledby="homeHeroTitle"
@@ -69,81 +69,54 @@ const cta=content.cta||{};
     </div>
   </section>
 
-  <section
-    class="home-story home-container"
-    data-home-section="story"
-    aria-labelledby="homeStoryTitle"
-  >
-    <div class="home-story__media">
-      <img
-        src={view.story.image}
-        alt=""
-        width="1400"
-        height="1050"
-        loading="lazy"
-      />
-    </div>
-
-    <div class="home-story__copy">
-      <p
-        class="home-eyebrow"
-        data-home-bind="story.kicker"
-      >
-        {story.kicker}
-      </p>
-      <h2
-        id="homeStoryTitle"
-        data-home-bind="story.title"
-      >
-        {story.title}
-      </h2>
-      <p data-home-bind="story.body">
-        {story.body}
-      </p>
-      <p
-        class="home-story__note"
-        data-home-bind="story.note"
-      >
-        {story.note}
-      </p>
-    </div>
-  </section>
-
-  <section
+<section
     class="home-section home-container home-collection-shelf dl-collection-shelf"
     data-home-section="collections"
     aria-labelledby="homeCollectionsTitle"
   >
-    <div class="home-section__head home-collections__type dl-collection-shelf__type">
+    <div class="home-collections__type dl-collection-shelf__type">
       <div
         class="home-collections__rail"
         data-home-collections-role="title-rail"
+        aria-hidden="true"
       >
-        <div class="home-collections__rail-inner">
-          <p
-            class="home-eyebrow"
-            data-home-bind="collections.kicker"
-          >
-            {collections.kicker}
-          </p>
-          <h2
-            id="homeCollectionsTitle"
-            data-home-bind="collections.title"
-          >
-            {collections.title}
-          </h2>
-        </div>
-      </div>
+        <span class="home-collections__rail-index">02</span>
 
-      <p
-        class="home-section__body"
-        data-home-bind="collections.body"
-      >
-        {collections.body}
-      </p>
+        <div class="home-collections__rail-track">
+          <span class="home-collections__rail-inner">
+            HAND-CARVED CANDLE ART
+          </span>
+        </div>
+
+        <span class="home-collections__rail-meta">
+          COLLECTION / 01—04
+        </span>
+      </div>
     </div>
 
-    <div class="home-collections dl-collection-shelf__items">
+    <div class="home-collections__body">
+      <div class="home-collections__intro">
+        <p
+          class="home-eyebrow"
+          data-home-bind="collections.kicker"
+        >
+          {collections.kicker}
+        </p>
+        <h2
+          id="homeCollectionsTitle"
+          data-home-bind="collections.title"
+        >
+          {collections.title}
+        </h2>
+        <p
+          class="home-section__body"
+          data-home-bind="collections.body"
+        >
+          {collections.body}
+        </p>
+      </div>
+
+      <div class="home-collections dl-collection-shelf__items">
       {view.collections.map((item:any)=>(
         <a
           class:list={[
@@ -186,10 +159,51 @@ const cta=content.cta||{};
           </div>
         </a>
       ))}
+      </div>
     </div>
   </section>
 
-  <section
+<section
+    class="home-story home-container"
+    data-home-section="story"
+    aria-labelledby="homeStoryTitle"
+  >
+    <div class="home-story__media">
+      <img
+        src={view.story.image}
+        alt=""
+        width="1400"
+        height="1050"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="home-story__copy">
+      <p
+        class="home-eyebrow"
+        data-home-bind="story.kicker"
+      >
+        {story.kicker}
+      </p>
+      <h2
+        id="homeStoryTitle"
+        data-home-bind="story.title"
+      >
+        {story.title}
+      </h2>
+      <p data-home-bind="story.body">
+        {story.body}
+      </p>
+      <p
+        class="home-story__note"
+        data-home-bind="story.note"
+      >
+        {story.note}
+      </p>
+    </div>
+  </section>
+
+<section
     class="home-section home-container"
     data-home-section="featured"
     aria-labelledby="homeFeaturedTitle"
@@ -274,12 +288,12 @@ const cta=content.cta||{};
     </div>
   </section>
 
-  <section
+<section
     class="home-editorial-band"
     data-home-section="craft"
   >
-    <div class="home-editorial home-container">
-      <div class="home-editorial__media">
+    <div class="home-editorial home-container dl-editorial-spread">
+      <div class="home-editorial__media dl-editorial-spread__media">
         <img
           src={view.craft.image}
           alt=""
@@ -289,7 +303,7 @@ const cta=content.cta||{};
         />
       </div>
 
-      <div class="home-editorial__copy">
+      <div class="home-editorial__copy dl-editorial-spread__copy">
         <p
           class="home-eyebrow"
           data-home-bind="craft.kicker"
@@ -306,12 +320,12 @@ const cta=content.cta||{};
     </div>
   </section>
 
-  <section
+<section
     class="home-section home-container"
     data-home-section="custom"
   >
-    <div class="home-custom">
-      <div class="home-custom__copy">
+    <div class="home-custom dl-editorial-spread dl-editorial-spread--reverse">
+      <div class="home-custom__copy dl-editorial-spread__copy">
         <p
           class="home-eyebrow"
           data-home-bind="custom.kicker"
@@ -346,7 +360,7 @@ const cta=content.cta||{};
         </a>
       </div>
 
-      <div class="home-custom__media">
+      <div class="home-custom__media dl-editorial-spread__media">
         <img
           src={view.custom.image}
           alt=""
@@ -358,43 +372,63 @@ const cta=content.cta||{};
     </div>
   </section>
 
-  <section
-    class="home-section home-container"
+<section
+    class="home-section home-container home-wholesale dl-editorial-spread"
     data-home-section="wholesale"
   >
-    <div class="home-wholesale__head">
-      <p
-        class="home-eyebrow"
-        data-home-bind="wholesale.kicker"
-      >
-        {wholesale.kicker}
-      </p>
-      <h2 data-home-bind="wholesale.title">
-        {wholesale.title}
-      </h2>
+    <div class="home-wholesale__media dl-editorial-spread__media">
+      <img
+        src={view.wholesale.image}
+        alt=""
+        width="1600"
+        height="1000"
+        loading="lazy"
+      />
     </div>
 
-    <div class="home-wholesale__facts">
-      {wholesale.facts.map((fact:any,index:number)=>(
-        <article>
-          <h3
-            data-home-wholesale-title
-            data-home-array-index={index}
-          >
-            {fact.title}
-          </h3>
-          <p
-            data-home-wholesale-body
-            data-home-array-index={index}
-          >
-            {fact.body}
-          </p>
-        </article>
-      ))}
+    <div class="home-wholesale__copy dl-editorial-spread__copy">
+      <div class="home-wholesale__head">
+        <p
+          class="home-eyebrow"
+          data-home-bind="wholesale.kicker"
+        >
+          {wholesale.kicker}
+        </p>
+        <h2 data-home-bind="wholesale.title">
+          {wholesale.title}
+        </h2>
+      </div>
+
+      <div class="home-wholesale__facts">
+        {wholesale.facts.map((fact:any,index:number)=>(
+          <article>
+            <span
+              class="home-wholesale__index"
+              aria-hidden="true"
+            >
+              {String(index+1).padStart(2,'0')}
+            </span>
+            <div>
+              <h3
+                data-home-wholesale-title
+                data-home-array-index={index}
+              >
+                {fact.title}
+              </h3>
+              <p
+                data-home-wholesale-body
+                data-home-array-index={index}
+              >
+                {fact.body}
+              </p>
+            </div>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 
-  <section
+<section
     class="home-cta"
     data-home-section="cta"
   >
