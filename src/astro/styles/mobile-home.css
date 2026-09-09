@@ -1,4 +1,9 @@
 .dl-mobile-startup{display:none}
+
+.home-mobile-cover{
+  display:none;
+}
+
 .home-hero__media picture{width:100%;height:100%;display:block}
 @media (max-width:720px){
   .dl-mobile-startup[data-active="true"]{

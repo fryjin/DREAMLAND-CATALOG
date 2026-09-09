@@ -154,6 +154,9 @@ function productPrice(
 function normalizeHomeContent(
   content={}
 ){
+  const hero=
+    content?.hero||
+    {};
   const navigation=
     content?.navigation||
     {};
@@ -183,6 +186,23 @@ function normalizeHomeContent(
     {};
 
   return Object.freeze({
+    hero:Object.freeze({
+      kicker:
+        hero.kicker||
+        'HAND-CARVED CANDLE ART',
+      title:
+        hero.title||
+        'Candles, carved by hand.',
+      body:
+        hero.body||
+        '',
+      primary:
+        hero.primary||
+        'Explore collection',
+      secondary:
+        hero.secondary||
+        'Start a custom project'
+    }),
     navigation:Object.freeze({
       collection:
         navigation.collection||
