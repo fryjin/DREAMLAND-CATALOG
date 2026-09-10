@@ -11,6 +11,84 @@ const {
 
 const copy=view.catalog||{};
 const navigation=view.content?.navigation||{};
+
+const EDITORIAL_ROLES={
+  a:[
+    'lead',
+    'support',
+    'narrow',
+    'support-wide',
+    'breather'
+  ],
+  b:[
+    'support',
+    'lead',
+    'support-wide',
+    'narrow',
+    'breather'
+  ]
+};
+
+function editorialRole(
+  phase:string,
+  slot:number
+){
+  const roles=
+    phase==='b'
+      ? EDITORIAL_ROLES.b
+      : EDITORIAL_ROLES.a;
+
+  return (
+    roles[slot-1]||
+    'support'
+  );
+}
+
+const editorialGroups=
+  Array.from(
+    {
+      length:
+        Math.ceil(
+          view.products.length/5
+        )
+    },
+    (
+      _,
+      groupIndex
+    )=>{
+      const phase=
+        groupIndex%2===0
+          ? 'a'
+          : 'b';
+
+      return {
+        phase,
+        products:
+          view.products
+            .slice(
+              groupIndex*5,
+              groupIndex*5+5
+            )
+            .map(
+              (
+                product:any,
+                localIndex:number
+              )=>({
+                ...product,
+                editorialSlot:
+                  localIndex+1,
+                editorialPhase:
+                  phase,
+                editorialRole:
+                  editorialRole(
+                    phase,
+                    localIndex+1
+                  )
+              })
+            )
+      };
+    }
+  );
 ---
 <main
   class="catalog-main"
@@ -111,6 +189,16 @@ const navigation=view.content?.navigation||{};
 
         <label class="catalog-search">
           <span
+            class="catalog-search__prompt"
+            aria-hidden="true"
+          >
+            <b>⌕</b>
+            <span data-catalog-bind="catalog.searchPlaceholder">
+              {copy.searchPlaceholder}
+            </span>
+          </span>
+
+          <span
             class="home-sr-only"
             data-catalog-bind="catalog.searchPlaceholder"
           >
@@ -173,6 +261,16 @@ const navigation=view.content?.navigation||{};
 
         <label class="catalog-sort">
           <span
+            class="catalog-sort__visual"
+            aria-hidden="true"
+          >
+            <span data-catalog-bind="catalog.sort">
+              {copy.sort}
+            </span>
+            <b>↕</b>
+          </span>
+
+          <span
             class="home-sr-only"
             data-catalog-bind="catalog.sort"
           >
@@ -224,57 +322,71 @@ const navigation=view.content?.navigation||{};
       class="catalog-grid"
       data-catalog-product-grid
     >
-      {view.products.map((product:any)=>(
-        <article
-          class="catalog-card"
-          data-catalog-product={product.id}
+      {editorialGroups.map((
+        group:any,
+        groupIndex:number
+      )=>(
+        <div
+          class="catalog-spread"
+          data-editorial-phase={group.phase}
+          data-editorial-group={groupIndex+1}
         >
-          <a
-            class="catalog-card__link"
-            href={product.href}
-            aria-label={`${copy.viewDetails}: ${product.name}`}
-          >
-            <div class="catalog-card__media">
-              <img
-                src={product.cover}
-                alt={product.name}
-                width="720"
-                height="900"
-                loading={product.loading}
-                fetchpriority={product.priority}
-                decoding="async"
-              />
-
-              <span
-                class="catalog-card__overlay"
-                aria-hidden="true"
+          {group.products.map((product:any)=>(
+            <article
+              class="catalog-card"
+              data-catalog-product={product.id}
+              data-editorial-slot={product.editorialSlot}
+              data-editorial-phase={product.editorialPhase}
+              data-editorial-role={product.editorialRole}
+            >
+              <a
+                class="catalog-card__link"
+                href={product.href}
+                aria-label={`${copy.viewDetails}: ${product.name}`}
               >
-                {copy.viewDetails}
-                <b>→</b>
-              </span>
-            </div>
+                <div class="catalog-card__media">
+                  <img
+                    src={product.cover}
+                    alt={product.name}
+                    width="720"
+                    height="900"
+                    loading={product.loading}
+                    fetchpriority={product.priority}
+                    decoding="async"
+                  />
 
-            <div class="catalog-card__copy">
-              <div>
-                <h2>
-                  {product.name}
-                </h2>
-                <p>
-                  {product.seriesLabel}
-                </p>
-              </div>
+                  <span
+                    class="catalog-card__overlay"
+                    aria-hidden="true"
+                  >
+                    {copy.viewDetails}
+                    <b>→</b>
+                  </span>
+                </div>
 
-              <div class="catalog-card__commercial">
-                <strong>
-                  {product.price}
-                </strong>
-                <span>
-                  {copy.moq} {product.moq}
-                </span>
-              </div>
-            </div>
-          </a>
-        </article>
+                <div class="catalog-card__copy">
+                  <div>
+                    <h2>
+                      {product.name}
+                    </h2>
+                    <p>
+                      {product.seriesLabel}
+                    </p>
+                  </div>
+
+                  <div class="catalog-card__commercial">
+                    <strong>
+                      {product.price}
+                    </strong>
+                    <span>
+                      {copy.moq} {product.moq}
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </article>
+          ))}
+        </div>
       ))}
     </div>
 

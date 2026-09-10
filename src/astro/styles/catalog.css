@@ -663,3 +663,460 @@
   body[data-dreamland-page="catalog"] .catalog-intro h1 { font-size:clamp(48px,12.5vw,60px); }
   body[data-dreamland-page="catalog"] .catalog-intro__count strong { font-size:48px; }
 }
+
+/* R4.11B4.1D-C — Mobile Editorial Flow System
+ * Editorial Magazine × Mobile-native Product Flow.
+ * Five products form one deterministic spread; Search/Filter/Sort
+ * keep the canonical R4 runtime and reflow the current result set.
+ */
+
+.catalog-spread {
+  display:contents;
+}
+
+.catalog-search__prompt,
+.catalog-sort__visual {
+  display:none;
+}
+
+@media (max-width:720px) {
+  body[data-dreamland-page="catalog"] .catalog-chapter {
+    width:calc(100% - 28px);
+    padding-top:22px;
+    padding-bottom:18px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-chapter__folio {
+    margin-bottom:14px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-intro__layout {
+    grid-template-columns:minmax(0,1fr) 58px;
+    gap:14px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-intro h1 {
+    max-width:7.4ch;
+    font-size:clamp(38px,11.6vw,48px);
+    line-height:.93;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-intro__copy > p {
+    max-width:32ch;
+    margin-top:14px;
+    font-size:12px;
+    line-height:1.5;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-intro__count {
+    gap:4px;
+    padding-bottom:1px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-intro__count strong {
+    font-size:31px;
+    line-height:.86;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-intro__count span {
+    max-width:54px;
+    font-size:7px;
+    line-height:1.2;
+    letter-spacing:.1em;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-reader__inner {
+    width:calc(100% - 28px);
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-reader__index {
+    flex-wrap:nowrap;
+    gap:0 20px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding:10px 0 8px;
+    scroll-snap-type:x proximity;
+    overscroll-behavior-inline:contain;
+    scrollbar-width:none;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-reader__index::-webkit-scrollbar {
+    display:none;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-series__item {
+    flex:0 0 auto;
+    min-height:34px;
+    scroll-snap-align:start;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-series__item small {
+    display:none;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-reader__tools {
+    position:relative;
+    grid-template-columns:minmax(0,1fr) auto auto;
+    align-items:center;
+    gap:14px;
+    min-height:52px;
+    padding:0;
+    border-bottom:1px solid var(--dl-color-border);
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-result-count {
+    position:absolute;
+    width:1px;
+    height:1px;
+    margin:-1px;
+    padding:0;
+    overflow:hidden;
+    clip:rect(0 0 0 0);
+    clip-path:inset(50%);
+    white-space:nowrap;
+    border:0;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-search {
+    position:relative;
+    grid-column:1;
+    min-width:0;
+    min-height:44px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-search__prompt {
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    min-width:0;
+    color:var(--dl-color-ink);
+    font-size:10px;
+    line-height:1;
+    font-weight:820;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    transition:opacity var(--dl-motion-fast);
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-search__prompt b {
+    flex:0 0 auto;
+    font-family:var(--dl-font-sans);
+    font-size:16px;
+    font-weight:500;
+    line-height:1;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-search__prompt span {
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-search input {
+    position:absolute;
+    inset:0;
+    width:100%;
+    min-height:44px;
+    padding:0 0 1px;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    color:var(--dl-color-ink);
+    font-size:13px;
+    opacity:0;
+    transition:opacity var(--dl-motion-fast);
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-search:focus-within input,
+  body[data-dreamland-page="catalog"] .catalog-search:has(input:not(:placeholder-shown)) input {
+    opacity:1;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-search:focus-within .catalog-search__prompt,
+  body[data-dreamland-page="catalog"] .catalog-search:has(input:not(:placeholder-shown)) .catalog-search__prompt {
+    opacity:0;
+    pointer-events:none;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-filter {
+    grid-column:2;
+    justify-self:end;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-filter > summary {
+    gap:7px;
+    min-height:44px;
+    padding:0;
+    white-space:nowrap;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-filter > summary::after {
+    content:"+";
+    font-size:14px;
+    font-weight:500;
+    line-height:1;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-filter[open] > summary::after {
+    content:"−";
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-sort {
+    position:relative;
+    grid-column:3;
+    justify-self:end;
+    min-width:54px;
+    min-height:44px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-sort__visual {
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:6px;
+    color:var(--dl-color-ink);
+    font-size:9px;
+    line-height:1;
+    font-weight:850;
+    letter-spacing:.11em;
+    text-transform:uppercase;
+    white-space:nowrap;
+    pointer-events:none;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-sort__visual b {
+    font-size:12px;
+    font-weight:500;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-sort select {
+    position:absolute;
+    inset:0;
+    z-index:1;
+    width:100%;
+    min-width:0;
+    height:44px;
+    padding:0;
+    border:0;
+    background:transparent;
+    opacity:0;
+    cursor:pointer;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-products.home-container {
+    width:calc(100% - 28px);
+    padding-top:18px;
+    padding-bottom:96px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-grid {
+    display:block;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-spread {
+    display:grid;
+    grid-template-columns:repeat(12,minmax(0,1fr));
+    align-items:start;
+    column-gap:4px;
+    row-gap:26px;
+    margin-bottom:40px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-spread:last-child {
+    margin-bottom:0;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-spread[data-editorial-phase="a"] .catalog-card[data-editorial-slot="1"] {
+    grid-column:1 / 8;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-spread[data-editorial-phase="a"] .catalog-card[data-editorial-slot="2"] {
+    grid-column:8 / 13;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-spread[data-editorial-phase="a"] .catalog-card[data-editorial-slot="3"] {
+    grid-column:1 / 6;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-spread[data-editorial-phase="a"] .catalog-card[data-editorial-slot="4"] {
+    grid-column:6 / 13;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-spread[data-editorial-phase="a"] .catalog-card[data-editorial-slot="5"] {
+    grid-column:3 / 13;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-spread[data-editorial-phase="b"] .catalog-card[data-editorial-slot="1"] {
+    grid-column:1 / 6;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-spread[data-editorial-phase="b"] .catalog-card[data-editorial-slot="2"] {
+    grid-column:6 / 13;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-spread[data-editorial-phase="b"] .catalog-card[data-editorial-slot="3"] {
+    grid-column:1 / 8;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-spread[data-editorial-phase="b"] .catalog-card[data-editorial-slot="4"] {
+    grid-column:8 / 13;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-spread[data-editorial-phase="b"] .catalog-card[data-editorial-slot="5"] {
+    grid-column:1 / 11;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card {
+    min-width:0;
+    overflow:visible;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+    transform:none;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card__media {
+    aspect-ratio:4/5;
+    overflow:hidden;
+    border-radius:18px;
+    background:var(--dl-color-surface-soft);
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card[data-editorial-role="lead"] .catalog-card__media {
+    aspect-ratio:4/5;
+    border-radius:22px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card[data-editorial-role="support"] .catalog-card__media {
+    aspect-ratio:1/1;
+    border-radius:16px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card[data-editorial-role="narrow"] .catalog-card__media {
+    aspect-ratio:3/4;
+    border-radius:14px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card[data-editorial-role="support-wide"] .catalog-card__media {
+    aspect-ratio:4/5;
+    border-radius:18px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card[data-editorial-role="breather"] .catalog-card__media {
+    aspect-ratio:5/4;
+    border-radius:18px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card__copy {
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:8px;
+    padding:10px 2px 0;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card[data-editorial-role="support"] .catalog-card__copy,
+  body[data-dreamland-page="catalog"] .catalog-card[data-editorial-role="narrow"] .catalog-card__copy {
+    grid-template-columns:1fr;
+    gap:6px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card__copy h2 {
+    font-size:clamp(16px,4.6vw,20px);
+    line-height:1.04;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card[data-editorial-role="support"] .catalog-card__copy h2,
+  body[data-dreamland-page="catalog"] .catalog-card[data-editorial-role="narrow"] .catalog-card__copy h2 {
+    font-size:15px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card__copy p {
+    margin-top:5px;
+    font-size:9px;
+    line-height:1.25;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card__commercial {
+    gap:4px;
+    align-items:flex-end;
+    text-align:right;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card[data-editorial-role="support"] .catalog-card__commercial,
+  body[data-dreamland-page="catalog"] .catalog-card[data-editorial-role="narrow"] .catalog-card__commercial {
+    align-items:flex-start;
+    text-align:left;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card__commercial strong {
+    font-size:11px;
+    line-height:1.15;
+    white-space:nowrap;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card__commercial span {
+    font-size:9px;
+    line-height:1.2;
+    white-space:nowrap;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-card__overlay {
+    display:none;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-pagination {
+    gap:16px;
+    padding-top:28px;
+  }
+}
+
+@media (max-width:374px) {
+  body[data-dreamland-page="catalog"] .catalog-chapter,
+  body[data-dreamland-page="catalog"] .catalog-reader__inner,
+  body[data-dreamland-page="catalog"] .catalog-products.home-container {
+    width:calc(100% - 24px);
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-intro__layout {
+    grid-template-columns:minmax(0,1fr) 50px;
+    gap:10px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-intro h1 {
+    font-size:clamp(36px,11.4vw,44px);
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-reader__index {
+    column-gap:16px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-reader__tools {
+    gap:11px;
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-spread {
+    column-gap:3px;
+    row-gap:22px;
+    margin-bottom:34px;
+  }
+}
+
+@media (min-width:421px) and (max-width:720px) {
+  body[data-dreamland-page="catalog"] .catalog-chapter,
+  body[data-dreamland-page="catalog"] .catalog-reader__inner,
+  body[data-dreamland-page="catalog"] .catalog-products.home-container {
+    width:calc(100% - 36px);
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-intro h1 {
+    font-size:clamp(42px,11.2vw,52px);
+  }
+
+  body[data-dreamland-page="catalog"] .catalog-spread {
+    row-gap:30px;
+    margin-bottom:44px;
+  }
+}

@@ -62,9 +62,6 @@ const pkg=read(
 const flatPage=
   page.replace(/\s+/g,' ');
 
-const flatCss=
-  css.replace(/\s+/g,' ');
-
 const flatRollout=
   rollout.replace(/\s+/g,' ');
 
@@ -149,9 +146,17 @@ for(const marker of [
 }
 
 /*
- * D-B only owns Chapter / Reader.
- * Product-field asymmetry belongs to D-C.
+ * D-B itself never introduced nth-child / translateY product rules.
+ * Later D-C route ownership is allowed to follow this block.
  */
+const dbOnlyCss=
+  chapterCss.includes(
+    '/* R4.11B4.1D-C — Mobile Editorial Flow System'
+  )
+    ? chapterCss.split(
+        '/* R4.11B4.1D-C — Mobile Editorial Flow System'
+      )[0]
+    : chapterCss;
 
 for(const forbidden of [
   'translateY(',
@@ -159,7 +164,7 @@ for(const forbidden of [
   'position:fixed',
   '!important'
 ]){
-  if(chapterCss.includes(forbidden)){
+  if(dbOnlyCss.includes(forbidden)){
     fail(
       'D-B Chapter layer contains forbidden product/fixed behavior: '+
       forbidden
@@ -169,7 +174,7 @@ for(const forbidden of [
 
 /*
  * ------------------------------------------------------------
- * 3. Intro / Browse must graduate out of rollout.css
+ * 3. Intro / Browse must remain graduated out of rollout.css
  * ------------------------------------------------------------
  */
 
@@ -191,27 +196,45 @@ for(const marker of [
 
 /*
  * ------------------------------------------------------------
- * 4. Product Field smoke must remain until D-C
+ * 4. Product Field smoke is transitional and may graduate to D-C
  * ------------------------------------------------------------
  */
 
-for(const marker of [
+const flowGraduated=
+  css.includes(
+    'R4.11B4.1D-C — Mobile Editorial Flow System'
+  );
+
+const smokeMarkers=[
   'body[data-dreamland-page="catalog"] .catalog-products.home-container',
   '.catalog-card:nth-child(even)',
   '.catalog-card:nth-child(4n + 2)',
   '.catalog-card:nth-child(4n + 3)',
   'var(--dl-asym-stagger-offset)'
-]){
-  expect(
-    flatRollout,
-    marker,
-    'D-B must preserve existing Product Field smoke until D-C.'
-  );
+];
+
+if(flowGraduated){
+  for(const marker of smokeMarkers){
+    if(flatRollout.includes(marker)){
+      fail(
+        'D-C has graduated Product Field ownership but rollout smoke remains: '+
+        marker
+      );
+    }
+  }
+}else{
+  for(const marker of smokeMarkers){
+    expect(
+      flatRollout,
+      marker,
+      'D-B must preserve existing Product Field smoke until D-C.'
+    );
+  }
 }
 
 /*
  * ------------------------------------------------------------
- * 5. Canonical Catalog runtime remains untouched
+ * 5. Canonical Catalog runtime capabilities remain intact
  * ------------------------------------------------------------
  */
 
@@ -229,7 +252,7 @@ for(const marker of [
   expect(
     runtime,
     marker,
-    'D-B must preserve canonical Catalog runtime.'
+    'D-B/D-C must preserve canonical Catalog runtime capability.'
   );
 }
 

@@ -519,6 +519,47 @@
     );
   }
 
+  const EDITORIAL_ROLES=
+    Object.freeze({
+      a:Object.freeze([
+        'lead',
+        'support',
+        'narrow',
+        'support-wide',
+        'breather'
+      ]),
+      b:Object.freeze([
+        'support',
+        'lead',
+        'support-wide',
+        'narrow',
+        'breather'
+      ])
+    });
+
+  function editorialMeta(index){
+    const slot=
+      index%5+
+      1;
+
+    const phase=
+      Math.floor(
+        index/5
+      )%2===0
+        ? 'a'
+        : 'b';
+
+    return {
+      slot,
+      phase,
+      role:
+        EDITORIAL_ROLES
+          [phase]
+          [slot-1]||
+        'support'
+    };
+  }
+
   function cardHtml(
     product,
     index,
@@ -553,9 +594,18 @@
         name
       );
 
+    const editorial=
+      editorialMeta(index);
+
     return (
       '<article class="catalog-card" data-catalog-product="'+
       escapeHtml(product.id)+
+      '" data-editorial-slot="'+
+      editorial.slot+
+      '" data-editorial-phase="'+
+      editorial.phase+
+      '" data-editorial-role="'+
+      editorial.role+
       '">'+
         '<a class="catalog-card__link" href="'+
         escapeHtml(product.href)+
@@ -605,6 +655,46 @@
           '</div>'+
         '</a>'+
       '</article>'
+    );
+  }
+
+  function spreadHtml(
+    products,
+    groupIndex,
+    copy
+  ){
+    const start=
+      groupIndex*5;
+
+    const phase=
+      editorialMeta(
+        start
+      ).phase;
+
+    return (
+      '<div class="catalog-spread" data-editorial-phase="'+
+      phase+
+      '" data-editorial-group="'+
+      (
+        groupIndex+
+        1
+      )+
+      '">'+
+        products
+          .map(
+            (
+              product,
+              localIndex
+            )=>
+              cardHtml(
+                product,
+                start+
+                  localIndex,
+                copy
+              )
+          )
+          .join('')+
+      '</div>'
     );
   }
 
@@ -847,18 +937,27 @@
 
     if(grid){
       grid.innerHTML=
-        view.products
-          .map(
-            (
-              product,
-              index
-            )=>
-              cardHtml(
-                product,
-                index,
-                copy
+        Array.from(
+          {
+            length:
+              Math.ceil(
+                view.products.length/
+                5
               )
-          )
+          },
+          (
+            _,
+            groupIndex
+          )=>
+            spreadHtml(
+              view.products.slice(
+                groupIndex*5,
+                groupIndex*5+5
+              ),
+              groupIndex,
+              copy
+            )
+        )
           .join('');
 
       grid.hidden=

@@ -35,6 +35,10 @@ const css=read(
   'src/astro/styles/system/rollout.css'
 );
 
+const catalogCss=read(
+  'src/astro/styles/catalog.css'
+);
+
 const flatCss=
   css.replace(/\s+/g,' ');
 
@@ -45,14 +49,12 @@ const layout=read(
 const pkg=read('package.json');
 
 /*
- * Normalize CSS whitespace before matching.
- * B4 selectors may intentionally wrap across multiple lines.
+ * R4.11B4 is a smoke layer. Home and Catalog may graduate to
+ * route-owned composition layers in later B4.1 stages.
  */
 for(const marker of [
   'body[data-dreamland-page="product"] .pdp-hero',
   'body[data-dreamland-page="product"] .pdp-summary',
-  'body[data-dreamland-page="catalog"] .catalog-card',
-  '.catalog-card:nth-child(even)',
   'body[data-dreamland-page="contact"] .contact-progress ol',
   'body[data-dreamland-page="contact"] .contact-form-shell',
   'body[data-dreamland-page="contact"] .contact-next',
@@ -63,22 +65,49 @@ for(const marker of [
   expect(
     flatCss,
     marker,
-    'B4 representative rollout contract changed.'
+    'B4 remaining smoke contract changed.'
   );
 }
 
 for(const marker of [
   'var(--dl-asym-gap-lg)',
   'var(--dl-asym-offset-md)',
-  'var(--dl-asym-stagger-offset)',
   'var(--dl-asym-mobile-inset)',
   'var(--dl-color-mobile-canvas)'
 ]){
   expect(
     css,
     marker,
-    'B4 must consume the B1-B3 system.'
+    'B4 must continue consuming the B1-B3 system.'
   );
+}
+
+if(
+  catalogCss.includes(
+    'R4.11B4.1D-C — Mobile Editorial Flow System'
+  )
+){
+  if(
+    css.includes(
+      'data-dreamland-page="catalog"'
+    )
+  ){
+    fail(
+      'Catalog has graduated to D-C and must no longer be owned by rollout.css.'
+    );
+  }
+}else{
+  for(const marker of [
+    'body[data-dreamland-page="catalog"] .catalog-card',
+    '.catalog-card:nth-child(even)',
+    'var(--dl-asym-stagger-offset)'
+  ]){
+    expect(
+      flatCss,
+      marker,
+      'Pre-D-C Catalog smoke contract changed.'
+    );
+  }
 }
 
 for(const forbiddenPage of [
