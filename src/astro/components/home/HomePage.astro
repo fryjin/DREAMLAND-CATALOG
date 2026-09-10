@@ -78,23 +78,28 @@ const cta=content.cta||{};
     <div
       class="home-mobile-cover"
       data-mobile-cover
+      data-mobile-hero-type-owner="asset"
     >
+      <p
+        class="home-mobile-cover__semantic home-sr-only"
+        data-mobile-cover-semantic
+      >
+        <span data-home-bind="hero.kicker">
+          {hero.kicker}
+        </span>
+        <span aria-hidden="true"> — </span>
+        <span data-home-bind="hero.title">
+          {hero.title}
+        </span>
+      </p>
+
       <div class="home-mobile-cover__headline">
         <span class="home-mobile-cover__edition">
           DREAMLAND / 01
         </span>
-        <p
-          class="home-mobile-cover__display"
-          data-home-bind="hero.kicker"
-        >
-          {hero.kicker}
-        </p>
       </div>
 
       <div class="home-mobile-cover__copy">
-        <h2 data-home-bind="hero.title">
-          {hero.title}
-        </h2>
         <p data-home-bind="hero.body">
           {hero.body}
         </p>
