@@ -17,16 +17,21 @@ const navigation=view.content?.navigation||{};
   data-catalog-runtime-presentation
 >
   <section
-    class="catalog-intro home-container"
+    class="catalog-intro home-container catalog-chapter"
     data-catalog-section="intro"
+    data-catalog-chapter-opener
     aria-labelledby="catalogTitle"
   >
-    <p
-      class="catalog-eyebrow"
-      data-catalog-bind="catalog.kicker"
-    >
-      {copy.kicker}
-    </p>
+    <div class="catalog-chapter__folio">
+      <span class="catalog-chapter__number">02</span>
+      <span class="catalog-chapter__slash" aria-hidden="true">/</span>
+      <p
+        class="catalog-eyebrow"
+        data-catalog-bind="catalog.kicker"
+      >
+        {copy.kicker}
+      </p>
+    </div>
 
     <div class="catalog-intro__layout">
       <div class="catalog-intro__copy">
@@ -56,13 +61,14 @@ const navigation=view.content?.navigation||{};
   </section>
 
   <section
-    class="catalog-browse"
+    class="catalog-browse catalog-reader"
     data-catalog-section="browse"
+    data-catalog-reader
     aria-label={copy.seriesNavigation}
   >
-    <div class="home-container">
+    <div class="home-container catalog-reader__inner">
       <div
-        class="catalog-series"
+        class="catalog-series catalog-reader__index"
         role="tablist"
         aria-label={copy.seriesNavigation}
         data-catalog-series-list
@@ -93,7 +99,7 @@ const navigation=view.content?.navigation||{};
         ))}
       </div>
 
-      <div class="catalog-tools">
+      <div class="catalog-tools catalog-reader__tools">
         <div class="catalog-result-count">
           <strong data-catalog-result-count>
             {view.totalCount}

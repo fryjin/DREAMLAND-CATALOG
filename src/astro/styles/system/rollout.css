@@ -79,43 +79,6 @@
  * ========================================================== */
 
 @media (max-width:720px) {
-  body[data-dreamland-page="catalog"] .catalog-main {
-    background:var(--dl-color-mobile-canvas);
-  }
-
-  body[data-dreamland-page="catalog"] .catalog-intro {
-    padding-top:48px;
-    padding-bottom:36px;
-  }
-
-  body[data-dreamland-page="catalog"]
-  .catalog-intro__layout {
-    grid-template-columns:minmax(0,1fr) auto;
-    gap:18px;
-    align-items:start;
-  }
-
-  body[data-dreamland-page="catalog"]
-  .catalog-intro__count {
-    justify-self:end;
-    align-items:flex-end;
-    padding-top:8px;
-  }
-
-  body[data-dreamland-page="catalog"]
-  .catalog-intro__count strong {
-    font-size:clamp(38px,12vw,52px);
-  }
-
-  body[data-dreamland-page="catalog"] .catalog-browse {
-    background:
-      color-mix(
-        in srgb,
-        var(--dl-color-mobile-canvas) 92%,
-        transparent
-      );
-  }
-
   body[data-dreamland-page="catalog"]
   .catalog-products.home-container {
     width:calc(100% - 28px);

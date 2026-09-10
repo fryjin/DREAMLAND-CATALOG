@@ -605,3 +605,61 @@
     width:auto;
   }
 }
+
+/* R4.11B4.1D-B — Mobile Catalog Chapter Foundation
+ * Cover → Chapter. Product-field composition remains on B4 smoke until D-C.
+ */
+@media (max-width:720px) {
+  body[data-dreamland-page="catalog"] .catalog-main { background:var(--dl-color-mobile-canvas); }
+  body[data-dreamland-page="catalog"] .catalog-chapter { width:calc(100% - 32px); padding-top:34px; padding-bottom:30px; }
+  body[data-dreamland-page="catalog"] .catalog-chapter__folio { display:flex; align-items:baseline; gap:7px; margin-bottom:22px; color:var(--dl-color-ink-muted); }
+  body[data-dreamland-page="catalog"] .catalog-chapter__number,
+  body[data-dreamland-page="catalog"] .catalog-chapter__slash { flex:0 0 auto; font-size:10px; line-height:1; font-weight:850; letter-spacing:.12em; }
+  body[data-dreamland-page="catalog"] .catalog-chapter__number { color:var(--dl-color-ink); }
+  body[data-dreamland-page="catalog"] .catalog-chapter__folio .catalog-eyebrow { margin:0; font-size:10px; line-height:1.2; letter-spacing:.14em; }
+  body[data-dreamland-page="catalog"] .catalog-intro__layout { grid-template-columns:minmax(0,1fr) 76px; gap:18px; align-items:end; }
+  body[data-dreamland-page="catalog"] .catalog-intro__copy { max-width:none; }
+  body[data-dreamland-page="catalog"] .catalog-intro h1 { max-width:7.2ch; font-size:clamp(42px,13.4vw,56px); line-height:.91; letter-spacing:-.05em; text-wrap:balance; }
+  body[data-dreamland-page="catalog"] .catalog-intro__copy > p { max-width:31ch; margin:20px 0 0; font-size:13px; line-height:1.55; }
+  body[data-dreamland-page="catalog"] .catalog-intro__count { justify-self:end; align-items:flex-end; gap:5px; padding:0 0 3px; }
+  body[data-dreamland-page="catalog"] .catalog-intro__count strong { font-size:44px; line-height:.82; letter-spacing:-.05em; }
+  body[data-dreamland-page="catalog"] .catalog-intro__count span { max-width:66px; font-size:8px; line-height:1.25; letter-spacing:.11em; text-align:right; }
+
+  body[data-dreamland-page="catalog"] .catalog-reader { position:relative; top:auto; z-index:10; border:0; background:transparent; backdrop-filter:none; }
+  body[data-dreamland-page="catalog"] .catalog-reader__inner { width:calc(100% - 32px); }
+  body[data-dreamland-page="catalog"] .catalog-reader__index { display:flex; flex-wrap:wrap; gap:0 18px; overflow:visible; padding:18px 0 16px; border-top:1px solid var(--dl-color-border); border-bottom:1px solid var(--dl-color-border); }
+  body[data-dreamland-page="catalog"] .catalog-series__item { position:relative; min-height:32px; gap:5px; padding:0; border:0; border-radius:0; background:transparent; color:var(--dl-color-ink-muted); font-size:10px; line-height:1; font-weight:760; letter-spacing:.08em; text-transform:uppercase; }
+  body[data-dreamland-page="catalog"] .catalog-series__item small { align-self:flex-start; margin-top:7px; font-size:8px; line-height:1; opacity:.52; }
+  body[data-dreamland-page="catalog"] .catalog-series__item::after { content:""; position:absolute; right:0; bottom:2px; left:0; height:1px; background:currentColor; transform:scaleX(0); transform-origin:left; transition:transform var(--dl-motion-fast); }
+  body[data-dreamland-page="catalog"] .catalog-series__item.is-active { background:transparent; color:var(--dl-color-ink); font-weight:900; }
+  body[data-dreamland-page="catalog"] .catalog-series__item.is-active::after { transform:scaleX(1); }
+
+  body[data-dreamland-page="catalog"] .catalog-reader__tools { grid-template-columns:minmax(0,1fr) auto; gap:0 20px; padding:14px 0 8px; }
+  body[data-dreamland-page="catalog"] .catalog-result-count { grid-column:1 / -1; gap:5px; padding:0 0 4px; font-size:9px; line-height:1; letter-spacing:.1em; text-transform:uppercase; }
+  body[data-dreamland-page="catalog"] .catalog-result-count strong { font-size:11px; font-weight:850; }
+  body[data-dreamland-page="catalog"] .catalog-search { grid-column:1 / -1; }
+  body[data-dreamland-page="catalog"] .catalog-search input { min-height:52px; padding:0; border:0; border-bottom:1px solid var(--dl-color-border-strong); border-radius:0; background:transparent; font-size:14px; }
+  body[data-dreamland-page="catalog"] .catalog-search input:focus { outline:0; border-bottom-color:var(--dl-color-ink); }
+  body[data-dreamland-page="catalog"] .catalog-filter { grid-column:1; justify-self:start; min-width:0; }
+  body[data-dreamland-page="catalog"] .catalog-filter > summary,
+  body[data-dreamland-page="catalog"] .catalog-sort select { min-height:44px; border:0; border-radius:0; background:transparent; color:var(--dl-color-ink); font-size:9px; line-height:1; font-weight:850; letter-spacing:.13em; text-transform:uppercase; }
+  body[data-dreamland-page="catalog"] .catalog-filter > summary { width:auto; justify-content:flex-start; padding:0; }
+  body[data-dreamland-page="catalog"] .catalog-sort { grid-column:2; justify-self:end; }
+  body[data-dreamland-page="catalog"] .catalog-sort select { min-width:0; width:auto; padding:0 24px 0 0; text-align:right; }
+  body[data-dreamland-page="catalog"] .catalog-products { padding-top:28px; }
+}
+
+@media (max-width:374px) {
+  body[data-dreamland-page="catalog"] .catalog-chapter,
+  body[data-dreamland-page="catalog"] .catalog-reader__inner { width:calc(100% - 28px); }
+  body[data-dreamland-page="catalog"] .catalog-intro__layout { grid-template-columns:minmax(0,1fr) 64px; gap:14px; }
+  body[data-dreamland-page="catalog"] .catalog-intro h1 { font-size:clamp(39px,13vw,48px); }
+  body[data-dreamland-page="catalog"] .catalog-reader__index { column-gap:14px; }
+}
+
+@media (min-width:421px) and (max-width:720px) {
+  body[data-dreamland-page="catalog"] .catalog-chapter,
+  body[data-dreamland-page="catalog"] .catalog-reader__inner { width:calc(100% - 40px); }
+  body[data-dreamland-page="catalog"] .catalog-intro h1 { font-size:clamp(48px,12.5vw,60px); }
+  body[data-dreamland-page="catalog"] .catalog-intro__count strong { font-size:48px; }
+}
