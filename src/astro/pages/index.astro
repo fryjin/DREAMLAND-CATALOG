@@ -130,6 +130,14 @@ const languageOptions=
       media="(max-width:720px)"
       fetchpriority="high"
     />
+
+    <link
+      rel="preload"
+      as="image"
+      href={view.wholesale.image}
+      media="(min-width:901px)"
+      fetchpriority="low"
+    />
   </Fragment>
 
   <MobileStartupLoader />

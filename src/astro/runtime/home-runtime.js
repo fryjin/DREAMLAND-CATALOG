@@ -675,13 +675,13 @@
     const waiters=[];
     const notify=()=>{
       mobileStartup.ready=ready;mobileStartup.settled=settled;mobileStartup.failed=failed;
-      startupPaint(loader,32+(images.length?(settled/images.length)*60:60),'Preparing collection '+ready+' / '+images.length);
+      startupPaint(loader,32+(images.length?(settled/images.length)*60:60),'The collection is coming into view');
       waiters.slice().forEach(waiter=>{if(ready>=waiter.count){waiter.resolve(ready);waiters.splice(waiters.indexOf(waiter),1);}});
     };
     const waitFor=count=>ready>=count?Promise.resolve(ready):new Promise(resolve=>waiters.push({count,resolve}));
     const worker=async()=>{while(cursor<images.length){const index=cursor++;const ok=await decodeImage(images[index]);settled++;ok?ready++:failed++;notify();}};
     const workers=Array.from({length:Math.min(profile.concurrency,Math.max(1,images.length))},()=>worker());
-    const done=Promise.all(workers).then(()=>{startupPaint(loader,96,'Collection ready');return {ready,settled,failed};});
+    const done=Promise.all(workers).then(()=>{startupPaint(loader,96,'Almost there');return {ready,settled,failed};});
     notify();
     return {done,waitFor,target:images.length};
   }
@@ -690,7 +690,7 @@
     try{sessionStore()?.setItem(MOBILE_STARTUP_SESSION,'1');}catch(_){}
     if(!loader)return;
     if(immediate){loader.dataset.active='false';return;}
-    startupPaint(loader,100,'Collection ready');loader.classList.add('is-leaving');
+    startupPaint(loader,100,'Welcome to DREAMLAND');loader.classList.add('is-leaving');
     root.setTimeout(()=>{loader.dataset.active='false';loader.classList.remove('is-leaving');},220);
   }
   function mobileStartupSnapshot(){return Object.freeze({...mobileStartup});}
@@ -705,9 +705,9 @@
     const seen=sessionStore()?.getItem(MOBILE_STARTUP_SESSION)==='1';
     if(seen){releaseMobileStartup(loader,{immediate:true});decodeImage(manifest.cover);mobileCatalogWarmup=startCatalogWarmup(manifest,profile);return true;}
     const started=root.performance?.now?.()||Date.now();
-    startupPaint(loader,14,'Loading cover');
+    startupPaint(loader,14,'Opening the first page');
     const cover=await Promise.race([decodeImage(manifest.cover),wait(2200).then(()=>false)]);
-    startupPaint(loader,cover?32:28,'Preparing collection 0 / '+Math.min(profile.target,manifest.catalogImages.length));
+    startupPaint(loader,cover?32:28,'The collection is coming into view');
     const warmup=mobileCatalogWarmup=startCatalogWarmup(manifest,profile,loader);
     const releaseCount=Math.min(warmup.target,profile.preferFull?profile.target:profile.minimum);
     const elapsed=(root.performance?.now?.()||Date.now())-started;
