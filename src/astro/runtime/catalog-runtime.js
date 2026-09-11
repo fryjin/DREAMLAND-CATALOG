@@ -1279,6 +1279,11 @@
     search?.addEventListener(
       'input',
       event=>{
+        const value=
+          event.currentTarget
+            ?.value||
+          '';
+
         root.clearTimeout(
           searchTimer
         );
@@ -1289,8 +1294,7 @@
               commit(
                 ()=>
                   catalog.setQuery(
-                    event.currentTarget
-                      ?.value
+                    value
                   ),
                 'replace'
               );
