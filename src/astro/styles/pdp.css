@@ -1093,3 +1093,74 @@
     font-weight:800;
   }
 }
+
+
+/* ============================================================
+ * R4.11B4.1E-B1-FIX1 — Mobile Quantity Stepper Visibility
+ * Canonical quantity controls stay canonical; mobile presentation
+ * explicitly keeps the − / qty / + stepper inside the visible row.
+ * Desktop remains unchanged.
+ * ========================================================== */
+
+@media (max-width:720px) {
+  .pdp-config > div.pdp-field {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+  }
+
+  .pdp-config > div.pdp-field > span {
+    flex:0 0 auto;
+    align-self:center;
+    padding-top:0;
+  }
+
+  .pdp-config > div.pdp-field > .pdp-quantity {
+    display:grid;
+    flex:0 0 128px;
+    width:128px;
+    min-width:128px;
+    grid-template-columns:
+      38px
+      52px
+      38px;
+    align-items:center;
+    justify-content:end;
+    gap:0;
+    position:static;
+    visibility:visible;
+    opacity:1;
+  }
+
+  .pdp-config > div.pdp-field
+  > .pdp-quantity
+  > button,
+  .pdp-config > div.pdp-field
+  > .pdp-quantity
+  > input {
+    display:block;
+    width:100%;
+    min-width:0;
+    min-height:42px;
+    margin:0;
+    visibility:visible;
+    opacity:1;
+  }
+
+  .pdp-config > div.pdp-field
+  > .pdp-quantity
+  > button {
+    padding:0;
+    text-align:center;
+  }
+
+  .pdp-config > div.pdp-field
+  > .pdp-quantity
+  > input {
+    padding:
+      0
+      4px;
+    text-align:center;
+  }
+}

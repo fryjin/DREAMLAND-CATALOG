@@ -171,6 +171,36 @@ for(const marker of [
   );
 }
 
+/* R4.11B4.1E-B1-FIX1 — Mobile Quantity Stepper Visibility */
+expect(
+  css,
+  'R4.11B4.1E-B1-FIX1 — Mobile Quantity Stepper Visibility',
+  'E-B1-FIX1 quantity visibility marker is missing.'
+);
+
+for(const marker of [
+  '.pdp-config > div.pdp-field > .pdp-quantity',
+  'flex:0 0 128px',
+  'width:128px',
+  'visibility:visible',
+  'opacity:1'
+]){
+  expect(
+    css,
+    marker,
+    'E-B1-FIX1 mobile quantity visibility contract changed.'
+  );
+}
+
+if(
+  /@media\s*\(min-width:\s*721px\)[\s\S]*?E-B1-FIX1/
+    .test(css)
+){
+  fail(
+    'E-B1-FIX1 must remain Mobile-only.'
+  );
+}
+
 /* Desktop route composition is not redesigned by E-B1. */
 if(
   /@media\s*\(min-width:\s*721px\)[\s\S]*?pdp-config-projection/
