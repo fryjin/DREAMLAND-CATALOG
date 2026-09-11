@@ -187,38 +187,63 @@ const editorialGroups=
           </span>
         </div>
 
-        <label class="catalog-search">
-          <span
-            class="catalog-search__prompt"
-            aria-hidden="true"
+        <div
+          class="catalog-search"
+          data-catalog-search-control
+        >
+          <button
+            class="catalog-search__trigger"
+            type="button"
+            data-catalog-search-trigger
+            aria-expanded="false"
+            aria-controls="catalogSearchField"
           >
-            <b>⌕</b>
-            <span data-catalog-bind="catalog.searchShort">
-              {copy.searchShort||copy.searchPlaceholder}
+            <span
+              class="catalog-search__prompt"
+              aria-hidden="true"
+            >
+              <b>⌕</b>
+              <span data-catalog-bind="catalog.searchShort">
+                {copy.searchShort||copy.searchPlaceholder}
+              </span>
             </span>
-          </span>
+          </button>
 
-          <span
-            class="home-sr-only"
-            data-catalog-bind="catalog.searchPlaceholder"
+          <div
+            class="catalog-search__field"
+            id="catalogSearchField"
           >
-            {copy.searchPlaceholder}
-          </span>
-          <input
-            type="search"
-            placeholder={copy.searchPlaceholder}
-            data-catalog-search
-            autocomplete="off"
-            enterkeyhint="search"
-          />
-        </label>
+            <label
+              class="home-sr-only"
+              for="catalogSearchInput"
+              data-catalog-bind="catalog.searchPlaceholder"
+            >
+              {copy.searchPlaceholder}
+            </label>
+            <input
+              id="catalogSearchInput"
+              type="search"
+              placeholder={copy.searchPlaceholder}
+              data-catalog-search
+              autocomplete="off"
+              enterkeyhint="search"
+            />
+          </div>
+        </div>
 
         <details
           class="catalog-filter"
           data-catalog-filter-panel
         >
-          <summary data-catalog-bind="catalog.filters">
-            {copy.filters}
+          <summary>
+            <span data-catalog-bind="catalog.filters">
+              {copy.filters}
+            </span>
+            <b
+              class="catalog-filter__symbol"
+              data-catalog-filter-symbol
+              aria-hidden="true"
+            ></b>
           </summary>
 
           <div class="catalog-filter__panel">
@@ -259,56 +284,53 @@ const editorialGroups=
           </div>
         </details>
 
-        <label class="catalog-sort">
-          <span
-            class="catalog-sort__visual"
-            aria-hidden="true"
-          >
-            <span data-catalog-bind="catalog.sort">
+        <div
+          class="catalog-sort"
+          data-catalog-sort-control
+        >
+          <label class="catalog-sort__native">
+            <span
+              class="home-sr-only"
+              data-catalog-bind="catalog.sort"
+            >
               {copy.sort}
             </span>
-            <b>↕</b>
-          </span>
+            <select data-catalog-sort>
+              <option value="featured" data-catalog-sort-option="featured">{copy.sortFeatured}</option>
+              <option value="name" data-catalog-sort-option="name">{copy.sortName}</option>
+              <option value="price-low" data-catalog-sort-option="price-low">{copy.sortPriceLow}</option>
+              <option value="price-high" data-catalog-sort-option="price-high">{copy.sortPriceHigh}</option>
+              <option value="moq-low" data-catalog-sort-option="moq-low">{copy.sortMoq}</option>
+            </select>
+          </label>
 
-          <span
-            class="home-sr-only"
-            data-catalog-bind="catalog.sort"
+          <details
+            class="catalog-sort__menu"
+            data-catalog-sort-panel
           >
-            {copy.sort}
-          </span>
-          <select data-catalog-sort>
-            <option
-              value="featured"
-              data-catalog-sort-option="featured"
+            <summary>
+              <span
+                class="catalog-sort__visual"
+                aria-hidden="true"
+              >
+                <span data-catalog-bind="catalog.sort">{copy.sort}</span>
+                <b>↕</b>
+              </span>
+            </summary>
+
+            <div
+              class="catalog-sort__panel"
+              role="group"
+              aria-label={copy.sort}
             >
-              {copy.sortFeatured}
-            </option>
-            <option
-              value="name"
-              data-catalog-sort-option="name"
-            >
-              {copy.sortName}
-            </option>
-            <option
-              value="price-low"
-              data-catalog-sort-option="price-low"
-            >
-              {copy.sortPriceLow}
-            </option>
-            <option
-              value="price-high"
-              data-catalog-sort-option="price-high"
-            >
-              {copy.sortPriceHigh}
-            </option>
-            <option
-              value="moq-low"
-              data-catalog-sort-option="moq-low"
-            >
-              {copy.sortMoq}
-            </option>
-          </select>
-        </label>
+              <button type="button" data-catalog-sort-action="featured" data-catalog-bind="catalog.sortFeatured">{copy.sortFeatured}</button>
+              <button type="button" data-catalog-sort-action="name" data-catalog-bind="catalog.sortName">{copy.sortName}</button>
+              <button type="button" data-catalog-sort-action="price-low" data-catalog-bind="catalog.sortPriceLow">{copy.sortPriceLow}</button>
+              <button type="button" data-catalog-sort-action="price-high" data-catalog-bind="catalog.sortPriceHigh">{copy.sortPriceHigh}</button>
+              <button type="button" data-catalog-sort-action="moq-low" data-catalog-bind="catalog.sortMoq">{copy.sortMoq}</button>
+            </div>
+          </details>
+        </div>
       </div>
     </div>
   </section>

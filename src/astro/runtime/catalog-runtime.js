@@ -813,6 +813,10 @@
       );
     }
 
+    syncCatalogSortActions(
+      view.sort
+    );
+
     document
       .querySelectorAll(
         '[data-catalog-sort-option]'
@@ -1153,7 +1157,101 @@
     );
   }
 
+  function catalogUtilityNodes(){
+    return {
+      reader:document.querySelector('[data-catalog-reader]'),
+      search:document.querySelector('[data-catalog-search-control]'),
+      searchTrigger:document.querySelector('[data-catalog-search-trigger]'),
+      searchInput:document.querySelector('[data-catalog-search]'),
+      filter:document.querySelector('[data-catalog-filter-panel]'),
+      sort:document.querySelector('[data-catalog-sort-panel]'),
+      nativeSort:document.querySelector('[data-catalog-sort]')
+    };
+  }
+
+  function syncCatalogUtilityActive(){
+    const {reader,search,filter,sort}=catalogUtilityNodes();
+    if(!reader)return;
+    const active=search?.classList.contains('is-open')?'search':filter?.open?'filter':sort?.open?'sort':'';
+    if(active){reader.dataset.utilityActive=active;return;}
+    delete reader.dataset.utilityActive;
+  }
+
+  function closeCatalogUtilities(except=''){
+    const {search,searchTrigger,filter,sort}=catalogUtilityNodes();
+    if(except!=='search'&&search){search.classList.remove('is-open');searchTrigger?.setAttribute('aria-expanded','false');}
+    if(except!=='filter'&&filter)filter.open=false;
+    if(except!=='sort'&&sort)sort.open=false;
+    syncCatalogUtilityActive();
+  }
+
+  function syncCatalogSortActions(sortValue){
+    const value=text(sortValue);
+    document.querySelectorAll('[data-catalog-sort-action]').forEach(button=>{
+      const selected=button.dataset.catalogSortAction===value;
+      button.classList.toggle('is-selected',selected);
+      button.setAttribute('aria-pressed',selected?'true':'false');
+    });
+  }
+
+  function bindCatalogUtilityInteractions(){
+    const {reader,search,searchTrigger,searchInput,filter,sort,nativeSort}=catalogUtilityNodes();
+
+    searchTrigger?.addEventListener('click',()=>{
+      const willOpen=!search?.classList.contains('is-open');
+      closeCatalogUtilities(willOpen?'search':'');
+      if(willOpen&&search){
+        search.classList.add('is-open');
+        searchTrigger.setAttribute('aria-expanded','true');
+        syncCatalogUtilityActive();
+        root.requestAnimationFrame(()=>searchInput?.focus());
+      }
+    });
+
+    filter?.addEventListener('toggle',()=>{
+      if(filter.open)closeCatalogUtilities('filter');
+      syncCatalogUtilityActive();
+    });
+
+    sort?.addEventListener('toggle',()=>{
+      if(sort.open)closeCatalogUtilities('sort');
+      syncCatalogUtilityActive();
+    });
+
+    document.querySelectorAll('[data-catalog-sort-action]').forEach(button=>{
+      button.addEventListener('click',()=>{
+        if(!nativeSort)return;
+        nativeSort.value=button.dataset.catalogSortAction||'featured';
+        nativeSort.dispatchEvent(new Event('change',{bubbles:true}));
+        closeCatalogUtilities();
+      });
+    });
+
+    document.addEventListener('keydown',event=>{
+      if(event.key!=='Escape')return;
+      closeCatalogUtilities();
+      if(event.target===searchInput)searchTrigger?.focus();
+    });
+
+    document.addEventListener('pointerdown',event=>{
+      if(!reader||reader.contains(event.target))return;
+      closeCatalogUtilities();
+    });
+
+    root.addEventListener('popstate',()=>{
+      root.requestAnimationFrame(()=>{
+        syncCatalogSortActions(nativeSort?.value||'featured');
+        closeCatalogUtilities();
+      });
+    });
+
+    syncCatalogSortActions(nativeSort?.value||'featured');
+    syncCatalogUtilityActive();
+  }
+
   function bindEvents(){
+    bindCatalogUtilityInteractions();
+
     document
       .querySelectorAll(
         '[data-catalog-series]'

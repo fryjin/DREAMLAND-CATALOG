@@ -182,16 +182,25 @@ for(const marker of [
   );
 }
 
-for(const forbidden of [
-  'nth-child(',
-  'translateY('
-]){
-  if(flowCss.includes(forbidden)){
-    fail(
-      'D-C must use structural slot/phase layout, not synthetic staggering: '+
-      forbidden
-    );
-  }
+/*
+ * D-C forbids synthetic PRODUCT staggering.
+ * Later visual stages may legitimately use translateY() for
+ * lightweight interaction/motion, so do not ban the token globally.
+ */
+if(flowCss.includes('nth-child(')){
+  fail(
+    'D-C must use structural slot/phase layout, not nth-child staggering.'
+  );
+}
+
+const syntheticCardTranslate=
+  /\.catalog-card(?!__)[^{]*\{[^}]*transform\s*:\s*translateY\(/s
+    .test(flowCss);
+
+if(syntheticCardTranslate){
+  fail(
+    'D-C product cards must not use translateY() synthetic staggering.'
+  );
 }
 
 /*
