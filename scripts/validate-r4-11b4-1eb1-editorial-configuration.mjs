@@ -201,6 +201,42 @@ if(
   );
 }
 
+/* R4.11B4.1E-B1-FIX2 — Canonical Quantity Projection */
+expect(
+  page,
+  'data-pdp-quantity-field',
+  'E-B1-FIX2 must retain a marked canonical quantity owner.'
+);
+
+for(const pattern of [
+  /pdpProjectionField\s*=\s*['"]quantity['"]/,
+  /pdpProxyQtyAdjust/,
+  /pdpProjectedQuantity/,
+  /canonicalButton\.click\s*\(/
+]){
+  if(!pattern.test(runtime)){
+    fail(
+      'E-B1-FIX2 canonical quantity projection contract changed: '+
+      pattern
+    );
+  }
+}
+
+for(const marker of [
+  'R4.11B4.1E-B1-FIX2 — Canonical Quantity Projection',
+  '[data-pdp-quantity-field]',
+  '.pdp-config-projection--quantity',
+  '.pdp-config-projection__quantity',
+  '.pdp-config-projection__qty-button',
+  '.pdp-config-projection__qty-value'
+]){
+  expect(
+    css,
+    marker,
+    'E-B1-FIX2 Mobile quantity projection styling changed.'
+  );
+}
+
 /* Desktop route composition is not redesigned by E-B1. */
 if(
   /@media\s*\(min-width:\s*721px\)[\s\S]*?pdp-config-projection/

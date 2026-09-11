@@ -1164,3 +1164,82 @@
     text-align:center;
   }
 }
+
+
+/* ============================================================
+ * R4.11B4.1E-B1-FIX2 — Canonical Quantity Projection
+ * The visible Mobile stepper is a proxy of the canonical quantity
+ * controls. Canonical DOM/runtime remain the only business owner.
+ * ========================================================== */
+
+@media (max-width:720px) {
+  [data-pdp-quantity-field] {
+    position:absolute;
+    width:1px;
+    height:1px;
+    padding:0;
+    margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
+    border:0;
+  }
+
+  .pdp-config-projection--quantity {
+    display:grid;
+    grid-template-columns:
+      minmax(0,1fr)
+      auto;
+    align-items:center;
+    gap:18px;
+  }
+
+  .pdp-config-projection--quantity
+  .pdp-config-projection__heading {
+    margin-bottom:0;
+  }
+
+  .pdp-config-projection__quantity {
+    display:grid;
+    grid-template-columns:
+      38px
+      52px
+      38px;
+    width:128px;
+    min-width:128px;
+    align-items:center;
+  }
+
+  .pdp-config-projection__qty-button,
+  .pdp-config-projection__qty-value {
+    display:grid;
+    width:100%;
+    min-width:0;
+    min-height:42px;
+    place-items:center;
+    margin:0;
+    padding:0;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    color:var(--home-ink);
+  }
+
+  .pdp-config-projection__qty-button {
+    font-size:18px;
+    cursor:pointer;
+  }
+
+  .pdp-config-projection__qty-value {
+    border-right:
+      1px
+      solid
+      var(--home-line);
+    border-left:
+      1px
+      solid
+      var(--home-line);
+    font-size:13px;
+    font-weight:800;
+  }
+}
