@@ -171,6 +171,49 @@ for(const marker of [
   );
 }
 
+/* R4.11B4.1E-B1-FIX4 — Mobile Config Width Containment
+ *
+ * Browser diagnosis at 390px proved the Quantity controls were visible
+ * but positioned >1100px off-canvas because the configuration area had
+ * expanded to ~1240px intrinsic width. The horizontal picker strip must
+ * scroll internally without widening the Mobile PDP route.
+ */
+for(const marker of [
+  'R4.11B4.1E-B1-FIX4 — Mobile Config Width Containment',
+  '.pdp-config {',
+  '.pdp-config-projections {',
+  '.pdp-config-projection {',
+  '.pdp-config-projection__strip {',
+  '[data-pdp-quantity-field] {',
+  'min-width:0;',
+  'max-width:100%;',
+  'overflow:hidden;'
+]){
+  expect(
+    css,
+    marker,
+    'E-B1-FIX4 Mobile configuration width containment changed.'
+  );
+}
+
+if(
+  !/\.pdp-config-projection__strip\s*\{[\s\S]*?width\s*:\s*100%\s*;[\s\S]*?min-width\s*:\s*0\s*;[\s\S]*?max-width\s*:\s*100%\s*;[\s\S]*?overflow-x\s*:\s*auto\s*;/
+    .test(css)
+){
+  fail(
+    'E-B1-FIX4 horizontal picker strip must scroll inside a width-constrained viewport.'
+  );
+}
+
+if(
+  !/\[data-pdp-quantity-field\]\s*\{[\s\S]*?width\s*:\s*100%\s*;[\s\S]*?min-width\s*:\s*0\s*;[\s\S]*?max-width\s*:\s*100%\s*;/
+    .test(css)
+){
+  fail(
+    'E-B1-FIX4 canonical Quantity field must stay within the Mobile configuration width.'
+  );
+}
+
 /* R4.11B4.1E-B1-FIX3 — Canonical Quantity Hierarchy Restoration
  *
  * Handoff contract:

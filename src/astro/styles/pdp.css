@@ -838,6 +838,8 @@
  * Desktop keeps the existing canonical controls.
  * R4.11B4.1E-B1-FIX3 — Canonical Quantity Hierarchy Restoration
  * Quantity keeps the canonical stepper visible; only hierarchy changes.
+ * R4.11B4.1E-B1-FIX4 — Mobile Config Width Containment
+ * Horizontal picker strips scroll internally and must not widen the route.
  * ========================================================== */
 
 .pdp-config-projections {
@@ -850,6 +852,9 @@
 
 @media (max-width:720px) {
   .pdp-config {
+    width:100%;
+    min-width:0;
+    max-width:100%;
     gap:0;
     margin-top:0;
   }
@@ -951,9 +956,17 @@
 
   .pdp-config-projections {
     display:block;
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    overflow:hidden;
   }
 
   .pdp-config-projection {
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    overflow:hidden;
     padding:
       20px
       0;
@@ -973,6 +986,9 @@
 
   .pdp-config-projection__strip {
     display:flex;
+    width:100%;
+    min-width:0;
+    max-width:100%;
     gap:22px;
     overflow-x:auto;
     padding:
@@ -1044,6 +1060,9 @@
 
   [data-pdp-quantity-field] {
     display:grid;
+    width:100%;
+    min-width:0;
+    max-width:100%;
     grid-template-columns:
       minmax(0,1fr)
       auto;
