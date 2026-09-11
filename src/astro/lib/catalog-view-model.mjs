@@ -172,6 +172,9 @@ function normalizeCatalogContent(
     searchPlaceholder:
       catalog.searchPlaceholder||
       'Search designs or product ID',
+    searchShort:
+      catalog.searchShort||
+      'Search',
     filters:
       catalog.filters||
       'Filter',
