@@ -171,69 +171,86 @@ for(const marker of [
   );
 }
 
-/* R4.11B4.1E-B1-FIX1 — Mobile Quantity Stepper Visibility */
-expect(
-  css,
-  'R4.11B4.1E-B1-FIX1 — Mobile Quantity Stepper Visibility',
-  'E-B1-FIX1 quantity visibility marker is missing.'
-);
-
-for(const marker of [
-  '.pdp-config > div.pdp-field > .pdp-quantity',
-  'flex:0 0 128px',
-  'width:128px',
-  'visibility:visible',
-  'opacity:1'
-]){
-  expect(
-    css,
-    marker,
-    'E-B1-FIX1 mobile quantity visibility contract changed.'
-  );
-}
-
-if(
-  /@media\s*\(min-width:\s*721px\)[\s\S]*?E-B1-FIX1/
-    .test(css)
-){
-  fail(
-    'E-B1-FIX1 must remain Mobile-only.'
-  );
-}
-
-/* R4.11B4.1E-B1-FIX2 — Canonical Quantity Projection */
+/* R4.11B4.1E-B1-FIX3 — Canonical Quantity Hierarchy Restoration
+ *
+ * Handoff contract:
+ * Quantity stepper itself stays canonical.
+ * E-B1 changes information hierarchy only.
+ */
 expect(
   page,
   'data-pdp-quantity-field',
-  'E-B1-FIX2 must retain a marked canonical quantity owner.'
+  'E-B1 Quantity canonical field marker is missing.'
 );
 
-for(const pattern of [
-  /pdpProjectionField\s*=\s*['"]quantity['"]/,
-  /pdpProxyQtyAdjust/,
-  /pdpProjectedQuantity/,
-  /canonicalButton\.click\s*\(/
+expect(
+  page,
+  'data-pdp-quantity-reference',
+  'E-B1 Quantity reference-price presentation is missing.'
+);
+
+if(
+  !/data-pdp-quantity-field[\s\S]*?data-pdp-ui="quantity"[\s\S]*?data-pdp-quantity-reference[\s\S]*?data-pdp-current-price[\s\S]*?class="pdp-quantity"[\s\S]*?data-pdp-qty-adjust="-1"[\s\S]*?data-pdp-quantity[\s\S]*?data-pdp-qty-adjust="1"/
+    .test(page)
+){
+  fail(
+    'E-B1 Quantity must keep the canonical − / input / + controls and add only the reference-price presentation.'
+  );
+}
+
+for(const forbidden of [
+  'pdpProxyQtyAdjust',
+  'pdpProjectedQuantity',
+  "pdpProjectionField=\n      'quantity'",
+  'pdp-config-projection--quantity',
+  'pdp-config-projection__quantity',
+  'pdp-config-projection__qty-button',
+  'pdp-config-projection__qty-value'
 ]){
-  if(!pattern.test(runtime)){
+  if(
+    runtime.includes(forbidden)||
+    css.includes(forbidden)
+  ){
     fail(
-      'E-B1-FIX2 canonical quantity projection contract changed: '+
-      pattern
+      'E-B1 Quantity must not use the removed FIX2 projection layer: '+
+      forbidden
+    );
+  }
+}
+
+for(const removedMarker of [
+  'R4.11B4.1E-B1-FIX1 — Mobile Quantity Stepper Visibility',
+  'R4.11B4.1E-B1-FIX2 — Canonical Quantity Projection'
+]){
+  if(css.includes(removedMarker)){
+    fail(
+      'Obsolete Quantity workaround CSS remains: '+
+      removedMarker
     );
   }
 }
 
 for(const marker of [
-  'R4.11B4.1E-B1-FIX2 — Canonical Quantity Projection',
+  'R4.11B4.1E-B1-FIX3 — Canonical Quantity Hierarchy Restoration',
+  '.pdp-quantity-reference {',
+  'grid-template-areas:',
+  '"reference stepper"',
   '[data-pdp-quantity-field]',
-  '.pdp-config-projection--quantity',
-  '.pdp-config-projection__quantity',
-  '.pdp-config-projection__qty-button',
-  '.pdp-config-projection__qty-value'
+  '> .pdp-quantity'
 ]){
   expect(
     css,
     marker,
-    'E-B1-FIX2 Mobile quantity projection styling changed.'
+    'E-B1 canonical Quantity hierarchy styling changed.'
+  );
+}
+
+if(
+  !/\.pdp-quantity-reference\s*\{\s*display\s*:\s*none\s*;\s*\}/
+    .test(css)
+){
+  fail(
+    'Desktop must keep the new Quantity reference-price presentation hidden.'
   );
 }
 

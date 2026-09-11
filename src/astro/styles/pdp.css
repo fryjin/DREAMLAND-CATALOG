@@ -836,9 +836,15 @@
  * R4.11B4.1E-B1 — Canonical Touch Projection Foundation
  * Proxy, Don't Fork: mobile visible controls project canonical state.
  * Desktop keeps the existing canonical controls.
+ * R4.11B4.1E-B1-FIX3 — Canonical Quantity Hierarchy Restoration
+ * Quantity keeps the canonical stepper visible; only hierarchy changes.
  * ========================================================== */
 
 .pdp-config-projections {
+  display:none;
+}
+
+.pdp-quantity-reference {
   display:none;
 }
 
@@ -1036,13 +1042,18 @@
     border:0;
   }
 
-  .pdp-config > div.pdp-field {
+  [data-pdp-quantity-field] {
     display:grid;
     grid-template-columns:
       minmax(0,1fr)
       auto;
-    align-items:center;
-    gap:18px;
+    grid-template-areas:
+      "label label"
+      "reference stepper";
+    align-items:end;
+    gap:
+      14px
+      18px;
     padding:
       20px
       0;
@@ -1052,91 +1063,54 @@
       var(--home-line);
   }
 
-  .pdp-config > div.pdp-field > span {
-    align-self:start;
-    padding-top:15px;
-  }
-
-  .pdp-quantity {
-    display:grid;
-    grid-template-columns:
-      38px
-      minmax(52px,72px)
-      38px;
-    gap:0;
-    align-items:center;
-  }
-
-  .pdp-quantity button,
-  .pdp-field .pdp-quantity input {
-    min-height:42px;
-    border:0;
-    border-radius:0;
-    background:transparent;
-  }
-
-  .pdp-quantity button {
-    font-size:18px;
-  }
-
-  .pdp-field .pdp-quantity input {
-    padding:0 4px;
-    border-right:
-      1px
-      solid
-      var(--home-line);
-    border-left:
-      1px
-      solid
-      var(--home-line);
-    font-size:13px;
-    font-weight:800;
-  }
-}
-
-
-/* ============================================================
- * R4.11B4.1E-B1-FIX1 — Mobile Quantity Stepper Visibility
- * Canonical quantity controls stay canonical; mobile presentation
- * explicitly keeps the − / qty / + stepper inside the visible row.
- * Desktop remains unchanged.
- * ========================================================== */
-
-@media (max-width:720px) {
-  .pdp-config > div.pdp-field {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:18px;
-  }
-
-  .pdp-config > div.pdp-field > span {
-    flex:0 0 auto;
-    align-self:center;
+  [data-pdp-quantity-field]
+  > [data-pdp-ui="quantity"] {
+    grid-area:label;
+    align-self:auto;
     padding-top:0;
   }
 
-  .pdp-config > div.pdp-field > .pdp-quantity {
+  .pdp-quantity-reference {
+    grid-area:reference;
     display:grid;
-    flex:0 0 128px;
-    width:128px;
-    min-width:128px;
+    gap:5px;
+    min-width:0;
+  }
+
+  .pdp-quantity-reference small {
+    color:var(--home-muted);
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.1em;
+    line-height:1.25;
+    text-transform:uppercase;
+  }
+
+  .pdp-quantity-reference strong {
+    color:var(--home-ink);
+    font-size:18px;
+    font-weight:700;
+    line-height:1.15;
+  }
+
+  [data-pdp-quantity-field]
+  > .pdp-quantity {
+    grid-area:stepper;
+    display:grid;
     grid-template-columns:
       38px
       52px
       38px;
-    align-items:center;
-    justify-content:end;
+    width:128px;
+    min-width:128px;
     gap:0;
-    position:static;
-    visibility:visible;
-    opacity:1;
+    align-items:center;
   }
 
-  .pdp-config > div.pdp-field
+  [data-pdp-quantity-field]
   > .pdp-quantity
   > button,
-  .pdp-config > div.pdp-field
+  [data-pdp-quantity-field]
   > .pdp-quantity
   > input {
     display:block;
@@ -1144,93 +1118,28 @@
     min-width:0;
     min-height:42px;
     margin:0;
-    visibility:visible;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    color:var(--home-ink);
     opacity:1;
+    visibility:visible;
   }
 
-  .pdp-config > div.pdp-field
+  [data-pdp-quantity-field]
   > .pdp-quantity
   > button {
     padding:0;
+    font-size:18px;
     text-align:center;
   }
 
-  .pdp-config > div.pdp-field
+  [data-pdp-quantity-field]
   > .pdp-quantity
   > input {
     padding:
       0
       4px;
-    text-align:center;
-  }
-}
-
-
-/* ============================================================
- * R4.11B4.1E-B1-FIX2 — Canonical Quantity Projection
- * The visible Mobile stepper is a proxy of the canonical quantity
- * controls. Canonical DOM/runtime remain the only business owner.
- * ========================================================== */
-
-@media (max-width:720px) {
-  [data-pdp-quantity-field] {
-    position:absolute;
-    width:1px;
-    height:1px;
-    padding:0;
-    margin:-1px;
-    overflow:hidden;
-    clip:rect(0,0,0,0);
-    white-space:nowrap;
-    border:0;
-  }
-
-  .pdp-config-projection--quantity {
-    display:grid;
-    grid-template-columns:
-      minmax(0,1fr)
-      auto;
-    align-items:center;
-    gap:18px;
-  }
-
-  .pdp-config-projection--quantity
-  .pdp-config-projection__heading {
-    margin-bottom:0;
-  }
-
-  .pdp-config-projection__quantity {
-    display:grid;
-    grid-template-columns:
-      38px
-      52px
-      38px;
-    width:128px;
-    min-width:128px;
-    align-items:center;
-  }
-
-  .pdp-config-projection__qty-button,
-  .pdp-config-projection__qty-value {
-    display:grid;
-    width:100%;
-    min-width:0;
-    min-height:42px;
-    place-items:center;
-    margin:0;
-    padding:0;
-    border:0;
-    border-radius:0;
-    background:transparent;
-    color:var(--home-ink);
-  }
-
-  .pdp-config-projection__qty-button {
-    font-size:18px;
-    cursor:pointer;
-  }
-
-  .pdp-config-projection__qty-value {
     border-right:
       1px
       solid
@@ -1241,5 +1150,6 @@
       var(--home-line);
     font-size:13px;
     font-weight:800;
+    text-align:center;
   }
 }

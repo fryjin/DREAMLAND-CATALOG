@@ -356,6 +356,18 @@ const galleryCount=
             {runtimeUi.quantity||'Quantity'}
           </span>
 
+          <div
+            class="pdp-quantity-reference"
+            data-pdp-quantity-reference
+          >
+            <small data-pdp-ui="currentUnitPrice">
+              {runtimeUi.currentUnitPrice||copy.unitPrice||'Current Reference Unit Price'}
+            </small>
+            <strong data-pdp-current-price>
+              {view.price}
+            </strong>
+          </div>
+
           <div class="pdp-quantity">
             <button
               type="button"
