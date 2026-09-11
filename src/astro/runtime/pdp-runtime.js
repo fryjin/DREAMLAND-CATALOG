@@ -843,6 +843,261 @@
     );
   }
 
+  function renderConfigurationProjection(view){
+    const rootNode=
+      document.querySelector(
+        '[data-pdp-config-projections]'
+      );
+
+    if(!rootNode){
+      return;
+    }
+
+    const definitions=[
+      {
+        field:'scentSeries',
+        selector:'[data-pdp-scent-series]',
+        label:
+          uiValue('scentSeries')||
+          'Scent Series'
+      },
+      {
+        field:'scent',
+        selector:'[data-pdp-scent]',
+        label:
+          uiValue('scent')||
+          'Scent'
+      },
+      {
+        field:'pattern',
+        selector:'[data-pdp-pattern]',
+        label:
+          uiValue('pattern')||
+          'Pattern'
+      },
+      {
+        field:'pack',
+        selector:'[data-pdp-pack]',
+        label:
+          uiValue('pack')||
+          'Packaging'
+      }
+    ];
+
+    const fragment=
+      document.createDocumentFragment();
+
+    definitions.forEach(definition=>{
+      const select=
+        document.querySelector(
+          definition.selector
+        );
+
+      if(!select){
+        return;
+      }
+
+      const options=
+        Array.from(
+          select.options||[]
+        );
+
+      if(!options.length){
+        return;
+      }
+
+      const section=
+        document.createElement('section');
+      section.className=
+        'pdp-config-projection';
+      section.dataset
+        .pdpProjectionField=
+        definition.field;
+
+      const heading=
+        document.createElement('div');
+      heading.className=
+        'pdp-config-projection__heading';
+
+      const label=
+        document.createElement('span');
+      label.className=
+        'pdp-config-projection__label';
+      label.textContent=
+        definition.label;
+
+      const count=
+        document.createElement('small');
+      count.className=
+        'pdp-config-projection__count';
+      count.textContent=
+        String(options.length);
+
+      heading.append(
+        label,
+        count
+      );
+
+      const strip=
+        document.createElement('div');
+      strip.className=
+        'pdp-config-projection__strip';
+      strip.setAttribute(
+        'role',
+        'group'
+      );
+      strip.setAttribute(
+        'aria-label',
+        definition.label
+      );
+
+      options.forEach(option=>{
+        const button=
+          document.createElement('button');
+
+        const selected=
+          option.value===
+          select.value;
+
+        button.type='button';
+        button.className=
+          'pdp-config-projection__option'+
+          (
+            selected
+              ? ' is-selected'
+              : ''
+          );
+
+        button.dataset
+          .pdpProxyField=
+          definition.field;
+        button.dataset
+          .pdpProxyValue=
+          option.value;
+
+        button.setAttribute(
+          'aria-pressed',
+          selected
+            ? 'true'
+            : 'false'
+        );
+
+        button.textContent=
+          option.textContent||
+          option.value;
+
+        strip.appendChild(
+          button
+        );
+      });
+
+      section.append(
+        heading,
+        strip
+      );
+
+      fragment.appendChild(
+        section
+      );
+    });
+
+    rootNode.replaceChildren(
+      fragment
+    );
+
+    rootNode.dataset
+      .pdpProjectionLanguage=
+      currentLanguage;
+
+    rootNode.dataset
+      .pdpProjectionSize=
+      text(
+        view?.config?.size
+      );
+  }
+
+  function bindConfigurationProjection(){
+    const rootNode=
+      document.querySelector(
+        '[data-pdp-config-projections]'
+      );
+
+    if(!rootNode){
+      return;
+    }
+
+    const selectors={
+      scentSeries:
+        '[data-pdp-scent-series]',
+      scent:
+        '[data-pdp-scent]',
+      pattern:
+        '[data-pdp-pattern]',
+      pack:
+        '[data-pdp-pack]'
+    };
+
+    rootNode.addEventListener(
+      'click',
+      event=>{
+        const button=
+          event.target
+            ?.closest
+            ? event.target.closest(
+                '[data-pdp-proxy-field]'
+              )
+            : null;
+
+        if(
+          !button||
+          !rootNode.contains(button)
+        ){
+          return;
+        }
+
+        const field=
+          button.dataset
+            .pdpProxyField;
+        const selector=
+          selectors[field];
+
+        if(!selector){
+          return;
+        }
+
+        const select=
+          document.querySelector(
+            selector
+          );
+
+        if(!select){
+          return;
+        }
+
+        const next=
+          button.dataset
+            .pdpProxyValue||
+          '';
+
+        if(select.value===next){
+          return;
+        }
+
+        select.value=
+          next;
+
+        select.dispatchEvent(
+          new Event(
+            'change',
+            {
+              bubbles:true
+            }
+          )
+        );
+      }
+    );
+  }
+
   function renderQuantity(view){
     const input=
       document.querySelector(
@@ -980,6 +1235,7 @@
     renderScents(view);
     renderPatterns(view);
     renderPacks(view);
+    renderConfigurationProjection(view);
     renderQuantity(view);
     renderPricing(view);
     updateInquiryBadge();
@@ -1599,6 +1855,7 @@
     configureDetail();
     configureInquiry();
     bindEvents();
+    bindConfigurationProjection();
     bindGalleryIndex();
 
     applyLanguage(
