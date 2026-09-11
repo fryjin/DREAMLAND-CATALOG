@@ -1332,10 +1332,11 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
   body[data-dreamland-page="catalog"] .catalog-search.is-open .catalog-search__field { display:block;animation:dlCatalogUtilityIn 150ms ease-out both; }
   body[data-dreamland-page="catalog"] .catalog-search.is-open input { position:relative;width:100%;min-height:48px;padding:0 0 0 22px;border:0;border-bottom:1px solid var(--dl-color-ink);border-radius:0;background:transparent;opacity:1; }
   body[data-dreamland-page="catalog"] .catalog-search.is-open::before { content:"⌕";position:absolute;left:0;bottom:15px;z-index:2;font-size:15px;line-height:1;pointer-events:none; }
-  body[data-dreamland-page="catalog"][data-utility-active="search"] .catalog-filter,
-  body[data-dreamland-page="catalog"][data-utility-active="search"] .catalog-sort { display:none; }
+  body[data-dreamland-page="catalog"] .catalog-reader[data-utility-active="search"] .catalog-filter,
+  body[data-dreamland-page="catalog"] .catalog-reader[data-utility-active="search"] .catalog-sort { display:none; }
   body[data-dreamland-page="catalog"] .catalog-filter > summary { gap:6px; }
-  body[data-dreamland-page="catalog"] .catalog-filter > summary::after { content:none; }
+  body[data-dreamland-page="catalog"] .catalog-filter > summary::after,
+  body[data-dreamland-page="catalog"] .catalog-filter[open] > summary::after { content:none; }
   body[data-dreamland-page="catalog"] .catalog-filter__symbol { display:inline-grid;place-items:center;width:12px;height:12px;font-size:12px;font-weight:600;line-height:1; }
   body[data-dreamland-page="catalog"] .catalog-filter__symbol::before { content:"+"; }
   body[data-dreamland-page="catalog"] .catalog-filter[open] .catalog-filter__symbol::before { content:"−"; }
@@ -1358,6 +1359,7 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
   body[data-dreamland-page="catalog"] .catalog-sort__panel { overscroll-behavior:contain; }
 }
 
+/* R4.11B4.1D-D-FIX1 — Utility Rail Visual Cleanup */
 @keyframes dlCatalogUtilityIn {
   from { opacity:0;transform:translateY(6px); }
   to { opacity:1;transform:translateY(0); }
