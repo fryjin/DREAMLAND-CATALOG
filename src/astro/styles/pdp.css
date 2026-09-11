@@ -496,3 +496,337 @@
 .pdp-commerce__note[data-pdp-moq-reached="true"] {
   color:var(--home-ink);
 }
+
+/* ============================================================
+ * R4.11B4.1E-A — Mobile PDP Feature Foundation
+ * Editorial Product Feature + canonical R4 configurator.
+ * Desktop remains unchanged; mobile composition is route-owned.
+ * ========================================================== */
+
+.pdp-feature-folio,
+.pdp-gallery-index,
+.pdp-config-intro {
+  display:none;
+}
+
+@media (max-width:720px) {
+  .pdp-main {
+    background:
+      var(
+        --dl-color-canvas,
+        var(--home-bg)
+      );
+  }
+
+  .pdp-back-row.home-container {
+    width:calc(100% - 32px);
+    margin-inline:auto;
+    padding-top:18px;
+    padding-bottom:14px;
+  }
+
+  .pdp-back {
+    gap:8px;
+    font-size:11px;
+    letter-spacing:.04em;
+  }
+
+  .pdp-hero.home-container {
+    display:block;
+    width:100%;
+    margin-inline:0;
+    padding-bottom:64px;
+  }
+
+  .pdp-feature-folio {
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin:
+      0
+      16px
+      14px;
+    color:var(--home-muted);
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.14em;
+    line-height:1;
+    text-transform:uppercase;
+  }
+
+  .pdp-feature-folio__index {
+    color:var(--home-ink);
+  }
+
+  .pdp-gallery {
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    padding:
+      0
+      16px;
+    scroll-padding-inline:16px;
+    scroll-snap-type:x mandatory;
+    overscroll-behavior-inline:contain;
+    scrollbar-width:none;
+  }
+
+  .pdp-gallery::-webkit-scrollbar {
+    display:none;
+  }
+
+  .pdp-gallery__item,
+  .pdp-gallery__item--primary {
+    flex:
+      0
+      0
+      min(
+        calc(100vw - 48px),
+        392px
+      );
+    aspect-ratio:4/5;
+    margin:0;
+    overflow:hidden;
+    border-radius:18px;
+    scroll-snap-align:start;
+    scroll-snap-stop:normal;
+    background:#eee7de;
+  }
+
+  .pdp-gallery__select {
+    cursor:zoom-in;
+  }
+
+  .pdp-gallery-index {
+    display:flex;
+    justify-content:flex-end;
+    gap:6px;
+    margin:
+      10px
+      16px
+      0;
+    color:var(--home-muted);
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.12em;
+    line-height:1;
+  }
+
+  .pdp-gallery-index [data-pdp-gallery-index-current] {
+    color:var(--home-ink);
+  }
+
+  .pdp-summary {
+    position:static;
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    margin:0;
+    padding:
+      0
+      16px;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+  }
+
+  .pdp-summary__identity {
+    margin-top:32px;
+  }
+
+  .pdp-summary .pdp-eyebrow {
+    font-size:10px;
+    letter-spacing:.15em;
+  }
+
+  .pdp-summary h1 {
+    max-width:9ch;
+    margin-top:11px;
+    font-size:
+      clamp(
+        46px,
+        13vw,
+        58px
+      );
+    line-height:.94;
+    letter-spacing:-.04em;
+  }
+
+  .pdp-description {
+    max-width:34ch;
+    margin-top:18px;
+    font-size:14px;
+    line-height:1.68;
+  }
+
+  .pdp-meta {
+    display:grid;
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0,1fr)
+      );
+    gap:18px;
+    margin-top:24px;
+    padding-top:18px;
+    border-top:
+      1px
+      solid
+      var(--home-line);
+  }
+
+  .pdp-meta div {
+    display:block;
+  }
+
+  .pdp-meta dt {
+    margin-bottom:6px;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.12em;
+  }
+
+  .pdp-meta dd {
+    font-size:12px;
+  }
+
+  .pdp-commerce {
+    display:grid;
+    grid-template-columns:
+      minmax(0,1fr)
+      auto;
+    gap:
+      12px
+      24px;
+    margin-top:28px;
+    padding:
+      20px
+      0;
+    border:
+      0;
+    border-top:
+      1px
+      solid
+      var(--home-line);
+    border-bottom:
+      1px
+      solid
+      var(--home-line);
+    border-radius:0;
+    background:transparent;
+  }
+
+  .pdp-commerce__price,
+  .pdp-commerce__moq {
+    gap:7px;
+  }
+
+  .pdp-commerce__moq {
+    align-items:flex-end;
+    text-align:right;
+  }
+
+  .pdp-commerce strong {
+    font-size:24px;
+  }
+
+  .pdp-commerce__note {
+    grid-column:1/-1;
+    margin:2px 0 0;
+    padding-top:4px;
+    border-top:0;
+    font-size:10px;
+    line-height:1.55;
+  }
+
+  .pdp-config-intro {
+    display:flex;
+    align-items:baseline;
+    gap:7px;
+    margin-top:34px;
+    padding-bottom:12px;
+    border-bottom:
+      1px
+      solid
+      var(--home-line);
+    color:var(--home-muted);
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.12em;
+    line-height:1.2;
+    text-transform:uppercase;
+  }
+
+  .pdp-config-intro__index {
+    color:var(--home-ink);
+  }
+
+  .pdp-config {
+    gap:16px;
+    margin-top:18px;
+    padding-top:0;
+  }
+
+  .pdp-size-list {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0,1fr)
+      );
+  }
+
+  .pdp-size-chip {
+    border-radius:10px;
+  }
+
+  .pdp-field select,
+  .pdp-field input {
+    min-height:52px;
+    border-radius:10px;
+  }
+
+  .pdp-quantity button {
+    border-radius:10px;
+  }
+
+  .pdp-tags {
+    margin-top:22px;
+  }
+
+  .pdp-actions {
+    margin-top:22px;
+  }
+
+  .pdp-static-note {
+    margin-top:14px;
+  }
+
+  .pdp-runtime-status {
+    margin-top:14px;
+  }
+
+  .pdp-details {
+    margin:0;
+    overflow:visible;
+    border-right:0;
+    border-left:0;
+    border-radius:0;
+  }
+
+  .pdp-details__grid.home-container {
+    width:calc(100% - 32px);
+    margin-inline:auto;
+    padding:
+      54px
+      0;
+  }
+
+  .pdp-details dl div {
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+
+  .pdp-cta__inner {
+    grid-template-columns:1fr;
+  }
+}

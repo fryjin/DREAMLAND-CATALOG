@@ -47,8 +47,38 @@ if(polishStart<0){
   fail('D-C-FIX1 Catalog polish CSS marker is missing.');
 }
 
-const polishCss=polishStart>=0?css.slice(polishStart):'';
-const flatPolishCss=polishCss.replace(/\s+/g,' ');
+const polishEndMarker=
+  '/* R4.11B4.1D-D — Editorial Utility Interaction */';
+
+const polishEnd=
+  polishStart>=0
+    ? css.indexOf(
+        polishEndMarker,
+        polishStart
+      )
+    : -1;
+
+if(
+  polishStart>=0&&
+  polishEnd<0
+){
+  fail(
+    'D-C-FIX1 validator cannot find the D-D stage boundary.'
+  );
+}
+
+const polishCss=
+  polishStart>=0
+    ? css.slice(
+        polishStart,
+        polishEnd>=0
+          ? polishEnd
+          : css.length
+      )
+    : '';
+
+const flatPolishCss=
+  polishCss.replace(/\s+/g,' ');
 
 const expectedSearchShort={
   en:'Search',

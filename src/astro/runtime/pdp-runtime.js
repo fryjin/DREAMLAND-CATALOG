@@ -1193,6 +1193,98 @@
     return view;
   }
 
+
+  function bindGalleryIndex(){
+    const gallery=
+      document.querySelector(
+        '[data-pdp-gallery]'
+      );
+
+    const current=
+      document.querySelector(
+        '[data-pdp-gallery-index-current]'
+      );
+
+    if(
+      !gallery||
+      !current
+    ){
+      return;
+    }
+
+    const items=
+      Array.from(
+        gallery.querySelectorAll(
+          '[data-pdp-gallery-item]'
+        )
+      );
+
+    if(!items.length){
+      return;
+    }
+
+    let frame=0;
+
+    const paint=()=>{
+      frame=0;
+
+      const galleryRect=
+        gallery.getBoundingClientRect();
+
+      let activeIndex=0;
+      let nearest=
+        Number.POSITIVE_INFINITY;
+
+      items.forEach(
+        (item,index)=>{
+          const rect=
+            item.getBoundingClientRect();
+
+          const distance=
+            Math.abs(
+              rect.left-
+              galleryRect.left
+            );
+
+          if(distance<nearest){
+            nearest=distance;
+            activeIndex=index;
+          }
+        }
+      );
+
+      current.textContent=
+        String(
+          activeIndex+1
+        ).padStart(2,'0');
+    };
+
+    const schedule=()=>{
+      if(frame){
+        return;
+      }
+
+      frame=
+        root.requestAnimationFrame(
+          paint
+        );
+    };
+
+    gallery.addEventListener(
+      'scroll',
+      schedule,
+      {passive:true}
+    );
+
+    root.addEventListener(
+      'resize',
+      schedule,
+      {passive:true}
+    );
+
+    paint();
+  }
+
   function bindEvents(){
     document
       .querySelectorAll(
@@ -1507,6 +1599,7 @@
     configureDetail();
     configureInquiry();
     bindEvents();
+    bindGalleryIndex();
 
     applyLanguage(
       currentLanguage,

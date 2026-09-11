@@ -66,6 +66,9 @@ const unit=
     ?.en
     ?.unit||
   '/pc';
+
+const galleryCount=
+  view.gallery.length;
 ---
 <main
   class="pdp-main"
@@ -87,6 +90,15 @@ const unit=
     class="pdp-hero home-container"
     aria-labelledby="pdpTitle"
   >
+    <p
+      class="pdp-feature-folio"
+      data-pdp-feature-folio
+    >
+      <span class="pdp-feature-folio__index">01</span>
+      <span aria-hidden="true">/</span>
+      <span>{view.id}</span>
+    </p>
+
     <div
       class="pdp-gallery"
       data-pdp-gallery
@@ -133,6 +145,17 @@ const unit=
         )
       )}
     </div>
+
+    <p
+      class="pdp-gallery-index"
+      aria-hidden="true"
+    >
+      <span data-pdp-gallery-index-current>01</span>
+      <span>/</span>
+      <span data-pdp-gallery-index-total>
+        {String(galleryCount).padStart(2,'0')}
+      </span>
+    </p>
 
     <aside class="pdp-summary">
       <div class="pdp-summary__identity">
@@ -208,6 +231,17 @@ const unit=
           {copy.moqNote||runtimeUi.submitMoqCheck||'MOQ is checked on submission.'}
         </p>
       </div>
+
+      <header
+        class="pdp-config-intro"
+        data-pdp-config-intro
+      >
+        <span class="pdp-config-intro__index">02</span>
+        <span aria-hidden="true">/</span>
+        <span data-pdp-ui="detailTitle">
+          {runtimeUi.detailTitle||'Product Configuration'}
+        </span>
+      </header>
 
       <div
         class="pdp-config"

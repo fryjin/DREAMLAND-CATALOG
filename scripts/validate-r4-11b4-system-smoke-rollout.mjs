@@ -39,6 +39,10 @@ const catalogCss=read(
   'src/astro/styles/catalog.css'
 );
 
+const pdpCss=read(
+  'src/astro/styles/pdp.css'
+);
+
 const flatCss=
   css.replace(/\s+/g,' ');
 
@@ -59,7 +63,6 @@ for(const marker of [
   'body[data-dreamland-page="contact"] .contact-form-shell',
   'body[data-dreamland-page="contact"] .contact-next',
   '@media (min-width:1051px)',
-  '@media (max-width:720px)',
   '@media (max-width:760px)'
 ]){
   expect(
@@ -79,6 +82,34 @@ for(const marker of [
     css,
     marker,
     'B4 must continue consuming the B1-B3 system.'
+  );
+}
+
+if(
+  pdpCss.includes(
+    'R4.11B4.1E-A — Mobile PDP Feature Foundation'
+  )
+){
+  if(
+    css.includes(
+      'Layered surface + variable media rhythm.'
+    )
+  ){
+    fail(
+      'Mobile PDP has graduated to E-A and must no longer be owned by rollout.css.'
+    );
+  }
+
+  expect(
+    css,
+    'Mobile PDP graduated to R4.11B4.1E-A Mobile PDP Feature Foundation.',
+    'B4 rollout must record Mobile PDP graduation.'
+  );
+}else{
+  expect(
+    flatCss,
+    '@media (max-width:720px)',
+    'Pre-E-A Mobile PDP smoke contract changed.'
   );
 }
 
