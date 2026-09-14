@@ -1374,14 +1374,17 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
 /* ============================================================
  * R4.11B4.1D-E — Mobile 3:2 ↔ 2:3 Mirrored Ratio Rhythm
  * R4.11B4.1D-E-FIX3 — Optical Ratio + Ordered Lane Rhythm
+ * R4.11B4.1D-E-FIX4 — Balanced Editorial Spread
  *
  * Five-card split remains:
  * A = 2 cards left / 3 cards right
  * B = 3 cards left / 2 cards right
  *
- * 7:5 is an optical correction for the 3:2 concept:
- * equal 4:5 media otherwise makes the 3fr lane read disproportionately heavy.
- * Lanes now use fixed vertical gaps; no distributed space-between gaps.
+ * Columns keep the softer 7:5 optical hierarchy.
+ * Full five-card spreads now balance VERTICAL MASS instead of empty space:
+ *   2-card primary lane => 2:3 media
+ *   3-card secondary lane => 4:5 media
+ * Partial groups keep 4:5 as the stable fallback.
  *
  * Desktop stays transparent through display:contents.
  * ========================================================== */
@@ -1457,6 +1460,11 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
     grid-column:auto;
   }
 
+  /*
+   * Default / partial-result fallback.
+   * Search/Filter can produce incomplete groups, so 4:5 stays canonical
+   * unless the spread is a complete five-card 2+3 composition.
+   */
   body[data-dreamland-page="catalog"]
   .catalog-spread
   .catalog-card__media,
@@ -1467,6 +1475,36 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
     aspect-ratio:4/5;
     border-radius:
       var(--catalog-ratio-radius);
+  }
+
+  /*
+   * Balanced Editorial Spread:
+   * the primary two-card lane receives additional vertical image mass.
+   * This compensates for the secondary lane carrying one extra card,
+   * one extra copy block, and one extra inter-card gap.
+   */
+  body[data-dreamland-page="catalog"]
+  .catalog-spread[data-editorial-count="5"]
+  .catalog-spread__lane[data-editorial-lane-count="2"]
+  .catalog-card__media,
+  body[data-dreamland-page="catalog"]
+  .catalog-spread[data-editorial-count="5"]
+  .catalog-spread__lane[data-editorial-lane-count="2"]
+  .catalog-card[data-editorial-role]
+  .catalog-card__media {
+    aspect-ratio:2/3;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread[data-editorial-count="5"]
+  .catalog-spread__lane[data-editorial-lane-count="3"]
+  .catalog-card__media,
+  body[data-dreamland-page="catalog"]
+  .catalog-spread[data-editorial-count="5"]
+  .catalog-spread__lane[data-editorial-lane-count="3"]
+  .catalog-card[data-editorial-role]
+  .catalog-card__media {
+    aspect-ratio:4/5;
   }
 
   body[data-dreamland-page="catalog"]

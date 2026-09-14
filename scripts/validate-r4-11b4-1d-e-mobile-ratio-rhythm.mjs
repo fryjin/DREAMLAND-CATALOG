@@ -208,7 +208,12 @@ for(const marker of [
   'justify-content:flex-start;',
   'align-self:start;',
   'R4.11B4.1D-E-FIX3 — Optical Ratio + Ordered Lane Rhythm',
+  'R4.11B4.1D-E-FIX4 — Balanced Editorial Spread',
   '.catalog-card__media',
+  'data-editorial-count="5"',
+  'data-editorial-lane-count="2"',
+  'aspect-ratio:2/3;',
+  'data-editorial-lane-count="3"',
   'aspect-ratio:4/5;',
   '@media (max-width:374px)',
   '@media (min-width:421px) and (max-width:720px)'
@@ -217,6 +222,28 @@ for(const marker of [
     flatStage,
     marker.replace(/\s+/g,' '),
     'D-E Mobile mirrored-ratio styling changed.'
+  );
+}
+
+/*
+ * FIX4: a complete five-card spread must balance vertical media mass
+ * structurally: two-card lane 2:3, three-card lane 4:5.
+ */
+if(
+  !/\.catalog-spread\[data-editorial-count="5"\][\s\S]*?\.catalog-spread__lane\[data-editorial-lane-count="2"\][\s\S]*?aspect-ratio\s*:\s*2\/3\s*;/m
+    .test(stageCss)
+){
+  fail(
+    'D-E-FIX4 two-card primary lane must use 2:3 media in complete five-card spreads.'
+  );
+}
+
+if(
+  !/\.catalog-spread\[data-editorial-count="5"\][\s\S]*?\.catalog-spread__lane\[data-editorial-lane-count="3"\][\s\S]*?aspect-ratio\s*:\s*4\/5\s*;/m
+    .test(stageCss)
+){
+  fail(
+    'D-E-FIX4 three-card secondary lane must keep 4:5 media in complete five-card spreads.'
   );
 }
 
@@ -292,5 +319,5 @@ if(errors.length){
 }
 
 console.log(
-  'R4.11B4.1D-E MOBILE MIRRORED RATIO RHYTHM: PASS'
+  'R4.11B4.1D-E BALANCED EDITORIAL SPREAD: PASS'
 );
