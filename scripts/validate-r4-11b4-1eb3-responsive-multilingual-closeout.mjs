@@ -194,7 +194,8 @@ for(const marker of [
   'R4.11B4.1E-B1-FIX4 — Mobile Config Width Containment',
   'R4.11B4.1E-B1-FIX5 — Active Picker Visibility',
   'R4.11B4.1E-B2 — Scent Detail Utility',
-  'R4.11B4.1E-B3 — Responsive / Multilingual Closeout'
+  'R4.11B4.1E-B3 — Responsive / Multilingual Closeout',
+  'R4.11B4.1E-B3-FIX1 — Single-line UI Copy Polish'
 ]){
   expect(
     css,
@@ -244,13 +245,26 @@ for(const marker of [
   );
 }
 
-/* Mobile options may wrap; the strip still owns horizontal overflow. */
+/*
+ * FIX1: short-form picker options stay on one line.
+ * The horizontally scrollable strip, not the option text, owns overflow.
+ */
+const fix1Start=
+  css.indexOf(
+    'R4.11B4.1E-B3-FIX1 — Single-line UI Copy Polish'
+  );
+
+const fix1Css=
+  fix1Start>=0
+    ? css.slice(fix1Start)
+    : '';
+
 if(
-  !/\.pdp-config-projection__option\s*\{[\s\S]*?max-width\s*:\s*min\(78vw,280px\)\s*;[\s\S]*?white-space\s*:\s*normal\s*;[\s\S]*?overflow-wrap\s*:\s*anywhere\s*;/m
-    .test(stageCss)
+  !/\.pdp-config-projection__option\s*\{[\s\S]*?max-width\s*:\s*none\s*;[\s\S]*?white-space\s*:\s*nowrap\s*;[\s\S]*?overflow-wrap\s*:\s*normal\s*;/m
+    .test(fix1Css)
 ){
   fail(
-    'E-B3 long option labels must wrap inside a bounded mobile option.'
+    'E-B3-FIX1 picker options must stay single-line while the strip owns horizontal scroll.'
   );
 }
 
@@ -260,6 +274,43 @@ if(
 ){
   fail(
     'E-B3 projection strip must tolerate wrapped option heights.'
+  );
+}
+
+/*
+ * FIX1: Current Reference Unit Price amount + unit are one visual token.
+ */
+if(
+  !/\.pdp-commerce__price\s*\{[\s\S]*?display\s*:\s*grid\s*;[\s\S]*?grid-template-areas\s*:[\s\S]*?"price unit"\s*;[\s\S]*?align-items\s*:\s*baseline\s*;/m
+    .test(fix1Css)
+){
+  fail(
+    'E-B3-FIX1 Current Reference Unit Price must keep amount and unit on one baseline.'
+  );
+}
+
+if(
+  !/\.pdp-commerce__price\s*>\s*strong\s*\{[\s\S]*?white-space\s*:\s*nowrap\s*;/m
+    .test(fix1Css)||
+  !/\.pdp-commerce__price\s*>\s*small\s*\{[\s\S]*?white-space\s*:\s*nowrap\s*;/m
+    .test(fix1Css)
+){
+  fail(
+    'E-B3-FIX1 price amount and /pc /件 unit must not split across lines.'
+  );
+}
+
+/*
+ * FIX1: compact metadata pills remain one reading line.
+ */
+if(
+  !/\.pdp-tags\s*\{[\s\S]*?flex-wrap\s*:\s*nowrap\s*;/m
+    .test(fix1Css)||
+  !/\.pdp-tags\s+span\s*\{[\s\S]*?white-space\s*:\s*nowrap\s*;/m
+    .test(fix1Css)
+){
+  fail(
+    'E-B3-FIX1 attribute pills must stay on one visual line.'
   );
 }
 
@@ -310,5 +361,5 @@ if(errors.length){
 }
 
 console.log(
-  'R4.11B4.1E-B3 RESPONSIVE / MULTILINGUAL CLOSEOUT: PASS'
+  'R4.11B4.1E-B3 RESPONSIVE / MULTILINGUAL CLOSEOUT + FIX1: PASS'
 );

@@ -1444,3 +1444,103 @@
     overflow-wrap:anywhere;
   }
 }
+
+/* ============================================================
+ * R4.11B4.1E-B3-FIX1 — Single-line UI Copy Polish
+ *
+ * Short-form UI copy should scan as one visual token.
+ * Long prose and Scent Detail values may continue wrapping.
+ * ========================================================== */
+@media (max-width:720px) {
+  /*
+   * Picker options are short-form controls, not prose.
+   * Keep each option on one line and let the strip own horizontal scroll.
+   */
+  .pdp-config-projection__option {
+    max-width:none;
+    white-space:nowrap;
+    overflow-wrap:normal;
+    word-break:normal;
+  }
+
+  html[lang="ko-KR"] .pdp-config-projection__option {
+    overflow-wrap:normal;
+    word-break:keep-all;
+  }
+
+  /*
+   * Current Reference Unit Price:
+   * label occupies row 1; amount + unit share row 2 and one baseline.
+   */
+  .pdp-commerce__price {
+    display:grid;
+    grid-template-columns:
+      max-content
+      max-content;
+    grid-template-areas:
+      "label label"
+      "price unit";
+    align-items:baseline;
+    justify-content:start;
+    column-gap:5px;
+    row-gap:7px;
+    min-width:0;
+  }
+
+  .pdp-commerce__price > span {
+    grid-area:label;
+    min-width:0;
+  }
+
+  .pdp-commerce__price > strong {
+    grid-area:price;
+    white-space:nowrap;
+  }
+
+  .pdp-commerce__price > small {
+    grid-area:unit;
+    align-self:baseline;
+    white-space:nowrap;
+  }
+
+  /*
+   * Attribute pills are compact metadata tokens.
+   * Keep the current four-item set on one reading line.
+   */
+  .pdp-tags {
+    flex-wrap:nowrap;
+    gap:4px;
+    min-width:0;
+  }
+
+  .pdp-tags span {
+    flex:0 0 auto;
+    padding:
+      6px
+      7px;
+    font-size:9px;
+    line-height:1.1;
+    white-space:nowrap;
+  }
+}
+
+@media (max-width:374px) {
+  .pdp-commerce__price {
+    column-gap:4px;
+  }
+
+  .pdp-commerce__price > small {
+    font-size:10px;
+  }
+
+  .pdp-tags {
+    gap:3px;
+  }
+
+  .pdp-tags span {
+    padding:
+      5px
+      5px;
+    font-size:8px;
+  }
+}
