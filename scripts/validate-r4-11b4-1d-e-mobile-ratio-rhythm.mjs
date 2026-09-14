@@ -199,14 +199,15 @@ const flatStage=
 
 for(const marker of [
   '@media (max-width:720px)',
-  '.catalog-spread { display:grid; grid-template-columns: minmax(0,3fr) minmax(0,2fr);',
-  '.catalog-spread[data-editorial-phase="b"] { grid-template-columns: minmax(0,2fr) minmax(0,3fr);',
+  '.catalog-spread { display:grid; grid-template-columns: minmax(0,7fr) minmax(0,5fr);',
+  '.catalog-spread[data-editorial-phase="b"] { grid-template-columns: minmax(0,5fr) minmax(0,7fr);',
   '.catalog-spread[data-editorial-count="1"] { grid-template-columns: minmax(0,1fr);',
   '.catalog-spread__lane {',
   'display:flex;',
   'flex-direction:column;',
-  'justify-content:space-between;',
-  'align-self:stretch;',
+  'justify-content:flex-start;',
+  'align-self:start;',
+  'R4.11B4.1D-E-FIX3 — Optical Ratio + Ordered Lane Rhythm',
   '.catalog-card__media',
   'aspect-ratio:4/5;',
   '@media (max-width:374px)',
@@ -216,6 +217,24 @@ for(const marker of [
     flatStage,
     marker.replace(/\s+/g,' '),
     'D-E Mobile mirrored-ratio styling changed.'
+  );
+}
+
+if(
+  /\.catalog-spread__lane\s*\{[\s\S]*?justify-content\s*:\s*space-between\s*;/m
+    .test(stageCss)
+){
+  fail(
+    'D-E-FIX3 lane rhythm must not redistribute residual height between cards.'
+  );
+}
+
+if(
+  /\.catalog-spread\[data-editorial-phase="a"\][\s\S]*?--catalog-ratio-title/m
+    .test(stageCss)
+){
+  fail(
+    'D-E-FIX3 must not visually amplify the wide lane with a second title/radius scale.'
   );
 }
 

@@ -1373,10 +1373,15 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
 
 /* ============================================================
  * R4.11B4.1D-E — Mobile 3:2 ↔ 2:3 Mirrored Ratio Rhythm
+ * R4.11B4.1D-E-FIX3 — Optical Ratio + Ordered Lane Rhythm
  *
- * Five-card spread:
- * A = 3fr left / 2fr right, 2 cards / 3 cards
- * B = 2fr left / 3fr right, 3 cards / 2 cards
+ * Five-card split remains:
+ * A = 2 cards left / 3 cards right
+ * B = 3 cards left / 2 cards right
+ *
+ * 7:5 is an optical correction for the 3:2 concept:
+ * equal 4:5 media otherwise makes the 3fr lane read disproportionately heavy.
+ * Lanes now use fixed vertical gaps; no distributed space-between gaps.
  *
  * Desktop stays transparent through display:contents.
  * ========================================================== */
@@ -1389,10 +1394,10 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
   body[data-dreamland-page="catalog"] .catalog-spread {
     display:grid;
     grid-template-columns:
-      minmax(0,3fr)
-      minmax(0,2fr);
-    align-items:stretch;
-    column-gap:12px;
+      minmax(0,7fr)
+      minmax(0,5fr);
+    align-items:start;
+    column-gap:10px;
     row-gap:0;
     margin-bottom:44px;
   }
@@ -1400,8 +1405,8 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
   body[data-dreamland-page="catalog"]
   .catalog-spread[data-editorial-phase="b"] {
     grid-template-columns:
-      minmax(0,2fr)
-      minmax(0,3fr);
+      minmax(0,5fr)
+      minmax(0,7fr);
   }
 
   body[data-dreamland-page="catalog"]
@@ -1415,13 +1420,13 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
     --catalog-ratio-title:
       clamp(14px,4vw,16px);
     --catalog-ratio-radius:
-      14px;
+      15px;
 
     display:flex;
     flex-direction:column;
-    justify-content:space-between;
-    align-self:stretch;
-    gap:16px;
+    justify-content:flex-start;
+    align-self:start;
+    gap:18px;
     min-width:0;
   }
 
@@ -1439,18 +1444,6 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
   .catalog-spread[data-editorial-count="1"]
   .catalog-spread__lane {
     grid-column:1;
-  }
-
-  body[data-dreamland-page="catalog"]
-  .catalog-spread[data-editorial-phase="a"]
-  .catalog-spread__lane[data-editorial-lane="left"],
-  body[data-dreamland-page="catalog"]
-  .catalog-spread[data-editorial-phase="b"]
-  .catalog-spread__lane[data-editorial-lane="right"] {
-    --catalog-ratio-title:
-      clamp(16px,4.6vw,19px);
-    --catalog-ratio-radius:
-      18px;
   }
 
   body[data-dreamland-page="catalog"]
@@ -1552,24 +1545,24 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
 
 @media (max-width:374px) {
   body[data-dreamland-page="catalog"] .catalog-spread {
-    column-gap:10px;
+    column-gap:8px;
     margin-bottom:38px;
   }
 
   body[data-dreamland-page="catalog"]
   .catalog-spread__lane {
-    gap:14px;
+    gap:16px;
   }
 }
 
 @media (min-width:421px) and (max-width:720px) {
   body[data-dreamland-page="catalog"] .catalog-spread {
-    column-gap:14px;
+    column-gap:12px;
     margin-bottom:48px;
   }
 
   body[data-dreamland-page="catalog"]
   .catalog-spread__lane {
-    gap:18px;
+    gap:20px;
   }
 }
