@@ -1292,3 +1292,155 @@
     overflow-wrap:anywhere;
   }
 }
+
+/* ============================================================
+ * R4.11B4.1E-B3 — Responsive / Multilingual Closeout
+ *
+ * E-B1/E-B2 architecture stays canonical.
+ * This stage only hardens the mobile presentation for:
+ *   360 / 390 / 430px
+ *   EN / ZH / KO
+ *   long option labels and rebuilt dependent option sets.
+ * ========================================================== */
+@media (max-width:720px) {
+  /*
+   * Projection headings may wrap under translated copy.
+   * Count remains stable while the label owns the flexible width.
+   */
+  .pdp-config-projection__heading {
+    align-items:flex-start;
+  }
+
+  .pdp-config-projection__heading > * {
+    min-width:0;
+  }
+
+  .pdp-config-projection__label {
+    line-height:1.3;
+    overflow-wrap:anywhere;
+  }
+
+  .pdp-config-projection__count {
+    flex:0 0 auto;
+    padding-top:1px;
+  }
+
+  /*
+   * Long scent / pattern / packaging names must remain inside the
+   * horizontal picker viewport. They may wrap within one option instead
+   * of widening the entire route or becoming impossible to fully reveal.
+   */
+  .pdp-config-projection__strip {
+    align-items:flex-start;
+  }
+
+  .pdp-config-projection__option {
+    max-width:min(78vw,280px);
+    white-space:normal;
+    overflow-wrap:anywhere;
+  }
+
+  .pdp-quantity-reference,
+  .pdp-quantity-reference small,
+  .pdp-quantity-reference strong {
+    min-width:0;
+  }
+
+  .pdp-quantity-reference small {
+    line-height:1.35;
+    overflow-wrap:anywhere;
+  }
+
+  .pdp-scent-detail__toggle {
+    min-width:0;
+    text-align:right;
+  }
+
+  .pdp-scent-detail__row dt {
+    min-width:0;
+    overflow-wrap:anywhere;
+  }
+}
+
+/* 360-class devices: protect Quantity and note-detail density. */
+@media (max-width:374px) {
+  .pdp-config-projection__strip {
+    gap:18px;
+    padding-right:10px;
+    scroll-padding-inline:10px;
+  }
+
+  .pdp-config-projection__option {
+    max-width:min(76vw,268px);
+  }
+
+  [data-pdp-quantity-field] {
+    grid-template-columns:
+      minmax(0,1fr)
+      120px;
+    gap:
+      12px
+      12px;
+  }
+
+  [data-pdp-quantity-field]
+  > .pdp-quantity {
+    grid-template-columns:
+      36px
+      48px
+      36px;
+    width:120px;
+    min-width:120px;
+  }
+
+  .pdp-scent-detail__row {
+    grid-template-columns:
+      62px
+      minmax(0,1fr);
+    gap:12px;
+  }
+}
+
+/* 430-class devices: allow translated options to breathe without overflow. */
+@media (min-width:421px) and (max-width:720px) {
+  .pdp-config-projection__option {
+    max-width:min(72vw,320px);
+  }
+
+  .pdp-scent-detail__row {
+    grid-template-columns:
+      78px
+      minmax(0,1fr);
+    gap:16px;
+  }
+}
+
+/*
+ * Script/language-specific label rhythm.
+ * These selectors only target the mobile projection/detail presentation;
+ * Desktop canonical controls remain unchanged.
+ */
+@media (max-width:720px) {
+  html[lang="zh-CN"] .pdp-section-heading > span,
+  html[lang="zh-CN"] .pdp-config-projection__label,
+  html[lang="zh-CN"] .pdp-field > span,
+  html[lang="zh-CN"] .pdp-scent-detail__toggle,
+  html[lang="zh-CN"] .pdp-scent-detail__row dt {
+    letter-spacing:.06em;
+  }
+
+  html[lang="ko-KR"] .pdp-section-heading > span,
+  html[lang="ko-KR"] .pdp-config-projection__label,
+  html[lang="ko-KR"] .pdp-field > span,
+  html[lang="ko-KR"] .pdp-scent-detail__toggle,
+  html[lang="ko-KR"] .pdp-scent-detail__row dt {
+    letter-spacing:.04em;
+    word-break:keep-all;
+  }
+
+  html[lang="ko-KR"] .pdp-config-projection__option,
+  html[lang="ko-KR"] .pdp-scent-detail__row dd {
+    word-break:keep-all;
+    overflow-wrap:anywhere;
+  }
+}
