@@ -1369,3 +1369,207 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
   body[data-dreamland-page="catalog"] .catalog-search.is-open .catalog-search__field,
   body[data-dreamland-page="catalog"] .catalog-sort__panel { animation:none; }
 }
+
+
+/* ============================================================
+ * R4.11B4.1D-E — Mobile 3:2 ↔ 2:3 Mirrored Ratio Rhythm
+ *
+ * Five-card spread:
+ * A = 3fr left / 2fr right, 2 cards / 3 cards
+ * B = 2fr left / 3fr right, 3 cards / 2 cards
+ *
+ * Desktop stays transparent through display:contents.
+ * ========================================================== */
+
+.catalog-spread__lane {
+  display:contents;
+}
+
+@media (max-width:720px) {
+  body[data-dreamland-page="catalog"] .catalog-spread {
+    display:grid;
+    grid-template-columns:
+      minmax(0,3fr)
+      minmax(0,2fr);
+    align-items:stretch;
+    column-gap:12px;
+    row-gap:0;
+    margin-bottom:44px;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread[data-editorial-phase="b"] {
+    grid-template-columns:
+      minmax(0,2fr)
+      minmax(0,3fr);
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread[data-editorial-count="1"] {
+    grid-template-columns:
+      minmax(0,1fr);
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread__lane {
+    --catalog-ratio-title:
+      clamp(14px,4vw,16px);
+    --catalog-ratio-radius:
+      14px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    align-self:stretch;
+    gap:16px;
+    min-width:0;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread__lane[data-editorial-lane="left"] {
+    grid-column:1;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread__lane[data-editorial-lane="right"] {
+    grid-column:2;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread[data-editorial-count="1"]
+  .catalog-spread__lane {
+    grid-column:1;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread[data-editorial-phase="a"]
+  .catalog-spread__lane[data-editorial-lane="left"],
+  body[data-dreamland-page="catalog"]
+  .catalog-spread[data-editorial-phase="b"]
+  .catalog-spread__lane[data-editorial-lane="right"] {
+    --catalog-ratio-title:
+      clamp(16px,4.6vw,19px);
+    --catalog-ratio-radius:
+      18px;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread
+  .catalog-card {
+    flex:
+      0
+      0
+      auto;
+    min-width:0;
+    grid-column:auto;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread
+  .catalog-card__media,
+  body[data-dreamland-page="catalog"]
+  .catalog-spread
+  .catalog-card[data-editorial-role]
+  .catalog-card__media {
+    aspect-ratio:4/5;
+    border-radius:
+      var(--catalog-ratio-radius);
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread
+  .catalog-card__copy,
+  body[data-dreamland-page="catalog"]
+  .catalog-spread
+  .catalog-card[data-editorial-role]
+  .catalog-card__copy {
+    display:grid;
+    grid-template-columns:
+      minmax(0,1fr);
+    gap:6px;
+    padding:
+      9px
+      1px
+      0;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread
+  .catalog-card__copy h2,
+  body[data-dreamland-page="catalog"]
+  .catalog-spread
+  .catalog-card[data-editorial-role]
+  .catalog-card__copy h2 {
+    max-width:100%;
+    font-size:
+      var(--catalog-ratio-title);
+    line-height:1.06;
+    overflow-wrap:anywhere;
+    text-wrap:balance;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread
+  .catalog-card__copy p {
+    margin-top:4px;
+    font-size:8px;
+    line-height:1.25;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread
+  .catalog-card__commercial,
+  body[data-dreamland-page="catalog"]
+  .catalog-spread
+  .catalog-card[data-editorial-role]
+  .catalog-card__commercial {
+    display:grid;
+    grid-template-columns:
+      minmax(0,1fr)
+      auto;
+    align-items:baseline;
+    gap:6px;
+    width:100%;
+    text-align:left;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread
+  .catalog-card__commercial strong {
+    min-width:0;
+    font-size:10px;
+    line-height:1.15;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread
+  .catalog-card__commercial span {
+    justify-self:end;
+    font-size:8px;
+    line-height:1.15;
+  }
+}
+
+@media (max-width:374px) {
+  body[data-dreamland-page="catalog"] .catalog-spread {
+    column-gap:10px;
+    margin-bottom:38px;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread__lane {
+    gap:14px;
+  }
+}
+
+@media (min-width:421px) and (max-width:720px) {
+  body[data-dreamland-page="catalog"] .catalog-spread {
+    column-gap:14px;
+    margin-bottom:48px;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread__lane {
+    gap:18px;
+  }
+}

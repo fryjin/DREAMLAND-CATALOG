@@ -658,27 +658,44 @@
     );
   }
 
-  function spreadHtml(
+  /*
+   * R4.11B4.1D-E — Mobile 3:2 ↔ 2:3 Mirrored Ratio Rhythm
+   */
+  function laneSplitCount(
+    phase,
+    count
+  ){
+    if(count<=1){
+      return count;
+    }
+
+    return Math.max(
+      1,
+      Math.min(
+        count-1,
+        Math.round(
+          count*
+          (
+            phase==='b'
+              ? .6
+              : .4
+          )
+        )
+      )
+    );
+  }
+
+  function laneHtml(
     products,
-    groupIndex,
+    start,
+    side,
     copy
   ){
-    const start=
-      groupIndex*5;
-
-    const phase=
-      editorialMeta(
-        start
-      ).phase;
-
     return (
-      '<div class="catalog-spread" data-editorial-phase="'+
-      phase+
-      '" data-editorial-group="'+
-      (
-        groupIndex+
-        1
-      )+
+      '<div class="catalog-spread__lane" data-editorial-lane="'+
+      side+
+      '" data-editorial-lane-count="'+
+      products.length+
       '">'+
         products
           .map(
@@ -694,6 +711,63 @@
               )
           )
           .join('')+
+      '</div>'
+    );
+  }
+
+  function spreadHtml(
+    products,
+    groupIndex,
+    copy
+  ){
+    const start=
+      groupIndex*5;
+
+    const phase=
+      editorialMeta(
+        start
+      ).phase;
+
+    const split=
+      laneSplitCount(
+        phase,
+        products.length
+      );
+
+    return (
+      '<div class="catalog-spread" data-editorial-phase="'+
+      phase+
+      '" data-editorial-group="'+
+      (
+        groupIndex+
+        1
+      )+
+      '" data-editorial-count="'+
+      products.length+
+      '">'+
+        laneHtml(
+          products.slice(
+            0,
+            split
+          ),
+          start,
+          'left',
+          copy
+        )+
+        (
+          split<
+          products.length
+            ? laneHtml(
+                products.slice(
+                  split
+                ),
+                start+
+                  split,
+                'right',
+                copy
+              )
+            : ''
+        )+
       '</div>'
     );
   }

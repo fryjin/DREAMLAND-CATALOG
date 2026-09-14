@@ -389,11 +389,49 @@ expect(
   'package.json must expose the E-A validator.'
 );
 
-expect(
-  pkg,
-  'npm run r4:visual:mobile-catalog-utility-cleanup && npm run r4:visual:pdp-feature',
-  'Main validation chain must run E-A after Mobile Catalog closeout.'
-);
+/*
+ * D-E extends Mobile Catalog closeout with the ratio-rhythm stage.
+ * Validate ordering instead of brittle direct adjacency so later
+ * Catalog closeout validators can be inserted without weakening
+ * the E-A boundary.
+ */
+const catalogCleanupCommand=
+  'npm run r4:visual:mobile-catalog-utility-cleanup';
+
+const catalogRatioCommand=
+  'npm run r4:visual:mobile-catalog-ratio-rhythm';
+
+const pdpFeatureCommand=
+  'npm run r4:visual:pdp-feature';
+
+const catalogCleanupIndex=
+  pkg.indexOf(
+    catalogCleanupCommand
+  );
+
+const catalogRatioIndex=
+  pkg.indexOf(
+    catalogRatioCommand
+  );
+
+const pdpFeatureIndex=
+  pkg.indexOf(
+    pdpFeatureCommand
+  );
+
+if(
+  !(
+    catalogCleanupIndex>=0&&
+    catalogRatioIndex>
+      catalogCleanupIndex&&
+    pdpFeatureIndex>
+      catalogRatioIndex
+  )
+){
+  fail(
+    'Main validation chain must close Mobile Catalog stages before E-A PDP: utility-cleanup -> ratio-rhythm -> pdp-feature.'
+  );
+}
 
 if(errors.length){
   console.error(

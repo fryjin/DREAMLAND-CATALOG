@@ -44,6 +44,37 @@ function editorialRole(
   );
 }
 
+/*
+ * R4.11B4.1D-E — Mobile 3:2 ↔ 2:3 Mirrored Ratio Rhythm.
+ * Full five-card spread:
+ *   A => 2 left / 3 right
+ *   B => 3 left / 2 right
+ * Partial result sets preserve both non-empty lanes when possible.
+ */
+function laneSplitCount(
+  phase:string,
+  count:number
+){
+  if(count<=1){
+    return count;
+  }
+
+  return Math.max(
+    1,
+    Math.min(
+      count-1,
+      Math.round(
+        count*
+        (
+          phase==='b'
+            ? .6
+            : .4
+        )
+      )
+    )
+  );
+}
+
 const editorialGroups=
   Array.from(
     {
@@ -352,62 +383,98 @@ const editorialGroups=
           class="catalog-spread"
           data-editorial-phase={group.phase}
           data-editorial-group={groupIndex+1}
+          data-editorial-count={group.products.length}
         >
-          {group.products.map((product:any)=>(
-            <article
-              class="catalog-card"
-              data-catalog-product={product.id}
-              data-editorial-slot={product.editorialSlot}
-              data-editorial-phase={product.editorialPhase}
-              data-editorial-role={product.editorialRole}
-            >
-              <a
-                class="catalog-card__link"
-                href={product.href}
-                aria-label={`${copy.viewDetails}: ${product.name}`}
+          {[
+            {
+              side:'left',
+              products:
+                group.products.slice(
+                  0,
+                  laneSplitCount(
+                    group.phase,
+                    group.products.length
+                  )
+                )
+            },
+            {
+              side:'right',
+              products:
+                group.products.slice(
+                  laneSplitCount(
+                    group.phase,
+                    group.products.length
+                  )
+                )
+            }
+          ]
+            .filter(
+              lane=>
+                lane.products.length
+            )
+            .map(lane=>(
+              <div
+                class="catalog-spread__lane"
+                data-editorial-lane={lane.side}
+                data-editorial-lane-count={lane.products.length}
               >
-                <div class="catalog-card__media">
-                  <img
-                    src={product.cover}
-                    alt={product.name}
-                    width="720"
-                    height="900"
-                    loading={product.loading}
-                    fetchpriority={product.priority}
-                    decoding="async"
-                  />
-
-                  <span
-                    class="catalog-card__overlay"
-                    aria-hidden="true"
+                {lane.products.map((product:any)=>(
+                  <article
+                    class="catalog-card"
+                    data-catalog-product={product.id}
+                    data-editorial-slot={product.editorialSlot}
+                    data-editorial-phase={product.editorialPhase}
+                    data-editorial-role={product.editorialRole}
                   >
-                    {copy.viewDetails}
-                    <b>→</b>
-                  </span>
-                </div>
+                    <a
+                      class="catalog-card__link"
+                      href={product.href}
+                      aria-label={`${copy.viewDetails}: ${product.name}`}
+                    >
+                      <div class="catalog-card__media">
+                        <img
+                          src={product.cover}
+                          alt={product.name}
+                          width="720"
+                          height="900"
+                          loading={product.loading}
+                          fetchpriority={product.priority}
+                          decoding="async"
+                        />
 
-                <div class="catalog-card__copy">
-                  <div>
-                    <h2>
-                      {product.name}
-                    </h2>
-                    <p>
-                      {product.seriesLabel}
-                    </p>
-                  </div>
+                        <span
+                          class="catalog-card__overlay"
+                          aria-hidden="true"
+                        >
+                          {copy.viewDetails}
+                          <b>→</b>
+                        </span>
+                      </div>
 
-                  <div class="catalog-card__commercial">
-                    <strong>
-                      {product.price}
-                    </strong>
-                    <span>
-                      {copy.moq} {product.moq}
-                    </span>
-                  </div>
-                </div>
-              </a>
-            </article>
-          ))}
+                      <div class="catalog-card__copy">
+                        <div>
+                          <h2>
+                            {product.name}
+                          </h2>
+                          <p>
+                            {product.seriesLabel}
+                          </p>
+                        </div>
+
+                        <div class="catalog-card__commercial">
+                          <strong>
+                            {product.price}
+                          </strong>
+                          <span>
+                            {copy.moq} {product.moq}
+                          </span>
+                        </div>
+                      </div>
+                    </a>
+                  </article>
+                ))}
+              </div>
+            ))}
         </div>
       ))}
     </div>
