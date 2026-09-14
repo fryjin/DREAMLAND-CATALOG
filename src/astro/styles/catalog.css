@@ -1375,6 +1375,11 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
  * R4.11B4.1D-E — Mobile 3:2 ↔ 2:3 Mirrored Ratio Rhythm
  * R4.11B4.1D-E-FIX3 — Optical Ratio + Ordered Lane Rhythm
  * R4.11B4.1D-E-FIX4 — Balanced Editorial Spread
+ * R4.11B4.1D-E-FIX5 — Seamless Editorial Flow
+ *
+ * Five-card groups remain structural only.
+ * Their visual seam matches the normal card-to-card lane rhythm,
+ * so readers perceive one continuous editorial waterfall.
  *
  * Five-card split remains:
  * A = 2 cards left / 3 cards right
@@ -1402,7 +1407,12 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
     align-items:start;
     column-gap:10px;
     row-gap:0;
-    margin-bottom:44px;
+    margin-bottom:18px;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-spread:last-child {
+    margin-bottom:0;
   }
 
   body[data-dreamland-page="catalog"]
@@ -1584,7 +1594,7 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
 @media (max-width:374px) {
   body[data-dreamland-page="catalog"] .catalog-spread {
     column-gap:8px;
-    margin-bottom:38px;
+    margin-bottom:16px;
   }
 
   body[data-dreamland-page="catalog"]
@@ -1596,7 +1606,7 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
 @media (min-width:421px) and (max-width:720px) {
   body[data-dreamland-page="catalog"] .catalog-spread {
     column-gap:12px;
-    margin-bottom:48px;
+    margin-bottom:20px;
   }
 
   body[data-dreamland-page="catalog"]

@@ -209,7 +209,12 @@ for(const marker of [
   'align-self:start;',
   'R4.11B4.1D-E-FIX3 — Optical Ratio + Ordered Lane Rhythm',
   'R4.11B4.1D-E-FIX4 — Balanced Editorial Spread',
+  'R4.11B4.1D-E-FIX5 — Seamless Editorial Flow',
   '.catalog-card__media',
+  'margin-bottom:18px;',
+  'margin-bottom:16px;',
+  'margin-bottom:20px;',
+  '.catalog-spread:last-child {',
   'data-editorial-count="5"',
   'data-editorial-lane-count="2"',
   'aspect-ratio:2/3;',
@@ -223,6 +228,62 @@ for(const marker of [
     marker.replace(/\s+/g,' '),
     'D-E Mobile mirrored-ratio styling changed.'
   );
+}
+
+/*
+ * FIX5: five-card groups are structural only.
+ * Inter-group spacing must match the visible card-to-card lane rhythm:
+ *   <=374px:   16 / 16
+ *   375-420px: 18 / 18
+ *   421-720px: 20 / 20
+ */
+if(
+  !/\.catalog-spread\s*\{[\s\S]*?margin-bottom\s*:\s*18px\s*;[\s\S]*?\.catalog-spread__lane\s*\{[\s\S]*?gap\s*:\s*18px\s*;/m
+    .test(stageCss)
+){
+  fail(
+    'D-E-FIX5 default mobile group seam must match the 18px lane rhythm.'
+  );
+}
+
+if(
+  !/@media\s*\(max-width:374px\)[\s\S]*?\.catalog-spread\s*\{[\s\S]*?margin-bottom\s*:\s*16px\s*;[\s\S]*?\.catalog-spread__lane\s*\{[\s\S]*?gap\s*:\s*16px\s*;/m
+    .test(stageCss)
+){
+  fail(
+    'D-E-FIX5 <=374px group seam must match the 16px lane rhythm.'
+  );
+}
+
+if(
+  !/@media\s*\(min-width:421px\)\s*and\s*\(max-width:720px\)[\s\S]*?\.catalog-spread\s*\{[\s\S]*?margin-bottom\s*:\s*20px\s*;[\s\S]*?\.catalog-spread__lane\s*\{[\s\S]*?gap\s*:\s*20px\s*;/m
+    .test(stageCss)
+){
+  fail(
+    'D-E-FIX5 421-720px group seam must match the 20px lane rhythm.'
+  );
+}
+
+if(
+  !/\.catalog-spread:last-child\s*\{[\s\S]*?margin-bottom\s*:\s*0\s*;/m
+    .test(stageCss)
+){
+  fail(
+    'D-E-FIX5 final spread must not leave a trailing group seam.'
+  );
+}
+
+for(const obsolete of [
+  'margin-bottom:44px;',
+  'margin-bottom:38px;',
+  'margin-bottom:48px;'
+]){
+  if(stageCss.includes(obsolete)){
+    fail(
+      'D-E-FIX5 must not preserve old visible group-break spacing: '+
+      obsolete
+    );
+  }
 }
 
 /*
@@ -319,5 +380,5 @@ if(errors.length){
 }
 
 console.log(
-  'R4.11B4.1D-E BALANCED EDITORIAL SPREAD: PASS'
+  'R4.11B4.1D-E SEAMLESS EDITORIAL FLOW: PASS'
 );
