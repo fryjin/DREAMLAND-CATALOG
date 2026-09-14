@@ -840,6 +840,8 @@
  * Quantity keeps the canonical stepper visible; only hierarchy changes.
  * R4.11B4.1E-B1-FIX4 — Mobile Config Width Containment
  * Horizontal picker strips scroll internally and must not widen the route.
+ * R4.11B4.1E-B1-FIX5 — Active Picker Visibility
+ * Selected options remain fully visible after canonical projection rebuilds.
  * ========================================================== */
 
 .pdp-config-projections {
@@ -993,9 +995,10 @@
     overflow-x:auto;
     padding:
       1px
-      0
-      3px;
-    scroll-padding-inline:0;
+      12px
+      3px
+      0;
+    scroll-padding-inline:12px;
     overscroll-behavior-inline:contain;
     scrollbar-width:none;
   }
@@ -1034,6 +1037,7 @@
   }
 
   .pdp-config-projection__option.is-selected {
+    scroll-margin-inline:12px;
     color:var(--home-ink);
     font-weight:800;
   }

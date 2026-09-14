@@ -843,6 +843,129 @@
     );
   }
 
+  /* R4.11B4.1E-B1-FIX5 — Active Picker Visibility */
+  function restoreProjectionViewport(
+    rootNode,
+    scrollState
+  ){
+    const apply=()=>{
+      if(
+        root.matchMedia&&
+        !root.matchMedia(
+          '(max-width:720px)'
+        ).matches
+      ){
+        return;
+      }
+
+      rootNode
+        .querySelectorAll(
+          '[data-pdp-projection-field]'
+        )
+        .forEach(section=>{
+          const strip=
+            section.querySelector(
+              '.pdp-config-projection__strip'
+            );
+
+          if(!strip){
+            return;
+          }
+
+          const field=
+            section.dataset
+              .pdpProjectionField||
+            '';
+
+          const previous=
+            scrollState.get(field);
+
+          if(
+            Number.isFinite(
+              previous
+            )
+          ){
+            strip.scrollLeft=
+              previous;
+          }
+
+          const selected=
+            strip.querySelector(
+              '.is-selected'
+            );
+
+          if(!selected){
+            return;
+          }
+
+          const viewportRect=
+            strip.getBoundingClientRect();
+
+          const selectedRect=
+            selected.getBoundingClientRect();
+
+          const inset=12;
+
+          if(
+            selectedRect.left<
+            viewportRect.left+
+              inset
+          ){
+            strip.scrollLeft=
+              Math.max(
+                0,
+                strip.scrollLeft-
+                (
+                  viewportRect.left+
+                  inset-
+                  selectedRect.left
+                )
+              );
+
+            return;
+          }
+
+          if(
+            selectedRect.right>
+            viewportRect.right-
+              inset
+          ){
+            const maxScroll=
+              Math.max(
+                0,
+                strip.scrollWidth-
+                strip.clientWidth
+              );
+
+            strip.scrollLeft=
+              Math.min(
+                maxScroll,
+                strip.scrollLeft+
+                (
+                  selectedRect.right-
+                  (
+                    viewportRect.right-
+                    inset
+                  )
+                )
+              );
+          }
+        });
+    };
+
+    if(root.requestAnimationFrame){
+      root.requestAnimationFrame(
+        apply
+      );
+      return;
+    }
+
+    root.setTimeout(
+      apply,
+      0
+    );
+  }
+
   function renderConfigurationProjection(view){
     const rootNode=
       document.querySelector(
@@ -852,6 +975,31 @@
     if(!rootNode){
       return;
     }
+
+    const projectionScroll=
+      new Map();
+
+    rootNode
+      .querySelectorAll(
+        '[data-pdp-projection-field]'
+      )
+      .forEach(section=>{
+        const strip=
+          section.querySelector(
+            '.pdp-config-projection__strip'
+          );
+
+        if(!strip){
+          return;
+        }
+
+        projectionScroll.set(
+          section.dataset
+            .pdpProjectionField||
+            '',
+          strip.scrollLeft
+        );
+      });
 
     const definitions=[
       {
@@ -1003,6 +1151,11 @@
 
     rootNode.replaceChildren(
       fragment
+    );
+
+    restoreProjectionViewport(
+      rootNode,
+      projectionScroll
     );
 
     rootNode.dataset

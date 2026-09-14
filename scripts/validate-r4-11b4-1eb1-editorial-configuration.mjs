@@ -171,6 +171,39 @@ for(const marker of [
   );
 }
 
+/* R4.11B4.1E-B1-FIX5 — Active Picker Visibility
+ *
+ * An active horizontal option must never remain partially clipped at the
+ * viewport edge after the canonical select triggers a projection rebuild.
+ */
+for(const marker of [
+  'R4.11B4.1E-B1-FIX5 — Active Picker Visibility',
+  'function restoreProjectionViewport(',
+  'projectionScroll',
+  'getBoundingClientRect()',
+  'strip.scrollLeft',
+  'strip.scrollWidth',
+  'strip.clientWidth',
+  'restoreProjectionViewport('
+]){
+  expect(
+    runtime,
+    marker,
+    'E-B1-FIX5 active picker visibility runtime contract changed.'
+  );
+}
+
+for(const marker of [
+  'scroll-padding-inline:12px;',
+  'scroll-margin-inline:12px;'
+]){
+  expect(
+    css,
+    marker,
+    'E-B1-FIX5 picker edge inset styling changed.'
+  );
+}
+
 /* R4.11B4.1E-B1-FIX4 — Mobile Config Width Containment
  *
  * Browser diagnosis at 390px proved the Quantity controls were visible
