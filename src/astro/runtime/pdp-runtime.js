@@ -976,6 +976,8 @@
       return;
     }
 
+    const scentDetail=rootNode.querySelector('[data-pdp-scent-detail]');
+
     const projectionScroll=
       new Map();
 
@@ -1143,6 +1145,21 @@
         heading,
         strip
       );
+
+      /* R4.11B4.1E-B2 — Scent Detail Utility */
+      if(definition.field==='scent'&&scentDetail){
+        const scent=scentMap.get(text(view?.config?.scentId));
+        let hasNotes=false;
+        scentDetail.querySelectorAll('[data-pdp-scent-note-value]').forEach(node=>{
+          const value=scentDisplay(scent?.notes?.[node.dataset.pdpScentNoteValue]);
+          setText(node,value);
+          const row=node.closest('[data-pdp-scent-note]');
+          if(row) row.hidden=!value;
+          if(value) hasNotes=true;
+        });
+        scentDetail.hidden=!hasNotes;
+        section.appendChild(scentDetail);
+      }
 
       fragment.appendChild(
         section

@@ -289,7 +289,51 @@ const galleryCount=
           class="pdp-config-projections"
           data-pdp-config-projections
           aria-live="polite"
-        ></div>
+        >
+          <details
+            class="pdp-scent-detail"
+            data-pdp-scent-detail
+            hidden
+          >
+            <summary class="pdp-scent-detail__toggle">
+              <span data-pdp-ui="scentDetailTitle">
+                {runtimeUi.scentDetailTitle||'Scent Details'}
+              </span>
+            </summary>
+
+            <dl class="pdp-scent-detail__list">
+              <div
+                class="pdp-scent-detail__row"
+                data-pdp-scent-note="top"
+              >
+                <dt data-pdp-ui="topNotes">
+                  {runtimeUi.topNotes||'Top Notes'}
+                </dt>
+                <dd data-pdp-scent-note-value="top"></dd>
+              </div>
+
+              <div
+                class="pdp-scent-detail__row"
+                data-pdp-scent-note="heart"
+              >
+                <dt data-pdp-ui="heartNotes">
+                  {runtimeUi.heartNotes||'Heart Notes'}
+                </dt>
+                <dd data-pdp-scent-note-value="heart"></dd>
+              </div>
+
+              <div
+                class="pdp-scent-detail__row"
+                data-pdp-scent-note="base"
+              >
+                <dt data-pdp-ui="baseNotes">
+                  {runtimeUi.baseNotes||'Base Notes'}
+                </dt>
+                <dd data-pdp-scent-note-value="base"></dd>
+              </div>
+            </dl>
+          </details>
+        </div>
 
         {product.series==='holiday'&&(
           <label class="pdp-field">
