@@ -349,8 +349,7 @@ if(
 
 /*
  * FIX2: Product Details was a redundant second presentation of identity,
- * Series, Size, MOQ and Price. The canonical summary/configuration remains
- * above, then the route must transition directly to the Inquiry CTA.
+ * Series, Size, MOQ and Price. The canonical summary/configuration remains.
  */
 expect(
   page,
@@ -377,11 +376,52 @@ if(css.includes('.pdp-details')){
   );
 }
 
+/*
+ * FIX3: the lower Wholesale / Inquiry band duplicated the canonical
+ * Add to Inquiry action already present directly below configuration.
+ * Remove the second presentation and its CSS without changing inquiry
+ * state, custom-project navigation, pricing-note or footer ownership.
+ */
 expect(
   page,
-  'data-pdp-section="inquiry-cta"',
-  'E-B3-FIX2 must preserve the Inquiry CTA after Product Details removal.'
+  'R4.11B4.1E-B3-FIX3 — Redundant Wholesale CTA Removal',
+  'E-B3-FIX3 removal marker is missing.'
 );
+
+for(const forbidden of [
+  'class="pdp-cta"',
+  'data-pdp-section="inquiry-cta"',
+  'pdp-cta__inner',
+  'data-pdp-bind="detail.wholesale"',
+  'data-home-bind="navigation.inquiry"',
+  'const navigation=view.content?.navigation||{};'
+]){
+  if(page.includes(forbidden)){
+    fail(
+      'E-B3-FIX3 redundant Wholesale / Inquiry CTA returned: '+
+      forbidden
+    );
+  }
+}
+
+if(css.includes('.pdp-cta')){
+  fail(
+    'E-B3-FIX3 orphaned .pdp-cta CSS must be removed.'
+  );
+}
+
+for(const marker of [
+  'data-pdp-add-inquiry',
+  'data-pdp-bind="detail.customProject"',
+  'class="pdp-static-note"',
+  'data-pdp-bind="detail.pricingNote"'
+]){
+  expect(
+    page,
+    marker,
+    'E-B3-FIX3 must preserve the canonical summary action stack.'
+  );
+}
 
 /* Package exposure and ordering. */
 expect(
@@ -410,5 +450,5 @@ if(errors.length){
 }
 
 console.log(
-  'R4.11B4.1E-B3 RESPONSIVE / MULTILINGUAL CLOSEOUT + FIX1 + FIX2 + FIX2C: PASS'
+  'R4.11B4.1E-B3 RESPONSIVE / MULTILINGUAL CLOSEOUT + FIX1 + FIX2 + FIX2C + FIX3: PASS'
 );

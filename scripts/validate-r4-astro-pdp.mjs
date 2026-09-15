@@ -140,7 +140,6 @@ try{
       'data-pdp-quantity',
       'data-pdp-current-price',
       'data-pdp-current-moq',
-      'data-pdp-section="inquiry-cta"',
       'id="pdpRuntimeState"',
       'src="/r4-pdp-runtime.js"',
       'href="/products/"',
@@ -168,6 +167,33 @@ try{
       if(html.includes(redundant)){
         fail(
           `R4.5B PDP ${id} reintroduced redundant Product Details markup: ${redundant}`
+        );
+      }
+    }
+
+    /*
+     * R4.11B4.1E-B3-FIX3 — Redundant Wholesale CTA Removal.
+     * Canonical conversion actions remain in the product summary.
+     */
+    for(const redundant of [
+      'data-pdp-section="inquiry-cta"',
+      'class="pdp-cta"',
+      'pdp-cta__inner'
+    ]){
+      if(html.includes(redundant)){
+        fail(
+          `R4.5B PDP ${id} reintroduced redundant Wholesale / Inquiry CTA markup: ${redundant}`
+        );
+      }
+    }
+
+    for(const required of [
+      'data-pdp-add-inquiry',
+      'href="/custom/"'
+    ]){
+      if(!html.includes(required)){
+        fail(
+          `R4.5B PDP ${id} lost canonical PDP conversion action: ${required}`
         );
       }
     }
@@ -574,6 +600,6 @@ console.log(
   'DREAMLAND B7-00B.4J R4.5A/R4.5B Astro PDP Presentation: PASS'
 );
 console.log(
-  '89 interactive isolated PDPs / canonical Detail + Pricing + Inquiry runtime ownership / active configuration controls / EN-ZH-KO state / direct route links verified.'
+  '89 interactive isolated PDPs / canonical Detail + Pricing + Inquiry runtime ownership / active configuration controls / redundant lower CTA removed / EN-ZH-KO state / direct route links verified.'
 );
 console.log('');

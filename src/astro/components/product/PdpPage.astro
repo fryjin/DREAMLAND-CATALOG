@@ -10,7 +10,6 @@ const {
 }=Astro.props;
 
 const copy=view.copy||{};
-const navigation=view.content?.navigation||{};
 const runtimeUi=
   runtimeState.languages
     ?.en
@@ -489,32 +488,10 @@ const galleryCount=
     in the canonical PDP summary/configuration above.
   -->
 
-  <section
-    class="pdp-cta"
-    data-pdp-section="inquiry-cta"
-  >
-    <div class="home-container pdp-cta__inner">
-      <div>
-        <p
-          class="pdp-eyebrow"
-          data-pdp-bind="detail.wholesale"
-        >
-          {copy.wholesale||'Wholesale'}
-        </p>
-        <h2 data-pdp-ui="addInquiry">
-          {runtimeUi.addInquiry||copy.addInquiry||'Add to Inquiry'}
-        </h2>
-        <p data-pdp-bind="detail.pricingNote">
-          {copy.pricingNote||'Final pricing is confirmed in the quotation.'}
-        </p>
-      </div>
 
-      <a href={view.routes.inquiry}>
-        <span data-home-bind="navigation.inquiry">
-          {navigation.inquiry||'Inquiry'}
-        </span>
-        <span aria-hidden="true">→</span>
-      </a>
-    </div>
-  </section>
+  <!--
+    R4.11B4.1E-B3-FIX3 — Redundant Wholesale CTA Removal
+    The canonical Add to Inquiry and custom-project actions remain in the
+    PDP summary above. Footer follows the route-owned PDP spacing directly.
+  -->
 </main>
