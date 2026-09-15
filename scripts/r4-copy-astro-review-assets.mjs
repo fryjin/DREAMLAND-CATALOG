@@ -139,7 +139,7 @@ for(const source of SOURCES){
     fs.readFileSync(
       file,
       'utf8'
-    );
+    ).replace(/\r\n?/g,'\n');
 
   const wrapped=
     source.owner==='Pwa'

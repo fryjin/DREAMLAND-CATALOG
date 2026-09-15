@@ -26,17 +26,38 @@ if(SOURCE_MODE===DIST_MODE){
 
 const errors=[];
 
+function hashLogicalTextFile(file){
+  return crypto
+    .createHash('sha256')
+    .update(
+      fs
+        .readFileSync(
+          file,
+          'utf8'
+        )
+        .replace(
+          /\r\n?/g,
+          '\n'
+        ),
+      'utf8'
+    )
+    .digest('hex');
+}
+
 function fail(message){
   errors.push(message);
 }
 
 function read(relative){
   return fs.readFileSync(
-    path.join(
+path.join(
       ROOT,
       relative
     ),
     'utf8'
+  ).replace(
+    /\r\n?/g,
+    '\n'
   );
 }
 
@@ -725,9 +746,7 @@ if(SOURCE_MODE){
   ){
     validateSuccessRuntime(
       fs.readFileSync(
-        isolated.runtimeFile,
-        'utf8'
-      ),
+        isolated.runtimeFile,'utf8').replace(/\r\n?/g,'\n'),
       'Isolated Success runtime'
     );
   }
@@ -789,9 +808,7 @@ if(DIST_MODE){
     ){
       validateSuccessRuntime(
         fs.readFileSync(
-          production.runtimeFile,
-          'utf8'
-        ),
+          production.runtimeFile,'utf8').replace(/\r\n?/g,'\n'),
         'Production Success runtime'
       );
     }
@@ -953,11 +970,10 @@ if(DIST_MODE){
       'Production sw.js is missing.'
     );
   }else if(
-    hashFile(sourceSw)!==
-    hashFile(distSw)
+    hashLogicalTextFile(sourceSw)!==hashLogicalTextFile(distSw)
   ){
     fail(
-      'Production sw.js must remain byte-identical to source during R4.10C.'
+      'Production sw.js must remain logically identical to source after EOL normalization during R4.10C.'
     );
   }
 }
@@ -986,6 +1002,6 @@ console.log(
 console.log(
   SOURCE_MODE
     ? 'Production pipeline / canonical R4.10B lastSubmission + hasLastSubmission runtime / Success-only ownership authorization / R4.10D detachment boundary verified.'
-    : 'dist/ owns Astro Success from the isolated artifact; Review remains Astro and sw.js remains byte-identical.'
+    : 'dist/ owns Astro Success from the isolated artifact; Review remains Astro and sw.js remains logically identical after EOL normalization.'
 );
 console.log('');

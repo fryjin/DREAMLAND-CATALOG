@@ -36,7 +36,15 @@ function productionBuildHasOrderedSteps(value){
 }
 
 function fail(message){errors.push(message);}
-function read(relative){return fs.readFileSync(path.join(ROOT,relative),'utf8');}
+function read(relative){
+  return fs.readFileSync(
+path.join(ROOT,relative),
+    'utf8'
+  ).replace(
+    /\r\n?/g,
+    '\n'
+  );
+}
 function json(relative){return JSON.parse(read(relative));}
 function expectFile(root,relative){const file=path.join(root,relative);if(!fs.existsSync(file)){fail('Missing file: '+path.relative(ROOT,file));return '';}return fs.readFileSync(file,'utf8');}
 function stateText(html){const match=html.match(/<script[^>]*id="customRuntimeState"[^>]*type="application\/json"[^>]*>([\s\S]*?)<\/script>/i)||html.match(/<script[^>]*type="application\/json"[^>]*id="customRuntimeState"[^>]*>([\s\S]*?)<\/script>/i);return match?match[1]:'';}

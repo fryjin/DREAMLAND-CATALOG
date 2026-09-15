@@ -105,9 +105,16 @@ fs.rmSync(mobileTarget,{recursive:true,force:true});
 fs.mkdirSync(path.dirname(mobileTarget),{recursive:true});
 fs.cpSync(mobileSource,mobileTarget,{recursive:true,force:true});
 
-fs.copyFileSync(
-  runtimeSource,
-  runtimeTarget
+fs.writeFileSync(
+  runtimeTarget,
+  fs.readFileSync(
+    runtimeSource,
+    'utf8'
+  ).replace(
+    /\r\n?/g,
+    '\n'
+  ),
+  'utf8'
 );
 
 console.log(

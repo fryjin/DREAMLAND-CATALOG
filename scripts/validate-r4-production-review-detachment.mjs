@@ -32,7 +32,15 @@ const BUDGETS=Object.freeze({
 });
 
 function fail(message){errors.push(message);}
-function read(relative){return fs.readFileSync(path.join(ROOT,relative),'utf8');}
+function read(relative){
+  return fs.readFileSync(
+path.join(ROOT,relative),
+    'utf8'
+  ).replace(
+    /\r\n?/g,
+    '\n'
+  );
+}
 function json(relative){return JSON.parse(read(relative));}
 function bytes(file){return fs.statSync(file).size;}
 function gzipBytes(file){return zlib.gzipSync(fs.readFileSync(file),{level:9}).length;}
@@ -44,6 +52,24 @@ function blockBetween(source,startMarker,endMarker){
   if(start<0)return '';
   const end=source.indexOf(endMarker,start+startMarker.length);
   return end<0?source.slice(start):source.slice(start,end);
+}
+
+function hashLogicalTextFile(file){
+  return crypto
+    .createHash('sha256')
+    .update(
+      fs
+        .readFileSync(
+          file,
+          'utf8'
+        )
+        .replace(
+          /\r\n?/g,
+          '\n'
+        ),
+      'utf8'
+    )
+    .digest('hex');
 }
 
 function navigationSlice(source){
@@ -539,8 +565,8 @@ if(DIST_MODE){
     }else{
       validateReviewSw(fs.readFileSync(swFile,'utf8'),'Production Service Worker');
       const sourceSw=path.join(ROOT,'sw.js');
-      if(hashFile(sourceSw)!==hashFile(swFile)){
-        fail('Production sw.js must remain byte-identical to the committed source Service Worker.');
+      if(hashLogicalTextFile(sourceSw)!==hashLogicalTextFile(swFile)){
+        fail('Production sw.js must remain logically identical to the committed source Service Worker after EOL normalization.');
       }
     }
 

@@ -41,7 +41,7 @@ function read(file){
   return fs.readFileSync(
     file,
     'utf8'
-  );
+  ).replace(/\r\n?/g,'\n');
 }
 
 function runtimeState(html){

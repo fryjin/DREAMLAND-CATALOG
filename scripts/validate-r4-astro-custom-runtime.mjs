@@ -8,7 +8,15 @@ const OUT=path.join(ROOT,'.r4-astro-dist');
 const errors=[];
 const BUDGETS=Object.freeze({adapterRaw:36*1024,bundleRaw:104*1024,stateRaw:72*1024});
 function fail(message){errors.push(message);}
-function read(relative){return fs.readFileSync(path.join(ROOT,relative),'utf8');}
+function read(relative){
+  return fs.readFileSync(
+path.join(ROOT,relative),
+    'utf8'
+  ).replace(
+    /\r\n?/g,
+    '\n'
+  );
+}
 function stateText(html){
   const match=html.match(/<script[^>]*id="customRuntimeState"[^>]*type="application\/json"[^>]*>([\s\S]*?)<\/script>/i)||html.match(/<script[^>]*type="application\/json"[^>]*id="customRuntimeState"[^>]*>([\s\S]*?)<\/script>/i);
   return match?match[1]:'';

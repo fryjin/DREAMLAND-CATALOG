@@ -5,7 +5,7 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const errors=[];
 const fail=m=>errors.push(m);
-const read=r=>fs.existsSync(path.join(ROOT,r))?fs.readFileSync(path.join(ROOT,r),'utf8'):(fail('Missing '+r),'');
+const read=r=>fs.existsSync(path.join(ROOT,r))?fs.readFileSync(path.join(ROOT,r),'utf8').replace(/\r\n?/g,'\n'):(fail('Missing '+r),'');
 const json=r=>JSON.parse(read(r));
 const expect=(s,m,msg)=>{if(!s.includes(m))fail(msg+' Missing: '+m)};
 const assets=json('data/mobile-home-assets.json');

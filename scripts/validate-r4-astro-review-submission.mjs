@@ -59,7 +59,9 @@ try{
     ]){
       if(!bundle.includes(marker)) fail('R4.9C bundle is missing canonical owner/boundary marker: '+marker);
     }
-    const adapter=read('src/astro/runtime/review-runtime.js');
+    const adapter=
+      read('src/astro/runtime/review-runtime.js')
+        .replace(/\r\n?/g,'\n');
     for(const marker of [
       'submissionPayload.build(','submissionPayload.validate(','risk.assess(',
       'risk.renderCaptcha(','risk.ensureCaptcha(','submissionFlow.submit({',

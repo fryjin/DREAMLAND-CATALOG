@@ -14,8 +14,34 @@ if(SOURCE_MODE===DIST_MODE){
 }
 
 const errors=[];
+
+function hashLogicalTextFile(file){
+  return crypto
+    .createHash('sha256')
+    .update(
+      fs
+        .readFileSync(
+          file,
+          'utf8'
+        )
+        .replace(
+          /\r\n?/g,
+          '\n'
+        ),
+      'utf8'
+    )
+    .digest('hex');
+}
 function fail(message){errors.push(message);}
-function read(relative){return fs.readFileSync(path.join(ROOT,relative),'utf8');}
+function read(relative){
+  return fs.readFileSync(
+path.join(ROOT,relative),
+    'utf8'
+  ).replace(
+    /\r\n?/g,
+    '\n'
+  );
+}
 function json(relative){return JSON.parse(read(relative));}
 function hashFile(file){return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');}
 function expectFile(root,relative){
@@ -247,7 +273,7 @@ try{
 
 if(SOURCE_MODE){
   const isolated=validateReviewDocument(path.join(ROOT,'.r4-astro-dist'),'Isolated Review');
-  if(isolated&&fs.existsSync(isolated.runtimeFile)) validateReviewRuntime(fs.readFileSync(isolated.runtimeFile,'utf8'),'Isolated Review runtime');
+  if(isolated&&fs.existsSync(isolated.runtimeFile)) validateReviewRuntime(fs.readFileSync(isolated.runtimeFile,'utf8').replace(/\r\n?/g,'\n'),'Isolated Review runtime');
 }
 
 if(DIST_MODE){
@@ -259,7 +285,7 @@ if(DIST_MODE){
   if(production&&isolated){
     if(hashFile(production.file)!==hashFile(isolated.file)) fail('Production Review HTML differs from the isolated Astro Review artifact.');
     if(fs.existsSync(production.runtimeFile)&&fs.existsSync(isolated.runtimeFile)&&hashFile(production.runtimeFile)!==hashFile(isolated.runtimeFile)) fail('Production Review runtime differs from the isolated R4.9C runtime artifact.');
-    if(fs.existsSync(production.runtimeFile)) validateReviewRuntime(fs.readFileSync(production.runtimeFile,'utf8'),'Production Review runtime');
+    if(fs.existsSync(production.runtimeFile)) validateReviewRuntime(fs.readFileSync(production.runtimeFile,'utf8').replace(/\r\n?/g,'\n'),'Production Review runtime');
   }
 
   const success=expectFile(distRoot,'inquiry/success/index.html');
@@ -294,7 +320,7 @@ if(DIST_MODE){
   const sourceSw=path.join(ROOT,'sw.js');
   const distSw=path.join(distRoot,'sw.js');
   if(!fs.existsSync(distSw)) fail('Production sw.js is missing.');
-  else if(hashFile(sourceSw)!==hashFile(distSw)) fail('Production sw.js must remain byte-identical to the protected source sw.js in R4.9D.');
+  else if(hashLogicalTextFile(sourceSw)!==hashLogicalTextFile(distSw)) fail('Production sw.js must remain logically identical to the protected source sw.js after EOL normalization in R4.9D.');
 
   for(const [relative,marker] of [
     ['index.html','data-r4-production-home="true"'],
@@ -340,5 +366,5 @@ console.log('');
 console.log('DREAMLAND B7-00B.4J R4.9D Production Review Cutover: PASS');
 console.log(SOURCE_MODE
   ? 'Production pipeline / canonical R4.9C submission boundary / Review-only ownership authorization / Success+sw.js protection verified.'
-  : 'dist/ owns Astro Review from the isolated artifact; Success remains Legacy and sw.js remains byte-identical.');
+  : 'dist/ owns Astro Review from the isolated artifact; Success remains Legacy and sw.js remains logically identical after EOL normalization.');
 console.log('');

@@ -137,7 +137,8 @@ try{
   const source=
     read(
       'src/astro/runtime/home-runtime.js'
-    );
+    )
+      .replace(/\r\n?/g,'\n');
 
   if(
     Buffer.byteLength(

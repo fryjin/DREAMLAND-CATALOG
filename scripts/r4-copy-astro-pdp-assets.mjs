@@ -34,7 +34,7 @@ function read(file){
   return fs.readFileSync(
     file,
     'utf8'
-  );
+  ).replace(/\r\n?/g,'\n');
 }
 
 const products=
@@ -45,7 +45,7 @@ const products=
         'data/products.json'
       ),
       'utf8'
-    )
+    ).replace(/\r\n?/g,'\n')
   )
     .products
     .filter(

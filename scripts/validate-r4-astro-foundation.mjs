@@ -17,8 +17,11 @@ function fail(message){
 
 function read(relative){
   return fs.readFileSync(
-    path.join(ROOT,relative),
+path.join(ROOT,relative),
     'utf8'
+  ).replace(
+    /\r\n?/g,
+    '\n'
   );
 }
 

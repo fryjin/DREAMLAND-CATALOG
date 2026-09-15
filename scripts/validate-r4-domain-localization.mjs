@@ -6,7 +6,15 @@ import {pathToFileURL} from 'node:url';
 const ROOT=process.cwd();
 const errors=[];
 function fail(m){errors.push(m);}
-function read(p){return fs.readFileSync(path.join(ROOT,p),'utf8');}
+function read(p){
+  return fs.readFileSync(
+path.join(ROOT,p),
+    'utf8'
+  ).replace(
+    /\r\n?/g,
+    '\n'
+  );
+}
 function json(p){return JSON.parse(read(p));}
 function functionSlice(source,name,nextName){
   const s=source.indexOf('function '+name+'(');

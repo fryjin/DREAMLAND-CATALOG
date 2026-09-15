@@ -84,7 +84,7 @@ const htmlSource=
   fs.readFileSync(
     html,
     'utf8'
-  );
+  ).replace(/\r\n?/g,'\n');
 
 for(const marker of [
   'id="successRuntimeState"',
@@ -127,7 +127,7 @@ for(const source of SOURCES){
     fs.readFileSync(
       file,
       'utf8'
-    )
+    ).replace(/\r\n?/g,'\n')
   );
 }
 

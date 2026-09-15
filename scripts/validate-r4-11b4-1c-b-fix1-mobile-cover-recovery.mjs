@@ -4,7 +4,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const errors=[];const fail=m=>errors.push(m);
-function read(r){const f=path.join(ROOT,r);if(!fs.existsSync(f)){fail('Missing required file: '+r);return '';}return fs.readFileSync(f,'utf8');}
+function read(r){const f=path.join(ROOT,r);if(!fs.existsSync(f)){fail('Missing required file: '+r);return '';}return fs.readFileSync(f,'utf8').replace(/\r\n?/g,'\n');}
 function json(r){try{return JSON.parse(read(r));}catch(e){fail('Invalid JSON: '+r+' — '+e.message);return {};}}
 function expect(s,m,msg){if(!s.includes(m))fail(msg+' Missing: '+m);}
 const viewModel=read('src/astro/lib/home-view-model.mjs');

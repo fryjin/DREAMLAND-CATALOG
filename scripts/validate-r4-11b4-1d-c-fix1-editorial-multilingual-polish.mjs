@@ -13,7 +13,7 @@ function read(relative){
     fail('Missing required file: '+relative);
     return '';
   }
-  return fs.readFileSync(file,'utf8');
+  return fs.readFileSync(file,'utf8').replace(/\r\n?/g,'\n');
 }
 
 function expect(content,marker,message){

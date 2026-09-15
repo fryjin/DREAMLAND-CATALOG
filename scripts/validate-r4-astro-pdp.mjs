@@ -140,7 +140,6 @@ try{
       'data-pdp-quantity',
       'data-pdp-current-price',
       'data-pdp-current-moq',
-      'data-pdp-section="details"',
       'data-pdp-section="inquiry-cta"',
       'id="pdpRuntimeState"',
       'src="/r4-pdp-runtime.js"',
@@ -152,6 +151,23 @@ try{
       if(!html.includes(marker)){
         fail(
           `R4.5B PDP ${id} is missing: ${marker}`
+        );
+      }
+    }
+
+    /*
+     * R4.11B4.1E-B3-FIX2 — Redundant Product Details Removal.
+     * Product identity/commercial facts are canonical above the CTA and
+     * must not be repeated in a second lower summary section.
+     */
+    for(const redundant of [
+      'data-pdp-section="details"',
+      'class="pdp-details"',
+      'pdp-details__grid'
+    ]){
+      if(html.includes(redundant)){
+        fail(
+          `R4.5B PDP ${id} reintroduced redundant Product Details markup: ${redundant}`
         );
       }
     }

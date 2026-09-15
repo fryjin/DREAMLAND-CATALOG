@@ -26,18 +26,29 @@ const BUDGETS=Object.freeze({
   stateRaw:72*1024
 });
 
+/*
+ * R4.11B4.1E-B3-FIX2D — Runtime Validator EOL Normalization
+ * Source budgets and delegated-behavior checks operate on logical LF text,
+ * independent of Windows checkout line endings.
+ */
+
 function fail(message){
   errors.push(message);
 }
 
 function read(relative){
-  return fs.readFileSync(
-    path.join(
-      ROOT,
-      relative
-    ),
-    'utf8'
-  );
+  return fs
+    .readFileSync(
+      path.join(
+        ROOT,
+        relative
+      ),
+      'utf8'
+    )
+    .replace(
+      /\r\n/g,
+      '\n'
+    );
 }
 
 function stateText(html){

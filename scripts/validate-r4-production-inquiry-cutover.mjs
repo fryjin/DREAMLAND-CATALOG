@@ -29,7 +29,15 @@ const REQUIRED_BUILD_STEPS=Object.freeze([
 ]);
 
 function fail(message){errors.push(message);}
-function read(relative){return fs.readFileSync(path.join(ROOT,relative),'utf8');}
+function read(relative){
+  return fs.readFileSync(
+path.join(ROOT,relative),
+    'utf8'
+  ).replace(
+    /\r\n?/g,
+    '\n'
+  );
+}
 function json(relative){return JSON.parse(read(relative));}
 function expectFile(root,relative){
   const file=path.join(root,relative);

@@ -50,11 +50,14 @@ function fail(message){
 
 function read(relative){
   return fs.readFileSync(
-    path.join(
+path.join(
       ROOT,
       relative
     ),
     'utf8'
+  ).replace(
+    /\r\n?/g,
+    '\n'
   );
 }
 

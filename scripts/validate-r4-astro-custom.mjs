@@ -7,7 +7,15 @@ const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const OUT=path.join(ROOT,'.r4-astro-dist');
 const errors=[];
 function fail(message){errors.push(message);}
-function read(relative){return fs.readFileSync(path.join(ROOT,relative),'utf8');}
+function read(relative){
+  return fs.readFileSync(
+path.join(ROOT,relative),
+    'utf8'
+  ).replace(
+    /\r\n?/g,
+    '\n'
+  );
+}
 function json(relative){return JSON.parse(read(relative));}
 function count(source,pattern){return [...source.matchAll(pattern)].length;}
 function stateText(html){

@@ -12,6 +12,11 @@ const ROOT=path.resolve(
 const errors=[];
 const RUNTIME_BUDGET=36*1024;
 
+/*
+ * R4.11B4.1E-B3-FIX2C — Windows Validator EOL Normalization
+ * Validators reason about logical source, not platform checkout EOL bytes.
+ */
+
 function fail(message){
   errors.push(message);
 }
@@ -22,7 +27,15 @@ function read(relative){
     fail('Missing required file: '+relative);
     return '';
   }
-  return fs.readFileSync(file,'utf8');
+  return fs
+    .readFileSync(
+      file,
+      'utf8'
+    )
+    .replace(
+      /\r\n/g,
+      '\n'
+    );
 }
 
 function expect(content,marker,message){
@@ -334,6 +347,42 @@ if(
   );
 }
 
+/*
+ * FIX2: Product Details was a redundant second presentation of identity,
+ * Series, Size, MOQ and Price. The canonical summary/configuration remains
+ * above, then the route must transition directly to the Inquiry CTA.
+ */
+expect(
+  page,
+  'R4.11B4.1E-B3-FIX2 — Redundant Product Details Removal',
+  'E-B3-FIX2 removal marker is missing.'
+);
+
+for(const forbidden of [
+  'class="pdp-details"',
+  'data-pdp-section="details"',
+  'pdp-details__grid'
+]){
+  if(page.includes(forbidden)){
+    fail(
+      'E-B3-FIX2 redundant Product Details markup returned: '+
+      forbidden
+    );
+  }
+}
+
+if(css.includes('.pdp-details')){
+  fail(
+    'E-B3-FIX2 orphaned .pdp-details CSS must be removed.'
+  );
+}
+
+expect(
+  page,
+  'data-pdp-section="inquiry-cta"',
+  'E-B3-FIX2 must preserve the Inquiry CTA after Product Details removal.'
+);
+
 /* Package exposure and ordering. */
 expect(
   pkg,
@@ -361,5 +410,5 @@ if(errors.length){
 }
 
 console.log(
-  'R4.11B4.1E-B3 RESPONSIVE / MULTILINGUAL CLOSEOUT + FIX1: PASS'
+  'R4.11B4.1E-B3 RESPONSIVE / MULTILINGUAL CLOSEOUT + FIX1 + FIX2 + FIX2C: PASS'
 );

@@ -5,15 +5,29 @@ import path from 'node:path';
 const ROOT=process.cwd();
 const errors=[];
 
+/*
+ * R4.11B4.1E-B3-FIX2M — Desktop Visual Foundation Validator EOL Normalization
+ * Multiline visual/runtime source markers operate on logical LF text so
+ * Windows CRLF checkouts do not invalidate Desktop Foundation contracts.
+ */
+
 function fail(message){
   errors.push(message);
 }
 
 function read(relative){
-  return fs.readFileSync(
-    path.join(ROOT,relative),
-    'utf8'
-  );
+  return fs
+    .readFileSync(
+      path.join(
+        ROOT,
+        relative
+      ),
+      'utf8'
+    )
+    .replace(
+      /\r\n/g,
+      '\n'
+    );
 }
 
 function includesAll(source,markers,label){

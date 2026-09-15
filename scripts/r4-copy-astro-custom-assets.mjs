@@ -13,7 +13,7 @@ function fail(message){
   console.error('');
   process.exit(1);
 }
-function read(file){return fs.readFileSync(file,'utf8');}
+function read(file){return fs.readFileSync(file,'utf8').replace(/\r\n?/g,'\n');}
 
 const customPage=path.join(OUT,'custom','index.html');
 if(!fs.existsSync(customPage)) fail('Custom Astro output is missing before runtime assembly.');

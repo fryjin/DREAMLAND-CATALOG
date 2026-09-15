@@ -483,62 +483,11 @@ const galleryCount=
     </aside>
   </section>
 
-  <section
-    class="pdp-details"
-    data-pdp-section="details"
-  >
-    <div class="home-container pdp-details__grid">
-      <div>
-        <p
-          class="pdp-eyebrow"
-          data-pdp-bind="detail.productDetails"
-        >
-          {copy.productDetails||'Product details'}
-        </p>
-        <h2 data-pdp-product-name>
-          {view.name}
-        </h2>
-      </div>
-
-      <dl>
-        <div>
-          <dt data-pdp-bind="detail.series">
-            {copy.series||'Series'}
-          </dt>
-          <dd data-pdp-series-label>
-            {view.seriesLabel}
-          </dd>
-        </div>
-        <div>
-          <dt data-pdp-bind="detail.availableSizes">
-            {copy.availableSizes||'Available sizes'}
-          </dt>
-          <dd>
-            {view.sizes
-              .map((item:any)=>item.size)
-              .join(' / ')}
-          </dd>
-        </div>
-        <div>
-          <dt data-pdp-bind="detail.wholesale">
-            {copy.wholesale||'Wholesale'}
-          </dt>
-          <dd>
-            <span data-pdp-ui="moq">
-              {runtimeUi.moq||copy.moq||'MOQ'}
-            </span>
-            <span data-pdp-current-moq>
-              {view.moq}
-            </span>
-            ·
-            <span data-pdp-current-price>
-              {view.price}
-            </span>
-          </dd>
-        </div>
-      </dl>
-    </div>
-  </section>
+  <!--
+    R4.11B4.1E-B3-FIX2 — Redundant Product Details Removal
+    Product identity, Series, Size, MOQ and reference price already exist
+    in the canonical PDP summary/configuration above.
+  -->
 
   <section
     class="pdp-cta"

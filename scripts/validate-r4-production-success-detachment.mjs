@@ -47,11 +47,14 @@ function fail(message){
 
 function read(relative){
   return fs.readFileSync(
-    path.join(
+path.join(
       ROOT,
       relative
     ),
     'utf8'
+  ).replace(
+    /\r\n?/g,
+    '\n'
   );
 }
 
@@ -79,6 +82,24 @@ function hashFile(file){
     .createHash('sha256')
     .update(
       fs.readFileSync(file)
+    )
+    .digest('hex');
+}
+
+function hashLogicalTextFile(file){
+  return crypto
+    .createHash('sha256')
+    .update(
+      fs
+        .readFileSync(
+          file,
+          'utf8'
+        )
+        .replace(
+          /\r\n?/g,
+          '\n'
+        ),
+      'utf8'
     )
     .digest('hex');
 }
@@ -746,9 +767,7 @@ if(SOURCE_MODE){
     ){
       validateRuntime(
         fs.readFileSync(
-          isolated.runtimeFile,
-          'utf8'
-        ),
+          isolated.runtimeFile,'utf8').replace(/\r\n?/g,'\n'),
         'Isolated Success runtime'
       );
     }
@@ -813,9 +832,7 @@ if(DIST_MODE){
       if(fs.existsSync(production.runtimeFile)){
         validateRuntime(
           fs.readFileSync(
-            production.runtimeFile,
-            'utf8'
-          ),
+            production.runtimeFile,'utf8').replace(/\r\n?/g,'\n'),
           'Production Success runtime'
         );
       }
@@ -946,11 +963,10 @@ if(DIST_MODE){
       );
     }else{
       if(
-        hashFile(sourceSw)!==
-        hashFile(distSw)
+        hashLogicalTextFile(sourceSw)!==hashLogicalTextFile(distSw)
       ){
         fail(
-          'Production sw.js must be byte-identical to the R4.10D source Service Worker.'
+          'Production sw.js must remain logically identical to the R4.10D source Service Worker after EOL normalization.'
         );
       }
 
@@ -1059,6 +1075,6 @@ console.log(
 console.log(
   SOURCE_MODE
     ? 'Exact Success Service Worker ownership / stale-document purge / network-only navigation / R4.10C Success preservation / R4.11 architecture-freeze handoff verified.'
-    : 'Production Success cache isolation, byte-identical Astro artifact/runtime, Service Worker detachment and payload budgets verified.'
+    : 'Production Success cache isolation, byte-identical Astro artifact/runtime, logically identical Service Worker content and payload budgets verified.'
 );
 console.log('');

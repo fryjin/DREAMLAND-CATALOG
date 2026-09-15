@@ -51,6 +51,9 @@ function read(relative){
       relative
     ),
     'utf8'
+  ).replace(
+    /\r\n?/g,
+    '\n'
   );
 }
 

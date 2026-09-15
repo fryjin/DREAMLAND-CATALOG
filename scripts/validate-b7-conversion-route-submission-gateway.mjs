@@ -11,15 +11,29 @@ const ROOT=path.resolve(
 
 const errors=[];
 
+/*
+ * R4.11B4.1E-B3-FIX2J — Conversion Gateway Validator EOL Normalization
+ * Multiline source markers operate on logical LF text so Windows CRLF
+ * checkouts do not invalidate Desktop Risk/CAPTCHA bridge contracts.
+ */
+
 function fail(message){
   errors.push(message);
 }
 
 function read(relative){
-  return fs.readFileSync(
-    path.join(ROOT,relative),
-    'utf8'
-  );
+  return fs
+    .readFileSync(
+      path.join(
+        ROOT,
+        relative
+      ),
+      'utf8'
+    )
+    .replace(
+      /\r\n/g,
+      '\n'
+    );
 }
 
 function json(relative){

@@ -114,7 +114,7 @@ for(const source of BUNDLE_SOURCES){
     fs.readFileSync(
       file,
       'utf8'
-    )
+    ).replace(/\r\n?/g,'\n')
   );
 }
 

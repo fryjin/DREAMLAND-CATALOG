@@ -96,7 +96,7 @@ const html=
   fs.readFileSync(
     htmlFile,
     'utf8'
-  );
+  ).replace(/\r\n?/g,'\n');
 
 for(const marker of [
   'data-r4-astro-inquiry="true"',
@@ -173,7 +173,7 @@ for(const relative of runtimeSources){
     fs.readFileSync(
       file,
       'utf8'
-    )
+    ).replace(/\r\n?/g,'\n')
   );
 }
 
