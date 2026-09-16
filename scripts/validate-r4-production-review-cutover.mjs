@@ -3,6 +3,9 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {
+  hashLogicalTextFile
+} from './lib/r4-validation-io.mjs';
 
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const SOURCE_MODE=process.argv.includes('--source');
@@ -15,23 +18,6 @@ if(SOURCE_MODE===DIST_MODE){
 
 const errors=[];
 
-function hashLogicalTextFile(file){
-  return crypto
-    .createHash('sha256')
-    .update(
-      fs
-        .readFileSync(
-          file,
-          'utf8'
-        )
-        .replace(
-          /\r\n?/g,
-          '\n'
-        ),
-      'utf8'
-    )
-    .digest('hex');
-}
 function fail(message){errors.push(message);}
 function read(relative){
   return fs.readFileSync(

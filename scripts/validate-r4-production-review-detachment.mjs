@@ -4,6 +4,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import {fileURLToPath} from 'node:url';
+import {
+  hashLogicalTextFile
+} from './lib/r4-validation-io.mjs';
 
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const SOURCE_MODE=process.argv.includes('--source');
@@ -54,23 +57,6 @@ function blockBetween(source,startMarker,endMarker){
   return end<0?source.slice(start):source.slice(start,end);
 }
 
-function hashLogicalTextFile(file){
-  return crypto
-    .createHash('sha256')
-    .update(
-      fs
-        .readFileSync(
-          file,
-          'utf8'
-        )
-        .replace(
-          /\r\n?/g,
-          '\n'
-        ),
-      'utf8'
-    )
-    .digest('hex');
-}
 
 function navigationSlice(source){
   return blockBetween(

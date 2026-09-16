@@ -2,6 +2,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
+import {
+  logicalTextBytes,
+  readLogicalText
+} from './lib/r4-validation-io.mjs';
 
 const ROOT=path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -21,9 +25,11 @@ function fail(message){
 }
 
 function read(relative){
-  return fs.readFileSync(
-    path.join(ROOT,relative),
-    'utf8'
+  return readLogicalText(
+    path.join(
+      ROOT,
+      relative
+    )
   );
 }
 
@@ -137,13 +143,11 @@ try{
   const source=
     read(
       'src/astro/runtime/home-runtime.js'
-    )
-      .replace(/\r\n?/g,'\n');
+    );
 
   if(
-    Buffer.byteLength(
-      source,
-      'utf8'
+    logicalTextBytes(
+      source
     )>
     20*1024
   ){

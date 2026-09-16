@@ -4,6 +4,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import {fileURLToPath} from 'node:url';
+import {
+  hashLogicalTextFile
+} from './lib/r4-validation-io.mjs';
 
 const ROOT=path.resolve(
   path.dirname(
@@ -86,23 +89,6 @@ function hashFile(file){
     .digest('hex');
 }
 
-function hashLogicalTextFile(file){
-  return crypto
-    .createHash('sha256')
-    .update(
-      fs
-        .readFileSync(
-          file,
-          'utf8'
-        )
-        .replace(
-          /\r\n?/g,
-          '\n'
-        ),
-      'utf8'
-    )
-    .digest('hex');
-}
 
 function kib(value){
   return (

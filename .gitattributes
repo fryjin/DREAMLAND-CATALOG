@@ -1,0 +1,48 @@
+# DREAMLAND — Cross-platform repository EOL policy
+#
+# Canonical source/config/document text is LF in the repository and checkout.
+# Windows-native command files remain CRLF.
+# Binary assets are never treated as text.
+
+* text=auto
+
+# Source / configuration / documentation
+*.js      text eol=lf
+*.mjs     text eol=lf
+*.cjs     text eol=lf
+*.jsx     text eol=lf
+*.ts      text eol=lf
+*.tsx     text eol=lf
+*.astro   text eol=lf
+*.css     text eol=lf
+*.scss    text eol=lf
+*.html    text eol=lf
+*.json    text eol=lf
+*.md      text eol=lf
+*.txt     text eol=lf
+*.yml     text eol=lf
+*.yaml    text eol=lf
+*.toml    text eol=lf
+*.xml     text eol=lf
+*.svg     text eol=lf
+*.csv     text eol=lf
+.env*     text eol=lf
+
+# Windows-native command files
+*.bat     text eol=crlf
+*.cmd     text eol=crlf
+
+# Binary assets
+*.png     -text
+*.jpg     -text
+*.jpeg    -text
+*.webp    -text
+*.gif     -text
+*.ico     -text
+*.avif    -text
+*.woff    -text
+*.woff2   -text
+*.ttf     -text
+*.otf     -text
+*.pdf     -text
+*.zip     -text
