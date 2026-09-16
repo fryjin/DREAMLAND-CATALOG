@@ -9,6 +9,7 @@
   let inquiry=null;
   let currentLanguage='en';
   let draft=null;
+  let editItemId='';
   let mounted=false;
   let statusTimer=0;
 
@@ -60,6 +61,73 @@
     });
   }
   function freshDraft(){ return {use:'',qty:'',budget:'',date:'',sizePref:'',color:'',pack:'',branding:'',note:''}; }
+
+  /*
+   * F3-B4 — Custom Project Edit Flow
+   * Draft hydration consumes the existing Inquiry item; DreamlandCustom
+   * continues to own scent-series/scents and validation/buildIntent semantics.
+   */
+  function requestedEditId(){
+    try{
+      return text(
+        new URL(
+          root.location.href
+        ).searchParams.get(
+          'edit'
+        )
+      );
+    }catch(_){
+      return '';
+    }
+  }
+
+  function editDraftFromItem(item={}){
+    return {
+      use:text(item.use),
+      qty:
+        item.qty==
+        null
+          ? ''
+          : String(item.qty),
+      budget:text(item.budget),
+      date:text(item.date),
+      sizePref:text(item.sizePref),
+      color:text(item.color),
+      pack:text(item.pack),
+      branding:text(item.branding),
+      note:text(item.note)
+    };
+  }
+
+  function hydrateEditSelection(item={}){
+    custom.reset();
+
+    const series=
+      text(
+        item.scentSeries
+      );
+
+    if(series){
+      custom.setSeries(
+        series
+      );
+    }
+
+    (
+      Array.isArray(
+        item.scentIds
+      )
+        ? item.scentIds
+        : []
+    ).forEach(
+      id=>
+        custom.toggleScent(
+          id
+        )
+    );
+
+    return custom.selection();
+  }
   function optionByValue(rows,value){ return (rows||[]).find(row=>text(row?.value)===text(value))||null; }
   function seriesView(key){ return (currentView().fragranceSeries||[]).find(row=>row?.key===key)||null; }
   function scentView(id){
@@ -143,6 +211,50 @@
   function applyLanguageBindings(){
     const v=currentView();
     applyHomeBindings(); applyCopyBindings();
+
+    const action=
+      document.querySelector(
+        '[data-custom-add-inquiry] [data-custom-copy="addInquiry"]'
+      );
+
+    const submit=
+      document.querySelector(
+        '[data-custom-add-inquiry]'
+      );
+
+    if(submit){
+      submit.dataset
+        .customEditSave=
+        editItemId
+          ? 'true'
+          : 'false';
+    }
+
+    if(
+      editItemId&&
+      action
+    ){
+      setText(
+        action,
+        v.ui?.saveChanges||
+        (
+          currentLanguage==='zh'
+            ? '保存修改'
+            : currentLanguage==='ko'
+              ? '변경사항 저장'
+              : 'Save Changes'
+        )
+      );
+    }
+
+    if(document.body){
+      document.body.dataset
+        .customInquiryEdit=
+        editItemId
+          ? 'true'
+          : 'false';
+    }
+
     applyOptionLabels('[data-custom-use-option]',v.useCases);
     applyOptionLabels('[data-custom-size-option]',v.sizes);
     applyOptionLabels('[data-custom-packaging-option]',v.packages);
@@ -233,7 +345,51 @@
   function addToInquiry(){
     const validation=custom.validateDraft(draft);
     if(!showValidation(validation)){status(statusText(validation.errors?.[0]||'quantity',{min:validation.minimumQuantity,max:validation.maximumQuantity}),'warn');return null;}
-    const intent=custom.buildIntent(draft,{id:uid()}); if(!intent)return null;
+
+    const intent=
+      custom.buildIntent(
+        draft,
+        {
+          id:
+            editItemId||
+            uid()
+        }
+      );
+
+    if(!intent)return null;
+
+    if(editItemId){
+      const existing=
+        inquiry.findItem(
+          editItemId
+        );
+
+      if(
+        !existing||
+        existing.type!==
+          'custom'
+      ){
+        root.location.assign(
+          '/inquiry/'
+        );
+        return null;
+      }
+
+      inquiry.replaceItem(
+        editItemId,
+        intent
+      );
+
+      inquiry.persist();
+      updateInquiryBadge();
+
+      root.location.assign(
+        '/inquiry/'
+      );
+
+      return intent;
+    }
+
     inquiry.addCustom(intent);inquiry.persist();updateInquiryBadge();status(statusText('added'));return intent;
   }
   function scalar(key,value){draft[key]=value;clearErrors();renderSummary();return draft[key];}
@@ -269,13 +425,45 @@
     if(mounted){updateInquiryBadge();return true;}
     state=parseState();custom=root.DreamlandCustom;inquiry=root.DreamlandInquiry;
     if(!state||!custom||!inquiry)return false;
-    configureCustom();configureInquiry();draft=freshDraft();
+    configureCustom();configureInquiry();
+
+    const requested=
+      requestedEditId();
+
+    const existing=
+      requested
+        ? inquiry.findItem(
+            requested
+          )
+        : null;
+
+    if(
+      existing&&
+      existing.type===
+        'custom'
+    ){
+      editItemId=
+        requested;
+
+      hydrateEditSelection(
+        existing
+      );
+
+      draft=
+        editDraftFromItem(
+          existing
+        );
+    }else{
+      editItemId='';
+      draft=freshDraft();
+    }
+
     currentLanguage=normalizeLanguage(readStorage(state.storage.languageKey),state.defaultLanguage||'en',Object.keys(state.languages));
     bindEvents();applyLanguage(currentLanguage,{persist:true});mounted=true;return true;
   }
 
   root.DreamlandCustomRuntime=Object.freeze({
-    version:VERSION,id:RUNTIME_ID,normalizeLanguage,inquiryCount,mount,render,applyLanguage,updateInquiryBadge,addToInquiry
+    version:VERSION,id:RUNTIME_ID,normalizeLanguage,inquiryCount,editDraftFromItem,mount,render,applyLanguage,updateInquiryBadge,addToInquiry
   });
 
   if(typeof document!=='undefined'){

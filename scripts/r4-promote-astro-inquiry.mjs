@@ -139,6 +139,8 @@ for(const marker of [
   'inquiryMoqState',
   'inquiry-item__edit',
   "'/?edit='",
+  'inquiryCustomEditProject',
+  'customEditHref',
   "'dreamland:inquiry-render'"
 ]){
   if(

@@ -402,6 +402,30 @@
     );
   }
 
+  /*
+   * F3-B4 — Custom Project Edit Flow
+   * Custom editing reuses /custom/ and carries only the Inquiry item ID as
+   * query intent. productManualV2State remains the sole persisted owner.
+   */
+  function customEditHref(
+    item,
+    state
+  ){
+    const base=
+      state?.routes?.custom||
+      '/custom/';
+
+    return (
+      base+
+      '?edit='+
+      encodeURIComponent(
+        text(
+          item?.id
+        )
+      )
+    );
+  }
+
   function configureInquiry(
     inquiry,
     pricing,
@@ -1092,6 +1116,7 @@
     context
   ){
     const {
+      state,
       language,
       locale,
       scents
@@ -1293,6 +1318,31 @@
 
     body.appendChild(
       pricingRow
+    );
+
+    const edit=
+      createElement(
+        documentRef,
+        'a',
+        'inquiry-item__edit'
+      );
+
+    edit.href=
+      customEditHref(
+        item,
+        state
+      );
+
+    edit.dataset
+      .inquiryCustomEditProject=
+      'true';
+
+    edit.textContent=
+      locale.ui?.editConfig||
+      'Edit';
+
+    body.appendChild(
+      edit
     );
 
     const remove=
