@@ -34,6 +34,7 @@ for(const marker of [
   'data-r4-astro-inquiry="true"',
   'data-r4-inquiry-static="true"',
   'data-inquiry-runtime-presentation',
+  'data-inquiry-conversion-composition="true"',
   'data-inquiry-commercial-summary',
   'data-inquiry-commercial-groups',
   'name="robots" content="noindex,nofollow"',
