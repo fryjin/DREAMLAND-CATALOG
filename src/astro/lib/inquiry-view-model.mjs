@@ -149,7 +149,15 @@ function compactUi(ui={}){
     'removedInquiry',
     'clearedInquiry',
     'minQtyError',
-    'quantityTooLarge'
+    'quantityTooLarge',
+    'tierPriceTable',
+    'tierRule',
+    'currentPriceTier',
+    'unitSaving',
+    'nextPriceBreak',
+    'moreToNextBreak',
+    'bestTierReached',
+    'noMorePriceBreaks'
   ];
 
   return Object.freeze(

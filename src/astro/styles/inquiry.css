@@ -470,3 +470,116 @@
     justify-self:start;
   }
 }
+
+
+/* ============================================================
+ * R4.11B4.1E-C3 — Inquiry Commercial Projection
+ * Aggregated tier context stays compact and secondary to conversion.
+ * ========================================================== */
+
+.inquiry-item__commercial {
+  display:grid;
+  gap:6px;
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px solid var(--home-line);
+}
+
+.inquiry-item__commercial > span,
+.inquiry-commercial-group__line {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:16px;
+  align-items:baseline;
+  color:var(--home-muted);
+  font-size:9px;
+  line-height:1.5;
+}
+
+.inquiry-item__commercial em,
+.inquiry-commercial-group__line em {
+  font-style:normal;
+}
+
+.inquiry-item__commercial strong,
+.inquiry-commercial-group__line strong {
+  color:var(--home-ink);
+  font-size:10px;
+  text-align:right;
+}
+
+.inquiry-item__commercial-terminal,
+.inquiry-commercial-group__terminal {
+  margin:0;
+  color:var(--home-muted);
+  font-size:9px;
+  line-height:1.55;
+}
+
+.inquiry-commercial-summary {
+  display:grid;
+  gap:12px;
+  padding:16px 0;
+  border-top:1px solid var(--home-line);
+  border-bottom:1px solid var(--home-line);
+}
+
+.inquiry-commercial-summary__header {
+  display:grid;
+  gap:4px;
+}
+
+.inquiry-commercial-summary__header > span {
+  color:var(--home-ink);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.inquiry-commercial-summary__header small {
+  color:var(--home-soft);
+  font-size:9px;
+  line-height:1.5;
+}
+
+.inquiry-commercial-groups {
+  display:grid;
+  gap:8px;
+}
+
+.inquiry-commercial-group {
+  display:grid;
+  gap:7px;
+  padding:11px 12px;
+  background:var(--home-sand);
+}
+
+.inquiry-commercial-group__heading {
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.inquiry-commercial-group__heading strong {
+  font-size:10px;
+}
+
+.inquiry-commercial-group__heading span {
+  color:var(--home-muted);
+  font-size:9px;
+}
+
+@media (max-width:760px) {
+  .inquiry-item__commercial > span,
+  .inquiry-commercial-group__line {
+    grid-template-columns:1fr;
+    gap:2px;
+  }
+
+  .inquiry-item__commercial strong,
+  .inquiry-commercial-group__line strong {
+    text-align:left;
+  }
+}

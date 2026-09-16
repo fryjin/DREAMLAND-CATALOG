@@ -206,6 +206,27 @@ const rows=[
         ))}
       </div>
 
+      <section
+        class="inquiry-commercial-summary"
+        data-inquiry-commercial-summary
+        aria-live="polite"
+        hidden
+      >
+        <header class="inquiry-commercial-summary__header">
+          <span data-inquiry-commercial-title>
+            Tier pricing
+          </span>
+          <small data-inquiry-commercial-rule>
+            Calculated by series or scent-series quantity
+          </small>
+        </header>
+
+        <div
+          class="inquiry-commercial-groups"
+          data-inquiry-commercial-groups
+        ></div>
+      </section>
+
       <p
         class="inquiry-summary__note"
         data-inquiry-bind="finalPricingNote"

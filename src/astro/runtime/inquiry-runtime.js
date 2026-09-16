@@ -1553,6 +1553,18 @@
           text(message);
       }
 
+      document.dispatchEvent(
+        new CustomEvent(
+          'dreamland:inquiry-render',
+          {
+            detail:{
+              viewModel,
+              language
+            }
+          }
+        )
+      );
+
       return viewModel;
     }
 
