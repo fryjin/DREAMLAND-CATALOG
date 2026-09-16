@@ -388,6 +388,305 @@
     );
   }
 
+  /*
+   * R4.11B4.1E-C1 — Commercial Pricing Intelligence Foundation
+   *
+   * This is a read-only commercial projection over the canonical pricing
+   * policy. It does not create a second pricing engine.
+   *
+   * Important ownership rules:
+   * - productSeries owns MOQ + packaging policy.
+   * - pricingSeries owns the tier table.
+   * - Holiday may delegate pricingSeries through selected scentSeries.
+   * - displayed unit price always includes the selected package surcharge.
+   */
+  function commercialSnapshot(
+    options={}
+  ){
+    const item=
+      options.item||
+      options.product||
+      {};
+
+    const seriesMeta=
+      options.seriesMeta||
+      {};
+
+    const currencyMap=
+      options.currencyMap||
+      {};
+
+    const language=
+      String(
+        options.language||
+        'en'
+      );
+
+    const productSeries=
+      String(
+        item.series||
+        options.series||
+        ''
+      ).trim();
+
+    const scentSeries=
+      String(
+        options.scentSeries??
+        item.scentSeries??
+        ''
+      ).trim();
+
+    const pricingSeries=
+      pricingSeriesFor(
+        {
+          ...item,
+          series:productSeries,
+          scentSeries
+        },
+        seriesMeta
+      );
+
+    const size=
+      String(
+        options.size||
+        item.size||
+        item.defaultSize||
+        'S'
+      )
+        .trim()
+        .toUpperCase();
+
+    const quantity=
+      normalizeQuantity(
+        options.quantity??
+        item.quantity??
+        1,
+        1,
+        1000000
+      );
+
+    const fallbackPack=
+      defaultPack(
+        productSeries,
+        seriesMeta
+      );
+
+    const pack=
+      String(
+        options.pack||
+        item.pack||
+        fallbackPack
+      ).trim()||
+      fallbackPack;
+
+    const packageSurchargeCny=
+      packSurchargeCny(
+        productSeries,
+        pack,
+        seriesMeta
+      );
+
+    const moq=
+      moqForSeriesSize(
+        productSeries,
+        size,
+        seriesMeta
+      );
+
+    const sourceTiers=
+      tiersFor(
+        pricingSeries,
+        seriesMeta
+      );
+
+    const selectedTier=
+      tierFor(
+        pricingSeries,
+        quantity,
+        seriesMeta
+      );
+
+    const selectedTierIndex=
+      selectedTier
+        ? sourceTiers.indexOf(
+            selectedTier
+          )
+        : -1;
+
+    function projectTier(
+      tier,
+      index
+    ){
+      const tierUnitPriceCny=
+        Number(
+          tier?.pricesCny?.[size]||
+          0
+        );
+
+      const effectiveUnitCny=
+        tierUnitPriceCny+
+        packageSurchargeCny;
+
+      const unitBase=
+        cnyToBase(
+          effectiveUnitCny,
+          currencyMap
+        );
+
+      return Object.freeze({
+        index,
+        minQty:
+          Number(tier?.minQty)||
+          1,
+        maxQty:
+          tier?.maxQty==null
+            ? null
+            : Number(
+                tier.maxQty
+              ),
+        rangeLabel:
+          tierRangeLabel(
+            tier
+          ),
+        tierUnitCny:
+          tierUnitPriceCny,
+        packageSurchargeCny,
+        effectiveUnitCny,
+        unitBase,
+        displayUnitPrice:
+          money(
+            unitBase,
+            language,
+            currencyMap
+          ),
+        isCurrent:
+          index===
+          selectedTierIndex
+      });
+    }
+
+    const tiers=
+      Object.freeze(
+        sourceTiers.map(
+          projectTier
+        )
+      );
+
+    const currentTier=
+      selectedTierIndex>=0
+        ? tiers[
+            selectedTierIndex
+          ]
+        : null;
+
+    const nextSourceTier=
+      nextTierFor(
+        pricingSeries,
+        quantity,
+        seriesMeta
+      );
+
+    const nextIndex=
+      nextSourceTier
+        ? sourceTiers.indexOf(
+            nextSourceTier
+          )
+        : -1;
+
+    const nextProjected=
+      nextIndex>=0
+        ? tiers[nextIndex]
+        : null;
+
+    const nextTier=
+      nextProjected
+        ? (()=>{
+            const additionalQty=
+              Math.max(
+                0,
+                nextProjected.minQty-
+                quantity
+              );
+
+            const unitSavingCny=
+              Math.max(
+                0,
+                Number(
+                  currentTier
+                    ?.effectiveUnitCny||
+                  0
+                )-
+                nextProjected
+                  .effectiveUnitCny
+              );
+
+            const unitSavingBase=
+              cnyToBase(
+                unitSavingCny,
+                currencyMap
+              );
+
+            return Object.freeze({
+              ...nextProjected,
+              additionalQty,
+              unitSavingCny,
+              unitSavingBase,
+              displayUnitSaving:
+                money(
+                  unitSavingBase,
+                  language,
+                  currencyMap
+                ),
+              hasUnitSaving:
+                unitSavingCny>0
+            });
+          })()
+        : null;
+
+    return Object.freeze({
+      schemaVersion:1,
+      productSeries,
+      pricingSeries,
+      pricingMode:
+        String(
+          seriesMeta
+            ?.[productSeries]
+            ?.pricingMode||
+          'series'
+        ),
+      size,
+      quantity,
+      pack,
+      moq,
+      meetsMoq:
+        quantity>=moq,
+      quantityToMoq:
+        Math.max(
+          0,
+          moq-
+          quantity
+        ),
+      packageSurchargeCny,
+      currencyUnit:
+        currencyUnit(
+          language,
+          currencyMap
+        ),
+      hasVolumeBreaks:
+        tiers.length>1,
+      currentTierIndex:
+        selectedTierIndex,
+      currentTier,
+      nextTier,
+      isBestAvailableTier:
+        Boolean(
+          currentTier&&
+          !nextTier
+        ),
+      tiers
+    });
+  }
+
   function catalogUnit(
     product,
     seriesMeta={},
@@ -464,6 +763,7 @@
       money,
       currencyUnit,
       normalizeQuantity,
+      commercialSnapshot,
       catalogUnit
     });
 })(
