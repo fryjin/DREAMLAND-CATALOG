@@ -373,6 +373,35 @@
     );
   }
 
+  /*
+   * F3-B3 — Product Configuration Edit Flow
+   * Editing reuses the canonical PDP route. The Inquiry item ID is carried
+   * only as a query intent; productManualV2State remains the sole state owner.
+   */
+  function productEditHref(
+    item,
+    state
+  ){
+    const base=
+      state?.routes?.collection||
+      '/products/';
+
+    return (
+      base+
+      encodeURIComponent(
+        text(
+          item?.productId
+        ).toUpperCase()
+      )+
+      '/?edit='+
+      encodeURIComponent(
+        text(
+          item?.id
+        )
+      )
+    );
+  }
+
   function configureInquiry(
     inquiry,
     pricing,
@@ -963,6 +992,31 @@
         .inquiryMoqFeedback=
         'true';
     }
+
+    const edit=
+      createElement(
+        documentRef,
+        'a',
+        'inquiry-item__edit'
+      );
+
+    edit.href=
+      productEditHref(
+        item,
+        state
+      );
+
+    edit.dataset
+      .inquiryEditConfiguration=
+      'true';
+
+    edit.textContent=
+      locale.ui?.editConfig||
+      'Edit configuration';
+
+    body.appendChild(
+      edit
+    );
 
     const remove=
       createElement(

@@ -1010,3 +1010,33 @@
     gap:3px 10px;
   }
 }
+
+
+/* ============================================================
+ * F3-B3 — Product Configuration Edit Flow
+ * Edit remains a quiet utility action; Quantity and conversion stay primary.
+ * ========================================================== */
+
+.inquiry-item__edit {
+  display:inline-flex;
+  width:max-content;
+  margin-top:10px;
+  color:var(--home-muted);
+  font-size:9px;
+  font-weight:800;
+  line-height:1.4;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+.inquiry-item__edit:hover {
+  color:var(--home-ink);
+}
+
+@media (max-width:760px) {
+  .inquiry-item__edit {
+    min-height:28px;
+    align-items:center;
+    margin-top:7px;
+  }
+}

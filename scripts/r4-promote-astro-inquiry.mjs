@@ -137,6 +137,8 @@ for(const marker of [
   '.pricingGroupQuantity(',
   '.productMoqGroups(',
   'inquiryMoqState',
+  'inquiry-item__edit',
+  "'/?edit='",
   "'dreamland:inquiry-render'"
 ]){
   if(

@@ -219,6 +219,7 @@ function compactUi(
     'detailTitle',
     'detailSub',
     'addInquiry',
+    'saveChanges',
     'addedInquiry',
     'size',
     'scent',

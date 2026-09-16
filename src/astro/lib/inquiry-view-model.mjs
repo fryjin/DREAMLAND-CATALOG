@@ -146,6 +146,7 @@ function compactUi(ui={}){
     'toConfirm',
     'quotePending',
     'customInquiry',
+    'editConfig',
     'removedInquiry',
     'clearedInquiry',
     'minQtyError',

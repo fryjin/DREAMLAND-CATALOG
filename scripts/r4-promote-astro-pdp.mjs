@@ -481,6 +481,10 @@ for(const marker of [
   "R4.11B4.1E-C2",
   'DreamlandPdpCommercialUi',
   '.commercialSnapshot({',
+  'DreamlandPdpInquiryEdit',
+  '.openItem(',
+  '.replaceItem(',
+  '.mergeDuplicateProducts(',
   "'dreamland:pdp-render'"
 ]){
   if(
