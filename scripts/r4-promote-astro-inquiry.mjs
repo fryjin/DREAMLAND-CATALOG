@@ -136,6 +136,7 @@ for(const marker of [
   '.commercialSnapshot({',
   '.pricingGroupQuantity(',
   '.productMoqGroups(',
+  'commercialGroupKey',
   'inquiryMoqState',
   'inquiry-item__edit',
   "'/?edit='",

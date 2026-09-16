@@ -100,10 +100,11 @@ if(SOURCE_MODE){
   }
 
   /*
-   * Canonical contract proof:
-   * MOQ grouping remains series+size.
-   * Pricing grouping remains series, with Holiday isolated by delegated pricing series.
-   * F3-B2 may consume these owners but must not merge them.
+   * Unified commercial quantity group proof:
+   * same series + same size may combine across different Products;
+   * different sizes never combine;
+   * Holiday also remains isolated by delegated pricing series.
+   * The same group quantity drives BOTH MOQ and tier pricing.
    */
   try{
     delete globalThis.DreamlandInquiry;
@@ -155,7 +156,7 @@ if(SOURCE_MODE){
 
     const advS=moqGroups.find(group=>group.key==='advanced|S');
     const advM=moqGroups.find(group=>group.key==='advanced|M');
-    const holidayS=moqGroups.find(group=>group.key==='holiday|S');
+    const holidayS=moqGroups.find(group=>group.key==='holiday:advanced|S');
 
     if(
       moqGroups.length!==3||
@@ -169,17 +170,22 @@ if(SOURCE_MODE){
       fail('Canonical MOQ grouping drifted from series+size ownership.');
     }
 
-    const advItem=inquiry.findItem('adv-s-1');
+    const advSItem=inquiry.findItem('adv-s-1');
+    const advMItem=inquiry.findItem('adv-m');
     const holidayItem=inquiry.findItem('holiday-a');
 
     if(
-      inquiry.pricingGroupQuantity(advItem)!==85||
+      inquiry.commercialGroupKey(advSItem)!=='advanced|S'||
+      inquiry.commercialGroupKey(advMItem)!=='advanced|M'||
+      inquiry.commercialGroupKey(holidayItem)!=='holiday:advanced|S'||
+      inquiry.pricingGroupQuantity(advSItem)!==80||
+      inquiry.pricingGroupQuantity(advMItem)!==5||
       inquiry.pricingGroupQuantity(holidayItem)!==10
     ){
-      fail('Pricing grouping drifted or was incorrectly merged with MOQ grouping.');
+      fail('Unified commercial quantity group must preserve same-series/same-size aggregation and keep different sizes separate.');
     }
   }catch(error){
-    fail('MOQ/Pricing owner separation proof failed: '+error.message);
+    fail('Unified commercial quantity group proof failed: '+error.message);
   }
 
   try{
@@ -298,7 +304,7 @@ console.log('');
 console.log('DREAMLAND F3-B2 INQUIRY INTERACTION EFFICIENCY: PASS');
 console.log(
   SOURCE_MODE
-    ? 'All MOQ blockers / per-card MOQ feedback / quantity boundaries / MOQ-vs-pricing ownership / media stability verified.'
+    ? 'All MOQ blockers / per-card MOQ feedback / quantity boundaries / unified MOQ+pricing quantity ownership / media stability verified.'
     : 'Isolated Astro + Production Inquiry preserve the F3-B2 interaction contract.'
 );
 console.log('');

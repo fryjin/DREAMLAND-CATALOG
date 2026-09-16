@@ -400,11 +400,21 @@
           state,
           language,
           snapshot.pricingSeries
+        )+
+        ' · '+
+        text(
+          snapshot.size
         )
       );
     }
 
-    return product;
+    return (
+      product+
+      ' · '+
+      text(
+        snapshot.size
+      )
+    );
   }
 
   function renderGroups(
@@ -626,6 +636,8 @@
       !viewModel||
       !state||
       !inquiry
+        ?.commercialGroupKey||
+      !inquiry
         ?.pricingGroupQuantity||
       !pricing
         ?.commercialSnapshot
@@ -663,9 +675,10 @@
         );
 
         const key=
-          snapshot.productSeries+
-          '|'+
-          snapshot.pricingSeries;
+          inquiry
+            .commercialGroupKey(
+              item
+            );
 
         if(!groups.has(key)){
           groups.set(

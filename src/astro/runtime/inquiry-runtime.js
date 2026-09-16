@@ -329,9 +329,9 @@
   }
 
   /*
-   * F3-B2 — Quantity & MOQ Interaction Efficiency
-   * MOQ grouping remains owned by DreamlandInquiry.productMoqGroups().
-   * Pricing grouping remains independent and continues to recompute globally.
+   * F3-B2 / F3-B5-RULE1
+   * MOQ and tier pricing now consume one canonical commercial quantity group
+   * owned by DreamlandInquiry. The adapter never reconstructs that key.
    */
   function quantityUnit(
     language,
@@ -365,12 +365,43 @@
     );
   }
 
-  function moqGroupKey(item){
-    return (
-      text(item?.series)+
-      '|'+
-      text(item?.size)
+  function commercialGroupLabel(
+    group,
+    language,
+    state
+  ){
+    const labels=[
+      seriesLabel(
+        group?.series,
+        language,
+        state
+      )
+    ];
+
+    if(
+      group?.series==='holiday'&&
+      group?.pricingSeries&&
+      group.pricingSeries!==
+        group.series
+    ){
+      labels.push(
+        seriesLabel(
+          group.pricingSeries,
+          language,
+          state
+        )
+      );
+    }
+
+    labels.push(
+      text(
+        group?.size
+      )
     );
+
+    return labels
+      .filter(Boolean)
+      .join(' · ');
   }
 
   /*
@@ -572,6 +603,7 @@
       products,
       scents,
       pricing,
+      inquiry,
       moqGroups
     }=context;
 
@@ -751,9 +783,10 @@
       );
 
     const groupKey=
-      moqGroupKey(
-        item
-      );
+      inquiry
+        .commercialGroupKey(
+          item
+        );
 
     const group=
       moqGroups
@@ -1749,14 +1782,10 @@
               row,
               'span',
               '',
-              seriesLabel(
-                group.series,
+              commercialGroupLabel(
+                group,
                 language,
                 state
-              )+
-              ' · '+
-              text(
-                group.size
               )
             );
 
@@ -1870,6 +1899,7 @@ function renderItems(
           products,
           scents,
           pricing,
+          inquiry,
           moqGroups
         };
 
