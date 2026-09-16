@@ -187,6 +187,13 @@ const runtimeSources=[
     'src',
     'astro',
     'runtime',
+    'pdp-commercial-runtime.js'
+  ),
+  path.join(
+    ROOT,
+    'src',
+    'astro',
+    'runtime',
     'pdp-runtime.js'
   )
 ];
@@ -227,5 +234,5 @@ console.log(
 );
 
 console.log(
-  '[R4 Astro PDP Runtime] bundled Detail + Pricing + Inquiry + minimal Astro adapter → .r4-astro-dist/r4-pdp-runtime.js'
+  '[R4 Astro PDP Runtime] bundled Detail + Pricing + Inquiry + Commercial UI + minimal Astro adapter → .r4-astro-dist/r4-pdp-runtime.js'
 );

@@ -243,7 +243,17 @@ function compactUi(
     'custom',
     'inquiry',
     'viewTierPrice',
-    'tierUnavailable'
+    'tierPriceTable',
+    'tierPriceDesc',
+    'tierQty',
+    'buyMorePrefix',
+    'buyMoreSuffix',
+    'bestTierReached',
+    'tierUnavailable',
+    'currentPriceTier',
+    'unitSaving',
+    'moreToMoq',
+    'noMorePriceBreaks'
   ];
 
   return Object.freeze(

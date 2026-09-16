@@ -1408,6 +1408,19 @@
     renderConfigurationProjection(view);
     renderQuantity(view);
     renderPricing(view);
+
+    document.dispatchEvent(
+      new CustomEvent(
+        'dreamland:pdp-render',
+        {
+          detail:{
+            view,
+            language:currentLanguage
+          }
+        }
+      )
+    );
+
     updateInquiryBadge();
 
     return view;

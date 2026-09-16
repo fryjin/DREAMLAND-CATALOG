@@ -440,6 +440,74 @@ const galleryCount=
         </div>
       </div>
 
+      <section
+        class="pdp-commercial"
+        data-pdp-commercial
+        aria-live="polite"
+        hidden
+      >
+        <div class="pdp-commercial__signal">
+          <div class="pdp-commercial__tier">
+            <span data-pdp-ui="currentPriceTier">
+              Current price tier
+            </span>
+            <strong data-pdp-commercial-current-tier>—</strong>
+          </div>
+
+          <p
+            class="pdp-commercial__moq-gap"
+            data-pdp-commercial-moq-gap
+            hidden
+          ></p>
+
+          <p
+            class="pdp-commercial__next"
+            data-pdp-commercial-next
+            hidden
+          ></p>
+
+          <p
+            class="pdp-commercial__saving"
+            data-pdp-commercial-saving
+            hidden
+          >
+            <span data-pdp-ui="unitSaving">
+              Save per piece
+            </span>
+            <strong data-pdp-commercial-saving-value></strong>
+          </p>
+
+          <p
+            class="pdp-commercial__terminal"
+            data-pdp-commercial-terminal
+            hidden
+          ></p>
+        </div>
+
+        <details
+          class="pdp-tier-sheet"
+          data-pdp-tier-sheet
+        >
+          <summary>
+            <span data-pdp-ui="viewTierPrice">
+              View Tier Prices
+            </span>
+            <span aria-hidden="true">+</span>
+          </summary>
+
+          <div class="pdp-tier-sheet__body">
+            <div class="pdp-tier-sheet__heading">
+              <span data-pdp-ui="tierQty">Qty</span>
+              <span data-pdp-ui="currentUnitPrice">
+                Current Reference Unit Price
+              </span>
+            </div>
+
+            <div data-pdp-tier-rows></div>
+          </div>
+        </details>
+      </section>
+
       {view.tags.length>0&&(
         <div class="pdp-tags">
           {view.tags.map((tag:string)=>(

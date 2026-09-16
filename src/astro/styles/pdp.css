@@ -204,6 +204,137 @@
   font-size:10px;
 }
 
+/* ============================================================
+ * R4.11B4.1E-C2 — PDP Commercial Decision UI
+ * Visible next-break intelligence + compact collapsible tier sheet.
+ * ========================================================== */
+
+.pdp-commercial {
+  display:grid;
+  gap:12px;
+  padding:16px;
+  border:1px solid var(--home-line);
+  background:rgba(255,253,249,.58);
+}
+
+.pdp-commercial__signal {
+  display:grid;
+  gap:8px;
+}
+
+.pdp-commercial__tier {
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.pdp-commercial__tier span,
+.pdp-commercial__moq-gap,
+.pdp-commercial__saving,
+.pdp-commercial__terminal {
+  color:var(--home-muted);
+  font-size:11px;
+  line-height:1.55;
+}
+
+.pdp-commercial__tier strong {
+  font-size:12px;
+}
+
+.pdp-commercial__moq-gap,
+.pdp-commercial__next,
+.pdp-commercial__saving,
+.pdp-commercial__terminal {
+  margin:0;
+}
+
+.pdp-commercial__next {
+  padding:11px 12px;
+  border-left:2px solid var(--home-ink);
+  background:rgba(20,18,16,.045);
+  font-size:12px;
+  font-weight:700;
+  line-height:1.55;
+}
+
+.pdp-commercial__saving {
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.pdp-commercial__saving strong {
+  color:var(--home-ink);
+  font-size:11px;
+}
+
+.pdp-tier-sheet {
+  border-top:1px solid var(--home-line);
+}
+
+.pdp-tier-sheet summary {
+  display:flex;
+  min-height:40px;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  cursor:pointer;
+  list-style:none;
+  font-size:11px;
+  font-weight:800;
+}
+
+.pdp-tier-sheet summary::-webkit-details-marker {
+  display:none;
+}
+
+.pdp-tier-sheet[open] summary [aria-hidden="true"] {
+  transform:rotate(45deg);
+}
+
+.pdp-tier-sheet__body {
+  padding:4px 0 2px;
+}
+
+.pdp-tier-sheet__heading,
+.pdp-tier-row {
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:20px;
+  align-items:center;
+  min-height:34px;
+  border-top:1px solid rgba(20,18,16,.08);
+}
+
+.pdp-tier-sheet__heading {
+  color:var(--home-soft);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.pdp-tier-row {
+  color:var(--home-muted);
+  font-size:11px;
+}
+
+.pdp-tier-row strong {
+  color:var(--home-ink);
+  font-size:11px;
+}
+
+.pdp-tier-row.is-current {
+  color:var(--home-ink);
+  font-weight:800;
+}
+
+.pdp-tier-row.is-current::before {
+  content:'';
+  position:absolute;
+}
+
 .pdp-tags {
   display:flex;
   flex-wrap:wrap;
@@ -1437,5 +1568,22 @@
       5px
       5px;
     font-size:8px;
+  }
+}
+
+@media (max-width:720px) {
+  .pdp-commercial {
+    margin-inline:0;
+    padding:14px 0;
+    border-width:1px 0;
+    background:transparent;
+  }
+
+  .pdp-commercial__next {
+    padding:10px 11px;
+  }
+
+  .pdp-tier-sheet summary {
+    min-height:42px;
   }
 }
