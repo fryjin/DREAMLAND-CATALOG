@@ -5,15 +5,29 @@ import path from 'node:path';
 const ROOT=process.cwd();
 const errors=[];
 
+/*
+ * R4.11B4.1E-B3-FIX2G — Shared Asset Validator EOL Normalization
+ * Multiline source markers operate on logical LF text so Windows CRLF
+ * checkouts do not invalidate responsive shared-asset contracts.
+ */
+
 function fail(message){
   errors.push(message);
 }
 
 function read(relativePath){
-  return fs.readFileSync(
-    path.join(ROOT,relativePath),
-    'utf8'
-  );
+  return fs
+    .readFileSync(
+      path.join(
+        ROOT,
+        relativePath
+      ),
+      'utf8'
+    )
+    .replace(
+      /\r\n/g,
+      '\n'
+    );
 }
 
 try{

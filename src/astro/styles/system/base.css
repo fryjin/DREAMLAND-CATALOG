@@ -1,0 +1,42 @@
+/*
+ * DREAMLAND R4.11B1
+ * Shared document foundation.
+ */
+
+* {
+  box-sizing:border-box;
+}
+
+html {
+  margin:0;
+  background:var(--dl-color-canvas);
+  color:var(--dl-color-ink);
+  scroll-behavior:smooth;
+}
+
+body {
+  min-width:320px;
+  min-height:100vh;
+  margin:0;
+  background:var(--dl-color-canvas);
+  color:var(--dl-color-ink);
+  font-family:var(--dl-font-sans);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+a {
+  color:inherit;
+  text-decoration:none;
+}
+
+img {
+  max-width:100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font:inherit;
+}

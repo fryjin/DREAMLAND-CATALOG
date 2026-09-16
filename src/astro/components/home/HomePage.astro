@@ -1,0 +1,538 @@
+---
+interface Props {
+  view:Record<string,any>;
+  mobileCover?:string;
+}
+
+const {view,mobileCover=''}=Astro.props;
+const content=view.content||{};
+const hero=content.hero||{};
+const story=content.story||{};
+const collections=content.collections||{};
+const featured=content.featured||{};
+const craft=content.craft||{};
+const custom=content.custom||{};
+const wholesale=content.wholesale||{};
+const cta=content.cta||{};
+---
+<main class="home-main" data-home-static-presentation>
+<section
+    class="home-hero home-container dl-cover-stage"
+    data-home-section="hero"
+    aria-labelledby="homeHeroTitle"
+  >
+    <h1
+      id="homeHeroTitle"
+      class="home-sr-only"
+    >
+      DREAMLAND
+    </h1>
+
+    <div
+      class="home-hero__visual home-hero__visual--start dl-cover-stage__visual--start"
+      data-home-hero-role="visual-start"
+      aria-hidden="true"
+    >
+      <img
+        src={view.hero.visualLeft}
+        alt=""
+        width="760"
+        height="340"
+        loading="lazy"
+      />
+    </div>
+
+    <div
+      class="home-hero__media dl-cover-stage__media"
+      data-home-hero-role="main-media"
+    >
+      <picture>
+        {mobileCover&&(
+          <source media="(max-width:720px)" srcset={mobileCover} />
+        )}
+        <img
+          src={view.hero.image}
+          alt=""
+          width="1920"
+          height="1080"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </picture>
+    </div>
+
+    <div
+      class="home-hero__visual home-hero__visual--end dl-cover-stage__visual--end"
+      data-home-hero-role="visual-end"
+      aria-hidden="true"
+    >
+      <img
+        src={view.hero.visualRight}
+        alt=""
+        width="620"
+        height="340"
+        loading="lazy"
+      />
+    </div>
+
+    <div
+      class="home-mobile-cover"
+      data-mobile-cover
+      data-mobile-hero-type-owner="asset"
+    >
+      <p
+        class="home-mobile-cover__semantic home-sr-only"
+        data-mobile-cover-semantic
+      >
+        <span data-home-bind="hero.kicker">
+          {hero.kicker}
+        </span>
+        <span aria-hidden="true"> — </span>
+        <span data-home-bind="hero.title">
+          {hero.title}
+        </span>
+      </p>
+
+      <div class="home-mobile-cover__headline">
+        <span class="home-mobile-cover__edition">
+          DREAMLAND / 01
+        </span>
+      </div>
+
+      <div class="home-mobile-cover__copy">
+        <p data-home-bind="hero.body">
+          {hero.body}
+        </p>
+      </div>
+
+      <a
+        class="home-mobile-gate"
+        href="/products/"
+        data-mobile-cover-gate
+        aria-label={hero.primary||'Explore collection'}
+      >
+        <span
+          class="home-mobile-gate__track"
+          data-mobile-cover-track
+        >
+          <span
+            class="home-mobile-gate__fill"
+            aria-hidden="true"
+          ></span>
+
+          <span
+            class="home-mobile-gate__thumb"
+            data-mobile-cover-thumb
+          >
+            <span data-home-bind="hero.primary">
+              {hero.primary}
+            </span>
+            <b aria-hidden="true">→</b>
+          </span>
+
+          <span
+            class="home-mobile-gate__arrows"
+            aria-hidden="true"
+          >
+            → → →
+          </span>
+        </span>
+      </a>
+    </div>
+
+  </section>
+
+<section
+    class="home-section home-container home-collection-shelf dl-collection-shelf"
+    data-home-section="collections"
+    aria-labelledby="homeCollectionsTitle"
+  >
+    <div class="home-collections__type dl-collection-shelf__type">
+      <div
+        class="home-collections__rail"
+        data-home-collections-role="title-rail"
+        aria-hidden="true"
+      >
+        <span class="home-collections__rail-index">02</span>
+
+        <div class="home-collections__rail-track">
+          <span class="home-collections__rail-inner">
+            HAND-CARVED CANDLE ART
+          </span>
+        </div>
+
+        <span class="home-collections__rail-meta">
+          COLLECTION / 01—04
+        </span>
+      </div>
+    </div>
+
+    <div class="home-collections__body">
+      <div class="home-collections__intro">
+        <p
+          class="home-eyebrow"
+          data-home-bind="collections.kicker"
+        >
+          {collections.kicker}
+        </p>
+        <h2
+          id="homeCollectionsTitle"
+          data-home-bind="collections.title"
+        >
+          {collections.title}
+        </h2>
+        <p
+          class="home-section__body"
+          data-home-bind="collections.body"
+        >
+          {collections.body}
+        </p>
+      </div>
+
+      <div class="home-collections dl-collection-shelf__items">
+      {view.collections.map((item:any)=>(
+        <a
+          class:list={[
+            'home-collection-card',
+            item.layout==='wide'&&
+              'is-wide'
+          ]}
+          href={item.href}
+          data-home-collection={item.id}
+        >
+          <div class="home-collection-card__media">
+            <img
+              src={item.image}
+              alt=""
+              width="1400"
+              height="1050"
+              loading="lazy"
+            />
+          </div>
+          <div class="home-collection-card__meta">
+            <div>
+              <h3 data-home-collection-label>
+                {item.label}
+              </h3>
+              <p data-home-collection-count>
+                {item.count}{' '}
+                {
+                  item.count===1
+                    ? collections.designSingular
+                    : collections.designPlural
+                }
+              </p>
+            </div>
+            <span
+              data-home-bind="collections.explore"
+              data-home-suffix=" →"
+            >
+              {collections.explore} →
+            </span>
+          </div>
+        </a>
+      ))}
+      </div>
+    </div>
+  </section>
+
+<section
+    class="home-story home-container"
+    data-home-section="story"
+    aria-labelledby="homeStoryTitle"
+  >
+    <div class="home-story__media">
+      <img
+        src={view.story.image}
+        alt=""
+        width="1400"
+        height="1050"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="home-story__copy">
+      <p
+        class="home-eyebrow"
+        data-home-bind="story.kicker"
+      >
+        {story.kicker}
+      </p>
+      <h2
+        id="homeStoryTitle"
+        data-home-bind="story.title"
+      >
+        {story.title}
+      </h2>
+      <p data-home-bind="story.body">
+        {story.body}
+      </p>
+      <p
+        class="home-story__note"
+        data-home-bind="story.note"
+      >
+        {story.note}
+      </p>
+    </div>
+  </section>
+
+<section
+    class="home-section home-container"
+    data-home-section="featured"
+    aria-labelledby="homeFeaturedTitle"
+  >
+    <div class="home-featured-head">
+      <div>
+        <p
+          class="home-eyebrow"
+          data-home-bind="featured.kicker"
+        >
+          {featured.kicker}
+        </p>
+        <h2
+          id="homeFeaturedTitle"
+          data-home-bind="featured.title"
+        >
+          {featured.title}
+        </h2>
+        <p
+          class="home-section__body"
+          data-home-bind="featured.body"
+        >
+          {featured.body}
+        </p>
+      </div>
+      <a href="/products/" class="home-text-link">
+        <span
+          data-home-bind="featured.viewAll"
+          data-home-suffix=" →"
+        >
+          {featured.viewAll} →
+        </span>
+      </a>
+    </div>
+
+    <div class="home-featured-grid dl-featured-3plus2">
+      {view.featuredProducts.map((product:any)=>(
+        <a
+          class:list={[
+            'home-product-card',
+            product.layout==='wide'&&
+              'is-wide',
+            product.layout==='wide'
+              ? 'dl-featured-3plus2__item--wide'
+              : 'dl-featured-3plus2__item--narrow'
+          ]}
+          href={product.href}
+          data-home-featured-product={product.id}
+          data-home-featured-layout={product.layout}
+        >
+          <div class="home-product-card__media">
+            <img
+              src={product.image}
+              alt={product.name}
+              width="1200"
+              height="1200"
+              loading="lazy"
+            />
+            <span data-home-product-details>
+              {featured.viewDetails} →
+            </span>
+          </div>
+
+          <div class="home-product-card__copy">
+            <h3 data-home-product-name>
+              {product.name}
+            </h3>
+            <p data-home-product-series>
+              {product.seriesLabel}
+            </p>
+            <div class="home-product-card__commercial">
+              <strong data-home-product-price>
+                {product.price}
+              </strong>
+              <span data-home-product-moq>
+                {featured.moq} {product.moq}
+              </span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+<section
+    class="home-editorial-band"
+    data-home-section="craft"
+  >
+    <div class="home-editorial home-container dl-editorial-spread">
+      <div class="home-editorial__media dl-editorial-spread__media">
+        <img
+          src={view.craft.image}
+          alt=""
+          width="1400"
+          height="1050"
+          loading="lazy"
+        />
+      </div>
+
+      <div class="home-editorial__copy dl-editorial-spread__copy">
+        <p
+          class="home-eyebrow"
+          data-home-bind="craft.kicker"
+        >
+          {craft.kicker}
+        </p>
+        <h2 data-home-bind="craft.title">
+          {craft.title}
+        </h2>
+        <p data-home-bind="craft.body">
+          {craft.body}
+        </p>
+      </div>
+    </div>
+  </section>
+
+<section
+    class="home-section home-container"
+    data-home-section="custom"
+  >
+    <div class="home-custom dl-editorial-spread dl-editorial-spread--reverse">
+      <div class="home-custom__copy dl-editorial-spread__copy">
+        <p
+          class="home-eyebrow"
+          data-home-bind="custom.kicker"
+        >
+          {custom.kicker}
+        </p>
+        <h2 data-home-bind="custom.title">
+          {custom.title}
+        </h2>
+        <p data-home-bind="custom.body">
+          {custom.body}
+        </p>
+
+        <ul>
+          {custom.features.map((item:string,index:number)=>(
+            <li
+              data-home-custom-feature
+              data-home-array-index={index}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+
+        <a href="/custom/" class="home-text-link">
+          <span
+            data-home-bind="custom.action"
+            data-home-suffix=" →"
+          >
+            {custom.action} →
+          </span>
+        </a>
+      </div>
+
+      <div class="home-custom__media dl-editorial-spread__media">
+        <img
+          src={view.custom.image}
+          alt=""
+          width="1600"
+          height="1000"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </section>
+
+<section
+    class="home-section home-container home-wholesale dl-editorial-spread"
+    data-home-section="wholesale"
+  >
+    <div class="home-wholesale__media dl-editorial-spread__media">
+      <img
+        src={view.wholesale.image}
+        alt=""
+        width="1600"
+        height="1000"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="home-wholesale__copy dl-editorial-spread__copy">
+      <div class="home-wholesale__head">
+        <p
+          class="home-eyebrow"
+          data-home-bind="wholesale.kicker"
+        >
+          {wholesale.kicker}
+        </p>
+        <h2 data-home-bind="wholesale.title">
+          {wholesale.title}
+        </h2>
+      </div>
+
+      <div class="home-wholesale__facts">
+        {wholesale.facts.map((fact:any,index:number)=>(
+          <article>
+            <span
+              class="home-wholesale__index"
+              aria-hidden="true"
+            >
+              {String(index+1).padStart(2,'0')}
+            </span>
+            <div>
+              <h3
+                data-home-wholesale-title
+                data-home-array-index={index}
+              >
+                {fact.title}
+              </h3>
+              <p
+                data-home-wholesale-body
+                data-home-array-index={index}
+              >
+                {fact.body}
+              </p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+<section
+    class="home-cta"
+    data-home-section="cta"
+  >
+    <div class="home-container home-cta__inner">
+      <div>
+        <p
+          class="home-eyebrow"
+          data-home-bind="cta.kicker"
+        >
+          {cta.kicker}
+        </p>
+        <h2 data-home-bind="cta.title">
+          {cta.title}
+        </h2>
+        <p data-home-bind="cta.body">
+          {cta.body}
+        </p>
+      </div>
+
+      <div class="home-cta__actions">
+        <a href="/products/">
+          <span data-home-bind="cta.explore">
+            {cta.explore}
+          </span>
+        </a>
+        <a href="/custom/">
+          <span data-home-bind="cta.custom">
+            {cta.custom}
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>

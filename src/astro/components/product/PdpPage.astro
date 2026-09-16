@@ -1,0 +1,497 @@
+---
+interface Props {
+  view:Record<string,any>;
+  runtimeState:Record<string,any>;
+}
+
+const {
+  view,
+  runtimeState
+}=Astro.props;
+
+const copy=view.copy||{};
+const runtimeUi=
+  runtimeState.languages
+    ?.en
+    ?.ui||
+  {};
+
+const product=
+  runtimeState.product||{};
+
+const defaultScentSeries=
+  product.series==='holiday'
+    ? (
+        product.availableScentSeries?.[0]||
+        ''
+      )
+    : (
+        product.availableScentSeries?.[0]||
+        product.series||
+        ''
+      );
+
+const initialScents=
+  runtimeState.scents
+    ?.filter(
+      (scent:any)=>
+        scent.series===
+        defaultScentSeries
+    )||
+  [];
+
+const initialPatterns=
+  runtimeState.patternsBySize
+    ?.[view.defaultSize]||
+  [];
+
+const initialPacks=
+  runtimeState.seriesMeta
+    ?.[product.series]
+    ?.packaging
+    ?.options||
+  [];
+
+const initialPack=
+  runtimeState.seriesMeta
+    ?.[product.series]
+    ?.packaging
+    ?.default||
+  initialPacks[0]||
+  '';
+
+const unit=
+  runtimeState.currencies
+    ?.en
+    ?.unit||
+  '/pc';
+
+const galleryCount=
+  view.gallery.length;
+---
+<main
+  class="pdp-main"
+  data-pdp-runtime-presentation
+>
+  <div class="home-container pdp-back-row">
+    <a
+      class="pdp-back"
+      href={view.routes.collection}
+    >
+      <span aria-hidden="true">←</span>
+      <span data-pdp-bind="detail.back">
+        {copy.back||'Back to collection'}
+      </span>
+    </a>
+  </div>
+
+  <section
+    class="pdp-hero home-container"
+    aria-labelledby="pdpTitle"
+  >
+    <p
+      class="pdp-feature-folio"
+      data-pdp-feature-folio
+    >
+      <span class="pdp-feature-folio__index">01</span>
+      <span aria-hidden="true">/</span>
+      <span>{view.id}</span>
+    </p>
+
+    <div
+      class="pdp-gallery"
+      data-pdp-gallery
+    >
+      {view.gallery.map(
+        (
+          image:any,
+          index:number
+        )=>(
+          <figure
+            class:list={[
+              'pdp-gallery__item',
+              image.primary&&
+                'pdp-gallery__item--primary'
+            ]}
+            data-pdp-gallery-item={index}
+          >
+            <button
+              class="pdp-gallery__select"
+              type="button"
+              data-pdp-gallery-select={image.src}
+              aria-label={`${view.name} — ${index+1}`}
+            >
+              <img
+                src={image.src}
+                alt={
+                  index===0
+                    ? view.name
+                    : `${view.name} — ${index+1}`
+                }
+                width="1200"
+                height="1500"
+                loading={image.loading}
+                fetchpriority={image.priority}
+                decoding="async"
+                data-pdp-primary-image={
+                  image.primary
+                    ? 'true'
+                    : undefined
+                }
+              />
+            </button>
+          </figure>
+        )
+      )}
+    </div>
+
+    <p
+      class="pdp-gallery-index"
+      aria-hidden="true"
+    >
+      <span data-pdp-gallery-index-current>01</span>
+      <span>/</span>
+      <span data-pdp-gallery-index-total>
+        {String(galleryCount).padStart(2,'0')}
+      </span>
+    </p>
+
+    <aside class="pdp-summary">
+      <div class="pdp-summary__identity">
+        <p
+          class="pdp-eyebrow"
+          data-pdp-series-label
+        >
+          {view.seriesLabel}
+        </p>
+
+        <h1
+          id="pdpTitle"
+          data-pdp-product-name
+        >
+          {view.name}
+        </h1>
+
+        <p
+          class="pdp-description"
+          data-pdp-product-description
+        >
+          {view.description}
+        </p>
+
+        <dl class="pdp-meta">
+          <div>
+            <dt data-pdp-bind="detail.productId">
+              {copy.productId||'Product ID'}
+            </dt>
+            <dd>{view.id}</dd>
+          </div>
+
+          {view.colorCode&&(
+            <div>
+              <dt>Color</dt>
+              <dd>{view.colorCode}</dd>
+            </div>
+          )}
+        </dl>
+      </div>
+
+      <div class="pdp-commerce">
+        <div class="pdp-commerce__price">
+          <span data-pdp-ui="currentUnitPrice">
+            {runtimeUi.currentUnitPrice||copy.unitPrice||'Current Reference Unit Price'}
+          </span>
+          <strong data-pdp-current-price>
+            {view.price}
+          </strong>
+          <small data-pdp-currency-unit>
+            {unit}
+          </small>
+        </div>
+
+        <div class="pdp-commerce__moq">
+          <span data-pdp-ui="currentSizeMoq">
+            {runtimeUi.currentSizeMoq||copy.moq||'Current Size MOQ'}
+          </span>
+          <strong>
+            <span data-pdp-current-moq>
+              {view.moq}
+            </span>
+            <small data-pdp-ui="pieces">
+              {runtimeUi.pieces||'pcs'}
+            </small>
+          </strong>
+        </div>
+
+        <p
+          class="pdp-commerce__note"
+          data-pdp-moq-note
+        >
+          {copy.moqNote||runtimeUi.submitMoqCheck||'MOQ is checked on submission.'}
+        </p>
+      </div>
+
+      <header
+        class="pdp-config-intro"
+        data-pdp-config-intro
+      >
+        <span class="pdp-config-intro__index">02</span>
+        <span aria-hidden="true">/</span>
+        <span data-pdp-ui="detailTitle">
+          {runtimeUi.detailTitle||'Product Configuration'}
+        </span>
+      </header>
+
+      <div
+        class="pdp-config"
+        aria-label={runtimeUi.detailTitle||'Product Configuration'}
+      >
+        <div class="pdp-config__group">
+          <div class="pdp-section-heading">
+            <span data-pdp-ui="size">
+              {runtimeUi.size||copy.size||'Size'}
+            </span>
+            <small data-pdp-size-summary>
+              {view.defaultSize}
+            </small>
+          </div>
+
+          <div
+            class="pdp-size-list"
+            data-pdp-size-options
+          >
+            {view.sizes.map((item:any)=>(
+              <button
+                class:list={[
+                  'pdp-size-chip',
+                  item.size===view.defaultSize&&
+                    'is-default'
+                ]}
+                type="button"
+                data-pdp-size={item.size}
+                aria-pressed={
+                  item.size===view.defaultSize
+                    ? 'true'
+                    : 'false'
+                }
+              >
+                <strong>{item.size}</strong>
+                {item.dimension&&(
+                  <small>{item.dimension}</small>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div
+          class="pdp-config-projections"
+          data-pdp-config-projections
+          aria-live="polite"
+        >
+          <details
+            class="pdp-scent-detail"
+            data-pdp-scent-detail
+            hidden
+          >
+            <summary class="pdp-scent-detail__toggle">
+              <span data-pdp-ui="scentDetailTitle">
+                {runtimeUi.scentDetailTitle||'Scent Details'}
+              </span>
+            </summary>
+
+            <dl class="pdp-scent-detail__list">
+              <div
+                class="pdp-scent-detail__row"
+                data-pdp-scent-note="top"
+              >
+                <dt data-pdp-ui="topNotes">
+                  {runtimeUi.topNotes||'Top Notes'}
+                </dt>
+                <dd data-pdp-scent-note-value="top"></dd>
+              </div>
+
+              <div
+                class="pdp-scent-detail__row"
+                data-pdp-scent-note="heart"
+              >
+                <dt data-pdp-ui="heartNotes">
+                  {runtimeUi.heartNotes||'Heart Notes'}
+                </dt>
+                <dd data-pdp-scent-note-value="heart"></dd>
+              </div>
+
+              <div
+                class="pdp-scent-detail__row"
+                data-pdp-scent-note="base"
+              >
+                <dt data-pdp-ui="baseNotes">
+                  {runtimeUi.baseNotes||'Base Notes'}
+                </dt>
+                <dd data-pdp-scent-note-value="base"></dd>
+              </div>
+            </dl>
+          </details>
+        </div>
+
+        {product.series==='holiday'&&(
+          <label class="pdp-field">
+            <span data-pdp-ui="scentSeries">
+              {runtimeUi.scentSeries||'Scent Series'}
+            </span>
+            <select data-pdp-scent-series>
+              {product.availableScentSeries.map((series:string)=>(
+                <option value={series}>
+                  {runtimeState.seriesMeta?.[series]?.labels?.en||series}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+
+        <label class="pdp-field">
+          <span data-pdp-ui="scent">
+            {runtimeUi.scent||'Scent'}
+          </span>
+          <select data-pdp-scent>
+            {initialScents.map((scent:any)=>(
+              <option value={scent.id}>
+                {scent.name?.en||scent.name?.zh||scent.id}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label class="pdp-field">
+          <span data-pdp-ui="pattern">
+            {runtimeUi.pattern||'Pattern'}
+          </span>
+          <select data-pdp-pattern>
+            {initialPatterns.map((pattern:string)=>(
+              <option value={pattern}>
+                {pattern}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label class="pdp-field">
+          <span data-pdp-ui="pack">
+            {runtimeUi.pack||'Packaging'}
+          </span>
+          <select data-pdp-pack>
+            {initialPacks.map((pack:string)=>(
+              <option
+                value={pack}
+                selected={pack===initialPack}
+              >
+                {pack}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <div
+          class="pdp-field"
+          data-pdp-quantity-field
+        >
+          <span data-pdp-ui="quantity">
+            {runtimeUi.quantity||'Quantity'}
+          </span>
+
+          <div
+            class="pdp-quantity-reference"
+            data-pdp-quantity-reference
+          >
+            <small data-pdp-ui="currentUnitPrice">
+              {runtimeUi.currentUnitPrice||copy.unitPrice||'Current Reference Unit Price'}
+            </small>
+            <strong data-pdp-current-price>
+              {view.price}
+            </strong>
+          </div>
+
+          <div class="pdp-quantity">
+            <button
+              type="button"
+              data-pdp-qty-adjust="-1"
+              aria-label="Decrease quantity"
+            >
+              −
+            </button>
+
+            <input
+              type="number"
+              min="1"
+              step="1"
+              value="1"
+              inputmode="numeric"
+              data-pdp-quantity
+            />
+
+            <button
+              type="button"
+              data-pdp-qty-adjust="1"
+              aria-label="Increase quantity"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {view.tags.length>0&&(
+        <div class="pdp-tags">
+          {view.tags.map((tag:string)=>(
+            <span>{tag}</span>
+          ))}
+        </div>
+      )}
+
+      <div class="pdp-actions">
+        <button
+          type="button"
+          data-pdp-add-inquiry
+        >
+          <span data-pdp-ui="addInquiry">
+            {runtimeUi.addInquiry||copy.addInquiry||'Add to Inquiry'}
+          </span>
+        </button>
+
+        <a href={view.routes.custom}>
+          <span data-pdp-bind="detail.customProject">
+            {copy.customProject||'Start a custom project'}
+          </span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <p
+        class="pdp-static-note"
+        data-pdp-bind="detail.pricingNote"
+      >
+        {copy.pricingNote||'Estimated pricing updates with configuration and quantity. Final pricing is confirmed in the quotation.'}
+      </p>
+
+      <div
+        class="pdp-runtime-status"
+        data-pdp-runtime-status
+        aria-live="polite"
+        hidden
+      ></div>
+    </aside>
+  </section>
+
+  <!--
+    R4.11B4.1E-B3-FIX2 — Redundant Product Details Removal
+    Product identity, Series, Size, MOQ and reference price already exist
+    in the canonical PDP summary/configuration above.
+  -->
+
+
+  <!--
+    R4.11B4.1E-B3-FIX3 — Redundant Wholesale CTA Removal
+    The canonical Add to Inquiry and custom-project actions remain in the
+    PDP summary above. Footer follows the route-owned PDP spacing directly.
+  -->
+</main>

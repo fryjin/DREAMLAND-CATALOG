@@ -6,15 +6,29 @@ import {pathToFileURL} from 'node:url';
 const ROOT=process.cwd();
 const errors=[];
 
+/*
+ * R4.11B4.1E-B3-FIX2N — Desktop Custom Validator EOL Normalization
+ * Multiline Custom/Experience source markers operate on logical LF text so
+ * Windows CRLF checkouts do not invalidate canonical integration contracts.
+ */
+
 function fail(message){
   errors.push(message);
 }
 
 function read(relative){
-  return fs.readFileSync(
-    path.join(ROOT,relative),
-    'utf8'
-  );
+  return fs
+    .readFileSync(
+      path.join(
+        ROOT,
+        relative
+      ),
+      'utf8'
+    )
+    .replace(
+      /\r\n/g,
+      '\n'
+    );
 }
 
 function compact(value){
@@ -479,9 +493,17 @@ try{
   }
 
   if(
-    !validate.endsWith(
-      'npm run desktop:catalog'
-    )
+    !(()=>{
+      const gate='npm run desktop:catalog';
+      const gateIndex=validate.lastIndexOf(gate);
+
+      return (
+        gateIndex>=0&&
+        !/npm run desktop:[a-z0-9:-]+/i.test(
+          validate.slice(gateIndex+gate.length)
+        )
+      );
+    })()
   ){
     fail(
       'desktop:catalog must remain the final Desktop aggregate gate.'

@@ -11,15 +11,29 @@ const ROOT=path.resolve(
 
 const errors=[];
 
+/*
+ * R4.11B4.1E-B3-FIX2K — MPA Closure Validator EOL Normalization
+ * Logical source checks use LF text so Windows CRLF checkouts do not invalidate
+ * Review hydration / route slicing / resilient Service Worker contracts.
+ */
+
 function fail(message){
   errors.push(message);
 }
 
 function read(relative){
-  return fs.readFileSync(
-    path.join(ROOT,relative),
-    'utf8'
-  );
+  return fs
+    .readFileSync(
+      path.join(
+        ROOT,
+        relative
+      ),
+      'utf8'
+    )
+    .replace(
+      /\r\n/g,
+      '\n'
+    );
 }
 
 function json(relative){
@@ -179,17 +193,50 @@ try{
       : '';
 
   for(const marker of [
-    'contact_name:c.name',
-    'country_or_region:c.country',
-    'email_address:c.email',
-    'phone_or_wechat:c.phone',
+    'inquiryFeature.buildProjection(',
+    'submissionPayloadPolicy.build('
+  ]){
+    if(
+      !compact(
+        payloadSource
+      ).includes(
+        compact(
+          marker
+        )
+      )
+    ){
+      fail(
+        'Submission payload bridge is missing: '+
+        marker
+      );
+    }
+  }
+
+  const payloadDomain=
+    read(
+      'src/domain/submission/runtime-submission-payload.js'
+    );
+
+  for(const marker of [
+    'contact_name:',
+    'country_or_region:',
+    'email_address:',
+    'phone_or_wechat:',
     'product_count:',
     'custom_count:',
     'items_summary:'
   ]){
-    if(!compact(payloadSource).includes(compact(marker))){
+    if(
+      !compact(
+        payloadDomain
+      ).includes(
+        compact(
+          marker
+        )
+      )
+    ){
       fail(
-        'Submission payload mapping is missing: '+
+        'Canonical Submission Payload Domain mapping is missing: '+
         marker
       );
     }

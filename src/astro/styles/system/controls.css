@@ -1,0 +1,59 @@
+/* DREAMLAND R4.11B2 — shared interactive controls. */
+.dl-button{
+  min-height:var(--dl-control-lg);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  padding:0 20px;
+  border:1px solid transparent;
+  border-radius:var(--dl-radius-pill);
+  font:inherit;
+  font-size:12px;
+  font-weight:800;
+  line-height:1;
+  cursor:pointer;
+  transition:transform var(--dl-motion-fast),opacity var(--dl-motion-fast),background var(--dl-motion-fast),border-color var(--dl-motion-fast);
+}
+.dl-button:active{transform:translateY(1px);}
+.dl-button:disabled,.dl-button[aria-disabled="true"]{cursor:not-allowed;opacity:.45;}
+.dl-button--primary{border-color:var(--dl-color-action);background:var(--dl-color-action);color:var(--dl-color-action-contrast);}
+.dl-button--primary:hover,.dl-button--primary:focus-visible{opacity:.86;}
+.dl-button--secondary{border-color:var(--dl-color-border);background:color-mix(in srgb,var(--dl-color-surface) 70%,transparent);color:var(--dl-color-ink);}
+.dl-button--secondary:hover,.dl-button--secondary:focus-visible{border-color:var(--dl-color-border-strong);background:var(--dl-color-surface);}
+.dl-button--text{min-height:auto;padding:0;border:0;border-radius:0;background:transparent;color:var(--dl-color-ink);}
+.dl-icon-button{
+  width:var(--dl-control-md);
+  height:var(--dl-control-md);
+  display:inline-grid;
+  place-items:center;
+  padding:0;
+  border:1px solid var(--dl-color-border);
+  border-radius:var(--dl-radius-circle);
+  background:var(--dl-color-surface);
+  color:var(--dl-color-ink);
+}
+.dl-pill,.dl-chip{
+  min-height:38px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 14px;
+  border:1px solid var(--dl-color-border);
+  border-radius:var(--dl-radius-pill);
+  background:var(--dl-color-surface);
+  color:var(--dl-color-ink-muted);
+  font-size:11px;
+  font-weight:750;
+}
+.dl-pill.is-active,.dl-chip.is-active,
+.dl-pill[aria-pressed="true"],.dl-chip[aria-pressed="true"]{
+  border-color:var(--dl-color-action);
+  background:var(--dl-color-action);
+  color:var(--dl-color-action-contrast);
+}
+@media (max-width:720px){
+  .dl-button{min-height:54px;padding-inline:22px;font-size:13px;}
+  .dl-icon-button{width:48px;height:48px;}
+  .dl-pill,.dl-chip{min-height:44px;padding-inline:16px;font-size:12px;}
+}

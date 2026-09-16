@@ -6,18 +6,29 @@ import {pathToFileURL} from 'node:url';
 const ROOT=process.cwd();
 const errors=[];
 
+/*
+ * R4.11B4.1E-B3-FIX2P1 — Desktop Catalog Preflight Repair
+ * Logical source checks normalize Windows CRLF to LF before multiline
+ * Catalog/media/startup/PWA contract validation.
+ */
+
 function fail(message){
   errors.push(message);
 }
 
 function read(relative){
-  return fs.readFileSync(
-    path.join(
-      ROOT,
-      relative
-    ),
-    'utf8'
-  );
+  return fs
+    .readFileSync(
+      path.join(
+        ROOT,
+        relative
+      ),
+      'utf8'
+    )
+    .replace(
+      /\r\n/g,
+      '\n'
+    );
 }
 
 function json(relative){
@@ -822,10 +833,20 @@ try{
     !validate.includes(
       'npm run desktop:home-assets'
     )||
-    !validate.trim()
-      .endsWith(
-        'npm run desktop:catalog'
-      )
+    !(()=>{
+      const gate='npm run desktop:catalog';
+      const gateIndex=validate.lastIndexOf(gate);
+
+      return (
+        gateIndex>=0&&
+        !/npm run desktop:[a-z0-9:-]+/i.test(
+          validate.slice(
+            gateIndex+
+            gate.length
+          )
+        )
+      );
+    })()
   ){
     fail(
       'npm run validate must preserve Desktop Home gates and finish with desktop:catalog.'

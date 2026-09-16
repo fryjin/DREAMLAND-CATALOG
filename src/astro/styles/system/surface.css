@@ -1,0 +1,14 @@
+/* DREAMLAND R4.11B2 — shared surface language. */
+.dl-surface{background:var(--dl-color-surface);color:var(--dl-color-ink);}
+.dl-surface--soft{background:var(--dl-color-surface-soft);}
+.dl-surface--outlined{border:1px solid var(--dl-color-border);}
+.dl-surface--summary{padding:28px;border:1px solid var(--dl-color-border);border-radius:var(--dl-radius-surface);background:var(--dl-color-surface);}
+.dl-surface--floating{border-radius:var(--dl-radius-surface);background:var(--dl-color-surface);box-shadow:var(--dl-shadow-soft);}
+.dl-info-row{min-height:52px;display:flex;align-items:baseline;justify-content:space-between;gap:18px;border-bottom:1px solid var(--dl-color-border);}
+.dl-info-row__label{color:var(--dl-color-ink-muted);font-size:11px;}
+.dl-info-row__value{color:var(--dl-color-ink);font-size:12px;font-weight:800;text-align:right;}
+@media (max-width:720px){
+  .dl-mobile-canvas{background:var(--dl-color-mobile-canvas);}
+  .dl-surface--summary,.dl-surface--floating{border-radius:28px;}
+  .dl-surface--summary{padding:24px;}
+}

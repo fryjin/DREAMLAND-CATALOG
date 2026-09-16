@@ -1,0 +1,167 @@
+---
+interface Props {
+  view:Record<string,any>;
+}
+
+const {view}=Astro.props;
+const c=view.copy||{};
+const submission=view.submission||{};
+
+const steps=
+  Array.isArray(c.whatNextSteps)&&
+  c.whatNextSteps.length
+    ? c.whatNextSteps
+    : [
+        'We check the selected products, quantities and custom requirements.',
+        'We confirm any information needed to prepare the quotation.',
+        'We contact you with pricing, lead time and delivery details.'
+      ];
+
+const display=(value:any)=>
+  String(
+    value??
+    ''
+  ).trim()||
+  '—';
+---
+<main
+  class="success-main"
+  data-success-static-presentation
+  data-success-guard-name={view.guard?.name||'hasLastSubmission'}
+  data-success-guard-allowed={view.guard?.allowed===false?'false':'true'}
+  data-success-guard-code={view.guard?.code||''}
+  data-success-guard-target={view.guard?.target||''}
+>
+  <section
+    class="success-hero"
+    aria-labelledby="successTitle"
+  >
+    <div class="home-container success-container">
+      <div
+        class="success-mark"
+        aria-hidden="true"
+      >
+        ✓
+      </div>
+
+      <p class="success-eyebrow">
+        {c.successKicker||'INQUIRY RECEIVED'}
+      </p>
+
+      <h1 id="successTitle">
+        {c.successTitle||'We have received your inquiry.'}
+      </h1>
+
+      <p class="success-lead">
+        {c.successBody||'We will review the products, quantities and custom requirements, then contact you with pricing, lead time and delivery details.'}
+      </p>
+
+      <dl
+        class="success-reference"
+        data-success-static-reference
+      >
+        <div>
+          <dt>
+            {c.inquiryNumber||'Inquiry number'}
+          </dt>
+          <dd
+            data-success-static-value="inquiryId"
+          >
+            {display(submission.inquiryId)}
+          </dd>
+        </div>
+
+        <div>
+          <dt>
+            {c.submitted||'Submitted'}
+          </dt>
+          <dd
+            data-success-static-value="submittedAt"
+          >
+            {display(submission.submittedAt)}
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="success-body home-container success-container">
+    <div
+      class="success-next"
+      data-success-static-next
+    >
+      <p class="success-eyebrow">
+        {c.whatNextKicker||'AFTER SUBMISSION'}
+      </p>
+
+      <h2>
+        {c.whatNextTitle||'What happens after submission'}
+      </h2>
+
+      <ol>
+        {steps.map((step:any,index:number)=>(
+          <li>
+            <b>
+              {String(index+1).padStart(2,'0')}
+            </b>
+            <span>
+              {step}
+            </span>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <dl
+      class="success-details"
+      data-success-static-details
+    >
+      <div>
+        <dt>
+          {c.productEstimate||'Estimated product amount'}
+        </dt>
+        <dd
+          data-success-static-value="amountDisplay"
+        >
+          {display(submission.amountDisplay)}
+        </dd>
+      </div>
+
+      <div>
+        <dt>
+          {c.status||'Status'}
+        </dt>
+        <dd data-success-static-status>
+          {c.awaitingReview||'In review'}
+        </dd>
+      </div>
+    </dl>
+  </section>
+
+  <nav
+    class="success-actions home-container success-container"
+    aria-label="Success actions"
+    data-success-static-actions
+  >
+    <a
+      class="success-action success-action--primary"
+      href={view.routes.catalog}
+      data-success-static-action="explore"
+    >
+      <span>
+        {c.continueExploring||'Continue Exploring'}
+      </span>
+      <span aria-hidden="true">
+        →
+      </span>
+    </a>
+
+    <a
+      class="success-action success-action--secondary"
+      href={view.routes.custom}
+      data-success-static-action="custom"
+    >
+      {c.startAnotherProject||'Start a New Inquiry'}
+    </a>
+  </nav>
+</main>

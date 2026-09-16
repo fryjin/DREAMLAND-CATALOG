@@ -10,20 +10,60 @@ src/
 ├─ features/
 ├─ ui/
 ├─ services/
+├─ domain/
 └─ data/
 ```
 
 Dependency direction:
 
 ```text
-app       → features / ui / services / data
-features  → ui / services / data
-services  → data
+app       → features / ui / services / domain / data
+features  → ui / services / domain / data
+services  → domain / data
+domain    → no higher-layer dependency
 ui        → no higher-layer dependency
 data      → no higher-layer dependency
 ```
 
 ## Runtime migration status
+
+### R4.2A — Pricing / MOQ / Currency Domain
+
+Runtime active:
+
+```text
+src/domain/pricing/runtime-pricing-policy.js
+```
+
+Owns deterministic shared commerce policy previously implemented directly in
+`index.html`: tier selection, packaging surcharge, MOQ, quantity normalization,
+CNY/base conversion, localized money formatting and Catalog reference pricing.
+
+The Domain runtime is DOM/storage/network free. Legacy page functions remain as
+thin adapters until the Astro Presentation migration retires the old App shell.
+
+### R4.2B — Submission Payload Domain
+
+Runtime active:
+
+```text
+src/domain/submission/runtime-submission-payload.js
+```
+
+Owns deterministic provider-delivery payload mapping and validation. The
+canonical Inquiry Projection remains the input owner, DreamlandSubmission
+remains the transport owner, and DreamlandInquirySubmissionFlow remains the
+transaction/orchestration owner.
+
+### R4.2C — Localization / Content Formatting Domain
+
+Runtime active:
+
+```text
+src/domain/localization/runtime-localization-policy.js
+```
+
+Owns deterministic shared language fallback for UI text, choice/series labels, localized product/scent fields, from-price ordering, locale resolution and date formatting. DOM language application remains an App/Presentation responsibility; currency conversion/money formatting remains owned by DreamlandPricingPolicy.
 
 ### B1-02 — Product data contract
 

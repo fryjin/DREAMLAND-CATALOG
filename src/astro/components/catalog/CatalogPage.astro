@@ -1,0 +1,567 @@
+---
+interface Props {
+  view:Record<string,any>;
+  sizeOptions:string[];
+}
+
+const {
+  view,
+  sizeOptions
+}=Astro.props;
+
+const copy=view.catalog||{};
+const navigation=view.content?.navigation||{};
+
+const EDITORIAL_ROLES={
+  a:[
+    'lead',
+    'support',
+    'narrow',
+    'support-wide',
+    'breather'
+  ],
+  b:[
+    'support',
+    'lead',
+    'support-wide',
+    'narrow',
+    'breather'
+  ]
+};
+
+function editorialRole(
+  phase:string,
+  slot:number
+){
+  const roles=
+    phase==='b'
+      ? EDITORIAL_ROLES.b
+      : EDITORIAL_ROLES.a;
+
+  return (
+    roles[slot-1]||
+    'support'
+  );
+}
+
+/*
+ * R4.11B4.1D-E — Mobile 3:2 ↔ 2:3 Mirrored Ratio Rhythm.
+ * Full five-card spread:
+ *   A => 2 left / 3 right
+ *   B => 3 left / 2 right
+ * Partial result sets preserve both non-empty lanes when possible.
+ */
+function laneSplitCount(
+  phase:string,
+  count:number
+){
+  if(count<=1){
+    return count;
+  }
+
+  return Math.max(
+    1,
+    Math.min(
+      count-1,
+      Math.round(
+        count*
+        (
+          phase==='b'
+            ? .6
+            : .4
+        )
+      )
+    )
+  );
+}
+
+const editorialGroups=
+  Array.from(
+    {
+      length:
+        Math.ceil(
+          view.products.length/5
+        )
+    },
+    (
+      _,
+      groupIndex
+    )=>{
+      const phase=
+        groupIndex%2===0
+          ? 'a'
+          : 'b';
+
+      return {
+        phase,
+        products:
+          view.products
+            .slice(
+              groupIndex*5,
+              groupIndex*5+5
+            )
+            .map(
+              (
+                product:any,
+                localIndex:number
+              )=>({
+                ...product,
+                editorialSlot:
+                  localIndex+1,
+                editorialPhase:
+                  phase,
+                editorialRole:
+                  editorialRole(
+                    phase,
+                    localIndex+1
+                  )
+              })
+            )
+      };
+    }
+  );
+---
+<main
+  class="catalog-main"
+  data-catalog-runtime-presentation
+>
+  <section
+    class="catalog-intro home-container catalog-chapter"
+    data-catalog-section="intro"
+    data-catalog-chapter-opener
+    aria-labelledby="catalogTitle"
+  >
+    <div class="catalog-chapter__folio">
+      <span class="catalog-chapter__number">02</span>
+      <span class="catalog-chapter__slash" aria-hidden="true">/</span>
+      <p
+        class="catalog-eyebrow"
+        data-catalog-bind="catalog.kicker"
+      >
+        {copy.kicker}
+      </p>
+    </div>
+
+    <div class="catalog-intro__layout">
+      <div class="catalog-intro__copy">
+        <h1
+          id="catalogTitle"
+          data-catalog-bind="catalog.title"
+        >
+          {copy.title}
+        </h1>
+        <p data-catalog-bind="catalog.body">
+          {copy.body}
+        </p>
+      </div>
+
+      <div
+        class="catalog-intro__count"
+        data-catalog-all-count={view.allCount}
+      >
+        <strong data-catalog-all-count-value>
+          {view.allCount}
+        </strong>
+        <span data-catalog-bind="catalog.activeDesigns">
+          {copy.activeDesigns}
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="catalog-browse catalog-reader"
+    data-catalog-section="browse"
+    data-catalog-reader
+    aria-label={copy.seriesNavigation}
+  >
+    <div class="home-container catalog-reader__inner">
+      <div
+        class="catalog-series catalog-reader__index"
+        role="tablist"
+        aria-label={copy.seriesNavigation}
+        data-catalog-series-list
+      >
+        {view.scopes.map((scope:any)=>(
+          <button
+            class:list={[
+              'catalog-series__item',
+              scope.id===view.scope&&
+                'is-active'
+            ]}
+            type="button"
+            role="tab"
+            aria-selected={
+              scope.id===view.scope
+                ? 'true'
+                : 'false'
+            }
+            data-catalog-series={scope.id}
+          >
+            <span data-catalog-series-label>
+              {scope.label}
+            </span>
+            <small data-catalog-series-count>
+              {scope.count}
+            </small>
+          </button>
+        ))}
+      </div>
+
+      <div class="catalog-tools catalog-reader__tools">
+        <div class="catalog-result-count">
+          <strong data-catalog-result-count>
+            {view.totalCount}
+          </strong>
+          <span data-catalog-bind="catalog.designs">
+            {copy.designs}
+          </span>
+        </div>
+
+        <div
+          class="catalog-search"
+          data-catalog-search-control
+        >
+          <button
+            class="catalog-search__trigger"
+            type="button"
+            data-catalog-search-trigger
+            aria-expanded="false"
+            aria-controls="catalogSearchField"
+          >
+            <span
+              class="catalog-search__prompt"
+              aria-hidden="true"
+            >
+              <b>⌕</b>
+              <span data-catalog-bind="catalog.searchShort">
+                {copy.searchShort||copy.searchPlaceholder}
+              </span>
+            </span>
+          </button>
+
+          <div
+            class="catalog-search__field"
+            id="catalogSearchField"
+          >
+            <label
+              class="home-sr-only"
+              for="catalogSearchInput"
+              data-catalog-bind="catalog.searchPlaceholder"
+            >
+              {copy.searchPlaceholder}
+            </label>
+            <input
+              id="catalogSearchInput"
+              type="search"
+              placeholder={copy.searchPlaceholder}
+              data-catalog-search
+              autocomplete="off"
+              enterkeyhint="search"
+            />
+          </div>
+        </div>
+
+        <details
+          class="catalog-filter"
+          data-catalog-filter-panel
+        >
+          <summary>
+            <span data-catalog-bind="catalog.filters">
+              {copy.filters}
+            </span>
+            <b
+              class="catalog-filter__symbol"
+              data-catalog-filter-symbol
+              aria-hidden="true"
+            ></b>
+          </summary>
+
+          <div class="catalog-filter__panel">
+            <div class="catalog-filter__head">
+              <strong data-catalog-bind="catalog.size">
+                {copy.size}
+              </strong>
+              <button
+                type="button"
+                data-catalog-size-clear
+                data-catalog-bind="catalog.clear"
+              >
+                {copy.clear}
+              </button>
+            </div>
+
+            <div class="catalog-filter__sizes">
+              {sizeOptions.map(size=>(
+                <label>
+                  <input
+                    type="checkbox"
+                    value={size}
+                    data-catalog-size
+                  />
+                  <span>{size}</span>
+                </label>
+              ))}
+            </div>
+
+            <button
+              class="catalog-filter__apply"
+              type="button"
+              data-catalog-size-apply
+              data-catalog-bind="catalog.apply"
+            >
+              {copy.apply}
+            </button>
+          </div>
+        </details>
+
+        <div
+          class="catalog-sort"
+          data-catalog-sort-control
+        >
+          <label class="catalog-sort__native">
+            <span
+              class="home-sr-only"
+              data-catalog-bind="catalog.sort"
+            >
+              {copy.sort}
+            </span>
+            <select data-catalog-sort>
+              <option value="featured" data-catalog-sort-option="featured">{copy.sortFeatured}</option>
+              <option value="name" data-catalog-sort-option="name">{copy.sortName}</option>
+              <option value="price-low" data-catalog-sort-option="price-low">{copy.sortPriceLow}</option>
+              <option value="price-high" data-catalog-sort-option="price-high">{copy.sortPriceHigh}</option>
+              <option value="moq-low" data-catalog-sort-option="moq-low">{copy.sortMoq}</option>
+            </select>
+          </label>
+
+          <details
+            class="catalog-sort__menu"
+            data-catalog-sort-panel
+          >
+            <summary>
+              <span
+                class="catalog-sort__visual"
+                aria-hidden="true"
+              >
+                <span data-catalog-bind="catalog.sort">{copy.sort}</span>
+                <b>↕</b>
+              </span>
+            </summary>
+
+            <div
+              class="catalog-sort__panel"
+              role="group"
+              aria-label={copy.sort}
+            >
+              <button type="button" data-catalog-sort-action="featured" data-catalog-bind="catalog.sortFeatured">{copy.sortFeatured}</button>
+              <button type="button" data-catalog-sort-action="name" data-catalog-bind="catalog.sortName">{copy.sortName}</button>
+              <button type="button" data-catalog-sort-action="price-low" data-catalog-bind="catalog.sortPriceLow">{copy.sortPriceLow}</button>
+              <button type="button" data-catalog-sort-action="price-high" data-catalog-bind="catalog.sortPriceHigh">{copy.sortPriceHigh}</button>
+              <button type="button" data-catalog-sort-action="moq-low" data-catalog-bind="catalog.sortMoq">{copy.sortMoq}</button>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="catalog-products home-container"
+    data-catalog-section="products"
+    aria-label={copy.title}
+  >
+    <div
+      class="catalog-grid"
+      data-catalog-product-grid
+    >
+      {editorialGroups.map((
+        group:any,
+        groupIndex:number
+      )=>(
+        <div
+          class="catalog-spread"
+          data-editorial-phase={group.phase}
+          data-editorial-group={groupIndex+1}
+          data-editorial-count={group.products.length}
+        >
+          {[
+            {
+              side:'left',
+              products:
+                group.products.slice(
+                  0,
+                  laneSplitCount(
+                    group.phase,
+                    group.products.length
+                  )
+                )
+            },
+            {
+              side:'right',
+              products:
+                group.products.slice(
+                  laneSplitCount(
+                    group.phase,
+                    group.products.length
+                  )
+                )
+            }
+          ]
+            .filter(
+              lane=>
+                lane.products.length
+            )
+            .map(lane=>(
+              <div
+                class="catalog-spread__lane"
+                data-editorial-lane={lane.side}
+                data-editorial-lane-count={lane.products.length}
+              >
+                {lane.products.map((product:any)=>(
+                  <article
+                    class="catalog-card"
+                    data-catalog-product={product.id}
+                    data-editorial-slot={product.editorialSlot}
+                    data-editorial-phase={product.editorialPhase}
+                    data-editorial-role={product.editorialRole}
+                  >
+                    <a
+                      class="catalog-card__link"
+                      href={product.href}
+                      aria-label={`${copy.viewDetails}: ${product.name}`}
+                    >
+                      <div class="catalog-card__media">
+                        <img
+                          src={product.cover}
+                          alt={product.name}
+                          width="720"
+                          height="900"
+                          loading={product.loading}
+                          fetchpriority={product.priority}
+                          decoding="async"
+                        />
+
+                        <span
+                          class="catalog-card__overlay"
+                          aria-hidden="true"
+                        >
+                          {copy.viewDetails}
+                          <b>→</b>
+                        </span>
+                      </div>
+
+                      <div class="catalog-card__copy">
+                        <div>
+                          <h2>
+                            {product.name}
+                          </h2>
+                          <p>
+                            {product.seriesLabel}
+                          </p>
+                        </div>
+
+                        <div class="catalog-card__commercial">
+                          <strong>
+                            {product.price}
+                          </strong>
+                          <span>
+                            {copy.moq} {product.moq}
+                          </span>
+                        </div>
+                      </div>
+                    </a>
+                  </article>
+                ))}
+              </div>
+            ))}
+        </div>
+      ))}
+    </div>
+
+    <div
+      class="catalog-empty"
+      data-catalog-empty
+      hidden
+    >
+      <p
+        class="catalog-eyebrow"
+        data-catalog-bind="catalog.emptyKicker"
+      >
+        {copy.emptyKicker}
+      </p>
+      <h2 data-catalog-empty-title>
+        {copy.emptyTitle}
+      </h2>
+      <p data-catalog-bind="catalog.emptyBody">
+        {copy.emptyBody}
+      </p>
+      <button
+        type="button"
+        data-catalog-clear-filters
+        data-catalog-bind="catalog.clearFilters"
+      >
+        {copy.clearFilters}
+      </button>
+    </div>
+
+    <div class="catalog-pagination">
+      <p data-catalog-pagination-copy>
+        <span data-catalog-bind="catalog.showing">
+          {copy.showing}
+        </span>
+        <strong data-catalog-rendered-count>
+          {view.renderedCount}
+        </strong>
+        <span data-catalog-bind="catalog.of">
+          {copy.of}
+        </span>
+        <strong data-catalog-total-count>
+          {view.totalCount}
+        </strong>
+      </p>
+
+      {view.hasMore&&(
+        <button
+          class="catalog-load-more"
+          type="button"
+          data-catalog-load-more
+          data-catalog-bind="catalog.loadMore"
+        >
+          {copy.loadMore}
+        </button>
+      )}
+    </div>
+  </section>
+
+  <section
+    class="catalog-cta"
+    data-catalog-section="inquiry-cta"
+  >
+    <div class="home-container catalog-cta__inner">
+      <div>
+        <p
+          class="catalog-eyebrow"
+          data-catalog-bind="catalog.ctaKicker"
+        >
+          {copy.ctaKicker}
+        </p>
+        <h2 data-catalog-bind="catalog.ctaEmptyTitle">
+          {copy.ctaEmptyTitle}
+        </h2>
+        <p data-catalog-bind="catalog.ctaEmptyBody">
+          {copy.ctaEmptyBody}
+        </p>
+      </div>
+
+      <a href="/inquiry/">
+        <span data-home-bind="navigation.inquiry">
+          {navigation.inquiry||'Inquiry'}
+        </span>
+        <span aria-hidden="true">
+          →
+        </span>
+      </a>
+    </div>
+  </section>
+</main>

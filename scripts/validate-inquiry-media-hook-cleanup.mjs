@@ -6,7 +6,15 @@ const ROOT=process.cwd();
 const errors=[];
 
 function fail(message){errors.push(message);}
-function read(relativePath){return fs.readFileSync(path.join(ROOT,relativePath),'utf8');}
+function read(relativePath){
+  return fs.readFileSync(
+path.join(ROOT,relativePath),
+    'utf8'
+  ).replace(
+    /\r\n?/g,
+    '\n'
+  );
+}
 
 try{
   const indexSource=read('index.html');

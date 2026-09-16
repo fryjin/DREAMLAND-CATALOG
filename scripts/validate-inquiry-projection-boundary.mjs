@@ -12,11 +12,14 @@ function fail(message){
 
 function read(relativePath){
   return fs.readFileSync(
-    path.join(
+path.join(
       ROOT,
       relativePath
     ),
     'utf8'
+  ).replace(
+    /\r\n?/g,
+    '\n'
   );
 }
 
@@ -602,11 +605,7 @@ try{
       payloadSource,
       [
         'inquiryFeature.buildProjection(',
-        'projection.itemsSummary',
-        'projection.rawProductItems',
-        'projection.rawCustomItems',
-        'projection.estimatedTotal',
-        'projection.estimatedTotalDisplay'
+        'submissionPayloadPolicy.build('
       ]
     ],
     [

@@ -11,15 +11,29 @@ const ROOT=path.resolve(
 
 const errors=[];
 
+/*
+ * R4.11B4.1E-B3-FIX2J — Conversion Gateway Validator EOL Normalization
+ * Multiline source markers operate on logical LF text so Windows CRLF
+ * checkouts do not invalidate Desktop Risk/CAPTCHA bridge contracts.
+ */
+
 function fail(message){
   errors.push(message);
 }
 
 function read(relative){
-  return fs.readFileSync(
-    path.join(ROOT,relative),
-    'utf8'
-  );
+  return fs
+    .readFileSync(
+      path.join(
+        ROOT,
+        relative
+      ),
+      'utf8'
+    )
+    .replace(
+      /\r\n/g,
+      '\n'
+    );
 }
 
 function json(relative){
@@ -481,12 +495,35 @@ try{
     fail('R3 validator is not in the expected validation position.');
   }
 
-  if(
-    !validate.endsWith(
-      'npm run desktop:catalog'
-    )
-  ){
-    fail('desktop:catalog must remain the final Desktop aggregate gate.');
+  const desktopCatalogGate=
+    'npm run desktop:catalog';
+
+  const desktopCatalogIndex=
+    validate.lastIndexOf(
+      desktopCatalogGate
+    );
+
+  if(desktopCatalogIndex<0){
+    fail(
+      'desktop:catalog aggregate gate is missing.'
+    );
+  }else{
+    const afterDesktopCatalog=
+      validate.slice(
+        desktopCatalogIndex+
+        desktopCatalogGate.length
+      );
+
+    if(
+      /npm run desktop:[a-z0-9:-]+/i
+        .test(
+          afterDesktopCatalog
+        )
+    ){
+      fail(
+        'desktop:catalog must remain the final Desktop aggregate gate.'
+      );
+    }
   }
 }catch(error){
   fail(

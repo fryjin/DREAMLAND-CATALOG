@@ -43,13 +43,23 @@ const productData=JSON.parse(
   )
 );
 
-const sourceIndex=fs.readFileSync(
-  path.join(
-    ROOT,
-    'index.html'
-  ),
-  'utf8'
-);
+/*
+ * R4.11B4.1E-B3-FIX2I — Build Pages EOL Normalization
+ * Route transforms operate on logical LF text so exact multiline markers are
+ * deterministic across Linux/macOS/Windows worktrees.
+ */
+const sourceIndex=fs
+  .readFileSync(
+    path.join(
+      ROOT,
+      'index.html'
+    ),
+    'utf8'
+  )
+  .replace(
+    /\r\n/g,
+    '\n'
+  );
 
 const activeProducts=(productData.products||[])
   .filter(
@@ -663,10 +673,24 @@ function copyStaticSite(){
       {recursive:true}
     );
 
-    fs.copyFileSync(
-      source,
-      target
-    );
+    if(relative==='sw.js'){
+      fs.writeFileSync(
+        target,
+        fs.readFileSync(
+          source,
+          'utf8'
+        ).replace(
+          /\r\n?/g,
+          '\n'
+        ),
+        'utf8'
+      );
+    }else{
+      fs.copyFileSync(
+        source,
+        target
+      );
+    }
   }
 }
 

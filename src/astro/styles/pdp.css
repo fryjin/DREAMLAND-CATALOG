@@ -1,0 +1,1441 @@
+.pdp-main {
+  overflow:hidden;
+}
+
+.pdp-back-row {
+  padding-top:34px;
+  padding-bottom:22px;
+}
+
+.pdp-back {
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  color:var(--home-muted);
+  font-size:13px;
+  font-weight:700;
+}
+
+.pdp-hero {
+  display:grid;
+  grid-template-columns:minmax(0,1.45fr) minmax(360px,.72fr);
+  gap:clamp(36px,5vw,84px);
+  align-items:start;
+  padding-bottom:clamp(84px,9vw,140px);
+}
+
+.pdp-gallery {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+
+.pdp-gallery__item {
+  aspect-ratio:4/5;
+  margin:0;
+  overflow:hidden;
+  background:#eee7de;
+}
+
+.pdp-gallery__item--primary {
+  grid-column:1/-1;
+  aspect-ratio:6/7;
+}
+
+.pdp-gallery__item img {
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.pdp-summary {
+  position:sticky;
+  top:28px;
+  display:flex;
+  flex-direction:column;
+  gap:30px;
+  padding-top:10px;
+}
+
+.pdp-eyebrow {
+  margin:0;
+  color:var(--home-muted);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.pdp-summary h1 {
+  margin:12px 0 0;
+  font-family:var(--home-serif);
+  font-size:clamp(44px,5.5vw,78px);
+  font-weight:400;
+  line-height:.96;
+  letter-spacing:-.035em;
+}
+
+.pdp-description {
+  max-width:620px;
+  margin:22px 0 0;
+  color:var(--home-muted);
+  font-size:15px;
+  line-height:1.75;
+}
+
+.pdp-meta {
+  display:flex;
+  flex-wrap:wrap;
+  gap:26px;
+  margin:24px 0 0;
+}
+
+.pdp-meta div {
+  display:flex;
+  gap:8px;
+}
+
+.pdp-meta dt {
+  color:var(--home-soft);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.pdp-meta dd {
+  margin:0;
+  font-size:12px;
+  font-weight:700;
+}
+
+.pdp-commerce {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  padding:22px;
+  border:1px solid var(--home-line);
+  background:rgba(255,253,249,.58);
+}
+
+.pdp-commerce__price,
+.pdp-commerce__moq {
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.pdp-commerce span {
+  color:var(--home-muted);
+  font-size:11px;
+}
+
+.pdp-commerce strong {
+  font-family:var(--home-serif);
+  font-size:24px;
+  font-weight:400;
+}
+
+.pdp-commerce small {
+  color:var(--home-muted);
+  font-family:var(--home-sans);
+  font-size:11px;
+  font-weight:500;
+}
+
+.pdp-commerce__note {
+  grid-column:1/-1;
+  margin:2px 0 0;
+  padding-top:14px;
+  border-top:1px solid var(--home-line);
+  color:var(--home-muted);
+  font-size:11px;
+  line-height:1.6;
+}
+
+.pdp-section-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:12px;
+}
+
+.pdp-section-heading > span {
+  font-size:12px;
+  font-weight:800;
+}
+
+.pdp-section-heading small {
+  color:var(--home-muted);
+  font-size:11px;
+}
+
+.pdp-size-list {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+}
+
+.pdp-size-chip {
+  display:flex;
+  min-height:58px;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  border:1px solid var(--home-line);
+  background:rgba(255,253,249,.52);
+}
+
+.pdp-size-chip.is-default {
+  border-color:var(--home-ink);
+  background:var(--home-ink);
+  color:var(--home-surface);
+}
+
+.pdp-size-chip strong {
+  font-size:13px;
+}
+
+.pdp-size-chip small {
+  color:inherit;
+  opacity:.65;
+  font-size:10px;
+}
+
+.pdp-tags {
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.pdp-tags span {
+  padding:7px 9px;
+  border:1px solid var(--home-line);
+  border-radius:999px;
+  color:var(--home-muted);
+  font-size:10px;
+}
+
+.pdp-actions {
+  display:grid;
+  gap:10px;
+}
+
+.pdp-actions button,
+.pdp-actions a {
+  display:flex;
+  min-height:50px;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:13px;
+}
+
+.pdp-actions button {
+  border:0;
+  background:var(--home-ink);
+  color:var(--home-surface);
+  cursor:default;
+  opacity:.72;
+}
+
+.pdp-actions a {
+  border:1px solid var(--home-line);
+}
+
+.pdp-static-note {
+  margin:-12px 0 0;
+  color:var(--home-soft);
+  font-size:10px;
+  line-height:1.6;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width:1050px) {
+  .pdp-hero {
+    grid-template-columns:1fr;
+  }
+
+  .pdp-summary {
+    position:static;
+  }
+
+
+}
+
+@media (max-width:720px) {
+  .pdp-back-row {
+    padding-top:22px;
+  }
+
+  .pdp-gallery {
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+  }
+
+  .pdp-gallery::-webkit-scrollbar {
+    display:none;
+  }
+
+  .pdp-gallery__item,
+  .pdp-gallery__item--primary {
+    flex:0 0 86%;
+    aspect-ratio:4/5;
+    scroll-snap-align:start;
+  }
+
+  .pdp-summary h1 {
+    font-size:clamp(40px,13vw,62px);
+  }
+
+  .pdp-size-list {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+
+
+}
+.pdp-gallery__select {
+  display:block;
+  width:100%;
+  height:100%;
+  padding:0;
+  border:0;
+  background:transparent;
+  cursor:zoom-in;
+}
+
+.pdp-config {
+  display:grid;
+  gap:16px;
+  padding-top:2px;
+}
+
+.pdp-config__group {
+  display:grid;
+  gap:0;
+}
+
+.pdp-size-chip {
+  cursor:pointer;
+}
+
+.pdp-field {
+  display:grid;
+  gap:8px;
+  color:var(--home-muted);
+  font-size:11px;
+  font-weight:700;
+}
+
+.pdp-field select,
+.pdp-field input {
+  width:100%;
+  min-height:44px;
+  border:1px solid var(--home-line);
+  border-radius:10px;
+  background:rgba(255,253,249,.72);
+  color:var(--home-ink);
+}
+
+.pdp-field select {
+  padding:0 36px 0 12px;
+}
+
+.pdp-quantity {
+  display:grid;
+  grid-template-columns:44px minmax(0,1fr) 44px;
+  gap:8px;
+}
+
+.pdp-quantity button {
+  border:1px solid var(--home-line);
+  border-radius:10px;
+  background:rgba(255,253,249,.72);
+  color:var(--home-ink);
+  font-size:20px;
+  cursor:pointer;
+}
+
+.pdp-quantity input {
+  padding:0 12px;
+  text-align:center;
+}
+
+.pdp-actions button[data-pdp-add-inquiry] {
+  opacity:1;
+  cursor:pointer;
+}
+
+.pdp-runtime-status {
+  margin-top:-12px;
+  padding:11px 13px;
+  border:1px solid var(--home-line);
+  border-radius:10px;
+  background:rgba(255,253,249,.74);
+  color:var(--home-muted);
+  font-size:11px;
+  line-height:1.5;
+}
+
+.pdp-runtime-status[data-kind="warn"] {
+  border-color:rgba(120,70,20,.28);
+}
+
+.pdp-commerce__price small {
+  margin-top:-3px;
+}
+
+.pdp-commerce__note[data-pdp-moq-reached="true"] {
+  color:var(--home-ink);
+}
+
+/* ============================================================
+ * R4.11B4.1E-A — Mobile PDP Feature Foundation
+ * Editorial Product Feature + canonical R4 configurator.
+ * Desktop remains unchanged; mobile composition is route-owned.
+ * ========================================================== */
+
+.pdp-feature-folio,
+.pdp-gallery-index,
+.pdp-config-intro {
+  display:none;
+}
+
+@media (max-width:720px) {
+  .pdp-main {
+    background:
+      var(
+        --dl-color-canvas,
+        var(--home-bg)
+      );
+  }
+
+  .pdp-back-row.home-container {
+    width:calc(100% - 32px);
+    margin-inline:auto;
+    padding-top:18px;
+    padding-bottom:14px;
+  }
+
+  .pdp-back {
+    gap:8px;
+    font-size:11px;
+    letter-spacing:.04em;
+  }
+
+  .pdp-hero.home-container {
+    display:block;
+    width:100%;
+    margin-inline:0;
+    padding-bottom:64px;
+  }
+
+  .pdp-feature-folio {
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin:
+      0
+      16px
+      14px;
+    color:var(--home-muted);
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.14em;
+    line-height:1;
+    text-transform:uppercase;
+  }
+
+  .pdp-feature-folio__index {
+    color:var(--home-ink);
+  }
+
+  .pdp-gallery {
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    padding:
+      0
+      16px;
+    scroll-padding-inline:16px;
+    scroll-snap-type:x mandatory;
+    overscroll-behavior-inline:contain;
+    scrollbar-width:none;
+  }
+
+  .pdp-gallery::-webkit-scrollbar {
+    display:none;
+  }
+
+  .pdp-gallery__item,
+  .pdp-gallery__item--primary {
+    flex:
+      0
+      0
+      min(
+        calc(100vw - 48px),
+        392px
+      );
+    aspect-ratio:4/5;
+    margin:0;
+    overflow:hidden;
+    border-radius:18px;
+    scroll-snap-align:start;
+    scroll-snap-stop:normal;
+    background:#eee7de;
+  }
+
+  .pdp-gallery__select {
+    cursor:zoom-in;
+  }
+
+  .pdp-gallery-index {
+    display:flex;
+    justify-content:flex-end;
+    gap:6px;
+    margin:
+      10px
+      16px
+      0;
+    color:var(--home-muted);
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.12em;
+    line-height:1;
+  }
+
+  .pdp-gallery-index [data-pdp-gallery-index-current] {
+    color:var(--home-ink);
+  }
+
+  .pdp-summary {
+    position:static;
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    margin:0;
+    padding:
+      0
+      16px;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+  }
+
+  .pdp-summary__identity {
+    margin-top:32px;
+  }
+
+  .pdp-summary .pdp-eyebrow {
+    font-size:10px;
+    letter-spacing:.15em;
+  }
+
+  .pdp-summary h1 {
+    max-width:9ch;
+    margin-top:11px;
+    font-size:
+      clamp(
+        46px,
+        13vw,
+        58px
+      );
+    line-height:.94;
+    letter-spacing:-.04em;
+  }
+
+  .pdp-description {
+    max-width:34ch;
+    margin-top:18px;
+    font-size:14px;
+    line-height:1.68;
+  }
+
+  .pdp-meta {
+    display:grid;
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0,1fr)
+      );
+    gap:18px;
+    margin-top:24px;
+    padding-top:18px;
+    border-top:
+      1px
+      solid
+      var(--home-line);
+  }
+
+  .pdp-meta div {
+    display:block;
+  }
+
+  .pdp-meta dt {
+    margin-bottom:6px;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.12em;
+  }
+
+  .pdp-meta dd {
+    font-size:12px;
+  }
+
+  .pdp-commerce {
+    display:grid;
+    grid-template-columns:
+      minmax(0,1fr)
+      auto;
+    gap:
+      12px
+      24px;
+    margin-top:28px;
+    padding:
+      20px
+      0;
+    border:
+      0;
+    border-top:
+      1px
+      solid
+      var(--home-line);
+    border-bottom:
+      1px
+      solid
+      var(--home-line);
+    border-radius:0;
+    background:transparent;
+  }
+
+  .pdp-commerce__price,
+  .pdp-commerce__moq {
+    gap:7px;
+  }
+
+  .pdp-commerce__moq {
+    align-items:flex-end;
+    text-align:right;
+  }
+
+  .pdp-commerce strong {
+    font-size:24px;
+  }
+
+  .pdp-commerce__note {
+    grid-column:1/-1;
+    margin:2px 0 0;
+    padding-top:4px;
+    border-top:0;
+    font-size:10px;
+    line-height:1.55;
+  }
+
+  .pdp-config-intro {
+    display:flex;
+    align-items:baseline;
+    gap:7px;
+    margin-top:34px;
+    padding-bottom:12px;
+    border-bottom:
+      1px
+      solid
+      var(--home-line);
+    color:var(--home-muted);
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.12em;
+    line-height:1.2;
+    text-transform:uppercase;
+  }
+
+  .pdp-config-intro__index {
+    color:var(--home-ink);
+  }
+
+  .pdp-config {
+    gap:16px;
+    margin-top:18px;
+    padding-top:0;
+  }
+
+  .pdp-size-list {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0,1fr)
+      );
+  }
+
+  .pdp-size-chip {
+    border-radius:10px;
+  }
+
+  .pdp-field select,
+  .pdp-field input {
+    min-height:52px;
+    border-radius:10px;
+  }
+
+  .pdp-quantity button {
+    border-radius:10px;
+  }
+
+  .pdp-tags {
+    margin-top:22px;
+  }
+
+  .pdp-actions {
+    margin-top:22px;
+  }
+
+  .pdp-static-note {
+    margin-top:14px;
+  }
+
+  .pdp-runtime-status {
+    margin-top:14px;
+  }
+
+
+
+
+
+
+
+}
+
+
+/* ============================================================
+ * R4.11B4.1E-B1 — Canonical Touch Projection Foundation
+ * Proxy, Don't Fork: mobile visible controls project canonical state.
+ * Desktop keeps the existing canonical controls.
+ * R4.11B4.1E-B1-FIX3 — Canonical Quantity Hierarchy Restoration
+ * Quantity keeps the canonical stepper visible; only hierarchy changes.
+ * R4.11B4.1E-B1-FIX4 — Mobile Config Width Containment
+ * Horizontal picker strips scroll internally and must not widen the route.
+ * R4.11B4.1E-B1-FIX5 — Active Picker Visibility
+ * Selected options remain fully visible after canonical projection rebuilds.
+ * ========================================================== */
+
+.pdp-config-projections {
+  display:none;
+}
+
+.pdp-quantity-reference {
+  display:none;
+}
+
+@media (max-width:720px) {
+  .pdp-config {
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    gap:0;
+    margin-top:0;
+  }
+
+  .pdp-config__group {
+    padding:
+      20px
+      0;
+    border-bottom:
+      1px
+      solid
+      var(--home-line);
+  }
+
+  .pdp-section-heading {
+    margin-bottom:14px;
+  }
+
+  .pdp-section-heading > span,
+  .pdp-config-projection__label,
+  .pdp-field > span {
+    color:var(--home-muted);
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
+
+  .pdp-section-heading small,
+  .pdp-config-projection__count {
+    color:var(--home-soft);
+    font-size:10px;
+    font-weight:700;
+  }
+
+  .pdp-size-list {
+    display:flex;
+    grid-template-columns:none;
+    gap:22px;
+    overflow-x:auto;
+    padding:
+      1px
+      0
+      3px;
+    scrollbar-width:none;
+    overscroll-behavior-inline:contain;
+  }
+
+  .pdp-size-list::-webkit-scrollbar,
+  .pdp-config-projection__strip::-webkit-scrollbar {
+    display:none;
+  }
+
+  .pdp-size-chip {
+    position:relative;
+    flex:0 0 auto;
+    min-height:38px;
+    padding:
+      0
+      0
+      0
+      12px;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    color:var(--home-muted);
+  }
+
+  .pdp-size-chip::before {
+    content:"";
+    position:absolute;
+    top:50%;
+    left:0;
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:transparent;
+    transform:translateY(-50%);
+  }
+
+  .pdp-size-chip.is-default {
+    border:0;
+    background:transparent;
+    color:var(--home-ink);
+  }
+
+  .pdp-size-chip.is-default::before {
+    background:var(--home-ink);
+  }
+
+  .pdp-size-chip strong {
+    font-size:13px;
+    font-weight:800;
+  }
+
+  .pdp-size-chip small {
+    display:none;
+  }
+
+  .pdp-config-projections {
+    display:block;
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    overflow:hidden;
+  }
+
+  .pdp-config-projection {
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    overflow:hidden;
+    padding:
+      20px
+      0;
+    border-bottom:
+      1px
+      solid
+      var(--home-line);
+  }
+
+  .pdp-config-projection__heading {
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:18px;
+    margin-bottom:15px;
+  }
+
+  .pdp-config-projection__strip {
+    display:flex;
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    gap:22px;
+    overflow-x:auto;
+    padding:
+      1px
+      12px
+      3px
+      0;
+    scroll-padding-inline:12px;
+    overscroll-behavior-inline:contain;
+    scrollbar-width:none;
+  }
+
+  .pdp-config-projection__option {
+    position:relative;
+    flex:0 0 auto;
+    min-height:38px;
+    padding:
+      0
+      0
+      0
+      12px;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    color:var(--home-muted);
+    font:inherit;
+    font-size:13px;
+    line-height:1.2;
+    text-align:left;
+    white-space:nowrap;
+    cursor:pointer;
+  }
+
+  .pdp-config-projection__option::before {
+    content:"";
+    position:absolute;
+    top:50%;
+    left:0;
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:transparent;
+    transform:translateY(-50%);
+  }
+
+  .pdp-config-projection__option.is-selected {
+    scroll-margin-inline:12px;
+    color:var(--home-ink);
+    font-weight:800;
+  }
+
+  .pdp-config-projection__option.is-selected::before {
+    background:var(--home-ink);
+  }
+
+  /*
+   * Keep canonical selects in the DOM as the business owner,
+   * but remove them from the mobile visual composition.
+   */
+  .pdp-config > label.pdp-field {
+    position:absolute;
+    width:1px;
+    height:1px;
+    padding:0;
+    margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
+    border:0;
+  }
+
+  [data-pdp-quantity-field] {
+    display:grid;
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    grid-template-columns:
+      minmax(0,1fr)
+      auto;
+    grid-template-areas:
+      "label label"
+      "reference stepper";
+    align-items:end;
+    gap:
+      14px
+      18px;
+    padding:
+      20px
+      0;
+    border-bottom:
+      1px
+      solid
+      var(--home-line);
+  }
+
+  [data-pdp-quantity-field]
+  > [data-pdp-ui="quantity"] {
+    grid-area:label;
+    align-self:auto;
+    padding-top:0;
+  }
+
+  .pdp-quantity-reference {
+    grid-area:reference;
+    display:grid;
+    gap:5px;
+    min-width:0;
+  }
+
+  .pdp-quantity-reference small {
+    color:var(--home-muted);
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.1em;
+    line-height:1.25;
+    text-transform:uppercase;
+  }
+
+  .pdp-quantity-reference strong {
+    color:var(--home-ink);
+    font-size:18px;
+    font-weight:700;
+    line-height:1.15;
+  }
+
+  [data-pdp-quantity-field]
+  > .pdp-quantity {
+    grid-area:stepper;
+    display:grid;
+    grid-template-columns:
+      38px
+      52px
+      38px;
+    width:128px;
+    min-width:128px;
+    gap:0;
+    align-items:center;
+  }
+
+  [data-pdp-quantity-field]
+  > .pdp-quantity
+  > button,
+  [data-pdp-quantity-field]
+  > .pdp-quantity
+  > input {
+    display:block;
+    width:100%;
+    min-width:0;
+    min-height:42px;
+    margin:0;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    color:var(--home-ink);
+    opacity:1;
+    visibility:visible;
+  }
+
+  [data-pdp-quantity-field]
+  > .pdp-quantity
+  > button {
+    padding:0;
+    font-size:18px;
+    text-align:center;
+  }
+
+  [data-pdp-quantity-field]
+  > .pdp-quantity
+  > input {
+    padding:
+      0
+      4px;
+    border-right:
+      1px
+      solid
+      var(--home-line);
+    border-left:
+      1px
+      solid
+      var(--home-line);
+    font-size:13px;
+    font-weight:800;
+    text-align:center;
+  }
+}
+
+
+/* ============================================================
+ * R4.11B4.1E-B2 — Scent Detail Utility
+ * Real top / heart / base notes from the canonical scent record.
+ * Native disclosure state; runtime only projects selected scent values.
+ * ========================================================== */
+@media (max-width:720px) {
+  .pdp-scent-detail {
+    margin:
+      7px
+      0
+      0;
+    border-top:
+      1px
+      solid
+      var(--home-line);
+  }
+
+  .pdp-scent-detail[hidden] {
+    display:none;
+  }
+
+  .pdp-scent-detail__toggle {
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:8px;
+    min-height:38px;
+    padding:0;
+    color:var(--home-muted);
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.11em;
+    line-height:1;
+    list-style:none;
+    text-transform:uppercase;
+    cursor:pointer;
+  }
+
+  .pdp-scent-detail__toggle::-webkit-details-marker {
+    display:none;
+  }
+
+  .pdp-scent-detail__toggle::after {
+    content:"+";
+    width:12px;
+    color:var(--home-ink);
+    font-size:13px;
+    font-weight:600;
+    text-align:center;
+  }
+
+  .pdp-scent-detail[open]
+  > .pdp-scent-detail__toggle::after {
+    content:"−";
+  }
+
+  .pdp-scent-detail__list {
+    display:grid;
+    gap:0;
+    margin:0;
+    padding:
+      6px
+      0
+      0;
+  }
+
+  .pdp-scent-detail:not([open])
+  > .pdp-scent-detail__list {
+    display:none;
+  }
+
+  .pdp-scent-detail__row {
+    display:grid;
+    grid-template-columns:
+      70px
+      minmax(0,1fr);
+    gap:14px;
+    align-items:start;
+    padding:
+      10px
+      0;
+    border-bottom:
+      1px
+      solid
+      var(--home-line);
+  }
+
+  .pdp-scent-detail__row:last-child {
+    border-bottom:0;
+  }
+
+  .pdp-scent-detail__row dt,
+  .pdp-scent-detail__row dd {
+    margin:0;
+  }
+
+  .pdp-scent-detail__row dt {
+    padding-top:2px;
+    color:var(--home-soft);
+    font-size:8px;
+    font-weight:850;
+    letter-spacing:.1em;
+    line-height:1.25;
+    text-transform:uppercase;
+  }
+
+  .pdp-scent-detail__row dd {
+    min-width:0;
+    color:var(--home-ink);
+    font-size:12px;
+    line-height:1.45;
+    overflow-wrap:anywhere;
+  }
+}
+
+/* ============================================================
+ * R4.11B4.1E-B3 — Responsive / Multilingual Closeout
+ *
+ * E-B1/E-B2 architecture stays canonical.
+ * This stage only hardens the mobile presentation for:
+ *   360 / 390 / 430px
+ *   EN / ZH / KO
+ *   long option labels and rebuilt dependent option sets.
+ * ========================================================== */
+@media (max-width:720px) {
+  /*
+   * Projection headings may wrap under translated copy.
+   * Count remains stable while the label owns the flexible width.
+   */
+  .pdp-config-projection__heading {
+    align-items:flex-start;
+  }
+
+  .pdp-config-projection__heading > * {
+    min-width:0;
+  }
+
+  .pdp-config-projection__label {
+    line-height:1.3;
+    overflow-wrap:anywhere;
+  }
+
+  .pdp-config-projection__count {
+    flex:0 0 auto;
+    padding-top:1px;
+  }
+
+  /*
+   * Long scent / pattern / packaging names must remain inside the
+   * horizontal picker viewport. They may wrap within one option instead
+   * of widening the entire route or becoming impossible to fully reveal.
+   */
+  .pdp-config-projection__strip {
+    align-items:flex-start;
+  }
+
+  .pdp-config-projection__option {
+    max-width:min(78vw,280px);
+    white-space:normal;
+    overflow-wrap:anywhere;
+  }
+
+  .pdp-quantity-reference,
+  .pdp-quantity-reference small,
+  .pdp-quantity-reference strong {
+    min-width:0;
+  }
+
+  .pdp-quantity-reference small {
+    line-height:1.35;
+    overflow-wrap:anywhere;
+  }
+
+  .pdp-scent-detail__toggle {
+    min-width:0;
+    text-align:right;
+  }
+
+  .pdp-scent-detail__row dt {
+    min-width:0;
+    overflow-wrap:anywhere;
+  }
+}
+
+/* 360-class devices: protect Quantity and note-detail density. */
+@media (max-width:374px) {
+  .pdp-config-projection__strip {
+    gap:18px;
+    padding-right:10px;
+    scroll-padding-inline:10px;
+  }
+
+  .pdp-config-projection__option {
+    max-width:min(76vw,268px);
+  }
+
+  [data-pdp-quantity-field] {
+    grid-template-columns:
+      minmax(0,1fr)
+      120px;
+    gap:
+      12px
+      12px;
+  }
+
+  [data-pdp-quantity-field]
+  > .pdp-quantity {
+    grid-template-columns:
+      36px
+      48px
+      36px;
+    width:120px;
+    min-width:120px;
+  }
+
+  .pdp-scent-detail__row {
+    grid-template-columns:
+      62px
+      minmax(0,1fr);
+    gap:12px;
+  }
+}
+
+/* 430-class devices: allow translated options to breathe without overflow. */
+@media (min-width:421px) and (max-width:720px) {
+  .pdp-config-projection__option {
+    max-width:min(72vw,320px);
+  }
+
+  .pdp-scent-detail__row {
+    grid-template-columns:
+      78px
+      minmax(0,1fr);
+    gap:16px;
+  }
+}
+
+/*
+ * Script/language-specific label rhythm.
+ * These selectors only target the mobile projection/detail presentation;
+ * Desktop canonical controls remain unchanged.
+ */
+@media (max-width:720px) {
+  html[lang="zh-CN"] .pdp-section-heading > span,
+  html[lang="zh-CN"] .pdp-config-projection__label,
+  html[lang="zh-CN"] .pdp-field > span,
+  html[lang="zh-CN"] .pdp-scent-detail__toggle,
+  html[lang="zh-CN"] .pdp-scent-detail__row dt {
+    letter-spacing:.06em;
+  }
+
+  html[lang="ko-KR"] .pdp-section-heading > span,
+  html[lang="ko-KR"] .pdp-config-projection__label,
+  html[lang="ko-KR"] .pdp-field > span,
+  html[lang="ko-KR"] .pdp-scent-detail__toggle,
+  html[lang="ko-KR"] .pdp-scent-detail__row dt {
+    letter-spacing:.04em;
+    word-break:keep-all;
+  }
+
+  html[lang="ko-KR"] .pdp-config-projection__option,
+  html[lang="ko-KR"] .pdp-scent-detail__row dd {
+    word-break:keep-all;
+    overflow-wrap:anywhere;
+  }
+}
+
+/* ============================================================
+ * R4.11B4.1E-B3-FIX1 — Single-line UI Copy Polish
+ *
+ * Short-form UI copy should scan as one visual token.
+ * Long prose and Scent Detail values may continue wrapping.
+ * ========================================================== */
+@media (max-width:720px) {
+  /*
+   * Picker options are short-form controls, not prose.
+   * Keep each option on one line and let the strip own horizontal scroll.
+   */
+  .pdp-config-projection__option {
+    max-width:none;
+    white-space:nowrap;
+    overflow-wrap:normal;
+    word-break:normal;
+  }
+
+  html[lang="ko-KR"] .pdp-config-projection__option {
+    overflow-wrap:normal;
+    word-break:keep-all;
+  }
+
+  /*
+   * Current Reference Unit Price:
+   * label occupies row 1; amount + unit share row 2 and one baseline.
+   */
+  .pdp-commerce__price {
+    display:grid;
+    grid-template-columns:
+      max-content
+      max-content;
+    grid-template-areas:
+      "label label"
+      "price unit";
+    align-items:baseline;
+    justify-content:start;
+    column-gap:5px;
+    row-gap:7px;
+    min-width:0;
+  }
+
+  .pdp-commerce__price > span {
+    grid-area:label;
+    min-width:0;
+  }
+
+  .pdp-commerce__price > strong {
+    grid-area:price;
+    white-space:nowrap;
+  }
+
+  .pdp-commerce__price > small {
+    grid-area:unit;
+    align-self:baseline;
+    white-space:nowrap;
+  }
+
+  /*
+   * Attribute pills are compact metadata tokens.
+   * Keep the current four-item set on one reading line.
+   */
+  .pdp-tags {
+    flex-wrap:nowrap;
+    gap:4px;
+    min-width:0;
+  }
+
+  .pdp-tags span {
+    flex:0 0 auto;
+    padding:
+      6px
+      7px;
+    font-size:9px;
+    line-height:1.1;
+    white-space:nowrap;
+  }
+}
+
+@media (max-width:374px) {
+  .pdp-commerce__price {
+    column-gap:4px;
+  }
+
+  .pdp-commerce__price > small {
+    font-size:10px;
+  }
+
+  .pdp-tags {
+    gap:3px;
+  }
+
+  .pdp-tags span {
+    padding:
+      5px
+      5px;
+    font-size:8px;
+  }
+}

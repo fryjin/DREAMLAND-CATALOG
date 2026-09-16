@@ -1,0 +1,141 @@
+/*
+ * DREAMLAND R4.11B1
+ * Canonical visual tokens.
+ *
+ * This stage intentionally preserves the current rendered presentation.
+ * Route CSS still consumes --home-* aliases until later R4.11B/C migrations.
+ */
+
+:root {
+  color-scheme:light;
+
+  /* Color */
+  --dl-color-canvas:#f8f5ef;
+  --dl-color-surface:#fffdf9;
+  --dl-color-surface-soft:#ede4d8;
+  --dl-color-ink:#181512;
+  --dl-color-ink-muted:#6e665f;
+  --dl-color-ink-soft:#928981;
+  --dl-color-border:rgba(24,21,18,.13);
+  --dl-color-border-strong:rgba(24,21,18,.22);
+  --dl-color-action:var(--dl-color-ink);
+  --dl-color-action-contrast:var(--dl-color-surface);
+  --dl-color-footer:#12100e;
+  --dl-color-mobile-canvas:#f3f4f7;
+  --dl-color-focus:rgba(24,21,18,.18);
+
+  /* Typography */
+  --dl-font-serif:Georgia,"Times New Roman",serif;
+  --dl-font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+
+  --dl-type-display:clamp(48px,7vw,96px);
+  --dl-type-page-title:clamp(44px,6vw,88px);
+  --dl-type-section-title:clamp(34px,4vw,58px);
+  --dl-type-card-title:17px;
+  --dl-type-body:15px;
+  --dl-type-label:12px;
+  --dl-type-meta:11px;
+  --dl-type-caption:10px;
+  --dl-type-price:24px;
+
+  --dl-leading-display:.95;
+  --dl-leading-title:1;
+  --dl-leading-body:1.7;
+
+  --dl-tracking-display:-.045em;
+  --dl-tracking-eyebrow:.16em;
+
+  /* Spacing */
+  --dl-space-1:4px;
+  --dl-space-2:8px;
+  --dl-space-3:12px;
+  --dl-space-4:16px;
+  --dl-space-5:20px;
+  --dl-space-6:24px;
+  --dl-space-8:32px;
+  --dl-space-10:40px;
+  --dl-space-12:48px;
+  --dl-space-16:64px;
+  --dl-space-20:80px;
+  --dl-space-24:96px;
+  --dl-space-32:128px;
+
+  /* Layout */
+  --dl-container-max:1440px;
+  --dl-container-wide:1600px;
+  --dl-container-reading:760px;
+  --dl-container-form:980px;
+  --dl-page-gutter:clamp(20px,4vw,64px);
+  --dl-section-space:clamp(88px,10vw,156px);
+  --dl-section-space-compact:clamp(56px,6vw,88px);
+  --dl-section-space-editorial:clamp(112px,12vw,176px);
+
+  /* Composition */
+  --dl-composition-gap:clamp(16px,2vw,28px);
+  --dl-composition-gap-wide:clamp(28px,4vw,64px);
+  --dl-composition-row-gap:clamp(48px,6vw,88px);
+  --dl-composition-rail:24ch;
+  --dl-reading-measure:42rem;
+  --dl-workflow-label-width:180px;
+  --dl-mobile-reading-gutter:18px;
+  --dl-mobile-chapter-space:clamp(52px,14vw,80px);
+  --dl-mobile-river-gap:14px;
+  --dl-mobile-river-lead:34px;
+
+  /* Media ratios */
+  --dl-media-ratio-product:4/5;
+  --dl-media-ratio-portrait:3/4;
+  --dl-media-ratio-landscape:4/3;
+  --dl-media-ratio-wide:16/10;
+
+  /* Controlled asymmetry */
+  --dl-asym-gap-sm:clamp(16px,2vw,28px);
+  --dl-asym-gap-md:clamp(24px,3vw,48px);
+  --dl-asym-gap-lg:clamp(32px,5vw,80px);
+  --dl-asym-offset-sm:clamp(18px,2vw,32px);
+  --dl-asym-offset-md:clamp(36px,4vw,64px);
+  --dl-asym-mobile-gap:14px;
+  --dl-asym-stagger-offset:clamp(18px,5vw,36px);
+  --dl-asym-mobile-inset:22px;
+
+  /* Radius */
+  --dl-radius-sm:5px;
+  --dl-radius-md:10px;
+  --dl-radius-lg:18px;
+  --dl-radius-surface:24px;
+  --dl-radius-hero:30px;
+  --dl-radius-pill:999px;
+  --dl-radius-circle:50%;
+
+  /* Controls */
+  --dl-control-sm:38px;
+  --dl-control-md:44px;
+  --dl-control-lg:50px;
+  --dl-control-xl:54px;
+
+  /* Elevation */
+  --dl-shadow-soft:0 12px 30px rgba(24,21,18,.06);
+  --dl-shadow-floating:0 18px 42px rgba(24,21,18,.12);
+
+  /* Motion */
+  --dl-motion-fast:.18s ease;
+  --dl-motion-standard:.2s ease;
+  --dl-motion-media:.35s cubic-bezier(.2,.75,.2,1);
+
+  /* Compatibility bridge.
+   * Keep until route CSS has migrated to canonical --dl-* tokens.
+   */
+  --home-canvas:var(--dl-color-canvas);
+  --home-surface:var(--dl-color-surface);
+  --home-sand:var(--dl-color-surface-soft);
+  --home-ink:var(--dl-color-ink);
+  --home-muted:var(--dl-color-ink-muted);
+  --home-soft:var(--dl-color-ink-soft);
+  --home-line:var(--dl-color-border);
+  --home-radius:var(--dl-radius-surface);
+  --home-max:var(--dl-container-max);
+  --home-gutter:var(--dl-page-gutter);
+  --home-section:var(--dl-section-space);
+  --home-serif:var(--dl-font-serif);
+  --home-sans:var(--dl-font-sans);
+}

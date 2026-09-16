@@ -9,6 +9,81 @@ const OTHER_IMAGE_CACHE = `${CACHE_VERSION}-other-images`;
 const RELEASE_TAG =
   'b7-00b4j-r3-v129';
 
+/*
+ * R4.3D / R4.4D / R4.5D / R4.6D / R4.7D / R4.8D / R4.9E document ownership boundary.
+ *
+ * The registered Service Worker remains required by the Legacy Success
+ * conversion route. Production Home, Catalog, PDP, Custom, Inquiry selection,
+ * Contact and Review documents are Astro-owned and must never be served from
+ * cached Legacy documents.
+ */
+const HOME_NAVIGATION_PATHS=
+  new Set([
+    '/',
+    '/index.html'
+  ]);
+
+const CATALOG_NAVIGATION_PATHS=
+  new Set([
+    '/products/',
+    '/products/index.html'
+  ]);
+
+const PDP_NAVIGATION_PATTERN=
+  /^\/products\/[A-Z]{3}\d{3}(?:\/(?:index\.html)?)?$/i;
+
+const CUSTOM_NAVIGATION_PATHS=
+  new Set([
+    '/custom',
+    '/custom/',
+    '/custom/index.html'
+  ]);
+
+/*
+ * R4.7D owns only the Inquiry selection document. Contact, Review and Success
+ * remain in the Legacy conversion/PWA boundary.
+ */
+const INQUIRY_NAVIGATION_PATHS=
+  new Set([
+    '/inquiry',
+    '/inquiry/',
+    '/inquiry/index.html'
+  ]);
+
+/*
+ * R4.8D owns only the Contact document. Review and Success remain in the
+ * Legacy conversion/PWA boundary.
+ */
+const CONTACT_NAVIGATION_PATHS=
+  new Set([
+    '/inquiry/contact',
+    '/inquiry/contact/',
+    '/inquiry/contact/index.html'
+  ]);
+
+/*
+ * R4.9E detaches only the Astro Review document. Success remains in the
+ * Legacy conversion/PWA boundary until its own migration stage.
+ */
+const REVIEW_NAVIGATION_PATHS=
+  new Set([
+    '/inquiry/review',
+    '/inquiry/review/',
+    '/inquiry/review/index.html'
+  ]);
+
+/*
+ * R4.10D detaches the final conversion document. All primary conversion
+ * documents are now Astro-owned; an older registered Service Worker may still
+ * exist in clients, but it may not revive cached Success documents.
+ */
+const SUCCESS_NAVIGATION_PATHS=
+  new Set([
+    '/inquiry/success',
+    '/inquiry/success/',
+    '/inquiry/success/index.html'
+  ]);
+
 const RELEASE_ASSETS = [
   './startup-loader.css?release=b7-00b4j-r3-v129',
   './startup-loader.js?release=b7-00b4j-r3-v129',
@@ -46,8 +121,10 @@ const RELEASE_ASSETS = [
 ];
 
 const APP_SHELL = [
-  './',
-  './index.html',
+  /*
+   * R4.3D: do not precache / or /index.html. The Astro Home is network-owned
+   * and must not fall back to a Legacy cached document.
+   */
   './startup-loader.css',
   './startup-loader.js',
   './src/ui/desktop/styles/tokens.css',
@@ -65,6 +142,9 @@ const APP_SHELL = [
   './src/ui/desktop/home/runtime-desktop-home.js',
   './src/ui/desktop/runtime-desktop-experience.js',
   './src/data/product-data-contract.js',
+  './src/domain/pricing/runtime-pricing-policy.js',
+  './src/domain/submission/runtime-submission-payload.js',
+  './src/domain/localization/runtime-localization-policy.js',
   './catalog-data.js',
   './src/services/storage/runtime-storage.js',
   './src/services/pwa/runtime-pwa.js',
@@ -178,6 +258,638 @@ async function cacheAvailableAssets(
   return failed;
 }
 
+function isHomeNavigation(
+  url
+){
+  return (
+    url.origin===
+      self.location.origin&&
+    HOME_NAVIGATION_PATHS
+      .has(
+        url.pathname
+      )
+  );
+}
+
+async function purgeLegacyHomeEntries(){
+  for(const cacheName of [
+    APP_CACHE,
+    RUNTIME_CACHE
+  ]){
+    const cache=
+      await caches.open(
+        cacheName
+      );
+
+    const requests=
+      await cache.keys();
+
+    await Promise.all(
+      requests.map(
+        async request=>{
+          try{
+            const url=
+              new URL(
+                request.url
+              );
+
+            if(
+              url.origin===
+                self.location.origin&&
+              HOME_NAVIGATION_PATHS
+                .has(
+                  url.pathname
+                )
+            ){
+              await cache.delete(
+                request
+              );
+            }
+          }catch(_){
+          }
+        }
+      )
+    );
+  }
+}
+
+async function homeNetworkOnly(
+  request
+){
+  try{
+    return await fetch(
+      request,
+      {
+        cache:'no-store'
+      }
+    );
+  }catch{
+    return (
+      await caches.match(
+        './offline.html'
+      )
+    )||
+    new Response(
+      'Offline',
+      {
+        status:503,
+        statusText:'Offline'
+      }
+    );
+  }
+}
+
+function isCatalogNavigation(
+  url
+){
+  return (
+    url.origin===
+      self.location.origin&&
+    CATALOG_NAVIGATION_PATHS
+      .has(
+        url.pathname
+      )
+  );
+}
+
+async function purgeLegacyCatalogEntries(){
+  for(const cacheName of [
+    APP_CACHE,
+    RUNTIME_CACHE
+  ]){
+    const cache=
+      await caches.open(
+        cacheName
+      );
+
+    const requests=
+      await cache.keys();
+
+    await Promise.all(
+      requests.map(
+        async request=>{
+          try{
+            const url=
+              new URL(
+                request.url
+              );
+
+            if(
+              url.origin===
+                self.location.origin&&
+              CATALOG_NAVIGATION_PATHS
+                .has(
+                  url.pathname
+                )
+            ){
+              await cache.delete(
+                request
+              );
+            }
+          }catch(_){
+          }
+        }
+      )
+    );
+  }
+}
+
+async function catalogNetworkOnly(
+  request
+){
+  try{
+    return await fetch(
+      request,
+      {
+        cache:'no-store'
+      }
+    );
+  }catch{
+    return (
+      await caches.match(
+        './offline.html'
+      )
+    )||
+    new Response(
+      'Offline',
+      {
+        status:503,
+        statusText:'Offline'
+      }
+    );
+  }
+}
+
+function isPdpNavigation(
+  url
+){
+  return (
+    url.origin===
+      self.location.origin&&
+    PDP_NAVIGATION_PATTERN
+      .test(
+        url.pathname
+      )
+  );
+}
+
+async function purgeLegacyPdpEntries(){
+  for(const cacheName of [
+    APP_CACHE,
+    RUNTIME_CACHE
+  ]){
+    const cache=
+      await caches.open(
+        cacheName
+      );
+
+    const requests=
+      await cache.keys();
+
+    await Promise.all(
+      requests.map(
+        async request=>{
+          try{
+            const url=
+              new URL(
+                request.url
+              );
+
+            if(
+              isPdpNavigation(
+                url
+              )
+            ){
+              await cache.delete(
+                request
+              );
+            }
+          }catch(_){
+          }
+        }
+      )
+    );
+  }
+}
+
+async function pdpNetworkOnly(
+  request
+){
+  try{
+    return await fetch(
+      request,
+      {
+        cache:'no-store'
+      }
+    );
+  }catch{
+    return (
+      await caches.match(
+        './offline.html'
+      )
+    )||
+    new Response(
+      'Offline',
+      {
+        status:503,
+        statusText:'Offline'
+      }
+    );
+  }
+}
+
+function isCustomNavigation(
+  url
+){
+  return (
+    url.origin===
+      self.location.origin&&
+    CUSTOM_NAVIGATION_PATHS
+      .has(
+        url.pathname
+      )
+  );
+}
+
+async function purgeLegacyCustomEntries(){
+  for(const cacheName of [
+    APP_CACHE,
+    RUNTIME_CACHE
+  ]){
+    const cache=
+      await caches.open(
+        cacheName
+      );
+
+    const requests=
+      await cache.keys();
+
+    await Promise.all(
+      requests.map(
+        async request=>{
+          try{
+            const url=
+              new URL(
+                request.url
+              );
+
+            if(
+              isCustomNavigation(
+                url
+              )
+            ){
+              await cache.delete(
+                request
+              );
+            }
+          }catch(_){
+          }
+        }
+      )
+    );
+  }
+}
+
+async function customNetworkOnly(
+  request
+){
+  try{
+    return await fetch(
+      request,
+      {
+        cache:'no-store'
+      }
+    );
+  }catch{
+    return (
+      await caches.match(
+        './offline.html'
+      )
+    )||
+    new Response(
+      'Offline',
+      {
+        status:503,
+        statusText:'Offline'
+      }
+    );
+  }
+}
+
+
+function isInquiryNavigation(
+  url
+){
+  return (
+    url.origin===
+      self.location.origin&&
+    INQUIRY_NAVIGATION_PATHS
+      .has(
+        url.pathname
+      )
+  );
+}
+
+async function purgeLegacyInquiryEntries(){
+  for(const cacheName of [
+    APP_CACHE,
+    RUNTIME_CACHE
+  ]){
+    const cache=
+      await caches.open(
+        cacheName
+      );
+
+    const requests=
+      await cache.keys();
+
+    await Promise.all(
+      requests.map(
+        async request=>{
+          try{
+            const url=
+              new URL(
+                request.url
+              );
+
+            if(
+              isInquiryNavigation(
+                url
+              )
+            ){
+              await cache.delete(
+                request
+              );
+            }
+          }catch(_){
+          }
+        }
+      )
+    );
+  }
+}
+
+async function inquiryNetworkOnly(
+  request
+){
+  try{
+    return await fetch(
+      request,
+      {
+        cache:'no-store'
+      }
+    );
+  }catch{
+    return (
+      await caches.match(
+        './offline.html'
+      )
+    )||
+    new Response(
+      'Offline',
+      {
+        status:503,
+        statusText:'Offline'
+      }
+    );
+  }
+}
+
+
+function isContactNavigation(
+  url
+){
+  return (
+    url.origin===
+      self.location.origin&&
+    CONTACT_NAVIGATION_PATHS
+      .has(
+        url.pathname
+      )
+  );
+}
+
+async function purgeLegacyContactEntries(){
+  for(const cacheName of [
+    APP_CACHE,
+    RUNTIME_CACHE
+  ]){
+    const cache=
+      await caches.open(
+        cacheName
+      );
+
+    const requests=
+      await cache.keys();
+
+    await Promise.all(
+      requests.map(
+        async request=>{
+          try{
+            const url=
+              new URL(
+                request.url
+              );
+
+            if(
+              isContactNavigation(
+                url
+              )
+            ){
+              await cache.delete(
+                request
+              );
+            }
+          }catch(_){
+          }
+        }
+      )
+    );
+  }
+}
+
+async function contactNetworkOnly(
+  request
+){
+  try{
+    return await fetch(
+      request,
+      {
+        cache:'no-store'
+      }
+    );
+  }catch{
+    return (
+      await caches.match(
+        './offline.html'
+      )
+    )||
+    new Response(
+      'Offline',
+      {
+        status:503,
+        statusText:'Offline'
+      }
+    );
+  }
+}
+
+function isReviewNavigation(
+  url
+){
+  return (
+    url.origin===
+      self.location.origin&&
+    REVIEW_NAVIGATION_PATHS
+      .has(
+        url.pathname
+      )
+  );
+}
+
+async function purgeLegacyReviewEntries(){
+  for(const cacheName of [
+    APP_CACHE,
+    RUNTIME_CACHE
+  ]){
+    const cache=
+      await caches.open(
+        cacheName
+      );
+
+    const requests=
+      await cache.keys();
+
+    await Promise.all(
+      requests.map(
+        async request=>{
+          try{
+            const url=
+              new URL(
+                request.url
+              );
+
+            if(
+              isReviewNavigation(
+                url
+              )
+            ){
+              await cache.delete(
+                request
+              );
+            }
+          }catch(_){
+          }
+        }
+      )
+    );
+  }
+}
+
+async function reviewNetworkOnly(
+  request
+){
+  try{
+    return await fetch(
+      request,
+      {
+        cache:'no-store'
+      }
+    );
+  }catch{
+    return (
+      await caches.match(
+        './offline.html'
+      )
+    )||
+    new Response(
+      'Offline',
+      {
+        status:503,
+        statusText:'Offline'
+      }
+    );
+  }
+}
+
+function isSuccessNavigation(
+  url
+){
+  return (
+    url.origin===
+      self.location.origin&&
+    SUCCESS_NAVIGATION_PATHS
+      .has(
+        url.pathname
+      )
+  );
+}
+
+async function purgeLegacySuccessEntries(){
+  for(const cacheName of [
+    APP_CACHE,
+    RUNTIME_CACHE
+  ]){
+    const cache=
+      await caches.open(
+        cacheName
+      );
+
+    const requests=
+      await cache.keys();
+
+    await Promise.all(
+      requests.map(
+        async request=>{
+          try{
+            const url=
+              new URL(
+                request.url
+              );
+
+            if(
+              isSuccessNavigation(
+                url
+              )
+            ){
+              await cache.delete(
+                request
+              );
+            }
+          }catch(_){
+          }
+        }
+      )
+    );
+  }
+}
+
+async function successNetworkOnly(
+  request
+){
+  try{
+    return await fetch(
+      request,
+      {
+        cache:'no-store'
+      }
+    );
+  }catch{
+    return (
+      await caches.match(
+        './offline.html'
+      )
+    )||
+    new Response(
+      'Offline',
+      {
+        status:503,
+        statusText:'Offline'
+      }
+    );
+  }
+}
+
 self.addEventListener('install', event => {
   event.waitUntil(
     Promise.all([
@@ -188,7 +900,15 @@ self.addEventListener('install', event => {
       cacheAvailableAssets(
         RUNTIME_CACHE,
         RELEASE_ASSETS
-      )
+      ),
+      purgeLegacyHomeEntries(),
+      purgeLegacyCatalogEntries(),
+      purgeLegacyPdpEntries(),
+      purgeLegacyCustomEntries(),
+      purgeLegacyInquiryEntries(),
+      purgeLegacyContactEntries(),
+      purgeLegacyReviewEntries(),
+      purgeLegacySuccessEntries()
     ])
   );
 });
@@ -209,7 +929,21 @@ self.addEventListener('activate', event => {
           .filter(key => !activeCaches.includes(key))
           .map(key => caches.delete(key))
       ))
-      .then(() => self.clients.claim())
+      .then(
+        ()=>Promise.all([
+          purgeLegacyHomeEntries(),
+          purgeLegacyCatalogEntries(),
+          purgeLegacyPdpEntries(),
+          purgeLegacyCustomEntries(),
+          purgeLegacyInquiryEntries(),
+          purgeLegacyContactEntries(),
+          purgeLegacyReviewEntries(),
+          purgeLegacySuccessEntries()
+        ])
+      )
+      .then(
+        ()=>self.clients.claim()
+      )
   );
 });
 
@@ -336,6 +1070,110 @@ self.addEventListener('fetch', event => {
   if(url.origin!==self.location.origin)return;
 
   if(request.mode==='navigate'){
+    if(
+      isHomeNavigation(
+        url
+      )
+    ){
+      event.respondWith(
+        homeNetworkOnly(
+          request
+        )
+      );
+      return;
+    }
+
+    if(
+      isCatalogNavigation(
+        url
+      )
+    ){
+      event.respondWith(
+        catalogNetworkOnly(
+          request
+        )
+      );
+      return;
+    }
+
+    if(
+      isPdpNavigation(
+        url
+      )
+    ){
+      event.respondWith(
+        pdpNetworkOnly(
+          request
+        )
+      );
+      return;
+    }
+
+    if(
+      isCustomNavigation(
+        url
+      )
+    ){
+      event.respondWith(
+        customNetworkOnly(
+          request
+        )
+      );
+      return;
+    }
+
+    if(
+      isInquiryNavigation(
+        url
+      )
+    ){
+      event.respondWith(
+        inquiryNetworkOnly(
+          request
+        )
+      );
+      return;
+    }
+
+    if(
+      isContactNavigation(
+        url
+      )
+    ){
+      event.respondWith(
+        contactNetworkOnly(
+          request
+        )
+      );
+      return;
+    }
+
+    if(
+      isReviewNavigation(
+        url
+      )
+    ){
+      event.respondWith(
+        reviewNetworkOnly(
+          request
+        )
+      );
+      return;
+    }
+
+    if(
+      isSuccessNavigation(
+        url
+      )
+    ){
+      event.respondWith(
+        successNetworkOnly(
+          request
+        )
+      );
+      return;
+    }
+
     event.respondWith(
       networkFirst(
         request,

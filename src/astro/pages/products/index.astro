@@ -1,0 +1,157 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import SiteHeader from '../../components/site/SiteHeader.astro';
+import SiteFooter from '../../components/site/SiteFooter.astro';
+import CatalogPage from '../../components/catalog/CatalogPage.astro';
+import {
+  buildCatalogViewModel,
+  buildCatalogRuntimeState
+} from '../../lib/catalog-view-model.mjs';
+
+import '../../styles/home.css';
+import '../../styles/catalog.css';
+
+import routes from '../../../../data/page-routes.json';
+import productsDocument from '../../../../data/products.json';
+import seriesDocument from '../../../../data/series.json';
+import siteContent from '../../../../data/site-content.json';
+import i18n from '../../../../data/i18n.json';
+
+import '../../../features/catalog/runtime-desktop-catalog-view.js';
+import '../../../domain/pricing/runtime-pricing-policy.js';
+import '../../../domain/localization/runtime-localization-policy.js';
+
+if(
+  routes.routes
+    ?.catalog
+    ?.path!==
+  '/products/'
+){
+  throw new Error(
+    'R4.4B expected canonical Catalog route /products/.'
+  );
+}
+
+const catalogPolicy=
+  globalThis
+    .DreamlandDesktopCatalogView;
+
+const pricingPolicy=
+  globalThis
+    .DreamlandPricingPolicy;
+
+const localizationPolicy=
+  globalThis
+    .DreamlandLocalizationPolicy;
+
+if(
+  !catalogPolicy||
+  !pricingPolicy||
+  !localizationPolicy
+){
+  throw new Error(
+    'R4.4B Catalog requires Desktop Catalog ViewState plus canonical Pricing and Localization policies.'
+  );
+}
+
+const language='en';
+
+const supportedLanguages=[
+  'en',
+  'zh',
+  'ko'
+];
+
+const seriesMeta=
+  seriesDocument.series||
+  {};
+
+const sharedInput={
+  products:
+    productsDocument.products||
+    [],
+  seriesMeta,
+  siteContent,
+  currencyMap:
+    i18n.currencyMap||
+    {},
+  catalogPolicy,
+  pricingPolicy,
+  localizationPolicy,
+  batchSize:24
+};
+
+const view=
+  buildCatalogViewModel({
+    language,
+    ...sharedInput
+  });
+
+const runtimeState=
+  buildCatalogRuntimeState({
+    languages:
+      supportedLanguages,
+    defaultLanguage:
+      language,
+    ...sharedInput
+  });
+
+const runtimeStateJson=
+  JSON.stringify(
+    runtimeState
+  )
+    .replace(
+      /</g,
+      '\\u003c'
+    );
+
+const languageOptions=
+  supportedLanguages.map(
+    value=>({
+      value,
+      label:
+        i18n.currencyMap
+          ?.[value]
+          ?.label||
+        value.toUpperCase()
+    })
+  );
+---
+<SiteLayout
+  title="DREAMLAND Collection — Hand-carved candles"
+  description="Browse the DREAMLAND collection of hand-carved candles for wholesale, gifting, retail and custom projects."
+  page="catalog"
+  lang={language}
+  robots="index,follow"
+  canonical="https://dreamland-catalog.pages.dev/products/"
+  ogImage="https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg"
+>
+  <SiteHeader
+    content={view.content}
+    languageOptions={languageOptions}
+    initialLanguage={language}
+    languageEnabled={true}
+  />
+
+  <CatalogPage
+    view={view}
+    sizeOptions={runtimeState.sizeOptions}
+  />
+
+  <SiteFooter
+    content={view.content}
+  />
+
+  <script
+    is:inline
+    id="catalogRuntimeState"
+    type="application/json"
+    set:html={runtimeStateJson}
+  ></script>
+
+  <script
+    is:inline
+    type="module"
+    src="/r4-catalog-runtime.js"
+  ></script>
+</SiteLayout>

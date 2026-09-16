@@ -1,0 +1,333 @@
+/*
+ * DREAMLAND R4.11B4.1A
+ * Composition System
+ *
+ * Fixed System + Variable Composition.
+ *
+ * This layer is route-agnostic and opt-in. It defines semantic composition
+ * roles only; B4.1A intentionally does not attach them to production routes.
+ */
+
+/* -------------------------------------------------
+ * Shared composition grid
+ * ------------------------------------------------- */
+
+.dl-composition-grid {
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:var(--dl-composition-gap);
+  align-items:start;
+}
+
+.dl-composition-grid > * {
+  min-width:0;
+}
+
+/* -------------------------------------------------
+ * Cover Stage
+ * Center media with explicit side visual roles.
+ * ------------------------------------------------- */
+
+.dl-cover-stage {
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:var(--dl-composition-gap);
+  align-items:center;
+}
+
+.dl-cover-stage__visual--start {
+  grid-column:1 / span 2;
+  justify-self:start;
+}
+
+.dl-cover-stage__media {
+  grid-column:3 / span 8;
+  min-width:0;
+}
+
+.dl-cover-stage__visual--end {
+  grid-column:11 / span 2;
+  justify-self:end;
+}
+
+/* -------------------------------------------------
+ * Editorial Spread
+ * One dominant media/copy relationship.
+ * ------------------------------------------------- */
+
+.dl-editorial-spread {
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:var(--dl-composition-gap-wide);
+  align-items:start;
+}
+
+.dl-editorial-spread > * {
+  min-width:0;
+}
+
+.dl-editorial-spread__media {
+  grid-column:1 / span 7;
+}
+
+.dl-editorial-spread__copy {
+  grid-column:9 / span 4;
+}
+
+.dl-editorial-spread--reverse
+.dl-editorial-spread__media {
+  grid-column:6 / span 7;
+}
+
+.dl-editorial-spread--reverse
+.dl-editorial-spread__copy {
+  grid-column:1 / span 4;
+}
+
+/* -------------------------------------------------
+ * Typography Rail
+ * Editorial copy/annotation role, not a floating card.
+ * ------------------------------------------------- */
+
+.dl-type-rail {
+  width:min(100%,var(--dl-composition-rail));
+  display:flex;
+  flex-direction:column;
+  gap:var(--dl-space-4);
+}
+
+.dl-type-rail--end {
+  margin-inline-start:auto;
+  text-align:right;
+}
+
+/* -------------------------------------------------
+ * Collection Shelf
+ * Typography weight on one side, ordered media group on the other.
+ * ------------------------------------------------- */
+
+.dl-collection-shelf {
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:var(--dl-composition-gap-wide);
+  align-items:start;
+}
+
+.dl-collection-shelf__type {
+  grid-column:1 / span 4;
+}
+
+.dl-collection-shelf__items {
+  grid-column:6 / -1;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:var(--dl-composition-gap);
+  align-items:start;
+}
+
+.dl-collection-shelf__item {
+  min-width:0;
+}
+
+/* -------------------------------------------------
+ * Recommendation Shelf — 3 + 2
+ * Semantic roles define the layout. No nth-child guessing.
+ * ------------------------------------------------- */
+
+.dl-featured-3plus2 {
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:
+    var(--dl-composition-row-gap)
+    var(--dl-composition-gap);
+  align-items:start;
+}
+
+.dl-featured-3plus2 > * {
+  min-width:0;
+}
+
+.dl-featured-3plus2__item--narrow {
+  grid-column:span 2;
+}
+
+.dl-featured-3plus2__item--wide {
+  grid-column:span 3;
+}
+
+/* -------------------------------------------------
+ * Editorial River
+ * Two real content flows; asymmetry is structural, not paint-time offset.
+ * ------------------------------------------------- */
+
+.dl-editorial-river {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:var(--dl-mobile-river-gap);
+  align-items:start;
+}
+
+.dl-editorial-river__flow {
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:var(--dl-mobile-river-gap);
+}
+
+.dl-editorial-river__flow--start {
+  padding-top:var(--dl-mobile-river-lead);
+}
+
+/* -------------------------------------------------
+ * Reading Chapter
+ * Mobile editorial sequencing / long-form rhythm.
+ * ------------------------------------------------- */
+
+.dl-reading-chapter {
+  width:min(
+    calc(100% - (2 * var(--dl-mobile-reading-gutter))),
+    var(--dl-container-reading)
+  );
+  margin-inline:auto;
+  padding-block:var(--dl-mobile-chapter-space);
+}
+
+.dl-reading-chapter__head {
+  width:min(100%,var(--dl-reading-measure));
+}
+
+.dl-reading-chapter__body {
+  margin-top:var(--dl-space-8);
+}
+
+/* -------------------------------------------------
+ * Workflow Chapter
+ * Shared editorial workflow structure for conversion routes.
+ * ------------------------------------------------- */
+
+.dl-workflow-chapter {
+  display:grid;
+  grid-template-columns:
+    minmax(120px,var(--dl-workflow-label-width))
+    minmax(0,1fr);
+  gap:var(--dl-composition-gap-wide);
+  padding-block:var(--dl-space-8);
+  border-top:1px solid var(--dl-color-border);
+}
+
+.dl-workflow-chapter__label {
+  min-width:0;
+}
+
+.dl-workflow-chapter__content {
+  min-width:0;
+}
+
+/* -------------------------------------------------
+ * Reset Section
+ * Deliberately restores order after an editorial moment.
+ * ------------------------------------------------- */
+
+.dl-reset-section {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:var(--dl-space-8);
+  align-items:start;
+}
+
+.dl-reset-section > * {
+  min-width:0;
+}
+
+/* -------------------------------------------------
+ * Media roles
+ * ------------------------------------------------- */
+
+.dl-media--product {
+  aspect-ratio:var(--dl-media-ratio-product);
+}
+
+.dl-media--portrait {
+  aspect-ratio:var(--dl-media-ratio-portrait);
+}
+
+.dl-media--landscape {
+  aspect-ratio:var(--dl-media-ratio-landscape);
+}
+
+.dl-media--wide {
+  aspect-ratio:var(--dl-media-ratio-wide);
+}
+
+/* -------------------------------------------------
+ * Responsive convergence
+ *
+ * B4.1A does not define route-specific mobile composition. These fallbacks
+ * only keep an adopted primitive readable below the desktop composition
+ * breakpoint until a route owns a dedicated mobile presentation.
+ * ------------------------------------------------- */
+
+@media (max-width:900px) {
+  .dl-composition-grid,
+  .dl-cover-stage,
+  .dl-editorial-spread,
+  .dl-collection-shelf {
+    grid-template-columns:1fr;
+  }
+
+  .dl-cover-stage__visual--start,
+  .dl-cover-stage__media,
+  .dl-cover-stage__visual--end,
+  .dl-editorial-spread__media,
+  .dl-editorial-spread__copy,
+  .dl-editorial-spread--reverse
+  .dl-editorial-spread__media,
+  .dl-editorial-spread--reverse
+  .dl-editorial-spread__copy,
+  .dl-collection-shelf__type,
+  .dl-collection-shelf__items {
+    grid-column:1 / -1;
+  }
+
+  .dl-cover-stage__visual--start,
+  .dl-cover-stage__visual--end {
+    justify-self:start;
+  }
+
+  .dl-collection-shelf__items {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .dl-type-rail--end {
+    margin-inline-start:0;
+    text-align:left;
+  }
+
+  .dl-featured-3plus2 {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .dl-featured-3plus2__item--narrow,
+  .dl-featured-3plus2__item--wide {
+    grid-column:span 1;
+  }
+
+  .dl-workflow-chapter {
+    grid-template-columns:1fr;
+    gap:var(--dl-space-4);
+  }
+}
+
+@media (max-width:560px) {
+  .dl-collection-shelf__items {
+    grid-template-columns:1fr;
+  }
+
+  .dl-editorial-river {
+    gap:var(--dl-mobile-river-gap);
+  }
+
+  .dl-reading-chapter {
+    width:calc(100% - (2 * var(--dl-mobile-reading-gutter)));
+  }
+}

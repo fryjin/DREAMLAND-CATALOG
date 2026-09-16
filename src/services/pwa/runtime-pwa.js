@@ -1384,12 +1384,17 @@
       onAppInstalled
     );
 
-    root.addEventListener(
-      'load',
-      ()=>{
-        registerServiceWorker();
-      }
-    );
+    if(
+      root.DREAMLAND_PWA_AUTO_REGISTER!==
+      false
+    ){
+      root.addEventListener(
+        'load',
+        ()=>{
+          registerServiceWorker();
+        }
+      );
+    }
   }
 })(
   typeof globalThis!=='undefined'

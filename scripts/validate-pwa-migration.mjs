@@ -12,11 +12,14 @@ function fail(message){
 
 function read(relativePath){
   return fs.readFileSync(
-    path.join(
+path.join(
       ROOT,
       relativePath
     ),
     'utf8'
+  ).replace(
+    /\r\n?/g,
+    '\n'
   );
 }
 
@@ -410,6 +413,262 @@ try{
     ){
       fail(
         `sw.js must preserve runtime-storage.js exactly once; found ${storageMatches.length}.`
+      );
+    }
+
+    for(const forbiddenHomeEntry of [
+      "'./',",
+      "'./index.html'"
+    ]){
+      if(
+        appShell.includes(
+          forbiddenHomeEntry
+        )
+      ){
+        fail(
+          'R4.3D Astro Home must not remain in the Legacy PWA APP_SHELL: '+
+          forbiddenHomeEntry
+        );
+      }
+    }
+  }
+
+  for(const marker of [
+    'function isHomeNavigation(',
+    'function purgeLegacyHomeEntries(',
+    'function homeNetworkOnly(',
+    "cache:'no-store'",
+    'purgeLegacyHomeEntries()'
+  ]){
+    if(
+      !swSource.includes(
+        marker
+      )
+    ){
+      fail(
+        'R4.3D Service Worker Home isolation is missing: '+
+        marker
+      );
+    }
+  }
+
+  for(const marker of [
+    'function isCatalogNavigation(',
+    'function purgeLegacyCatalogEntries(',
+    'function catalogNetworkOnly(',
+    'CATALOG_NAVIGATION_PATHS',
+    'purgeLegacyCatalogEntries()'
+  ]){
+    if(
+      !swSource.includes(
+        marker
+      )
+    ){
+      fail(
+        'R4.4D Service Worker Catalog isolation is missing: '+
+        marker
+      );
+    }
+  }
+
+  const catalogNavigationContract=
+    /const\s+CATALOG_NAVIGATION_PATHS\s*=\s*new\s+Set\s*\(\s*\[\s*['"]\/products\/['"]\s*,\s*['"]\/products\/index\.html['"]\s*\]\s*\)/m;
+
+  if(
+    !catalogNavigationContract.test(
+      swSource
+    )
+  ){
+    fail(
+      'R4.4D Catalog Service Worker ownership must match only /products/ and /products/index.html.'
+    );
+  }
+
+  const catalogMatcherStart=
+    swSource.search(
+      /function\s+isCatalogNavigation\s*\(/
+    );
+
+  const catalogMatcherEnd=
+    swSource.search(
+      /async\s+function\s+purgeLegacyCatalogEntries\s*\(/
+    );
+
+  if(
+    catalogMatcherStart<0||
+    catalogMatcherEnd<=catalogMatcherStart
+  ){
+    fail(
+      'R4.4D could not isolate isCatalogNavigation().'
+    );
+  }else{
+    const catalogMatcher=
+      swSource.slice(
+        catalogMatcherStart,
+        catalogMatcherEnd
+      );
+
+    if(
+      !/CATALOG_NAVIGATION_PATHS\s*\.\s*has\s*\(\s*url\.pathname\s*\)/
+        .test(
+          catalogMatcher
+        )||
+      catalogMatcher.includes(
+        'startsWith('
+      )||
+      catalogMatcher.includes(
+        'includes('
+      )
+    ){
+      fail(
+        'R4.4D Catalog navigation must use exact Set membership so Catalog ownership remains index-only.'
+      );
+    }
+  }
+
+  for(const marker of [
+    'function isPdpNavigation(',
+    'function purgeLegacyPdpEntries(',
+    'function pdpNetworkOnly(',
+    'PDP_NAVIGATION_PATTERN',
+    'purgeLegacyPdpEntries()'
+  ]){
+    if(
+      !swSource.includes(
+        marker
+      )
+    ){
+      fail(
+        'R4.5D Service Worker PDP isolation is missing: '+
+        marker
+      );
+    }
+  }
+
+  const pdpNavigationContract=
+    /const\s+PDP_NAVIGATION_PATTERN\s*=\s*\/\^\\\/products\\\/\[A-Z\]\{3\}\\d\{3\}\(\?:\\\/\(\?:index\\\.html\)\?\)\?\$\/i\s*;/m;
+
+  if(
+    !pdpNavigationContract.test(
+      swSource
+    )
+  ){
+    fail(
+      'R4.5D PDP Service Worker ownership must match only /products/{AAA000}, /products/{AAA000}/ and /products/{AAA000}/index.html.'
+    );
+  }
+
+  const pdpMatcherStart=
+    swSource.search(
+      /function\s+isPdpNavigation\s*\(/
+    );
+
+  const pdpMatcherEnd=
+    swSource.search(
+      /async\s+function\s+purgeLegacyPdpEntries\s*\(/
+    );
+
+  if(
+    pdpMatcherStart<0||
+    pdpMatcherEnd<=pdpMatcherStart
+  ){
+    fail(
+      'R4.5D could not isolate isPdpNavigation().'
+    );
+  }else{
+    const pdpMatcher=
+      swSource.slice(
+        pdpMatcherStart,
+        pdpMatcherEnd
+      );
+
+    if(
+      !/PDP_NAVIGATION_PATTERN\s*\.\s*test\s*\(\s*url\.pathname\s*\)/
+        .test(
+          pdpMatcher
+        )||
+      pdpMatcher.includes(
+        'startsWith('
+      )||
+      pdpMatcher.includes(
+        'includes('
+      )
+    ){
+      fail(
+        'R4.5D PDP navigation must use the exact PDP route-pattern owner.'
+      );
+    }
+  }
+  for(const marker of [
+    'function isCustomNavigation(',
+    'function purgeLegacyCustomEntries(',
+    'function customNetworkOnly(',
+    'CUSTOM_NAVIGATION_PATHS',
+    'purgeLegacyCustomEntries()'
+  ]){
+    if(
+      !swSource.includes(
+        marker
+      )
+    ){
+      fail(
+        'R4.6D Service Worker Custom isolation is missing: '+
+        marker
+      );
+    }
+  }
+
+  const customNavigationContract=
+    /const\s+CUSTOM_NAVIGATION_PATHS\s*=\s*new\s+Set\s*\(\s*\[\s*['"]\/custom['"]\s*,\s*['"]\/custom\/['"]\s*,\s*['"]\/custom\/index\.html['"]\s*\]\s*\)/m;
+
+  if(
+    !customNavigationContract.test(
+      swSource
+    )
+  ){
+    fail(
+      'R4.6D Custom Service Worker ownership must match only /custom, /custom/ and /custom/index.html.'
+    );
+  }
+
+  const customMatcherStart=
+    swSource.search(
+      /function\s+isCustomNavigation\s*\(/
+    );
+
+  const customMatcherEnd=
+    swSource.search(
+      /async\s+function\s+purgeLegacyCustomEntries\s*\(/
+    );
+
+  if(
+    customMatcherStart<0||
+    customMatcherEnd<=customMatcherStart
+  ){
+    fail(
+      'R4.6D could not isolate isCustomNavigation().'
+    );
+  }else{
+    const customMatcher=
+      swSource.slice(
+        customMatcherStart,
+        customMatcherEnd
+      );
+
+    if(
+      !/CUSTOM_NAVIGATION_PATHS\s*\.\s*has\s*\(\s*url\.pathname\s*\)/
+        .test(
+          customMatcher
+        )||
+      customMatcher.includes(
+        'startsWith('
+      )||
+      customMatcher.includes(
+        'includes('
+      )
+    ){
+      fail(
+        'R4.6D Custom navigation must use exact Set membership.'
       );
     }
   }

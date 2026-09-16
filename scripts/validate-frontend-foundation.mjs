@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import {pathToFileURL} from 'node:url';
 
 const ROOT=process.cwd();
 const SRC_ROOT=path.join(ROOT,'src');
@@ -45,6 +46,9 @@ const requiredFiles=[
   'src/app/runtime-hooks.js',
   'src/services/submission/runtime-submission.js',
   'src/services/risk/runtime-risk.js',
+  'src/domain/pricing/runtime-pricing-policy.js',
+  'src/domain/submission/runtime-submission-payload.js',
+  'src/domain/localization/runtime-localization-policy.js',
   'src/features/inquiry/runtime-inquiry.js',
   'src/features/contact/runtime-contact.js',
   'src/features/catalog/runtime-catalog.js',
@@ -62,9 +66,31 @@ for(const file of requiredFiles){
 let foundation=null;
 let layersModule=null;
 
+/*
+ * R4.11B4.1E-B3-FIX2E — Windows ESM Import Repair
+ * Node ESM requires file:// URLs for absolute Windows filesystem paths.
+ */
 try{
-  foundation=(await import(path.join(ROOT,'src/app/foundation.js'))).FRONTEND_FOUNDATION;
-  layersModule=await import(path.join(ROOT,'src/app/layers.js'));
+  foundation=(
+    await import(
+      pathToFileURL(
+        path.join(
+          ROOT,
+          'src/app/foundation.js'
+        )
+      ).href
+    )
+  ).FRONTEND_FOUNDATION;
+
+  layersModule=
+    await import(
+      pathToFileURL(
+        path.join(
+          ROOT,
+          'src/app/layers.js'
+        )
+      ).href
+    );
 }catch(error){
   fail(`Cannot import frontend foundation: ${error.message}`)
 }
@@ -480,7 +506,8 @@ const architectureFiles=[
   ...walkJs(path.join(SRC_ROOT,'app')),
   ...walkJs(path.join(SRC_ROOT,'features')),
   ...walkJs(path.join(SRC_ROOT,'ui')),
-  ...walkJs(path.join(SRC_ROOT,'services'))
+  ...walkJs(path.join(SRC_ROOT,'services')),
+  ...walkJs(path.join(SRC_ROOT,'domain'))
 ];
 
 

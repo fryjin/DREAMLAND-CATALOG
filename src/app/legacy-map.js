@@ -59,7 +59,7 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
   ],
   'features',
   'catalog',
-  'Catalog active-series state, default-series resolution, product filtering/ordering and Catalog ViewModel are routed through DreamlandCatalog. Catalog tabs, product-card HTML, batch rendering, scroll-driven loading and Catalog UI event delegation are routed through DreamlandCatalogRenderer. Product data loading, shared pricing policy, Detail navigation and the catalog.afterAppendBatch media lifecycle bridge remain App-owned.',
+  'Catalog active-series state, default-series resolution, product filtering/ordering and Catalog ViewModel are routed through DreamlandCatalog. Catalog tabs, product-card HTML, batch rendering, scroll-driven loading and Catalog UI event delegation are routed through DreamlandCatalogRenderer. Product data loading, Detail navigation and the catalog.afterAppendBatch media lifecycle bridge remain App-owned. Shared pricing/MOQ/currency policy is routed through DreamlandPricingPolicy.',
   {
     status:'partial',
     runtimeMigrated:false,
@@ -101,7 +101,7 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'features',
     'inquiry',
-    'Inquiry item-state hydration/persistence/mutation, Inquiry-specific pricing derivation, the Inquiry screen View Model and Preview/Submission/Archive projection data are routed through DreamlandInquiry. Inquiry list/summary HTML templates, DOM rendering, incremental DOM updates and item-level event delegation remain routed through DreamlandInquiryRenderer. Final submission transaction orchestration, archive persistence and success-state cleanup are routed through DreamlandInquirySubmissionFlow. Preview DOM, Risk/Captcha UI, navigation/badge behavior and shared pricing policy remain in index.html. copy-polish.js is presentation-only dictionary/meta/preview decoration and no longer wraps App render/language/payload functions.',
+    'Inquiry item-state hydration/persistence/mutation, Inquiry-specific pricing derivation, the Inquiry screen View Model and Preview/Submission/Archive projection data are routed through DreamlandInquiry. Inquiry list/summary HTML templates, DOM rendering, incremental DOM updates and item-level event delegation remain routed through DreamlandInquiryRenderer. Final submission transaction orchestration, archive persistence and success-state cleanup are routed through DreamlandInquirySubmissionFlow. Preview DOM, Risk/Captcha UI and navigation/badge behavior remain in index.html. Shared pricing/MOQ/currency policy is routed through DreamlandPricingPolicy. copy-polish.js is presentation-only dictionary/meta/preview decoration and no longer wraps App render/language/payload functions.',
     {
       status:'partial',
       runtimeMigrated:false,
@@ -152,6 +152,54 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     }
   ),
   entry(
+    'pricing-domain',
+    [
+      'index.html'
+    ],
+    'domain',
+    'pricing',
+    'Shared pricing, tier selection, packaging surcharge, MOQ, quantity normalization and currency policy are routed through DreamlandPricingPolicy. index.html retains thin compatibility adapters while Legacy Presentation remains active.',
+    {
+      status:'migrated',
+      runtimeMigrated:true,
+      runtimeOwners:[
+        'src/domain/pricing/runtime-pricing-policy.js'
+      ]
+    }
+  ),
+  entry(
+    'submission-payload-domain',
+    [
+      'index.html'
+    ],
+    'domain',
+    'submission',
+    'Provider delivery payload mapping and payload validation are routed through DreamlandSubmissionPayload. index.html retains thin compatibility wrappers while Legacy Review and Risk orchestration remain active.',
+    {
+      status:'migrated',
+      runtimeMigrated:true,
+      runtimeOwners:[
+        'src/domain/submission/runtime-submission-payload.js'
+      ]
+    }
+  ),
+  entry(
+    'localization-domain',
+    [
+      'index.html'
+    ],
+    'domain',
+    'localization',
+    'Shared UI/choice/series/product/scent lookup, from-price ordering, locale resolution and date formatting are routed through DreamlandLocalizationPolicy. DOM language application, page-specific copy composition, PWA copy, Risk copy and SEO/meta mutation remain Presentation/App concerns.',
+    {
+      status:'migrated',
+      runtimeMigrated:true,
+      runtimeOwners:[
+        'src/domain/localization/runtime-localization-policy.js'
+      ]
+    }
+  ),
+  entry(
     'media',
     [
       'image-manager.js',
@@ -197,7 +245,7 @@ export const LEGACY_FRONTEND_MAP=Object.freeze([
     ],
     'services',
     'submission',
-    'Client Web3Forms transport, FormData assembly and response normalization are routed through DreamlandSubmission. Final submission transaction orchestration, reachability gating, attempt recording, archive persistence and success-state cleanup are routed through DreamlandInquirySubmissionFlow. Payload/snapshot composition and DOM feedback remain App/index concerns.',
+    'Client Web3Forms transport, FormData assembly and response normalization are routed through DreamlandSubmission. Final submission transaction orchestration, reachability gating, attempt recording, archive persistence and success-state cleanup are routed through DreamlandInquirySubmissionFlow. Provider delivery payload mapping and payload validation are routed through DreamlandSubmissionPayload. Archive snapshot composition and DOM feedback remain App/index concerns.',
     {
       status:'partial',
       runtimeMigrated:false,

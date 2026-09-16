@@ -1335,6 +1335,9 @@ body[data-lang="ko"] .option-grid-scroll .option{
 <script src="/src/site/runtime/runtime-catalog-url-state.js?release=b7-00b4j-r3-v129"></script>
 <script src="/src/site/runtime/runtime-page-guards.js?release=b7-00b4j-r3-v129"></script>
 <script src="./src/data/product-data-contract.js"></script>
+<script src="./src/domain/pricing/runtime-pricing-policy.js"></script>
+<script src="./src/domain/submission/runtime-submission-payload.js"></script>
+<script src="./src/domain/localization/runtime-localization-policy.js"></script>
 <script src="./catalog-data.js?release=b7-00b4j-r3-v129"></script>
 <script src="./src/services/storage/runtime-storage.js"></script>
 <script src="./src/services/pwa/runtime-pwa.js?release=b7-00b4j-r3-v129"></script>
@@ -1377,7 +1380,28 @@ const customScentUi=window.DreamlandCustomScent;
 const submissionFlow=window.DreamlandInquirySubmissionFlow;
 const pageGuards=window.DreamlandPageGuards;
 const detailFeature=window.DreamlandDetail;
+const pricingPolicy=window.DreamlandPricingPolicy;
+const submissionPayloadPolicy=window.DreamlandSubmissionPayload;
+const localizationPolicy=window.DreamlandLocalizationPolicy;
 const desktopExperience=window.DreamlandDesktopExperience;
+
+if(!pricingPolicy){
+  throw new Error(
+    'DreamlandPricingPolicy must load before pricing policy initialization.'
+  );
+}
+
+if(!submissionPayloadPolicy){
+  throw new Error(
+    'DreamlandSubmissionPayload must load before submission payload initialization.'
+  );
+}
+
+if(!localizationPolicy){
+  throw new Error(
+    'DreamlandLocalizationPolicy must load before localization policy initialization.'
+  );
+}
 
 if(!desktopExperience){
   throw new Error(
@@ -2078,8 +2102,9 @@ riskService.bindInteractionTracking(
 }
 
 function seriesTabLabel(key){
-  return seriesTabLabels[currentLang]?.[key]||seriesTabLabels.zh?.[key]||seriesMeta[key]?.name||key;
+  return localizationPolicy.seriesLabel(currentLang,key,seriesTabLabels,seriesMeta);
 }
+
 function riskAssessmentEndpoint(){
   return appConfig.submissionEndpoint||'./api/submit'
 }
@@ -2642,45 +2667,31 @@ function uid(){
 }
 
 function money(value){
-  const currency=
-    currencyMap[currentLang]||
-    currencyMap.zh;
-
-  const amount=
-    Number(value||0)*
-    currency.rate;
-
-  return currency.prefix+
-    amount.toLocaleString(
-      currency.locale,
-      {
-        minimumFractionDigits:currency.digits,
-        maximumFractionDigits:currency.digits
-      }
-    );
+  return pricingPolicy.money(
+    value,
+    currentLang,
+    currencyMap
+  );
 }
 
 function fromPrice(value){
-  const amount=money(value);
+  return localizationPolicy.fromPrice(currentLang,ui('priceFrom'),money(value));
+}
 
-  return currentLang==='en'
-    ? `${ui('priceFrom')} ${amount}`
-    : `${amount} ${ui('priceFrom')}`;
-} 
-  
 function currencyUnit(){
-  return (
-    currencyMap[currentLang]||
-    currencyMap.zh
-  ).unit;
+  return pricingPolicy
+    .currencyUnit(
+      currentLang,
+      currencyMap
+    );
 }
 
 function cnyToBase(cny){
-  const cnyRate=
-    Number(currencyMap.zh?.rate)||
-    7.2;
-
-  return Number(cny||0)/cnyRate;
+  return pricingPolicy
+    .cnyToBase(
+      cny,
+      currencyMap
+    );
 }
 
 function seriesQty(series){
@@ -2691,16 +2702,11 @@ function seriesQty(series){
 }
 
 function pricingSeriesFor(item){
-  if(item?.series==='holiday'){
-    return (
-      item.scentSeries||
-      seriesMeta.holiday
-        ?.scentSeriesOptions?.[0]||
-      'classic'
+  return pricingPolicy
+    .pricingSeriesFor(
+      item,
+      seriesMeta
     );
-  }
-
-  return item?.series||'';
 }
 
 function pricingGroupQty(item){
@@ -2710,82 +2716,47 @@ function pricingGroupQty(item){
     );
 }
 
-function tierFor(seriesKey,quantity){
-  const tiers=
-    seriesMeta[seriesKey]?.priceTiers||
-    [];
-
-  return (
-    tiers.find(tier=>{
-      const min=
-        Number(tier.minQty)||0;
-
-      const max=
-        tier.maxQty==null
-          ? Infinity
-          : Number(tier.maxQty);
-
-      return (
-        quantity>=min&&
-        quantity<=max
-      );
-    })||
-    tiers[tiers.length-1]||
-    null
-  );
+function tierFor(
+  seriesKey,
+  quantity
+){
+  return pricingPolicy
+    .tierFor(
+      seriesKey,
+      quantity,
+      seriesMeta
+    );
 }
+
 function tierRangeLabel(tier){
-  const min=Number(tier?.minQty)||1;
-  const max=tier?.maxQty;
-
-  if(max==null){
-    return `${min}+`;
-  }
-
-  return `${min}-${max}`;
+  return pricingPolicy
+    .tierRangeLabel(
+      tier
+    );
 }
 
 function currentTierIndex(
   seriesKey,
   quantity
 ){
-  const tiers=
-    seriesMeta[seriesKey]
-      ?.priceTiers||
-    [];
-
-  return Math.max(
-    0,
-    tiers.findIndex(tier=>{
-      const min=
-        Number(tier.minQty)||0;
-
-      const max=
-        tier.maxQty==null
-          ? Infinity
-          : Number(tier.maxQty);
-
-      return (
-        quantity>=min&&
-        quantity<=max
-      );
-    })
-  );
+  return pricingPolicy
+    .currentTierIndex(
+      seriesKey,
+      quantity,
+      seriesMeta
+    );
 }
 
 function nextTierFor(
   seriesKey,
   quantity
 ){
-  const tiers=
-    seriesMeta[seriesKey]
-      ?.priceTiers||
-    [];
-
-  return tiers.find(
-    tier=>
-      Number(tier.minQty)>quantity
-  )||null;
+  return pricingPolicy
+    .nextTierFor(
+      seriesKey,
+      quantity,
+      seriesMeta
+    );
 }
 
 function configPricingSeries(){
@@ -3017,43 +2988,41 @@ function tierUnitCny(
   size,
   quantity
 ){
-  const tier=
-    tierFor(seriesKey,quantity);
-
-  return Number(
-    tier?.pricesCny?.[size]||0
-  );
+  return pricingPolicy
+    .tierUnitCny(
+      seriesKey,
+      size,
+      quantity,
+      seriesMeta
+    );
 }
 
 function packOptions(series){
-  return (
-    seriesMeta[series]
-      ?.packaging
-      ?.options||
-    ['批发包装']
-  );
+  return pricingPolicy
+    .packOptions(
+      series,
+      seriesMeta
+    );
 }
 
 function defaultPack(series){
-  return (
-    seriesMeta[series]
-      ?.packaging
-      ?.default||
-    packOptions(series)[0]||
-    '批发包装'
-  );
+  return pricingPolicy
+    .defaultPack(
+      series,
+      seriesMeta
+    );
 }
 
 function packSurchargeCny(
   series,
   pack
 ){
-  return Number(
-    seriesMeta[series]
-      ?.packaging
-      ?.surchargesCny?.[pack]||
-    0
-  );
+  return pricingPolicy
+    .packSurchargeCny(
+      series,
+      pack,
+      seriesMeta
+    );
 }
 
 function packSurchargeBase(
@@ -3162,44 +3131,14 @@ function total(){
 }
 
 function catalogUnit(product){
-  if(!product)return 0;
-
-  const pricingSeries=
-    product.series==='holiday'
-      ? (
-          seriesMeta.holiday
-            ?.scentSeriesOptions?.[0]||
-          'classic'
-        )
-      : product.series;
-
- const size=
-    defaultProductSize(product);
-
-  const quantity=
-    moqForSeriesSize(
-      product.series,
-      size
+  return pricingPolicy
+    .catalogUnit(
+      product,
+      seriesMeta,
+      currencyMap
     );
-
-  const priceCny=
-    tierUnitCny(
-      pricingSeries,
-      size,
-      quantity
-    );
-
-  const packageCny=
-    packSurchargeCny(
-      product.series,
-      defaultPack(product.series)
-    );
-
-  return cnyToBase(
-    priceCny+
-    packageCny
-  );
 }
+
 function refreshBudgetOptions(){let el=document.getElementById('customBudget');if(!el)return;let previous=el.selectedIndex<0?0:el.selectedIndex;el.innerHTML=currencyMap[currentLang].budget.map(x=>`<option>${x}</option>`).join('');el.selectedIndex=Math.min(previous,el.options.length-1)}
 function desktopCustomBudgetOptions(){
   const currency=
@@ -3274,64 +3213,47 @@ function rerenderCurrent(){
   }
 }
 function ui(key){
-  return uiDict[currentLang]?.[key]||uiDict.zh?.[key]||key;
+  return localizationPolicy.uiText(currentLang,key,uiDict);
 }
+
 function choiceLabel(value){
-  return choiceMaps[currentLang]?.[value]||value;
+  return localizationPolicy.choiceLabel(currentLang,value,choiceMaps);
 }
+
 function seriesLabel(key){return seriesTabLabel(key)}
 function productDisplayName(product){
-  if(!product)return '';
-  return product.names?.[currentLang]||product.names?.zh||product.name||product.id||'';
+  return localizationPolicy.productName(currentLang,product);
 }
+
 function productDesc(product){
-  if(!product)return '';
-  return product.descriptions?.[currentLang]||product.descriptions?.zh||product.desc||'';
+  return localizationPolicy.productDescription(currentLang,product);
 }
+
 function moqForSeriesSize(
   series,
   size
 ){
-  const value=
-    Number(
-      seriesMeta[series]
-        ?.moqBySize?.[size]
+  return pricingPolicy
+    .moqForSeriesSize(
+      series,
+      size,
+      seriesMeta
     );
-
-  return (
-    Number.isInteger(value)&&
-    value>0
-  )
-    ? value
-    : 1;
 }
 
 function defaultProductSize(product){
-  return product?.defaultSize||'S';
-}
-  
-function productMoq(product){
-  if(!product)return 1;
-
-  const configured=
-    moqForSeriesSize(
-      product.series,
-      product.size
+  return pricingPolicy
+    .defaultProductSize(
+      product
     );
+}
 
-  if(configured>1){
-    return configured;
-  }
-
-  const own=
-    Number(product.moq);
-
-  return (
-    Number.isInteger(own)&&
-    own>0
-  )
-    ? own
-    : 1;
+function productMoq(product){
+  return pricingPolicy
+    .productMoq(
+      product,
+      seriesMeta
+    );
 }
 
 function itemMoq(item){
@@ -3374,12 +3296,18 @@ function configMoq(){
 
 function maximumQuantity(){return Math.max(1,Number(appConfig.maxQuantity)||1000000)}
 function customMoq(){return Math.max(1,Number(appConfig.customMoq)||50)}
-function normalizeQty(value,min=1){
-  let quantity=Number(value);
-  if(!Number.isFinite(quantity))quantity=min;
-  quantity=Math.trunc(quantity);
-  return Math.min(maximumQuantity(),Math.max(min,quantity));
+function normalizeQty(
+  value,
+  min=1
+){
+  return pricingPolicy
+    .normalizeQuantity(
+      value,
+      min,
+      maximumQuantity()
+    );
 }
+
 function generateInquiryId(){
   const now=new Date();
   const date=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('');
@@ -4435,14 +4363,7 @@ function captureDetailOptionScrollState(){
 }
   
 function scentDisplayText(value){
-  if(!value)return '';
-
-  return (
-    value[currentLang]||
-    value.en||
-    value.zh||
-    ''
-  );
+  return localizationPolicy.scentText(currentLang,value);
 }
 
 function scentSafeText(value){
@@ -7080,128 +7001,19 @@ function renderPreview(){
 function submissionEmailValid(
   value
 ){
-  const email=
-    String(value??'')
-      .trim();
-
-  const at=
-    email.indexOf('@');
-
-  const dot=
-    email.lastIndexOf('.');
-
-  return (
-    at>0&&
-    dot>at+1&&
-    dot<email.length-1
-  );
+  return submissionPayloadPolicy
+    .emailValid(
+      value
+    );
 }
 
 function validateSubmissionPayload(
   payload
 ){
-  const value=
-    payload&&
-    typeof payload==='object'&&
-    !Array.isArray(payload)
-      ? payload
-      : {};
-
-  const inquiryId=
-    String(
-      value.inquiry_id??''
-    ).trim();
-
-  if(
-    !/^[A-Za-z0-9][A-Za-z0-9_-]{7,119}$/
-      .test(inquiryId)
-  ){
-    return {
-      ok:false,
-      code:'INVALID_INQUIRY_ID'
-    };
-  }
-
-  if(
-    String(
-      value.contact_name??''
-    )
-      .trim()
-      .length<2
-  ){
-    return {
-      ok:false,
-      code:'INVALID_CONTACT_NAME'
-    };
-  }
-
-  if(
-    !String(
-      value.country_or_region??''
-    ).trim()
-  ){
-    return {
-      ok:false,
-      code:'INVALID_COUNTRY'
-    };
-  }
-
-  if(
-    !submissionEmailValid(
-      value.email_address
-    )
-  ){
-    return {
-      ok:false,
-      code:'INVALID_EMAIL'
-    };
-  }
-
-  if(
-    String(
-      value.phone_or_wechat??''
-    )
-      .trim()
-      .length<5
-  ){
-    return {
-      ok:false,
-      code:'INVALID_CONTACT_METHOD'
-    };
-  }
-
-  if(
-    Number(
-      value.product_count||0
-    )+
-    Number(
-      value.custom_count||0
-    )<
-    1
-  ){
-    return {
-      ok:false,
-      code:'EMPTY_INQUIRY'
-    };
-  }
-
-  if(
-    String(
-      value.items_summary??''
-    )
-      .trim()
-      .length<5
-  ){
-    return {
-      ok:false,
-      code:'EMPTY_SUMMARY'
-    };
-  }
-
-  return {
-    ok:true,
-    code:'OK'
-  };
+  return submissionPayloadPolicy
+    .validate(
+      payload
+    );
 }
 
 function buildWeb3FormsPayload(
@@ -7227,69 +7039,10 @@ function buildWeb3FormsPayload(
           ''
       });
 
-  const c=
-    projection.contact;
-
-  const subject=
-    `[${projection.inquiryId}] DREAMLAND 批发与定制询价 - ${c.name||'未填写联系人'}`;
-
-  return {
-    subject,
-    from_name:c.name||'DREAMLAND 官网访客',
-    email:c.email||'',
-    inquiry_id:projection.inquiryId,
-    submitted_at:projection.submittedAt,
-    privacy_version:projection.privacyVersion,
-    privacy_accepted:'yes',
-    contact_name:c.name||'',
-    company:c.company||'',
-    country_or_region:c.country||'',
-    city:c.city||'',
-    email_address:c.email||'',
-    phone_or_wechat:c.phone||'',
-    buyer_type:c.buyerType||'',
-    message:c.message||'',
-
-    personal_info:
-      JSON.stringify(
-        c,
-        null,
-        2
-      ),
-
-    language:
-      projection.language,
-
-    estimated_amount:
-      projection.estimatedTotalDisplay,
-
-    estimated_amount_base_usd:
-      projection.estimatedTotal
-        .toFixed(2),
-
-    product_count:
-      projection.productCount,
-
-    custom_count:
-      projection.customCount,
-
-    items_summary:
-      projection.itemsSummary,
-
-    product_items:
-      JSON.stringify(
-        projection.rawProductItems,
-        null,
-        2
-      ),
-
-    custom_items:
-      JSON.stringify(
-        projection.rawCustomItems,
-        null,
-        2
-      )
-  };
+  return submissionPayloadPolicy
+    .build(
+      projection
+    );
 }
 
 function submissionSnapshot(
@@ -7656,10 +7409,13 @@ async function submitInquiry(){
 function renderSuccess(){
   let snapshot={};try{snapshot=JSON.parse(appStorage.local.getItem(LAST_SUBMISSION_KEY)||'{}')}catch(_){}
   let d=snapshot.submittedAt?new Date(snapshot.submittedAt):new Date();
-  successId.textContent=snapshot.inquiryId||'—';successDate.textContent=d.toLocaleDateString(currencyMap[currentLang]?.locale||'zh-CN');successAmount.textContent=snapshot.amountDisplay||money(0);
+  successId.textContent=snapshot.inquiryId||'—';
+  successDate.textContent=localizationPolicy.formatDate(d,currentLang,currencyMap);
+  successAmount.textContent=snapshot.amountDisplay||money(0);
   let sub=document.querySelector('.success-sub');if(sub)sub.innerHTML=`${ui('successSub1')}<br>${ui('successSub2')}`;
   let actions=document.querySelector('.success-actions');if(actions&&!actions.querySelector('.archive-note'))actions.insertAdjacentHTML('afterbegin',`<p class="archive-note">${ui('submissionArchived')}</p>`)
 }
+
 function inquiryBadgeCount(){
   return inquiryFeature.items().reduce((sum,item)=>{
     if(item.type==='product')return sum+(Number(item.qty)||0);
@@ -8251,9 +8007,10 @@ async function bootstrap(){
           desktopLastSubmission(),
 
       locale:
-        ()=>currencyMap[
-          currentLang
-        ]?.locale,
+        ()=>localizationPolicy.localeFor(
+          currentLang,
+          currencyMap
+        ),
 
       feedback:
         message=>
