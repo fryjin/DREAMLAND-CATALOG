@@ -1481,7 +1481,14 @@
       return canContinue;
     }
 
-    function renderItems(
+        /*
+     * R4.11B4.1E-C3-FIX2C
+     * Quantity-only renders preserve decoded product media so pricing and
+     * commercial projections can refresh without visible image reloads.
+     */
+    let preserveMediaOnNextRender=false;
+
+function renderItems(
       viewModel
     ){
       const view=
@@ -1490,6 +1497,32 @@
       if(!itemsNode){
         return;
       }
+
+      const preservedMedia=
+        preserveMediaOnNextRender
+          ? new Map(
+              Array
+                .from(
+                  itemsNode
+                    .querySelectorAll(
+                      '[data-inquiry-item-id]'
+                    )
+                )
+                .map(card=>[
+                  text(
+                    card.dataset
+                      .inquiryItemId
+                  ),
+                  card.querySelector(
+                    '.inquiry-item__media'
+                  )
+                ])
+                .filter(
+                  ([,media])=>
+                    Boolean(media)
+                )
+            )
+          : null;
 
       itemsNode.replaceChildren();
 
@@ -1503,7 +1536,7 @@
           pricing
         };
 
-        itemsNode.appendChild(
+        const card=
           item.type===
             'custom'
             ? renderCustom(
@@ -1515,7 +1548,53 @@
                 document,
                 item,
                 context
-              )
+              );
+
+        if(
+          preservedMedia&&
+          item.type===
+            'product'
+        ){
+          const media=
+            preservedMedia.get(
+              text(item.id)
+            );
+
+          const nextMedia=
+            card.querySelector(
+              '.inquiry-item__media'
+            );
+
+          if(
+            media&&
+            nextMedia
+          ){
+            const currentImage=
+              media.querySelector(
+                'img'
+              );
+
+            const nextImage=
+              nextMedia.querySelector(
+                'img'
+              );
+
+            if(
+              currentImage&&
+              nextImage
+            ){
+              currentImage.alt=
+                nextImage.alt;
+            }
+
+            nextMedia.replaceWith(
+              media
+            );
+          }
+        }
+
+        itemsNode.appendChild(
+          card
         );
       }
 
@@ -1531,6 +1610,8 @@
         clearNode.hidden=
           viewModel.empty;
       }
+
+      preserveMediaOnNextRender=false;
     }
 
     function render(
@@ -1597,6 +1678,8 @@
           value,
           1
         );
+
+      preserveMediaOnNextRender=true;
 
       render(
         persistAndView()

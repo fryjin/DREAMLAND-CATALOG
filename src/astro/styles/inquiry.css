@@ -436,6 +436,14 @@
 }
 
 @media (max-width:760px) {
+  /*
+   * R4.11B4.1E-C3-FIX2C — iOS Safari focus stability.
+   * 16px prevents native focus zoom without disabling user zoom.
+   */
+  .inquiry-item__qty input {
+    font-size:16px;
+  }
+
   .inquiry-hero__inner {
     grid-template-columns:1fr;
   }

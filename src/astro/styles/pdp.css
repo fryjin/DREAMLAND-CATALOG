@@ -554,6 +554,13 @@
 }
 
 @media (max-width:720px) {
+  /*
+   * R4.11B4.1E-C3-FIX2C — iOS Safari focus stability.
+   */
+  .pdp-quantity input {
+    font-size:16px;
+  }
+
   .pdp-main {
     background:
       var(
