@@ -328,6 +328,51 @@
       );
   }
 
+  /*
+   * F3-B2 — Quantity & MOQ Interaction Efficiency
+   * MOQ grouping remains owned by DreamlandInquiry.productMoqGroups().
+   * Pricing grouping remains independent and continues to recompute globally.
+   */
+  function quantityUnit(
+    language,
+    locale
+  ){
+    return (
+      locale.ui?.pieces||
+      (
+        language==='zh'
+          ? '件'
+          : language==='ko'
+            ? '개'
+            : 'pcs'
+      )
+    );
+  }
+
+  function moreToMoqLabel(
+    language,
+    locale
+  ){
+    return (
+      locale.ui?.moreToMoq||
+      (
+        language==='zh'
+          ? '距起订还差'
+          : language==='ko'
+            ? '최소 주문까지'
+            : 'More to MOQ'
+      )
+    );
+  }
+
+  function moqGroupKey(item){
+    return (
+      text(item?.series)+
+      '|'+
+      text(item?.size)
+    );
+  }
+
   function configureInquiry(
     inquiry,
     pricing,
@@ -473,7 +518,8 @@
       locale,
       products,
       scents,
-      pricing
+      pricing,
+      moqGroups
     }=context;
 
     const card=
@@ -651,6 +697,51 @@
         pricing
       );
 
+    const groupKey=
+      moqGroupKey(
+        item
+      );
+
+    const group=
+      moqGroups
+        ?.get(
+          groupKey
+        )||
+      null;
+
+    const groupQuantity=
+      number(
+        group?.qty,
+        number(
+          item.normalizedQty||
+          item.qty,
+          1
+        )
+      );
+
+    const groupMoq=
+      number(
+        group?.moq,
+        moq
+      );
+
+    const quantityToMoq=
+      Math.max(
+        0,
+        groupMoq-
+        groupQuantity
+      );
+
+    card.dataset
+      .inquiryMoqGroup=
+      groupKey;
+
+    card.dataset
+      .inquiryMoqState=
+      quantityToMoq>0
+        ? 'unmet'
+        : 'met';
+
     const moqLabel=
       appendText(
         documentRef,
@@ -744,6 +835,26 @@
         'inquiry-item__qty'
       );
 
+    const normalizedQuantity=
+      Math.max(
+        1,
+        number(
+          item.normalizedQty||
+          item.qty,
+          1
+        )
+      );
+
+    const maximumQuantity=
+      Math.max(
+        1,
+        number(
+          state.limits
+            ?.maxQuantity,
+          1000000
+        )
+      );
+
     const minus=
       createElement(
         documentRef,
@@ -759,6 +870,8 @@
       .itemId=
       text(item.id);
     minus.dataset.delta='-1';
+    minus.disabled=
+      normalizedQuantity<=1;
     minus.setAttribute(
       'aria-label',
       'Decrease quantity'
@@ -774,18 +887,12 @@
     input.min='1';
     input.max=
       String(
-        state.limits
-          ?.maxQuantity||
-        1000000
+        maximumQuantity
       );
     input.step='1';
     input.value=
       String(
-        number(
-          item.normalizedQty||
-          item.qty,
-          1
-        )
+        normalizedQuantity
       );
     input.dataset
       .inquiryQuantity=
@@ -814,6 +921,9 @@
       .itemId=
       text(item.id);
     plus.dataset.delta='1';
+    plus.disabled=
+      normalizedQuantity>=
+      maximumQuantity;
     plus.setAttribute(
       'aria-label',
       'Increase quantity'
@@ -828,6 +938,31 @@
     body.appendChild(
       qty
     );
+
+    if(quantityToMoq>0){
+      const feedback=
+        appendText(
+          documentRef,
+          body,
+          'p',
+          'inquiry-item__moq-feedback',
+          moreToMoqLabel(
+            language,
+            locale
+          )+
+          ' '+
+          quantityToMoq+
+          ' '+
+          quantityUnit(
+            language,
+            locale
+          )
+        );
+
+      feedback.dataset
+        .inquiryMoqFeedback=
+        'true';
+    }
 
     const remove=
       createElement(
@@ -1372,9 +1507,9 @@
         );
     }
 
-    function unmetGroup(){
+    function currentMoqGroups(){
       return inquiry
-        .firstUnmetProductMoqGroup(
+        .productMoqGroups(
           item=>
             itemMoq(
               item,
@@ -1382,6 +1517,28 @@
               pricing
             )
         );
+    }
+
+    function unmetGroups(){
+      return currentMoqGroups()
+        .filter(
+          group=>
+            number(
+              group?.qty,
+              0
+            )<
+            number(
+              group?.moq,
+              1
+            )
+        );
+    }
+
+    function unmetGroup(){
+      return (
+        unmetGroups()[0]||
+        null
+      );
     }
 
     function renderSummary(
@@ -1434,12 +1591,12 @@
 
       const unmet=
         viewModel.empty
-          ? null
-          : unmetGroup();
+          ? []
+          : unmetGroups();
 
       const canContinue=
         !viewModel.empty&&
-        !unmet;
+        unmet.length===0;
 
       if(continueNode){
         continueNode.disabled=
@@ -1448,33 +1605,97 @@
 
       if(validationNode){
         validationNode.hidden=
-          !unmet;
+          unmet.length===0;
 
-        if(unmet){
-          validationNode.textContent=
-            (
-              view.copy
-                ?.cannotContinue||
-              'Review the selected quantities before continuing.'
-            )+
-            ' '+
-            seriesLabel(
-              unmet.series,
-              language,
-              state
-            )+
-            ' · '+
-            text(
-              unmet.size
-            )+
-            ' · MOQ '+
-            unmet.moq+
-            ' · '+
-            unmet.qty+
-            '/'+
-            unmet.moq;
-        }else{
-          validationNode.textContent='';
+        validationNode
+          .replaceChildren();
+
+        if(unmet.length){
+          appendText(
+            document,
+            validationNode,
+            'strong',
+            'inquiry-validation__title',
+            view.copy
+              ?.cannotContinue||
+            'Review the selected quantities before continuing.'
+          );
+
+          const list=
+            createElement(
+              document,
+              'div',
+              'inquiry-validation__groups'
+            );
+
+          unmet.forEach(group=>{
+            const row=
+              createElement(
+                document,
+                'div',
+                'inquiry-validation__row'
+              );
+
+            row.dataset
+              .inquiryMoqBlocker=
+              group.key;
+
+            appendText(
+              document,
+              row,
+              'span',
+              '',
+              seriesLabel(
+                group.series,
+                language,
+                state
+              )+
+              ' · '+
+              text(
+                group.size
+              )
+            );
+
+            appendText(
+              document,
+              row,
+              'strong',
+              '',
+              group.qty+
+              '/'+
+              group.moq
+            );
+
+            appendText(
+              document,
+              row,
+              'small',
+              '',
+              moreToMoqLabel(
+                language,
+                view
+              )+
+              ' '+
+              Math.max(
+                0,
+                group.moq-
+                group.qty
+              )+
+              ' '+
+              quantityUnit(
+                language,
+                view
+              )
+            );
+
+            list.appendChild(
+              row
+            );
+          });
+
+          validationNode.appendChild(
+            list
+          );
         }
       }
 
@@ -1497,6 +1718,17 @@ function renderItems(
       if(!itemsNode){
         return;
       }
+
+      const moqGroups=
+        new Map(
+          currentMoqGroups()
+            .map(
+              group=>[
+                group.key,
+                group
+              ]
+            )
+        );
 
       const preservedMedia=
         preserveMediaOnNextRender
@@ -1533,7 +1765,8 @@ function renderItems(
           locale:view,
           products,
           scents,
-          pricing
+          pricing,
+          moqGroups
         };
 
         const card=

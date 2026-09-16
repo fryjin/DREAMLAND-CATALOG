@@ -935,3 +935,78 @@
     text-underline-offset:4px;
   }
 }
+
+
+/* ============================================================
+ * F3-B2 — Quantity & MOQ Interaction Efficiency
+ * Procurement-condition feedback stays visible without turning the
+ * Inquiry into an error-heavy form.
+ * ========================================================== */
+
+.inquiry-item__qty button:disabled {
+  opacity:.32;
+  cursor:not-allowed;
+}
+
+.inquiry-item__moq-feedback {
+  margin:8px 0 0;
+  color:#714a35;
+  font-size:9px;
+  font-weight:700;
+  line-height:1.5;
+}
+
+.inquiry-item[data-inquiry-moq-state="unmet"] .inquiry-item__qty {
+  position:relative;
+}
+
+.inquiry-validation {
+  display:grid;
+  gap:10px;
+}
+
+.inquiry-validation__title {
+  font-size:10px;
+  line-height:1.5;
+}
+
+.inquiry-validation__groups {
+  display:grid;
+  gap:8px;
+}
+
+.inquiry-validation__row {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:3px 14px;
+  align-items:baseline;
+  padding-top:8px;
+  border-top:1px solid rgba(127,72,42,.18);
+}
+
+.inquiry-validation__row > span {
+  min-width:0;
+  font-size:9px;
+  font-weight:700;
+}
+
+.inquiry-validation__row > strong {
+  font-size:10px;
+}
+
+.inquiry-validation__row > small {
+  grid-column:1/-1;
+  color:#8a634d;
+  font-size:9px;
+  line-height:1.45;
+}
+
+@media (max-width:760px) {
+  .inquiry-item__moq-feedback {
+    margin-top:7px;
+  }
+
+  .inquiry-validation__row {
+    gap:3px 10px;
+  }
+}

@@ -35,6 +35,7 @@ for(const marker of [
   'data-r4-inquiry-static="true"',
   'data-inquiry-runtime-presentation',
   'data-inquiry-conversion-composition="true"',
+  'data-inquiry-interaction-efficiency="true"',
   'data-inquiry-commercial-summary',
   'data-inquiry-commercial-groups',
   'name="robots" content="noindex,nofollow"',
@@ -134,6 +135,8 @@ for(const marker of [
   'DreamlandInquiryCommercialUi',
   '.commercialSnapshot({',
   '.pricingGroupQuantity(',
+  '.productMoqGroups(',
+  'inquiryMoqState',
   "'dreamland:inquiry-render'"
 ]){
   if(

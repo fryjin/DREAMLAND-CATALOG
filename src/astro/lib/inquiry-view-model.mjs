@@ -156,6 +156,7 @@ function compactUi(ui={}){
     'unitSaving',
     'nextPriceBreak',
     'moreToNextBreak',
+    'moreToMoq',
     'bestTierReached',
     'noMorePriceBreaks'
   ];
