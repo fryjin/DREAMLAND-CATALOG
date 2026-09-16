@@ -245,6 +245,8 @@ for(const productId of productIds){
   for(const marker of [
     'data-r4-astro-product="true"',
     'data-pdp-runtime-presentation',
+    'data-pdp-commercial',
+    'data-pdp-tier-sheet',
     'data-product-id="'+
       productId+
       '"',
@@ -458,11 +460,43 @@ for(const pathname of astroAssets){
   );
 }
 
-copyFile(
+const pdpRuntimeSource=
   path.join(
     SOURCE_ROOT,
     'r4-pdp-runtime.js'
-  ),
+  );
+
+ensureFile(
+  pdpRuntimeSource,
+  'Isolated Astro PDP runtime'
+);
+
+const pdpRuntimeContent=
+  fs.readFileSync(
+    pdpRuntimeSource,
+    'utf8'
+  );
+
+for(const marker of [
+  "R4.11B4.1E-C2",
+  'DreamlandPdpCommercialUi',
+  '.commercialSnapshot({',
+  "'dreamland:pdp-render'"
+]){
+  if(
+    !pdpRuntimeContent.includes(
+      marker
+    )
+  ){
+    fail(
+      'Isolated Astro PDP runtime lost Commercial Intelligence before Production promotion: '+
+      marker
+    );
+  }
+}
+
+copyFile(
+  pdpRuntimeSource,
   path.join(
     TARGET_ROOT,
     'r4-pdp-runtime.js'

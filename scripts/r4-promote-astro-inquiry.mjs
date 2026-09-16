@@ -34,6 +34,8 @@ for(const marker of [
   'data-r4-astro-inquiry="true"',
   'data-r4-inquiry-static="true"',
   'data-inquiry-runtime-presentation',
+  'data-inquiry-commercial-summary',
+  'data-inquiry-commercial-groups',
   'name="robots" content="noindex,nofollow"',
   'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/"',
   'id="inquiryRuntimeState"',
@@ -109,7 +111,49 @@ for(const pathname of astroAssets){
   copyFile(path.join(SOURCE_ROOT,relative),path.join(TARGET_ROOT,relative));
 }
 
-copyFile(path.join(SOURCE_ROOT,'r4-inquiry-runtime.js'),path.join(TARGET_ROOT,'r4-inquiry-runtime.js'));
+const inquiryRuntimeSource=
+  path.join(
+    SOURCE_ROOT,
+    'r4-inquiry-runtime.js'
+  );
+
+ensureFile(
+  inquiryRuntimeSource,
+  'Isolated Astro Inquiry runtime'
+);
+
+const inquiryRuntimeContent=
+  fs.readFileSync(
+    inquiryRuntimeSource,
+    'utf8'
+  );
+
+for(const marker of [
+  "R4.11B4.1E-C3",
+  'DreamlandInquiryCommercialUi',
+  '.commercialSnapshot({',
+  '.pricingGroupQuantity(',
+  "'dreamland:inquiry-render'"
+]){
+  if(
+    !inquiryRuntimeContent.includes(
+      marker
+    )
+  ){
+    fail(
+      'Isolated Astro Inquiry runtime lost Commercial Intelligence before Production promotion: '+
+      marker
+    );
+  }
+}
+
+copyFile(
+  inquiryRuntimeSource,
+  path.join(
+    TARGET_ROOT,
+    'r4-inquiry-runtime.js'
+  )
+);
 
 let coverCount=0;
 for(const product of state.products||[]){
