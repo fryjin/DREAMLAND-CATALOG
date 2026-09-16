@@ -554,12 +554,6 @@
 }
 
 @media (max-width:720px) {
-  /*
-   * R4.11B4.1E-C3-FIX2C — iOS Safari focus stability.
-   */
-  .pdp-quantity input {
-    font-size:16px;
-  }
 
   .pdp-main {
     background:
@@ -1204,7 +1198,11 @@
       1px
       solid
       var(--home-line);
-    font-size:13px;
+    /*
+     * R4.11B4.1E-C3-FIX2E — effective visible PDP quantity input.
+     * 16px prevents iOS Safari focus auto-zoom without disabling user zoom.
+     */
+    font-size:16px;
     font-weight:800;
     text-align:center;
   }
