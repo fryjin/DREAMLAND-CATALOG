@@ -3,8 +3,9 @@
   padding-bottom:clamp(80px,9vw,132px);
 }
 
+/* F3-D2 — Review Conversion Composition */
 .review-hero {
-  padding:clamp(52px,7vw,92px) 0 30px;
+  padding:clamp(34px,4vw,54px) 0 20px;
 }
 
 .review-hero__inner {
@@ -27,7 +28,7 @@
   max-width:780px;
   margin:0;
   font-family:var(--home-serif);
-  font-size:clamp(42px,6vw,82px);
+  font-size:clamp(38px,4.2vw,56px);
   font-weight:500;
   line-height:.98;
   letter-spacing:-.045em;
@@ -42,8 +43,8 @@
 }
 
 .review-progress {
-  margin-top:12px;
-  padding-bottom:30px;
+  margin-top:4px;
+  padding-bottom:18px;
   border-bottom:1px solid var(--home-line);
 }
 
@@ -57,8 +58,8 @@
 }
 
 .review-progress li {
-  min-height:58px;
-  padding:14px 0;
+  min-height:44px;
+  padding:10px 0;
   display:grid;
   grid-template-columns:32px minmax(0,1fr);
   gap:10px;
@@ -129,7 +130,6 @@
 }
 
 .review-section__title h2,
-.review-notice h2,
 .review-summary h2 {
   margin:0;
   font-family:var(--home-serif);
@@ -185,28 +185,6 @@
   border-top:1px solid var(--home-line);
 }
 
-.review-notice {
-  margin-top:20px;
-  padding:26px;
-  background:var(--home-sand);
-  border-radius:18px;
-}
-
-.review-notice .review-section__title {
-  grid-template-columns:34px minmax(0,1fr);
-}
-
-.review-notice .review-eyebrow {
-  margin-bottom:8px;
-}
-
-.review-notice > p {
-  margin:16px 0 0 48px;
-  color:var(--home-muted);
-  font-size:12px;
-  line-height:1.65;
-}
-
 .review-summary {
   position:sticky;
   top:24px;
@@ -245,11 +223,40 @@
   text-align:right;
 }
 
+.review-summary__reference {
+  display:block!important;
+  padding:14px 0 15px;
+}
+
+.review-summary__reference span,
+.review-summary__reference strong {
+  display:block;
+  text-align:left;
+}
+
+.review-summary__reference strong {
+  margin-top:5px;
+  font-size:14px;
+  letter-spacing:.01em;
+}
+
 .review-summary__note {
   margin:17px 0;
+  display:grid;
+  gap:5px;
   color:var(--home-muted);
   font-size:11px;
   line-height:1.6;
+}
+
+.review-summary__note strong {
+  color:var(--home-ink);
+  font-size:11px;
+  font-weight:800;
+}
+
+.review-summary__note span {
+  display:block;
 }
 
 .review-consent {
@@ -317,7 +324,7 @@
 
 @media (max-width:640px) {
   .review-hero {
-    padding-top:40px;
+    padding-top:26px;
   }
 
   .review-progress ol {
@@ -325,8 +332,10 @@
   }
 
   .review-progress li {
-    grid-template-columns:1fr;
-    gap:3px;
+    min-height:34px;
+    padding:6px 0;
+    grid-template-columns:auto minmax(0,1fr);
+    gap:5px;
   }
 
   .review-contact-grid {
@@ -338,28 +347,25 @@
     margin-left:0;
   }
 
-  .review-notice > p {
-    margin-left:0;
-  }
 }
 /* --------------------------------------------------------------------------
  * R4.9B — Review Minimal Runtime
  * ------------------------------------------------------------------------ */
 
 .review-runtime-item {
-  min-height:112px;
+  min-height:96px;
   margin-left:48px;
-  padding:18px 0;
+  padding:14px 0;
   display:grid;
-  grid-template-columns:82px minmax(0,1fr) auto;
+  grid-template-columns:72px minmax(0,1fr) auto;
   gap:18px;
   align-items:center;
   border-top:1px solid var(--home-line);
 }
 
 .review-runtime-item__media {
-  width:82px;
-  height:94px;
+  width:72px;
+  height:82px;
   overflow:hidden;
   display:grid;
   place-items:center;
@@ -383,7 +389,11 @@
 }
 
 .review-runtime-item__body p {
-  margin:7px 0 0;
+  margin:6px 0 0;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
   color:var(--home-muted);
   font-size:11px;
   line-height:1.6;

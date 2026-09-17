@@ -51,11 +51,13 @@ const contactRows=[
 ];
 
 const notProvided=c.notProvided||'Not provided';
+const optionalContactKeys=new Set(['company','buyerType','city','message']);
 ---
 <main
   class="review-main"
   data-review-static-presentation
   data-review-runtime-presentation
+  data-review-conversion-composition="true"
 >
   <section
     class="review-hero"
@@ -149,7 +151,10 @@ const notProvided=c.notProvided||'Not provided';
 
         <dl class="review-contact-grid">
           {contactRows.map((row:any)=>(
-            <div data-review-static-contact-field={row.key}>
+            <div
+              data-review-static-contact-field={row.key}
+              hidden={optionalContactKeys.has(row.key)}
+            >
               <dt data-review-contact-label={row.key}>
                 {row.label}
               </dt>
@@ -218,29 +223,7 @@ const notProvided=c.notProvided||'Not provided';
         <div data-review-customs-list></div>
       </section>
 
-      <section
-        class="review-notice"
-        data-review-static-notice
-      >
-        <div class="review-section__title">
-          <span data-review-notice-index>03</span>
-          <div>
-            <p
-              class="review-eyebrow"
-              data-review-bind="beforeSubmitKicker"
-            >
-              {c.beforeSubmitKicker||'BEFORE SUBMISSION'}
-            </p>
-            <h2 data-review-bind="beforeSubmitTitle">
-              {c.beforeSubmitTitle||'Submitting an inquiry does not place an order.'}
-            </h2>
-          </div>
-        </div>
-
-        <p data-review-bind="beforeSubmitBody">
-          {c.beforeSubmitBody||'Pricing, production and delivery are confirmed only after the quotation is accepted.'}
-        </p>
-      </section>
+      <span data-review-static-notice hidden></span>
     </div>
 
     <aside
@@ -259,7 +242,7 @@ const notProvided=c.notProvided||'Not provided';
       </h2>
 
       <div class="review-summary__rows">
-        <div>
+        <div class="review-summary__reference">
           <span data-review-bind="inquiryNumber">
             {c.inquiryNumber||'Inquiry ID'}
           </span>
@@ -284,6 +267,14 @@ const notProvided=c.notProvided||'Not provided';
         </div>
 
         <div
+          data-review-product-quantity-summary
+          hidden
+        >
+          <span data-review-bind="totalQuantity">{c.totalQuantity||'Total Quantity'}</span>
+          <strong data-review-total-quantity>—</strong>
+        </div>
+
+        <div
           data-review-custom-summary
           hidden
         >
@@ -296,12 +287,10 @@ const notProvided=c.notProvided||'Not provided';
         </div>
       </div>
 
-      <p
-        class="review-summary__note"
-        data-review-bind="beforeSubmitBody"
-      >
-        {c.beforeSubmitBody||'Pricing, production and delivery are confirmed only after the quotation is accepted.'}
-      </p>
+      <div class="review-summary__note">
+        <strong data-review-bind="beforeSubmitTitle">{c.beforeSubmitTitle||'Submitting an inquiry does not place an order.'}</strong>
+        <span data-review-bind="beforeSubmitBody">{c.beforeSubmitBody||'Pricing, production and delivery are confirmed only after the quotation is accepted.'}</span>
+      </div>
 
       <label
         class="review-consent"

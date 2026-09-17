@@ -769,6 +769,8 @@
       projection.contact||
       {};
 
+    const optionalContactKeys=new Set(['company','buyerType','city','message']);
+
     const labels={
       name:
         copy.name,
@@ -822,23 +824,11 @@
     }
 
     for(const key of Object.keys(labels)){
-      const node=
-        documentRef.querySelector(
-          '[data-review-contact-value="'+
-          key+
-          '"]'
-        );
-
-      if(node){
-        node.textContent=
-          text(
-            values[key]
-          )||
-          text(
-            copy.notProvided
-          )||
-          '—';
-      }
+      const value=text(values[key]);
+      const shell=documentRef.querySelector('[data-review-static-contact-field="'+key+'"]');
+      if(shell&&optionalContactKeys.has(key)) shell.hidden=!value;
+      const node=documentRef.querySelector('[data-review-contact-value="'+key+'"]');
+      if(node) node.textContent=value||text(copy.notProvided)||'—';
     }
   }
 
@@ -881,6 +871,11 @@
     );
 
     return node;
+  }
+
+  function conciseProductPreview(item){
+    const parts=text(item?.previewValue).split(' · ').map(text).filter(Boolean);
+    return parts.filter((part,index)=>index!==parts.length-1&&!/^MOQ\s+/i.test(part)).join(' · ');
   }
 
   function productCard(documentRef,item){
@@ -962,7 +957,7 @@
       body,
       'p',
       '',
-      item.previewValue
+      conciseProductPreview(item)
     );
 
     appendText(
@@ -1134,18 +1129,6 @@
       );
     }
 
-    const noticeIndex=
-      documentRef.querySelector(
-        '[data-review-notice-index]'
-      );
-
-    if(noticeIndex){
-      noticeIndex.textContent=
-        hasCustom
-          ? '04'
-          : '03';
-    }
-
     const customSummary=
       documentRef.querySelector(
         '[data-review-custom-summary]'
@@ -1177,6 +1160,14 @@
         projection.estimatedTotalDisplay||
         '—';
     }
+
+    const productQuantity=number(viewModel.summary?.productQuantity,0);
+    const quantityRow=documentRef.querySelector('[data-review-product-quantity-summary]');
+    if(quantityRow) quantityRow.hidden=productQuantity<=0;
+    const quantityValue=documentRef.querySelector('[data-review-total-quantity]');
+    if(quantityValue) quantityValue.textContent=productQuantity>0
+      ? productQuantity+' '+(text(locale.ui?.pieces)||'pcs')
+      : '—';
 
     const badge=
       documentRef.querySelector(

@@ -41,6 +41,7 @@ const REVIEW_COPY_KEYS=Object.freeze([
   'summaryTitle',
   'inquiryNumber',
   'productEstimate',
+  'totalQuantity',
   'beforeSubmitKicker',
   'beforeSubmitTitle',
   'beforeSubmitBody',
