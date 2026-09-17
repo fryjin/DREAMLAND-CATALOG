@@ -140,6 +140,7 @@ function compactUi(ui={}){
   const keys=[
     'pieces',
     'items',
+    'models',
     'moq',
     'currentUnitPrice',
     'amountEstimate',
@@ -153,6 +154,10 @@ function compactUi(ui={}){
     'quantityTooLarge',
     'tierPriceTable',
     'tierRule',
+    'quantityGroup',
+    'quantityGroups',
+    'quantityGroupRule',
+    'groupTotal',
     'currentPriceTier',
     'unitSaving',
     'nextPriceBreak',

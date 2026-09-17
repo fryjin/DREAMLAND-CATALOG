@@ -437,7 +437,11 @@ if(SOURCE_MODE){
       for(const key of [
         'moreToMoq',
         'editConfig',
-        'saveChanges'
+        'saveChanges',
+        'quantityGroup',
+        'quantityGroups',
+        'quantityGroupRule',
+        'groupTotal'
       ]){
         if(
           !String(
@@ -464,6 +468,36 @@ if(SOURCE_MODE){
   }
 
   /*
+   * RULE1 grouping visibility: the presentation layer must expose the single
+   * canonical commercialGroupKey instead of inventing another grouping rule.
+   */
+  try{
+    const commercial=
+      read(
+        'src/astro/runtime/inquiry-commercial-runtime.js'
+      );
+
+    requireMarkers(
+      'Unified grouping visibility',
+      commercial,
+      [
+        'F3-B5-FIX2R1 — Unified Grouping Visibility',
+        'renderGroupSections',
+        'renderItemGroupStatus',
+        '.commercialGroupKey(',
+        '.productMoqGroups(',
+        'inquiryQuantityGroup',
+        'inquiryGroupStatus'
+      ]
+    );
+  }catch(error){
+    fail(
+      'Unified grouping visibility closeout failed: '+
+      error.message
+    );
+  }
+
+  /*
    * Mobile focus stability + utility action styling remain intact.
    */
   try{
@@ -479,7 +513,9 @@ if(SOURCE_MODE){
         '.inquiry-item__qty button:disabled',
         '.inquiry-item__moq-feedback',
         '.inquiry-validation__row',
-        '.inquiry-item__edit'
+        '.inquiry-item__edit',
+        '.inquiry-quantity-group',
+        '.inquiry-item__group-status'
       ]
     );
 
@@ -554,7 +590,10 @@ if(SOURCE_MODE){
         "'.productMoqGroups('",
         "'inquiry-item__edit'",
         "'inquiryCustomEditProject'",
-        "'customEditHref'"
+        "'customEditHref'",
+        "'inquiryQuantityGroup'",
+        "'inquiryGroupStatus'",
+        "'renderGroupSections'"
       ]
     );
 
@@ -638,6 +677,8 @@ if(SOURCE_MODE){
       'npm run r4:conversion:inquiry-interaction',
       'npm run r4:conversion:product-edit',
       'npm run r4:conversion:custom-edit',
+      'npm run r4:conversion:unified-commercial-group',
+      'npm run r4:conversion:grouping-visibility',
       'npm run r4:conversion:interaction-closeout',
       'npm run r4:astro:contact'
     ];
@@ -673,6 +714,8 @@ if(SOURCE_MODE){
       'npm run r4:conversion:inquiry-interaction:dist',
       'npm run r4:conversion:product-edit:dist',
       'npm run r4:conversion:custom-edit:dist',
+      'npm run r4:conversion:unified-commercial-group:dist',
+      'npm run r4:conversion:grouping-visibility:dist',
       'npm run r4:conversion:interaction-closeout:dist'
     ];
 

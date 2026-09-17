@@ -417,6 +417,316 @@
     );
   }
 
+  /*
+   * F3-B5-FIX2R1 — Unified Grouping Visibility
+   * RULE1 already owns the single commercial quantity group. This layer only
+   * exposes that canonical membership in the left list and right summary.
+   */
+  function groupMeta(
+    group,
+    state,
+    language
+  ){
+    const models=
+      ui(
+        state,
+        language,
+        'models'
+      )||
+      (
+        language==='zh'
+          ? '款'
+          : language==='ko'
+            ? '개 상품'
+            : 'items'
+      );
+
+    return (
+      group.itemCount+
+      ' '+
+      models+
+      ' · '+
+      group.quantity+
+      ' '+
+      pieces(
+        state,
+        language
+      )
+    );
+  }
+
+  function renderItemGroupStatus(
+    item,
+    group,
+    moqGroup,
+    state,
+    language
+  ){
+    const card=
+      itemCard(
+        item
+      );
+
+    const body=
+      card?.querySelector(
+        '.inquiry-item__body'
+      );
+
+    if(!body){
+      return;
+    }
+
+    body
+      .querySelector(
+        '[data-inquiry-group-status]'
+      )
+      ?.remove();
+
+    const status=
+      create(
+        'div',
+        'inquiry-item__group-status'
+      );
+
+    status.dataset
+      .inquiryGroupStatus=
+      group.key;
+
+    const label=
+      create(
+        'span'
+      );
+
+    label.textContent=
+      ui(
+        state,
+        language,
+        'groupTotal'
+      )||
+      'Group total';
+
+    const value=
+      create(
+        'strong'
+      );
+
+    const moq=
+      Number(
+        moqGroup?.moq
+      )||
+      0;
+
+    value.textContent=
+      group.quantity+
+      ' '+
+      pieces(
+        state,
+        language
+      )+
+      (
+        moq>0
+          ? ' · MOQ '+
+            moq
+          : ''
+      );
+
+    status.append(
+      label,
+      value
+    );
+
+    const commercial=
+      body.querySelector(
+        '[data-inquiry-commercial-item]'
+      );
+
+    body.insertBefore(
+      status,
+      commercial||
+      null
+    );
+  }
+
+  function renderGroupSections(
+    groups,
+    state,
+    language
+  ){
+    const container=
+      document.querySelector(
+        '[data-inquiry-items]'
+      );
+
+    if(
+      !container||
+      !groups.length
+    ){
+      return;
+    }
+
+    const productIds=
+      new Set(
+        groups.flatMap(
+          group=>
+            group.items.map(
+              item=>
+                text(
+                  item?.id
+                )
+            )
+        )
+      );
+
+    const customCards=
+      Array.from(
+        container.querySelectorAll(
+          '[data-inquiry-item-id]'
+        )
+      ).filter(
+        card=>
+          !productIds.has(
+            text(
+              card.dataset
+                .inquiryItemId
+            )
+          )
+      );
+
+    const fragment=
+      document.createDocumentFragment();
+
+    groups.forEach(group=>{
+      const section=
+        create(
+          'section',
+          'inquiry-quantity-group'
+        );
+
+      section.dataset
+        .inquiryQuantityGroup=
+        group.key;
+
+      const header=
+        create(
+          'header',
+          'inquiry-quantity-group__header'
+        );
+
+      const heading=
+        create(
+          'div',
+          'inquiry-quantity-group__heading'
+        );
+
+      const eyebrow=
+        create(
+          'span'
+        );
+
+      eyebrow.textContent=
+        ui(
+          state,
+          language,
+          'quantityGroup'
+        )||
+        'Quantity group';
+
+      const title=
+        create(
+          'strong'
+        );
+
+      title.textContent=
+        groupLabel(
+          group.snapshot,
+          state,
+          language
+        );
+
+      heading.append(
+        eyebrow,
+        title
+      );
+
+      const meta=
+        create(
+          'span',
+          'inquiry-quantity-group__meta'
+        );
+
+      meta.textContent=
+        groupMeta(
+          group,
+          state,
+          language
+        );
+
+      header.append(
+        heading,
+        meta
+      );
+
+      const rule=
+        create(
+          'p',
+          'inquiry-quantity-group__rule'
+        );
+
+      rule.textContent=
+        ui(
+          state,
+          language,
+          'quantityGroupRule'
+        )||
+        ui(
+          state,
+          language,
+          'tierRule'
+        )||
+        'Same-series, same-size products combine for MOQ and tier pricing';
+
+      const body=
+        create(
+          'div',
+          'inquiry-quantity-group__body'
+        );
+
+      group.items.forEach(item=>{
+        const card=
+          itemCard(
+            item
+          );
+
+        if(card){
+          body.appendChild(
+            card
+          );
+        }
+      });
+
+      section.append(
+        header,
+        rule,
+        body
+      );
+
+      fragment.appendChild(
+        section
+      );
+    });
+
+    customCards.forEach(
+      card=>
+        fragment.appendChild(
+          card
+        )
+    );
+
+    container.replaceChildren(
+      fragment
+    );
+  }
+
   function renderGroups(
     groups,
     state,
@@ -445,9 +755,14 @@
       ui(
         state,
         language,
+        'quantityGroups'
+      )||
+      ui(
+        state,
+        language,
         'tierPriceTable'
       )||
-      'Tier pricing';
+      'Quantity groups';
 
     document.querySelector(
       '[data-inquiry-commercial-rule]'
@@ -455,9 +770,14 @@
       ui(
         state,
         language,
+        'quantityGroupRule'
+      )||
+      ui(
+        state,
+        language,
         'tierRule'
       )||
-      'Calculated by series or scent-series quantity';
+      'Same-series, same-size products combine for MOQ and tier pricing';
 
     section.hidden=
       groups.length===0;
@@ -639,6 +959,8 @@
         ?.commercialGroupKey||
       !inquiry
         ?.pricingGroupQuantity||
+      !inquiry
+        ?.productMoqGroups||
       !pricing
         ?.commercialSnapshot
     ){
@@ -687,15 +1009,69 @@
               key,
               quantity:
                 snapshot.quantity,
+              itemCount:0,
+              items:[],
               snapshot
             }
           );
         }
+
+        const group=
+          groups.get(
+            key
+          );
+
+        group.itemCount+=1;
+        group.items.push(
+          item
+        );
       });
 
     const projected=[
       ...groups.values()
     ];
+
+    const moqGroups=
+      new Map(
+        inquiry
+          .productMoqGroups(
+            item=>
+              pricing
+                .moqForSeriesSize(
+                  item?.series,
+                  item?.size,
+                  state.seriesMeta||
+                  {}
+                )
+          )
+          .map(
+            group=>[
+              group.key,
+              group
+            ]
+          )
+      );
+
+    projected.forEach(group=>{
+      group.items.forEach(
+        item=>
+          renderItemGroupStatus(
+            item,
+            group,
+            moqGroups.get(
+              group.key
+            ),
+            state,
+            language
+          )
+      );
+    });
+
+    renderGroupSections(
+      projected,
+      state,
+      language
+    );
 
     renderGroups(
       projected,

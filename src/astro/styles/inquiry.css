@@ -1040,3 +1040,127 @@
     margin-top:7px;
   }
 }
+
+
+/* ============================================================
+ * F3-B5-FIX2R1 — Unified Grouping Visibility
+ * One visible group = one canonical Commercial Quantity Group.
+ * ========================================================== */
+
+.inquiry-quantity-group {
+  display:grid;
+  gap:10px;
+  padding-top:18px;
+  border-top:1px solid var(--home-ink);
+}
+
+.inquiry-quantity-group:first-child {
+  padding-top:0;
+  border-top:0;
+}
+
+.inquiry-quantity-group__header {
+  display:flex;
+  gap:20px;
+  align-items:end;
+  justify-content:space-between;
+  padding:0 2px;
+}
+
+.inquiry-quantity-group__heading {
+  display:grid;
+  gap:4px;
+}
+
+.inquiry-quantity-group__heading > span {
+  color:var(--home-muted);
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.inquiry-quantity-group__heading > strong {
+  font-family:var(--home-serif);
+  font-size:22px;
+  font-weight:400;
+  line-height:1.05;
+}
+
+.inquiry-quantity-group__meta {
+  color:var(--home-muted);
+  font-size:9px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.inquiry-quantity-group__rule {
+  max-width:62ch;
+  margin:-2px 2px 2px;
+  color:var(--home-soft);
+  font-size:9px;
+  line-height:1.5;
+}
+
+.inquiry-quantity-group__body {
+  display:grid;
+  gap:10px;
+}
+
+.inquiry-item__group-status {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 12px;
+  align-items:baseline;
+  width:max-content;
+  max-width:100%;
+  margin-top:12px;
+  padding:7px 10px;
+  background:var(--home-sand);
+  color:var(--home-muted);
+  font-size:9px;
+  line-height:1.45;
+}
+
+.inquiry-item__group-status span {
+  font-weight:800;
+}
+
+.inquiry-item__group-status strong {
+  color:var(--home-ink);
+  font-size:9px;
+}
+
+@media (max-width:760px) {
+  .inquiry-quantity-group {
+    gap:8px;
+    padding-top:22px;
+  }
+
+  .inquiry-quantity-group__header {
+    align-items:start;
+  }
+
+  .inquiry-quantity-group__heading > strong {
+    font-size:20px;
+  }
+
+  .inquiry-quantity-group__meta {
+    padding-top:13px;
+    font-size:8px;
+  }
+
+  .inquiry-quantity-group__rule {
+    margin:0 2px 2px;
+  }
+
+  .inquiry-quantity-group__body {
+    gap:8px;
+  }
+
+  .inquiry-item__group-status {
+    display:grid;
+    gap:2px;
+    width:auto;
+  }
+}

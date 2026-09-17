@@ -55,7 +55,7 @@ if(SOURCE_MODE){
     const runtime=read('src/astro/runtime/inquiry-runtime.js');
 
     for(const marker of [
-      'F3-B2 — Quantity & MOQ Interaction Efficiency',
+      '.commercialGroupKey(',
       '.productMoqGroups(',
       'function unmetGroups(',
       'inquiryMoqState',
