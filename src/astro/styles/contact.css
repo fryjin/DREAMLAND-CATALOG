@@ -430,6 +430,14 @@
     grid-template-columns:1fr;
   }
 
+  /* ------------------------------------------------------------------------
+   * F3-C3 — Contact Input Efficiency
+   * 16px controls prevent mobile focus zoom.
+   * ---------------------------------------------------------------------- */
+  .contact-field :is(input,select,textarea) {
+    font-size:16px;
+  }
+
   .contact-field--wide {
     grid-column:auto;
   }

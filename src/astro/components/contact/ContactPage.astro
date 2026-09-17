@@ -44,7 +44,11 @@ const fieldConfig:Record<string,any>={
     placeholder:c.namePlaceholder||'Your name',
     required:true,
     type:'text',
-    autocomplete:'name'
+    autocomplete:'name',
+    inputMode:'text',
+    enterKeyHint:'next',
+    autoCapitalize:'words',
+    spellcheck:false
   },
   company:{
     labelKey:'company',
@@ -53,7 +57,10 @@ const fieldConfig:Record<string,any>={
     placeholder:c.companyPlaceholder||'Company or brand',
     required:false,
     type:'text',
-    autocomplete:'organization'
+    autocomplete:'organization',
+    inputMode:'text',
+    autoCapitalize:'words',
+    spellcheck:false
   },
   country:{
     labelKey:'country',
@@ -70,7 +77,10 @@ const fieldConfig:Record<string,any>={
     placeholder:c.cityPlaceholder||'City',
     required:false,
     type:'text',
-    autocomplete:'address-level2'
+    autocomplete:'address-level2',
+    inputMode:'text',
+    autoCapitalize:'words',
+    spellcheck:false
   },
   email:{
     labelKey:'email',
@@ -79,16 +89,24 @@ const fieldConfig:Record<string,any>={
     placeholder:c.emailPlaceholder||'name@example.com',
     required:true,
     type:'email',
-    autocomplete:'email'
+    autocomplete:'email',
+    inputMode:'email',
+    enterKeyHint:'next',
+    autoCapitalize:'none',
+    spellcheck:false
   },
   phone:{
     labelKey:'phone',
     label:c.phone||'WhatsApp / Phone / WeChat',
     placeholderKey:'phonePlaceholder',
-    placeholder:c.phonePlaceholder||'Preferred contact method',
+    placeholder:c.phonePlaceholder||'Phone, WhatsApp number or WeChat ID',
     required:true,
-    type:'tel',
-    autocomplete:'tel'
+    type:'text',
+    autocomplete:'tel',
+    inputMode:'text',
+    enterKeyHint:'done',
+    autoCapitalize:'none',
+    spellcheck:false
   },
   buyerType:{
     labelKey:'buyerType',
@@ -134,6 +152,7 @@ const summaryRows=[
   data-contact-static-presentation
   data-contact-runtime-presentation
   data-contact-conversion-composition="true"
+  data-contact-input-efficiency="true"
 >
   <section
     class="contact-hero"
@@ -256,6 +275,8 @@ const summaryRows=[
                         disabled
                         required
                         autocomplete="country-name"
+                        aria-describedby="countryError"
+                        aria-invalid="false"
                         data-contact-static-field="country"
                         data-contact-field="country"
                         data-contact-country-select
@@ -273,6 +294,7 @@ const summaryRows=[
                         ))}
                       </select>
                       <p
+                        id="countryError"
                         class="contact-field__error"
                         data-contact-field-error="country"
                         hidden
@@ -297,6 +319,8 @@ const summaryRows=[
                       </span>
                       <select
                         disabled
+                        aria-describedby="buyerTypeError"
+                        aria-invalid="false"
                         data-contact-static-field="buyerType"
                         data-contact-field="buyerType"
                         data-contact-buyer-select
@@ -314,6 +338,7 @@ const summaryRows=[
                         ))}
                       </select>
                       <p
+                        id="buyerTypeError"
                         class="contact-field__error"
                         data-contact-field-error="buyerType"
                         hidden
@@ -339,11 +364,14 @@ const summaryRows=[
                       <textarea
                         disabled
                         placeholder={field.placeholder}
+                        aria-describedby={`${key}Error`}
+                        aria-invalid="false"
                         data-contact-static-field={key}
                         data-contact-field={key}
                         data-contact-placeholder={field.placeholderKey}
                       >{contact[key]||''}</textarea>
                       <p
+                        id={`${key}Error`}
                         class="contact-field__error"
                         data-contact-field-error={key}
                         hidden
@@ -370,6 +398,12 @@ const summaryRows=[
                       required={required}
                       type={field.type}
                       autocomplete={field.autocomplete}
+                      inputmode={field.inputMode}
+                      enterkeyhint={field.enterKeyHint}
+                      autocapitalize={field.autoCapitalize}
+                      spellcheck={field.spellcheck}
+                      aria-describedby={`${key}Error`}
+                      aria-invalid="false"
                       placeholder={field.placeholder}
                       value={contact[key]||''}
                       data-contact-static-field={key}
@@ -377,6 +411,7 @@ const summaryRows=[
                       data-contact-placeholder={field.placeholderKey}
                     />
                     <p
+                      id={`${key}Error`}
                       class="contact-field__error"
                       data-contact-field-error={key}
                       hidden
