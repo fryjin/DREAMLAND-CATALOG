@@ -60,7 +60,6 @@ if(SOURCE_MODE){
       'function unmetGroups(',
       'inquiryMoqState',
       'inquiryMoqGroup',
-      'inquiry-item__moq-feedback',
       'inquiry-validation__row',
       'minus.disabled=',
       'plus.disabled=',
@@ -86,7 +85,6 @@ if(SOURCE_MODE){
 
     for(const marker of [
       'F3-B2 — Quantity & MOQ Interaction Efficiency',
-      '.inquiry-item__moq-feedback',
       '.inquiry-validation__title',
       '.inquiry-validation__row',
       '.inquiry-item__qty button:disabled'
@@ -277,7 +275,6 @@ if(DIST_MODE){
       for(const marker of [
         '.productMoqGroups(',
         'inquiryMoqState',
-        'inquiry-item__moq-feedback',
         'inquiry-validation__row'
       ]){
         if(!runtime.includes(marker)){
@@ -304,7 +301,7 @@ console.log('');
 console.log('DREAMLAND F3-B2 INQUIRY INTERACTION EFFICIENCY: PASS');
 console.log(
   SOURCE_MODE
-    ? 'All MOQ blockers / per-card MOQ feedback / quantity boundaries / unified MOQ+pricing quantity ownership / media stability verified.'
+    ? 'All MOQ blockers / quantity boundaries / unified MOQ+pricing quantity ownership / media stability verified.'
     : 'Isolated Astro + Production Inquiry preserve the F3-B2 interaction contract.'
 );
 console.log('');

@@ -130,7 +130,6 @@ if(SOURCE_MODE){
       [
         'function unmetGroups(',
         '.productMoqGroups(',
-        'inquiry-item__moq-feedback',
         'inquiry-validation__row',
         'minus.disabled=',
         'plus.disabled=',
@@ -483,7 +482,7 @@ if(SOURCE_MODE){
       [
         'F3-B5-FIX2R1 — Unified Grouping Visibility',
         'renderGroupSections',
-        'renderItemGroupStatus',
+        'renderGroupStatus',
         '.commercialGroupKey(',
         '.productMoqGroups(',
         'inquiryQuantityGroup',
@@ -511,11 +510,10 @@ if(SOURCE_MODE){
       inquiryCss,
       [
         '.inquiry-item__qty button:disabled',
-        '.inquiry-item__moq-feedback',
         '.inquiry-validation__row',
         '.inquiry-item__edit',
         '.inquiry-quantity-group',
-        '.inquiry-item__group-status'
+        '.inquiry-quantity-group__status'
       ]
     );
 
@@ -679,6 +677,7 @@ if(SOURCE_MODE){
       'npm run r4:conversion:custom-edit',
       'npm run r4:conversion:unified-commercial-group',
       'npm run r4:conversion:grouping-visibility',
+      'npm run r4:conversion:group-status-dedup',
       'npm run r4:conversion:interaction-closeout',
       'npm run r4:astro:contact'
     ];
@@ -716,6 +715,7 @@ if(SOURCE_MODE){
       'npm run r4:conversion:custom-edit:dist',
       'npm run r4:conversion:unified-commercial-group:dist',
       'npm run r4:conversion:grouping-visibility:dist',
+      'npm run r4:conversion:group-status-dedup:dist',
       'npm run r4:conversion:interaction-closeout:dist'
     ];
 
@@ -795,7 +795,7 @@ if(DIST_MODE){
       inquiry,
       [
         'function unmetGroups(',
-        'inquiry-item__moq-feedback',
+        'renderGroupStatus',
         'preserveMediaOnNextRender=true;',
         'inquiryEditConfiguration',
         'inquiryCustomEditProject',

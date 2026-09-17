@@ -1025,31 +1025,6 @@
       qty
     );
 
-    if(quantityToMoq>0){
-      const feedback=
-        appendText(
-          documentRef,
-          body,
-          'p',
-          'inquiry-item__moq-feedback',
-          moreToMoqLabel(
-            language,
-            locale
-          )+
-          ' '+
-          quantityToMoq+
-          ' '+
-          quantityUnit(
-            language,
-            locale
-          )
-        );
-
-      feedback.dataset
-        .inquiryMoqFeedback=
-        'true';
-    }
-
     const edit=
       createElement(
         documentRef,

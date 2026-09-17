@@ -154,13 +154,13 @@ if(SOURCE_MODE){
       [
         'F3-B5-FIX2R1 — Unified Grouping Visibility',
         'function renderGroupSections(',
-        'function renderItemGroupStatus(',
+        'function renderGroupStatus(',
         '.commercialGroupKey(',
         '.productMoqGroups(',
         '.pricingGroupQuantity(',
         'inquiry-quantity-group',
         'inquiryQuantityGroup',
-        'inquiry-item__group-status',
+        'inquiry-quantity-group__status',
         'inquiryGroupStatus',
         "'quantityGroup'",
         "'quantityGroups'",
@@ -260,7 +260,7 @@ if(SOURCE_MODE){
         '.inquiry-quantity-group',
         '.inquiry-quantity-group__header',
         '.inquiry-quantity-group__body',
-        '.inquiry-item__group-status'
+        '.inquiry-quantity-group__status'
       ]
     );
   }catch(error){
@@ -409,7 +409,7 @@ if(DIST_MODE){
         [
           'F3-B5-FIX2R1 — Unified Grouping Visibility',
           'renderGroupSections',
-          'renderItemGroupStatus',
+          'renderGroupStatus',
           'inquiryQuantityGroup',
           'inquiryGroupStatus',
           '.commercialGroupKey(',
@@ -480,7 +480,7 @@ console.log(
 
 console.log(
   SOURCE_MODE
-    ? 'Canonical commercial groups are now visible as left-side Product sections, per-card group totals and right-side Quantity Groups without duplicating grouping logic.'
+    ? 'Canonical commercial groups are visible as left-side Product sections, one group-level status and right-side Quantity Groups without duplicating grouping logic.'
     : 'Isolated Astro + Production Inquiry preserve unified grouping visibility and EN/ZH/KO copy.'
 );
 

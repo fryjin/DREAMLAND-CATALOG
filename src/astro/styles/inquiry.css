@@ -948,14 +948,6 @@
   cursor:not-allowed;
 }
 
-.inquiry-item__moq-feedback {
-  margin:8px 0 0;
-  color:#714a35;
-  font-size:9px;
-  font-weight:700;
-  line-height:1.5;
-}
-
 .inquiry-item[data-inquiry-moq-state="unmet"] .inquiry-item__qty {
   position:relative;
 }
@@ -1002,10 +994,6 @@
 }
 
 @media (max-width:760px) {
-  .inquiry-item__moq-feedback {
-    margin-top:7px;
-  }
-
   .inquiry-validation__row {
     gap:3px 10px;
   }
@@ -1107,28 +1095,37 @@
   gap:10px;
 }
 
-.inquiry-item__group-status {
+/* ============================================================
+ * F3-B5-FIX2R2 — Group Status De-duplication
+ * One procurement status line per canonical Quantity Group.
+ * ========================================================== */
+
+.inquiry-quantity-group__status {
   display:flex;
   flex-wrap:wrap;
   gap:6px 12px;
   align-items:baseline;
-  width:max-content;
-  max-width:100%;
-  margin-top:12px;
-  padding:7px 10px;
-  background:var(--home-sand);
+  margin:2px 2px 4px;
+  padding:8px 10px;
+  border:1px solid var(--home-line);
   color:var(--home-muted);
   font-size:9px;
   line-height:1.45;
 }
 
-.inquiry-item__group-status span {
+.inquiry-quantity-group__status span {
   font-weight:800;
 }
 
-.inquiry-item__group-status strong {
+.inquiry-quantity-group__status strong {
   color:var(--home-ink);
   font-size:9px;
+}
+
+.inquiry-quantity-group__status[data-inquiry-group-state="unmet"] {
+  border-color:rgba(127,72,42,.22);
+  background:rgba(197,143,104,.11);
+  color:#714a35;
 }
 
 @media (max-width:760px) {
@@ -1158,9 +1155,10 @@
     gap:8px;
   }
 
-  .inquiry-item__group-status {
+  .inquiry-quantity-group__status {
     display:grid;
     gap:2px;
-    width:auto;
+    margin-right:0;
+    margin-left:0;
   }
 }

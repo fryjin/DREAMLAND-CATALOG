@@ -444,53 +444,52 @@
     return (
       group.itemCount+
       ' '+
-      models+
-      ' · '+
-      group.quantity+
-      ' '+
-      pieces(
-        state,
-        language
-      )
+      models
     );
   }
 
-  function renderItemGroupStatus(
-    item,
+  /*
+   * F3-B5-FIX2R2 — Group Status De-duplication
+   * Shared MOQ progress belongs to the canonical Quantity Group, not each
+   * Product card.
+   */
+  function renderGroupStatus(
     group,
     moqGroup,
     state,
     language
   ){
-    const card=
-      itemCard(
-        item
-      );
-
-    const body=
-      card?.querySelector(
-        '.inquiry-item__body'
-      );
-
-    if(!body){
-      return;
-    }
-
-    body
-      .querySelector(
-        '[data-inquiry-group-status]'
-      )
-      ?.remove();
-
     const status=
       create(
         'div',
-        'inquiry-item__group-status'
+        'inquiry-quantity-group__status'
       );
 
     status.dataset
       .inquiryGroupStatus=
       group.key;
+
+    const moq=
+      Math.max(
+        0,
+        Number(
+          moqGroup?.moq
+        )||
+        0
+      );
+
+    const remaining=
+      Math.max(
+        0,
+        moq-
+        group.quantity
+      );
+
+    status.dataset
+      .inquiryGroupState=
+      remaining>0
+        ? 'unmet'
+        : 'met';
 
     const label=
       create(
@@ -510,12 +509,6 @@
         'strong'
       );
 
-    const moq=
-      Number(
-        moqGroup?.moq
-      )||
-      0;
-
     value.textContent=
       group.quantity+
       ' '+
@@ -528,6 +521,26 @@
           ? ' · MOQ '+
             moq
           : ''
+      )+
+      (
+        remaining>0
+          ? ' · '+
+            (
+              ui(
+                state,
+                language,
+                'moreToMoq'
+              )||
+              'More to MOQ'
+            )+
+            ' '+
+            remaining+
+            ' '+
+            pieces(
+              state,
+              language
+            )
+          : ''
       );
 
     status.append(
@@ -535,20 +548,12 @@
       value
     );
 
-    const commercial=
-      body.querySelector(
-        '[data-inquiry-commercial-item]'
-      );
-
-    body.insertBefore(
-      status,
-      commercial||
-      null
-    );
+    return status;
   }
 
   function renderGroupSections(
     groups,
+    moqGroups,
     state,
     language
   ){
@@ -685,6 +690,16 @@
         )||
         'Same-series, same-size products combine for MOQ and tier pricing';
 
+      const status=
+        renderGroupStatus(
+          group,
+          moqGroups.get(
+            group.key
+          ),
+          state,
+          language
+        );
+
       const body=
         create(
           'div',
@@ -707,6 +722,7 @@
       section.append(
         header,
         rule,
+        status,
         body
       );
 
@@ -1052,23 +1068,9 @@
           )
       );
 
-    projected.forEach(group=>{
-      group.items.forEach(
-        item=>
-          renderItemGroupStatus(
-            item,
-            group,
-            moqGroups.get(
-              group.key
-            ),
-            state,
-            language
-          )
-      );
-    });
-
     renderGroupSections(
       projected,
+      moqGroups,
       state,
       language
     );
