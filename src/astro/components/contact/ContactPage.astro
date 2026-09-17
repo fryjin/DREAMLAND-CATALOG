@@ -13,34 +13,26 @@ const buyerTypes=Array.isArray(view.buyerTypes)?view.buyerTypes:[];
 const requiredLabel=c.requiredLabel||'Required';
 const optionalLabel=c.optionalLabel||'Optional';
 
-const chapters=[
+const sections=[
   {
-    index:'01',
-    key:'person',
-    titleKey:'contactChapterPerson',
-    title:c.contactChapterPerson||'Contact person',
-    fields:['name','company','buyerType']
+    key:'required',
+    kickerKey:'requiredLabel',
+    kicker:requiredLabel,
+    titleKey:'contactRequiredTitle',
+    title:c.contactRequiredTitle||'Required contact details',
+    bodyKey:'contactRequiredBody',
+    body:c.contactRequiredBody||'Complete these four fields to continue to review.',
+    fields:['name','country','email','phone']
   },
   {
-    index:'02',
-    key:'region',
-    titleKey:'contactChapterRegion',
-    title:c.contactChapterRegion||'Location',
-    fields:['country','city']
-  },
-  {
-    index:'03',
-    key:'channels',
-    titleKey:'contactChapterChannels',
-    title:c.contactChapterChannels||'Contact details',
-    fields:['email','phone']
-  },
-  {
-    index:'04',
-    key:'notes',
-    titleKey:'contactChapterNotes',
-    title:c.contactChapterNotes||'Additional information',
-    fields:['message']
+    key:'optional',
+    kickerKey:'optionalLabel',
+    kicker:optionalLabel,
+    titleKey:'contactOptionalTitle',
+    title:c.contactOptionalTitle||'Optional project context',
+    bodyKey:'contactOptionalBody',
+    body:c.contactOptionalBody||'Add company, buyer and location context if it helps us prepare the quotation.',
+    fields:['company','buyerType','city','message']
   }
 ];
 
@@ -141,6 +133,7 @@ const summaryRows=[
   class="contact-main"
   data-contact-static-presentation
   data-contact-runtime-presentation
+  data-contact-conversion-composition="true"
 >
   <section
     class="contact-hero"
@@ -211,41 +204,35 @@ const summaryRows=[
       data-contact-static-form
       data-contact-form-shell
     >
-      <header class="contact-form__header">
-        <p
-          class="contact-eyebrow"
-          data-contact-bind="contactDetailsKicker"
-        >
-          {c.contactDetailsKicker||'CONTACT DETAILS'}
-        </p>
-        <h2 data-contact-bind="contactDetailsTitle">
-          {c.contactDetailsTitle||'Contact details'}
-        </h2>
-        <p data-contact-bind="contactDetailsBody">
-          {c.contactDetailsBody||'These details are used only to reply to this inquiry and follow up on the project.'}
-        </p>
-      </header>
-
       <form
         class="contact-form"
         aria-label={c.contactDetailsTitle||'Contact details'}
         data-contact-form
         novalidate
       >
-        {chapters.map((chapter:any)=>(
+        {sections.map((section:any)=>(
           <section
-            class="contact-chapter"
-            data-contact-static-chapter={chapter.index}
+            class={`contact-section contact-section--${section.key}`}
+            data-contact-static-section={section.key}
+            data-contact-section={section.key}
           >
-            <header class="contact-chapter__header">
-              <span>{chapter.index}</span>
-              <h3 data-contact-bind={chapter.titleKey}>
-                {chapter.title}
-              </h3>
+            <header class="contact-section__header">
+              <p
+                class="contact-eyebrow"
+                data-contact-bind={section.kickerKey}
+              >
+                {section.kicker}
+              </p>
+              <h2 data-contact-bind={section.titleKey}>
+                {section.title}
+              </h2>
+              <p data-contact-bind={section.bodyKey}>
+                {section.body}
+              </p>
             </header>
 
-            <div class="contact-chapter__fields">
-              {chapter.fields.map((key:string)=>{
+            <div class="contact-section__fields">
+              {section.fields.map((key:string)=>{
                 const field=fieldConfig[key]||{};
                 const required=Boolean(field.required);
                 const requirement=required?requiredLabel:optionalLabel;

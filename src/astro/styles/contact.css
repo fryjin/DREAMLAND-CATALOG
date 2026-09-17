@@ -25,21 +25,21 @@
 
 .contact-hero__inner {
   display:grid;
-  grid-template-columns:minmax(0,1.25fr) minmax(320px,.55fr);
-  gap:clamp(42px,8vw,132px);
+  grid-template-columns:minmax(0,1.1fr) minmax(300px,.65fr);
+  gap:clamp(32px,6vw,88px);
   align-items:end;
-  padding-top:clamp(88px,10vw,154px);
-  padding-bottom:clamp(70px,8vw,118px);
+  padding-top:clamp(52px,6vw,80px);
+  padding-bottom:clamp(40px,5vw,64px);
 }
 
 .contact-hero h1 {
-  max-width:900px;
-  margin:18px 0 0;
+  max-width:760px;
+  margin:12px 0 0;
   font-family:var(--home-serif);
-  font-size:clamp(48px,7vw,96px);
+  font-size:clamp(44px,5.4vw,68px);
   font-weight:400;
-  line-height:.94;
-  letter-spacing:-.045em;
+  line-height:.96;
+  letter-spacing:-.04em;
 }
 
 .contact-hero__body {
@@ -50,8 +50,8 @@
 }
 
 .contact-progress {
-  padding-top:24px;
-  padding-bottom:24px;
+  padding-top:16px;
+  padding-bottom:16px;
   border-bottom:1px solid var(--home-line);
 }
 
@@ -98,20 +98,14 @@
   grid-template-columns:minmax(0,1fr) minmax(340px,420px);
   gap:clamp(44px,6vw,92px);
   align-items:start;
-  padding-top:clamp(58px,7vw,98px);
-  padding-bottom:clamp(96px,10vw,156px);
+  padding-top:clamp(42px,5vw,72px);
+  padding-bottom:clamp(82px,9vw,138px);
 }
 
 .contact-form-shell {
   min-width:0;
 }
 
-.contact-form__header {
-  max-width:760px;
-  margin-bottom:34px;
-}
-
-.contact-form__header h2,
 .contact-summary h2,
 .contact-next h2 {
   margin:12px 0 0;
@@ -120,56 +114,53 @@
   letter-spacing:-.03em;
 }
 
-.contact-form__header h2 {
-  font-size:clamp(34px,4vw,58px);
-  line-height:1;
-}
-
-.contact-form__header > p:last-child {
-  max-width:680px;
-  margin:14px 0 0;
-  color:var(--home-muted);
-  font-size:14px;
-  line-height:1.7;
-}
-
 .contact-form {
   display:grid;
 }
 
-.contact-chapter {
+/* --------------------------------------------------------------------------
+ * F3-C2 — Contact Conversion Composition
+ * Required-first task flow with optional project context as a secondary block.
+ * ------------------------------------------------------------------------ */
+
+.contact-section {
   display:grid;
-  grid-template-columns:180px minmax(0,1fr);
+  grid-template-columns:minmax(160px,190px) minmax(0,1fr);
   gap:30px;
-  padding:30px 0 34px;
+  padding:28px 0 34px;
   border-top:1px solid var(--home-line);
 }
 
-.contact-chapter:last-of-type {
+.contact-section:last-of-type {
   border-bottom:1px solid var(--home-line);
 }
 
-.contact-chapter__header {
-  display:grid;
-  grid-template-columns:28px minmax(0,1fr);
-  gap:12px;
+.contact-section__header {
   align-content:start;
 }
 
-.contact-chapter__header > span {
-  color:var(--home-soft);
-  font-size:10px;
-  font-weight:800;
+.contact-section__header h2 {
+  margin:7px 0 0;
+  font-family:var(--home-serif);
+  font-size:24px;
+  font-weight:400;
+  line-height:1.08;
+  letter-spacing:-.025em;
 }
 
-.contact-chapter__header h3 {
-  margin:0;
-  font-size:15px;
-  line-height:1.35;
-  letter-spacing:-.015em;
+.contact-section__header > p:last-child {
+  max-width:180px;
+  margin:10px 0 0;
+  color:var(--home-muted);
+  font-size:11px;
+  line-height:1.55;
 }
 
-.contact-chapter__fields {
+.contact-section--optional .contact-section__header {
+  opacity:.82;
+}
+
+.contact-section__fields {
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:24px 16px;
@@ -377,18 +368,65 @@
 @media (max-width:760px) {
   .contact-hero__inner {
     grid-template-columns:1fr;
+    gap:18px;
+    padding-top:30px;
+    padding-bottom:28px;
+  }
+
+  .contact-hero h1 {
+    margin-top:8px;
+    font-size:clamp(38px,11vw,48px);
+  }
+
+  .contact-hero__body {
+    font-size:13px;
+    line-height:1.6;
+  }
+
+  .contact-progress {
+    padding-top:10px;
+    padding-bottom:10px;
   }
 
   .contact-progress ol {
-    grid-template-columns:1fr;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:0;
   }
 
-  .contact-chapter {
+  .contact-progress li {
+    grid-template-columns:auto minmax(0,1fr);
+    gap:5px;
+    min-height:36px;
+    padding:0 5px;
+  }
+
+  .contact-progress strong {
+    font-size:8px;
+  }
+
+  .contact-progress span {
+    overflow:hidden;
+    font-size:9px;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .contact-workspace {
+    padding-top:30px;
+    padding-bottom:78px;
+  }
+
+  .contact-section {
     grid-template-columns:1fr;
     gap:18px;
+    padding:24px 0 28px;
   }
 
-  .contact-chapter__fields {
+  .contact-section__header > p:last-child {
+    max-width:32rem;
+  }
+
+  .contact-section__fields {
     grid-template-columns:1fr;
   }
 
