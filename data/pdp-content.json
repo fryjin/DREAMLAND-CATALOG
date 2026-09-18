@@ -1,0 +1,931 @@
+{
+  "schemaVersion": 1,
+  "locales": [
+    "zh",
+    "en",
+    "ko"
+  ],
+  "revision": "PDP-COPY-1A.3",
+  "workflow": {
+    "draftStatus": "pending-review",
+    "publishStatus": "approved",
+    "publishRequires": [
+      "zh",
+      "en",
+      "ko"
+    ],
+    "uiWiringPhase": "PDP-COPY-1B",
+    "holidayPlaceholderKind": "placeholder"
+  },
+  "approval": {
+    "state": "approved-with-holiday-placeholders",
+    "storyCount": 73,
+    "placeholderCount": 16,
+    "copyDigest": "a71e3b4d8ecda866cd913d3028ccbc2382d627fa4eee64dd593d885ba8bd0aa9"
+  },
+  "colorStoryPolicy": {
+    "purpose": "editorial-color-story",
+    "draftBasis": [
+      "product-images",
+      "product-name",
+      "series-character"
+    ],
+    "replacesCurrentParameterSummary": true,
+    "maxSentences": 2
+  },
+  "colorStories": {
+    "ADV001": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "夜色压得很低，却总有一点颜色不肯彻底安静下来。不是张扬的彩虹，更像雨后街角悄悄亮起的光。",
+        "en": "The night sits low, but a trace of color refuses to disappear. Less a bold rainbow than a quiet glow on a rain-soaked street corner.",
+        "ko": "밤이 짙게 내려앉아도 한 줄기 색은 끝내 사라지지 않습니다. 화려한 무지개보다 비 갠 골목에 조용히 번지는 빛에 가깝습니다."
+      }
+    },
+    "ADV002": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "有风、有水，也有一点清晨还没完全散开的雾。颜色很轻，心情也跟着慢下来。",
+        "en": "Wind, water, and a little morning mist that has not yet lifted. The colors feel light, and everything seems to slow with them.",
+        "ko": "바람과 물, 아직 다 걷히지 않은 아침 안개. 색이 가볍게 머물수록 마음의 속도도 함께 느려집니다."
+      }
+    },
+    "ADV003": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "有些颜色彼此靠近，有些又故意拉开距离。它不急着讲清楚，反而像一个醒来后还记得一半的梦。",
+        "en": "Some colors lean toward each other; others keep their distance. Nothing is fully explained, like a dream you remember only halfway after waking.",
+        "ko": "어떤 색은 서로 가까워지고, 어떤 색은 일부러 거리를 둡니다. 다 말하지 않아서 오히려 깨어난 뒤 절반만 기억나는 꿈처럼 남습니다."
+      }
+    },
+    "ADV004": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "太阳快落下去的时候，海边总会有几分钟特别好看。暖得刚刚好，也松弛得刚刚好。",
+        "en": "For a few minutes before sunset, the coast seems to glow just right—warm enough, relaxed enough, with nowhere else to be.",
+        "ko": "해가 지기 직전의 몇 분은 해변이 유난히 아름답습니다. 따뜻함도, 느긋함도 딱 좋은 순간입니다."
+      }
+    },
+    "ADV005": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "落日慢慢沉下去，珊瑚色却还停留了一会儿。明亮里带一点柔软，是一天快结束时最好看的那几分钟。",
+        "en": "The sun slips away, but the coral glow lingers a little longer. Bright yet soft—the loveliest few minutes before the day ends.",
+        "ko": "해는 천천히 내려가도 산호빛은 잠시 더 남습니다. 밝지만 부드러운, 하루가 끝나기 전 가장 예쁜 몇 분입니다."
+      }
+    },
+    "ADV006": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "是烤箱刚打开时扑出来的暖意，也是秋天最讨人喜欢的那种颜色。甜一点，但不会腻。",
+        "en": "The warmth that escapes when the oven door opens, and the kind of color autumn does best. A little sweet, never too much.",
+        "ko": "오븐 문을 여는 순간 퍼지는 온기, 그리고 가을이 가장 잘 어울리는 색. 달콤하지만 전혀 부담스럽지 않습니다."
+      }
+    },
+    "ADV007": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "熟透的蜜桃本来就够甜了，它偏偏还要再热闹一点。俏皮、明亮，有点不按常理出牌。",
+        "en": "A ripe peach is sweet enough already—this one insists on being a little louder. Playful, bright, and happily unpredictable.",
+        "ko": "잘 익은 복숭아만으로도 충분히 달콤한데, 여기에 한층 더 들뜬 기분을 얹었습니다. 발랄하고 밝으며 조금은 제멋대로입니다."
+      }
+    },
+    "ADV008": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "森林不是静止的，叶子会动，潮气会漫上来，光也会一层层穿过去。它有一种很湿润的生命感。",
+        "en": "A forest is never still: leaves shift, moisture rises, and light filters through in layers. It feels lush, damp, and vividly alive.",
+        "ko": "숲은 멈춰 있지 않습니다. 잎은 흔들리고 습기는 차오르며 빛은 여러 겹으로 스며듭니다. 촉촉한 생명력이 느껴지는 색입니다."
+      }
+    },
+    "ADV009": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "比起热闹的圣诞树，更像夜深以后留下的壁炉。人都散了，暖意还在。",
+        "en": "Less like a crowded Christmas tree, more like the fireplace left glowing late at night. Everyone has gone, but the warmth stays.",
+        "ko": "화려한 크리스마스트리보다 늦은 밤까지 남아 있는 벽난로에 가깝습니다. 사람들은 돌아갔지만 온기는 그대로입니다."
+      }
+    },
+    "ADV010": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "不需要发生什么特别的事，只是某个瞬间忽然觉得很舒服。像冬天把手缩进袖子里，简单又踏实。",
+        "en": "Nothing special has to happen. It is simply that sudden feeling of comfort—like tucking your hands into your sleeves on a cold day.",
+        "ko": "특별한 일이 없어도 문득 편안해지는 순간이 있습니다. 겨울날 손을 소매 안에 넣었을 때처럼 단순하고 포근합니다."
+      }
+    },
+    "ADV011": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "天色灰一点，水汽重一点，反而很好看。是雨还没停透的时候，远处什么都看不太真切。",
+        "en": "A grayer sky and heavier air somehow make the view more beautiful. The rain has not quite ended, and the distance stays softly out of focus.",
+        "ko": "하늘은 조금 더 흐리고 공기에는 물기가 짙습니다. 비가 완전히 그치기 전, 먼 풍경이 또렷하지 않은 그때가 오히려 아름답습니다."
+      }
+    },
+    "ADV012": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "花草长得有点任性，却刚好组成一片自己的秩序。不是规整的花园，是想一直往里走的那一种。",
+        "en": "Flowers and leaves grow a little wildly, yet somehow find their own order. Not a manicured garden—the kind you want to keep wandering into.",
+        "ko": "꽃과 잎은 제멋대로 자라는 듯하지만 그 안에는 자연스러운 질서가 있습니다. 잘 다듬어진 정원보다 자꾸 더 안쪽으로 걸어가고 싶은 곳에 가깝습니다."
+      }
+    },
+    "ADV013": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "打开以后没有宝石，也没有喧闹的惊喜，只是一点很安静的光。却会让人忍不住多看一会儿。",
+        "en": "No jewels, no dramatic surprise—just a quiet glow when the box opens. Somehow, it makes you want to look a little longer.",
+        "ko": "상자를 열어도 보석이나 요란한 놀라움은 없습니다. 그저 조용한 빛 하나가 남아, 자꾸 한 번 더 바라보게 합니다."
+      }
+    },
+    "ADV014": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "咖啡的暖，夜空的深，放在一起竟然很合适。像深夜还没睡的人，手边那杯已经有点凉的摩卡。",
+        "en": "The warmth of coffee and the depth of a night sky belong together surprisingly well—like a late-night mocha cooling beside someone still awake.",
+        "ko": "커피의 온기와 밤하늘의 깊이가 의외로 잘 어울립니다. 늦은 밤 아직 잠들지 못한 사람 곁에서 조금씩 식어가는 모카처럼."
+      }
+    },
+    "ADV015": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "黄和绿都很直接，没有拐弯。像刚冒出来的新芽，鲜得有点生气，也有点可爱。",
+        "en": "Yellow and green speak plainly. Fresh as a new sprout—almost defiantly vivid, and a little charming because of it.",
+        "ko": "노랑과 초록은 돌려 말하지 않습니다. 막 돋아난 새싹처럼 선명하고 생기 넘치며, 그래서 조금 귀엽기도 합니다."
+      }
+    },
+    "ADV016": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "海不是安静的蓝，它会被太阳照亮，会被风吹乱，也会突然变得很浓。自由得有点过分。",
+        "en": "The sea is never just a quiet blue. Sunlight brightens it, wind breaks it apart, and suddenly it turns deep again—almost recklessly free.",
+        "ko": "바다는 조용한 파랑 하나로 끝나지 않습니다. 햇빛에 밝아지고 바람에 흐트러지며 어느 순간 짙어집니다. 조금 지나칠 만큼 자유롭습니다."
+      }
+    },
+    "ADV017": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "天快黑的时候，灰烟里还留着最后一点暖光。不是热烈的落日，是散场前舍不得灭掉的灯。",
+        "en": "As evening closes in, one last warmth remains in the gray haze. Not a blazing sunset—more like a light no one wants to switch off just yet.",
+        "ko": "날이 어두워질 무렵 잿빛 안개 속에 마지막 온기가 남습니다. 강렬한 노을보다, 자리를 뜨기 전 차마 끄지 못한 불빛에 가깝습니다."
+      }
+    },
+    "ADV018": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "鸟已经飞走，岛还留在原地。风很大，颜色很淡，却有一种让人想停久一点的安静。",
+        "en": "The birds have gone, but the island stays. The wind is strong and the colors are pale, yet the quiet makes you want to linger.",
+        "ko": "새들은 떠났지만 섬은 그대로 남아 있습니다. 바람은 세고 색은 옅지만, 그 고요함 때문에 조금 더 머물고 싶어집니다."
+      }
+    },
+    "ADV019": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "有阳光，有公路，也有没想好下一站去哪的自由。它不是旅行计划，更像一次临时起意。",
+        "en": "Sunlight, open roads, and the freedom of not knowing the next stop. Less a travel plan, more a beautiful impulse.",
+        "ko": "햇빛과 도로, 그리고 다음 목적지를 정하지 않은 자유. 여행 계획이라기보다 어느 날 문득 떠나고 싶은 마음에 가깝습니다."
+      }
+    },
+    "MPC001": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "柔软的颜色里突然跳出一点明亮，像视线交汇的那一秒。轻轻的，却足够让人记住。",
+        "en": "A sudden spark inside soft color, like the second two glances meet. Small, almost quiet, yet enough to stay with you.",
+        "ko": "부드러운 색 사이로 갑자기 한 줄기 밝음이 튀어나옵니다. 시선이 마주친 바로 그 순간처럼 작지만 오래 남습니다."
+      }
+    },
+    "MPC002": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "奶油粉、杏橙与珊瑚红慢慢舒展开来，像花刚好开到最好看的时候。明亮、热烈，还有一点藏不住的甜。",
+        "en": "Creamy pink, apricot orange, and coral red open out like flowers at their fullest. Bright, warm, with a sweetness that cannot quite be hidden.",
+        "ko": "크리미 핑크와 살구빛 오렌지, 코랄 레드가 꽃이 가장 예쁘게 핀 순간처럼 펼쳐집니다. 밝고 따뜻하며 숨길 수 없는 달콤함이 있습니다."
+      }
+    },
+    "MPC003": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "花园最迷人的地方，从来不是一眼就看完。总要再往里走一点，才发现后面还藏着另一片颜色。",
+        "en": "The best gardens never reveal themselves at once. Walk a little farther and another layer of color appears, quietly waiting beyond the first.",
+        "ko": "정원의 매력은 한눈에 다 보이지 않는 데 있습니다. 조금 더 안쪽으로 걸어가야 뒤에 숨어 있던 또 다른 색이 나타납니다."
+      }
+    },
+    "MPC004": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "黑糖的焦香和拿铁的奶感混在一起，颜色也变得很有温度。适合阴天，也适合什么都不赶的下午。",
+        "en": "Caramelized brown sugar and milky latte warmth settle into the color. Made for gray skies and afternoons with nowhere to rush.",
+        "ko": "흑당의 깊은 단맛과 라테의 부드러움이 섞여 색에도 온기가 생깁니다. 흐린 날에도, 아무것도 서두르지 않는 오후에도 잘 어울립니다."
+      }
+    },
+    "MPC005": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "夜深以后，世界会自动把音量调低。剩下一点灯光，一点颜色，还有终于可以独处的时间。",
+        "en": "Late at night, the world seems to lower its own volume. A little light, a little color, and finally some time that belongs only to you.",
+        "ko": "밤이 깊어지면 세상은 스스로 볼륨을 낮춥니다. 작은 불빛과 색, 그리고 마침내 혼자일 수 있는 시간이 남습니다."
+      }
+    },
+    "MPC006": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "有一点复古，也有一点不太好接近的漂亮。像旧电影里的女人，安静站着就已经很有存在感。",
+        "en": "Vintage, poised, and just a little hard to approach. Like a woman in an old film who needs no gesture to hold the room.",
+        "ko": "빈티지하면서도 쉽게 다가가기 어려운 아름다움이 있습니다. 오래된 영화 속 인물처럼 가만히 있어도 충분히 존재감이 느껴집니다."
+      }
+    },
+    "MPC007": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "蔓越莓的好看就在于，它从来不只是甜。颜色浓一点，情绪也浓一点，热烈得很有分寸。",
+        "en": "Cranberry is never only sweet. The color runs deeper, the feeling does too—rich and passionate without losing its restraint.",
+        "ko": "크랜베리의 매력은 단맛만으로 끝나지 않습니다. 색도 감정도 한층 짙고, 뜨겁지만 지나치지 않습니다."
+      }
+    },
+    "MPC008": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "蝴蝶飞过的时候其实很快，可漂亮的东西总会让人记很久。柔美里带一点戏剧感，刚好。",
+        "en": "A butterfly passes in an instant, but beautiful things stay in memory much longer. Graceful, with just enough drama.",
+        "ko": "나비가 스쳐 가는 순간은 짧지만 아름다운 것은 오래 기억됩니다. 우아함 속에 적당한 극적인 분위기가 있습니다."
+      }
+    },
+    "MPC009": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "花开得多，却不吵。每一层都有自己的颜色，越往里看，越觉得还有东西没有发现。",
+        "en": "Flowers bloom everywhere without becoming noisy. Each layer keeps its own color, and every closer look suggests there is still more to find.",
+        "ko": "꽃은 가득 피어 있지만 소란스럽지 않습니다. 층마다 고유한 색이 있고, 들여다볼수록 아직 발견하지 못한 것이 남아 있는 듯합니다."
+      }
+    },
+    "MPC010": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "想和一个人待在一座很小的岛上，不赶船，也不看时间。这里只有风、海，还有刚刚好的距离。",
+        "en": "Imagine a tiny island with someone you like—no ferries to catch, no clocks to check. Just wind, sea, and the right amount of distance.",
+        "ko": "누군가와 아주 작은 섬에 머물고 싶어집니다. 배 시간도, 시계도 신경 쓰지 않고 바람과 바다, 그리고 딱 좋은 거리만 남겨 둡니다."
+      }
+    },
+    "MPC011": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "夜空那么大，总有一颗星会让人第一眼就看见。它亮得很冷静，却从来不缺存在感。",
+        "en": "In a sky this vast, one star still catches your eye first. Its light is calm, almost cool, but never easy to overlook.",
+        "ko": "넓은 밤하늘에서도 유독 먼저 눈에 들어오는 별이 있습니다. 빛은 차분하고 서늘하지만 존재감은 분명합니다."
+      }
+    },
+    "MPC012": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "星光落到水面以后，就不再那么遥远了。碎碎的、轻轻的，有一种很安静的甜。",
+        "en": "Once starlight touches the water, it no longer feels so far away. Small, scattered glimmers with a quiet kind of sweetness.",
+        "ko": "별빛이 물 위에 내려앉으면 더 이상 멀게 느껴지지 않습니다. 잘게 부서진 빛 사이에 조용한 달콤함이 남습니다."
+      }
+    },
+    "MPC013": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "不是柔软的白色羽翼，而是带着光和热度的那一种。漂亮，也有力量。",
+        "en": "Not soft white wings, but something lit from within—radiant, warm, and beautiful with real strength behind it.",
+        "ko": "부드러운 흰 날개보다 안쪽에서 빛과 열이 번지는 모습에 가깝습니다. 아름답고, 동시에 힘이 있습니다."
+      }
+    },
+    "MPC014": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "青绿从来不需要太多解释。山、雾、水、远处的轮廓，都已经在里面了。",
+        "en": "Blue-green needs little explanation. Mountains, mist, water, and distant outlines already seem to live inside it.",
+        "ko": "청록에는 많은 설명이 필요하지 않습니다. 산과 안개, 물과 멀리 흐려진 윤곽이 이미 그 안에 담겨 있습니다."
+      }
+    },
+    "MPC015": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "水清得过分，阳光也亮得过分。是那种看一眼就想把手机关掉、什么都不管的颜色。",
+        "en": "The water looks impossibly clear, the sun impossibly bright. The kind of color that makes you want to turn off your phone and forget the rest.",
+        "ko": "물이 지나치게 맑고 햇빛도 지나치게 밝습니다. 한 번 보면 휴대폰을 끄고 아무것도 신경 쓰지 않고 싶어지는 색입니다."
+      }
+    },
+    "MPC016": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "有些相遇没有提前安排，却刚好在最合适的时候发生。像两束光碰到一起，很短，也很亮。",
+        "en": "Some meetings are never planned, yet happen at exactly the right time. Like two beams of light crossing—brief, but bright.",
+        "ko": "어떤 만남은 계획하지 않았는데도 가장 알맞은 순간에 찾아옵니다. 두 줄기 빛이 스치는 것처럼 짧지만 선명합니다."
+      }
+    },
+    "MPC017": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "有一点旧诗的清雅，也有一点年轻人的克制。不是第一眼惊艳，却很容易越看越喜欢。",
+        "en": "A touch of old poetry, a touch of youthful restraint. It may not demand attention at first, but grows more appealing the longer you look.",
+        "ko": "옛 시의 단정함과 젊은 감각의 절제가 함께 있습니다. 첫눈에 화려하지 않아도 볼수록 마음이 가는 색입니다."
+      }
+    },
+    "MPC018": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "什么都别看得太清楚，反而更迷人。颜色隔着一层雾，连情绪也变得柔软。",
+        "en": "Not everything needs to be seen clearly. Behind a veil of mist, the colors blur—and the mood softens with them.",
+        "ko": "모든 것이 또렷할 필요는 없습니다. 안개 한 겹 너머로 색이 흐려지면 감정도 함께 부드러워집니다."
+      }
+    },
+    "MPC019": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "夏天就该有一瓶冰得冒水珠的橘子汽水。打开盖子的那一刻，心情也跟着“啪”一下亮起来。",
+        "en": "Summer deserves a bottle of orange soda cold enough to bead with water. Pop the cap, and the mood brightens with it.",
+        "ko": "여름에는 물방울이 맺힐 만큼 차가운 오렌지 소다가 잘 어울립니다. 뚜껑을 여는 순간 기분도 톡 하고 밝아집니다."
+      }
+    },
+    "MPC020": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "夜已经很安静了，霜又让它更冷一点。月光落下来，所有颜色都像被擦亮了一层。",
+        "en": "The night is already quiet; frost makes it a little colder. Under moonlight, every color seems polished into a sharper glow.",
+        "ko": "밤은 이미 고요하고 서리는 공기를 조금 더 차갑게 만듭니다. 달빛이 내려오면 모든 색이 한 겹 더 맑아진 듯 빛납니다."
+      }
+    },
+    "MPC021": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "海越深，声音越少。颜色沉下去以后，反而显得更干净，也更让人想靠近。",
+        "en": "The deeper the sea, the quieter it becomes. As the color sinks, it feels cleaner, calmer, and strangely more inviting.",
+        "ko": "바다가 깊어질수록 소리는 줄어듭니다. 색이 아래로 가라앉을수록 오히려 더 맑고 차분해져 가까이 보고 싶어집니다."
+      }
+    },
+    "MPC022": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "喜欢一个人有时候很小声，不是告白，只是每次看到对方，心里都会多停一下。",
+        "en": "Sometimes liking someone is very quiet. Not a confession—just that tiny pause in your heart every time you see them.",
+        "ko": "누군가를 좋아하는 마음은 때로 아주 조용합니다. 고백이라기보다 그 사람을 볼 때마다 마음이 잠깐 멈추는 순간에 가깝습니다."
+      }
+    },
+    "MPC023": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "乐园不一定有旋转木马，也可以只是颜色大胆地撞在一起。开心这件事，本来就不需要太多理由。",
+        "en": "Paradise does not need a carousel. Sometimes it is simply colors colliding without hesitation. Joy rarely needs much explanation.",
+        "ko": "낙원에 꼭 회전목마가 있을 필요는 없습니다. 색들이 망설임 없이 부딪히는 것만으로도 충분합니다. 즐거움에는 원래 많은 이유가 필요하지 않습니다."
+      }
+    },
+    "MPC024": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "一边是很深的海，一边是很远的星。两个遥不可及的地方，在这里安静地碰到了一起。",
+        "en": "One side belongs to the deepest sea, the other to distant stars. Two unreachable worlds meet here in silence.",
+        "ko": "한쪽에는 깊은 바다, 다른 쪽에는 먼 별이 있습니다. 닿을 수 없던 두 세계가 이곳에서 조용히 만납니다."
+      }
+    },
+    "MPC025": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "茉莉原本很柔，沾上一点海风以后就清爽了起来。干净，但不寡淡。",
+        "en": "Jasmine begins soft; a touch of sea air makes it feel fresher. Clean, but never plain.",
+        "ko": "재스민의 부드러움에 바닷바람이 살짝 닿자 한층 산뜻해집니다. 깨끗하지만 심심하지 않습니다."
+      }
+    },
+    "MPC026": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "有时候并不是想逃走，只是想去一个没人催你的地方。花开着，风吹着，日子也慢一点。",
+        "en": "Sometimes you do not want to escape—you just want somewhere no one is rushing you. Flowers bloom, wind passes, and the day moves more slowly.",
+        "ko": "도망치고 싶은 것이 아니라 아무도 재촉하지 않는 곳에 가고 싶을 때가 있습니다. 꽃은 피고 바람은 불며 하루도 조금 느리게 흘러갑니다."
+      }
+    },
+    "MPC027": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "童话最好的地方，是不用每件事都有道理。颜色可以任性一点，梦也可以做久一点。",
+        "en": "The best thing about fairy tales is that not everything has to make sense. Colors can be a little unruly, and dreams can last a little longer.",
+        "ko": "동화의 좋은 점은 모든 일이 꼭 말이 될 필요가 없다는 것입니다. 색은 조금 제멋대로여도 되고 꿈은 조금 더 오래 이어져도 됩니다."
+      }
+    },
+    "MPC028": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "软软的，暖暖的，有点笨拙也没关系。是小时候喜欢过的东西，长大以后还是会觉得可爱。",
+        "en": "Soft, warm, and allowed to be a little clumsy. Like something you loved as a child and still find charming years later.",
+        "ko": "부드럽고 따뜻하며 조금 서툴러도 괜찮습니다. 어릴 때 좋아했던 것을 어른이 된 뒤에도 여전히 귀엽게 느끼는 마음과 닮았습니다."
+      }
+    },
+    "MPC029": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "夏天的午后很适合做梦。窗帘晃一点，光线软一点，连时间都懒得往前走。",
+        "en": "Summer afternoons are made for dreaming. Curtains stir, light softens, and even time seems too lazy to move.",
+        "ko": "여름 오후는 꿈꾸기에 잘 어울립니다. 커튼이 살짝 흔들리고 빛이 부드러워지면 시간마저 천천히 흐르는 듯합니다."
+      }
+    },
+    "MPC030": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "白天不敢说的愿望，到晚上反而会变得很清楚。留一盏小灯，也给自己留一点期待。",
+        "en": "Wishes you cannot say in daylight often become clearer at night. Leave one small light on, and a little hope with it.",
+        "ko": "낮에는 말하지 못한 바람이 밤이 되면 오히려 또렷해집니다. 작은 불 하나를 남기고, 기대도 조금 남겨 둡니다."
+      }
+    },
+    "MPC031": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "琉璃好看的地方，是光进去以后会变。换一个角度，就像换了一种心情。",
+        "en": "The beauty of glass lies in how it changes once light enters. Shift the angle, and the mood seems to change with it.",
+        "ko": "유리의 매력은 빛이 들어간 뒤 달라지는 데 있습니다. 각도를 조금만 바꿔도 기분까지 달라지는 듯합니다."
+      }
+    },
+    "MPC032": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "风吹过以后，沙丘会重新长出新的纹路。什么都没固定下来，却有一种很稳定的安静。",
+        "en": "After the wind passes, the dunes draw themselves again. Nothing stays fixed, yet the stillness feels remarkably steady.",
+        "ko": "바람이 지나가면 모래언덕에는 새로운 결이 생깁니다. 아무것도 고정되어 있지 않지만 이상할 만큼 안정된 고요가 남습니다."
+      }
+    },
+    "MPC033": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "很远的星球，很小的一朵花，还有一些长大以后才慢慢读懂的话。温柔，却不是孩子气。",
+        "en": "A faraway planet, one small flower, and words that make more sense as you grow older. Tender, but never childish.",
+        "ko": "아주 먼 별과 작은 꽃 한 송이, 그리고 어른이 된 뒤에야 천천히 이해되는 말들. 다정하지만 유치하지 않습니다."
+      }
+    },
+    "MPC034": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "泡泡本来就没有什么意义，可看它飘起来的时候，人还是会开心。轻一点，也挺好。",
+        "en": "Bubbles do not need to mean anything. Watching them float is enough to make you smile. Sometimes lighter is simply better.",
+        "ko": "비눗방울에는 특별한 의미가 없어도 됩니다. 떠오르는 모습을 보는 것만으로도 기분이 좋아집니다. 가벼운 것도 충분히 좋습니다."
+      }
+    },
+    "CLA001": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "东川的红从来不含蓄，太阳一落下来，土地和天色就一起烧了起来。浓烈，却很真实。",
+        "en": "Dongchuan red has never been shy. At sunset, earth and sky seem to catch fire together—intense, vivid, and completely honest.",
+        "ko": "둥촨의 붉음은 결코 수줍지 않습니다. 해가 지면 땅과 하늘이 함께 타오르는 듯합니다. 강렬하지만 아주 솔직한 색입니다."
+      }
+    },
+    "CLA002": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "梅里的霞光总有一点庄严。雪峰还冷着，第一束暖色已经慢慢爬上来了。",
+        "en": "Morning light over Meili always feels a little solemn. The snowy peaks are still cold as the first warmth slowly climbs across them.",
+        "ko": "메이리의 노을빛에는 늘 조금의 장엄함이 있습니다. 설봉은 아직 차갑지만 첫 온기가 천천히 산 위로 올라옵니다."
+      }
+    },
+    "CLA003": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "风吹过花田的时候，黄色会一层一层往远处跑。不是静止的风景，是整片春天在动。",
+        "en": "When wind moves through Luoping's fields, yellow rolls outward in waves. It is not a still landscape—it is spring itself in motion.",
+        "ko": "바람이 뤄핑의 꽃밭을 지나가면 노란빛이 물결처럼 멀리 퍼집니다. 멈춘 풍경이 아니라 봄 전체가 움직이는 순간입니다."
+      }
+    },
+    "CLA004": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "西双版纳的绿从来不是一种绿。深的、浅的、湿润的，全都挤在一起，长得热热闹闹。",
+        "en": "Xishuangbanna is never just one green. Deep, pale, humid greens crowd together, growing with almost joyful abundance.",
+        "ko": "시솽반나의 초록은 한 가지가 아닙니다. 짙은 초록과 연한 초록, 습기를 머금은 초록이 한데 어우러져 풍성하게 자랍니다."
+      }
+    },
+    "CLA005": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "天晴的时候，洱海会把蓝色铺得特别开。风一来，水面轻轻皱一下，就很好看。",
+        "en": "On clear days, Erhai spreads blue as far as it can. A breeze wrinkles the surface just slightly—and that is enough.",
+        "ko": "맑은 날의 얼하이는 파란빛을 넓게 펼쳐 놓습니다. 바람이 불어 수면이 살짝 흔들리는 것만으로도 충분히 아름답습니다."
+      }
+    },
+    "CLA006": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "蓝花楹开的时候，昆明的街道会忽然变得很浪漫。不是精心布置，是春天自己做的事。",
+        "en": "When jacarandas bloom, Kunming's streets suddenly turn romantic. Nothing staged—just spring doing what it does.",
+        "ko": "자카란다가 피면 쿤밍의 거리는 갑자기 낭만적으로 변합니다. 누가 꾸민 것이 아니라 봄이 스스로 만들어 낸 풍경입니다."
+      }
+    },
+    "CLA007": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "深色慢慢沉下来，像一泡茶从第一道喝到最后。安静、醇厚，还有一点时间留下来的味道。",
+        "en": "The dark tones settle slowly, like tea deepening from the first infusion to the last. Quiet, full-bodied, with a trace of time left behind.",
+        "ko": "짙은 색이 천천히 가라앉는 모습은 차를 첫 잔부터 마지막 잔까지 마시는 과정과 닮았습니다. 차분하고 깊으며 시간의 맛이 조금 남습니다."
+      }
+    },
+    "CLA008": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "山里的天气总是变得很快。雨刚停，云还没散，颜色已经从缝隙里冒出来了。",
+        "en": "Mountain weather changes quickly. The rain has only just stopped, the clouds have not cleared, and color is already breaking through.",
+        "ko": "산의 날씨는 늘 빠르게 변합니다. 비가 막 그쳤고 구름도 아직 남아 있는데 색은 벌써 그 틈 사이로 모습을 드러냅니다."
+      }
+    },
+    "MPC036": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "海不是安静的蓝，它会被太阳照亮，会被风吹乱，也会突然变得很浓。自由得有点过分。",
+        "en": "The sea is never just a quiet blue. Sunlight brightens it, wind breaks it apart, and suddenly it turns deep again—almost recklessly free.",
+        "ko": "바다는 조용한 파랑 하나로 끝나지 않습니다. 햇빛에 밝아지고 바람에 흐트러지며 어느 순간 짙어집니다. 조금 지나칠 만큼 자유롭습니다."
+      },
+      "sourceProductId": "ADV016"
+    },
+    "MPC037": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "夜色压得很低，却总有一点颜色不肯彻底安静下来。不是张扬的彩虹，更像雨后街角悄悄亮起的光。",
+        "en": "The night sits low, but a trace of color refuses to disappear. Less a bold rainbow than a quiet glow on a rain-soaked street corner.",
+        "ko": "밤이 짙게 내려앉아도 한 줄기 색은 끝내 사라지지 않습니다. 화려한 무지개보다 비 갠 골목에 조용히 번지는 빛에 가깝습니다."
+      },
+      "sourceProductId": "ADV001"
+    },
+    "MPC038": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "有风、有水，也有一点清晨还没完全散开的雾。颜色很轻，心情也跟着慢下来。",
+        "en": "Wind, water, and a little morning mist that has not yet lifted. The colors feel light, and everything seems to slow with them.",
+        "ko": "바람과 물, 아직 다 걷히지 않은 아침 안개. 색이 가볍게 머물수록 마음의 속도도 함께 느려집니다."
+      },
+      "sourceProductId": "ADV002"
+    },
+    "MPC039": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "有些颜色彼此靠近，有些又故意拉开距离。它不急着讲清楚，反而像一个醒来后还记得一半的梦。",
+        "en": "Some colors lean toward each other; others keep their distance. Nothing is fully explained, like a dream you remember only halfway after waking.",
+        "ko": "어떤 색은 서로 가까워지고, 어떤 색은 일부러 거리를 둡니다. 다 말하지 않아서 오히려 깨어난 뒤 절반만 기억나는 꿈처럼 남습니다."
+      },
+      "sourceProductId": "ADV003"
+    },
+    "MPC040": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "太阳快落下去的时候，海边总会有几分钟特别好看。暖得刚刚好，也松弛得刚刚好。",
+        "en": "For a few minutes before sunset, the coast seems to glow just right—warm enough, relaxed enough, with nowhere else to be.",
+        "ko": "해가 지기 직전의 몇 분은 해변이 유난히 아름답습니다. 따뜻함도, 느긋함도 딱 좋은 순간입니다."
+      },
+      "sourceProductId": "ADV004"
+    },
+    "MPC041": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "天快黑的时候，灰烟里还留着最后一点暖光。不是热烈的落日，是散场前舍不得灭掉的灯。",
+        "en": "As evening closes in, one last warmth remains in the gray haze. Not a blazing sunset—more like a light no one wants to switch off just yet.",
+        "ko": "날이 어두워질 무렵 잿빛 안개 속에 마지막 온기가 남습니다. 강렬한 노을보다, 자리를 뜨기 전 차마 끄지 못한 불빛에 가깝습니다."
+      },
+      "sourceProductId": "ADV017"
+    },
+    "MPC042": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "鸟已经飞走，岛还留在原地。风很大，颜色很淡，却有一种让人想停久一点的安静。",
+        "en": "The birds have gone, but the island stays. The wind is strong and the colors are pale, yet the quiet makes you want to linger.",
+        "ko": "새들은 떠났지만 섬은 그대로 남아 있습니다. 바람은 세고 색은 옅지만, 그 고요함 때문에 조금 더 머물고 싶어집니다."
+      },
+      "sourceProductId": "ADV018"
+    },
+    "MPC043": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "有阳光，有公路，也有没想好下一站去哪的自由。它不是旅行计划，更像一次临时起意。",
+        "en": "Sunlight, open roads, and the freedom of not knowing the next stop. Less a travel plan, more a beautiful impulse.",
+        "ko": "햇빛과 도로, 그리고 다음 목적지를 정하지 않은 자유. 여행 계획이라기보다 어느 날 문득 떠나고 싶은 마음에 가깝습니다."
+      },
+      "sourceProductId": "ADV019"
+    },
+    "MPC044": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "打开以后没有宝石，也没有喧闹的惊喜，只是一点很安静的光。却会让人忍不住多看一会儿。",
+        "en": "No jewels, no dramatic surprise—just a quiet glow when the box opens. Somehow, it makes you want to look a little longer.",
+        "ko": "상자를 열어도 보석이나 요란한 놀라움은 없습니다. 그저 조용한 빛 하나가 남아, 자꾸 한 번 더 바라보게 합니다."
+      },
+      "sourceProductId": "ADV013"
+    },
+    "MPC048": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "比起热闹的圣诞树，更像夜深以后留下的壁炉。人都散了，暖意还在。",
+        "en": "Less like a crowded Christmas tree, more like the fireplace left glowing late at night. Everyone has gone, but the warmth stays.",
+        "ko": "화려한 크리스마스트리보다 늦은 밤까지 남아 있는 벽난로에 가깝습니다. 사람들은 돌아갔지만 온기는 그대로입니다."
+      },
+      "sourceProductId": "ADV009"
+    },
+    "MPC049": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "森林不是静止的，叶子会动，潮气会漫上来，光也会一层层穿过去。它有一种很湿润的生命感。",
+        "en": "A forest is never still: leaves shift, moisture rises, and light filters through in layers. It feels lush, damp, and vividly alive.",
+        "ko": "숲은 멈춰 있지 않습니다. 잎은 흔들리고 습기는 차오르며 빛은 여러 겹으로 스며듭니다. 촉촉한 생명력이 느껴지는 색입니다."
+      },
+      "sourceProductId": "ADV008"
+    },
+    "MPC050": {
+      "kind": "story",
+      "status": "approved",
+      "copy": {
+        "zh": "咖啡的暖，夜空的深，放在一起竟然很合适。像深夜还没睡的人，手边那杯已经有点凉的摩卡。",
+        "en": "The warmth of coffee and the depth of a night sky belong together surprisingly well—like a late-night mocha cooling beside someone still awake.",
+        "ko": "커피의 온기와 밤하늘의 깊이가 의외로 잘 어울립니다. 늦은 밤 아직 잠들지 못한 사람 곁에서 조금씩 식어가는 모카처럼."
+      },
+      "sourceProductId": "ADV014"
+    },
+    "HOL001": {
+      "kind": "placeholder",
+      "status": "approved",
+      "copy": {
+        "zh": "色彩故事整理中。",
+        "en": "Color story coming soon.",
+        "ko": "컬러 스토리를 준비 중입니다."
+      }
+    },
+    "HOL002": {
+      "kind": "placeholder",
+      "status": "approved",
+      "copy": {
+        "zh": "色彩故事整理中。",
+        "en": "Color story coming soon.",
+        "ko": "컬러 스토리를 준비 중입니다."
+      }
+    },
+    "HOL003": {
+      "kind": "placeholder",
+      "status": "approved",
+      "copy": {
+        "zh": "色彩故事整理中。",
+        "en": "Color story coming soon.",
+        "ko": "컬러 스토리를 준비 중입니다."
+      }
+    },
+    "HOL004": {
+      "kind": "placeholder",
+      "status": "approved",
+      "copy": {
+        "zh": "色彩故事整理中。",
+        "en": "Color story coming soon.",
+        "ko": "컬러 스토리를 준비 중입니다."
+      }
+    },
+    "HOL005": {
+      "kind": "placeholder",
+      "status": "approved",
+      "copy": {
+        "zh": "色彩故事整理中。",
+        "en": "Color story coming soon.",
+        "ko": "컬러 스토리를 준비 중입니다."
+      }
+    },
+    "HOL006": {
+      "kind": "placeholder",
+      "status": "approved",
+      "copy": {
+        "zh": "色彩故事整理中。",
+        "en": "Color story coming soon.",
+        "ko": "컬러 스토리를 준비 중입니다."
+      }
+    },
+    "HOL007": {
+      "kind": "placeholder",
+      "status": "approved",
+      "copy": {
+        "zh": "色彩故事整理中。",
+        "en": "Color story coming soon.",
+        "ko": "컬러 스토리를 준비 중입니다."
+      }
+    },
+    "HOL008": {
+      "kind": "placeholder",
+      "status": "approved",
+      "copy": {
+        "zh": "色彩故事整理中。",
+        "en": "Color story coming soon.",
+        "ko": "컬러 스토리를 준비 중입니다."
+      }
+    },
+    "HOL009": {
+      "kind": "placeholder",
+      "status": "approved",
+      "copy": {
+        "zh": "色彩故事整理中。",
+        "en": "Color story coming soon.",
+        "ko": "컬러 스토리를 준비 중입니다."
+      }
+    },
+    "HOL010": {
+      "kind": "placeholder",
+      "status": "approved",
+      "copy": {
+        "zh": "色彩故事整理中。",
+        "en": "Color story coming soon.",
+        "ko": "컬러 스토리를 준비 중입니다."
+      }
+    },
+    "HOL011": {
+      "kind": "placeholder",
+      "status": "approved",
+      "copy": {
+        "zh": "色彩故事整理中。",
+        "en": "Color story coming soon.",
+        "ko": "컬러 스토리를 준비 중입니다."
+      }
+    },
+    "HOL012": {
+      "kind": "placeholder",
+      "status": "approved",
+      "copy": {
+        "zh": "色彩故事整理中。",
+        "en": "Color story coming soon.",
+        "ko": "컬러 스토리를 준비 중입니다."
+      }
+    },
+    "HOL013": {
+      "kind": "placeholder",
+      "status": "approved",
+      "copy": {
+        "zh": "色彩故事整理中。",
+        "en": "Color story coming soon.",
+        "ko": "컬러 스토리를 준비 중입니다."
+      }
+    },
+    "HOL014": {
+      "kind": "placeholder",
+      "status": "approved",
+      "copy": {
+        "zh": "色彩故事整理中。",
+        "en": "Color story coming soon.",
+        "ko": "컬러 스토리를 준비 중입니다."
+      }
+    },
+    "HOL015": {
+      "kind": "placeholder",
+      "status": "approved",
+      "copy": {
+        "zh": "色彩故事整理中。",
+        "en": "Color story coming soon.",
+        "ko": "컬러 스토리를 준비 중입니다."
+      }
+    },
+    "HOL016": {
+      "kind": "placeholder",
+      "status": "approved",
+      "copy": {
+        "zh": "色彩故事整理中。",
+        "en": "Color story coming soon.",
+        "ko": "컬러 스토리를 준비 중입니다."
+      }
+    }
+  },
+  "scentStandards": {
+    "classic": {
+      "source": "data/scents.csv",
+      "supplier": {
+        "zh": "上海依克塞汀香薰香精",
+        "en": "Shanghai Excitin Fragrance",
+        "ko": ""
+      },
+      "fragranceRatio": "5%",
+      "helperCopy": {
+        "status": "approved",
+        "copy": {
+          "zh": "上海依克塞汀 品牌香精 · 底模添加约 5%",
+          "en": "Shanghai Excitin branded fragrance · approx. 5% in base wax",
+          "ko": "Shanghai Excitin 브랜드 향료 · 베이스 왁스 약 5%"
+        }
+      }
+    },
+    "advanced": {
+      "source": "data/scents.csv",
+      "supplier": {
+        "zh": "法国 Robertet Group 进口香薰香精",
+        "en": "Robertet Group Imported Fragrance",
+        "ko": ""
+      },
+      "fragranceRatio": "8%",
+      "helperCopy": {
+        "status": "approved",
+        "copy": {
+          "zh": "法国 Robertet Group 进口香精 · 底模添加约 8%",
+          "en": "French Robertet Group imported fragrance · approx. 8% in base wax",
+          "ko": "프랑스 Robertet Group 수입 향료 · 베이스 왁스 약 8%"
+        }
+      }
+    },
+    "masterpiece": {
+      "source": "data/scents.csv",
+      "supplier": {
+        "zh": "美国 CandleScience 进口香薰精油",
+        "en": "CandleScience Imported Fragrance Oil",
+        "ko": ""
+      },
+      "fragranceRatio": "10%",
+      "helperCopy": {
+        "status": "approved",
+        "copy": {
+          "zh": "美国 CandleScience 专业香精 · 底模添加约 10%",
+          "en": "U.S. CandleScience professional fragrance · approx. 10% in base wax",
+          "ko": "미국 CandleScience 전문 향료 · 베이스 왁스 약 10%"
+        }
+      }
+    }
+  },
+  "scentStandardResolution": {
+    "standardKeys": [
+      "classic",
+      "advanced",
+      "masterpiece"
+    ],
+    "productStrategy": "selected-scent-series",
+    "holidayStrategy": "selected-scent-series",
+    "noHolidayOwnedStandard": true
+  },
+  "quantityHelper": {
+    "ruleId": "same-series-same-size-mixed-product-moq",
+    "aggregationKey": [
+      "series",
+      "size"
+    ],
+    "allowMixedProducts": true,
+    "allowCrossSize": false,
+    "helperCopy": {
+      "status": "approved",
+      "copy": {
+        "zh": "同系列 · 同尺寸可混款计起订量",
+        "en": "Mix styles within the same series and size to meet MOQ.",
+        "ko": "동일 시리즈·동일 사이즈 내 여러 스타일을 합산해 MOQ를 충족할 수 있습니다."
+      }
+    }
+  }
+}

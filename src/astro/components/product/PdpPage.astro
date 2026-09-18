@@ -40,6 +40,21 @@ const initialScents=
     )||
   [];
 
+const initialPdpCopy=
+  runtimeState.languages
+    ?.en
+    ?.pdpCopy||
+  {};
+
+const initialScentHelper=
+  initialPdpCopy.scentHelpers
+    ?.[defaultScentSeries]||
+  '';
+
+const initialQuantityHelper=
+  initialPdpCopy.quantityHelper||
+  '';
+
 const initialPatterns=
   runtimeState.patternsBySize
     ?.[view.defaultSize]||
@@ -175,6 +190,7 @@ const galleryCount=
         <p
           class="pdp-description"
           data-pdp-product-description
+          data-pdp-color-story-kind={view.colorStoryKind||'story'}
         >
           {view.description}
         </p>
@@ -353,6 +369,12 @@ const galleryCount=
           <span data-pdp-ui="scent">
             {runtimeUi.scent||'Scent'}
           </span>
+          <small
+            class="pdp-field__helper"
+            data-pdp-scent-helper
+          >
+            {initialScentHelper}
+          </small>
           <select data-pdp-scent>
             {initialScents.map((scent:any)=>(
               <option value={scent.id}>
@@ -398,6 +420,13 @@ const galleryCount=
           <span data-pdp-ui="quantity">
             {runtimeUi.quantity||'Quantity'}
           </span>
+
+          <small
+            class="pdp-quantity-helper"
+            data-pdp-quantity-helper
+          >
+            {initialQuantityHelper}
+          </small>
 
           <div
             class="pdp-quantity-reference"

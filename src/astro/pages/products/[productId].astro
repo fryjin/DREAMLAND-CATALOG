@@ -20,6 +20,7 @@ import seriesDocument from '../../../../data/series.json';
 import siteContent from '../../../../data/site-content.json';
 import i18n from '../../../../data/i18n.json';
 import routes from '../../../../data/page-routes.json';
+import pdpContentDocument from '../../../../data/pdp-content.json';
 
 import '../../../data/product-data-contract.js';
 import '../../../domain/pricing/runtime-pricing-policy.js';
@@ -114,6 +115,7 @@ const view=
   buildPdpViewModel({
     language,
     product,
+    pdpContentDocument,
     seriesDocument,
     siteContent,
     ui:
@@ -146,6 +148,7 @@ const scents=
 const runtimeState=
   buildPdpRuntimeState({
     product,
+    pdpContentDocument,
     languages:
       supportedLanguages,
     defaultLanguage:

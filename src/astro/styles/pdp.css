@@ -1592,3 +1592,56 @@
     min-height:42px;
   }
 }
+
+/* ============================================================
+ * PDP-COPY-1B — Approved Content UI Wiring
+ * Color Story owns the hero description. Scent and Quantity helper
+ * copy stay subordinate to their canonical configuration owners.
+ * ========================================================== */
+.pdp-field__helper,
+.pdp-quantity-helper,
+.pdp-config-projection__helper {
+  color:var(--home-soft);
+  font-size:10px;
+  font-weight:500;
+  line-height:1.45;
+}
+
+.pdp-field__helper {
+  display:block;
+  margin-top:-2px;
+}
+
+.pdp-quantity-helper {
+  display:block;
+  margin-top:-4px;
+}
+
+@media (max-width:720px) {
+  .pdp-config-projection__helper {
+    max-width:34ch;
+    margin:-8px 0 12px;
+    color:var(--home-soft);
+    font-size:10px;
+    line-height:1.45;
+  }
+
+  [data-pdp-quantity-field] {
+    grid-template-areas:
+      "label label"
+      "helper helper"
+      "reference stepper";
+  }
+
+  .pdp-quantity-helper {
+    grid-area:helper;
+    min-width:0;
+    margin:-6px 0 0;
+    overflow-wrap:anywhere;
+  }
+
+  html[lang="ko-KR"] .pdp-config-projection__helper,
+  html[lang="ko-KR"] .pdp-quantity-helper {
+    word-break:keep-all;
+  }
+}

@@ -180,63 +180,13 @@
     );
   }
 
-  function languageDescription(){
-    return (
-      content().description||
-      state?.product
-        ?.descriptions
-        ?.[currentLanguage]||
-      state?.product
-        ?.descriptions
-        ?.en||
-      ''
-    );
-  }
+  function languageDescription(){return content().description||state?.product?.descriptions?.[currentLanguage]||state?.product?.descriptions?.en||'';}
 
-  function scentDisplay(
-    value
-  ){
-    if(
-      value&&
-      typeof value===
-      'object'
-    ){
-      return (
-        value?.[currentLanguage]||
-        value?.en||
-        value?.zh||
-        ''
-      );
-    }
+  function scentDisplay(value){return value&&typeof value==='object'?(value?.[currentLanguage]||value?.en||value?.zh||''):text(value);}
 
-    return text(value);
-  }
+  function seriesLabel(key){return state?.seriesMeta?.[key]?.labels?.[currentLanguage]||state?.seriesMeta?.[key]?.labels?.en||key;}
 
-  function seriesLabel(
-    key
-  ){
-    return (
-      state?.seriesMeta
-        ?.[key]
-        ?.labels
-        ?.[currentLanguage]||
-      state?.seriesMeta
-        ?.[key]
-        ?.labels
-        ?.en||
-      key
-    );
-  }
-
-  function setText(
-    node,
-    value
-  ){
-    if(node){
-      node.textContent=
-        text(value);
-    }
-  }
+  function setText(node,value){if(node)node.textContent=text(value);}
 
   function pathValue(
     source,
@@ -532,14 +482,7 @@
     );
   }
 
-  function uiValue(key){
-    return (
-      content()
-        ?.ui
-        ?.[key]||
-      ''
-    );
-  }
+  function uiValue(key){return content()?.ui?.[key]||'';}
 
   function applyLanguageBindings(){
     const lang=
@@ -684,37 +627,18 @@
   }
 
   function renderScents(view){
-    const select=
-      document.querySelector(
-        '[data-pdp-scent]'
-      );
-
-    if(!select){
-      return;
-    }
-
-    const selected=
-      view.config.scentId;
-
-    select.innerHTML=
-      view.options.scents
-        .map(
-          scent=>
-            '<option value="'+
-            text(scent.id)
-              .replace(/"/g,'&quot;')+
-            '">'+
-            scentDisplay(
-              scent.name
-            )
-              .replace(/&/g,'&amp;')
-              .replace(/</g,'&lt;')+
-            '</option>'
-        )
-        .join('');
-
-    select.value=
-      selected;
+    const select=document.querySelector('[data-pdp-scent]');
+    if(!select)return;
+    select.innerHTML=view.options.scents.map(scent=>
+      '<option value="'+text(scent.id).replace(/"/g,'&quot;')+'">'+
+      scentDisplay(scent.name).replace(/&/g,'&amp;').replace(/</g,'&lt;')+
+      '</option>'
+    ).join('');
+    select.value=view.config.scentId;
+    const copy=content().pdpCopy||{};
+    const series=text(view?.config?.scentSeries||state?.product?.series);
+    setText(document.querySelector('[data-pdp-scent-helper]'),copy.scentHelpers?.[series]||'');
+    setText(document.querySelector('[data-pdp-quantity-helper]'),copy.quantityHelper||'');
   }
 
   function renderPatterns(view){
@@ -1141,10 +1065,14 @@
         );
       });
 
-      section.append(
-        heading,
-        strip
-      );
+      section.appendChild(heading);
+      if(definition.field==='scent'){
+        const helper=document.createElement('p');
+        helper.className='pdp-config-projection__helper';
+        helper.textContent=text(content().pdpCopy?.scentHelpers?.[text(view?.config?.scentSeries||state?.product?.series)]||'');
+        if(helper.textContent)section.appendChild(helper);
+      }
+      section.appendChild(strip);
 
       /* R4.11B4.1E-B2 — Scent Detail Utility */
       if(definition.field==='scent'&&scentDetail){
