@@ -1283,6 +1283,9 @@
 
     let privacyAccepted=false;
     let submitting=false;
+    let activeInquiryId='';
+    let attemptGate=Object.freeze({active:false,code:'',state:'idle',retryAfterMs:0});
+    let attemptGateTimer=null;
 
     const statusCopy=Object.freeze({
       en:Object.freeze({
@@ -1291,7 +1294,14 @@
         captcha:'Please complete the security verification.',
         filtered:'This inquiry could not be submitted. Please review the details and try again.',
         failed:'Submission failed. Please try again.',
-        offline:'The network appears unavailable. Your inquiry remains saved on this device.'
+        offline:'The network appears unavailable. Your inquiry remains saved on this device.',
+        timeout:'The submission check timed out. Your inquiry is still saved; please try again.',
+        security:'Security verification failed. Please try again.',
+        provider:'The submission service rejected the request. Your inquiry is still saved; please try again.',
+        config:'Submission is temporarily unavailable. Your inquiry is still saved.',
+        cooldown:'Please wait {seconds}s before trying again.',
+        duplicate:'This inquiry is already being submitted in another tab.',
+        unknown:'We could not confirm delivery. Please wait {seconds}s before retrying to avoid a duplicate inquiry.'
       }),
       zh:Object.freeze({
         privacy:'提交前请先同意隐私声明。',
@@ -1299,7 +1309,14 @@
         captcha:'请完成安全验证。',
         filtered:'当前询价暂无法提交，请检查信息后重试。',
         failed:'提交失败，请稍后重试。',
-        offline:'当前网络不可用，询价内容仍保存在本机。'
+        offline:'当前网络不可用，询价内容仍保存在本机。',
+        timeout:'提交检查超时，询价内容仍已保存，请稍后重试。',
+        security:'安全验证失败，请重新完成验证后重试。',
+        provider:'提交服务暂时拒绝了请求，询价内容仍已保存，请稍后重试。',
+        config:'提交服务暂时不可用，询价内容仍已保存。',
+        cooldown:'请等待 {seconds} 秒后再重试。',
+        duplicate:'该询价正在另一个页面中提交，请勿重复操作。',
+        unknown:'暂时无法确认询价是否已送达。为避免重复，请等待 {seconds} 秒后再重试。'
       }),
       ko:Object.freeze({
         privacy:'제출하기 전에 개인정보 처리 안내에 동의해 주세요.',
@@ -1307,7 +1324,14 @@
         captcha:'보안 인증을 완료해 주세요.',
         filtered:'현재 문의를 제출할 수 없습니다. 내용을 확인한 뒤 다시 시도해 주세요.',
         failed:'제출하지 못했습니다. 다시 시도해 주세요.',
-        offline:'네트워크에 연결할 수 없습니다. 문의 내용은 기기에 저장되어 있습니다.'
+        offline:'네트워크에 연결할 수 없습니다. 문의 내용은 기기에 저장되어 있습니다.',
+        timeout:'제출 확인 시간이 초과되었습니다. 문의 내용은 저장되어 있으니 다시 시도해 주세요.',
+        security:'보안 인증에 실패했습니다. 인증을 다시 완료해 주세요.',
+        provider:'제출 서비스가 요청을 처리하지 못했습니다. 문의 내용은 저장되어 있으니 다시 시도해 주세요.',
+        config:'제출 서비스를 일시적으로 사용할 수 없습니다. 문의 내용은 저장되어 있습니다.',
+        cooldown:'{seconds}초 후에 다시 시도해 주세요.',
+        duplicate:'이 문의는 다른 탭에서 이미 제출 중입니다.',
+        unknown:'전송 여부를 확인할 수 없습니다. 중복 제출을 피하기 위해 {seconds}초 후 다시 시도해 주세요.'
       })
     });
 
@@ -1326,6 +1350,24 @@
       );
     }
 
+    function statusWithSeconds(key,retryAfterMs){
+      return statusText(key).replace('{seconds}',String(Math.max(1,Math.ceil(Number(retryAfterMs||0)/1000))));
+    }
+
+    function classifySubmissionError(error){
+      const code=text(error?.code);
+      if(error?.reachable===false||code==='OFFLINE') return 'offline';
+      if(code==='RISK_FILTERED') return 'filtered';
+      if(code.startsWith('CAPTCHA_')) return 'security';
+      if(code==='RISK_TIMEOUT') return 'timeout';
+      if(code==='COOLDOWN') return 'cooldown';
+      if(code==='DUPLICATE') return 'duplicate';
+      if(code==='UNKNOWN_PENDING'||code==='SUBMISSION_TIMEOUT') return 'unknown';
+      if(code==='NOT_CONFIGURED'||code.startsWith('DIRECT_CONFIG_')) return 'config';
+      if(code==='SUBMISSION_FAILED'||Number(error?.status||0)>0) return 'provider';
+      return 'failed';
+    }
+
     function setStatus(message='',kind=''){
       const node=
         documentRef.querySelector(
@@ -1338,6 +1380,20 @@
         node.dataset.reviewStatus=
           text(kind);
       }
+    }
+
+    function clearAttemptGateTimer(){if(attemptGateTimer){clearTimeout(attemptGateTimer);attemptGateTimer=null;}}
+
+    function refreshAttemptGate(announce=false){
+      clearAttemptGateTimer();
+      const previousActive=attemptGate.active;
+      attemptGate=activeInquiryId&&typeof submissionFlow.attemptState==='function'?submissionFlow.attemptState(activeInquiryId):Object.freeze({active:false,code:'',state:'idle',retryAfterMs:0});
+      if(attemptGate.active&&announce&&!submitting){
+        const key=attemptGate.code==='UNKNOWN_PENDING'?'unknown':attemptGate.code==='COOLDOWN'?'cooldown':'duplicate';
+        setStatus(key==='duplicate'?statusText(key):statusWithSeconds(key,attemptGate.retryAfterMs),'error');
+      }else if(previousActive&&!attemptGate.active&&!submitting){setStatus('');}
+      if(attemptGate.active&&attemptGate.retryAfterMs>0){attemptGateTimer=setTimeout(()=>{refreshAttemptGate(true);syncSubmitUi();},Math.min(1000,attemptGate.retryAfterMs));}
+      return attemptGate;
     }
 
     function syncSubmitUi(){
@@ -1361,6 +1417,7 @@
       if(submitButton){
         submitButton.disabled=
           submitting||
+          attemptGate.active||
           !privacyAccepted;
         submitButton.setAttribute(
           'aria-busy',
@@ -1432,7 +1489,11 @@
         archiveLimit:
           config.archiveLimit,
         cooldownMs:
-          config.cooldownMs
+          config.cooldownMs,
+        attemptKey:config.attemptKey,
+        attemptTtlMs:config.attemptTtlMs,
+        unknownRetryDelayMs:config.unknownRetryDelayMs,
+        submissionTimeoutMs:config.submissionTimeoutMs
       });
 
       risk.markFormStart();
@@ -1466,14 +1527,21 @@
       });
     }
 
+    async function runWithTimeout(task,timeoutMs,code){
+      const duration=Math.max(0,Number(timeoutMs)||0);
+      if(duration<=0||typeof root.AbortController!=='function') return task(null);
+      const controller=new root.AbortController();
+      let timedOut=false;
+      const timer=setTimeout(()=>{timedOut=true;controller.abort();},duration);
+      try{return await task(controller.signal);}catch(error){if(timedOut||error?.name==='AbortError'){const timeoutError=new Error(code);timeoutError.code=code;throw timeoutError;}throw error;}finally{clearTimeout(timer);}
+    }
+
     async function assessRisk(payload){
       const assessment=
-        await risk.assess(
-          payload,
-          {
-            website:'',
-            language
-          }
+        await runWithTimeout(
+          signal=>risk.assess(payload,{website:'',language,...(signal?{signal}:{})}),
+          state.submission.riskTimeoutMs,
+          'RISK_TIMEOUT'
         );
 
       if(assessment.filtered){
@@ -1545,6 +1613,9 @@
         return false;
       }
 
+      refreshAttemptGate(true);
+      if(attemptGate.active){syncSubmitUi();return false;}
+
       submitting=true;
       syncSubmitUi();
       setStatus(
@@ -1614,14 +1685,12 @@
           security.hidden=true;
         }
 
+        refreshAttemptGate(false);
+        const category=classifySubmissionError(error);
         setStatus(
-          error?.reachable===false
-            ? statusText('offline')
-            : (
-                error?.code==='RISK_FILTERED'
-                  ? statusText('filtered')
-                  : statusText('failed')
-              ),
+          category==='cooldown'||category==='unknown'
+            ? statusWithSeconds(category,error?.retryAfterMs||attemptGate.retryAfterMs)
+            : statusText(category),
           'error'
         );
 
@@ -1729,6 +1798,9 @@
       const result=
         projection();
 
+      activeInquiryId=result.inquiryId;
+      refreshAttemptGate(true);
+
       const viewModel=
         inquiry
           .buildViewModel();
@@ -1814,11 +1886,15 @@
           state.storage
             .contactKey,
           state.storage
-            .pendingInquiryKey
+            .pendingInquiryKey,
+          state.submission
+            .attemptKey
         ].includes(
           event.key
         )
       ){
+        if(event.key===state.submission.attemptKey){refreshAttemptGate(true);syncSubmitUi();return;}
+
         language=
           readLanguage(
             state,
