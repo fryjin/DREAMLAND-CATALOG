@@ -1141,3 +1141,17 @@
     transition:none;
   }
 }
+
+/* ============================================================
+ * GLOBAL-POLISH-1A — Remove Decorative Collection Folio
+ * ========================================================== */
+
+.home-collections__rail-index {
+  display:none;
+}
+
+@media (min-width:901px) {
+  .home-collections__rail-track {
+    top:28px;
+  }
+}

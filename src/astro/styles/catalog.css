@@ -1861,3 +1861,90 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
     min-height:48px;
   }
 }
+
+/* ============================================================
+ * GLOBAL-POLISH-1A — Editorial Folio Cleanup + Catalog Hero Consistency
+ *
+ * Historical 01/02 chapter numbers were decorative editorial folios, not
+ * business data. Remove them from the public visual hierarchy.
+ *
+ * Catalog Hero title sizing now uses one shared token for EN / ZH / KO.
+ * Locale-specific legacy rules may keep their typography metrics, but may
+ * no longer own the font size.
+ * ========================================================== */
+
+.catalog-chapter__number,
+.catalog-chapter__slash {
+  display:none;
+}
+
+.catalog-chapter__folio {
+  gap:0;
+}
+
+.catalog-intro {
+  --catalog-hero-title-size:
+    clamp(38px,4.2vw,62px);
+}
+
+body[data-dreamland-page="catalog"]
+.catalog-intro h1,
+html[lang="zh-CN"]
+body[data-dreamland-page="catalog"]
+.catalog-intro h1,
+body[data-dreamland-page="catalog"][data-catalog-language="zh"]
+.catalog-intro h1,
+html[lang="ko-KR"]
+body[data-dreamland-page="catalog"]
+.catalog-intro h1,
+body[data-dreamland-page="catalog"][data-catalog-language="ko"]
+.catalog-intro h1 {
+  max-width:none;
+  font-size:
+    var(--catalog-hero-title-size);
+  line-height:1;
+  letter-spacing:-.035em;
+  white-space:nowrap;
+  text-wrap:nowrap;
+}
+
+@media (max-width:720px) {
+  body[data-dreamland-page="catalog"]
+  .catalog-chapter {
+    width:calc(100% - 40px);
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-intro {
+    --catalog-hero-title-size:
+      clamp(24px,6.8vw,30px);
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-intro h1,
+  html[lang="zh-CN"]
+  body[data-dreamland-page="catalog"]
+  .catalog-intro h1,
+  body[data-dreamland-page="catalog"][data-catalog-language="zh"]
+  .catalog-intro h1,
+  html[lang="ko-KR"]
+  body[data-dreamland-page="catalog"]
+  .catalog-intro h1,
+  body[data-dreamland-page="catalog"][data-catalog-language="ko"]
+  .catalog-intro h1 {
+    max-width:100%;
+    font-size:
+      var(--catalog-hero-title-size);
+    line-height:1.05;
+    letter-spacing:-.03em;
+    white-space:nowrap;
+    text-wrap:nowrap;
+  }
+}
+
+@media (max-width:374px) {
+  body[data-dreamland-page="catalog"]
+  .catalog-chapter {
+    width:calc(100% - 32px);
+  }
+}

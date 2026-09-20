@@ -264,13 +264,20 @@ const validate=
     ''
   );
 
+/*
+ * GLOBAL-POLISH-1A-FIX1 — gate adjacency semantics
+ *
+ * CATALOG-VISUAL-1 owns the adjacency to the PDP responsive closeout.
+ * Later visual closeout gates may legitimately append after Catalog, so
+ * Catalog must not require itself to remain the final command forever.
+ */
 if(
-  !validate.endsWith(
+  !validate.includes(
     'npm run r4:visual:pdp-responsive-closeout && npm run r4:visual:catalog-polish'
   )
 ){
   fail(
-    'CATALOG-VISUAL-1 gate must close the visual validation chain after the existing PDP responsive closeout.'
+    'CATALOG-VISUAL-1 gate must remain immediately after the existing PDP responsive closeout.'
   );
 }
 

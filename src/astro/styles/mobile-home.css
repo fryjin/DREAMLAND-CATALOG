@@ -638,3 +638,18 @@
     animation:none;
   }
 }
+
+/* ============================================================
+ * GLOBAL-POLISH-1A — Remove Decorative Mobile Folios
+ * ========================================================== */
+
+@media (max-width:720px) {
+  .home-mobile-cover__headline,
+  .dl-mobile-startup__index {
+    display:none;
+  }
+
+  .dl-mobile-startup__wordmark {
+    margin-top:0;
+  }
+}
