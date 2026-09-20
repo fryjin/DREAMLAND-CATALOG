@@ -109,7 +109,10 @@ for(const marker of [
   '@media (min-width:721px)',
   '.pdp-scent-detail-host {',
   '.pdp-scent-detail__toggle {',
-  '.pdp-scent-detail__list,',
+  '.pdp-scent-detail__toggle::after {',
+  '.pdp-scent-detail[open]',
+  '.pdp-scent-detail__list {',
+  '.pdp-scent-detail:not([open])',
   'grid-template-columns:',
   '64px',
   'border-bottom:'
@@ -118,6 +121,24 @@ for(const marker of [
     css,
     marker,
     'Desktop scent-detail host styling changed.'
+  );
+}
+
+if(
+  !/@media\s*\(max-width:\s*720px\)[\s\S]*?\.pdp-scent-detail\s*\{[\s\S]*?margin\s*:\s*0\s*;[\s\S]*?border-top\s*:\s*0\s*;/m
+    .test(css)
+){
+  fail(
+    'Mobile Scent Detail must not add a second divider above the disclosure.'
+  );
+}
+
+if(
+  !/@media\s*\(min-width:\s*721px\)[\s\S]*?\.pdp-scent-detail__toggle\s*\{[\s\S]*?display\s*:\s*flex\s*;/m
+    .test(css)
+){
+  fail(
+    'Desktop Scent Detail must expose the native disclosure entry.'
   );
 }
 
@@ -158,6 +179,6 @@ console.log(
   'PDP-OPTIONS-1B-FIX4B DESKTOP SCENT DETAIL HOST: PASS'
 );
 console.log(
-  'Desktop Top / Heart / Base notes render as three rows in a static shared host; Mobile disclosure remains below the Mobile Scent projection.'
+  'Desktop exposes a Scent Details disclosure with three-row Top / Heart / Base notes; Mobile keeps one clean disclosure divider below the Scent projection.'
 );
 console.log('');

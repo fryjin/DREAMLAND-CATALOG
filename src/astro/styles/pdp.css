@@ -1216,14 +1216,8 @@
  * ========================================================== */
 @media (max-width:720px) {
   .pdp-scent-detail {
-    margin:
-      7px
-      0
-      0;
-    border-top:
-      1px
-      solid
-      var(--home-line);
+    margin:0;
+    border-top:0;
   }
 
   .pdp-scent-detail[hidden] {
@@ -2116,12 +2110,39 @@ html[data-pdp-visual-options-ready="true"]
   }
 
   .pdp-scent-detail__toggle {
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:8px;
+    min-height:34px;
+    padding:0;
+    color:var(--home-muted);
+    font-size:10px;
+    font-weight:700;
+    line-height:1;
+    list-style:none;
+    cursor:pointer;
+  }
+
+  .pdp-scent-detail__toggle::-webkit-details-marker {
     display:none;
   }
 
-  .pdp-scent-detail__list,
-  .pdp-scent-detail:not([open])
-  > .pdp-scent-detail__list {
+  .pdp-scent-detail__toggle::after {
+    content:"+";
+    width:12px;
+    color:var(--home-ink);
+    font-size:13px;
+    font-weight:600;
+    text-align:center;
+  }
+
+  .pdp-scent-detail[open]
+  > .pdp-scent-detail__toggle::after {
+    content:"−";
+  }
+
+  .pdp-scent-detail__list {
     display:grid;
     grid-template-columns:
       minmax(0,1fr);
@@ -2131,6 +2152,11 @@ html[data-pdp-visual-options-ready="true"]
       2px
       0
       0;
+  }
+
+  .pdp-scent-detail:not([open])
+  > .pdp-scent-detail__list {
+    display:none;
   }
 
   .pdp-scent-detail__row {
