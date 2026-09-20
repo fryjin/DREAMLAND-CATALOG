@@ -1614,3 +1614,250 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"] .catalog-intro h
     gap:20px;
   }
 }
+
+/* ============================================================
+ * CATALOG-VISUAL-1 — Catalog Hierarchy & Conversion Polish
+ *
+ * #1 Desktop Hero hierarchy
+ * #2 Product count becomes a secondary statistic
+ * #3 Inquiry CTA becomes a compact project-selection closeout
+ * #6 Mobile Hero copy/rhythm becomes one compact editorial block
+ * ========================================================== */
+
+.catalog-intro {
+  padding-top:
+    clamp(
+      60px,
+      6vw,
+      96px
+    );
+  padding-bottom:
+    clamp(
+      44px,
+      4.5vw,
+      72px
+    );
+}
+
+.catalog-intro__layout {
+  grid-template-columns:
+    minmax(0,1fr)
+    auto;
+  align-items:end;
+  gap:
+    clamp(
+      32px,
+      5vw,
+      80px
+    );
+}
+
+.catalog-intro h1 {
+  max-width:none;
+  font-size:
+    clamp(
+      38px,
+      4.2vw,
+      62px
+    );
+  line-height:1;
+  letter-spacing:-.035em;
+  white-space:nowrap;
+  text-wrap:nowrap;
+}
+
+.catalog-intro__copy > p {
+  max-width:none;
+  margin-top:18px;
+  font-size:
+    clamp(
+      14px,
+      1.2vw,
+      17px
+    );
+  line-height:1.5;
+}
+
+.catalog-intro__count {
+  flex-direction:row;
+  align-items:baseline;
+  gap:8px;
+  padding-bottom:5px;
+  white-space:nowrap;
+}
+
+.catalog-intro__count strong {
+  font-family:inherit;
+  font-size:28px;
+  font-weight:850;
+  line-height:1;
+  letter-spacing:-.025em;
+}
+
+.catalog-intro__count span {
+  max-width:none;
+  font-size:10px;
+  line-height:1;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.catalog-cta__inner {
+  align-items:center;
+  gap:
+    clamp(
+      32px,
+      5vw,
+      72px
+    );
+  padding-top:
+    clamp(
+      48px,
+      5vw,
+      72px
+    );
+  padding-bottom:
+    clamp(
+      48px,
+      5vw,
+      72px
+    );
+}
+
+.catalog-cta .catalog-eyebrow {
+  margin-bottom:12px;
+}
+
+.catalog-cta h2 {
+  max-width:720px;
+  font-size:
+    clamp(
+      32px,
+      3.4vw,
+      50px
+    );
+  line-height:1.08;
+  letter-spacing:-.025em;
+}
+
+.catalog-cta p:not(.catalog-eyebrow) {
+  max-width:720px;
+  margin-top:14px;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.catalog-cta a {
+  justify-content:space-between;
+  min-width:152px;
+  min-height:46px;
+}
+
+@media (max-width:900px) {
+  .catalog-intro h1 {
+    font-size:
+      clamp(
+        34px,
+        5vw,
+        46px
+      );
+  }
+}
+
+@media (max-width:720px) {
+  body[data-dreamland-page="catalog"]
+  .catalog-chapter {
+    padding-top:18px;
+    padding-bottom:16px;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-chapter__folio {
+    margin-bottom:11px;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-intro__layout {
+    display:block;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-intro h1 {
+    max-width:none;
+    font-size:clamp(24px,6.8vw,30px);
+    line-height:1.05;
+    letter-spacing:-.03em;
+    white-space:nowrap;
+    text-wrap:nowrap;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-intro__copy > p {
+    max-width:none;
+    margin-top:8px;
+    font-size:11px;
+    line-height:1.4;
+    white-space:nowrap;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-intro__count {
+    justify-self:auto;
+    align-items:baseline;
+    gap:5px;
+    margin-top:12px;
+    padding:0;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-intro__count strong {
+    font-family:inherit;
+    font-size:14px;
+    font-weight:850;
+    line-height:1;
+    letter-spacing:0;
+  }
+
+  body[data-dreamland-page="catalog"]
+  .catalog-intro__count span {
+    max-width:none;
+    font-size:9px;
+    line-height:1;
+    letter-spacing:.07em;
+    text-align:left;
+  }
+
+  .catalog-cta__inner {
+    grid-template-columns:1fr;
+    gap:24px;
+    padding-top:36px;
+    padding-bottom:36px;
+  }
+
+  .catalog-cta .catalog-eyebrow {
+    margin-bottom:10px;
+  }
+
+  .catalog-cta h2 {
+    max-width:15ch;
+    font-size:
+      clamp(
+        27px,
+        8vw,
+        34px
+      );
+    line-height:1.06;
+  }
+
+  .catalog-cta p:not(.catalog-eyebrow) {
+    max-width:38ch;
+    margin-top:12px;
+    font-size:12px;
+    line-height:1.55;
+  }
+
+  .catalog-cta a {
+    width:100%;
+    min-height:48px;
+  }
+}

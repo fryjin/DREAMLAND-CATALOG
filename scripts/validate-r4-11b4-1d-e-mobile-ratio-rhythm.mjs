@@ -308,8 +308,15 @@ if(
   );
 }
 
+/*
+ * CATALOG-VISUAL-1-FIX1 — block-scoped lane declaration check
+ *
+ * Only declarations inside the .catalog-spread__lane block belong to the
+ * D-E lane-rhythm contract. Later Catalog sections may legitimately use
+ * justify-content:space-between.
+ */
 if(
-  /\.catalog-spread__lane\s*\{[\s\S]*?justify-content\s*:\s*space-between\s*;/m
+  /\.catalog-spread__lane\s*\{[^}]*justify-content\s*:\s*space-between\s*;/m
     .test(stageCss)
 ){
   fail(

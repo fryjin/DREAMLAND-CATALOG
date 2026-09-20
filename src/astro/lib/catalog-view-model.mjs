@@ -153,10 +153,10 @@ function normalizeCatalogContent(
       'PRODUCT CATALOG',
     title:
       catalog.title||
-      'Browse the DREAMLAND collection',
+      'DREAMLAND Collection',
     body:
       catalog.body||
-      '',
+      'For wholesale, retail and custom projects.',
     all:
       catalog.all||
       'All',
@@ -237,13 +237,13 @@ function normalizeCatalogContent(
       'Clear filters',
     ctaKicker:
       catalog.ctaKicker||
-      'YOUR INQUIRY',
+      'PROJECT SELECTION',
     ctaEmptyTitle:
       catalog.ctaEmptyTitle||
-      'Add products to an inquiry when you are ready for a quote.',
+      'Build a selection for your project.',
     ctaEmptyBody:
       catalog.ctaEmptyBody||
-      'Choose a product, configure it, then add it to your inquiry.',
+      'Add the products you are interested in to your inquiry. Final pricing is confirmed based on quantity, configuration and customization.',
     ctaReadyTitle:
       catalog.ctaReadyTitle||
       'Review selected products.',
