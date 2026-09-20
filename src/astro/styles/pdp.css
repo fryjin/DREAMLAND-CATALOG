@@ -1790,3 +1790,112 @@
     font-size:11px;
   }
 }
+
+/* ============================================================
+ * PDP-GALLERY-1 — Gallery / Variant Interaction
+ * Desktop: one editorial frame + horizontal thumbnail rail.
+ * Mobile: canonical horizontal swipe track.
+ * Size changes project to an existing gallery asset; cover remains recoverable.
+ * ========================================================== */
+
+@media (min-width:721px) {
+  .pdp-gallery {
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    gap:12px;
+    min-width:0;
+    overflow:visible;
+  }
+
+  .pdp-gallery__stage {
+    display:block;
+    aspect-ratio:6/7;
+    margin:0;
+    overflow:hidden;
+    background:#eee7de;
+  }
+
+  .pdp-gallery__stage img {
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+
+  .pdp-gallery__track {display:none;}
+
+  .pdp-gallery__thumbs {
+    display:flex;
+    min-width:0;
+    gap:8px;
+    overflow-x:auto;
+    padding:1px 0 6px;
+    scrollbar-width:none;
+    overscroll-behavior-inline:contain;
+  }
+
+  .pdp-gallery__thumbs::-webkit-scrollbar {display:none;}
+
+  .pdp-gallery__thumb {
+    flex:0 0 76px;
+    width:76px;
+    aspect-ratio:4/5;
+    padding:0;
+    overflow:hidden;
+    border:1px solid transparent;
+    background:#eee7de;
+    opacity:.58;
+    cursor:pointer;
+  }
+
+  .pdp-gallery__thumb.is-selected {
+    border-color:var(--home-ink);
+    opacity:1;
+  }
+
+  .pdp-gallery__thumb img {
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+}
+
+@media (max-width:720px) {
+  .pdp-gallery {
+    display:block;
+    overflow:visible;
+    padding:0;
+  }
+
+  .pdp-gallery__stage,
+  .pdp-gallery__thumbs {display:none;}
+
+  .pdp-gallery__track {
+    display:flex;
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    gap:12px;
+    overflow-x:auto;
+    padding:0 16px;
+    scroll-padding-inline:16px;
+    scroll-snap-type:x mandatory;
+    overscroll-behavior-inline:contain;
+    scrollbar-width:none;
+  }
+
+  .pdp-gallery__track::-webkit-scrollbar {display:none;}
+
+  .pdp-gallery__track > .pdp-gallery__item,
+  .pdp-gallery__track > .pdp-gallery__item--primary {
+    flex:0 0 min(calc(100vw - 48px),392px);
+    aspect-ratio:4/5;
+    margin:0;
+    overflow:hidden;
+    border-radius:18px;
+    scroll-snap-align:start;
+    scroll-snap-stop:normal;
+    background:#eee7de;
+  }
+}

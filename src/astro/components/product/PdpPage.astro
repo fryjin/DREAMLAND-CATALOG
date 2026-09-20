@@ -83,6 +83,16 @@ const unit=
 
 const galleryCount=
   view.gallery.length;
+
+const defaultSizeDimension=
+  view.sizes
+    ?.find(
+      (item:any)=>
+        item.size===
+        view.defaultSize
+    )
+    ?.dimension||
+  '';
 ---
 <main
   class="pdp-main"
@@ -117,47 +127,100 @@ const galleryCount=
       class="pdp-gallery"
       data-pdp-gallery
     >
-      {view.gallery.map(
-        (
-          image:any,
-          index:number
-        )=>(
-          <figure
-            class:list={[
-              'pdp-gallery__item',
-              image.primary&&
-                'pdp-gallery__item--primary'
-            ]}
-            data-pdp-gallery-item={index}
-          >
+      <figure class="pdp-gallery__stage">
+        <img
+          src={view.gallery[0].src}
+          alt={view.name}
+          width="1200"
+          height="1400"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          data-pdp-primary-image="true"
+          data-pdp-gallery-stage-image
+        />
+      </figure>
+
+      <div
+        class="pdp-gallery__track"
+        data-pdp-gallery-track
+      >
+        {view.gallery.map(
+          (
+            image:any,
+            index:number
+          )=>(
+            <figure
+              class:list={[
+                'pdp-gallery__item',
+                image.primary&&
+                  'pdp-gallery__item--primary'
+              ]}
+              data-pdp-gallery-item={index}
+              data-pdp-gallery-src={image.src}
+            >
+              <button
+                class="pdp-gallery__select"
+                type="button"
+                data-pdp-gallery-select={image.src}
+                aria-label={`${view.name} — ${index+1}`}
+              >
+                <img
+                  src={image.src}
+                  alt={
+                    index===0
+                      ? view.name
+                      : `${view.name} — ${index+1}`
+                  }
+                  width="1200"
+                  height="1500"
+                  loading="lazy"
+                  fetchpriority="auto"
+                  decoding="async"
+                />
+              </button>
+            </figure>
+          )
+        )}
+      </div>
+
+      <div
+        class="pdp-gallery__thumbs"
+        data-pdp-gallery-thumbs
+        aria-label={`${view.name} gallery`}
+      >
+        {view.gallery.map(
+          (
+            image:any,
+            index:number
+          )=>(
             <button
-              class="pdp-gallery__select"
+              class:list={[
+                'pdp-gallery__thumb',
+                index===0&&
+                  'is-selected'
+              ]}
               type="button"
-              data-pdp-gallery-select={image.src}
+              data-pdp-gallery-thumb={image.src}
+              aria-pressed={
+                index===0
+                  ? 'true'
+                  : 'false'
+              }
               aria-label={`${view.name} — ${index+1}`}
             >
               <img
                 src={image.src}
-                alt={
-                  index===0
-                    ? view.name
-                    : `${view.name} — ${index+1}`
-                }
-                width="1200"
-                height="1500"
-                loading={image.loading}
-                fetchpriority={image.priority}
+                alt=""
+                width="160"
+                height="200"
+                loading="lazy"
                 decoding="async"
-                data-pdp-primary-image={
-                  image.primary
-                    ? 'true'
-                    : undefined
-                }
               />
             </button>
-          </figure>
-        )
-      )}
+          )
+        )}
+      </div>
     </div>
 
     <p
@@ -269,6 +332,9 @@ const galleryCount=
             </span>
             <small data-pdp-size-summary>
               {view.defaultSize}
+              {defaultSizeDimension&&(
+                <> · {defaultSizeDimension}</>
+              )}
             </small>
           </div>
 

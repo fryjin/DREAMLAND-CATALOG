@@ -735,35 +735,16 @@
   }
 
   function renderSizes(view){
-    document
-      .querySelectorAll(
-        '[data-pdp-size]'
-      )
-      .forEach(button=>{
-        const active=
-          button.dataset
-            .pdpSize===
-          view.config.size;
-
-        button.classList
-          .toggle(
-            'is-default',
-            active
-          );
-
-        button.setAttribute(
-          'aria-pressed',
-          active
-            ? 'true'
-            : 'false'
-        );
-      });
-
+    const size=text(view.config.size);
+    document.querySelectorAll('[data-pdp-size]').forEach(button=>{
+      const active=button.dataset.pdpSize===size;
+      button.classList.toggle('is-default',active);
+      button.setAttribute('aria-pressed',active?'true':'false');
+    });
+    const dimension=text(state?.sizes?.[size]);
     setText(
-      document.querySelector(
-        '[data-pdp-size-summary]'
-      ),
-      view.config.size
+      document.querySelector('[data-pdp-size-summary]'),
+      size+(dimension?' · '+dimension:'')
     );
   }
 
@@ -1299,25 +1280,38 @@
     }
   }
 
-  function updatePrimaryForSize(view){
-    const src=
-      state.product
-        .sizeImages
-        ?.[view.config.size];
+  function gallerySelect(src,scrollMobile=false){
+    src=text(src);
+    if(!src)return;
 
-    if(!src){
-      return;
+    const stage=document.querySelector('[data-pdp-gallery-stage-image]');
+    if(stage)stage.src=src;
+
+    document.querySelectorAll('[data-pdp-gallery-thumb]').forEach(button=>{
+      const active=button.dataset.pdpGalleryThumb===src;
+      button.classList.toggle('is-selected',active);
+      button.setAttribute('aria-pressed',active?'true':'false');
+    });
+
+    if(scrollMobile&&root.matchMedia?.('(max-width:720px)').matches){
+      const track=document.querySelector('[data-pdp-gallery-track]');
+      const item=Array.from(
+        track?.querySelectorAll('[data-pdp-gallery-item]')||[]
+      ).find(node=>node.dataset.pdpGallerySrc===src);
+      if(track&&item){
+        track.scrollTo({
+          left:item.offsetLeft-track.offsetLeft,
+          behavior:'smooth'
+        });
+      }
     }
+  }
 
-    const image=
-      document.querySelector(
-        '[data-pdp-primary-image="true"]'
-      );
-
-    if(image){
-      image.src=
-        src;
-    }
+  function galleryForSize(view){
+    gallerySelect(
+      state.product.sizeImages?.[view.config.size],
+      true
+    );
   }
 
   function render(
@@ -1552,7 +1546,7 @@
     render(view);
 
     if(sizeImage){
-      updatePrimaryForSize(
+      galleryForSize(
         view
       );
     }
@@ -1562,93 +1556,30 @@
 
 
   function bindGalleryIndex(){
-    const gallery=
-      document.querySelector(
-        '[data-pdp-gallery]'
-      );
-
-    const current=
-      document.querySelector(
-        '[data-pdp-gallery-index-current]'
-      );
-
-    if(
-      !gallery||
-      !current
-    ){
-      return;
-    }
-
-    const items=
-      Array.from(
-        gallery.querySelectorAll(
-          '[data-pdp-gallery-item]'
-        )
-      );
-
-    if(!items.length){
-      return;
-    }
+    const gallery=document.querySelector('[data-pdp-gallery-track]');
+    const current=document.querySelector('[data-pdp-gallery-index-current]');
+    const items=Array.from(
+      gallery?.querySelectorAll('[data-pdp-gallery-item]')||[]
+    );
+    if(!gallery||!current||!items.length)return;
 
     let frame=0;
-
     const paint=()=>{
       frame=0;
-
-      const galleryRect=
-        gallery.getBoundingClientRect();
-
-      let activeIndex=0;
-      let nearest=
-        Number.POSITIVE_INFINITY;
-
-      items.forEach(
-        (item,index)=>{
-          const rect=
-            item.getBoundingClientRect();
-
-          const distance=
-            Math.abs(
-              rect.left-
-              galleryRect.left
-            );
-
-          if(distance<nearest){
-            nearest=distance;
-            activeIndex=index;
-          }
-        }
-      );
-
-      current.textContent=
-        String(
-          activeIndex+1
-        ).padStart(2,'0');
+      const left=gallery.getBoundingClientRect().left;
+      let active=0;
+      let nearest=Number.POSITIVE_INFINITY;
+      items.forEach((item,index)=>{
+        const distance=Math.abs(item.getBoundingClientRect().left-left);
+        if(distance<nearest){nearest=distance;active=index;}
+      });
+      current.textContent=String(active+1).padStart(2,'0');
     };
-
     const schedule=()=>{
-      if(frame){
-        return;
-      }
-
-      frame=
-        root.requestAnimationFrame(
-          paint
-        );
+      if(!frame)frame=root.requestAnimationFrame(paint);
     };
-
-    gallery.addEventListener(
-      'scroll',
-      schedule,
-      {passive:true}
-    );
-
-    root.addEventListener(
-      'resize',
-      schedule,
-      {passive:true}
-    );
-
+    gallery.addEventListener('scroll',schedule,{passive:true});
+    root.addEventListener('resize',schedule,{passive:true});
     paint();
   }
 
@@ -1835,27 +1766,15 @@
 
     document
       .querySelectorAll(
-        '[data-pdp-gallery-select]'
+        '[data-pdp-gallery-thumb], [data-pdp-gallery-select]'
       )
       .forEach(button=>{
         button.addEventListener(
           'click',
-          ()=>{
-            const image=
-              document.querySelector(
-                '[data-pdp-primary-image="true"]'
-              );
-
-            if(
-              image&&
-              button.dataset
-                .pdpGallerySelect
-            ){
-              image.src=
-                button.dataset
-                  .pdpGallerySelect;
-            }
-          }
+          ()=>gallerySelect(
+            button.dataset.pdpGalleryThumb||
+            button.dataset.pdpGallerySelect
+          )
         );
       });
 

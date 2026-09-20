@@ -1052,24 +1052,37 @@ if(DIST_MODE){
         match=>match[0]
       );
 
+      /*
+       * R4.5D unique canonical Product media after PDP-GALLERY-1.
+       * Responsive presentation may repeat one canonical asset across the
+       * Desktop stage, Mobile swipe track and Desktop thumbnail rail.
+       */
+      const mediaPaths=[
+        ...new Set(
+          mediaTags
+            .map(tag=>attribute(tag,'src'))
+            .filter(Boolean)
+        )
+      ];
+
       if(
-        mediaTags.length<1||
-        mediaTags.length>10
+        mediaPaths.length<1||
+        mediaPaths.length>10
       ){
         fail(
           'Production PDP '+id+
-          ' must render 1-10 Product images; found '+
-          mediaTags.length+
+          ' must own 1-10 unique Product images; found '+
+          mediaPaths.length+
           '.'
         );
       }
 
       if(
-        mediaTags.length>
+        mediaPaths.length>
         maxMediaCount.count
       ){
         maxMediaCount={
-          count:mediaTags.length,
+          count:mediaPaths.length,
           id
         };
       }
