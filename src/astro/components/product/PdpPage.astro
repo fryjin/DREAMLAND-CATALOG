@@ -366,10 +366,44 @@ const defaultSizeDimension=
           </div>
         </div>
 
+
+        {product.series==='holiday'&&(
+          <label class="pdp-field">
+            <span data-pdp-ui="scentSeries">
+              {runtimeUi.scentSeries||'Scent Series'}
+            </span>
+            <select data-pdp-scent-series>
+              {product.availableScentSeries.map((series:string)=>(
+                <option value={series}>
+                  {runtimeState.seriesMeta?.[series]?.labels?.en||series}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+
+        <label class="pdp-field">
+          <span data-pdp-ui="scent">
+            {runtimeUi.scent||'Scent'}
+          </span>
+          <small
+            class="pdp-field__helper"
+            data-pdp-scent-helper
+          >
+            {initialScentHelper}
+          </small>
+          <select data-pdp-scent>
+            {initialScents.map((scent:any)=>(
+              <option value={scent.id}>
+                {scent.name?.en||scent.name?.zh||scent.id}
+              </option>
+            ))}
+          </select>
+        </label>
+
         <div
-          class="pdp-config-projections"
-          data-pdp-config-projections
-          aria-live="polite"
+          class="pdp-scent-detail-host"
+          data-pdp-scent-detail-host
         >
           <details
             class="pdp-scent-detail"
@@ -416,39 +450,11 @@ const defaultSizeDimension=
           </details>
         </div>
 
-        {product.series==='holiday'&&(
-          <label class="pdp-field">
-            <span data-pdp-ui="scentSeries">
-              {runtimeUi.scentSeries||'Scent Series'}
-            </span>
-            <select data-pdp-scent-series>
-              {product.availableScentSeries.map((series:string)=>(
-                <option value={series}>
-                  {runtimeState.seriesMeta?.[series]?.labels?.en||series}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-
-        <label class="pdp-field">
-          <span data-pdp-ui="scent">
-            {runtimeUi.scent||'Scent'}
-          </span>
-          <small
-            class="pdp-field__helper"
-            data-pdp-scent-helper
-          >
-            {initialScentHelper}
-          </small>
-          <select data-pdp-scent>
-            {initialScents.map((scent:any)=>(
-              <option value={scent.id}>
-                {scent.name?.en||scent.name?.zh||scent.id}
-              </option>
-            ))}
-          </select>
-        </label>
+        <div
+          class="pdp-config-projections"
+          data-pdp-config-projections
+          aria-live="polite"
+        ></div>
 
         <label
           class="pdp-field pdp-field--visual-source"

@@ -92,6 +92,7 @@ for(const language of ['en','zh','ko']){
 
 for(const marker of [
   '<details',
+  'data-pdp-scent-detail-host',
   'data-pdp-scent-detail',
   '<summary class="pdp-scent-detail__toggle">',
   'data-pdp-ui="scentDetailTitle"',
@@ -111,11 +112,13 @@ for(const marker of [
 
 for(const marker of [
   'R4.11B4.1E-B2 — Scent Detail Utility',
-  "rootNode.querySelector('[data-pdp-scent-detail]')",
+  "document.querySelector('[data-pdp-scent-detail]')",
+  "'[data-pdp-scent-detail-host]'",
+
   "scentMap.get(text(view?.config?.scentId))",
   "scent?.notes?.[node.dataset.pdpScentNoteValue]",
   "[data-pdp-scent-note-value]",
-  'section.appendChild(scentDetail)'
+  '.appendChild(scentDetail)'
 ]){
   expect(
     runtime,

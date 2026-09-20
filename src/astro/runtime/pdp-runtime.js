@@ -881,7 +881,7 @@
       return;
     }
 
-    const scentDetail=rootNode.querySelector('[data-pdp-scent-detail]');
+    const scentDetail=document.querySelector('[data-pdp-scent-detail]');
 
     const projectionScroll=
       new Map();
@@ -1067,7 +1067,7 @@
           if(value) hasNotes=true;
         });
         scentDetail.hidden=!hasNotes;
-        section.appendChild(scentDetail);
+        (root.matchMedia?.('(max-width:720px)')?.matches?section:document.querySelector('[data-pdp-scent-detail-host]'))?.appendChild(scentDetail);
       }
 
       fragment.appendChild(
