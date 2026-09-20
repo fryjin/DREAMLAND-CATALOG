@@ -668,6 +668,7 @@ export function buildPdpRuntimeState({
   ui={},
   currencyMap={},
   scents=[],
+  visualOptions={},
   pricingPolicy,
   localizationPolicy
 }={}){
@@ -796,6 +797,9 @@ export function buildPdpRuntimeState({
         seriesDocument.patternsBySize||
         {}
       )
+    }),
+    visualOptions:Object.freeze({
+      ...visualOptions
     }),
     seriesMeta:Object.freeze({
       ...(

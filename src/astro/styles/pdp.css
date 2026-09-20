@@ -1899,3 +1899,190 @@
     background:#eee7de;
   }
 }
+
+/* ============================================================
+ * PDP-OPTIONS-1B — Pattern / Packaging Visual Option UI
+ *
+ * Canonical Pattern / Packaging selects remain business state owners.
+ * Image cards are presentation proxies for visual-first decisions.
+ * ========================================================== */
+
+.pdp-visual-field {
+  display:none;
+}
+
+html[data-pdp-visual-options-ready="true"]
+.pdp-visual-field:not([hidden]) {
+  display:grid;
+  gap:10px;
+}
+
+html[data-pdp-visual-options-ready="true"]
+.pdp-field--visual-source {
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
+}
+
+.pdp-visual-field__heading {
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.pdp-visual-field__heading > span {
+  color:var(--home-muted);
+  font-size:12px;
+  font-weight:700;
+}
+
+.pdp-visual-field__heading > small {
+  color:var(--home-soft);
+  font-size:10px;
+  font-weight:700;
+}
+
+.pdp-visual-options__strip {
+  min-width:0;
+}
+
+.pdp-visual-option {
+  min-width:0;
+  padding:0;
+  overflow:hidden;
+  border:1px solid var(--home-line);
+  border-radius:0;
+  background:rgba(255,253,249,.72);
+  color:var(--home-muted);
+  font:inherit;
+  text-align:left;
+  cursor:pointer;
+}
+
+.pdp-visual-option img {
+  display:block;
+  width:100%;
+  aspect-ratio:4/3;
+  object-fit:cover;
+  background:#eee7de;
+}
+
+.pdp-visual-option > span {
+  display:block;
+  padding:8px 9px 9px;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.35;
+}
+
+.pdp-visual-option.is-selected {
+  border-color:var(--home-ink);
+  color:var(--home-ink);
+}
+
+@media (min-width:721px) {
+  .pdp-visual-field {
+    margin-top:2px;
+  }
+
+  .pdp-visual-options__strip {
+    display:grid;
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0,1fr)
+      );
+    gap:8px;
+  }
+
+  [data-pdp-visual-field="pack"]
+  .pdp-visual-options__strip {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0,1fr)
+      );
+  }
+}
+
+@media (max-width:720px) {
+  html[data-pdp-visual-options-ready="true"]
+  [data-pdp-projection-field="pattern"],
+  html[data-pdp-visual-options-ready="true"]
+  [data-pdp-projection-field="pack"] {
+    display:none;
+  }
+
+  .pdp-visual-field {
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    overflow:hidden;
+    padding:
+      20px
+      0;
+    border-bottom:
+      1px
+      solid
+      var(--home-line);
+  }
+
+  .pdp-visual-field__heading {
+    margin-bottom:5px;
+  }
+
+  .pdp-visual-field__heading > span {
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
+
+  .pdp-visual-field__heading > small {
+    font-size:10px;
+  }
+
+  .pdp-visual-options__strip {
+    display:flex;
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    gap:10px;
+    overflow-x:auto;
+    padding:
+      1px
+      12px
+      4px
+      0;
+    scroll-padding-inline:12px;
+    overscroll-behavior-inline:contain;
+    scrollbar-width:none;
+  }
+
+  .pdp-visual-options__strip::-webkit-scrollbar {
+    display:none;
+  }
+
+  .pdp-visual-option {
+    flex:
+      0
+      0
+      124px;
+    width:124px;
+  }
+
+  .pdp-visual-option > span {
+    min-height:42px;
+    padding:
+      8px
+      9px;
+    font-size:11px;
+  }
+}

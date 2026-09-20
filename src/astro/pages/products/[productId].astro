@@ -11,6 +11,9 @@ import {
   buildPdpRuntimeState,
   mapPdpScents
 } from '../../lib/pdp-view-model.mjs';
+import {
+  buildPdpVisualOptions
+} from '../../../data/pdp-visual-options-contract.mjs';
 
 import '../../styles/home.css';
 import '../../styles/pdp.css';
@@ -145,6 +148,25 @@ const scents=
     scentRows
   );
 
+const sharedAssetRows=
+  productDataContract
+    .parseCsv(
+      fs.readFileSync(
+        path.resolve(
+          process.cwd(),
+          'data/shared-assets.csv'
+        ),
+        'utf8'
+      )
+    );
+
+const visualOptions=
+  buildPdpVisualOptions({
+    sharedAssets:
+      sharedAssetRows,
+    seriesDocument
+  });
+
 const runtimeState=
   buildPdpRuntimeState({
     product,
@@ -162,6 +184,7 @@ const runtimeState=
       i18n.currencyMap||
       {},
     scents,
+    visualOptions,
     pricingPolicy,
     localizationPolicy
   });

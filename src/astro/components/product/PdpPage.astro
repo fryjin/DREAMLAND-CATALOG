@@ -450,7 +450,10 @@ const defaultSizeDimension=
           </select>
         </label>
 
-        <label class="pdp-field">
+        <label
+          class="pdp-field pdp-field--visual-source"
+          data-pdp-visual-source="pattern"
+        >
           <span data-pdp-ui="pattern">
             {runtimeUi.pattern||'Pattern'}
           </span>
@@ -463,7 +466,32 @@ const defaultSizeDimension=
           </select>
         </label>
 
-        <label class="pdp-field">
+        <section
+          class="pdp-visual-field"
+          data-pdp-visual-field="pattern"
+          hidden
+        >
+          <div class="pdp-visual-field__heading">
+            <span data-pdp-ui="pattern">
+              {runtimeUi.pattern||'Pattern'}
+            </span>
+            <small data-pdp-visual-count="pattern">
+              {initialPatterns.length}
+            </small>
+          </div>
+
+          <div
+            class="pdp-visual-options__strip"
+            data-pdp-visual-options="pattern"
+            role="group"
+            aria-label={runtimeUi.pattern||'Pattern'}
+          ></div>
+        </section>
+
+        <label
+          class="pdp-field pdp-field--visual-source"
+          data-pdp-visual-source="pack"
+        >
           <span data-pdp-ui="pack">
             {runtimeUi.pack||'Packaging'}
           </span>
@@ -478,6 +506,28 @@ const defaultSizeDimension=
             ))}
           </select>
         </label>
+
+        <section
+          class="pdp-visual-field"
+          data-pdp-visual-field="pack"
+          hidden
+        >
+          <div class="pdp-visual-field__heading">
+            <span data-pdp-ui="pack">
+              {runtimeUi.pack||'Packaging'}
+            </span>
+            <small data-pdp-visual-count="pack">
+              {initialPacks.length}
+            </small>
+          </div>
+
+          <div
+            class="pdp-visual-options__strip"
+            data-pdp-visual-options="pack"
+            role="group"
+            aria-label={runtimeUi.pack||'Packaging'}
+          ></div>
+        </section>
 
         <div
           class="pdp-field"

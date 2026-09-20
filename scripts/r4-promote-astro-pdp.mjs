@@ -365,6 +365,14 @@ for(const productId of productIds){
     );
   }
 
+  for(const match of html.matchAll(
+    /"(\/images\/generated\/shared\/(?:patterns|packages)\/[^"<>\\s]+\.(?:webp|png|jpe?g))"/gi
+  )){
+    productMedia.add(
+      match[1]
+    );
+  }
+
   sourceDocuments.set(
     productId,
     {

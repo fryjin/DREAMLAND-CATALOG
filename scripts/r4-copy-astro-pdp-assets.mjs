@@ -119,6 +119,21 @@ for(const product of products){
         pathname
       )
   );
+
+  const visualPaths=[
+    ...html.matchAll(
+      /"(\/images\/generated\/shared\/(?:patterns|packages)\/[^"<>\\s]+\.(?:webp|png|jpe?g))"/gi
+    )
+  ].map(
+    match=>match[1]
+  );
+
+  visualPaths.forEach(
+    pathname=>
+      referenced.add(
+        pathname
+      )
+  );
 }
 
 for(const pathname of referenced){
@@ -201,6 +216,13 @@ const runtimeSources=[
     'src',
     'astro',
     'runtime',
+    'pdp-visual-options-runtime.js'
+  ),
+  path.join(
+    ROOT,
+    'src',
+    'astro',
+    'runtime',
     'pdp-inquiry-edit-runtime.js'
   )
 ];
@@ -237,7 +259,7 @@ fs.writeFileSync(
 console.log(
   '[R4 Astro PDP Assets] copied '+
   referenced.size+
-  ' referenced product images into .r4-astro-dist.'
+  ' referenced PDP product/shared visual images into .r4-astro-dist.'
 );
 
 console.log(
