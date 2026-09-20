@@ -382,10 +382,16 @@ const defaultSizeDimension=
           </label>
         )}
 
-        <label class="pdp-field">
+        <label class="pdp-field pdp-field--scent">
           <span data-pdp-ui="scent">
             {runtimeUi.scent||'Scent'}
           </span>
+          <small
+            class="pdp-field__count"
+            data-pdp-scent-count
+          >
+            {initialScents.length}
+          </small>
           <small
             class="pdp-field__helper"
             data-pdp-scent-helper
@@ -400,6 +406,19 @@ const defaultSizeDimension=
             ))}
           </select>
         </label>
+
+        <section
+          class="pdp-scent-direct"
+          data-pdp-scent-direct
+          hidden
+        >
+          <div
+            class="pdp-scent-direct__options"
+            data-pdp-scent-direct-options
+            role="group"
+            aria-label={runtimeUi.scent||'Scent'}
+          ></div>
+        </section>
 
         <div
           class="pdp-config-projections"
