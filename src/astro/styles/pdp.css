@@ -2124,8 +2124,8 @@ html[data-pdp-visual-options-ready="true"]
   > .pdp-scent-detail__list {
     display:grid;
     grid-template-columns:
-      repeat(3,minmax(0,1fr));
-    gap:22px;
+      minmax(0,1fr);
+    gap:0;
     margin:0;
     padding:
       2px
@@ -2135,11 +2135,24 @@ html[data-pdp-visual-options-ready="true"]
 
   .pdp-scent-detail__row {
     display:grid;
-    gap:5px;
+    grid-template-columns:
+      64px
+      minmax(0,1fr);
+    gap:16px;
+    align-items:start;
     min-width:0;
     margin:0;
-    padding:0;
-    border:0;
+    padding:
+      9px
+      0;
+    border-bottom:
+      1px
+      solid
+      var(--home-line);
+  }
+
+  .pdp-scent-detail__row:last-child {
+    border-bottom:0;
   }
 
   .pdp-scent-detail__row dt,
@@ -2149,17 +2162,18 @@ html[data-pdp-visual-options-ready="true"]
   }
 
   .pdp-scent-detail__row dt {
+    padding-top:1px;
     color:var(--home-soft);
     font-size:10px;
     font-weight:700;
-    line-height:1.3;
+    line-height:1.45;
   }
 
   .pdp-scent-detail__row dd {
     color:var(--home-muted);
     font-size:11px;
     font-weight:500;
-    line-height:1.5;
+    line-height:1.45;
     overflow-wrap:anywhere;
   }
 }

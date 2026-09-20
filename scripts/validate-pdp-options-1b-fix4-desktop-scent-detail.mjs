@@ -62,28 +62,36 @@ if(
   patternIndex<0||
   !(
     scentIndex<
-    hostIndex&&
-    hostIndex<
     projectionIndex&&
     projectionIndex<
+    hostIndex&&
+    hostIndex<
     patternIndex
   )
 ){
   fail(
-    'Expected Desktop order: Scent -> Scent Detail host -> Mobile projection root -> Pattern.'
+    'Expected shared order: Scent -> Mobile projection root -> Scent Detail host -> Pattern.'
   );
 }
 
 for(const marker of [
   "document.querySelector('[data-pdp-scent-detail]')",
-  "document.querySelector('[data-pdp-scent-detail-host]')",
-  "root.matchMedia?.('(max-width:720px)')?.matches",
-  '.appendChild(scentDetail)'
+  "scentMap.get(text(view?.config?.scentId))",
+  "[data-pdp-scent-note-value]"
 ]){
   expect(
     runtime,
     marker,
     'Scent Detail host routing changed.'
+  );
+}
+
+if(
+  runtime.includes('.appendChild(scentDetail)')||
+  runtime.includes("matchMedia?.('(max-width:720px)')?.matches?section")
+){
+  fail(
+    'Scent Detail must stay in one breakpoint-stable static host and must not be re-parented at runtime.'
   );
 }
 
@@ -102,7 +110,9 @@ for(const marker of [
   '.pdp-scent-detail-host {',
   '.pdp-scent-detail__toggle {',
   '.pdp-scent-detail__list,',
-  'repeat(3,minmax(0,1fr));'
+  'grid-template-columns:',
+  '64px',
+  'border-bottom:'
 ]){
   expect(
     css,
@@ -148,6 +158,6 @@ console.log(
   'PDP-OPTIONS-1B-FIX4B DESKTOP SCENT DETAIL HOST: PASS'
 );
 console.log(
-  'Desktop Top / Heart / Base notes use a dedicated host; Mobile editorial projections remain Mobile-only.'
+  'Desktop Top / Heart / Base notes render as three rows in a static shared host; Mobile disclosure remains below the Mobile Scent projection.'
 );
 console.log('');

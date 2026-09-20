@@ -113,17 +113,30 @@ for(const marker of [
 for(const marker of [
   'R4.11B4.1E-B2 — Scent Detail Utility',
   "document.querySelector('[data-pdp-scent-detail]')",
-  "'[data-pdp-scent-detail-host]'",
 
   "scentMap.get(text(view?.config?.scentId))",
   "scent?.notes?.[node.dataset.pdpScentNoteValue]",
-  "[data-pdp-scent-note-value]",
-  '.appendChild(scentDetail)'
+  "[data-pdp-scent-note-value]"
 ]){
   expect(
     runtime,
     marker,
     'E-B2 compact read-only scent projection changed.'
+  );
+}
+
+/*
+ * FIX4EA — static host ownership semantics
+ *
+ * Host ownership is structural (PdpPage.astro), not runtime-owned.
+ * Runtime may project note text/visibility only.
+ */
+if(
+  runtime.includes("[data-pdp-scent-detail-host]")||
+  runtime.includes('.appendChild(scentDetail)')
+){
+  fail(
+    'E-B2 static Scent Detail host must not be runtime-owned or re-parented.'
   );
 }
 
