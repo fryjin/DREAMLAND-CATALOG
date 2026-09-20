@@ -154,10 +154,18 @@ if(mode==='source'){
     );
   }
 
+  /*
+   * PDP-SCENT-1-FIX1B — compact sourceFor semantic contract
+   *
+   * The shared proxy now uses sourceFor(f). Variable spelling is not part
+   * of the contract; Pattern / Packaging canonical mappings are.
+   */
   for(const marker of [
     "const VERSION='PDP-OPTIONS-1B';",
     'data-pdp-visual-option',
-    "sourceFor(field)",
+    'function sourceFor(f)',
+    "f==='pattern'?'[data-pdp-pattern]'",
+    "f==='pack'?'[data-pdp-pack]'",
     "select.dispatchEvent(",
     "'dreamland:pdp-render'",
     'pdpVisualOptionsReady'

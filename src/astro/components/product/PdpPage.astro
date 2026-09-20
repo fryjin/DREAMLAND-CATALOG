@@ -368,18 +368,33 @@ const defaultSizeDimension=
 
 
         {product.series==='holiday'&&(
-          <label class="pdp-field">
-            <span data-pdp-ui="scentSeries">
-              {runtimeUi.scentSeries||'Scent Series'}
-            </span>
-            <select data-pdp-scent-series>
-              {product.availableScentSeries.map((series:string)=>(
-                <option value={series}>
-                  {runtimeState.seriesMeta?.[series]?.labels?.en||series}
-                </option>
-              ))}
-            </select>
-          </label>
+          <>
+            <label class="pdp-field pdp-field--scent-series">
+              <span data-pdp-ui="scentSeries">
+                {runtimeUi.scentSeries||'Scent Series'}
+              </span>
+              <select data-pdp-scent-series>
+                {product.availableScentSeries.map((series:string)=>(
+                  <option value={series}>
+                    {runtimeState.seriesMeta?.[series]?.labels?.en||series}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <section
+              class="pdp-scent-series-direct"
+              data-pdp-scent-series-direct
+              hidden
+            >
+              <div
+                class="pdp-scent-series-direct__options"
+                data-pdp-scent-series-direct-options
+                role="group"
+                aria-label={runtimeUi.scentSeries||'Scent Series'}
+              ></div>
+            </section>
+          </>
         )}
 
         <label class="pdp-field pdp-field--scent">

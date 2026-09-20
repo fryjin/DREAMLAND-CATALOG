@@ -2305,7 +2305,7 @@ html[data-pdp-visual-options-ready="true"]
   .pdp-scent-direct__option.is-selected {
     border-color:var(--home-ink);
     background:var(--home-ink);
-    color:var(--home-bg);
+    color:#fff;
     font-weight:800;
   }
 
@@ -2325,6 +2325,52 @@ html[data-pdp-visual-options-ready="true"]
 
 @media (max-width:720px) {
   .pdp-scent-direct {
+    display:none !important;
+  }
+}
+
+/* ============================================================
+ * PDP-SCENT-1-FIX1 — Holiday Series Direct Selection
+ *
+ * Holiday Scent Series uses the same Desktop one-click proxy pattern.
+ * The canonical select remains the state owner and Mobile keeps E-B1.
+ * ========================================================== */
+
+.pdp-scent-series-direct {
+  display:none;
+}
+
+@media (min-width:721px) {
+  html[data-pdp-scent-series-direct-ready="true"]
+  .pdp-field--scent-series
+  > select {
+    position:absolute;
+    width:1px;
+    height:1px;
+    padding:0;
+    margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
+    border:0;
+  }
+
+  html[data-pdp-scent-series-direct-ready="true"]
+  .pdp-scent-series-direct:not([hidden]) {
+    display:block;
+    margin-top:-6px;
+  }
+
+  .pdp-scent-series-direct__options {
+    display:grid;
+    grid-template-columns:
+      repeat(3,minmax(0,1fr));
+    gap:8px;
+  }
+}
+
+@media (max-width:720px) {
+  .pdp-scent-series-direct {
     display:none !important;
   }
 }

@@ -35,7 +35,10 @@ if(mode==='source'){
 
   for(const marker of [
     'pdp-field--scent',
+    'pdp-field--scent-series',
     'data-pdp-scent-count',
+    'data-pdp-scent-series-direct',
+    'data-pdp-scent-series-direct-options',
     'data-pdp-scent-direct',
     'data-pdp-scent-direct-options',
     'data-pdp-scent'
@@ -47,10 +50,23 @@ if(mode==='source'){
     );
   }
 
+  /*
+   * FIX1A — sourceFor semantic contract
+   *
+   * The compact presentation adapter routes both Scent and Scent Series
+   * through sourceFor(field). Validate the mappings + direct render calls,
+   * not nonexistent formatting-specific literal invocations.
+   */
   for(const marker of [
-    "sourceFor('scent')",
+    'function sourceFor(f)',
+    "f==='scentSeries'?'[data-pdp-scent-series]'",
+    ":'[data-pdp-scent]'",
+    "direct('scentSeries')",
+    "direct('scent')",
     'data-pdp-scent-direct-option',
+    'data-pdp-scent-series-direct-option',
     'pdpScentDirectReady',
+    'pdpScentSeriesDirectReady',
     "select.dispatchEvent(new Event('change'",
     "'dreamland:pdp-render'"
   ]){
@@ -96,7 +112,10 @@ if(mode==='source'){
     '.pdp-scent-direct__options {',
     '.pdp-scent-direct__option {',
     '.pdp-scent-direct__option.is-selected {',
+    'color:#fff;',
     'html[data-pdp-scent-direct-ready="true"]',
+    'html[data-pdp-scent-series-direct-ready="true"]',
+    '.pdp-scent-series-direct__options {',
     '@media (max-width:720px)'
   ]){
     expect(
@@ -117,10 +136,21 @@ if(mode==='source'){
 
   if(
     !/@media\s*\(max-width:\s*720px\)[\s\S]*?\.pdp-scent-direct\s*\{[\s\S]*?display\s*:\s*none\s*!important/m
+      .test(css)||
+    !/@media\s*\(max-width:\s*720px\)[\s\S]*?\.pdp-scent-series-direct\s*\{[\s\S]*?display\s*:\s*none\s*!important/m
       .test(css)
   ){
     fail(
-      'PDP-SCENT-1 must keep the new Desktop direct selector hidden on Mobile.'
+      'PDP-SCENT-1 must keep Desktop direct Scent / Scent Series selectors hidden on Mobile.'
+    );
+  }
+
+  if(
+    !/@media\s*\(min-width:\s*721px\)[\s\S]*?\.pdp-scent-series-direct__options\s*\{[\s\S]*?grid-template-columns\s*:\s*repeat\(3,minmax\(0,1fr\)\)/m
+      .test(css)
+  ){
+    fail(
+      'PDP-SCENT-1 Holiday Scent Series must render as a three-column direct-selection grid on Desktop.'
     );
   }
 
@@ -216,6 +246,22 @@ if(mode==='source'){
       }
     }
 
+    if(
+      String(product?.series||'').trim().toLowerCase()==='holiday'
+    ){
+      for(const marker of [
+        'data-pdp-scent-series',
+        'data-pdp-scent-series-direct',
+        'data-pdp-scent-series-direct-options'
+      ]){
+        if(!html.includes(marker)){
+          fail(
+            `PDP-SCENT-1 Production Holiday ${id} missing ${marker}.`
+          );
+        }
+      }
+    }
+
     checked++;
   }
 
@@ -238,8 +284,14 @@ if(mode==='source'){
 
     for(const marker of [
       'data-pdp-scent-direct-option',
+      'data-pdp-scent-series-direct-option',
       'pdpScentDirectReady',
-      "sourceFor('scent')"
+      'pdpScentSeriesDirectReady',
+      'function sourceFor(f)',
+      "[data-pdp-scent-series]",
+      "[data-pdp-scent]",
+      "direct('scentSeries')",
+      "direct('scent')"
     ]){
       if(!source.includes(marker)){
         fail(
@@ -269,7 +321,7 @@ console.log(
 );
 console.log(
   mode==='source'
-    ? 'Desktop one-click scent cards + canonical select ownership + Mobile projection preservation verified.'
+    ? 'Desktop one-click Scent + Holiday Scent Series cards + selected contrast + canonical ownership + Mobile projection preservation verified.'
     : '89 Production PDPs + bundled direct-scent proxy verified.'
 );
 console.log('');
