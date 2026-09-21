@@ -184,13 +184,18 @@ const validate=
     ''
   );
 
+/*
+ * PDP-POLISH-2 — validation-chain ownership
+ * PDP-TYPO-1 owns adjacency to GLOBAL-POLISH-1A. Newer presentation
+ * closeouts may append after it.
+ */
 if(
-  !validate.endsWith(
+  !validate.includes(
     'npm run r4:visual:global-folio-polish && npm run r4:visual:pdp-typography'
   )
 ){
   fail(
-    'PDP-TYPO-1 must close the visual validation chain after GLOBAL-POLISH-1A.'
+    'PDP-TYPO-1 must remain immediately after GLOBAL-POLISH-1A.'
   );
 }
 

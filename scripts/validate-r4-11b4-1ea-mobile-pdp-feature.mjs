@@ -70,20 +70,35 @@ const flatCss=
  * ------------------------------------------------------------
  */
 
+/*
+ * PDP-POLISH-2 — Customer-facing Metadata Cleanup
+ * Keep the useful Gallery position index; decorative feature/config folios
+ * are no longer required public markup.
+ */
 for(const marker of [
-  'class="pdp-feature-folio"',
-  'data-pdp-feature-folio',
   'class="pdp-gallery-index"',
   'data-pdp-gallery-index-current',
-  'data-pdp-gallery-index-total',
-  'class="pdp-config-intro"',
-  'data-pdp-config-intro'
+  'data-pdp-gallery-index-total'
 ]){
   expect(
     flatPage,
     marker,
-    'E-A Product Feature markup contract changed.'
+    'E-A Gallery index markup contract changed.'
   );
+}
+
+for(const removedMarker of [
+  'class="pdp-feature-folio"',
+  'data-pdp-feature-folio',
+  'class="pdp-config-intro"',
+  'data-pdp-config-intro'
+]){
+  if(flatPage.includes(removedMarker)){
+    fail(
+      'PDP-POLISH-2 removed decorative E-A public chrome but it was reintroduced: '+
+      removedMarker
+    );
+  }
 }
 
 /*

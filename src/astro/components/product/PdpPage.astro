@@ -114,15 +114,6 @@ const defaultSizeDimension=
     class="pdp-hero home-container"
     aria-labelledby="pdpTitle"
   >
-    <p
-      class="pdp-feature-folio"
-      data-pdp-feature-folio
-    >
-      <span class="pdp-feature-folio__index">01</span>
-      <span aria-hidden="true">/</span>
-      <span>{view.id}</span>
-    </p>
-
     <div
       class="pdp-gallery"
       data-pdp-gallery
@@ -258,21 +249,6 @@ const defaultSizeDimension=
           {view.description}
         </p>
 
-        <dl class="pdp-meta">
-          <div>
-            <dt data-pdp-bind="detail.productId">
-              {copy.productId||'Product ID'}
-            </dt>
-            <dd>{view.id}</dd>
-          </div>
-
-          {view.colorCode&&(
-            <div>
-              <dt>Color</dt>
-              <dd>{view.colorCode}</dd>
-            </div>
-          )}
-        </dl>
       </div>
 
       <div class="pdp-commerce">
@@ -309,17 +285,6 @@ const defaultSizeDimension=
           {copy.moqNote||runtimeUi.submitMoqCheck||'MOQ is checked on submission.'}
         </p>
       </div>
-
-      <header
-        class="pdp-config-intro"
-        data-pdp-config-intro
-      >
-        <span class="pdp-config-intro__index">02</span>
-        <span aria-hidden="true">/</span>
-        <span data-pdp-ui="detailTitle">
-          {runtimeUi.detailTitle||'Product Configuration'}
-        </span>
-      </header>
 
       <div
         class="pdp-config"
