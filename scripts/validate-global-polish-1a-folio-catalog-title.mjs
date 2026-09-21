@@ -127,13 +127,19 @@ if(
 
 const validate=String(pkg.scripts?.validate||'');
 
+/*
+ * PDP-TYPO-1 — validation-chain ownership
+ *
+ * GLOBAL-POLISH-1A owns adjacency to Catalog. Newer visual closeout gates
+ * may append after it without weakening that contract.
+ */
 if(
-  !validate.endsWith(
+  !validate.includes(
     'npm run r4:visual:catalog-polish && npm run r4:visual:global-folio-polish'
   )
 ){
   fail(
-    'GLOBAL-POLISH-1A must close the visual validation chain after Catalog polish.'
+    'GLOBAL-POLISH-1A must remain immediately after Catalog polish.'
   );
 }
 

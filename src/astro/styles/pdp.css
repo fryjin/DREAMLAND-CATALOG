@@ -2374,3 +2374,56 @@ html[data-pdp-visual-options-ready="true"]
     display:none !important;
   }
 }
+
+/* ============================================================
+ * PDP-TYPO-1 — Price / Unit Typography Closeout
+ *
+ * Commercial units are supporting information, not footnotes.
+ * Preserve the established amount scale while giving /pc, /件, pcs, 件
+ * and equivalent locale units enough weight to read as part of the value.
+ *
+ * Presentation only: no pricing / MOQ / Quantity / Inquiry semantics.
+ * ========================================================== */
+
+.pdp-commerce__price > small {
+  align-self:baseline;
+  margin:0;
+  color:var(--home-muted);
+  font-family:var(--home-sans);
+  font-size:13px;
+  font-weight:650;
+  line-height:1.15;
+  letter-spacing:0;
+  white-space:nowrap;
+  word-break:keep-all;
+  overflow-wrap:normal;
+}
+
+.pdp-commerce__moq > strong {
+  display:inline-flex;
+  align-items:baseline;
+  justify-content:flex-start;
+  gap:3px;
+  line-height:1.05;
+  white-space:nowrap;
+}
+
+.pdp-commerce__moq > strong > small {
+  flex:0 0 auto;
+  margin:0;
+  color:var(--home-muted);
+  font-family:var(--home-sans);
+  font-size:13px;
+  font-weight:650;
+  line-height:1.15;
+  letter-spacing:0;
+  white-space:nowrap;
+  word-break:keep-all;
+  overflow-wrap:normal;
+}
+
+@media (max-width:720px) {
+  .pdp-commerce__moq > strong {
+    justify-content:flex-end;
+  }
+}
