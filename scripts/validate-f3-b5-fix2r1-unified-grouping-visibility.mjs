@@ -425,6 +425,36 @@ if(DIST_MODE){
   }
 
   try{
+    const i18n=
+      json(
+        'data/i18n.json'
+      );
+
+    const expectedGroupingCopy=
+      [
+        'en',
+        'zh',
+        'ko'
+      ].map(
+        language=>
+          String(
+            i18n.ui
+              ?.[language]
+              ?.quantityGroups||
+            ''
+          ).trim()
+      );
+
+    if(
+      expectedGroupingCopy.some(
+        value=>!value
+      )
+    ){
+      fail(
+        'Production unified grouping localization source is incomplete: quantityGroups.'
+      );
+    }
+
     for(const relative of [
       '.r4-astro-dist/inquiry/index.html',
       'dist/inquiry/index.html'
@@ -434,11 +464,7 @@ if(DIST_MODE){
           relative
         );
 
-      for(const value of [
-        'Quantity groups',
-        '合并计数组',
-        '수량 합산 그룹'
-      ]){
+      for(const value of expectedGroupingCopy){
         if(!html.includes(value)){
           fail(
             relative+

@@ -1723,11 +1723,31 @@
           .replaceChildren();
 
         if(unmet.length){
+          const firstUnmet=
+            unmet[0];
+
+          const zhBlocker=
+            language==='zh'&&
+            firstUnmet
+              ? (
+                  '⚠️ 当前选款组合尚未达到基础起订量门槛（起订量 '+
+                  firstUnmet.moq+
+                  ' 件，还差 '+
+                  Math.max(
+                    0,
+                    firstUnmet.moq-
+                    firstUnmet.qty
+                  )+
+                  ' 件），请调整数量后继续。'
+                )
+              : '';
+
           appendText(
             document,
             validationNode,
             'strong',
             'inquiry-validation__title',
+            zhBlocker||
             view.copy
               ?.cannotContinue||
             'Review the selected quantities before continuing.'

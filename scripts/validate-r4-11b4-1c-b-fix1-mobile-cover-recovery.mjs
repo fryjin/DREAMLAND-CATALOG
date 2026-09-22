@@ -16,7 +16,7 @@ const siteContent=json('data/site-content.json');
 const pkg=read('package.json');
 for(const m of ['const hero=','content?.hero||','hero:Object.freeze({','hero.kicker||','hero.title||','hero.body||','hero.primary||','hero.secondary||'])expect(viewModel,m,'FIX1 canonical Hero content pipeline changed.');
 for(const language of ['en','zh','ko']){const hero=siteContent?.languages?.[language]?.hero;if(!hero||!String(hero.kicker||'').trim()||!String(hero.title||'').trim()||!String(hero.primary||'').trim())fail('FIX1 requires non-empty canonical Hero content for language: '+language);}
-for(const m of ['const hero=content.hero||{};','data-home-bind="hero.kicker"','data-home-bind="hero.title"','data-home-bind="hero.body"','data-home-bind="hero.primary"','href="/products/"'])expect(page,m,'FIX1 Mobile Cover content binding changed.');
+for(const m of ['const hero=content.hero||{};','data-home-bind="hero.kicker"','data-home-bind="hero.title"','data-home-bind="hero.bodyMobile"','data-home-bind="hero.primary"','href="/products/"'])expect(page,m,'FIX1 Mobile Cover content binding changed.');
 const firstMobileMedia=css.indexOf('@media (max-width:720px)');if(firstMobileMedia<0)fail('FIX1 could not find the Mobile breakpoint.');
 const baseCss=firstMobileMedia>=0?css.slice(0,firstMobileMedia):css;
 if(!/\.home-mobile-cover\s*\{[^}]*display\s*:\s*none\s*;?[^}]*\}/s.test(baseCss))fail('FIX1 Mobile Cover must be hidden by default outside <=720px.');

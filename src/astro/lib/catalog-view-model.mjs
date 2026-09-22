@@ -157,6 +157,19 @@ function normalizeCatalogContent(
     body:
       catalog.body||
       'Four collections, from quieter color stories to pieces made to stand out.',
+    bodyDesktop:
+      catalog.bodyDesktop||
+      catalog.body||
+      'Four collections, from quieter color stories to pieces made to stand out.',
+    bodyMobile:
+      catalog.bodyMobile||
+      catalog.body||
+      'Four collections, from quieter color stories to pieces made to stand out.',
+    seriesOrder:Object.freeze(
+      Array.isArray(catalog.seriesOrder)
+        ? catalog.seriesOrder.slice()
+        : []
+    ),
     all:
       catalog.all||
       'All',
@@ -253,6 +266,9 @@ function normalizeCatalogContent(
     reviewInquiry:
       catalog.reviewInquiry||
       'Review inquiry',
+    ctaHref:
+      catalog.ctaHref||
+      '/inquiry/',
     backToTop:
       catalog.backToTop||
       'Back to top'

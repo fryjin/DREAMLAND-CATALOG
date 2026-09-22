@@ -47,7 +47,7 @@ for(const marker of [
   'data-mobile-cover-semantic',
   'data-home-bind="hero.kicker"',
   'data-home-bind="hero.title"',
-  'data-home-bind="hero.body"',
+  'data-home-bind="hero.bodyMobile"',
   'href="/products/"',
   'data-mobile-cover-gate',
   'data-mobile-cover-track',

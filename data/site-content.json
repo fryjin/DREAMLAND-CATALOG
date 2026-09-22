@@ -29,7 +29,9 @@
         "title": "Candles, carved to be seen.",
         "body": "Made for retail, gifting, brand collaborations and special occasions. Start with a design you love, then make the color, scent and packaging your own.",
         "primary": "Explore the collection",
-        "secondary": "Start a custom project"
+        "secondary": "Start a custom project",
+        "bodyDesktop": "Made for retail, gifting, brand collaborations and special occasions. Start with a design you love, then make the color, scent and packaging your own.",
+        "bodyMobile": "Made for retail, gifting, brand collaborations and special occasions. Start with a design you love, then make the color, scent and packaging your own."
       },
       "collections": {
         "kicker": "THE COLLECTION",
@@ -144,7 +146,11 @@
         "ctaReadyTitle": "You’ve started a selection.",
         "ctaReadyBody": "{count} products are in your inquiry.",
         "reviewInquiry": "Review inquiry",
-        "backToTop": "Back to top"
+        "backToTop": "Back to top",
+        "bodyDesktop": "Four collections, from quieter color stories to pieces made to stand out.",
+        "bodyMobile": "Four collections, from quieter color stories to pieces made to stand out.",
+        "seriesOrder": [],
+        "ctaHref": "/inquiry/"
       },
       "detail": {
         "back": "Back to collection",
@@ -1561,9 +1567,11 @@
       "hero": {
         "kicker": "手工雕刻蜡烛",
         "title": "DREAMLAND",
-        "body": "专为精品零售与定制礼赠而生。以多层浸蜡与手工雕刻塑形，从廓形、色彩到香氛，定制属于你的空间光影。",
+        "body": "层层浸染，一刃成境。甄选天然白蜂蜡与莫兰迪色彩体系，为精品零售与定制礼赠打造雕琢光影的感官艺术。",
         "primary": "浏览产品",
-        "secondary": "开始定制"
+        "secondary": "开始定制",
+        "bodyDesktop": "层层浸染，一刃成境。甄选天然白蜂蜡与莫兰迪色彩体系，为精品零售与定制礼赠打造雕琢光影的感官艺术。",
+        "bodyMobile": "专为精品零售与定制礼赠而生。甄选天然白蜂蜡，手工层叠切割。从廓形、色彩到香氛，定制属于你的空间光影。"
       },
       "collections": {
         "kicker": "产品系列",
@@ -1575,8 +1583,8 @@
       },
       "featured": {
         "kicker": "本期精选",
-        "title": "五款精选作品",
-        "body": "从匠作与进阶系列中选出的五款代表作。",
+        "title": "匠心臻选 · 经典系列展示",
+        "body": "",
         "viewAll": "查看全部",
         "viewDetails": "查看详情",
         "moq": "起订"
@@ -1584,12 +1592,12 @@
       "craft": {
         "kicker": "手工工艺",
         "title": "揉光进影，手作修刃",
-        "body": "从调色、浸蜡到切割、折曲与修整，核心造型均由手工完成。\n\n30至50次反复浸染，让色彩逐层沉入蜡体；趁蜡尚有温度与韧性，工匠迅速下刀，把平面的蜡层打开成立体花瓣与纹理。"
+        "body": "摒弃工业化模具灌装，从调色、提浸到每一刀切割均由工匠手工完成。"
       },
       "custom": {
         "kicker": "定制",
-        "title": "定制，让灵感落地。",
-        "body": "从配色、香型到包装与品牌物料，把你的想法一步步落实成可生产、可交付的方案。",
+        "title": "私享定制 · 灵感落地",
+        "body": "",
         "features": [
           "配色",
           "香气",
@@ -1600,23 +1608,23 @@
       },
       "wholesale": {
         "kicker": "服务流程",
-        "title": "清晰有序的服务流程",
+        "title": "严谨有序的服务流程",
         "facts": [
           {
-            "title": "01 廓形选款",
-            "body": "确认款式、数量、用途与交付时间。"
+            "title": "廓形选款",
+            "body": ""
           },
           {
-            "title": "02 细节沟通",
-            "body": "逐项确认配色、香型、包装与品牌物料。"
+            "title": "细节沟通",
+            "body": ""
           },
           {
-            "title": "03 样品 / 方案确认",
-            "body": "根据项目需要安排样品或细节确认，再进入正式生产。"
+            "title": "试样确认",
+            "body": ""
           },
           {
-            "title": "04 生产交付",
-            "body": "确认报价与周期后进入生产，并按目的地安排运输。"
+            "title": "尊享交付",
+            "body": ""
           }
         ]
       },
@@ -1645,7 +1653,7 @@
       "catalog": {
         "kicker": "产品系列",
         "title": "搜寻属于你的光影廓形",
-        "body": "探索不同系列的精雕廓形与色彩层次，选中款式即可加入询价清单。",
+        "body": "38 款凝练色彩与精雕廓形，全方位适配空间美学展示与品牌高定礼赠需求。",
         "all": "全部",
         "activeDesigns": "款产品",
         "designs": "款产品",
@@ -1672,19 +1680,29 @@
         "searchEmptyTitle": "没有找到“{query}”",
         "emptyBody": "可以换个尺寸，或者清除筛选继续看看。",
         "clearFilters": "清除筛选",
-        "ctaKicker": "询价清单",
-        "ctaEmptyTitle": "有喜欢的，先放进询价清单。",
-        "ctaEmptyBody": "数量和选项可以之后继续调整，我们会根据最终选择为你确认报价。",
-        "ctaReadyTitle": "已选款式",
-        "ctaReadyBody": "询价清单里有 {count} 款产品。",
-        "reviewInquiry": "查看询价清单",
-        "backToTop": "返回顶部"
+        "ctaKicker": "",
+        "ctaEmptyTitle": "灵感私享 · 凭图定制",
+        "ctaEmptyBody": "已具备明确的设计手稿或参考意向？上传你的灵感图纸，我们的手作团队将直接为你评估工艺可行性、梯次报价与生产周期。",
+        "ctaReadyTitle": "灵感私享 · 凭图定制",
+        "ctaReadyBody": "已具备明确的设计手稿或参考意向？上传你的灵感图纸，我们的手作团队将直接为你评估工艺可行性、梯次报价与生产周期。",
+        "reviewInquiry": "上传图纸并询价",
+        "backToTop": "返回顶部",
+        "bodyDesktop": "38 款凝练色彩与精雕廓形，全方位适配空间美学展示与品牌高定礼赠需求。",
+        "bodyMobile": "探索精雕廓形与色彩层次，选中款式即可加入询价清单。",
+        "seriesOrder": [
+          "all",
+          "masterpiece",
+          "advanced",
+          "classic",
+          "holiday"
+        ],
+        "ctaHref": "/custom/"
       },
       "detail": {
         "back": "返回产品系列",
         "productId": "产品编号",
         "moq": "起订量",
-        "moqNote": "同系列、同规格款式可合并计算起订量与阶梯价格。",
+        "moqNote": "💡 同系列、同规格款式支持合并累加计算起订量与阶梯优惠",
         "size": "尺寸",
         "scentCollection": "香型系列",
         "scent": "香型",
@@ -1694,7 +1712,7 @@
         "included": "已包含",
         "unitPrice": "参考单价",
         "estimatedTotal": "产品金额",
-        "pricingNote": "最终单价将依据采购总量与定制配置，在正式报价中确认。",
+        "pricingNote": "最终结算单价将依据采购总量与个性化定制配置，在正式报价单中确认。",
         "addInquiry": "加入询价清单",
         "added": "已加入询价清单",
         "customProject": "预约专属定制",
@@ -1894,13 +1912,13 @@
         "continueToNext": "继续"
       },
       "inquiryFlow": {
-        "progressLabel": "询价进度",
+        "progressLabel": "询价清单步骤",
         "stepSelection": "选款核对",
         "stepContact": "填写联系方式",
         "stepReview": "提交确认",
         "kicker": "询价清单",
         "title": "询价清单确认",
-        "body": "核对您的选款组合与预估数量，确认无误后即可填写联系方式，获取正式报价。",
+        "body": "核对您的选款组合与预估数量，确认无误后即可填写真实联系方式获取商业报价单。",
         "selectedProducts": "选款组合",
         "selectedItems": "已选款式",
         "totalQuantity": "产品数量",
@@ -1911,7 +1929,7 @@
         "customQuotedSeparately": "确认需求后报价",
         "finalPricingNote": "最终价格、制作周期和交付方式会在正式报价中确认。",
         "continueContact": "填写联系方式",
-        "continueExploring": "继续看看",
+        "continueExploring": "探索更多产品",
         "exploreCollection": "浏览产品",
         "startCustom": "开始定制",
         "emptyTitle": "询价清单还是空的。",
@@ -1936,17 +1954,17 @@
         "clearBody": "当前选择的产品和定制内容都会移除。",
         "clearConfirm": "确定清空当前询价清单吗？",
         "editConfiguration": "修改选项",
-        "cannotContinue": "当前选款组合尚未达到起订量，请调整数量后继续。",
+        "cannotContinue": "⚠️ 当前选款组合尚未达到基础起订量门槛，请调整数量后继续。",
         "contactKicker": "联系方式",
         "contactTitle": "联系方式与项目信息",
-        "contactBody": "请留下常用联系方式，我们会根据选款与项目需求跟进报价和落地细节。",
+        "contactBody": "请留下您的常用联系方式，我们的定制顾问将在 24 小时内与您对接详细报价与落地细节。",
         "contactDetailsKicker": "联系方式",
         "contactDetailsTitle": "基础联系信息",
         "contactDetailsBody": "以下信息仅用于本次询价及后续项目沟通。",
-        "contactRequiredTitle": "基础联系信息",
-        "contactRequiredBody": "为确保准确收到正式报价，请填写有效联系方式。",
-        "contactOptionalTitle": "项目背景与定制需求",
-        "contactOptionalBody": "公司名称、采购身份与项目背景有助于我们更快理解需求并准备更合适的报价。",
+        "contactRequiredTitle": "基础联系信息（必填）— 为确保准确收到正式报价单，请填写有效联络方式",
+        "contactRequiredBody": "",
+        "contactOptionalTitle": "项目背景与定制需求（选填）— 提供公司名称与采购背景，有助于为您提供精准折扣",
+        "contactOptionalBody": "",
         "name": "联系人",
         "company": "公司 / 品牌",
         "country": "国家 / 地区",
@@ -2014,17 +2032,17 @@
         ],
         "reviewKicker": "最终确认",
         "reviewTitle": "询价信息最终确认",
-        "reviewBody": "请复核您的联系方式与选款清单，无误后即可提交询价申请。",
+        "reviewBody": "请复核您的联系信息与选款清单，无误后即可提交询价申请。",
         "edit": "修改",
         "notProvided": "未填写",
         "none": "无",
         "reviewSummaryTitle": "询价清单",
         "inquiryNumber": "询价编号",
         "beforeSubmitKicker": "提交前",
-        "beforeSubmitTitle": "提交后，我们将进入报价确认流程。",
-        "beforeSubmitBody": "我们会根据采购数量与定制要求，确认最终价格、制作周期与交付方案。",
+        "beforeSubmitTitle": "提交后，我们将根据您的梯次数量与个性化要求，计算最终优惠总价、生产工期与交付方案。",
+        "beforeSubmitBody": "",
         "privacyPrefix": "我已阅读并同意",
-        "privacyLink": "隐私说明",
+        "privacyLink": "《隐私政策与服务条款》",
         "privacyRequired": "发送前请先同意隐私说明。",
         "security": "验证",
         "securityChecking": "正在验证…",
@@ -2032,26 +2050,26 @@
         "securityAdditional": "还需要完成一次验证才能发送。",
         "securityVerified": "验证完成。",
         "submitInquiry": "提交询价申请",
-        "submitting": "正在提交询价…",
+        "submitting": "正在提交询价申请…",
         "submitFailed": "现在暂时无法发送询价。你选择的内容已经保留，请稍后再试。",
         "successKicker": "提交成功",
         "successTitle": "询价申请已成功提交",
-        "successBody": "感谢您的询价。我们已收到选款与项目需求，正在进行需求复核，并会尽快与您确认后续细节。",
+        "successBody": "感谢您的垂询。我们已收到您的询价意向，专属顾问正在整理项目需求，并将尽快与您建立对接。",
         "submitted": "提交时间",
         "status": "状态",
-        "awaitingReview": "需求确认中",
+        "awaitingReview": "需求审核中",
         "startAnotherProject": "提交新的询价",
         "workspaceKicker": "询价清单",
         "workspaceTitle": "询价清单确认",
-        "workspaceBody": "核对选款组合与预估数量，确认无误后继续填写联系方式。",
+        "workspaceBody": "核对您的选款组合与预估数量，确认无误后即可填写真实联系方式获取商业报价单。",
         "productSelection": "选款组合",
         "customProjects": "定制",
         "inquiryOverview": "询价清单",
         "productConfigurations": "已选配置",
         "currentItemQuantity": "数量",
-        "moqGroup": "合并计价组",
+        "moqGroup": "梯次组合计费组",
         "moqReview": "起订量",
-        "moqRule": "同系列、同规格款式合并计算起订量与阶梯价格。",
+        "moqRule": "本组内款式享起订量合并累加，快速解锁下一阶梯批发优惠。",
         "moqReady": "已达到起订量",
         "moqRemaining": "还差 {count} 件达到起订量",
         "moqGroupsReady": "{count} 组已达到起订量",
@@ -3074,13 +3092,23 @@
         "selectBuyerType": "请选择采购 / 合作类型",
         "contactSnapshotTitle": "询价概要",
         "reviewMoqStatus": "起订状态",
-        "reviewMoqGroupsReady": "{ready} / {total} 个组合已满足"
+        "reviewMoqGroupsReady": "{ready} / {total} 个组合已满足",
+        "contactNextSteps": [
+          "需求初审",
+          "细节沟通",
+          "正式报价"
+        ],
+        "successNextSteps": [
+          "需求复核",
+          "方案对接",
+          "正式报价"
+        ]
       },
       "story": {
         "kicker": "关于 DREAMLAND",
         "mark": "meet DREAMLAND",
         "title": "光影与手温的相遇",
-        "body": "以复合蜡材为基底，我们将多层浸蜡工艺与手工雕刻结合。每一支蜡烛，都在层层色彩与手工切割中形成自己的纹理与廓形，为空间留下独立而温润的光影。",
+        "body": "以天然白蜂蜡为基底，我们将传统多层提浸工艺与几何雕琢融为一体。每一支蜡烛，都在静止的蜡质中凝固流动的感官色彩，为空间注入独立而温润的气场。",
         "note": "心中有爱，好梦常在。",
         "eyebrow": "关于 DREAMLAND"
       }
@@ -3097,7 +3125,9 @@
         "title": "바라보는 즐거움까지 담은 캔들.",
         "body": "리테일, 기프트, 브랜드 협업과 특별한 행사를 위해 만듭니다. 마음에 드는 디자인에서 시작해 컬러, 향과 패키지를 원하는 방향으로 완성해 보세요.",
         "primary": "컬렉션 보기",
-        "secondary": "커스텀 프로젝트 시작"
+        "secondary": "커스텀 프로젝트 시작",
+        "bodyDesktop": "리테일, 기프트, 브랜드 협업과 특별한 행사를 위해 만듭니다. 마음에 드는 디자인에서 시작해 컬러, 향과 패키지를 원하는 방향으로 완성해 보세요.",
+        "bodyMobile": "리테일, 기프트, 브랜드 협업과 특별한 행사를 위해 만듭니다. 마음에 드는 디자인에서 시작해 컬러, 향과 패키지를 원하는 방향으로 완성해 보세요."
       },
       "collections": {
         "kicker": "THE COLLECTION",
@@ -3212,7 +3242,11 @@
         "ctaReadyTitle": "제품을 고르기 시작했어요.",
         "ctaReadyBody": "문의 목록에 {count}개 제품이 있습니다.",
         "reviewInquiry": "문의 보기",
-        "backToTop": "맨 위로"
+        "backToTop": "맨 위로",
+        "bodyDesktop": "차분한 컬러부터 시선을 끄는 디자인까지, 네 가지 시리즈를 천천히 둘러보세요.",
+        "bodyMobile": "차분한 컬러부터 시선을 끄는 디자인까지, 네 가지 시리즈를 천천히 둘러보세요.",
+        "seriesOrder": [],
+        "ctaHref": "/inquiry/"
       },
       "detail": {
         "back": "컬렉션으로 돌아가기",

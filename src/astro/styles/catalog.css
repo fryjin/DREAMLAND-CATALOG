@@ -1948,3 +1948,20 @@ body[data-dreamland-page="catalog"][data-catalog-language="ko"]
     width:calc(100% - 32px);
   }
 }
+
+/* ============================================================
+ * SITE-COPY-ZH2 — Device Copy Projection
+ * ========================================================== */
+.catalog-intro__body--mobile {
+  display:none;
+}
+
+@media (max-width:720px) {
+  .catalog-intro__body--desktop {
+    display:none;
+  }
+
+  .catalog-intro__body--mobile {
+    display:block;
+  }
+}

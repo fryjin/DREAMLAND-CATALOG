@@ -70,11 +70,11 @@ const expected={
   },
   zh:{
     title:'搜寻属于你的光影廓形',
-    body:'探索不同系列的精雕廓形与色彩层次，选中款式即可加入询价清单。',
-    ctaKicker:'询价清单',
-    ctaEmptyTitle:'有喜欢的，先放进询价清单。',
-    ctaEmptyBody:'数量和选项可以之后继续调整，我们会根据最终选择为你确认报价。',
-    reviewInquiry:'查看询价清单'
+    body:'38 款凝练色彩与精雕廓形，全方位适配空间美学展示与品牌高定礼赠需求。',
+    ctaKicker:'',
+    ctaEmptyTitle:'灵感私享 · 凭图定制',
+    ctaEmptyBody:'已具备明确的设计手稿或参考意向？上传你的灵感图纸，我们的手作团队将直接为你评估工艺可行性、梯次报价与生产周期。',
+    reviewInquiry:'上传图纸并询价'
   },
   ko:{
     title:'마음이 가는 캔들을 찾아보세요.',

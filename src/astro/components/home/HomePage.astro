@@ -76,6 +76,13 @@ const cta=content.cta||{};
     </div>
 
     <div
+      class="home-desktop-cover-copy"
+      data-home-desktop-cover-copy
+    >
+      <p data-home-bind="hero.bodyDesktop">{hero.bodyDesktop||hero.body}</p>
+    </div>
+
+    <div
       class="home-mobile-cover"
       data-mobile-cover
       data-mobile-hero-type-owner="asset"
@@ -100,8 +107,8 @@ const cta=content.cta||{};
       </div>
 
       <div class="home-mobile-cover__copy">
-        <p data-home-bind="hero.body">
-          {hero.body}
+        <p data-home-bind="hero.bodyMobile">
+          {hero.bodyMobile||hero.body}
         </p>
       </div>
 

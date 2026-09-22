@@ -53,8 +53,29 @@ if(SOURCE){
     const content=json('data/site-content.json');
     for(const lang of ['en','zh','ko']){
       const copy=content.languages?.[lang]?.inquiryFlow;
-      for(const key of ['contactRequiredTitle','contactRequiredBody','contactOptionalTitle','contactOptionalBody']){
-        if(!String(copy?.[key]||'').trim())fail('Contact composition copy is missing: '+lang+'.'+key);
+
+      for(const key of ['contactRequiredTitle','contactOptionalTitle']){
+        if(!String(copy?.[key]||'').trim()){
+          fail('Contact composition copy is missing: '+lang+'.'+key);
+        }
+      }
+
+      for(const key of ['contactRequiredBody','contactOptionalBody']){
+        const owns=
+          Boolean(copy)&&
+          Object.prototype.hasOwnProperty.call(copy,key);
+
+        if(!owns){
+          fail('Contact composition copy key is missing: '+lang+'.'+key);
+          continue;
+        }
+
+        if(
+          lang!=='zh'&&
+          !String(copy?.[key]||'').trim()
+        ){
+          fail('Contact composition copy is missing: '+lang+'.'+key);
+        }
       }
     }
   }catch(e){fail('Contact localization validation failed: '+e.message);}

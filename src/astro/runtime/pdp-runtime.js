@@ -180,7 +180,15 @@
     );
   }
 
-  function languageDescription(){return content().description||state?.product?.descriptions?.[currentLanguage]||state?.product?.descriptions?.en||'';}
+  function languageDescription(){
+    return (
+      content().presentationDescription||
+      content().description||
+      state?.product?.descriptions?.[currentLanguage]||
+      state?.product?.descriptions?.en||
+      ''
+    );
+  }
 
   function scentDisplay(value){return value&&typeof value==='object'?(value?.[currentLanguage]||value?.en||value?.zh||''):text(value);}
 
