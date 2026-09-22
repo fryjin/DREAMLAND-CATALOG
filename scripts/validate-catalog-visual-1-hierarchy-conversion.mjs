@@ -54,30 +54,35 @@ const pkg=
     read('package.json')
   );
 
+/*
+ * SITE-COPY-1B — Canonical customer-copy contract.
+ * Catalog visual structure remains owned by CATALOG-VISUAL-1; customer
+ * language now follows the SITE-COPY-1B voice system.
+ */
 const expected={
   en:{
-    title:'DREAMLAND Collection',
-    body:'For wholesale, retail and custom projects.',
-    ctaKicker:'PROJECT SELECTION',
-    ctaEmptyTitle:'Build a selection for your project.',
-    ctaEmptyBody:'Add the products you are interested in to your inquiry. Final pricing is confirmed based on quantity, configuration and customization.',
+    title:'Find the one that catches your eye.',
+    body:'Four collections, from quieter color stories to pieces made to stand out.',
+    ctaKicker:'INQUIRY',
+    ctaEmptyTitle:'See something you like? Add it to your inquiry.',
+    ctaEmptyBody:'You can adjust quantities and options later. We’ll confirm pricing once your selection is ready.',
     reviewInquiry:'Review inquiry'
   },
   zh:{
-    title:'DREAMLAND 产品系列',
-    body:'适合批发、零售与定制项目。',
-    ctaKicker:'项目询价',
-    ctaEmptyTitle:'为你的项目挑选产品',
-    ctaEmptyBody:'将感兴趣的款式加入询价单，我们会根据数量、规格和定制需求确认最终报价。',
+    title:'找到你喜欢的那一支。',
+    body:'四个系列，从安静的配色到大胆的组合，慢慢挑。',
+    ctaKicker:'询价单',
+    ctaEmptyTitle:'有喜欢的，先放进询价单。',
+    ctaEmptyBody:'数量和选项可以之后继续调整，我们会根据最终选择为你确认报价。',
     reviewInquiry:'查看询价单'
   },
   ko:{
-    title:'DREAMLAND 컬렉션',
-    body:'도매·리테일·맞춤 프로젝트용 제품입니다.',
-    ctaKicker:'프로젝트 문의',
-    ctaEmptyTitle:'프로젝트에 맞는 제품을 골라보세요.',
-    ctaEmptyBody:'관심 있는 제품을 문의 목록에 추가하세요. 수량, 사양 및 맞춤 요구사항을 바탕으로 최종 견적을 확인해 드립니다.',
-    reviewInquiry:'문의 목록 보기'
+    title:'마음이 가는 캔들을 찾아보세요.',
+    body:'차분한 컬러부터 시선을 끄는 디자인까지, 네 가지 시리즈를 천천히 둘러보세요.',
+    ctaKicker:'문의',
+    ctaEmptyTitle:'마음에 드는 제품은 문의 목록에 담아두세요.',
+    ctaEmptyBody:'수량과 옵션은 나중에 조정할 수 있습니다. 최종 선택을 바탕으로 견적을 안내드립니다.',
+    reviewInquiry:'문의 보기'
   }
 };
 
@@ -96,16 +101,19 @@ for(const language of ['en','zh','ko']){
 }
 
 for(const marker of [
-  "title:\n      catalog.title||\n      'DREAMLAND Collection'",
-  "body:\n      catalog.body||\n      'For wholesale, retail and custom projects.'",
-  "ctaKicker:\n      catalog.ctaKicker||\n      'PROJECT SELECTION'",
-  "ctaEmptyTitle:\n      catalog.ctaEmptyTitle||\n      'Build a selection for your project.'",
+  "title:\n      catalog.title||\n      'Find the one that catches your eye.'",
+  "body:\n      catalog.body||\n      'Four collections, from quieter color stories to pieces made to stand out.'",
+  "ctaKicker:\n      catalog.ctaKicker||\n      'INQUIRY'",
+  "ctaEmptyTitle:\n      catalog.ctaEmptyTitle||\n      'See something you like? Add it to your inquiry.'",
+  "ctaEmptyBody:\n      catalog.ctaEmptyBody||\n      'You can adjust quantities and options later. We’ll confirm pricing once your selection is ready.'",
+  "ctaReadyTitle:\n      catalog.ctaReadyTitle||\n      'You’ve started a selection.'",
+  "ctaReadyBody:\n      catalog.ctaReadyBody||\n      '{count} products are in your inquiry.'",
   "reviewInquiry:\n      catalog.reviewInquiry||\n      'Review inquiry'"
 ]){
   expect(
     viewModel,
     marker,
-    'CATALOG-VISUAL-1 fallback copy changed.'
+    'CATALOG-VISUAL-1 / SITE-COPY-1B fallback copy changed.'
   );
 }
 
@@ -300,6 +308,6 @@ console.log(
   'CATALOG-VISUAL-1 HIERARCHY / CONVERSION POLISH: PASS'
 );
 console.log(
-  'Desktop/Mobile hero hierarchy + compact product count + EN/ZH/KO project CTA contract verified.'
+  'Desktop/Mobile hero hierarchy + compact product count + SITE-COPY-1B EN/ZH/KO customer CTA contract verified.'
 );
 console.log('');

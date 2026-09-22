@@ -75,7 +75,7 @@ const optionalContactKeys=new Set(['company','buyerType','city','message']);
           id="reviewTitle"
           data-review-bind="reviewTitle"
         >
-          {c.reviewTitle||'Review and submit the inquiry.'}
+          {c.reviewTitle||'One last look.'}
         </h1>
       </div>
 
@@ -83,7 +83,7 @@ const optionalContactKeys=new Set(['company','buyerType','city','message']);
         class="review-hero__body"
         data-review-bind="reviewBody"
       >
-        {c.reviewBody||'Check the contact details, product configurations and custom project requirements.'}
+        {c.reviewBody||'Check the details below, then send it our way.'}
       </p>
     </div>
   </section>
@@ -288,8 +288,8 @@ const optionalContactKeys=new Set(['company','buyerType','city','message']);
       </div>
 
       <div class="review-summary__note">
-        <strong data-review-bind="beforeSubmitTitle">{c.beforeSubmitTitle||'Submitting an inquiry does not place an order.'}</strong>
-        <span data-review-bind="beforeSubmitBody">{c.beforeSubmitBody||'Pricing, production and delivery are confirmed only after the quotation is accepted.'}</span>
+        <strong data-review-bind="beforeSubmitTitle">{c.beforeSubmitTitle||'Once it’s sent, we’ll take it from there.'}</strong>
+        <span data-review-bind="beforeSubmitBody">{c.beforeSubmitBody||'We’ll review your final selection, quantity and custom requirements, then confirm pricing, production timing and delivery with you.'}</span>
       </div>
 
       <label
@@ -331,7 +331,7 @@ const optionalContactKeys=new Set(['company','buyerType','city','message']);
         data-review-submit
       >
         <span data-review-bind="submitInquiry">
-          {c.submitInquiry||'Submit Inquiry'}
+          {c.submitInquiry||'Send inquiry'}
         </span>
         <span aria-hidden="true">→</span>
       </button>

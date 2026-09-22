@@ -585,16 +585,17 @@ try{
     }
   }
 
-  if(site?.languages?.zh?.catalog?.ctaReadyTitle!=='查看已选产品。'){
-    fail('Chinese Catalog CTA still uses rejected ownership wording.');
+  // SITE-COPY-1B — Catalog CTA now follows the canonical customer voice.
+  if(site?.languages?.zh?.catalog?.ctaReadyTitle!=='你已经选了一些。'){
+    fail('SITE-COPY-1B Chinese Catalog CTA copy regressed.');
   }
 
-  if(site?.languages?.en?.catalog?.ctaReadyTitle!=='Review selected products.'){
-    fail('English Catalog CTA audit was not applied.');
+  if(site?.languages?.en?.catalog?.ctaReadyTitle!=='You’ve started a selection.'){
+    fail('SITE-COPY-1B English Catalog CTA copy regressed.');
   }
 
-  if(site?.languages?.ko?.catalog?.ctaReadyTitle!=='선택한 제품을 확인하세요.'){
-    fail('Korean Catalog CTA audit was not applied.');
+  if(site?.languages?.ko?.catalog?.ctaReadyTitle!=='제품을 고르기 시작했어요.'){
+    fail('SITE-COPY-1B Korean Catalog CTA copy regressed.');
   }
 }catch(error){
   fail('4F R1.1 + 4G R1 successor validation failed: '+error.message);

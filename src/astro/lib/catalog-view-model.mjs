@@ -150,13 +150,13 @@ function normalizeCatalogContent(
   return Object.freeze({
     kicker:
       catalog.kicker||
-      'PRODUCT CATALOG',
+      'COLLECTION',
     title:
       catalog.title||
-      'DREAMLAND Collection',
+      'Find the one that catches your eye.',
     body:
       catalog.body||
-      'For wholesale, retail and custom projects.',
+      'Four collections, from quieter color stories to pieces made to stand out.',
     all:
       catalog.all||
       'All',
@@ -171,7 +171,7 @@ function normalizeCatalogContent(
       'Collection index',
     searchPlaceholder:
       catalog.searchPlaceholder||
-      'Search designs or product ID',
+      'Search by name or product ID',
     searchShort:
       catalog.searchShort||
       'Search',
@@ -222,34 +222,34 @@ function normalizeCatalogContent(
       'Load more',
     emptyKicker:
       catalog.emptyKicker||
-      'NO MATCHES',
+      'TRY ANOTHER VIEW',
     emptyTitle:
       catalog.emptyTitle||
-      'No designs match these filters.',
+      'Nothing matches those filters yet.',
     searchEmptyTitle:
       catalog.searchEmptyTitle||
       'No results for “{query}”',
     emptyBody:
       catalog.emptyBody||
-      'Try another size or clear your filters.',
+      'Try another size or clear the filters to keep browsing.',
     clearFilters:
       catalog.clearFilters||
       'Clear filters',
     ctaKicker:
       catalog.ctaKicker||
-      'PROJECT SELECTION',
+      'INQUIRY',
     ctaEmptyTitle:
       catalog.ctaEmptyTitle||
-      'Build a selection for your project.',
+      'See something you like? Add it to your inquiry.',
     ctaEmptyBody:
       catalog.ctaEmptyBody||
-      'Add the products you are interested in to your inquiry. Final pricing is confirmed based on quantity, configuration and customization.',
+      'You can adjust quantities and options later. We’ll confirm pricing once your selection is ready.',
     ctaReadyTitle:
       catalog.ctaReadyTitle||
-      'Review selected products.',
+      'You’ve started a selection.',
     ctaReadyBody:
       catalog.ctaReadyBody||
-      '{count} products have been added to your inquiry.',
+      '{count} products are in your inquiry.',
     reviewInquiry:
       catalog.reviewInquiry||
       'Review inquiry',

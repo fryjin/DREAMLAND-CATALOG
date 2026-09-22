@@ -100,11 +100,11 @@ if(
 
 const validate=String(pkg.scripts?.validate||'');
 if(
-  !validate.endsWith(
+  !validate.includes(
     'npm run r4:visual:pdp-typography && npm run r4:visual:pdp-metadata-cleanup'
   )
 ){
-  fail('PDP-POLISH-2 must close the visual validation chain after PDP-TYPO-1.');
+  fail('PDP-POLISH-2 must remain immediately after PDP-TYPO-1.');
 }
 
 if(errors.length){

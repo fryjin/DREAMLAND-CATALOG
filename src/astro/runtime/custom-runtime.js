@@ -156,8 +156,8 @@
       added:c.addedInquiry||c.addedToInquiry
     }[key];
     const fallback={
-      en:{use:'Select a use case.',quantity:'Enter a whole-number quantity.','quantity-min':'Quantity is below the Custom MOQ of {min}.','quantity-max':'Quantity exceeds the maximum of {max}.',scents:'Select at least one scent.',added:'Custom project added to Inquiry.'},
-      zh:{use:'请选择使用场景。',quantity:'请输入整数数量。','quantity-min':'数量不能低于定制起订量 {min}。','quantity-max':'数量不能超过上限 {max}。',scents:'请至少选择一个香型。',added:'定制项目已加入询价单。'},
+      en:{use:'Choose what the project is for.',quantity:'Enter a whole-number quantity.','quantity-min':'Custom MOQ is {min} pcs.','quantity-max':'This quantity needs a separate check. Please contact us.',scents:'Choose at least one scent.',added:'Custom project added to inquiry.'},
+      zh:{use:'请选择使用场景。',quantity:'请输入完整数量。','quantity-min':'定制起订量为 {min} 件。','quantity-max':'这个数量需要单独确认，请联系我们。',scents:'请至少选择一种香气。',added:'定制项目已加入询价单。'},
       ko:{use:'사용 목적을 선택하세요.',quantity:'정수 수량을 입력하세요.','quantity-min':'수량은 최소 주문 수량 {min}개 이상이어야 합니다.','quantity-max':'수량은 최대 {max}개를 초과할 수 없습니다.',scents:'향을 하나 이상 선택하세요.',added:'커스텀 프로젝트를 문의 목록에 추가했습니다.'}
     };
     return text(source||fallback[currentLanguage]?.[key]||fallback.en[key]||'')

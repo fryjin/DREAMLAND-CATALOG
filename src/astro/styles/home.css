@@ -1155,3 +1155,12 @@
     top:28px;
   }
 }
+
+/* ============================================================
+ * SITE-COPY-1B — Craft Longform Copy
+ * Preserve editorial paragraph breaks supplied by canonical copy.
+ * ========================================================== */
+
+.home-editorial__copy > p[data-home-bind="craft.body"] {
+  white-space:pre-line;
+}

@@ -112,7 +112,7 @@ for(const [language,value] of Object.entries(expected)){
 
 expect(
   flatViewModel,
-  "searchPlaceholder: catalog.searchPlaceholder|| 'Search designs or product ID', searchShort: catalog.searchShort|| 'Search', filters:",
+  "searchPlaceholder: catalog.searchPlaceholder|| 'Search by name or product ID', searchShort: catalog.searchShort|| 'Search', filters:",
   'FIX1A normalizeCatalogContent must project searchShort.'
 );
 
