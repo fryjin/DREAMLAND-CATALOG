@@ -260,8 +260,8 @@ try{
     },
     zh:{
       customTitle:'有个想法？把它做成蜡烛。',
-      reviewTitle:'最后确认一下',
-      successTitle:'收到，接下来交给我们。'
+      reviewTitle:'询价信息最终确认',
+      successTitle:'询价申请已成功提交'
     },
     ko:{
       customTitle:'아이디어를 들려주세요. 캔들로 함께 완성하겠습니다.',
@@ -530,7 +530,7 @@ try{
 
   for(const [lang,title] of [
     ['en','Candles, carved to be seen.'],
-    ['zh','把蜡烛，做成一件作品。'],
+    ['zh','DREAMLAND'],
     ['ko','바라보는 즐거움까지 담은 캔들.']
   ]){
     if(site.languages?.[lang]?.hero?.title!==title){
@@ -538,8 +538,12 @@ try{
     }
   }
 
-  for(const lang of ['en','zh','ko']){
-    if(site.languages?.[lang]?.story?.title!=='meet DREAMLAND'){
+  for(const [lang,title] of [
+    ['en','meet DREAMLAND'],
+    ['zh','光影与手温的相遇'],
+    ['ko','meet DREAMLAND']
+  ]){
+    if(site.languages?.[lang]?.story?.title!==title){
       fail(`4B R4.1 Brand Story copy regression: ${lang}.story.title`);
     }
   }

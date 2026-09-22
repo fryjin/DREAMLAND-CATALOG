@@ -69,12 +69,12 @@ const expected={
     reviewInquiry:'Review inquiry'
   },
   zh:{
-    title:'找到你喜欢的那一支。',
-    body:'四个系列，从安静的配色到大胆的组合，慢慢挑。',
-    ctaKicker:'询价单',
-    ctaEmptyTitle:'有喜欢的，先放进询价单。',
+    title:'搜寻属于你的光影廓形',
+    body:'探索不同系列的精雕廓形与色彩层次，选中款式即可加入询价清单。',
+    ctaKicker:'询价清单',
+    ctaEmptyTitle:'有喜欢的，先放进询价清单。',
     ctaEmptyBody:'数量和选项可以之后继续调整，我们会根据最终选择为你确认报价。',
-    reviewInquiry:'查看询价单'
+    reviewInquiry:'查看询价清单'
   },
   ko:{
     title:'마음이 가는 캔들을 찾아보세요.',
