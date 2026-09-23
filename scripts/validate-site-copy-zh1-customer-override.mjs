@@ -29,7 +29,7 @@ const zh=site.languages?.zh||{};
 const ui=i18n.ui?.zh||{};
 
 expect(zh.hero?.title,'DREAMLAND','ZH Home Hero title');
-expect(zh.hero?.body,'专为精品零售与定制礼赠而生。环保选材，匠心手作，定制属于你的空间光影。','ZH Home Hero body');
+expect(zh.hero?.body,'专为精品零售与定制礼赠而生。优材精选，匠心手作，定制属于你的空间光影。','ZH Home Hero body');
 
 expect(zh.story?.title,'光影与手温的相遇','ZH Story title');
 expect(zh.story?.body,'层层浸染，一刃成境。甄选环保蜡材搭配莫兰迪色彩体系，为精品零售与定制礼赠打造雕琢光影的感官艺术。','ZH Story body');
@@ -84,7 +84,7 @@ expect(zh.inquiryFlow?.successBody,'感谢您的咨询。我们已收到您的�
 expect(zh.inquiryFlow?.continueExploring,'探索更多产品','ZH Success browse CTA');
 expect(zh.inquiryFlow?.startAnotherProject,'提交新的询价','ZH Success new-inquiry CTA');
 
-expect(ui.heroCopy,'专为精品零售与定制礼赠而生。环保选材，匠心手作，定制属于你的空间光影。','ZH legacy Hero copy');
+expect(ui.heroCopy,'专为精品零售与定制礼赠而生。优材精选，匠心手作，定制属于你的空间光影。','ZH legacy Hero copy');
 expect(ui.catalogSub,'凝练色彩与精雕廓形，全方位适配空间美学展示与品牌高定礼赠需求。','ZH legacy Catalog copy');
 expect(ui.quantityGroupRule,'本组内款式享起订量合并累加，快速解锁下一阶梯批发优惠。','ZH UI quantity group rule');
 expect(ui.tierRule,'本组内款式享起订量合并累加，快速解锁下一阶梯批发优惠。','ZH UI tier rule');
