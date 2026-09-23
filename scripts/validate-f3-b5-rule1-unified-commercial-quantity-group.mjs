@@ -620,7 +620,7 @@ if(SOURCE_MODE){
 
     const expected={
       zh:
-        '按同系列、同尺寸商品合计数量计算；节日系列按香型价格系列分别计算',
+        '本组内款式享起订量合并累加，快速解锁下一阶梯批发优惠。',
       en:
         'Combined by the same series and size; Holiday is separated by scent pricing series',
       ko:
@@ -842,7 +842,7 @@ if(DIST_MODE){
         );
 
       for(const value of [
-        '按同系列、同尺寸商品合计数量计算',
+        '本组内款式享起订量合并累加，快速解锁下一阶梯批发优惠。',
         'Combined by the same series and size',
         '같은 시리즈·같은 사이즈'
       ]){

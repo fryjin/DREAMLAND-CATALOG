@@ -38,9 +38,7 @@ for(const lang of ['zh','en','ko']){
 }
 
 expect(site.languages?.zh?.craft?.title,'揉光进影，手作修刃','ZH Craft title');
-if(!String(site.languages?.zh?.craft?.body||'').includes('30至50次反复浸染')){
-  fail('ZH Craft body must preserve the approved 30–50 dip craft fact.');
-}
+expect(site.languages?.zh?.craft?.body,'以食品级石蜡和天然白蜂蜡为基底，我们将传统多层提浸工艺与几何雕琢融为一体。每一支蜡烛，都在静止的蜡质中凝固流动的感官色彩，为空间注入独立而温润的气场。','ZH Craft body');
 expect(site.languages?.zh?.catalog?.title,'搜寻属于你的光影廓形','ZH Catalog title');
 expect(site.languages?.en?.catalog?.title,'Find the one that catches your eye.','EN Catalog title');
 expect(site.languages?.ko?.catalog?.title,'마음이 가는 캔들을 찾아보세요.','KO Catalog title');
@@ -49,7 +47,7 @@ expect(site.languages?.zh?.inquiryFlow?.reviewTitle,'询价信息最终确认','
 expect(site.languages?.en?.inquiryFlow?.reviewTitle,'One last look.','EN Review title');
 expect(site.languages?.ko?.inquiryFlow?.reviewTitle,'마지막으로 한 번 확인해 주세요.','KO Review title');
 
-expect(site.languages?.zh?.inquiryFlow?.beforeSubmitTitle,'提交后，我们将进入报价确认流程。','ZH before-submit title');
+expect(site.languages?.zh?.inquiryFlow?.beforeSubmitTitle,'提交后，我们将根据您的梯次数量与个性化要求，计算最终优惠总价、生产工期与交付方案。','ZH before-submit title');
 expect(site.languages?.en?.inquiryFlow?.beforeSubmitTitle,'Once it’s sent, we’ll take it from there.','EN before-submit title');
 expect(site.languages?.ko?.inquiryFlow?.beforeSubmitTitle,'문의가 접수되면 필요한 내용을 이어서 확인합니다.','KO before-submit title');
 
