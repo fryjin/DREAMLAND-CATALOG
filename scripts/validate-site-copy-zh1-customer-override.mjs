@@ -34,6 +34,9 @@ expect(zh.hero?.body,'专为精品零售与定制礼赠而生。环保选材，�
 expect(zh.story?.title,'光影与手温的相遇','ZH Story title');
 expect(zh.story?.body,'层层浸染，一刃成境。甄选环保蜡材搭配莫兰迪色彩体系，为精品零售与定制礼赠打造雕琢光影的感官艺术。','ZH Story body');
 
+expect(zh.collections?.title,'搜寻属于你的光影廓形','ZH Home Collections title');
+expect(zh.collections?.body,'凝练色彩与精雕廓形，全方位适配空间美学展示与品牌高定礼赠需求。','ZH Home Collections body');
+
 expect(zh.featured?.title,'臻选推荐','ZH Featured title');
 
 expect(zh.craft?.title,'揉光进影，手作修刃','ZH Craft title');
@@ -63,9 +66,9 @@ expect(zh.inquiryFlow?.cannotContinue,'⚠️ 当前选款组合尚未达到基�
 
 expect(zh.inquiryFlow?.contactTitle,'联系方式与项目信息','ZH Contact title');
 expect(zh.inquiryFlow?.contactBody,'请留下您的常用联系方式，我们的定制顾问将在 24 小时内与您对接详细报价与落地细节。','ZH Contact body');
-expect(zh.inquiryFlow?.contactRequiredTitle,'基础联系信息（必填）','ZH Contact required title');
+expect(zh.inquiryFlow?.contactRequiredTitle,'*联系信息','ZH Contact required title');
 expect(zh.inquiryFlow?.contactRequiredBody,'为确保准确收到正式报价单，请填写有效联络方式','ZH Contact required body');
-expect(zh.inquiryFlow?.contactOptionalTitle,'项目背景与定制需求（选填）','ZH Contact optional title');
+expect(zh.inquiryFlow?.contactOptionalTitle,'其他补充','ZH Contact optional title');
 expect(zh.inquiryFlow?.contactOptionalBody,'提供公司名称与采购背景，有助于为您提供精准折扣','ZH Contact optional body');
 expect(JSON.stringify(zh.inquiryFlow?.whatNextSteps),JSON.stringify(['需求初审','细节沟通','正式报价']),'ZH Contact/Success steps');
 

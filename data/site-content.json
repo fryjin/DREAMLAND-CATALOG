@@ -1567,8 +1567,8 @@
       },
       "collections": {
         "kicker": "产品系列",
-        "title": "找到你喜欢的那一支。",
-        "body": "四个系列，从安静的配色到大胆的组合，慢慢挑。",
+        "title": "搜寻属于你的光影廓形",
+        "body": "凝练色彩与精雕廓形，全方位适配空间美学展示与品牌高定礼赠需求。",
         "designSingular": "款",
         "designPlural": "款",
         "explore": "浏览系列"
@@ -1943,9 +1943,9 @@
         "contactDetailsKicker": "联系方式",
         "contactDetailsTitle": "基础联系信息（必填）",
         "contactDetailsBody": "为确保准确收到正式报价单，请填写有效联络方式",
-        "contactRequiredTitle": "基础联系信息（必填）",
+        "contactRequiredTitle": "*联系信息",
         "contactRequiredBody": "为确保准确收到正式报价单，请填写有效联络方式",
-        "contactOptionalTitle": "项目背景与定制需求（选填）",
+        "contactOptionalTitle": "其他补充",
         "contactOptionalBody": "提供公司名称与采购背景，有助于为您提供精准折扣",
         "name": "联系人",
         "company": "公司 / 品牌",
