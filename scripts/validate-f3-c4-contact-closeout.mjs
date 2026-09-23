@@ -465,43 +465,11 @@ if(SOURCE_MODE){
 
       for(const key of [
         'contactRequiredTitle',
-        'contactOptionalTitle'
-      ]){
-        if(
-          !String(
-            copy?.[key]||
-            ''
-          ).trim()
-        ){
-          fail(
-            'Contact closeout copy is missing: '+
-            language+
-            '.'+
-            key
-          );
-        }
-      }
-
-      for(const key of [
         'contactRequiredBody',
+        'contactOptionalTitle',
         'contactOptionalBody'
       ]){
-        const owns=
-          Boolean(copy)&&
-          Object.prototype.hasOwnProperty.call(copy,key);
-
-        if(!owns){
-          fail(
-            'Contact closeout copy key is missing: '+
-            language+
-            '.'+
-            key
-          );
-          continue;
-        }
-
         if(
-          language!=='zh'&&
           !String(
             copy?.[key]||
             ''

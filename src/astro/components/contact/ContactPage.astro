@@ -21,7 +21,7 @@ const sections=[
     titleKey:'contactRequiredTitle',
     title:c.contactRequiredTitle||'Required contact details',
     bodyKey:'contactRequiredBody',
-    body:c.contactRequiredBody??'Complete these four fields to continue to review.',
+    body:c.contactRequiredBody||'Complete these four fields to continue to review.',
     fields:['name','country','email','phone']
   },
   {
@@ -31,7 +31,7 @@ const sections=[
     titleKey:'contactOptionalTitle',
     title:c.contactOptionalTitle||'Optional project context',
     bodyKey:'contactOptionalBody',
-    body:c.contactOptionalBody??'Add company, buyer and location context if it helps us prepare the quotation.',
+    body:c.contactOptionalBody||'Add company, buyer and location context if it helps us prepare the quotation.',
     fields:['company','buyerType','city','message']
   }
 ];
@@ -510,7 +510,7 @@ const summaryRows=[
         </h2>
 
         <ol data-contact-next-steps>
-          {(c.contactNextSteps||c.whatNextSteps||[]).map((step:string,index:number)=>(
+          {(c.whatNextSteps||[]).map((step:string,index:number)=>(
             <li>
               <b>{String(index+1).padStart(2,'0')}</b>
               <span>{step}</span>

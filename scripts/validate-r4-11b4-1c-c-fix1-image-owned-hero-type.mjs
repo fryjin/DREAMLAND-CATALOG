@@ -18,7 +18,7 @@ const pkg=read('package.json');
   'data-mobile-cover-semantic',
   'data-home-bind="hero.kicker"',
   'data-home-bind="hero.title"',
-  'data-home-bind="hero.bodyMobile"',
+  'data-home-bind="hero.body"',
   'data-home-bind="hero.primary"'
 ].forEach(m=>expect(page,m,'Image-owned Hero contract changed.'));
 const a=page.indexOf('data-mobile-cover-semantic');const b=a>=0?page.indexOf('</p>',a):-1;const sem=a>=0&&b>a?page.slice(a,b):'';

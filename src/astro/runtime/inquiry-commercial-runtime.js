@@ -408,18 +408,6 @@
       );
     }
 
-    if(language==='zh'){
-      return (
-        '梯次组合计费组 · '+
-        product+
-        ' ('+
-        text(
-          snapshot.size
-        )+
-        ' 规格)'
-      );
-    }
-
     return (
       product+
       ' · '+
@@ -641,19 +629,12 @@
         );
 
       eyebrow.textContent=
-        language==='zh'
-          ? ''
-          : (
-              ui(
-                state,
-                language,
-                'quantityGroup'
-              )||
-              'Quantity group'
-            );
-
-      eyebrow.hidden=
-        language==='zh';
+        ui(
+          state,
+          language,
+          'quantityGroup'
+        )||
+        'Quantity group';
 
       const title=
         create(

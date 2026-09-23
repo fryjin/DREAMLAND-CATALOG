@@ -259,65 +259,36 @@
         !snapshot.nextTier;
 
       if(snapshot.nextTier){
-        if(language==='zh'){
-          const range=
-            String(
-              snapshot.currentTier
-                ?.rangeLabel||
-              ''
-            ).replace(
-              /-/g,
-              '–'
-            );
-
-          next.textContent=
-            '当前梯度 '+
-            range+
-            ' 件 ｜ 再增加 '+
-            snapshot.nextTier.additionalQty+
-            ' 件即可解锁下一阶梯优惠价 '+
-            snapshot.nextTier.displayUnitPrice+
-            snapshot.currencyUnit+
-            (
-              snapshot.nextTier.hasUnitSaving
-                ? '（每件立减 '+
-                  snapshot.nextTier.displayUnitSaving+
-                  snapshot.currencyUnit+
-                  '）'
-                : ''
-            );
-        }else{
-          next.textContent=
-            (
-              ui(
-                runtimeState,
-                language,
-                'buyMorePrefix'
-              )||
-              'Add'
-            )+
-            ' '+
-            snapshot.nextTier
-              .additionalQty+
-            ' '+
-            pieces(
+        next.textContent=
+          (
+            ui(
               runtimeState,
-              language
-            )+
-            ' '+
-            (
-              ui(
-                runtimeState,
-                language,
-                'buyMoreSuffix'
-              )||
-              'to unlock'
-            )+
-            ' '+
-            snapshot.nextTier
-              .displayUnitPrice+
-            snapshot.currencyUnit;
-        }
+              language,
+              'buyMorePrefix'
+            )||
+            'Add'
+          )+
+          ' '+
+          snapshot.nextTier
+            .additionalQty+
+          ' '+
+          pieces(
+            runtimeState,
+            language
+          )+
+          ' '+
+          (
+            ui(
+              runtimeState,
+              language,
+              'buyMoreSuffix'
+            )||
+            'to unlock'
+          )+
+          ' '+
+          snapshot.nextTier
+            .displayUnitPrice+
+          snapshot.currencyUnit;
       }
     }
 
@@ -328,7 +299,6 @@
 
     if(saving){
       saving.hidden=
-        language==='zh'||
         !snapshot.nextTier
           ?.hasUnitSaving;
 

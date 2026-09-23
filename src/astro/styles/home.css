@@ -1164,34 +1164,3 @@
 .home-editorial__copy > p[data-home-bind="craft.body"] {
   white-space:pre-line;
 }
-
-/* ============================================================
- * SITE-COPY-ZH2 — Desktop Hero Customer Copy
- * ========================================================== */
-.home-desktop-cover-copy {
-  display:none;
-}
-
-@media (min-width:901px) {
-  .home-desktop-cover-copy {
-    position:absolute;
-    z-index:5;
-    left:clamp(28px,4vw,68px);
-    bottom:clamp(32px,4vw,64px);
-    display:block;
-    max-width:min(620px,48vw);
-    padding:18px 22px;
-    border-radius:18px;
-    background:rgba(18,16,14,.42);
-    color:#fffdf9;
-    backdrop-filter:blur(10px);
-  }
-
-  .home-desktop-cover-copy p {
-    margin:0;
-    max-width:56ch;
-    font-size:14px;
-    line-height:1.7;
-    color:rgba(255,253,249,.9);
-  }
-}

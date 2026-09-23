@@ -150,11 +150,8 @@ const editorialGroups=
         >
           {copy.title}
         </h1>
-        <p class="catalog-intro__body catalog-intro__body--desktop" data-catalog-bind="catalog.bodyDesktop">
-          {copy.bodyDesktop||copy.body}
-        </p>
-        <p class="catalog-intro__body catalog-intro__body--mobile" data-catalog-bind="catalog.bodyMobile">
-          {copy.bodyMobile||copy.body}
+        <p data-catalog-bind="catalog.body">
+          {copy.body}
         </p>
       </div>
 
@@ -557,7 +554,7 @@ const editorialGroups=
         </p>
       </div>
 
-      <a href={copy.ctaHref||'/inquiry/'} data-catalog-cta-link>
+      <a href="/inquiry/">
         <span data-catalog-bind="catalog.reviewInquiry">
           {copy.reviewInquiry||navigation.inquiry||'Review inquiry'}
         </span>

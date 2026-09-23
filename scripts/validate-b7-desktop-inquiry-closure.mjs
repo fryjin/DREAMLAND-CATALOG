@@ -586,8 +586,8 @@ try{
   }
 
   // SITE-COPY-1B — Catalog CTA now follows the canonical customer voice.
-  if(site?.languages?.zh?.catalog?.ctaReadyTitle!=='灵感私享 · 凭图定制'){
-    fail('SITE-COPY-ZH2 Chinese Catalog CTA copy regressed.');
+  if(site?.languages?.zh?.catalog?.ctaReadyTitle!=='已选款式'){
+    fail('SITE-COPY-ZH1 Chinese Catalog CTA copy regressed.');
   }
 
   if(site?.languages?.en?.catalog?.ctaReadyTitle!=='You’ve started a selection.'){

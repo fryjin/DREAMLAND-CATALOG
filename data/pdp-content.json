@@ -927,18 +927,5 @@
         "ko": "동일 시리즈·동일 사이즈 내 여러 스타일을 합산해 MOQ를 충족할 수 있습니다."
       }
     }
-  },
-  "productPresentationOverrides": {
-    "MPC001": {
-      "seriesLabel": {
-        "zh": "匠作系列 · Mastercraft"
-      },
-      "name": {
-        "zh": "怦然心动 (Heartbeat)"
-      },
-      "description": {
-        "zh": "柔和的莫兰迪基底中，跃出一抹亮烈的光影。如同视线交汇的瞬间——轻盈却深刻，于静止中凝固流动的情感。"
-      }
-    }
   }
 }

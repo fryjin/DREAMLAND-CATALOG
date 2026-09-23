@@ -196,14 +196,6 @@ function normalizeHomeContent(
       body:
         hero.body||
         '',
-      bodyDesktop:
-        hero.bodyDesktop||
-        hero.body||
-        '',
-      bodyMobile:
-        hero.bodyMobile||
-        hero.body||
-        '',
       primary:
         hero.primary||
         'Explore collection',
@@ -322,9 +314,6 @@ function normalizeHomeContent(
       title:
         wholesale.title||
         'From selection to delivery.',
-      nodesText:
-        wholesale.nodesText||
-        '',
       facts:Object.freeze(
         (
           Array.isArray(
@@ -755,3 +744,4 @@ export function buildHomeRuntimeState({
     )
   });
 }
+

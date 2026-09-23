@@ -378,24 +378,6 @@ function approvedPdpCopy(
   return text(block?.copy?.[language]||block?.copy?.en||block?.copy?.zh);
 }
 
-function productPresentationOverride(
-  document,
-  product,
-  language='en'
-){
-  const id=productId(product);
-  const block=
-    document?.productPresentationOverrides
-      ?.[id]||
-    {};
-
-  return Object.freeze({
-    name:text(block?.name?.[language]),
-    seriesLabel:text(block?.seriesLabel?.[language]),
-    description:text(block?.description?.[language])
-  });
-}
-
 function pdpCopyProjection(
   document,
   product,
@@ -556,13 +538,6 @@ export function buildPdpViewModel({
       language
     );
 
-  const presentation=
-    productPresentationOverride(
-      pdpContentDocument,
-      product,
-      language
-    );
-
   const defaultSize=
     text(
       pricingPolicy
@@ -623,14 +598,12 @@ export function buildPdpViewModel({
     language,
     id,
     name:
-      presentation.name||
       localizationPolicy
         .productName(
           language,
           product
         ),
     description:
-      presentation.description||
       pdpCopy.colorStory||
       localizationPolicy
         .productDescription(
@@ -644,7 +617,6 @@ export function buildPdpViewModel({
         product.series
       ),
     seriesLabel:
-      presentation.seriesLabel||
       seriesLabel(
         product,
         language,
@@ -754,13 +726,6 @@ export function buildPdpRuntimeState({
               language
             );
 
-          const presentation=
-            productPresentationOverride(
-              pdpContentDocument,
-              product,
-              language
-            );
-
           return [
             language,
             Object.freeze({
@@ -774,7 +739,6 @@ export function buildPdpRuntimeState({
                   {}
                 ),
               name:
-                presentation.name||
                 localizationPolicy
                   .productName(
                     language,
@@ -787,9 +751,6 @@ export function buildPdpRuntimeState({
                     language,
                     product
                   ),
-              presentationDescription:
-                presentation.description||
-                '',
               pdpCopy:Object.freeze({
                 scentHelpers:
                   pdpCopy.scentHelpers,
@@ -797,7 +758,6 @@ export function buildPdpRuntimeState({
                   pdpCopy.quantityHelper
               }),
               seriesLabel:
-                presentation.seriesLabel||
                 seriesLabel(
                   product,
                   language,

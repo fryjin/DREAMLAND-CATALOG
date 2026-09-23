@@ -496,11 +496,3 @@
 .contact-global-error[hidden] {
   display:none!important;
 }
-
-/* ============================================================
- * SITE-COPY-ZH2 — Intentional Empty Contact Body
- * Chinese spreadsheet combines explanatory copy into the section title.
- * ========================================================== */
-.contact-section__header > p:empty {
-  display:none;
-}

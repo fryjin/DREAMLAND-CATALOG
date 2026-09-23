@@ -772,49 +772,10 @@
     );
   }
 
-  function reorderSeries(copy){
-    const order=
-      Array.isArray(copy?.seriesOrder)
-        ? copy.seriesOrder
-        : [];
-
-    if(!order.length){
-      return;
-    }
-
-    const list=
-      document.querySelector(
-        '[data-catalog-series-list]'
-      );
-
-    if(!list){
-      return;
-    }
-
-    const nodes=
-      new Map(
-        Array.from(
-          list.querySelectorAll(
-            '[data-catalog-series]'
-          )
-        ).map(node=>[
-          node.dataset.catalogSeries,
-          node
-        ])
-      );
-
-    order.forEach(scope=>{
-      const node=nodes.get(scope);
-      if(node)list.appendChild(node);
-    });
-  }
-
   function updateSeries(
     view,
     copy
   ){
-    reorderSeries(copy);
-
     document
       .querySelectorAll(
         '[data-catalog-series]'
@@ -1003,19 +964,6 @@
     applyGenericBindings(
       content
     );
-
-    const ctaLink=
-      document.querySelector(
-        '[data-catalog-cta-link]'
-      );
-
-    if(ctaLink){
-      ctaLink.setAttribute(
-        'href',
-        copy.ctaHref||
-        '/inquiry/'
-      );
-    }
 
     updateSeries(
       view,
