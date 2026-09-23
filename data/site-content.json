@@ -1943,7 +1943,7 @@
         "contactDetailsKicker": "联系方式",
         "contactDetailsTitle": "基础联系信息（必填）",
         "contactDetailsBody": "为确保准确收到正式报价单，请填写有效联络方式",
-        "contactRequiredTitle": "*联系信息",
+        "contactRequiredTitle": "联系信息",
         "contactRequiredBody": "为确保准确收到正式报价单，请填写有效联络方式",
         "contactOptionalTitle": "其他补充",
         "contactOptionalBody": "提供公司名称与采购背景，有助于为您提供精准折扣",

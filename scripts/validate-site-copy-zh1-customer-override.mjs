@@ -66,7 +66,7 @@ expect(zh.inquiryFlow?.cannotContinue,'⚠️ 当前选款组合尚未达到基�
 
 expect(zh.inquiryFlow?.contactTitle,'联系方式与项目信息','ZH Contact title');
 expect(zh.inquiryFlow?.contactBody,'请留下您的常用联系方式，我们的定制顾问将在 24 小时内与您对接详细报价与落地细节。','ZH Contact body');
-expect(zh.inquiryFlow?.contactRequiredTitle,'*联系信息','ZH Contact required title');
+expect(zh.inquiryFlow?.contactRequiredTitle,'联系信息','ZH Contact required title');
 expect(zh.inquiryFlow?.contactRequiredBody,'为确保准确收到正式报价单，请填写有效联络方式','ZH Contact required body');
 expect(zh.inquiryFlow?.contactOptionalTitle,'其他补充','ZH Contact optional title');
 expect(zh.inquiryFlow?.contactOptionalBody,'提供公司名称与采购背景，有助于为您提供精准折扣','ZH Contact optional body');
