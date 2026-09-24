@@ -41,6 +41,7 @@ const REVIEW_COPY_KEYS=Object.freeze([
   'summaryTitle',
   'inquiryNumber',
   'productEstimate',
+  'totalQuantity',
   'beforeSubmitKicker',
   'beforeSubmitTitle',
   'beforeSubmitBody',
@@ -410,6 +411,31 @@ export function buildReviewRuntimeState({
           appConfig.submitCooldownMs
         )||
         10000,
+      riskTimeoutMs:
+        Number(
+          appConfig.submissionRiskTimeoutMs
+        )||
+        12000,
+      submissionTimeoutMs:
+        Number(
+          appConfig.submissionRequestTimeoutMs
+        )||
+        20000,
+      attemptTtlMs:
+        Number(
+          appConfig.submissionAttemptTtlMs
+        )||
+        45000,
+      unknownRetryDelayMs:
+        Number(
+          appConfig.submissionUnknownRetryDelayMs
+        )||
+        15000,
+      attemptKey:
+        text(
+          appConfig.submissionAttemptKey
+        )||
+        'dreamlandSubmissionAttemptV1',
       archiveLimit:
         Number(
           appConfig.archiveLimit

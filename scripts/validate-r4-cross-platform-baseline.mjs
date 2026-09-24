@@ -62,6 +62,41 @@ function git(args){
   }
 }
 
+function gitConfigGet(key){
+  try{
+    return execFileSync(
+      'git',
+      [
+        'config',
+        '--get',
+        key
+      ],
+      {
+        cwd:ROOT,
+        encoding:'utf8',
+        stdio:['ignore','pipe','pipe']
+      }
+    ).trim();
+  }catch(error){
+    if(error?.status===1){
+      return '';
+    }
+
+    fail(
+      'Git command failed: git config --get '+
+      key+
+      ' — '+
+      String(
+        error.stderr||
+        error.message||
+        error
+      )
+    );
+
+    return '';
+  }
+}
+
 const attrs=read('.gitattributes');
 
 for(const marker of [
@@ -75,6 +110,8 @@ for(const marker of [
   '*.md      text eol=lf',
   '*.yml     text eol=lf',
   '*.yaml    text eol=lf',
+  '*.webmanifest text eol=lf',
+  '.gitkeep  text eol=lf',
   '*.bat     text eol=crlf',
   '*.cmd     text eol=crlf',
   '*.png     -text',
@@ -89,6 +126,8 @@ for(const marker of [
 const representative=[
   'package.json',
   'sw.js',
+  'manifest.webmanifest',
+  'images/.gitkeep',
   'scripts/build-pages.mjs',
   'src/astro/components/product/PdpPage.astro',
   'src/astro/styles/pdp.css'
@@ -194,11 +233,9 @@ for(const relative of [
 }
 
 const autoCrlf=
-  git([
-    'config',
-    '--get',
+  gitConfigGet(
     'core.autocrlf'
-  ]);
+  );
 
 if(errors.length){
   console.error('');

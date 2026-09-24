@@ -37,6 +37,7 @@ function compactRuntimeView(view={}){
       footer:Object.freeze({...((view.content||{}).footer||{})})
     }),
     copy:Object.freeze({...((view.copy)||{})}),
+    ui:Object.freeze({...((view.ui)||{})}),
     useCases:Object.freeze([...(view.useCases||[])]),
     budgets:Object.freeze([...(view.budgets||[])]),
     sizes:Object.freeze([...(view.sizes||[])]),
@@ -96,6 +97,10 @@ export function buildCustomViewModel({
     language,
     content:localized,
     copy:Object.freeze({...custom}),
+    ui:Object.freeze({
+      saveChanges:text(i18n.ui?.[language]?.saveChanges),
+      updatedInquiry:text(i18n.ui?.[language]?.updatedInquiry)
+    }),
     minimumQuantity:Number(snapshot.minimumQuantity)||Number(appConfig.customMoq)||1,
     maximumQuantity:Number(snapshot.maximumQuantity)||Number(appConfig.maxQuantity)||1000000,
     useCases:normalizeOptions(custom.useCases),

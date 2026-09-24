@@ -328,6 +328,135 @@
       );
   }
 
+  /*
+   * F3-B2 / F3-B5-RULE1
+   * MOQ and tier pricing now consume one canonical commercial quantity group
+   * owned by DreamlandInquiry. The adapter never reconstructs that key.
+   */
+  function quantityUnit(
+    language,
+    locale
+  ){
+    return (
+      locale.ui?.pieces||
+      (
+        language==='zh'
+          ? '件'
+          : language==='ko'
+            ? '개'
+            : 'pcs'
+      )
+    );
+  }
+
+  function moreToMoqLabel(
+    language,
+    locale
+  ){
+    return (
+      locale.ui?.moreToMoq||
+      (
+        language==='zh'
+          ? '距起订还差'
+          : language==='ko'
+            ? '최소 주문까지'
+            : 'More to MOQ'
+      )
+    );
+  }
+
+  function commercialGroupLabel(
+    group,
+    language,
+    state
+  ){
+    const labels=[
+      seriesLabel(
+        group?.series,
+        language,
+        state
+      )
+    ];
+
+    if(
+      group?.series==='holiday'&&
+      group?.pricingSeries&&
+      group.pricingSeries!==
+        group.series
+    ){
+      labels.push(
+        seriesLabel(
+          group.pricingSeries,
+          language,
+          state
+        )
+      );
+    }
+
+    labels.push(
+      text(
+        group?.size
+      )
+    );
+
+    return labels
+      .filter(Boolean)
+      .join(' · ');
+  }
+
+  /*
+   * F3-B3 — Product Configuration Edit Flow
+   * Editing reuses the canonical PDP route. The Inquiry item ID is carried
+   * only as a query intent; productManualV2State remains the sole state owner.
+   */
+  function productEditHref(
+    item,
+    state
+  ){
+    const base=
+      state?.routes?.collection||
+      '/products/';
+
+    return (
+      base+
+      encodeURIComponent(
+        text(
+          item?.productId
+        ).toUpperCase()
+      )+
+      '/?edit='+
+      encodeURIComponent(
+        text(
+          item?.id
+        )
+      )
+    );
+  }
+
+  /*
+   * F3-B4 — Custom Project Edit Flow
+   * Custom editing reuses /custom/ and carries only the Inquiry item ID as
+   * query intent. productManualV2State remains the sole persisted owner.
+   */
+  function customEditHref(
+    item,
+    state
+  ){
+    const base=
+      state?.routes?.custom||
+      '/custom/';
+
+    return (
+      base+
+      '?edit='+
+      encodeURIComponent(
+        text(
+          item?.id
+        )
+      )
+    );
+  }
+
   function configureInquiry(
     inquiry,
     pricing,
@@ -473,7 +602,9 @@
       locale,
       products,
       scents,
-      pricing
+      pricing,
+      inquiry,
+      moqGroups
     }=context;
 
     const card=
@@ -651,6 +782,52 @@
         pricing
       );
 
+    const groupKey=
+      inquiry
+        .commercialGroupKey(
+          item
+        );
+
+    const group=
+      moqGroups
+        ?.get(
+          groupKey
+        )||
+      null;
+
+    const groupQuantity=
+      number(
+        group?.qty,
+        number(
+          item.normalizedQty||
+          item.qty,
+          1
+        )
+      );
+
+    const groupMoq=
+      number(
+        group?.moq,
+        moq
+      );
+
+    const quantityToMoq=
+      Math.max(
+        0,
+        groupMoq-
+        groupQuantity
+      );
+
+    card.dataset
+      .inquiryMoqGroup=
+      groupKey;
+
+    card.dataset
+      .inquiryMoqState=
+      quantityToMoq>0
+        ? 'unmet'
+        : 'met';
+
     const moqLabel=
       appendText(
         documentRef,
@@ -744,6 +921,26 @@
         'inquiry-item__qty'
       );
 
+    const normalizedQuantity=
+      Math.max(
+        1,
+        number(
+          item.normalizedQty||
+          item.qty,
+          1
+        )
+      );
+
+    const maximumQuantity=
+      Math.max(
+        1,
+        number(
+          state.limits
+            ?.maxQuantity,
+          1000000
+        )
+      );
+
     const minus=
       createElement(
         documentRef,
@@ -759,6 +956,8 @@
       .itemId=
       text(item.id);
     minus.dataset.delta='-1';
+    minus.disabled=
+      normalizedQuantity<=1;
     minus.setAttribute(
       'aria-label',
       'Decrease quantity'
@@ -774,18 +973,12 @@
     input.min='1';
     input.max=
       String(
-        state.limits
-          ?.maxQuantity||
-        1000000
+        maximumQuantity
       );
     input.step='1';
     input.value=
       String(
-        number(
-          item.normalizedQty||
-          item.qty,
-          1
-        )
+        normalizedQuantity
       );
     input.dataset
       .inquiryQuantity=
@@ -814,6 +1007,9 @@
       .itemId=
       text(item.id);
     plus.dataset.delta='1';
+    plus.disabled=
+      normalizedQuantity>=
+      maximumQuantity;
     plus.setAttribute(
       'aria-label',
       'Increase quantity'
@@ -827,6 +1023,31 @@
 
     body.appendChild(
       qty
+    );
+
+    const edit=
+      createElement(
+        documentRef,
+        'a',
+        'inquiry-item__edit'
+      );
+
+    edit.href=
+      productEditHref(
+        item,
+        state
+      );
+
+    edit.dataset
+      .inquiryEditConfiguration=
+      'true';
+
+    edit.textContent=
+      locale.ui?.editConfig||
+      'Edit configuration';
+
+    body.appendChild(
+      edit
     );
 
     const remove=
@@ -903,6 +1124,7 @@
     context
   ){
     const {
+      state,
       language,
       locale,
       scents
@@ -1104,6 +1326,31 @@
 
     body.appendChild(
       pricingRow
+    );
+
+    const edit=
+      createElement(
+        documentRef,
+        'a',
+        'inquiry-item__edit'
+      );
+
+    edit.href=
+      customEditHref(
+        item,
+        state
+      );
+
+    edit.dataset
+      .inquiryCustomEditProject=
+      'true';
+
+    edit.textContent=
+      locale.ui?.editConfig||
+      'Edit';
+
+    body.appendChild(
+      edit
     );
 
     const remove=
@@ -1372,9 +1619,9 @@
         );
     }
 
-    function unmetGroup(){
+    function currentMoqGroups(){
       return inquiry
-        .firstUnmetProductMoqGroup(
+        .productMoqGroups(
           item=>
             itemMoq(
               item,
@@ -1382,6 +1629,28 @@
               pricing
             )
         );
+    }
+
+    function unmetGroups(){
+      return currentMoqGroups()
+        .filter(
+          group=>
+            number(
+              group?.qty,
+              0
+            )<
+            number(
+              group?.moq,
+              1
+            )
+        );
+    }
+
+    function unmetGroup(){
+      return (
+        unmetGroups()[0]||
+        null
+      );
     }
 
     function renderSummary(
@@ -1434,12 +1703,12 @@
 
       const unmet=
         viewModel.empty
-          ? null
-          : unmetGroup();
+          ? []
+          : unmetGroups();
 
       const canContinue=
         !viewModel.empty&&
-        !unmet;
+        unmet.length===0;
 
       if(continueNode){
         continueNode.disabled=
@@ -1448,40 +1717,107 @@
 
       if(validationNode){
         validationNode.hidden=
-          !unmet;
+          unmet.length===0;
 
-        if(unmet){
-          validationNode.textContent=
-            (
-              view.copy
-                ?.cannotContinue||
-              'Review the selected quantities before continuing.'
-            )+
-            ' '+
-            seriesLabel(
-              unmet.series,
-              language,
-              state
-            )+
-            ' · '+
-            text(
-              unmet.size
-            )+
-            ' · MOQ '+
-            unmet.moq+
-            ' · '+
-            unmet.qty+
-            '/'+
-            unmet.moq;
-        }else{
-          validationNode.textContent='';
+        validationNode
+          .replaceChildren();
+
+        if(unmet.length){
+          appendText(
+            document,
+            validationNode,
+            'strong',
+            'inquiry-validation__title',
+            view.copy
+              ?.cannotContinue||
+            'Review the selected quantities before continuing.'
+          );
+
+          const list=
+            createElement(
+              document,
+              'div',
+              'inquiry-validation__groups'
+            );
+
+          unmet.forEach(group=>{
+            const row=
+              createElement(
+                document,
+                'div',
+                'inquiry-validation__row'
+              );
+
+            row.dataset
+              .inquiryMoqBlocker=
+              group.key;
+
+            appendText(
+              document,
+              row,
+              'span',
+              '',
+              commercialGroupLabel(
+                group,
+                language,
+                state
+              )
+            );
+
+            appendText(
+              document,
+              row,
+              'strong',
+              '',
+              group.qty+
+              '/'+
+              group.moq
+            );
+
+            appendText(
+              document,
+              row,
+              'small',
+              '',
+              moreToMoqLabel(
+                language,
+                view
+              )+
+              ' '+
+              Math.max(
+                0,
+                group.moq-
+                group.qty
+              )+
+              ' '+
+              quantityUnit(
+                language,
+                view
+              )
+            );
+
+            list.appendChild(
+              row
+            );
+          });
+
+          validationNode.appendChild(
+            list
+          );
         }
       }
 
       return canContinue;
     }
 
-    function renderItems(
+        /*
+     * R4.11B4.1E-C3-FIX2C
+     * Quantity-only renders preserve decoded product media so pricing and
+     * commercial projections can refresh without visible image reloads.
+     */
+    let preserveMediaOnNextRender=false;
+
+function renderItems(
       viewModel
     ){
       const view=
@@ -1490,6 +1826,43 @@
       if(!itemsNode){
         return;
       }
+
+      const moqGroups=
+        new Map(
+          currentMoqGroups()
+            .map(
+              group=>[
+                group.key,
+                group
+              ]
+            )
+        );
+
+      const preservedMedia=
+        preserveMediaOnNextRender
+          ? new Map(
+              Array
+                .from(
+                  itemsNode
+                    .querySelectorAll(
+                      '[data-inquiry-item-id]'
+                    )
+                )
+                .map(card=>[
+                  text(
+                    card.dataset
+                      .inquiryItemId
+                  ),
+                  card.querySelector(
+                    '.inquiry-item__media'
+                  )
+                ])
+                .filter(
+                  ([,media])=>
+                    Boolean(media)
+                )
+            )
+          : null;
 
       itemsNode.replaceChildren();
 
@@ -1500,10 +1873,12 @@
           locale:view,
           products,
           scents,
-          pricing
+          pricing,
+          inquiry,
+          moqGroups
         };
 
-        itemsNode.appendChild(
+        const card=
           item.type===
             'custom'
             ? renderCustom(
@@ -1515,7 +1890,53 @@
                 document,
                 item,
                 context
-              )
+              );
+
+        if(
+          preservedMedia&&
+          item.type===
+            'product'
+        ){
+          const media=
+            preservedMedia.get(
+              text(item.id)
+            );
+
+          const nextMedia=
+            card.querySelector(
+              '.inquiry-item__media'
+            );
+
+          if(
+            media&&
+            nextMedia
+          ){
+            const currentImage=
+              media.querySelector(
+                'img'
+              );
+
+            const nextImage=
+              nextMedia.querySelector(
+                'img'
+              );
+
+            if(
+              currentImage&&
+              nextImage
+            ){
+              currentImage.alt=
+                nextImage.alt;
+            }
+
+            nextMedia.replaceWith(
+              media
+            );
+          }
+        }
+
+        itemsNode.appendChild(
+          card
         );
       }
 
@@ -1531,6 +1952,8 @@
         clearNode.hidden=
           viewModel.empty;
       }
+
+      preserveMediaOnNextRender=false;
     }
 
     function render(
@@ -1552,6 +1975,18 @@
         runtimeStatus.textContent=
           text(message);
       }
+
+      document.dispatchEvent(
+        new CustomEvent(
+          'dreamland:inquiry-render',
+          {
+            detail:{
+              viewModel,
+              language
+            }
+          }
+        )
+      );
 
       return viewModel;
     }
@@ -1585,6 +2020,8 @@
           value,
           1
         );
+
+      preserveMediaOnNextRender=true;
 
       render(
         persistAndView()

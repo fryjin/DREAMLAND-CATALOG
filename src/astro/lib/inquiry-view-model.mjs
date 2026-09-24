@@ -140,16 +140,31 @@ function compactUi(ui={}){
   const keys=[
     'pieces',
     'items',
+    'models',
     'moq',
     'currentUnitPrice',
     'amountEstimate',
     'toConfirm',
     'quotePending',
     'customInquiry',
+    'editConfig',
     'removedInquiry',
     'clearedInquiry',
     'minQtyError',
-    'quantityTooLarge'
+    'quantityTooLarge',
+    'tierPriceTable',
+    'tierRule',
+    'quantityGroup',
+    'quantityGroups',
+    'quantityGroupRule',
+    'groupTotal',
+    'currentPriceTier',
+    'unitSaving',
+    'nextPriceBreak',
+    'moreToNextBreak',
+    'moreToMoq',
+    'bestTierReached',
+    'noMorePriceBreaks'
   ];
 
   return Object.freeze(

@@ -180,63 +180,13 @@
     );
   }
 
-  function languageDescription(){
-    return (
-      content().description||
-      state?.product
-        ?.descriptions
-        ?.[currentLanguage]||
-      state?.product
-        ?.descriptions
-        ?.en||
-      ''
-    );
-  }
+  function languageDescription(){return content().description||state?.product?.descriptions?.[currentLanguage]||state?.product?.descriptions?.en||'';}
 
-  function scentDisplay(
-    value
-  ){
-    if(
-      value&&
-      typeof value===
-      'object'
-    ){
-      return (
-        value?.[currentLanguage]||
-        value?.en||
-        value?.zh||
-        ''
-      );
-    }
+  function scentDisplay(value){return value&&typeof value==='object'?(value?.[currentLanguage]||value?.en||value?.zh||''):text(value);}
 
-    return text(value);
-  }
+  function seriesLabel(key){return state?.seriesMeta?.[key]?.labels?.[currentLanguage]||state?.seriesMeta?.[key]?.labels?.en||key;}
 
-  function seriesLabel(
-    key
-  ){
-    return (
-      state?.seriesMeta
-        ?.[key]
-        ?.labels
-        ?.[currentLanguage]||
-      state?.seriesMeta
-        ?.[key]
-        ?.labels
-        ?.en||
-      key
-    );
-  }
-
-  function setText(
-    node,
-    value
-  ){
-    if(node){
-      node.textContent=
-        text(value);
-    }
-  }
+  function setText(node,value){if(node)node.textContent=text(value);}
 
   function pathValue(
     source,
@@ -532,14 +482,7 @@
     );
   }
 
-  function uiValue(key){
-    return (
-      content()
-        ?.ui
-        ?.[key]||
-      ''
-    );
-  }
+  function uiValue(key){return content()?.ui?.[key]||'';}
 
   function applyLanguageBindings(){
     const lang=
@@ -684,37 +627,18 @@
   }
 
   function renderScents(view){
-    const select=
-      document.querySelector(
-        '[data-pdp-scent]'
-      );
-
-    if(!select){
-      return;
-    }
-
-    const selected=
-      view.config.scentId;
-
-    select.innerHTML=
-      view.options.scents
-        .map(
-          scent=>
-            '<option value="'+
-            text(scent.id)
-              .replace(/"/g,'&quot;')+
-            '">'+
-            scentDisplay(
-              scent.name
-            )
-              .replace(/&/g,'&amp;')
-              .replace(/</g,'&lt;')+
-            '</option>'
-        )
-        .join('');
-
-    select.value=
-      selected;
+    const select=document.querySelector('[data-pdp-scent]');
+    if(!select)return;
+    select.innerHTML=view.options.scents.map(scent=>
+      '<option value="'+text(scent.id).replace(/"/g,'&quot;')+'">'+
+      scentDisplay(scent.name).replace(/&/g,'&amp;').replace(/</g,'&lt;')+
+      '</option>'
+    ).join('');
+    select.value=view.config.scentId;
+    const copy=content().pdpCopy||{};
+    const series=text(view?.config?.scentSeries||state?.product?.series);
+    setText(document.querySelector('[data-pdp-scent-helper]'),copy.scentHelpers?.[series]||'');
+    setText(document.querySelector('[data-pdp-quantity-helper]'),copy.quantityHelper||'');
   }
 
   function renderPatterns(view){
@@ -811,35 +735,16 @@
   }
 
   function renderSizes(view){
-    document
-      .querySelectorAll(
-        '[data-pdp-size]'
-      )
-      .forEach(button=>{
-        const active=
-          button.dataset
-            .pdpSize===
-          view.config.size;
-
-        button.classList
-          .toggle(
-            'is-default',
-            active
-          );
-
-        button.setAttribute(
-          'aria-pressed',
-          active
-            ? 'true'
-            : 'false'
-        );
-      });
-
+    const size=text(view.config.size);
+    document.querySelectorAll('[data-pdp-size]').forEach(button=>{
+      const active=button.dataset.pdpSize===size;
+      button.classList.toggle('is-default',active);
+      button.setAttribute('aria-pressed',active?'true':'false');
+    });
+    const dimension=text(state?.sizes?.[size]);
     setText(
-      document.querySelector(
-        '[data-pdp-size-summary]'
-      ),
-      view.config.size
+      document.querySelector('[data-pdp-size-summary]'),
+      size+(dimension?' · '+dimension:'')
     );
   }
 
@@ -976,7 +881,7 @@
       return;
     }
 
-    const scentDetail=rootNode.querySelector('[data-pdp-scent-detail]');
+    const scentDetail=document.querySelector('[data-pdp-scent-detail]');
 
     const projectionScroll=
       new Map();
@@ -1141,10 +1046,14 @@
         );
       });
 
-      section.append(
-        heading,
-        strip
-      );
+      section.appendChild(heading);
+      if(definition.field==='scent'){
+        const helper=document.createElement('p');
+        helper.className='pdp-config-projection__helper';
+        helper.textContent=text(content().pdpCopy?.scentHelpers?.[text(view?.config?.scentSeries||state?.product?.series)]||'');
+        if(helper.textContent)section.appendChild(helper);
+      }
+      section.appendChild(strip);
 
       /* R4.11B4.1E-B2 — Scent Detail Utility */
       if(definition.field==='scent'&&scentDetail){
@@ -1158,7 +1067,6 @@
           if(value) hasNotes=true;
         });
         scentDetail.hidden=!hasNotes;
-        section.appendChild(scentDetail);
       }
 
       fragment.appendChild(
@@ -1371,25 +1279,38 @@
     }
   }
 
-  function updatePrimaryForSize(view){
-    const src=
-      state.product
-        .sizeImages
-        ?.[view.config.size];
+  function gallerySelect(src,scrollMobile=false){
+    src=text(src);
+    if(!src)return;
 
-    if(!src){
-      return;
+    const stage=document.querySelector('[data-pdp-gallery-stage-image]');
+    if(stage)stage.src=src;
+
+    document.querySelectorAll('[data-pdp-gallery-thumb]').forEach(button=>{
+      const active=button.dataset.pdpGalleryThumb===src;
+      button.classList.toggle('is-selected',active);
+      button.setAttribute('aria-pressed',active?'true':'false');
+    });
+
+    if(scrollMobile&&root.matchMedia?.('(max-width:720px)').matches){
+      const track=document.querySelector('[data-pdp-gallery-track]');
+      const item=Array.from(
+        track?.querySelectorAll('[data-pdp-gallery-item]')||[]
+      ).find(node=>node.dataset.pdpGallerySrc===src);
+      if(track&&item){
+        track.scrollTo({
+          left:item.offsetLeft-track.offsetLeft,
+          behavior:'smooth'
+        });
+      }
     }
+  }
 
-    const image=
-      document.querySelector(
-        '[data-pdp-primary-image="true"]'
-      );
-
-    if(image){
-      image.src=
-        src;
-    }
+  function galleryForSize(view){
+    gallerySelect(
+      state.product.sizeImages?.[view.config.size],
+      true
+    );
   }
 
   function render(
@@ -1408,6 +1329,19 @@
     renderConfigurationProjection(view);
     renderQuantity(view);
     renderPricing(view);
+
+    document.dispatchEvent(
+      new CustomEvent(
+        'dreamland:pdp-render',
+        {
+          detail:{
+            view,
+            language:currentLanguage
+          }
+        }
+      )
+    );
+
     updateInquiryBadge();
 
     return view;
@@ -1611,7 +1545,7 @@
     render(view);
 
     if(sizeImage){
-      updatePrimaryForSize(
+      galleryForSize(
         view
       );
     }
@@ -1621,93 +1555,30 @@
 
 
   function bindGalleryIndex(){
-    const gallery=
-      document.querySelector(
-        '[data-pdp-gallery]'
-      );
-
-    const current=
-      document.querySelector(
-        '[data-pdp-gallery-index-current]'
-      );
-
-    if(
-      !gallery||
-      !current
-    ){
-      return;
-    }
-
-    const items=
-      Array.from(
-        gallery.querySelectorAll(
-          '[data-pdp-gallery-item]'
-        )
-      );
-
-    if(!items.length){
-      return;
-    }
+    const gallery=document.querySelector('[data-pdp-gallery-track]');
+    const current=document.querySelector('[data-pdp-gallery-index-current]');
+    const items=Array.from(
+      gallery?.querySelectorAll('[data-pdp-gallery-item]')||[]
+    );
+    if(!gallery||!current||!items.length)return;
 
     let frame=0;
-
     const paint=()=>{
       frame=0;
-
-      const galleryRect=
-        gallery.getBoundingClientRect();
-
-      let activeIndex=0;
-      let nearest=
-        Number.POSITIVE_INFINITY;
-
-      items.forEach(
-        (item,index)=>{
-          const rect=
-            item.getBoundingClientRect();
-
-          const distance=
-            Math.abs(
-              rect.left-
-              galleryRect.left
-            );
-
-          if(distance<nearest){
-            nearest=distance;
-            activeIndex=index;
-          }
-        }
-      );
-
-      current.textContent=
-        String(
-          activeIndex+1
-        ).padStart(2,'0');
+      const left=gallery.getBoundingClientRect().left;
+      let active=0;
+      let nearest=Number.POSITIVE_INFINITY;
+      items.forEach((item,index)=>{
+        const distance=Math.abs(item.getBoundingClientRect().left-left);
+        if(distance<nearest){nearest=distance;active=index;}
+      });
+      current.textContent=String(active+1).padStart(2,'0');
     };
-
     const schedule=()=>{
-      if(frame){
-        return;
-      }
-
-      frame=
-        root.requestAnimationFrame(
-          paint
-        );
+      if(!frame)frame=root.requestAnimationFrame(paint);
     };
-
-    gallery.addEventListener(
-      'scroll',
-      schedule,
-      {passive:true}
-    );
-
-    root.addEventListener(
-      'resize',
-      schedule,
-      {passive:true}
-    );
-
+    gallery.addEventListener('scroll',schedule,{passive:true});
+    root.addEventListener('resize',schedule,{passive:true});
     paint();
   }
 
@@ -1894,27 +1765,15 @@
 
     document
       .querySelectorAll(
-        '[data-pdp-gallery-select]'
+        '[data-pdp-gallery-thumb], [data-pdp-gallery-select]'
       )
       .forEach(button=>{
         button.addEventListener(
           'click',
-          ()=>{
-            const image=
-              document.querySelector(
-                '[data-pdp-primary-image="true"]'
-              );
-
-            if(
-              image&&
-              button.dataset
-                .pdpGallerySelect
-            ){
-              image.src=
-                button.dataset
-                  .pdpGallerySelect;
-            }
-          }
+          ()=>gallerySelect(
+            button.dataset.pdpGalleryThumb||
+            button.dataset.pdpGallerySelect
+          )
         );
       });
 

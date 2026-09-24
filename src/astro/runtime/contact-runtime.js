@@ -566,6 +566,26 @@
     );
   }
 
+  function contactFromDom(
+    documentRef,
+    current
+  ){
+    const next={
+      ...(current||{})
+    };
+
+    for(const node of documentRef.querySelectorAll(
+      '[data-contact-field]'
+    )){
+      const key=node.dataset.contactField;
+      if(key){
+        next[key]=String(node.value??'');
+      }
+    }
+
+    return next;
+  }
+
   function renderFieldValues(
     documentRef,
     contact
@@ -629,6 +649,17 @@
         ?.classList
         .remove(
           'is-invalid'
+        );
+
+      const fieldNode=
+        documentRef.querySelector(
+          '[data-contact-field="'+key+'"]'
+        );
+
+      fieldNode
+        ?.setAttribute(
+          'aria-invalid',
+          'false'
         );
     }
 
@@ -700,6 +731,17 @@
         ?.classList
         .add(
           'is-invalid'
+        );
+
+      const fieldNode=
+        documentRef.querySelector(
+          '[data-contact-field="'+key+'"]'
+        );
+
+      fieldNode
+        ?.setAttribute(
+          'aria-invalid',
+          'true'
         );
     }
 
@@ -1112,6 +1154,12 @@
     }
 
     function continueToReview(){
+      currentContact=
+        contactFromDom(
+          documentRef,
+          currentContact
+        );
+
       contact.replace(
         currentContact
       );

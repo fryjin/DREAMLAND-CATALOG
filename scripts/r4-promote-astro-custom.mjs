@@ -58,7 +58,51 @@ for(const contract of sentinelContracts){
   sentinelHashes.set(contract.relative,hashFile(file));
 }
 for(const pathname of astroAssets){const relative=pathname.replace(/^\/+/,'');copyFile(path.join(SOURCE_ROOT,relative),path.join(TARGET_ROOT,relative));}
-copyFile(path.join(SOURCE_ROOT,'r4-custom-runtime.js'),path.join(TARGET_ROOT,'r4-custom-runtime.js'));
+const customRuntimeSource=
+  path.join(
+    SOURCE_ROOT,
+    'r4-custom-runtime.js'
+  );
+
+ensureFile(
+  customRuntimeSource,
+  'Isolated Astro Custom runtime'
+);
+
+const customRuntimeContent=
+  fs.readFileSync(
+    customRuntimeSource,
+    'utf8'
+  );
+
+for(const marker of [
+  'F3-B4 — Custom Project Edit Flow',
+  'customInquiryEdit',
+  'customEditSave',
+  '.findItem(',
+  '.replaceItem(',
+  '.buildIntent(',
+  '.addCustom('
+]){
+  if(
+    !customRuntimeContent.includes(
+      marker
+    )
+  ){
+    fail(
+      'Isolated Astro Custom runtime lost F3-B4 edit/create behavior before Production promotion: '+
+      marker
+    );
+  }
+}
+
+copyFile(
+  customRuntimeSource,
+  path.join(
+    TARGET_ROOT,
+    'r4-custom-runtime.js'
+  )
+);
 copyFile(source,target);
 const manifestFile=path.join(TARGET_ROOT,'multipage-build-manifest.json');ensureFile(manifestFile,'Production build manifest');
 const manifest=JSON.parse(fs.readFileSync(manifestFile,'utf8'));

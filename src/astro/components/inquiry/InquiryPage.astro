@@ -25,12 +25,6 @@ const rows=[
     bind:'customProject',
     label:c.customProject||'Custom Project',
     value:summary.customCount??0
-  },
-  {
-    key:'estimate',
-    bind:'productEstimate',
-    label:c.productEstimate||'Estimated product amount',
-    value:'—'
   }
 ];
 ---
@@ -38,6 +32,8 @@ const rows=[
   class="inquiry-main"
   data-inquiry-static-presentation
   data-inquiry-runtime-presentation
+  data-inquiry-conversion-composition="true"
+  data-inquiry-interaction-efficiency="true"
 >
   <section
     class="inquiry-hero"
@@ -100,12 +96,6 @@ const rows=[
     <div class="inquiry-selection">
       <header class="inquiry-section__header">
         <div>
-          <p
-            class="inquiry-eyebrow"
-            data-inquiry-bind="selectedProducts"
-          >
-            {c.selectedProducts||'Inquiry items'}
-          </p>
           <h2 data-inquiry-bind="selectedProducts">
             {c.selectedProducts||'Inquiry items'}
           </h2>
@@ -206,6 +196,43 @@ const rows=[
         ))}
       </div>
 
+      <section
+        class="inquiry-commercial-summary"
+        data-inquiry-commercial-summary
+        aria-live="polite"
+        hidden
+      >
+        <header class="inquiry-commercial-summary__header">
+          <span data-inquiry-commercial-title>
+            Tier pricing
+          </span>
+          <small data-inquiry-commercial-rule>
+            Calculated by series or scent-series quantity
+          </small>
+        </header>
+
+        <div
+          class="inquiry-commercial-groups"
+          data-inquiry-commercial-groups
+        ></div>
+      </section>
+
+      <section
+        class="inquiry-summary__amount"
+        data-inquiry-estimate-block
+        aria-live="polite"
+      >
+        <span data-inquiry-bind="productEstimate">
+          {c.productEstimate||'Estimated product amount'}
+        </span>
+        <strong
+          data-inquiry-static-summary-value="estimate"
+          data-inquiry-summary-value="estimate"
+        >
+          —
+        </strong>
+      </section>
+
       <p
         class="inquiry-summary__note"
         data-inquiry-bind="finalPricingNote"
@@ -213,13 +240,13 @@ const rows=[
         {c.finalPricingNote||'Final pricing, lead time and delivery will be confirmed in the formal quotation.'}
       </p>
 
-      <p
+      <div
         class="inquiry-validation"
         data-inquiry-validation
         role="status"
         aria-live="polite"
         hidden
-      ></p>
+      ></div>
 
       <button
         type="button"

@@ -100,7 +100,7 @@ try{
     'removeItem',
     'clearItems',
     'persist',
-    'firstUnmetProductMoqGroup',
+    'productMoqGroups',
     'location.assign',
     "'/r4-inquiry-runtime.js'"
   ]){

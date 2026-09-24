@@ -769,6 +769,8 @@
       projection.contact||
       {};
 
+    const optionalContactKeys=new Set(['company','buyerType','city','message']);
+
     const labels={
       name:
         copy.name,
@@ -822,23 +824,11 @@
     }
 
     for(const key of Object.keys(labels)){
-      const node=
-        documentRef.querySelector(
-          '[data-review-contact-value="'+
-          key+
-          '"]'
-        );
-
-      if(node){
-        node.textContent=
-          text(
-            values[key]
-          )||
-          text(
-            copy.notProvided
-          )||
-          '—';
-      }
+      const value=text(values[key]);
+      const shell=documentRef.querySelector('[data-review-static-contact-field="'+key+'"]');
+      if(shell&&optionalContactKeys.has(key)) shell.hidden=!value;
+      const node=documentRef.querySelector('[data-review-contact-value="'+key+'"]');
+      if(node) node.textContent=value||text(copy.notProvided)||'—';
     }
   }
 
@@ -881,6 +871,11 @@
     );
 
     return node;
+  }
+
+  function conciseProductPreview(item){
+    const parts=text(item?.previewValue).split(' · ').map(text).filter(Boolean);
+    return parts.filter((part,index)=>index!==parts.length-1&&!/^MOQ\s+/i.test(part)).join(' · ');
   }
 
   function productCard(documentRef,item){
@@ -962,7 +957,7 @@
       body,
       'p',
       '',
-      item.previewValue
+      conciseProductPreview(item)
     );
 
     appendText(
@@ -1134,18 +1129,6 @@
       );
     }
 
-    const noticeIndex=
-      documentRef.querySelector(
-        '[data-review-notice-index]'
-      );
-
-    if(noticeIndex){
-      noticeIndex.textContent=
-        hasCustom
-          ? '04'
-          : '03';
-    }
-
     const customSummary=
       documentRef.querySelector(
         '[data-review-custom-summary]'
@@ -1177,6 +1160,14 @@
         projection.estimatedTotalDisplay||
         '—';
     }
+
+    const productQuantity=number(viewModel.summary?.productQuantity,0);
+    const quantityRow=documentRef.querySelector('[data-review-product-quantity-summary]');
+    if(quantityRow) quantityRow.hidden=productQuantity<=0;
+    const quantityValue=documentRef.querySelector('[data-review-total-quantity]');
+    if(quantityValue) quantityValue.textContent=productQuantity>0
+      ? productQuantity+' '+(text(locale.ui?.pieces)||'pcs')
+      : '—';
 
     const badge=
       documentRef.querySelector(
@@ -1292,31 +1283,55 @@
 
     let privacyAccepted=false;
     let submitting=false;
+    let activeInquiryId='';
+    let attemptGate=Object.freeze({active:false,code:'',state:'idle',retryAfterMs:0});
+    let attemptGateTimer=null;
 
     const statusCopy=Object.freeze({
       en:Object.freeze({
-        privacy:'Please accept the Privacy Notice before submitting.',
-        submitting:'Submitting your inquiry…',
-        captcha:'Please complete the security verification.',
-        filtered:'This inquiry could not be submitted. Please review the details and try again.',
-        failed:'Submission failed. Please try again.',
-        offline:'The network appears unavailable. Your inquiry remains saved on this device.'
+        privacy:'Please agree to the Privacy Notice before sending.',
+        submitting:'Sending your inquiry…',
+        captcha:'Please complete the verification to continue.',
+        filtered:'We couldn’t send this inquiry yet. Please check the details and try again.',
+        failed:'We couldn’t send your inquiry. Please try again shortly.',
+        offline:'You’re offline. Your inquiry is still saved on this device.',
+        timeout:'This is taking longer than expected. Your inquiry is still saved — please try again.',
+        security:'We couldn’t complete the verification. Please try again.',
+        provider:'We can’t send your inquiry right now. Your selection is still saved — please try again.',
+        config:'We can’t send your inquiry right now. Your selection is still saved.',
+        cooldown:'Please wait {seconds}s, then try again.',
+        duplicate:'This inquiry is already being sent in another tab.',
+        unknown:'We couldn’t confirm whether it was sent. Please wait {seconds}s before trying again.'
       }),
       zh:Object.freeze({
-        privacy:'提交前请先同意隐私声明。',
-        submitting:'正在提交询价…',
-        captcha:'请完成安全验证。',
-        filtered:'当前询价暂无法提交，请检查信息后重试。',
-        failed:'提交失败，请稍后重试。',
-        offline:'当前网络不可用，询价内容仍保存在本机。'
+        privacy:'发送前请先同意隐私说明。',
+        submitting:'正在发送询价…',
+        captcha:'请完成验证后继续。',
+        filtered:'这份询价暂时无法发送，请检查信息后再试。',
+        failed:'现在暂时无法发送询价，请稍后再试。',
+        offline:'当前网络不可用，询价内容仍保存在这台设备上。',
+        timeout:'发送时间比预期更久，询价内容已经保留，请稍后再试。',
+        security:'验证没有完成，请重新尝试。',
+        provider:'现在暂时无法发送询价，你选择的内容已经保留，请稍后再试。',
+        config:'现在暂时无法发送询价，你选择的内容已经保留。',
+        cooldown:'请等待 {seconds} 秒后再试。',
+        duplicate:'这份询价正在另一个页面发送，请稍等。',
+        unknown:'暂时无法确认是否已经发送，请等待 {seconds} 秒后再试。'
       }),
       ko:Object.freeze({
-        privacy:'제출하기 전에 개인정보 처리 안내에 동의해 주세요.',
-        submitting:'문의 내용을 제출하고 있습니다…',
-        captcha:'보안 인증을 완료해 주세요.',
-        filtered:'현재 문의를 제출할 수 없습니다. 내용을 확인한 뒤 다시 시도해 주세요.',
-        failed:'제출하지 못했습니다. 다시 시도해 주세요.',
-        offline:'네트워크에 연결할 수 없습니다. 문의 내용은 기기에 저장되어 있습니다.'
+        privacy:'문의 전 개인정보 안내에 동의해 주세요.',
+        submitting:'문의를 보내는 중입니다…',
+        captcha:'계속하려면 확인을 완료해 주세요.',
+        filtered:'지금은 이 문의를 보낼 수 없습니다. 내용을 확인한 뒤 다시 시도해 주세요.',
+        failed:'지금은 문의를 보낼 수 없습니다. 잠시 후 다시 시도해 주세요.',
+        offline:'현재 네트워크에 연결할 수 없습니다. 문의 내용은 이 기기에 저장되어 있습니다.',
+        timeout:'전송에 예상보다 시간이 걸리고 있습니다. 문의 내용은 저장되어 있으니 잠시 후 다시 시도해 주세요.',
+        security:'확인을 완료하지 못했습니다. 다시 시도해 주세요.',
+        provider:'지금은 문의를 보낼 수 없습니다. 선택 내용은 저장되어 있으니 다시 시도해 주세요.',
+        config:'지금은 문의를 보낼 수 없습니다. 선택 내용은 저장되어 있습니다.',
+        cooldown:'{seconds}초 후에 다시 시도해 주세요.',
+        duplicate:'이 문의는 다른 탭에서 이미 전송 중입니다.',
+        unknown:'전송 여부를 확인하지 못했습니다. {seconds}초 후에 다시 시도해 주세요.'
       })
     });
 
@@ -1335,6 +1350,24 @@
       );
     }
 
+    function statusWithSeconds(key,retryAfterMs){
+      return statusText(key).replace('{seconds}',String(Math.max(1,Math.ceil(Number(retryAfterMs||0)/1000))));
+    }
+
+    function classifySubmissionError(error){
+      const code=text(error?.code);
+      if(error?.reachable===false||code==='OFFLINE') return 'offline';
+      if(code==='RISK_FILTERED') return 'filtered';
+      if(code.startsWith('CAPTCHA_')) return 'security';
+      if(code==='RISK_TIMEOUT') return 'timeout';
+      if(code==='COOLDOWN') return 'cooldown';
+      if(code==='DUPLICATE') return 'duplicate';
+      if(code==='UNKNOWN_PENDING'||code==='SUBMISSION_TIMEOUT') return 'unknown';
+      if(code==='NOT_CONFIGURED'||code.startsWith('DIRECT_CONFIG_')) return 'config';
+      if(code==='SUBMISSION_FAILED'||Number(error?.status||0)>0) return 'provider';
+      return 'failed';
+    }
+
     function setStatus(message='',kind=''){
       const node=
         documentRef.querySelector(
@@ -1347,6 +1380,20 @@
         node.dataset.reviewStatus=
           text(kind);
       }
+    }
+
+    function clearAttemptGateTimer(){if(attemptGateTimer){clearTimeout(attemptGateTimer);attemptGateTimer=null;}}
+
+    function refreshAttemptGate(announce=false){
+      clearAttemptGateTimer();
+      const previousActive=attemptGate.active;
+      attemptGate=activeInquiryId&&typeof submissionFlow.attemptState==='function'?submissionFlow.attemptState(activeInquiryId):Object.freeze({active:false,code:'',state:'idle',retryAfterMs:0});
+      if(attemptGate.active&&announce&&!submitting){
+        const key=attemptGate.code==='UNKNOWN_PENDING'?'unknown':attemptGate.code==='COOLDOWN'?'cooldown':'duplicate';
+        setStatus(key==='duplicate'?statusText(key):statusWithSeconds(key,attemptGate.retryAfterMs),'error');
+      }else if(previousActive&&!attemptGate.active&&!submitting){setStatus('');}
+      if(attemptGate.active&&attemptGate.retryAfterMs>0){attemptGateTimer=setTimeout(()=>{refreshAttemptGate(true);syncSubmitUi();},Math.min(1000,attemptGate.retryAfterMs));}
+      return attemptGate;
     }
 
     function syncSubmitUi(){
@@ -1370,6 +1417,7 @@
       if(submitButton){
         submitButton.disabled=
           submitting||
+          attemptGate.active||
           !privacyAccepted;
         submitButton.setAttribute(
           'aria-busy',
@@ -1441,7 +1489,11 @@
         archiveLimit:
           config.archiveLimit,
         cooldownMs:
-          config.cooldownMs
+          config.cooldownMs,
+        attemptKey:config.attemptKey,
+        attemptTtlMs:config.attemptTtlMs,
+        unknownRetryDelayMs:config.unknownRetryDelayMs,
+        submissionTimeoutMs:config.submissionTimeoutMs
       });
 
       risk.markFormStart();
@@ -1475,14 +1527,21 @@
       });
     }
 
+    async function runWithTimeout(task,timeoutMs,code){
+      const duration=Math.max(0,Number(timeoutMs)||0);
+      if(duration<=0||typeof root.AbortController!=='function') return task(null);
+      const controller=new root.AbortController();
+      let timedOut=false;
+      const timer=setTimeout(()=>{timedOut=true;controller.abort();},duration);
+      try{return await task(controller.signal);}catch(error){if(timedOut||error?.name==='AbortError'){const timeoutError=new Error(code);timeoutError.code=code;throw timeoutError;}throw error;}finally{clearTimeout(timer);}
+    }
+
     async function assessRisk(payload){
       const assessment=
-        await risk.assess(
-          payload,
-          {
-            website:'',
-            language
-          }
+        await runWithTimeout(
+          signal=>risk.assess(payload,{website:'',language,...(signal?{signal}:{})}),
+          state.submission.riskTimeoutMs,
+          'RISK_TIMEOUT'
         );
 
       if(assessment.filtered){
@@ -1554,6 +1613,9 @@
         return false;
       }
 
+      refreshAttemptGate(true);
+      if(attemptGate.active){syncSubmitUi();return false;}
+
       submitting=true;
       syncSubmitUi();
       setStatus(
@@ -1623,14 +1685,12 @@
           security.hidden=true;
         }
 
+        refreshAttemptGate(false);
+        const category=classifySubmissionError(error);
         setStatus(
-          error?.reachable===false
-            ? statusText('offline')
-            : (
-                error?.code==='RISK_FILTERED'
-                  ? statusText('filtered')
-                  : statusText('failed')
-              ),
+          category==='cooldown'||category==='unknown'
+            ? statusWithSeconds(category,error?.retryAfterMs||attemptGate.retryAfterMs)
+            : statusText(category),
           'error'
         );
 
@@ -1738,6 +1798,9 @@
       const result=
         projection();
 
+      activeInquiryId=result.inquiryId;
+      refreshAttemptGate(true);
+
       const viewModel=
         inquiry
           .buildViewModel();
@@ -1823,11 +1886,15 @@
           state.storage
             .contactKey,
           state.storage
-            .pendingInquiryKey
+            .pendingInquiryKey,
+          state.submission
+            .attemptKey
         ].includes(
           event.key
         )
       ){
+        if(event.key===state.submission.attemptKey){refreshAttemptGate(true);syncSubmitUi();return;}
+
         language=
           readLanguage(
             state,

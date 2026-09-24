@@ -316,13 +316,23 @@ try{
       }
     }
 
+    /*
+     * R4.5B unique product media semantics after PDP-GALLERY-1.
+     * The same canonical asset may appear in the Desktop stage,
+     * Mobile swipe track and Desktop thumbnail rail. Preserve the
+     * historical 1–10 media limit by counting unique product paths.
+     */
     const images=[
-      ...html.matchAll(
-        /src="(\/images\/products\/[^"]+\.(?:webp|png|jpe?g))"/gi
+      ...new Set(
+        [
+          ...html.matchAll(
+            /src="(\/images\/products\/[^"]+\.(?:webp|png|jpe?g))"/gi
+          )
+        ].map(
+          match=>match[1]
+        )
       )
-    ].map(
-      match=>match[1]
-    );
+    ];
 
     if(
       images.length<1||

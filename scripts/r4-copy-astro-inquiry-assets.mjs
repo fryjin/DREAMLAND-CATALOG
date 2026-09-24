@@ -152,6 +152,7 @@ if(
 const runtimeSources=[
   'src/domain/pricing/runtime-pricing-policy.js',
   'src/features/inquiry/runtime-inquiry.js',
+  'src/astro/runtime/inquiry-commercial-runtime.js',
   'src/astro/runtime/inquiry-runtime.js'
 ];
 
@@ -253,7 +254,7 @@ console.log(
   '- Runtime bundle: /r4-inquiry-runtime.js'
 );
 console.log(
-  '- Canonical runtime owners: PricingPolicy + DreamlandInquiry + Astro Inquiry adapter'
+  '- Canonical runtime owners: PricingPolicy + DreamlandInquiry + Inquiry Commercial Projection + Astro Inquiry adapter'
 );
 console.log(
   '- Runtime product covers guaranteed:',

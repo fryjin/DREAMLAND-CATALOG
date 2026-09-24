@@ -11,6 +11,9 @@ import {
   buildPdpRuntimeState,
   mapPdpScents
 } from '../../lib/pdp-view-model.mjs';
+import {
+  buildPdpVisualOptions
+} from '../../../data/pdp-visual-options-contract.mjs';
 
 import '../../styles/home.css';
 import '../../styles/pdp.css';
@@ -20,6 +23,7 @@ import seriesDocument from '../../../../data/series.json';
 import siteContent from '../../../../data/site-content.json';
 import i18n from '../../../../data/i18n.json';
 import routes from '../../../../data/page-routes.json';
+import pdpContentDocument from '../../../../data/pdp-content.json';
 
 import '../../../data/product-data-contract.js';
 import '../../../domain/pricing/runtime-pricing-policy.js';
@@ -114,6 +118,7 @@ const view=
   buildPdpViewModel({
     language,
     product,
+    pdpContentDocument,
     seriesDocument,
     siteContent,
     ui:
@@ -143,9 +148,29 @@ const scents=
     scentRows
   );
 
+const sharedAssetRows=
+  productDataContract
+    .parseCsv(
+      fs.readFileSync(
+        path.resolve(
+          process.cwd(),
+          'data/shared-assets.csv'
+        ),
+        'utf8'
+      )
+    );
+
+const visualOptions=
+  buildPdpVisualOptions({
+    sharedAssets:
+      sharedAssetRows,
+    seriesDocument
+  });
+
 const runtimeState=
   buildPdpRuntimeState({
     product,
+    pdpContentDocument,
     languages:
       supportedLanguages,
     defaultLanguage:
@@ -159,6 +184,7 @@ const runtimeState=
       i18n.currencyMap||
       {},
     scents,
+    visualOptions,
     pricingPolicy,
     localizationPolicy
   });

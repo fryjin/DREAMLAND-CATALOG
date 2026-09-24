@@ -40,6 +40,21 @@ const initialScents=
     )||
   [];
 
+const initialPdpCopy=
+  runtimeState.languages
+    ?.en
+    ?.pdpCopy||
+  {};
+
+const initialScentHelper=
+  initialPdpCopy.scentHelpers
+    ?.[defaultScentSeries]||
+  '';
+
+const initialQuantityHelper=
+  initialPdpCopy.quantityHelper||
+  '';
+
 const initialPatterns=
   runtimeState.patternsBySize
     ?.[view.defaultSize]||
@@ -68,6 +83,16 @@ const unit=
 
 const galleryCount=
   view.gallery.length;
+
+const defaultSizeDimension=
+  view.sizes
+    ?.find(
+      (item:any)=>
+        item.size===
+        view.defaultSize
+    )
+    ?.dimension||
+  '';
 ---
 <main
   class="pdp-main"
@@ -89,60 +114,104 @@ const galleryCount=
     class="pdp-hero home-container"
     aria-labelledby="pdpTitle"
   >
-    <p
-      class="pdp-feature-folio"
-      data-pdp-feature-folio
-    >
-      <span class="pdp-feature-folio__index">01</span>
-      <span aria-hidden="true">/</span>
-      <span>{view.id}</span>
-    </p>
-
     <div
       class="pdp-gallery"
       data-pdp-gallery
     >
-      {view.gallery.map(
-        (
-          image:any,
-          index:number
-        )=>(
-          <figure
-            class:list={[
-              'pdp-gallery__item',
-              image.primary&&
-                'pdp-gallery__item--primary'
-            ]}
-            data-pdp-gallery-item={index}
-          >
+      <figure class="pdp-gallery__stage">
+        <img
+          src={view.gallery[0].src}
+          alt={view.name}
+          width="1200"
+          height="1400"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          data-pdp-primary-image="true"
+          data-pdp-gallery-stage-image
+        />
+      </figure>
+
+      <div
+        class="pdp-gallery__track"
+        data-pdp-gallery-track
+      >
+        {view.gallery.map(
+          (
+            image:any,
+            index:number
+          )=>(
+            <figure
+              class:list={[
+                'pdp-gallery__item',
+                image.primary&&
+                  'pdp-gallery__item--primary'
+              ]}
+              data-pdp-gallery-item={index}
+              data-pdp-gallery-src={image.src}
+            >
+              <button
+                class="pdp-gallery__select"
+                type="button"
+                data-pdp-gallery-select={image.src}
+                aria-label={`${view.name} — ${index+1}`}
+              >
+                <img
+                  src={image.src}
+                  alt={
+                    index===0
+                      ? view.name
+                      : `${view.name} — ${index+1}`
+                  }
+                  width="1200"
+                  height="1500"
+                  loading="lazy"
+                  fetchpriority="auto"
+                  decoding="async"
+                />
+              </button>
+            </figure>
+          )
+        )}
+      </div>
+
+      <div
+        class="pdp-gallery__thumbs"
+        data-pdp-gallery-thumbs
+        aria-label={`${view.name} gallery`}
+      >
+        {view.gallery.map(
+          (
+            image:any,
+            index:number
+          )=>(
             <button
-              class="pdp-gallery__select"
+              class:list={[
+                'pdp-gallery__thumb',
+                index===0&&
+                  'is-selected'
+              ]}
               type="button"
-              data-pdp-gallery-select={image.src}
+              data-pdp-gallery-thumb={image.src}
+              aria-pressed={
+                index===0
+                  ? 'true'
+                  : 'false'
+              }
               aria-label={`${view.name} — ${index+1}`}
             >
               <img
                 src={image.src}
-                alt={
-                  index===0
-                    ? view.name
-                    : `${view.name} — ${index+1}`
-                }
-                width="1200"
-                height="1500"
-                loading={image.loading}
-                fetchpriority={image.priority}
+                alt=""
+                width="160"
+                height="200"
+                loading="lazy"
                 decoding="async"
-                data-pdp-primary-image={
-                  image.primary
-                    ? 'true'
-                    : undefined
-                }
               />
             </button>
-          </figure>
-        )
-      )}
+          )
+        )}
+      </div>
     </div>
 
     <p
@@ -175,25 +244,11 @@ const galleryCount=
         <p
           class="pdp-description"
           data-pdp-product-description
+          data-pdp-color-story-kind={view.colorStoryKind||'story'}
         >
           {view.description}
         </p>
 
-        <dl class="pdp-meta">
-          <div>
-            <dt data-pdp-bind="detail.productId">
-              {copy.productId||'Product ID'}
-            </dt>
-            <dd>{view.id}</dd>
-          </div>
-
-          {view.colorCode&&(
-            <div>
-              <dt>Color</dt>
-              <dd>{view.colorCode}</dd>
-            </div>
-          )}
-        </dl>
       </div>
 
       <div class="pdp-commerce">
@@ -231,17 +286,6 @@ const galleryCount=
         </p>
       </div>
 
-      <header
-        class="pdp-config-intro"
-        data-pdp-config-intro
-      >
-        <span class="pdp-config-intro__index">02</span>
-        <span aria-hidden="true">/</span>
-        <span data-pdp-ui="detailTitle">
-          {runtimeUi.detailTitle||'Product Configuration'}
-        </span>
-      </header>
-
       <div
         class="pdp-config"
         aria-label={runtimeUi.detailTitle||'Product Configuration'}
@@ -253,6 +297,9 @@ const galleryCount=
             </span>
             <small data-pdp-size-summary>
               {view.defaultSize}
+              {defaultSizeDimension&&(
+                <> · {defaultSizeDimension}</>
+              )}
             </small>
           </div>
 
@@ -284,10 +331,84 @@ const galleryCount=
           </div>
         </div>
 
+
+        {product.series==='holiday'&&(
+          <>
+            <label class="pdp-field pdp-field--scent-series">
+              <span data-pdp-ui="scentSeries">
+                {runtimeUi.scentSeries||'Scent Series'}
+              </span>
+              <select data-pdp-scent-series>
+                {product.availableScentSeries.map((series:string)=>(
+                  <option value={series}>
+                    {runtimeState.seriesMeta?.[series]?.labels?.en||series}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <section
+              class="pdp-scent-series-direct"
+              data-pdp-scent-series-direct
+              hidden
+            >
+              <div
+                class="pdp-scent-series-direct__options"
+                data-pdp-scent-series-direct-options
+                role="group"
+                aria-label={runtimeUi.scentSeries||'Scent Series'}
+              ></div>
+            </section>
+          </>
+        )}
+
+        <label class="pdp-field pdp-field--scent">
+          <span data-pdp-ui="scent">
+            {runtimeUi.scent||'Scent'}
+          </span>
+          <small
+            class="pdp-field__count"
+            data-pdp-scent-count
+          >
+            {initialScents.length}
+          </small>
+          <small
+            class="pdp-field__helper"
+            data-pdp-scent-helper
+          >
+            {initialScentHelper}
+          </small>
+          <select data-pdp-scent>
+            {initialScents.map((scent:any)=>(
+              <option value={scent.id}>
+                {scent.name?.en||scent.name?.zh||scent.id}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <section
+          class="pdp-scent-direct"
+          data-pdp-scent-direct
+          hidden
+        >
+          <div
+            class="pdp-scent-direct__options"
+            data-pdp-scent-direct-options
+            role="group"
+            aria-label={runtimeUi.scent||'Scent'}
+          ></div>
+        </section>
+
         <div
           class="pdp-config-projections"
           data-pdp-config-projections
           aria-live="polite"
+        ></div>
+
+        <div
+          class="pdp-scent-detail-host"
+          data-pdp-scent-detail-host
         >
           <details
             class="pdp-scent-detail"
@@ -334,35 +455,10 @@ const galleryCount=
           </details>
         </div>
 
-        {product.series==='holiday'&&(
-          <label class="pdp-field">
-            <span data-pdp-ui="scentSeries">
-              {runtimeUi.scentSeries||'Scent Series'}
-            </span>
-            <select data-pdp-scent-series>
-              {product.availableScentSeries.map((series:string)=>(
-                <option value={series}>
-                  {runtimeState.seriesMeta?.[series]?.labels?.en||series}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-
-        <label class="pdp-field">
-          <span data-pdp-ui="scent">
-            {runtimeUi.scent||'Scent'}
-          </span>
-          <select data-pdp-scent>
-            {initialScents.map((scent:any)=>(
-              <option value={scent.id}>
-                {scent.name?.en||scent.name?.zh||scent.id}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label class="pdp-field">
+        <label
+          class="pdp-field pdp-field--visual-source"
+          data-pdp-visual-source="pattern"
+        >
           <span data-pdp-ui="pattern">
             {runtimeUi.pattern||'Pattern'}
           </span>
@@ -375,7 +471,32 @@ const galleryCount=
           </select>
         </label>
 
-        <label class="pdp-field">
+        <section
+          class="pdp-visual-field"
+          data-pdp-visual-field="pattern"
+          hidden
+        >
+          <div class="pdp-visual-field__heading">
+            <span data-pdp-ui="pattern">
+              {runtimeUi.pattern||'Pattern'}
+            </span>
+            <small data-pdp-visual-count="pattern">
+              {initialPatterns.length}
+            </small>
+          </div>
+
+          <div
+            class="pdp-visual-options__strip"
+            data-pdp-visual-options="pattern"
+            role="group"
+            aria-label={runtimeUi.pattern||'Pattern'}
+          ></div>
+        </section>
+
+        <label
+          class="pdp-field pdp-field--visual-source"
+          data-pdp-visual-source="pack"
+        >
           <span data-pdp-ui="pack">
             {runtimeUi.pack||'Packaging'}
           </span>
@@ -391,6 +512,28 @@ const galleryCount=
           </select>
         </label>
 
+        <section
+          class="pdp-visual-field"
+          data-pdp-visual-field="pack"
+          hidden
+        >
+          <div class="pdp-visual-field__heading">
+            <span data-pdp-ui="pack">
+              {runtimeUi.pack||'Packaging'}
+            </span>
+            <small data-pdp-visual-count="pack">
+              {initialPacks.length}
+            </small>
+          </div>
+
+          <div
+            class="pdp-visual-options__strip"
+            data-pdp-visual-options="pack"
+            role="group"
+            aria-label={runtimeUi.pack||'Packaging'}
+          ></div>
+        </section>
+
         <div
           class="pdp-field"
           data-pdp-quantity-field
@@ -398,6 +541,13 @@ const galleryCount=
           <span data-pdp-ui="quantity">
             {runtimeUi.quantity||'Quantity'}
           </span>
+
+          <small
+            class="pdp-quantity-helper"
+            data-pdp-quantity-helper
+          >
+            {initialQuantityHelper}
+          </small>
 
           <div
             class="pdp-quantity-reference"
@@ -439,6 +589,74 @@ const galleryCount=
           </div>
         </div>
       </div>
+
+      <section
+        class="pdp-commercial"
+        data-pdp-commercial
+        aria-live="polite"
+        hidden
+      >
+        <div class="pdp-commercial__signal">
+          <div class="pdp-commercial__tier">
+            <span data-pdp-ui="currentPriceTier">
+              Current price tier
+            </span>
+            <strong data-pdp-commercial-current-tier>—</strong>
+          </div>
+
+          <p
+            class="pdp-commercial__moq-gap"
+            data-pdp-commercial-moq-gap
+            hidden
+          ></p>
+
+          <p
+            class="pdp-commercial__next"
+            data-pdp-commercial-next
+            hidden
+          ></p>
+
+          <p
+            class="pdp-commercial__saving"
+            data-pdp-commercial-saving
+            hidden
+          >
+            <span data-pdp-ui="unitSaving">
+              Save per piece
+            </span>
+            <strong data-pdp-commercial-saving-value></strong>
+          </p>
+
+          <p
+            class="pdp-commercial__terminal"
+            data-pdp-commercial-terminal
+            hidden
+          ></p>
+        </div>
+
+        <details
+          class="pdp-tier-sheet"
+          data-pdp-tier-sheet
+        >
+          <summary>
+            <span data-pdp-ui="viewTierPrice">
+              View Tier Prices
+            </span>
+            <span aria-hidden="true">+</span>
+          </summary>
+
+          <div class="pdp-tier-sheet__body">
+            <div class="pdp-tier-sheet__heading">
+              <span data-pdp-ui="tierQty">Qty</span>
+              <span data-pdp-ui="currentUnitPrice">
+                Current Reference Unit Price
+              </span>
+            </div>
+
+            <div data-pdp-tier-rows></div>
+          </div>
+        </details>
+      </section>
 
       {view.tags.length>0&&(
         <div class="pdp-tags">

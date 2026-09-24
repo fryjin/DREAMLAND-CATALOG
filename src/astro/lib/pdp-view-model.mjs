@@ -1,3 +1,10 @@
+import {
+  colorStoryEntry,
+  colorStoryFor,
+  quantityRule,
+  scentStandardFor
+} from '../../data/pdp-content-contract.mjs';
+
 function text(value){
   return String(
     value??
@@ -219,6 +226,7 @@ function compactUi(
     'detailTitle',
     'detailSub',
     'addInquiry',
+    'saveChanges',
     'addedInquiry',
     'size',
     'scent',
@@ -243,7 +251,17 @@ function compactUi(
     'custom',
     'inquiry',
     'viewTierPrice',
-    'tierUnavailable'
+    'tierPriceTable',
+    'tierPriceDesc',
+    'tierQty',
+    'buyMorePrefix',
+    'buyMoreSuffix',
+    'bestTierReached',
+    'tierUnavailable',
+    'currentPriceTier',
+    'unitSaving',
+    'moreToMoq',
+    'noMorePriceBreaks'
   ];
 
   return Object.freeze(
@@ -352,6 +370,39 @@ function runtimeProduct(product){
   });
 }
 
+function approvedPdpCopy(
+  block,
+  language='en'
+){
+  if(block?.status!=='approved')return '';
+  return text(block?.copy?.[language]||block?.copy?.en||block?.copy?.zh);
+}
+
+function pdpCopyProjection(
+  document,
+  product,
+  language='en'
+){
+  const id=productId(product);
+  const story=colorStoryEntry(document,id);
+  const quantity=quantityRule(document);
+  const scentHelpers=Object.freeze(
+    Object.fromEntries(
+      ['classic','advanced','masterpiece'].map(seriesId=>{
+        const standard=scentStandardFor(document,seriesId);
+        return [seriesId,approvedPdpCopy(standard?.helperCopy,language)];
+      })
+    )
+  );
+
+  return Object.freeze({
+    colorStory:colorStoryFor(document,id,language),
+    colorStoryKind:text(story?.kind),
+    scentHelpers,
+    quantityHelper:approvedPdpCopy(quantity?.helperCopy,language)
+  });
+}
+
 export function mapPdpScents(
   records=[]
 ){
@@ -441,6 +492,7 @@ export function mapPdpScents(
 export function buildPdpViewModel({
   language='en',
   product,
+  pdpContentDocument={},
   seriesDocument={},
   siteContent={},
   ui={},
@@ -477,6 +529,13 @@ export function buildPdpViewModel({
   const id=
     productId(
       product
+    );
+
+  const pdpCopy=
+    pdpCopyProjection(
+      pdpContentDocument,
+      product,
+      language
     );
 
   const defaultSize=
@@ -545,11 +604,14 @@ export function buildPdpViewModel({
           product
         ),
     description:
+      pdpCopy.colorStory||
       localizationPolicy
         .productDescription(
           language,
           product
         ),
+    colorStoryKind:
+      pdpCopy.colorStoryKind,
     series:
       text(
         product.series
@@ -578,12 +640,7 @@ export function buildPdpViewModel({
         1
       ),
     price,
-    tags:Object.freeze(
-      localizedTags(
-        product,
-        language
-      )
-    ),
+    tags:Object.freeze([]),
     gallery:Object.freeze(
       gallery
     ),
@@ -599,6 +656,7 @@ export function buildPdpViewModel({
 
 export function buildPdpRuntimeState({
   product,
+  pdpContentDocument={},
   languages=[
     'en',
     'zh',
@@ -610,6 +668,7 @@ export function buildPdpRuntimeState({
   ui={},
   currencyMap={},
   scents=[],
+  visualOptions={},
   pricingPolicy,
   localizationPolicy
 }={}){
@@ -660,6 +719,13 @@ export function buildPdpRuntimeState({
                 siteContent
               );
 
+          const pdpCopy=
+            pdpCopyProjection(
+              pdpContentDocument,
+              product,
+              language
+            );
+
           return [
             language,
             Object.freeze({
@@ -679,11 +745,18 @@ export function buildPdpRuntimeState({
                     product
                   ),
               description:
+                pdpCopy.colorStory||
                 localizationPolicy
                   .productDescription(
                     language,
                     product
                   ),
+              pdpCopy:Object.freeze({
+                scentHelpers:
+                  pdpCopy.scentHelpers,
+                quantityHelper:
+                  pdpCopy.quantityHelper
+              }),
               seriesLabel:
                 seriesLabel(
                   product,
@@ -724,6 +797,9 @@ export function buildPdpRuntimeState({
         seriesDocument.patternsBySize||
         {}
       )
+    }),
+    visualOptions:Object.freeze({
+      ...visualOptions
     }),
     seriesMeta:Object.freeze({
       ...(

@@ -12,6 +12,11 @@
   "maxQuantity": 1000000,
   "archiveLimit": 20,
   "submitCooldownMs": 10000,
+  "submissionRiskTimeoutMs": 12000,
+  "submissionRequestTimeoutMs": 20000,
+  "submissionAttemptTtlMs": 45000,
+  "submissionUnknownRetryDelayMs": 15000,
+  "submissionAttemptKey": "dreamlandSubmissionAttemptV1",
   "submissionTransport": "web3forms-direct",
   "inquiryClientConfigEndpoint": "/api/inquiry?client_config=1",
   "pwa": {

@@ -118,6 +118,7 @@ try{
       'money',
       'currencyUnit',
       'normalizeQuantity',
+      'commercialSnapshot',
       'catalogUnit'
     ]){
       if(typeof policy[method]!=='function'){

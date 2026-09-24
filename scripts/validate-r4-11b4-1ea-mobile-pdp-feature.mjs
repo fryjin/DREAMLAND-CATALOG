@@ -2,7 +2,6 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 
 const ROOT=path.resolve(
@@ -31,20 +30,6 @@ function expect(content,marker,message){
   if(!content.includes(marker)){
     fail(message+' Missing: '+marker);
   }
-}
-
-function blobSha(content){
-  const body=Buffer.from(content,'utf8');
-  const header=Buffer.from(
-    'blob '+body.length+'\0',
-    'utf8'
-  );
-
-  return crypto
-    .createHash('sha1')
-    .update(header)
-    .update(body)
-    .digest('hex');
 }
 
 const page=read(
@@ -85,20 +70,35 @@ const flatCss=
  * ------------------------------------------------------------
  */
 
+/*
+ * PDP-POLISH-2 — Customer-facing Metadata Cleanup
+ * Keep the useful Gallery position index; decorative feature/config folios
+ * are no longer required public markup.
+ */
 for(const marker of [
-  'class="pdp-feature-folio"',
-  'data-pdp-feature-folio',
   'class="pdp-gallery-index"',
   'data-pdp-gallery-index-current',
-  'data-pdp-gallery-index-total',
-  'class="pdp-config-intro"',
-  'data-pdp-config-intro'
+  'data-pdp-gallery-index-total'
 ]){
   expect(
     flatPage,
     marker,
-    'E-A Product Feature markup contract changed.'
+    'E-A Gallery index markup contract changed.'
   );
+}
+
+for(const removedMarker of [
+  'class="pdp-feature-folio"',
+  'data-pdp-feature-folio',
+  'class="pdp-config-intro"',
+  'data-pdp-config-intro'
+]){
+  if(flatPage.includes(removedMarker)){
+    fail(
+      'PDP-POLISH-2 removed decorative E-A public chrome but it was reintroduced: '+
+      removedMarker
+    );
+  }
 }
 
 /*
@@ -333,17 +333,46 @@ for(const marker of [
  * ------------------------------------------------------------
  */
 
-const EXPECTED_ROUTE_BLOB=
-  'e429698d68f5fac338af6e64d83deb9cbadb0147';
+/*
+ * PDP-COPY-1B-FIX2 — Semantic Route Ownership
+ *
+ * E-A originally froze the Astro route by historical blob SHA. That is too
+ * brittle for later stages that legitimately add canonical data composition
+ * without changing route/runtime ownership.
+ *
+ * Protect the architectural boundary instead:
+ * - one canonical Astro PDP route
+ * - canonical ViewModel + RuntimeState builders
+ * - one serialized runtime-state payload
+ * - one canonical r4-pdp-runtime.js executable owner
+ *
+ * Later stages may add approved data inputs such as pdpContentDocument.
+ */
+for(const marker of [
+  'buildPdpViewModel',
+  'buildPdpRuntimeState',
+  'id="pdpRuntimeState"',
+  'src="/r4-pdp-runtime.js"'
+]){
+  expect(
+    route,
+    marker,
+    'E-A canonical Astro PDP route ownership changed.'
+  );
+}
 
 if(
-  route&&
-  blobSha(route)!==
-    EXPECTED_ROUTE_BLOB
+  route.includes(
+    "import pdpContentDocument from '../../../../data/pdp-content.json';"
+  )
 ){
-  fail(
-    'E-A must not modify the canonical Astro PDP route.'
-  );
+  if(
+    (route.match(/pdpContentDocument,/g)||[]).length<2
+  ){
+    fail(
+      'Later PDP content wiring must feed the same approved document to both PDP builders.'
+    );
+  }
 }
 
 for(const marker of [

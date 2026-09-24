@@ -319,7 +319,7 @@
       documentRef,
       '#successTitle',
       copy.successTitle||
-      'We have received your inquiry.'
+      'Got it. We’ll take it from here.'
     );
 
     setText(
@@ -354,7 +354,7 @@
       documentRef,
       '[data-success-static-next] h2',
       copy.whatNextTitle||
-      'What happens after submission'
+      'What happens next'
     );
 
     const steps=
@@ -410,14 +410,14 @@
       documentRef,
       '[data-success-static-action="explore"] span:first-child',
       copy.continueExploring||
-      'Continue Exploring'
+      'Keep exploring'
     );
 
     setText(
       documentRef,
       '[data-success-static-action="custom"]',
       copy.startAnotherProject||
-      'Start a New Inquiry'
+      'Start another inquiry'
     );
   }
 

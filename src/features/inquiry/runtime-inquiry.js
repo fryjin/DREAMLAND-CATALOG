@@ -593,9 +593,9 @@
           );
 
         const key=
-          series+
-          '|'+
-          size;
+          commercialGroupKey(
+            item
+          );
 
         const moq=
           Math.max(
@@ -620,6 +620,10 @@
             {
               key,
               series,
+              pricingSeries:
+                pricingSeries(
+                  item
+                ),
               size,
               qty:0,
               moq
@@ -702,9 +706,22 @@
     );
   }
 
-  function pricingGroupKey(
+  /*
+   * F3-B5-RULE1 — Unified Commercial Quantity Group
+   * Different products may combine only when they share the same commercial
+   * series boundary AND the same size. Holiday additionally keeps delegated
+   * scent-pricing series isolated because those items do not share one price
+   * table.
+   */
+  function commercialGroupKey(
     item
   ){
+    const size=
+      String(
+        item?.size||
+        ''
+      );
+
     if(
       item?.series==='holiday'
     ){
@@ -712,13 +729,19 @@
         'holiday:'+
         pricingSeries(
           item
-        )
+        )+
+        '|'+
+        size
       );
     }
 
-    return String(
-      item?.series||
-      ''
+    return (
+      String(
+        item?.series||
+        ''
+      )+
+      '|'+
+      size
     );
   }
 
@@ -751,7 +774,7 @@
     item
   ){
     const key=
-      pricingGroupKey(
+      commercialGroupKey(
         item
       );
 
@@ -760,7 +783,7 @@
         row=>
           row?.type===
             'product'&&
-          pricingGroupKey(
+          commercialGroupKey(
             row
           )===key
       )
@@ -1521,6 +1544,7 @@
       firstUnmetProductMoqGroup,
       pricingReady,
       seriesQuantity,
+      commercialGroupKey,
       pricingGroupQuantity,
       itemUnit,
       itemSubtotal,

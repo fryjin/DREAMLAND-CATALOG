@@ -204,6 +204,137 @@
   font-size:10px;
 }
 
+/* ============================================================
+ * R4.11B4.1E-C2 — PDP Commercial Decision UI
+ * Visible next-break intelligence + compact collapsible tier sheet.
+ * ========================================================== */
+
+.pdp-commercial {
+  display:grid;
+  gap:12px;
+  padding:16px;
+  border:1px solid var(--home-line);
+  background:rgba(255,253,249,.58);
+}
+
+.pdp-commercial__signal {
+  display:grid;
+  gap:8px;
+}
+
+.pdp-commercial__tier {
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.pdp-commercial__tier span,
+.pdp-commercial__moq-gap,
+.pdp-commercial__saving,
+.pdp-commercial__terminal {
+  color:var(--home-muted);
+  font-size:11px;
+  line-height:1.55;
+}
+
+.pdp-commercial__tier strong {
+  font-size:12px;
+}
+
+.pdp-commercial__moq-gap,
+.pdp-commercial__next,
+.pdp-commercial__saving,
+.pdp-commercial__terminal {
+  margin:0;
+}
+
+.pdp-commercial__next {
+  padding:11px 12px;
+  border-left:2px solid var(--home-ink);
+  background:rgba(20,18,16,.045);
+  font-size:12px;
+  font-weight:700;
+  line-height:1.55;
+}
+
+.pdp-commercial__saving {
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.pdp-commercial__saving strong {
+  color:var(--home-ink);
+  font-size:11px;
+}
+
+.pdp-tier-sheet {
+  border-top:1px solid var(--home-line);
+}
+
+.pdp-tier-sheet summary {
+  display:flex;
+  min-height:40px;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  cursor:pointer;
+  list-style:none;
+  font-size:11px;
+  font-weight:800;
+}
+
+.pdp-tier-sheet summary::-webkit-details-marker {
+  display:none;
+}
+
+.pdp-tier-sheet[open] summary [aria-hidden="true"] {
+  transform:rotate(45deg);
+}
+
+.pdp-tier-sheet__body {
+  padding:4px 0 2px;
+}
+
+.pdp-tier-sheet__heading,
+.pdp-tier-row {
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:20px;
+  align-items:center;
+  min-height:34px;
+  border-top:1px solid rgba(20,18,16,.08);
+}
+
+.pdp-tier-sheet__heading {
+  color:var(--home-soft);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.pdp-tier-row {
+  color:var(--home-muted);
+  font-size:11px;
+}
+
+.pdp-tier-row strong {
+  color:var(--home-ink);
+  font-size:11px;
+}
+
+.pdp-tier-row.is-current {
+  color:var(--home-ink);
+  font-weight:800;
+}
+
+.pdp-tier-row.is-current::before {
+  content:'';
+  position:absolute;
+}
+
 .pdp-tags {
   display:flex;
   flex-wrap:wrap;
@@ -423,6 +554,7 @@
 }
 
 @media (max-width:720px) {
+
   .pdp-main {
     background:
       var(
@@ -1066,7 +1198,11 @@
       1px
       solid
       var(--home-line);
-    font-size:13px;
+    /*
+     * R4.11B4.1E-C3-FIX2E — effective visible PDP quantity input.
+     * 16px prevents iOS Safari focus auto-zoom without disabling user zoom.
+     */
+    font-size:16px;
     font-weight:800;
     text-align:center;
   }
@@ -1080,14 +1216,8 @@
  * ========================================================== */
 @media (max-width:720px) {
   .pdp-scent-detail {
-    margin:
-      7px
-      0
-      0;
-    border-top:
-      1px
-      solid
-      var(--home-line);
+    margin:0;
+    border-top:0;
   }
 
   .pdp-scent-detail[hidden] {
@@ -1437,5 +1567,863 @@
       5px
       5px;
     font-size:8px;
+  }
+}
+
+@media (max-width:720px) {
+  .pdp-commercial {
+    margin-inline:0;
+    padding:14px 0;
+    border-width:1px 0;
+    background:transparent;
+  }
+
+  .pdp-commercial__next {
+    padding:10px 11px;
+  }
+
+  .pdp-tier-sheet summary {
+    min-height:42px;
+  }
+}
+
+/* ============================================================
+ * PDP-COPY-1B — Approved Content UI Wiring
+ * Color Story owns the hero description. Scent and Quantity helper
+ * copy stay subordinate to their canonical configuration owners.
+ * ========================================================== */
+.pdp-field__helper,
+.pdp-quantity-helper,
+.pdp-config-projection__helper {
+  color:var(--home-soft);
+  font-size:10px;
+  font-weight:500;
+  line-height:1.45;
+}
+
+.pdp-field__helper {
+  display:block;
+  margin-top:-2px;
+}
+
+.pdp-quantity-helper {
+  display:block;
+  margin-top:-4px;
+}
+
+@media (max-width:720px) {
+  .pdp-config-projection__helper {
+    max-width:34ch;
+    margin:-8px 0 12px;
+    color:var(--home-soft);
+    font-size:10px;
+    line-height:1.45;
+  }
+
+  [data-pdp-quantity-field] {
+    grid-template-areas:
+      "label label"
+      "helper helper"
+      "reference stepper";
+  }
+
+  .pdp-quantity-helper {
+    grid-area:helper;
+    min-width:0;
+    margin:-6px 0 0;
+    overflow-wrap:anywhere;
+  }
+
+  html[lang="ko-KR"] .pdp-config-projection__helper,
+  html[lang="ko-KR"] .pdp-quantity-helper {
+    word-break:keep-all;
+  }
+}
+
+/* ============================================================
+ * PDP-COPY-1B-FIX3 — Price Typography & Responsive Copy Rhythm
+ *
+ * Visual-only refinement:
+ * - price amount uses the canonical sans UI family;
+ * - amount + currency unit are one non-breaking reading token;
+ * - Desktop PDP support text gains one restrained type-scale step;
+ * - Mobile Scent helper keeps the approved full copy and removes the
+ *   artificial 34ch wrap constraint.
+ * No copy, pricing, MOQ, Inquiry, or configuration semantics change.
+ * ========================================================== */
+
+.pdp-commerce__price {
+  display:grid;
+  grid-template-columns:
+    max-content
+    max-content;
+  grid-template-areas:
+    "label label"
+    "price unit";
+  align-items:baseline;
+  justify-content:start;
+  column-gap:5px;
+  row-gap:8px;
+  min-width:0;
+}
+
+.pdp-commerce__price > span {
+  grid-area:label;
+  min-width:0;
+}
+
+.pdp-commerce__price > strong {
+  grid-area:price;
+  font-family:var(--home-sans);
+  font-weight:750;
+  line-height:1.05;
+  letter-spacing:-.02em;
+  white-space:nowrap;
+}
+
+.pdp-commerce__price > small {
+  grid-area:unit;
+  align-self:baseline;
+  margin:0;
+  white-space:nowrap;
+}
+
+.pdp-commerce__moq > strong {
+  font-family:var(--home-sans);
+  font-weight:700;
+}
+
+@media (max-width:720px) {
+  .pdp-config-projection__helper {
+    width:100%;
+    max-width:none;
+    margin:-8px 0 12px;
+    font-size:9px;
+    line-height:1.35;
+    letter-spacing:-.01em;
+    white-space:nowrap;
+    overflow-wrap:normal;
+    word-break:normal;
+  }
+
+  html[lang="ko-KR"] .pdp-config-projection__helper {
+    word-break:keep-all;
+    overflow-wrap:normal;
+  }
+}
+
+@media (min-width:721px) {
+  .pdp-description {
+    font-size:16px;
+    line-height:1.78;
+  }
+
+  .pdp-meta dt {
+    font-size:12px;
+  }
+
+  .pdp-meta dd {
+    font-size:13px;
+  }
+
+  .pdp-commerce span,
+  .pdp-commerce small,
+  .pdp-commerce__note {
+    font-size:12px;
+  }
+
+  .pdp-commerce__price > strong {
+    font-size:25px;
+  }
+
+  .pdp-commerce__moq > strong {
+    font-size:15px;
+  }
+
+  .pdp-section-heading > span {
+    font-size:13px;
+  }
+
+  .pdp-section-heading small {
+    font-size:12px;
+  }
+
+  .pdp-field {
+    font-size:12px;
+  }
+
+  .pdp-field__helper,
+  .pdp-quantity-helper {
+    font-size:11px;
+    line-height:1.5;
+  }
+
+  .pdp-commercial__tier span,
+  .pdp-commercial__moq-gap,
+  .pdp-commercial__saving,
+  .pdp-commercial__terminal {
+    font-size:12px;
+  }
+
+  .pdp-commercial__next {
+    font-size:13px;
+  }
+
+  .pdp-tier-sheet summary,
+  .pdp-tier-row,
+  .pdp-tier-row strong {
+    font-size:12px;
+  }
+
+  .pdp-actions button,
+  .pdp-actions a {
+    font-size:14px;
+  }
+
+  .pdp-static-note {
+    font-size:11px;
+  }
+}
+
+/* ============================================================
+ * PDP-GALLERY-1 — Gallery / Variant Interaction
+ * Desktop: one editorial frame + horizontal thumbnail rail.
+ * Mobile: canonical horizontal swipe track.
+ * Size changes project to an existing gallery asset; cover remains recoverable.
+ * ========================================================== */
+
+@media (min-width:721px) {
+  .pdp-gallery {
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    gap:12px;
+    min-width:0;
+    overflow:visible;
+  }
+
+  .pdp-gallery__stage {
+    display:block;
+    aspect-ratio:6/7;
+    margin:0;
+    overflow:hidden;
+    background:#eee7de;
+  }
+
+  .pdp-gallery__stage img {
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+
+  .pdp-gallery__track {display:none;}
+
+  .pdp-gallery__thumbs {
+    display:flex;
+    min-width:0;
+    gap:8px;
+    overflow-x:auto;
+    padding:1px 0 6px;
+    scrollbar-width:none;
+    overscroll-behavior-inline:contain;
+  }
+
+  .pdp-gallery__thumbs::-webkit-scrollbar {display:none;}
+
+  .pdp-gallery__thumb {
+    flex:0 0 76px;
+    width:76px;
+    aspect-ratio:4/5;
+    padding:0;
+    overflow:hidden;
+    border:1px solid transparent;
+    background:#eee7de;
+    opacity:.58;
+    cursor:pointer;
+  }
+
+  .pdp-gallery__thumb.is-selected {
+    border-color:var(--home-ink);
+    opacity:1;
+  }
+
+  .pdp-gallery__thumb img {
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+}
+
+@media (max-width:720px) {
+  .pdp-gallery {
+    display:block;
+    overflow:visible;
+    padding:0;
+  }
+
+  .pdp-gallery__stage,
+  .pdp-gallery__thumbs {display:none;}
+
+  .pdp-gallery__track {
+    display:flex;
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    gap:12px;
+    overflow-x:auto;
+    padding:0 16px;
+    scroll-padding-inline:16px;
+    scroll-snap-type:x mandatory;
+    overscroll-behavior-inline:contain;
+    scrollbar-width:none;
+  }
+
+  .pdp-gallery__track::-webkit-scrollbar {display:none;}
+
+  .pdp-gallery__track > .pdp-gallery__item,
+  .pdp-gallery__track > .pdp-gallery__item--primary {
+    flex:0 0 min(calc(100vw - 48px),392px);
+    aspect-ratio:4/5;
+    margin:0;
+    overflow:hidden;
+    border-radius:18px;
+    scroll-snap-align:start;
+    scroll-snap-stop:normal;
+    background:#eee7de;
+  }
+}
+
+/* ============================================================
+ * PDP-OPTIONS-1B — Pattern / Packaging Visual Option UI
+ *
+ * Canonical Pattern / Packaging selects remain business state owners.
+ * Image cards are presentation proxies for visual-first decisions.
+ * ========================================================== */
+
+.pdp-visual-field {
+  display:none;
+}
+
+html[data-pdp-visual-options-ready="true"]
+.pdp-visual-field:not([hidden]) {
+  display:grid;
+  gap:10px;
+}
+
+html[data-pdp-visual-options-ready="true"]
+.pdp-field--visual-source {
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
+}
+
+.pdp-visual-field__heading {
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.pdp-visual-field__heading > span {
+  color:var(--home-muted);
+  font-size:12px;
+  font-weight:700;
+}
+
+.pdp-visual-field__heading > small {
+  color:var(--home-soft);
+  font-size:10px;
+  font-weight:700;
+}
+
+.pdp-visual-options__strip {
+  min-width:0;
+}
+
+.pdp-visual-option {
+  min-width:0;
+  padding:0;
+  overflow:hidden;
+  border:1px solid var(--home-line);
+  border-radius:0;
+  background:rgba(255,253,249,.72);
+  color:var(--home-muted);
+  font:inherit;
+  text-align:left;
+  cursor:pointer;
+}
+
+.pdp-visual-option img {
+  display:block;
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  background:#eee7de;
+}
+
+.pdp-visual-option > span {
+  display:block;
+  padding:8px 9px 9px;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.35;
+}
+
+.pdp-visual-option.is-selected {
+  border-color:var(--home-ink);
+  color:var(--home-ink);
+}
+
+@media (min-width:721px) {
+  .pdp-visual-field {
+    margin-top:2px;
+  }
+
+  .pdp-visual-options__strip {
+    display:grid;
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0,1fr)
+      );
+    gap:8px;
+  }
+
+  [data-pdp-visual-field="pack"]
+  .pdp-visual-options__strip {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0,1fr)
+      );
+  }
+}
+
+@media (max-width:720px) {
+  html[data-pdp-visual-options-ready="true"]
+  [data-pdp-projection-field="pattern"],
+  html[data-pdp-visual-options-ready="true"]
+  [data-pdp-projection-field="pack"] {
+    display:none;
+  }
+
+  .pdp-visual-field {
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    overflow:hidden;
+    padding:
+      20px
+      0;
+    border-bottom:
+      1px
+      solid
+      var(--home-line);
+  }
+
+  .pdp-visual-field__heading {
+    margin-bottom:5px;
+  }
+
+  .pdp-visual-field__heading > span {
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
+
+  .pdp-visual-field__heading > small {
+    font-size:10px;
+  }
+
+  .pdp-visual-options__strip {
+    display:flex;
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    gap:10px;
+    overflow-x:auto;
+    padding:
+      1px
+      12px
+      4px
+      0;
+    scroll-padding-inline:12px;
+    overscroll-behavior-inline:contain;
+    scrollbar-width:none;
+  }
+
+  .pdp-visual-options__strip::-webkit-scrollbar {
+    display:none;
+  }
+
+  .pdp-visual-option {
+    flex:
+      0
+      0
+      124px;
+    width:124px;
+  }
+
+  .pdp-visual-option > span {
+    min-height:42px;
+    padding:
+      8px
+      9px;
+    font-size:11px;
+  }
+}
+
+/* ============================================================
+ * PDP-OPTIONS-1B-FIX4B — Desktop Scent Detail Host
+ *
+ * Mobile editorial controls stay Mobile-only. Desktop exposes only the
+ * canonical read-only Top / Heart / Base note node in its dedicated host.
+ * ========================================================== */
+
+@media (min-width:721px) {
+  .pdp-scent-detail-host {
+    display:block;
+    min-width:0;
+    margin-top:-2px;
+  }
+
+  .pdp-scent-detail {
+    display:block;
+    margin:0;
+    padding:
+      2px
+      0
+      4px;
+    border:0;
+  }
+
+  .pdp-scent-detail[hidden] {
+    display:none;
+  }
+
+  .pdp-scent-detail__toggle {
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:8px;
+    min-height:34px;
+    padding:0;
+    color:var(--home-muted);
+    font-size:10px;
+    font-weight:700;
+    line-height:1;
+    list-style:none;
+    cursor:pointer;
+  }
+
+  .pdp-scent-detail__toggle::-webkit-details-marker {
+    display:none;
+  }
+
+  .pdp-scent-detail__toggle::after {
+    content:"+";
+    width:12px;
+    color:var(--home-ink);
+    font-size:13px;
+    font-weight:600;
+    text-align:center;
+  }
+
+  .pdp-scent-detail[open]
+  > .pdp-scent-detail__toggle::after {
+    content:"−";
+  }
+
+  .pdp-scent-detail__list {
+    display:grid;
+    grid-template-columns:
+      minmax(0,1fr);
+    gap:0;
+    margin:0;
+    padding:
+      2px
+      0
+      0;
+  }
+
+  .pdp-scent-detail:not([open])
+  > .pdp-scent-detail__list {
+    display:none;
+  }
+
+  .pdp-scent-detail__row {
+    display:grid;
+    grid-template-columns:
+      64px
+      minmax(0,1fr);
+    gap:16px;
+    align-items:start;
+    min-width:0;
+    margin:0;
+    padding:
+      9px
+      0;
+    border-bottom:
+      1px
+      solid
+      var(--home-line);
+  }
+
+  .pdp-scent-detail__row:last-child {
+    border-bottom:0;
+  }
+
+  .pdp-scent-detail__row dt,
+  .pdp-scent-detail__row dd {
+    min-width:0;
+    margin:0;
+  }
+
+  .pdp-scent-detail__row dt {
+    padding-top:1px;
+    color:var(--home-soft);
+    font-size:10px;
+    font-weight:700;
+    line-height:1.45;
+  }
+
+  .pdp-scent-detail__row dd {
+    color:var(--home-muted);
+    font-size:11px;
+    font-weight:500;
+    line-height:1.45;
+    overflow-wrap:anywhere;
+  }
+}
+
+/* ============================================================
+ * PDP-SCENT-1 — Direct Scent Selection
+ *
+ * Desktop replaces the two-click native dropdown interaction with a
+ * one-click presentation proxy. The canonical select stays in the DOM as
+ * the single business-state owner and graceful fallback.
+ * Mobile keeps the existing E-B1 horizontal Scent projection.
+ * ========================================================== */
+
+.pdp-scent-direct {
+  display:none;
+}
+
+.pdp-field__count {
+  color:var(--home-soft);
+  font-size:10px;
+  font-weight:700;
+  line-height:1.2;
+}
+
+@media (min-width:721px) {
+  .pdp-field--scent {
+    grid-template-columns:
+      minmax(0,1fr)
+      auto;
+    align-items:start;
+  }
+
+  .pdp-field--scent
+  > [data-pdp-ui="scent"] {
+    grid-column:1;
+  }
+
+  .pdp-field--scent
+  > .pdp-field__count {
+    grid-column:2;
+    justify-self:end;
+  }
+
+  .pdp-field--scent
+  > .pdp-field__helper,
+  .pdp-field--scent
+  > select {
+    grid-column:1/-1;
+  }
+
+  html[data-pdp-scent-direct-ready="true"]
+  .pdp-field--scent
+  > select {
+    position:absolute;
+    width:1px;
+    height:1px;
+    padding:0;
+    margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
+    border:0;
+  }
+
+  html[data-pdp-scent-direct-ready="true"]
+  .pdp-scent-direct:not([hidden]) {
+    display:block;
+    margin-top:-6px;
+  }
+
+  .pdp-scent-direct__options {
+    display:grid;
+    grid-template-columns:
+      repeat(3,minmax(0,1fr));
+    gap:8px;
+  }
+
+  .pdp-scent-direct__option {
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    min-width:0;
+    min-height:42px;
+    padding:
+      8px
+      11px;
+    border:
+      1px
+      solid
+      var(--home-line);
+    border-radius:0;
+    background:rgba(255,253,249,.72);
+    color:var(--home-muted);
+    font:inherit;
+    font-size:11px;
+    font-weight:650;
+    line-height:1.3;
+    text-align:left;
+    overflow-wrap:anywhere;
+    cursor:pointer;
+  }
+
+  .pdp-scent-direct__option.is-selected {
+    border-color:var(--home-ink);
+    background:var(--home-ink);
+    color:#fff;
+    font-weight:800;
+  }
+
+  .pdp-scent-direct__option:focus-visible {
+    outline:
+      2px
+      solid
+      var(--home-ink);
+    outline-offset:2px;
+  }
+
+  html[lang="ko-KR"]
+  .pdp-scent-direct__option {
+    word-break:keep-all;
+  }
+}
+
+@media (max-width:720px) {
+  .pdp-scent-direct {
+    display:none !important;
+  }
+}
+
+/* ============================================================
+ * PDP-SCENT-1-FIX1 — Holiday Series Direct Selection
+ *
+ * Holiday Scent Series uses the same Desktop one-click proxy pattern.
+ * The canonical select remains the state owner and Mobile keeps E-B1.
+ * ========================================================== */
+
+.pdp-scent-series-direct {
+  display:none;
+}
+
+@media (min-width:721px) {
+  html[data-pdp-scent-series-direct-ready="true"]
+  .pdp-field--scent-series
+  > select {
+    position:absolute;
+    width:1px;
+    height:1px;
+    padding:0;
+    margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
+    border:0;
+  }
+
+  html[data-pdp-scent-series-direct-ready="true"]
+  .pdp-scent-series-direct:not([hidden]) {
+    display:block;
+    margin-top:-6px;
+  }
+
+  .pdp-scent-series-direct__options {
+    display:grid;
+    grid-template-columns:
+      repeat(3,minmax(0,1fr));
+    gap:8px;
+  }
+}
+
+@media (max-width:720px) {
+  .pdp-scent-series-direct {
+    display:none !important;
+  }
+}
+
+/* ============================================================
+ * PDP-TYPO-1 — Price / Unit Typography Closeout
+ *
+ * Commercial units are supporting information, not footnotes.
+ * Preserve the established amount scale while giving /pc, /件, pcs, 件
+ * and equivalent locale units enough weight to read as part of the value.
+ *
+ * Presentation only: no pricing / MOQ / Quantity / Inquiry semantics.
+ * ========================================================== */
+
+.pdp-commerce__price > small {
+  align-self:baseline;
+  margin:0;
+  color:var(--home-muted);
+  font-family:var(--home-sans);
+  font-size:13px;
+  font-weight:650;
+  line-height:1.15;
+  letter-spacing:0;
+  white-space:nowrap;
+  word-break:keep-all;
+  overflow-wrap:normal;
+}
+
+.pdp-commerce__moq > strong {
+  display:inline-flex;
+  align-items:baseline;
+  justify-content:flex-start;
+  gap:3px;
+  line-height:1.05;
+  white-space:nowrap;
+}
+
+.pdp-commerce__moq > strong > small {
+  flex:0 0 auto;
+  margin:0;
+  color:var(--home-muted);
+  font-family:var(--home-sans);
+  font-size:13px;
+  font-weight:650;
+  line-height:1.15;
+  letter-spacing:0;
+  white-space:nowrap;
+  word-break:keep-all;
+  overflow-wrap:normal;
+}
+
+@media (max-width:720px) {
+  .pdp-commerce__moq > strong {
+    justify-content:flex-end;
   }
 }

@@ -251,22 +251,22 @@ try{
     'R1.1 PDP Foundation migration'
   );
 
-  // B7-00B.4G R1.1 — audited public-copy validator baseline
+  // SITE-COPY-1B — canonical customer-copy validator baseline.
   const publicCopy={
     en:{
-      customTitle:'Custom products for brands, events and gifting.',
-      reviewTitle:'Review and submit the inquiry.',
-      successTitle:'We have received your inquiry.'
+      customTitle:'Bring the brief. We’ll shape the candle.',
+      reviewTitle:'One last look.',
+      successTitle:'Got it. We’ll take it from here.'
     },
     zh:{
-      customTitle:'品牌、活动与礼赠定制。',
-      reviewTitle:'确认信息后提交询价。',
-      successTitle:'我们已收到您的询价。'
+      customTitle:'有个想法？把它做成蜡烛。',
+      reviewTitle:'询价信息最终确认',
+      successTitle:'询价申请已成功提交'
     },
     ko:{
-      customTitle:'브랜드, 이벤트와 기프트를 위한 커스텀 제작.',
-      reviewTitle:'내용을 확인한 뒤 문의를 제출하세요.',
-      successTitle:'문의가 접수되었습니다.'
+      customTitle:'아이디어를 들려주세요. 캔들로 함께 완성하겠습니다.',
+      reviewTitle:'마지막으로 한 번 확인해 주세요.',
+      successTitle:'잘 받았습니다. 이제 저희가 이어서 준비하겠습니다.'
     }
   };
 
@@ -383,9 +383,9 @@ try{
 
   if(
     site.languages?.zh?.customProject?.minimumQuantity!==
-    '最低定制数量'
+    '定制起订量'
   ){
-    fail('R1.2 public copy regression: zh minimum quantity label.');
+    fail('SITE-COPY-1B public copy regression: zh minimum quantity label.');
   }
 }catch(error){
   fail(`R1.2 Visual Polish successor validation failed: ${error.message}`);
@@ -526,20 +526,24 @@ try{
     'B7-00B.4B / 4H Home runtime successor'
   );
 
-  // B7-00B.4H R1.1a — repaired Home runtime validator compatibility syntax.
+  // SITE-COPY-1B — Home public-copy contract follows canonical customer copy.
 
   for(const [lang,title] of [
-    ['en','Candles, carved by hand.'],
-    ['zh','把蜡烛，做成一件作品。'],
-    ['ko','손으로 조각한 하나의 작품.']
+    ['en','Candles, carved to be seen.'],
+    ['zh','DREAMLAND'],
+    ['ko','바라보는 즐거움까지 담은 캔들.']
   ]){
     if(site.languages?.[lang]?.hero?.title!==title){
       fail(`4B Home public copy regression: ${lang}.hero.title`);
     }
   }
 
-  for(const lang of ['en','zh','ko']){
-    if(site.languages?.[lang]?.story?.title!=='meet DREAMLAND'){
+  for(const [lang,title] of [
+    ['en','meet DREAMLAND'],
+    ['zh','光影与手温的相遇'],
+    ['ko','meet DREAMLAND']
+  ]){
+    if(site.languages?.[lang]?.story?.title!==title){
       fail(`4B R4.1 Brand Story copy regression: ${lang}.story.title`);
     }
   }
