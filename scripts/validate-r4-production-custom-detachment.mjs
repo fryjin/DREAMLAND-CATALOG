@@ -588,7 +588,7 @@ if(SOURCE_MODE){
 
     for(const marker of [
       'robots="index,follow"',
-      'canonical="https://dreamland-catalog.pages.dev/custom/"',
+      'canonical="https://dreamlandart.net/custom/"',
       'id="customRuntimeState"',
       'src="/r4-custom-runtime.js"'
     ]){
@@ -646,7 +646,7 @@ if(DIST_MODE){
         'data-r4-astro-custom="true"',
         'data-custom-runtime-presentation',
         'name="robots" content="index,follow"',
-        'rel="canonical" href="https://dreamland-catalog.pages.dev/custom/"',
+        'rel="canonical" href="https://dreamlandart.net/custom/"',
         'id="customRuntimeState"',
         'src="/r4-custom-runtime.js"',
         'data-site-language-enabled="true"'

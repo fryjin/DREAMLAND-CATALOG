@@ -21,7 +21,7 @@ if(!WRITE&&!CHECK){
 
 const RELEASE='b7-00b4j-r3-v129';
 const PWA='dreamland-pwa-v129';
-const SITE_ORIGIN='https://dreamland-catalog.pages.dev';
+const SITE_ORIGIN='https://dreamlandart.net';
 
 const routes=JSON.parse(
   fs.readFileSync(

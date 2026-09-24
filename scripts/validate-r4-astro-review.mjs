@@ -98,7 +98,7 @@ try{
       'data-review-static-consent',
       'data-review-static-submit',
       'name="robots" content="noindex,nofollow"',
-      'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/review/"',
+      'rel="canonical" href="https://dreamlandart.net/inquiry/review/"',
       'href="/inquiry/"',
       'href="/inquiry/contact/"'
     ]){

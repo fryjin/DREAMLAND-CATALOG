@@ -60,7 +60,7 @@ function validateReviewDocument(root,label){
     'data-review-static-presentation',
     'data-review-runtime-presentation',
     'name="robots" content="noindex,nofollow"',
-    'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/review/"',
+    'rel="canonical" href="https://dreamlandart.net/inquiry/review/"',
     'id="reviewRuntimeState"',
     'src="/r4-review-runtime.js"',
     'data-review-privacy',
@@ -237,7 +237,7 @@ try{
   const page=read('src/astro/pages/inquiry/review/index.astro');
   for(const marker of [
     'robots="noindex,nofollow"',
-    'canonical="https://dreamland-catalog.pages.dev/inquiry/review/"',
+    'canonical="https://dreamlandart.net/inquiry/review/"',
     'id="reviewRuntimeState"',
     'src="/r4-review-runtime.js"',
     'languageEnabled={true}'

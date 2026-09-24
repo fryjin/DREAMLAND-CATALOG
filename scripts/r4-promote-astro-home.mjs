@@ -132,7 +132,7 @@ for(const marker of [
   'data-r4-astro-home="true"',
   'data-r4-production-home="true"',
   'name="robots" content="index,follow"',
-  'rel="canonical" href="https://dreamland-catalog.pages.dev/"',
+  'rel="canonical" href="https://dreamlandart.net/"',
   'src="/r4-home-runtime.js"'
 ]){
   if(

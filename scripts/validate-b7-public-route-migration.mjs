@@ -82,7 +82,7 @@ try{
     "window.DREAMLAND_PUBLIC_ROUTE_ENTRY=Object.freeze({page:'home',productId:'',pathname:'/'});",
     '<base href="/">',
     '<meta name="robots" content="index,follow"/>',
-    '<link rel="canonical" href="https://dreamland-catalog.pages.dev/"/>',
+    '<link rel="canonical" href="https://dreamlandart.net/"/>',
     'runtime-public-navigation.js?release=b7-00b4j-r3-v129',
     'runtime-catalog-url-state.js?release=b7-00b4j-r3-v129',
     'window.DreamlandPublicNavigation',

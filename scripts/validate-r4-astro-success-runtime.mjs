@@ -99,7 +99,7 @@ try{
       'data-success-guard-name="hasLastSubmission"',
       'data-success-guard-code="SUBMISSION_REQUIRED"',
       'name="robots" content="noindex,nofollow"',
-      'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/success/"'
+      'rel="canonical" href="https://dreamlandart.net/inquiry/success/"'
     ]){
       if(
         !html.includes(

@@ -127,7 +127,7 @@ try{
       'src="/r4-review-runtime.js"',
       'data-site-language-enabled="true"',
       'name="robots" content="noindex,nofollow"',
-      'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/review/"',
+      'rel="canonical" href="https://dreamlandart.net/inquiry/review/"',
       'href="/inquiry/"',
       'href="/inquiry/contact/"'
     ]){
