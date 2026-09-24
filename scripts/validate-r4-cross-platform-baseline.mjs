@@ -110,6 +110,8 @@ for(const marker of [
   '*.md      text eol=lf',
   '*.yml     text eol=lf',
   '*.yaml    text eol=lf',
+  '*.webmanifest text eol=lf',
+  '.gitkeep  text eol=lf',
   '*.bat     text eol=crlf',
   '*.cmd     text eol=crlf',
   '*.png     -text',
@@ -124,6 +126,8 @@ for(const marker of [
 const representative=[
   'package.json',
   'sw.js',
+  'manifest.webmanifest',
+  'images/.gitkeep',
   'scripts/build-pages.mjs',
   'src/astro/components/product/PdpPage.astro',
   'src/astro/styles/pdp.css'
