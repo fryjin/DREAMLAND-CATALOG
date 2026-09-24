@@ -27,7 +27,7 @@ try{
       'data-review-runtime-presentation','data-review-privacy','data-review-submit',
       'data-review-security','data-review-captcha','src="/r4-review-runtime.js"',
       'id="reviewRuntimeState"','name="robots" content="noindex,nofollow"',
-      'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/review/"'
+      'rel="canonical" href="https://dreamlandart.net/inquiry/review/"'
     ]){
       if(!html.includes(marker)) fail('R4.9C Review output is missing: '+marker);
     }

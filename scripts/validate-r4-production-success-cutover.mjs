@@ -157,7 +157,7 @@ function validateSuccessDocument(root,label){
     'data-success-static-actions',
     'data-site-language-enabled="true"',
     'name="robots" content="noindex,nofollow"',
-    'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/success/"',
+    'rel="canonical" href="https://dreamlandart.net/inquiry/success/"',
     'id="successRuntimeState"',
     'src="/r4-success-runtime.js"',
     'data-success-guard-name="hasLastSubmission"',
@@ -534,7 +534,7 @@ try{
 
   for(const marker of [
     'robots="noindex,nofollow"',
-    'canonical="https://dreamland-catalog.pages.dev/inquiry/success/"',
+    'canonical="https://dreamlandart.net/inquiry/success/"',
     'id="successRuntimeState"',
     'src="/r4-success-runtime.js"',
     'languageEnabled={true}'

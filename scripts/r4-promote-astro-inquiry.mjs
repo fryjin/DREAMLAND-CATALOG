@@ -39,7 +39,7 @@ for(const marker of [
   'data-inquiry-commercial-summary',
   'data-inquiry-commercial-groups',
   'name="robots" content="noindex,nofollow"',
-  'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/"',
+  'rel="canonical" href="https://dreamlandart.net/inquiry/"',
   'id="inquiryRuntimeState"',
   'src="/r4-inquiry-runtime.js"'
 ]) if(!html.includes(marker))fail('Isolated Astro Inquiry is not promotion-ready: '+marker);

@@ -68,7 +68,7 @@ function validateInquiryDocument(root,label){
     'data-r4-inquiry-static="true"',
     'data-inquiry-runtime-presentation',
     'name="robots" content="noindex,nofollow"',
-    'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/"',
+    'rel="canonical" href="https://dreamlandart.net/inquiry/"',
     'id="inquiryRuntimeState"',
     'src="/r4-inquiry-runtime.js"',
     'data-site-language-enabled="true"'
@@ -179,7 +179,7 @@ try{
   const page=read('src/astro/pages/inquiry/index.astro');
   for(const marker of [
     'robots="noindex,nofollow"',
-    'canonical="https://dreamland-catalog.pages.dev/inquiry/"',
+    'canonical="https://dreamlandart.net/inquiry/"',
     'id="inquiryRuntimeState"',
     'src="/r4-inquiry-runtime.js"'
   ]) if(!page.includes(marker))fail('Astro Inquiry Production source is missing: '+marker);

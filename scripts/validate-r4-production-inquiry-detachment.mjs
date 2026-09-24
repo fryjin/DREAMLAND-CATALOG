@@ -610,7 +610,7 @@ if(SOURCE_MODE){
 
     for(const marker of [
       'robots="noindex,nofollow"',
-      'canonical="https://dreamland-catalog.pages.dev/inquiry/"',
+      'canonical="https://dreamlandart.net/inquiry/"',
       'id="inquiryRuntimeState"',
       'src="/r4-inquiry-runtime.js"'
     ]){
@@ -692,7 +692,7 @@ if(DIST_MODE){
         'data-r4-astro-inquiry="true"',
         'data-inquiry-runtime-presentation',
         'name="robots" content="noindex,nofollow"',
-        'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/"',
+        'rel="canonical" href="https://dreamlandart.net/inquiry/"',
         'id="inquiryRuntimeState"',
         'src="/r4-inquiry-runtime.js"',
         'data-site-language-enabled="true"'

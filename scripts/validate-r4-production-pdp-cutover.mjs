@@ -180,7 +180,7 @@ function validatePdpDocument(
   }
 
   const canonical=
-    'rel="canonical" href="https://dreamland-catalog.pages.dev/products/'+
+    'rel="canonical" href="https://dreamlandart.net/products/'+
     encodeURIComponent(
       productId
     )+

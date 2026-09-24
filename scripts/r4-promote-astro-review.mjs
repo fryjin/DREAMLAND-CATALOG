@@ -90,7 +90,7 @@ for(const marker of [
   'data-r4-review-static="true"',
   'data-review-runtime-presentation',
   'name="robots" content="noindex,nofollow"',
-  'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/review/"',
+  'rel="canonical" href="https://dreamlandart.net/inquiry/review/"',
   'id="reviewRuntimeState"',
   'src="/r4-review-runtime.js"'
 ]) if(!sourceHtml.includes(marker)) fail('Isolated Astro Review is missing cutover marker: '+marker);

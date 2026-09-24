@@ -27,7 +27,7 @@ ensureFile(target,'Legacy Production Custom');
 const html=fs.readFileSync(source,'utf8');
 for(const marker of [
   'data-r4-astro-foundation="true"','data-r4-astro-custom="true"','data-custom-runtime-presentation',
-  'name="robots" content="index,follow"','rel="canonical" href="https://dreamland-catalog.pages.dev/custom/"',
+  'name="robots" content="index,follow"','rel="canonical" href="https://dreamlandart.net/custom/"',
   'id="customRuntimeState"','src="/r4-custom-runtime.js"'
 ]) if(!html.includes(marker)) fail('Isolated Astro Custom is not promotion-ready: '+marker);
 for(const forbidden of ['DREAMLAND_MPA_ACTIVE','runtime-desktop-experience.js','runtime-desktop-custom.js','runtime-risk.js','runtime-submission.js','runtime-pwa.js','custom-scent-multi.js','startup-loader.js']) if(html.includes(forbidden)) fail('Isolated Astro Custom still contains Legacy runtime marker: '+forbidden);

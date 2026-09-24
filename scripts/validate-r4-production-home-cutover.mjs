@@ -228,8 +228,8 @@ try{
 
   for(const marker of [
     'robots="index,follow"',
-    'canonical="https://dreamland-catalog.pages.dev/"',
-    'ogImage="https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg"'
+    'canonical="https://dreamlandart.net/"',
+    'ogImage="https://dreamlandart.net/images/shared/share/SHARE001/cover-social.jpg"'
   ]){
     if(
       !page.includes(
@@ -304,7 +304,7 @@ if(SOURCE_MODE){
         'data-r4-astro-home="true"',
         'data-r4-production-home="true"',
         'name="robots" content="index,follow"',
-        'rel="canonical" href="https://dreamland-catalog.pages.dev/"',
+        'rel="canonical" href="https://dreamlandart.net/"',
         'src="/r4-home-runtime.js"'
       ]){
         if(
@@ -378,7 +378,7 @@ if(DIST_MODE){
         'data-r4-astro-home="true"',
         'data-r4-production-home="true"',
         'name="robots" content="index,follow"',
-        'rel="canonical" href="https://dreamland-catalog.pages.dev/"',
+        'rel="canonical" href="https://dreamlandart.net/"',
         'property="og:title"',
         'property="og:image"',
         'src="/r4-home-runtime.js"'

@@ -92,7 +92,7 @@ try{
       'data-contact-static-back',
       'data-contact-static-continue',
       'name="robots" content="noindex,nofollow"',
-      'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/contact/"',
+      'rel="canonical" href="https://dreamlandart.net/inquiry/contact/"',
       'href="/inquiry/"'
     ]){
       if(
