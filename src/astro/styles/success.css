@@ -241,3 +241,12 @@
     width:100%;
   }
 }
+
+/* F1.2-A — ZH Mobile Success Title Closeout */
+@media (max-width:860px) {
+  html[lang="zh"] .success-hero h1 {
+    font-size:clamp(32px,9vw,38px);
+    line-height:1.02;
+    text-wrap:balance;
+  }
+}

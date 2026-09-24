@@ -496,3 +496,12 @@
 .contact-global-error[hidden] {
   display:none!important;
 }
+
+/* F1.2-A — ZH Mobile Contact Title Closeout */
+@media (max-width:760px) {
+  html[lang="zh"] .contact-hero h1 {
+    font-size:clamp(32px,8.8vw,38px);
+    line-height:1.02;
+    text-wrap:balance;
+  }
+}
