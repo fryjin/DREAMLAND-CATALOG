@@ -1,0 +1,315 @@
+/*
+ * DREAMLAND B7-00B.4A — Desktop Visual Refresh Foundation
+ *
+ * Desktop is a separate Presentation Layer.
+ * These tokens do not override the mobile experience below 1024px.
+ *
+ * B7-00B.4A introduces semantic design-system tokens while retaining the
+ * historical --dw-* aliases that existing B7-00B.1–3D page CSS consumes.
+ */
+
+.desktop-experience{
+  display:none;
+}
+
+.desktop-experience[hidden]{
+  display:none!important;
+}
+
+@media (min-width:1024px){
+  :root{
+    /* ---------------------------------------------------------------
+     * Legacy palette aliases — retained for B7-00B.1–3D compatibility.
+     * ------------------------------------------------------------- */
+    --dw-canvas:#f5f3ef;
+    --dw-surface:#faf8f4;
+    --dw-card:#ffffff;
+    --dw-sand:#e9e0d5;
+    --dw-sand-strong:#d8c9b8;
+    --dw-clay:#bfa38e;
+    --dw-taupe:#988779;
+    --dw-ink:#171614;
+    --dw-muted:#77736d;
+    --dw-soft:#a09b94;
+    --dw-line:rgba(71,58,47,.12);
+    --dw-dark-line:rgba(255,255,255,.14);
+
+    /* Semantic color system. */
+    --dw-color-canvas:var(--dw-canvas);
+    --dw-color-paper:var(--dw-surface);
+    --dw-color-surface:var(--dw-surface);
+    --dw-color-surface-raised:var(--dw-card);
+    --dw-color-surface-warm:#efe6dc;
+    --dw-color-surface-warm-soft:#f3ece4;
+    --dw-color-sand:var(--dw-sand);
+    --dw-color-clay:var(--dw-clay);
+    --dw-color-taupe:var(--dw-taupe);
+    --dw-color-ink:var(--dw-ink);
+    --dw-color-ink-soft:#514941;
+    --dw-color-muted:var(--dw-muted);
+    --dw-color-faint:var(--dw-soft);
+    --dw-color-line:var(--dw-line);
+    --dw-color-line-strong:rgba(71,58,47,.22);
+    --dw-color-inverse:#f8f4ee;
+    --dw-color-danger:#8c5146;
+    --dw-color-danger-soft:#f7ebe7;
+    --dw-color-success:#4e674f;
+    --dw-color-success-soft:#e9efe8;
+    --dw-focus-ring:#8f765f;
+    --dw-focus-ring-soft:rgba(143,118,95,.18);
+
+    /* Typography. */
+    --dw-font-sans:
+      -apple-system,
+      BlinkMacSystemFont,
+      "SF Pro Display",
+      "Segoe UI",
+      Roboto,
+      Helvetica,
+      Arial,
+      "PingFang SC",
+      "Microsoft YaHei",
+      "Noto Sans KR",
+      sans-serif;
+    --dw-font-display:var(--dw-font-sans);
+
+    --dw-type-display-xl-size:clamp(64px,7.2vw,116px);
+    --dw-type-display-xl-line:.90;
+    --dw-type-display-xl-track:-.055em;
+
+    --dw-type-page-size:clamp(48px,5vw,78px);
+    --dw-type-page-line:.94;
+    --dw-type-page-track:-.045em;
+
+    --dw-type-section-size:clamp(32px,3vw,48px);
+    --dw-type-section-line:.98;
+    --dw-type-section-track:-.035em;
+
+    --dw-type-subsection-size:clamp(24px,2vw,30px);
+    --dw-type-subsection-line:1.05;
+    --dw-type-subsection-track:-.025em;
+
+    --dw-type-body-lg-size:16px;
+    --dw-type-body-lg-line:1.7;
+    --dw-type-body-size:14px;
+    --dw-type-body-line:1.65;
+    --dw-type-meta-size:12px;
+    --dw-type-meta-line:1.45;
+    --dw-type-micro-size:10px;
+    --dw-type-micro-line:1.35;
+    --dw-type-eyebrow-size:11px;
+    --dw-type-eyebrow-track:.14em;
+
+    --dw-copy-measure:68ch;
+    --dw-copy-measure-compact:54ch;
+    --dw-copy-measure-wide:82ch;
+
+    /* Layout / containers. */
+    --dw-header:76px;
+    --dw-max:1440px;
+    --dw-container:1440px;
+    --dw-container-wide:1600px;
+    --dw-container-reading:760px;
+    --dw-container-form:980px;
+    --dw-gap:24px;
+    --dw-grid-gap:clamp(20px,2vw,32px);
+    --dw-gutter:clamp(28px,3.2vw,48px);
+
+    /* Spacing scale. */
+    --dw-space-1:4px;
+    --dw-space-2:8px;
+    --dw-space-3:12px;
+    --dw-space-4:16px;
+    --dw-space-5:24px;
+    --dw-space-6:32px;
+    --dw-space-7:48px;
+    --dw-space-8:64px;
+    --dw-space-9:80px;
+    --dw-space-10:96px;
+    --dw-space-11:128px;
+    --dw-space-12:160px;
+
+    --dw-section:clamp(96px,8vw,128px);
+    --dw-section-compact:clamp(72px,6vw,96px);
+    --dw-section-standard:clamp(96px,8vw,144px);
+    --dw-section-editorial:clamp(128px,10vw,180px);
+
+    /* Existing page-radius aliases plus semantic radii for new primitives. */
+    --dw-radius-xl:28px;
+    --dw-radius-lg:22px;
+    --dw-radius-md:14px;
+    --dw-radius-sm:8px;
+    --dw-radius-control:12px;
+    --dw-radius-ui:14px;
+    --dw-radius-panel:18px;
+    --dw-radius-editorial:22px;
+    --dw-radius-campaign:28px;
+    --dw-radius-pill:999px;
+
+    /* Elevation. */
+    --dw-shadow-soft:0 18px 54px rgba(62,50,40,.08);
+    --dw-shadow-button:0 10px 28px rgba(27,23,19,.14);
+    --dw-shadow-subtle:
+      0 1px 0 rgba(32,25,20,.04),
+      0 8px 30px rgba(32,25,20,.05);
+    --dw-shadow-float:0 20px 60px rgba(30,24,20,.12);
+
+    /* Image system. */
+    --dw-ratio-product:4 / 5;
+    --dw-ratio-editorial-portrait:3 / 4;
+    --dw-ratio-editorial-landscape:4 / 3;
+    --dw-ratio-editorial-wide:16 / 10;
+    --dw-ratio-square:1 / 1;
+    --dw-media-zoom:1.018;
+
+    /* Motion. */
+    --dw-duration-fast:160ms;
+    --dw-duration-standard:260ms;
+    --dw-duration-slow:480ms;
+    --dw-ease:cubic-bezier(.22,.8,.22,1);
+    --dw-ease-out:cubic-bezier(.22,.75,.2,1);
+  }
+
+  html{
+    background:var(--dw-color-canvas);
+  }
+
+  body.desktop-experience-ready{
+    display:block;
+    width:100%;
+    min-height:100vh;
+    padding:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+    background:var(--dw-color-canvas);
+    color:var(--dw-color-ink);
+    font-family:var(--dw-font-sans);
+    text-rendering:optimizeLegibility;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  body.desktop-experience-ready .desktop-experience:not([hidden]){
+    display:block;
+  }
+
+  /*
+   * All B7-00B.3D Desktop screens are now Desktop-owned. This successor rule
+   * closes the historical Home/Catalog-only ownership gap while the explicit
+   * screen selectors below remain as compatibility markers for older gates.
+   */
+  body.desktop-experience-ready[data-desktop-screen] > #app{
+    display:none!important;
+  }
+
+  body.desktop-experience-ready[data-desktop-screen="home"] > #app{
+    display:none;
+  }
+
+  body.desktop-experience-ready[data-desktop-screen="catalog"] > #app{
+    display:none;
+  }
+
+  /*
+   * Historical B7-00B.3A compatibility marker. Every known Desktop screen has
+   * a Desktop renderer as of B7-00B.3D; the general ownership rule above is
+   * authoritative in B7-00B.4A.
+   */
+  body.desktop-experience-ready:not([data-desktop-screen="home"]):not([data-desktop-screen="catalog"]) > #app{
+    margin:36px auto 64px;
+  }
+
+  .desktop-container{
+    width:min(
+      calc(100% - (2 * var(--dw-gutter))),
+      var(--dw-max)
+    );
+    margin-inline:auto;
+  }
+
+  .desktop-container--wide{
+    width:min(
+      calc(100% - (2 * var(--dw-gutter))),
+      var(--dw-container-wide)
+    );
+    margin-inline:auto;
+  }
+
+  .desktop-eyebrow{
+    color:var(--dw-color-muted);
+    font-size:12px;
+    line-height:1.2;
+    font-weight:850;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+  }
+
+  .desktop-arrow-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:inherit;
+    font-size:13px;
+    line-height:1;
+    font-weight:820;
+  }
+
+  .desktop-arrow-link .desktop-arrow{
+    display:inline-block;
+    transition:transform var(--dw-duration-fast) var(--dw-ease-out);
+  }
+
+  .desktop-arrow-link:hover .desktop-arrow{
+    transform:translateX(4px);
+  }
+
+  .desktop-primary-button{
+    min-height:48px;
+    padding:0 18px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    border-radius:var(--dw-radius-control);
+    background:var(--dw-color-ink);
+    color:#fff;
+    box-shadow:var(--dw-shadow-button);
+    font-size:13px;
+    line-height:1;
+    font-weight:850;
+    cursor:pointer;
+    transition:
+      transform var(--dw-duration-fast) ease,
+      background var(--dw-duration-fast) ease,
+      box-shadow var(--dw-duration-fast) ease;
+  }
+
+  .desktop-primary-button:hover{
+    transform:translateY(-1px);
+    background:#0d0c0b;
+    box-shadow:0 14px 32px rgba(27,23,19,.17);
+  }
+
+  .desktop-primary-button:focus-visible,
+  .desktop-text-button:focus-visible,
+  .desktop-site-header button:focus-visible,
+  .desktop-site-footer button:focus-visible,
+  .desktop-collection-card:focus-visible,
+  .desktop-product-link:focus-visible{
+    outline:2px solid var(--dw-focus-ring);
+    outline-offset:4px;
+  }
+
+  .desktop-text-button{
+    min-height:44px;
+    padding:0;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:transparent;
+    color:var(--dw-color-ink);
+    font-size:13px;
+    line-height:1;
+    font-weight:820;
+    cursor:pointer;
+  }
+}

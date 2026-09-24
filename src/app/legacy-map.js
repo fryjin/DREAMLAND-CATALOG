@@ -1,0 +1,296 @@
+function entry(
+  id,
+  legacyFiles,
+  targetLayer,
+  targetArea,
+  notes='',
+  options={}
+){
+  const runtimeMigrated=
+    options.runtimeMigrated===true;
+
+  return Object.freeze({
+    id,
+    legacyFiles:Object.freeze([
+      ...legacyFiles
+    ]),
+    targetLayer,
+    targetArea,
+    status:
+      options.status||
+      (
+        runtimeMigrated
+          ? 'migrated'
+          : 'legacy-owned'
+      ),
+    runtimeMigrated,
+    runtimeOwners:Object.freeze([
+      ...(options.runtimeOwners||[])
+    ]),
+    notes
+  });
+}
+
+export const LEGACY_FRONTEND_MAP=Object.freeze([
+  entry(
+  'app-shell',
+  [
+    'index.html',
+    'startup-loader.js'
+  ],
+  'app',
+  'bootstrap',
+  'Application startup, screen navigation and DOM-facing orchestration remain in index.html. Final Inquiry submission transaction orchestration is routed through DreamlandInquirySubmissionFlow.',
+  {
+    status:'partial',
+    runtimeMigrated:false,
+    runtimeOwners:[
+      'src/app/runtime-inquiry-submission-flow.js',
+      'index.html',
+      'startup-loader.js'
+    ]
+  }
+),
+  entry(
+  'catalog',
+  [
+    'index.html',
+    'catalog-data.js'
+  ],
+  'features',
+  'catalog',
+  'Catalog active-series state, default-series resolution, product filtering/ordering and Catalog ViewModel are routed through DreamlandCatalog. Catalog tabs, product-card HTML, batch rendering, scroll-driven loading and Catalog UI event delegation are routed through DreamlandCatalogRenderer. Product data loading, Detail navigation and the catalog.afterAppendBatch media lifecycle bridge remain App-owned. Shared pricing/MOQ/currency policy is routed through DreamlandPricingPolicy.',
+  {
+    status:'partial',
+    runtimeMigrated:false,
+    runtimeOwners:[
+      'src/features/catalog/runtime-catalog.js',
+      'src/ui/catalog/runtime-catalog-renderer.js',
+      'index.html',
+      'catalog-data.js'
+    ]
+  }
+),
+  entry(
+  'detail',
+  [
+    'index.html',
+    'detail-progressive.js',
+    'pattern-preview-swipe.js'
+  ],
+  'features',
+  'detail',
+  'Detail active-product state, configuration state, option mutation, quantity normalization and Detail pricing/MOQ ViewModel derivation are routed through DreamlandDetail. Detail configuration-card HTML, size/scent/pattern/pack/quantity presentation, delegated configuration events and horizontal option-scroll lifecycle are routed through DreamlandDetailRenderer. Detail media/carousel/swipe, shared preview modals, screen navigation and Inquiry mutation orchestration remain App/adapter-owned. Detail media/preview adapters read frozen product/config snapshots directly from DreamlandDetail; the temporary App-level activeProduct/config compatibility state has been removed.',
+  {
+    status:'partial',
+    runtimeMigrated:false,
+    runtimeOwners:[
+      'src/features/detail/runtime-detail.js',
+      'src/ui/detail/runtime-detail-renderer.js',
+      'index.html',
+      'detail-progressive.js',
+      'pattern-preview-swipe.js'
+    ]
+  }
+),
+  entry(
+    'inquiry',
+    [
+      'index.html',
+      'copy-polish.js'
+    ],
+    'features',
+    'inquiry',
+    'Inquiry item-state hydration/persistence/mutation, Inquiry-specific pricing derivation, the Inquiry screen View Model and Preview/Submission/Archive projection data are routed through DreamlandInquiry. Inquiry list/summary HTML templates, DOM rendering, incremental DOM updates and item-level event delegation remain routed through DreamlandInquiryRenderer. Final submission transaction orchestration, archive persistence and success-state cleanup are routed through DreamlandInquirySubmissionFlow. Preview DOM, Risk/Captcha UI and navigation/badge behavior remain in index.html. Shared pricing/MOQ/currency policy is routed through DreamlandPricingPolicy. copy-polish.js is presentation-only dictionary/meta/preview decoration and no longer wraps App render/language/payload functions.',
+    {
+      status:'partial',
+      runtimeMigrated:false,
+      runtimeOwners:[
+        'src/features/inquiry/runtime-inquiry.js',
+        'src/ui/inquiry/runtime-inquiry-renderer.js',
+        'src/app/runtime-inquiry-submission-flow.js',
+        'index.html',
+        'copy-polish.js'
+      ]
+    }
+  ),
+  entry(
+     'contact',
+     [
+    'index.html'
+     ],
+     'features',
+     'contact',
+     'Contact state, draft TTL/persistence and contact validation are routed through DreamlandContact. DOM field collection, invalid-field presentation and page lifecycle event binding remain in index.html.',
+     {
+      status:'partial',
+      runtimeMigrated:false,
+      runtimeOwners:[
+      'src/features/contact/runtime-contact.js',
+      'index.html'
+    ]
+    }
+  ),
+
+  entry(
+    'custom-request',
+    [
+      'index.html',
+      'custom-scent-multi.js'
+    ],
+    'features',
+    'custom',
+    'Custom scent-series/scent selection state, Custom validation and canonical Custom intent construction are routed through DreamlandCustom. DOM field collection, field-level invalid presentation, localized Custom scent UI rendering and navigation/toast orchestration remain in index.html/custom-scent-multi.js. Final insertion/persistence stays routed through DreamlandInquiry.',
+    {
+      status:'partial',
+      runtimeMigrated:false,
+      runtimeOwners:[
+        'src/features/custom/runtime-custom.js',
+        'index.html',
+        'custom-scent-multi.js'
+      ]
+    }
+  ),
+  entry(
+    'pricing-domain',
+    [
+      'index.html'
+    ],
+    'domain',
+    'pricing',
+    'Shared pricing, tier selection, packaging surcharge, MOQ, quantity normalization and currency policy are routed through DreamlandPricingPolicy. index.html retains thin compatibility adapters while Legacy Presentation remains active.',
+    {
+      status:'migrated',
+      runtimeMigrated:true,
+      runtimeOwners:[
+        'src/domain/pricing/runtime-pricing-policy.js'
+      ]
+    }
+  ),
+  entry(
+    'submission-payload-domain',
+    [
+      'index.html'
+    ],
+    'domain',
+    'submission',
+    'Provider delivery payload mapping and payload validation are routed through DreamlandSubmissionPayload. index.html retains thin compatibility wrappers while Legacy Review and Risk orchestration remain active.',
+    {
+      status:'migrated',
+      runtimeMigrated:true,
+      runtimeOwners:[
+        'src/domain/submission/runtime-submission-payload.js'
+      ]
+    }
+  ),
+  entry(
+    'localization-domain',
+    [
+      'index.html'
+    ],
+    'domain',
+    'localization',
+    'Shared UI/choice/series/product/scent lookup, from-price ordering, locale resolution and date formatting are routed through DreamlandLocalizationPolicy. DOM language application, page-specific copy composition, PWA copy, Risk copy and SEO/meta mutation remain Presentation/App concerns.',
+    {
+      status:'migrated',
+      runtimeMigrated:true,
+      runtimeOwners:[
+        'src/domain/localization/runtime-localization-policy.js'
+      ]
+    }
+  ),
+  entry(
+    'media',
+    [
+      'image-manager.js',
+      'image-variants.js',
+      'detail-progressive.js',
+      'pattern-preview-swipe.js'
+    ],
+    'services',
+    'media',
+    'Shared media primitives are owned by DreamlandMedia. Catalog/detail media adapters, shared-asset candidate transformation, and inquiry media lifecycle integration now attach through DreamlandRuntimeHooks. The media-side global render-function monkey-patches tracked by B3-01 through B3-03 are removed. ImageManager now routes Inquiry item lookup/cover updates directly through DreamlandInquiry; PatternPreviewSwipe uses explicit App lifecycle calls instead of replacing shared preview globals.',
+    {
+      status:'partial',
+      runtimeMigrated:false,
+      runtimeOwners:[
+        'src/services/media/runtime-media.js',
+        'image-manager.js',
+        'image-variants.js',
+        'detail-progressive.js',
+        'pattern-preview-swipe.js'
+      ]
+    }
+  ),
+  entry(
+    'storage',
+    [
+      'index.html'
+    ],
+    'services',
+    'storage',
+    'Main-application local/session storage access is routed through DreamlandStorage. startup-loader.js remains a deliberate pre-bootstrap storage exception.',
+    {
+      status:'migrated',
+      runtimeMigrated:true,
+      runtimeOwners:[
+        'src/services/storage/runtime-storage.js'
+      ]
+    }
+  ),
+  entry(
+    'submission',
+    [
+      'index.html'
+    ],
+    'services',
+    'submission',
+    'Client Web3Forms transport, FormData assembly and response normalization are routed through DreamlandSubmission. Final submission transaction orchestration, reachability gating, attempt recording, archive persistence and success-state cleanup are routed through DreamlandInquirySubmissionFlow. Provider delivery payload mapping and payload validation are routed through DreamlandSubmissionPayload. Archive snapshot composition and DOM feedback remain App/index concerns.',
+    {
+      status:'partial',
+      runtimeMigrated:false,
+      runtimeOwners:[
+        'src/services/submission/runtime-submission.js',
+        'src/app/runtime-inquiry-submission-flow.js',
+        'index.html'
+      ]
+    }
+  ),
+  entry(
+    'risk',
+    [
+      'index.html',
+      'functions/api/submit.js'
+    ],
+    'services',
+    'risk',
+    'Client risk context, local attempt tracking, risk-assessment transport and hCaptcha SDK lifecycle are routed through DreamlandRisk. Risk copy/status UI and honeypot DOM remain in index.html. Server-side scoring, RISK_STORE persistence and request validation remain in functions/api/submit.js for a later server-boundary phase.',
+    {
+      status:'partial',
+      runtimeMigrated:false,
+      runtimeOwners:[
+        'src/services/risk/runtime-risk.js',
+        'functions/api/submit.js'
+      ]
+    }
+  ),
+  entry(
+    'pwa',
+    [
+      'index.html',
+      'sw.js',
+      'startup-loader.js'
+    ],
+    'services',
+    'pwa',
+    'PWA browser lifecycle, install/update orchestration and network reachability are routed through DreamlandPwa. sw.js remains the service-worker implementation; startup-loader.js remains a pre-bootstrap concern.',
+    {
+      status:'migrated',
+      runtimeMigrated:true,
+      runtimeOwners:[
+        'src/services/pwa/runtime-pwa.js',
+        'sw.js'
+      ]
+    }
+  )
+]);

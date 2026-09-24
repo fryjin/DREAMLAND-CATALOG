@@ -1,0 +1,244 @@
+/*
+ * DREAMLAND R4.11B4
+ * System Smoke Rollout
+ *
+ * First visible application of the R4.11 visual system.
+ *
+ * Desktop representatives:
+ *   PDP
+ *   Home graduated to R4.11B4.1B semantic route composition.
+ *
+ * Mobile representatives:
+ *   Catalog + PDP + Contact
+ *
+ * Scope is intentionally isolated by data-dreamland-page.
+ */
+
+/* ============================================================
+ * DESKTOP / HOME
+ * Graduated to R4.11B4.1B Desktop Home Composition Proof.
+ * Home route geometry is now owned by Home markup + home.css
+ * consuming semantic primitives from composition.css.
+ * ========================================================== */
+
+/* ============================================================
+ * DESKTOP / PDP
+ * Media-led editorial composition.
+ * ========================================================== */
+
+@media (min-width:1051px) {
+  body[data-dreamland-page="product"] .pdp-hero {
+    grid-template-columns:
+      minmax(0,8fr)
+      minmax(340px,4fr);
+    gap:var(--dl-asym-gap-lg);
+  }
+
+  body[data-dreamland-page="product"] .pdp-gallery {
+    gap:18px;
+  }
+
+  body[data-dreamland-page="product"] .pdp-summary {
+    top:96px;
+    gap:26px;
+    padding-top:var(--dl-asym-offset-md);
+  }
+
+  body[data-dreamland-page="product"] .pdp-summary h1 {
+    max-width:9ch;
+    font-size:clamp(54px,5.6vw,86px);
+  }
+
+  body[data-dreamland-page="product"] .pdp-commerce {
+    gap:20px;
+    padding:
+      22px
+      0;
+    border-right:0;
+    border-left:0;
+    background:transparent;
+  }
+
+  body[data-dreamland-page="product"]
+  .pdp-details__grid {
+    grid-template-columns:
+      minmax(0,8fr)
+      minmax(300px,4fr);
+    gap:var(--dl-asym-gap-lg);
+  }
+
+  body[data-dreamland-page="product"]
+  .pdp-details__grid > :first-child {
+    padding-left:clamp(0px,4vw,56px);
+  }
+}
+
+/* ============================================================
+ * MOBILE / PDP
+ * Mobile PDP graduated to R4.11B4.1E-A Mobile PDP Feature Foundation.
+ * Route geometry is now owned by pdp.css.
+ * ========================================================== */
+
+/* ============================================================
+ * MOBILE / CONTACT
+ * Touch-first form, compact progress, offset supporting surface.
+ * ========================================================== */
+
+@media (max-width:760px) {
+  body[data-dreamland-page="contact"] .contact-main {
+    background:var(--dl-color-mobile-canvas);
+  }
+
+  body[data-dreamland-page="contact"] .contact-hero {
+    border-bottom:0;
+    background:var(--dl-color-mobile-canvas);
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-hero__inner {
+    gap:18px;
+    padding-top:52px;
+    padding-bottom:28px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-hero h1 {
+    font-size:clamp(44px,13vw,60px);
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-progress.home-container {
+    width:calc(100% - 28px);
+    padding:
+      0
+      0
+      18px;
+    border-bottom:0;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-progress ol {
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:6px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-progress li {
+    min-height:46px;
+    grid-template-columns:auto minmax(0,1fr);
+    gap:7px;
+    padding:0 10px;
+    border:0;
+    border-radius:999px;
+    background:
+      color-mix(
+        in srgb,
+        var(--dl-color-surface) 72%,
+        transparent
+      );
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-progress li.is-complete {
+    background:var(--dl-color-surface);
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-progress li.is-active {
+    background:var(--dl-color-action);
+    color:var(--dl-color-action-contrast);
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-workspace.home-container {
+    width:calc(100% - 28px);
+    gap:14px;
+    padding-top:0;
+    padding-bottom:84px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-form-shell {
+    padding:
+      24px
+      20px
+      20px;
+    border-radius:30px;
+    background:var(--dl-color-surface);
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-form__header {
+    margin-bottom:24px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-chapter {
+    gap:16px;
+    padding:
+      24px
+      0
+      28px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-field input,
+  body[data-dreamland-page="contact"]
+  .contact-field select {
+    height:56px;
+    border-radius:18px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-field textarea {
+    min-height:156px;
+    border-radius:20px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-actions {
+    gap:10px;
+    margin-top:24px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-action {
+    min-height:54px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-action--secondary {
+    border-color:transparent;
+    background:transparent;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-rail {
+    gap:14px;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-summary,
+  body[data-dreamland-page="contact"]
+  .contact-next {
+    padding:22px;
+    border:0;
+    border-radius:28px;
+    background:var(--dl-color-surface);
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-summary > .contact-eyebrow {
+    padding-top:0;
+  }
+
+  body[data-dreamland-page="contact"]
+  .contact-next {
+    width:
+      calc(
+        100% -
+        var(--dl-asym-mobile-inset)
+      );
+    margin-inline-start:auto;
+  }
+}

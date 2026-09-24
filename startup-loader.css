@@ -1,0 +1,201 @@
+html.dreamland-booting{
+  background:#f3f4f8;
+}
+
+html.dreamland-booting,
+html.dreamland-booting body{
+  overflow:hidden!important;
+  overscroll-behavior:none;
+}
+
+html.dreamland-booting body{
+  background:#f3f4f8!important;
+}
+
+html.dreamland-booting body > :not(#dreamlandStartup){
+  visibility:hidden!important;
+}
+
+.dreamland-startup{
+  --startup-ink:#101114;
+  --startup-muted:#858993;
+  --startup-track:#dfe2e7;
+  --startup-progress:12%;
+
+  position:fixed;
+  inset:0;
+  z-index:2147483000;
+
+  display:grid;
+  place-items:center;
+
+  width:100%;
+  min-height:100dvh;
+  padding:
+    max(28px,env(safe-area-inset-top))
+    28px
+    max(28px,env(safe-area-inset-bottom));
+
+  overflow:hidden;
+  background:#f3f4f8;
+  color:var(--startup-ink);
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    "PingFang SC",
+    "Microsoft YaHei",
+    sans-serif;
+
+  opacity:0;
+  transition:opacity .28s ease;
+}
+
+.dreamland-startup.is-visible{
+  opacity:1;
+}
+
+.dreamland-startup.is-leaving{
+  opacity:0;
+  pointer-events:none;
+}
+
+.dreamland-startup__shell{
+  width:min(100%,340px);
+  transform:translateY(8px);
+  opacity:0;
+
+  transition:
+    transform .36s cubic-bezier(.22,.8,.22,1),
+    opacity .28s ease;
+}
+
+.dreamland-startup.is-visible .dreamland-startup__shell{
+  transform:translateY(0);
+  opacity:1;
+}
+
+.dreamland-startup__topline{
+  display:flex;
+  align-items:center;
+
+  color:var(--startup-muted);
+  font-size:10px;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+
+.dreamland-startup__signal{
+  display:none;
+}
+
+.dreamland-startup__wordmark{
+  margin-top:20px;
+
+  color:var(--startup-ink);
+  font-size:30px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+
+.dreamland-startup__wordmark span{
+  display:inline;
+}
+
+.dreamland-startup__wordmark span:last-child{
+  color:inherit;
+  -webkit-text-stroke:0;
+  text-stroke:0;
+}
+
+.dreamland-startup__copy{
+  max-width:290px;
+  margin:18px 0 0;
+
+  color:#454952;
+  font-size:13px;
+  line-height:1.55;
+  font-weight:650;
+  letter-spacing:-.005em;
+}
+
+.dreamland-startup__progress{
+  position:relative;
+
+  width:100%;
+  height:3px;
+  margin-top:34px;
+
+  overflow:hidden;
+  border-radius:999px;
+  background:var(--startup-track);
+}
+
+.dreamland-startup__progress i{
+  position:absolute;
+  inset:0 auto 0 0;
+
+  display:block;
+  width:var(--startup-progress);
+
+  border-radius:inherit;
+  background:var(--startup-ink);
+
+  transition:
+    width .34s cubic-bezier(.22,.8,.22,1);
+}
+
+.dreamland-startup__progress i::after{
+  display:none;
+}
+
+.dreamland-startup__status{
+  min-height:16px;
+  margin-top:11px;
+
+  color:var(--startup-muted);
+  font-size:11px;
+  line-height:1.45;
+  font-weight:650;
+  font-variant-numeric:tabular-nums;
+}
+
+@media (max-width:600px){
+  .dreamland-startup{
+    place-items:center;
+    padding:
+      max(34px,env(safe-area-inset-top))
+      30px
+      max(34px,env(safe-area-inset-bottom));
+  }
+
+  .dreamland-startup__shell{
+    width:100%;
+    max-width:320px;
+  }
+
+  .dreamland-startup__wordmark{
+    font-size:28px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .dreamland-startup,
+  .dreamland-startup__shell,
+  .dreamland-startup__progress i{
+    transition-duration:.01ms!important;
+    animation:none!important;
+  }
+
+  .dreamland-startup__shell{
+    transform:none;
+  }
+}

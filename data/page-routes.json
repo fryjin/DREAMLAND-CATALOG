@@ -1,0 +1,58 @@
+{
+  "version": "B7-00B.4J-R1",
+  "basePath": "/",
+  "localePrefix": {
+    "enabled": false,
+    "supported": [
+      "en",
+      "zh",
+      "ko"
+    ]
+  },
+  "routes": {
+    "home": {
+      "path": "/",
+      "public": true
+    },
+    "catalog": {
+      "path": "/products/",
+      "public": true
+    },
+    "product": {
+      "path": "/products/{productId}/",
+      "public": true,
+      "dynamic": "productId"
+    },
+    "custom": {
+      "path": "/custom/",
+      "public": true
+    },
+    "inquiry": {
+      "path": "/inquiry/",
+      "public": false
+    },
+    "contact": {
+      "path": "/inquiry/contact/",
+      "public": false,
+      "guard": "hasInquiry"
+    },
+    "review": {
+      "path": "/inquiry/review/",
+      "public": false,
+      "guard": "hasValidContact"
+    },
+    "success": {
+      "path": "/inquiry/success/",
+      "public": false,
+      "guard": "hasLastSubmission"
+    },
+    "privacy": {
+      "path": "/privacy/",
+      "public": true
+    },
+    "notFound": {
+      "path": "/404/",
+      "public": true
+    }
+  }
+}

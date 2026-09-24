@@ -1,0 +1,82 @@
+name: Cross-platform deterministic build
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-matrix:
+    name: build-${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      - name: Install project dependencies
+        run: npm ci
+
+      - name: Run complete validation
+        run: npm run check
+
+      - name: Build Production artifacts
+        run: npm run build
+
+      - name: Write deterministic artifact manifest
+        run: node scripts/write-r4-cross-platform-manifest.mjs --root dist --output ".cross-platform/manifest-${{ runner.os }}.json" --platform "${{ runner.os }}"
+
+      - name: Upload artifact manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: cross-platform-${{ runner.os }}
+          path: .cross-platform/manifest-${{ runner.os }}.json
+          if-no-files-found: error
+          retention-days: 7
+
+  compare-artifacts:
+    name: compare-windows-linux-artifacts
+    needs:
+      - build-matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      - name: Download platform manifests
+        uses: actions/download-artifact@v4
+        with:
+          pattern: cross-platform-*
+          path: .cross-platform/manifests
+          merge-multiple: true
+
+      - name: Compare Windows and Linux Production artifacts
+        run: node scripts/compare-r4-cross-platform-manifests.mjs ".cross-platform/manifests/manifest-Windows.json" ".cross-platform/manifests/manifest-Linux.json"

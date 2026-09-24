@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "stage": "B7-00B.4H-R1",
+  "basePath": "./images/desktop/home/",
+  "hero": {
+    "image": "./images/desktop/home/hero/hero-main.webp",
+    "recommendedSize": "1920x1080",
+    "visualLeft": "./images/desktop/home/r4-1/hero-word-dream.png",
+    "visualRight": "./images/desktop/home/r4-1/hero-word-land.png"
+  },
+  "collections": {
+    "masterpiece": {
+      "image": "./images/desktop/home/collections/masterpiece.webp",
+      "recommendedSize": "1400x1050"
+    },
+    "advanced": {
+      "image": "./images/desktop/home/collections/advanced.webp",
+      "recommendedSize": "1200x1200"
+    },
+    "holiday": {
+      "image": "./images/desktop/home/collections/holiday.webp",
+      "recommendedSize": "1200x1200"
+    },
+    "classic": {
+      "image": "./images/desktop/home/collections/classic.webp",
+      "recommendedSize": "1400x1050"
+    }
+  },
+  "featured": [
+    {
+      "slot": 1,
+      "series": "masterpiece",
+      "layout": "narrow",
+      "image": "./images/desktop/home/featured/featured-01.webp",
+      "recommendedSize": "1200x1200"
+    },
+    {
+      "slot": 2,
+      "series": "masterpiece",
+      "layout": "narrow",
+      "image": "./images/desktop/home/featured/featured-02.webp",
+      "recommendedSize": "1200x1200"
+    },
+    {
+      "slot": 3,
+      "series": "masterpiece",
+      "layout": "narrow",
+      "image": "./images/desktop/home/featured/featured-03.webp",
+      "recommendedSize": "1200x1200"
+    },
+    {
+      "slot": 4,
+      "series": "advanced",
+      "layout": "wide",
+      "image": "./images/desktop/home/featured/featured-04.webp",
+      "recommendedSize": "1600x1100"
+    },
+    {
+      "slot": 5,
+      "series": "advanced",
+      "layout": "wide",
+      "image": "./images/desktop/home/featured/featured-05.webp",
+      "recommendedSize": "1600x1100"
+    }
+  ],
+  "craft": {
+    "image": "./images/desktop/home/craft/craft-main.webp",
+    "recommendedSize": "1400x1050"
+  },
+  "custom": {
+    "image": "./images/desktop/home/custom/custom-main.webp",
+    "recommendedSize": "1600x1000"
+  },
+  "wholesale": {
+    "image": "./images/desktop/home/wholesale/wholesale-main.webp",
+    "recommendedSize": "1600x1000"
+  }
+}

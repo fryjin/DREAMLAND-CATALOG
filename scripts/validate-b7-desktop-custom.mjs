@@ -1,0 +1,799 @@
+#!/usr/bin/env node
+import fs from 'node:fs';
+import path from 'node:path';
+import {pathToFileURL} from 'node:url';
+
+const ROOT=process.cwd();
+const errors=[];
+
+/*
+ * R4.11B4.1E-B3-FIX2N — Desktop Custom Validator EOL Normalization
+ * Multiline Custom/Experience source markers operate on logical LF text so
+ * Windows CRLF checkouts do not invalidate canonical integration contracts.
+ */
+
+function fail(message){
+  errors.push(message);
+}
+
+function read(relative){
+  return fs
+    .readFileSync(
+      path.join(
+        ROOT,
+        relative
+      ),
+      'utf8'
+    )
+    .replace(
+      /\r\n/g,
+      '\n'
+    );
+}
+
+function compact(value){
+  return String(value||'')
+    .replace(/\s+/g,'');
+}
+
+function countOf(source,marker){
+  return source.split(marker).length-1;
+}
+
+/*
+ * Gate 1 — Desktop Custom Presentation runtime is executable and does not own
+ * canonical Custom/Inquiry business state.
+ */
+try{
+  const runtimePath=
+    path.join(
+      ROOT,
+      'src/ui/desktop/custom/runtime-desktop-custom.js'
+    );
+
+  delete globalThis.DreamlandDesktopCustom;
+
+  await import(
+    `${pathToFileURL(runtimePath).href}?b7-desktop-custom=${Date.now()}`
+  );
+
+  const custom=
+    globalThis.DreamlandDesktopCustom;
+
+  if(
+    !custom||
+    custom.version!==
+      'B7-00B.3C'
+  ){
+    fail(
+      'DreamlandDesktopCustom B7-00B.3C was not exposed.'
+    );
+  }else{
+    for(const method of [
+      'configure',
+      'mount',
+      'refresh',
+      'syncInquiry',
+      'snapshot'
+    ]){
+      if(
+        typeof custom[method]!==
+        'function'
+      ){
+        fail(
+          `DreamlandDesktopCustom.${method} is missing.`
+        );
+      }
+    }
+  }
+}catch(error){
+  fail(
+    `Desktop Custom executable runtime validation failed: ${error.message}`
+  );
+}
+
+try{
+  const runtime=
+    read(
+      'src/ui/desktop/custom/runtime-desktop-custom.js'
+    );
+
+  for(const forbidden of [
+    'DreamlandCustom',
+    'DreamlandInquiry',
+    'localStorage',
+    'sessionStorage',
+    'productManualV2State',
+    'function customMoq(',
+    'function maximumQuantity(',
+    'addCustom('
+  ]){
+    if(runtime.includes(forbidden)){
+      fail(
+        `Desktop Custom crossed its presentation boundary: ${forbidden}`
+      );
+    }
+  }
+
+  for(const required of [
+    "const VERSION='B7-00B.3C';",
+    'validateDraft?.(',
+    'setSeries?.(',
+    'toggleScent?.(',
+    'availableSeries?.(',
+    'availableScents?.(',
+    'selectedScents?.(',
+    'data-desktop-custom-pick=',
+    'data-desktop-custom-series=',
+    'data-desktop-custom-scent=',
+    'data-desktop-custom-action="submit"',
+    'data-desktop-custom-summary',
+    'quotedAfterReview',
+    'focusFirstError()'
+  ]){
+    if(!runtime.includes(required)){
+      fail(
+        `Desktop Custom runtime is missing: ${required}`
+      );
+    }
+  }
+}catch(error){
+  fail(
+    `Desktop Custom runtime source validation failed: ${error.message}`
+  );
+}
+
+/*
+ * Gate 2 — Desktop Experience makes Custom a Desktop-owned screen and bridges
+ * the canonical DreamlandCustom owner through configuration.
+ */
+try{
+  const experience=
+    read(
+      'src/ui/desktop/runtime-desktop-experience.js'
+    );
+
+  for(const required of [
+    "const VERSION='B7-00B.3D';",
+    'id="desktopCustomRoot"',
+    'DreamlandDesktopCustom',
+    'customState:',
+    "currentScreen==='custom'",
+    'customManaged=',
+    "'is-custom'",
+    '#desktopCustomRoot',
+    'customPresentation()',
+    'feature:\n        config.customState',
+    'customState:\n        options.customState',
+    'addCustomIntent'
+  ]){
+    if(!experience.includes(required)){
+      fail(
+        `Desktop Experience is missing Custom integration: ${required}`
+      );
+    }
+  }
+
+  if(
+    experience.includes(
+      'root.DreamlandCustom'
+    )||
+    experience.includes(
+      'root.DreamlandInquiry'
+    )
+  ){
+    fail(
+      'Desktop Experience must receive Custom/Inquiry ownership through injected configuration.'
+    );
+  }
+}catch(error){
+  fail(
+    `Desktop Custom Experience integration validation failed: ${error.message}`
+  );
+}
+
+/*
+ * Gate 3 — index provides the canonical feature/action bridge and keeps the
+ * Mobile Custom presentation intact.
+ */
+try{
+  const index=
+    read('index.html');
+
+  for(const required of [
+    "window.DREAMLAND_RELEASE='b7-00b4j-r3-v129';",
+    './src/ui/desktop/styles/custom.css?release=b7-00b4j-r3-v129',
+    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4j-r3-v129',
+    'ensureCustomFeatureRuntime();',
+    'customState:',
+    'customFeature,',
+    'addCustomIntent:',
+    'addCustomIntentDesktop(',
+    'customFeature.validateDraft(',
+    'customFeature.buildIntent(',
+    'inquiryFeature.addCustom('
+  ]){
+    if(!index.includes(required)){
+      fail(
+        `index.html is missing the Desktop Custom canonical bridge: ${required}`
+      );
+    }
+  }
+
+  if(
+    countOf(
+      index,
+      './src/ui/desktop/styles/custom.css?release=b7-00b4j-r3-v129'
+    )!==1
+  ){
+    fail(
+      'Desktop Custom CSS must load exactly once.'
+    );
+  }
+
+  if(
+    countOf(
+      index,
+      './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4j-r3-v129'
+    )!==1
+  ){
+    fail(
+      'Desktop Custom runtime must load exactly once.'
+    );
+  }
+
+  for(const required of [
+    '<section class="screen" data-screen="custom">',
+    'id="customUse"',
+    'id="customQty"',
+    'id="customPack"',
+    'onclick="addCustomIntent()"'
+  ]){
+    if(!index.includes(required)){
+      fail(
+        `Historical Mobile Custom presentation regressed: ${required}`
+      );
+    }
+  }
+
+  const owner=
+    read(
+      'src/features/custom/runtime-custom.js'
+    );
+
+  if(
+    !owner.includes(
+      "const VERSION='B6-05';"
+    )||
+    !owner.includes(
+      'validateDraft'
+    )||
+    !owner.includes(
+      'buildIntent'
+    )
+  ){
+    fail(
+      'Canonical DreamlandCustom B6-05 owner changed or is unavailable.'
+    );
+  }
+}catch(error){
+  fail(
+    `Desktop Custom index/Mobile preservation validation failed: ${error.message}`
+  );
+}
+
+/*
+ * Gate 4 — Desktop visual contract.
+ */
+try{
+  const css=
+    read(
+      'src/ui/desktop/styles/custom.css'
+    );
+
+  const flat=
+    compact(css);
+
+  if(
+    !flat.includes(
+      compact(
+        'body.desktop-experience-ready[data-desktop-screen="custom"] > #app{display:none!important;}'
+      )
+    )
+  ){
+    fail(
+      'Desktop Custom must hide the Mobile #app at >=1024px.'
+    );
+  }
+
+  for(const required of [
+    '.desktop-custom-layout{',
+    '.desktop-custom-section{',
+    '.desktop-custom-choice-grid--use{',
+    '.desktop-custom-series{',
+    '.desktop-custom-scents{',
+    '.desktop-custom-summary-wrap{',
+    'position:sticky;',
+    '.desktop-custom-submit{'
+  ]){
+    if(!css.includes(required)){
+      fail(
+        `Desktop Custom CSS is missing: ${required}`
+      );
+    }
+  }
+
+  if(
+    !flat.includes(
+      compact(
+        'body.desktop-experience-ready .desktop-experience.is-custom .desktop-site-main'
+      )
+    )||
+    !flat.includes(
+      compact(
+        'body.desktop-experience-ready .desktop-experience.is-custom .desktop-site-footer'
+      )
+    )
+  ){
+    fail(
+      'Desktop Custom must restore the Desktop site main/footer over the historical Mobile-fallback shell rule.'
+    );
+  }
+}catch(error){
+  fail(
+    `Desktop Custom CSS validation failed: ${error.message}`
+  );
+}
+
+/*
+ * Gate 5 — EN / ZH / KO Custom Project website content contract.
+ */
+try{
+  const site=
+    JSON.parse(
+      read(
+        'data/site-content.json'
+      )
+    );
+
+  for(const lang of [
+    'en',
+    'zh',
+    'ko'
+  ]){
+    const custom=
+      site?.languages
+        ?.[lang]
+        ?.customProject;
+
+    for(const key of [
+      'kicker',
+      'title',
+      'body',
+      'useCase',
+      'quantity',
+      'budget',
+      'delivery',
+      'size',
+      'fragranceCollection',
+      'scents',
+      'color',
+      'packaging',
+      'branding',
+      'notes',
+      'summaryTitle',
+      'quotedAfterReview',
+      'addInquiry',
+      'addedTitle'
+    ]){
+      if(!custom?.[key]){
+        fail(
+          `Desktop Custom copy is incomplete for ${lang}.${key}`
+        );
+      }
+    }
+
+    for(const key of [
+      'useCases',
+      'budgets',
+      'sizes',
+      'packages',
+      'brandingOptions'
+    ]){
+      if(
+        !Array.isArray(
+          custom?.[key]
+        )||
+        !custom[key].length
+      ){
+        fail(
+          `Desktop Custom option copy is incomplete for ${lang}.${key}`
+        );
+      }
+    }
+  }
+}catch(error){
+  fail(
+    `Desktop Custom content validation failed: ${error.message}`
+  );
+}
+
+/*
+ * Gate 6 — PWA v98 and release-versioned Custom assets.
+ */
+try{
+  const sw=read('sw.js');
+  const pwa=
+    read(
+      'src/services/pwa/runtime-pwa.js'
+    );
+
+  for(const required of [
+    "const CACHE_VERSION = 'dreamland-pwa-v129';",
+    "'b7-00b4j-r3-v129'",
+    './src/ui/desktop/styles/custom.css?release=b7-00b4j-r3-v129',
+    './src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4j-r3-v129',
+    "'./src/ui/desktop/styles/custom.css'",
+    "'./src/ui/desktop/custom/runtime-desktop-custom.js'"
+  ]){
+    if(!sw.includes(required)){
+      fail(
+        `sw.js is missing Desktop Custom/PWA v98 marker: ${required}`
+      );
+    }
+  }
+
+  if(
+    !pwa.includes(
+      "'b7-00b4j-r3-v129'"
+    )
+  ){
+    fail(
+      'PWA runtime release tag was not advanced to B7-00B.3C.'
+    );
+  }
+}catch(error){
+  fail(
+    `Desktop Custom PWA validation failed: ${error.message}`
+  );
+}
+
+/*
+ * Gate 7 — validation order.
+ */
+try{
+  const pkg=
+    JSON.parse(
+      read('package.json')
+    );
+
+  if(
+    pkg?.scripts?.['desktop:custom']!==
+    'node scripts/validate-b7-desktop-custom.mjs'
+  ){
+    fail(
+      'package.json is missing desktop:custom.'
+    );
+  }
+
+  const validate=
+    String(
+      pkg?.scripts?.validate||
+      ''
+    );
+
+  if(
+    !validate.includes(
+      'npm run desktop:custom && npm run desktop:detail && npm run desktop:website && npm run desktop:catalog'
+    )
+  ){
+    fail(
+      'Desktop Custom gate must run before Detail, Website and final Catalog gates.'
+    );
+  }
+
+  if(
+    !(()=>{
+      const gate='npm run desktop:catalog';
+      const gateIndex=validate.lastIndexOf(gate);
+
+      return (
+        gateIndex>=0&&
+        !/npm run desktop:[a-z0-9:-]+/i.test(
+          validate.slice(gateIndex+gate.length)
+        )
+      );
+    })()
+  ){
+    fail(
+      'desktop:catalog must remain the final Desktop aggregate gate.'
+    );
+  }
+}catch(error){
+  fail(
+    `Desktop Custom package validation failed: ${error.message}`
+  );
+}
+
+/* Gate 4E-R1 — Editorial Brief Builder + persistent Live Project Brief. */
+try{
+  const runtime=read('src/ui/desktop/custom/runtime-desktop-custom.js');
+  const css=read('src/ui/desktop/styles/custom.css');
+  const site=JSON.parse(read('data/site-content.json'));
+
+  for(const required of [
+    "const PRESENTATION_VERSION='B7-00B.4E-R1';",
+    'data-desktop-custom-presentation=',
+    'desktop-custom-brief-builder',
+    'desktop-custom-live-brief',
+    'desktop-custom-fragrance-matrix',
+    'function renderLiveBrief()',
+    'function syncChoiceState(field)',
+    'function syncValidationUi()',
+    'function renderFragrancePanel()',
+    'syncFieldError(field);',
+    'renderLiveBrief();'
+  ]){
+    if(!runtime.includes(required)){
+      fail(`Desktop Custom 4E R1 runtime is missing: ${required}`);
+    }
+  }
+
+  for(const required of [
+    'B7-00B.4E R1 — Custom Project Editorial Intake + Guided Brief Recomposition',
+    '[data-desktop-custom-presentation="B7-00B.4E-R1"]',
+    '.desktop-custom-live-brief__rows{',
+    '.desktop-custom-fragrance-matrix',
+    'grid-template-columns:minmax(0,1fr) minmax(380px,420px);',
+    'border-radius:0;',
+    'position:sticky;'
+  ]){
+    if(!css.includes(required)){
+      fail(`Desktop Custom 4E R1 CSS is missing: ${required}`);
+    }
+  }
+
+  if(/font-size:(?:8|9|10)px;/.test(css)){
+    fail('Desktop Custom 4E R1 readability regression: custom.css contains visible 8/9/10px text.');
+  }
+
+  for(const lang of ['en','zh','ko']){
+    const custom=site?.languages?.[lang]?.customProject;
+    if(!custom?.collectionResetHint){
+      fail(`Desktop Custom 4E R1 collection-reset microcopy is missing for ${lang}.`);
+    }
+  }
+
+  const clickStart=runtime.indexOf('function onClick(event)');
+  const clickEnd=runtime.indexOf('function onInput(event)',clickStart);
+  const clickBody=
+    clickStart>=0&&clickEnd>clickStart
+      ? runtime.slice(clickStart,clickEnd)
+      : '';
+
+  if(clickBody.includes('render({')){
+    fail('Desktop Custom 4E R1 interaction regression: choice clicks still trigger full page render().');
+  }
+
+  const submitStart=runtime.indexOf('function submit()');
+  const submitEnd=runtime.indexOf('function onClick(event)',submitStart);
+  const submitBody=
+    submitStart>=0&&submitEnd>submitStart
+      ? runtime.slice(submitStart,submitEnd)
+      : '';
+
+  if(submitBody.includes('render({')){
+    fail('Desktop Custom 4E R1 submit regression: validation/success still rebuilds the whole page.');
+  }
+}catch(error){
+  fail(`Desktop Custom 4E R1 successor validation failed: ${error.message}`);
+}
+
+/* Gate 4E-R1.1 — interaction affordance + guided section navigation. */
+try{
+  const runtime=read('src/ui/desktop/custom/runtime-desktop-custom.js');
+  const css=read('src/ui/desktop/styles/custom.css');
+  const site=JSON.parse(read('data/site-content.json'));
+
+  for(const required of [
+    "const INTERACTION_VERSION='B7-00B.4E-R1.1';",
+    'data-desktop-custom-interaction=',
+    'function flowNavigatorHtml()',
+    'function setupGuidedNavigation()',
+    'function syncGuidedNavigation()',
+    'function jumpToSection(name)',
+    'data-desktop-custom-flow-progress',
+    'data-desktop-custom-jump=',
+    'desktop-custom-section-stack',
+    'desktop-custom-section-next',
+  ]){
+    if(!runtime.includes(required)){
+      fail(`Desktop Custom 4E R1.1 runtime is missing: ${required}`);
+    }
+  }
+
+  for(const required of [
+    'B7-00B.4E R1.1 — Interaction Affordance + Guided Section Navigation',
+    '[data-desktop-custom-interaction="B7-00B.4E-R1.1"]',
+    '.desktop-custom-flow-nav{',
+    '.desktop-custom-flow-nav__item.is-active{',
+    '.desktop-custom-section-next{',
+    '.desktop-custom-live-brief__progress{',
+    'border:1px solid var(--dw-color-line-strong)!important;',
+    'background-image:'
+  ]){
+    if(!css.includes(required)){
+      fail(`Desktop Custom 4E R1.1 CSS is missing: ${required}`);
+    }
+  }
+
+  if(/font-size:(?:8|9|10)px;/.test(css)){
+    fail('Desktop Custom 4E R1.1 readability regression: custom.css contains visible 8/9/10px text.');
+  }
+
+  for(const lang of ['en','zh','ko']){
+    const custom=site?.languages?.[lang]?.customProject;
+    for(const key of ['flowTitle','requiredProgress','continueToNext']){
+      if(!custom?.[key]){
+        fail(`Desktop Custom 4E R1.1 guided-flow copy is missing for ${lang}.${key}.`);
+      }
+    }
+  }
+
+  const clickStart=runtime.indexOf('function onClick(event)');
+  const clickEnd=runtime.indexOf('function onInput(event)',clickStart);
+  const clickBody=
+    clickStart>=0&&clickEnd>clickStart
+      ? runtime.slice(clickStart,clickEnd)
+      : '';
+
+  if(clickBody.includes('render({')){
+    fail('Desktop Custom 4E R1.1 interaction regression: guided interactions must not restore full-page render().');
+  }
+}catch(error){
+  fail(`Desktop Custom 4E R1.1 successor validation failed: ${error.message}`);
+}
+
+/* Gate 4E-R1.2 — contrast / spacing / Step Rail simplification. */
+try{
+  const runtime=read('src/ui/desktop/custom/runtime-desktop-custom.js');
+  const css=read('src/ui/desktop/styles/custom.css');
+
+  for(const required of [
+    "const POLISH_VERSION='B7-00B.4E-R1.2';",
+    'data-desktop-custom-polish=',
+    'function flowNavigatorHtml()',
+    'function setupGuidedNavigation()'
+  ]){
+    if(!runtime.includes(required)){
+      fail(`Desktop Custom 4E R1.2 runtime is missing: ${required}`);
+    }
+  }
+
+  const briefStart=runtime.indexOf('function liveBriefHtml()');
+  const briefEnd=runtime.indexOf('function chapterLabel(',briefStart);
+  const briefBody=
+    briefStart>=0&&briefEnd>briefStart
+      ? runtime.slice(briefStart,briefEnd)
+      : '';
+
+  if(briefBody.includes('desktop-custom-live-brief__progress')){
+    fail('Desktop Custom 4E R1.2 regression: Live Brief still renders duplicate flow progress.');
+  }
+
+  const setupStart=runtime.indexOf('function setupGuidedNavigation()');
+  const setupEnd=runtime.indexOf('function pageHtml()',setupStart);
+  const setupBody=
+    setupStart>=0&&setupEnd>setupStart
+      ? runtime.slice(setupStart,setupEnd)
+      : '';
+
+  if(setupBody.includes('decorateSectionContinuations();')){
+    fail('Desktop Custom 4E R1.2 regression: large continuation cards are still injected.');
+  }
+
+  for(const required of [
+    'B7-00B.4E R1.2 — Selection Contrast + Field Spacing Cleanup',
+    '[data-desktop-custom-polish="B7-00B.4E-R1.2"]',
+    'color:var(--dw-color-ink)!important;',
+    'padding:0 16px!important;',
+    '.desktop-custom-section-next,',
+    'display:none!important;'
+  ]){
+    if(!css.includes(required)){
+      fail(`Desktop Custom 4E R1.2 CSS is missing: ${required}`);
+    }
+  }
+
+  if(/font-size:(?:8|9|10)px;/.test(css)){
+    fail('Desktop Custom 4E R1.2 readability regression: custom.css contains visible 8/9/10px text.');
+  }
+}catch(error){
+  fail(`Desktop Custom 4E R1.2 successor validation failed: ${error.message}`);
+}
+
+
+
+/* Gate 4H-R1 — FX-backed localized Budget Range. */
+try{
+  const custom=read('src/ui/desktop/custom/runtime-desktop-custom.js');
+  const experience=read('src/ui/desktop/runtime-desktop-experience.js');
+  const index=read('index.html');
+  const i18n=JSON.parse(read('data/i18n.json'));
+
+  for(const required of [
+    "const CURRENCY_VERSION='B7-00B.4H-R1';",
+    "if(key==='budgets')",
+    'config?.budgetOptions?.()',
+    'data-desktop-custom-currency=',
+    'budgetOptions:'
+  ]){
+    if(!custom.includes(required)){
+      fail('Desktop Custom 4H R1 currency bridge is missing: '+required);
+    }
+  }
+
+  // B7-00B.4H R1.2 — FX budget validator structural matching.
+  if(
+    !experience.includes('budgetOptions:')||
+    !experience.includes('config.budgetOptions')
+  ){
+    fail('Desktop Experience does not bridge FX-backed Custom budget options.');
+  }
+
+  for(const required of [
+    'function desktopCustomBudgetOptions()',
+    'currencyMap[currentLang]',
+    'budgetOptions:',
+    'desktopCustomBudgetOptions'
+  ]){
+    if(!index.includes(required)){
+      fail('index.html is missing Desktop Custom FX budget integration: '+required);
+    }
+  }
+
+  const currency=i18n?.currencyMap||{};
+
+  if(Number(currency.en?.rate)!==1){
+    fail('English currency base rate must remain 1 USD.');
+  }
+
+  if(!(Number(currency.zh?.rate)>1)){
+    fail('Chinese currency conversion rate is missing.');
+  }
+
+  if(!(Number(currency.ko?.rate)>100)){
+    fail('Korean currency conversion rate is missing.');
+  }
+
+  for(const lang of ['zh','en','ko']){
+    if(
+      !Array.isArray(currency?.[lang]?.budget)||
+      currency[lang].budget.length!==5
+    ){
+      fail('FX-backed budget ranges are incomplete for '+lang+'.');
+    }
+  }
+}catch(error){
+  fail('Desktop Custom 4H R1 FX budget validation failed: '+error.message);
+}
+
+if(errors.length){
+  console.error(
+    '\nB7-00B.3C Desktop Custom Request validation failed:\n'
+  );
+
+  for(const error of errors){
+    console.error(`- ${error}`);
+  }
+
+  process.exit(1);
+}
+
+console.log(
+  'B7-00B.3C Desktop Custom Request validation: PASS'
+);
+
+console.log(
+  'Desktop-owned Custom Project / canonical DreamlandCustom validation + scent state / canonical Inquiry add / field-level validation / EN-ZH-KO / PWA v98 PASS.'
+);

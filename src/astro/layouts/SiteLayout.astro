@@ -1,0 +1,131 @@
+---
+import '../styles/system/tokens.css';
+import '../styles/system/base.css';
+import '../styles/system/layout.css';
+import '../styles/system/asymmetry.css';
+import '../styles/system/composition.css';
+import '../styles/system/surface.css';
+import '../styles/system/controls.css';
+import '../styles/system/forms.css';
+import '../styles/system/site.css';
+import '../styles/system/rollout.css';
+
+interface Props {
+  title:string;
+  description:string;
+  page:string;
+  lang?:string;
+  robots?:string;
+  canonical?:string;
+  ogImage?:string;
+  productId?:string;
+}
+
+const {
+  title,
+  description,
+  page,
+  lang='en',
+  robots='noindex,nofollow',
+  canonical='https://dreamland-catalog.pages.dev/',
+  ogImage='https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg',
+  productId=''
+}=Astro.props;
+
+const isHome=
+  page==='home';
+
+const isCatalog=
+  page==='catalog';
+
+const isProduct=
+  page==='product';
+
+const isCustom=
+  page==='custom';
+
+const isInquiry=
+  page==='inquiry';
+
+const isContact=
+  page==='contact';
+
+const isReview=
+  page==='review';
+
+const isSuccess=
+  page==='success';
+
+const presentation=
+  isHome
+    ? 'astro-home-production'
+    : isCatalog
+      ? 'astro-catalog-static'
+      : isProduct
+        ? 'astro-pdp-static'
+        : isCustom
+          ? 'astro-custom-static'
+          : isInquiry
+            ? 'astro-inquiry-static'
+            : isContact
+              ? 'astro-contact-static'
+              : isReview
+                ? 'astro-review-static'
+                : isSuccess
+                  ? 'astro-success-static'
+                  : 'astro-static';
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1"
+    />
+    <meta name="robots" content={robots} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta
+      name="dreamland-r4-presentation"
+      content={presentation}
+    />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#f8f5ef" />
+    <title>{title}</title>
+    <slot name="head" />
+  </head>
+  <body
+    data-r4-astro-home={isHome?'true':undefined}
+    data-r4-home-static={isHome?'true':undefined}
+    data-r4-production-home={isHome?'true':undefined}
+    data-r4-astro-foundation={(isCatalog||isProduct||isCustom||isInquiry||isContact||isReview||isSuccess)?'true':undefined}
+    data-r4-astro-catalog={isCatalog?'true':undefined}
+    data-r4-catalog-static={isCatalog?'true':undefined}
+    data-r4-astro-product={isProduct?'true':undefined}
+    data-r4-pdp-static={isProduct?'true':undefined}
+    data-r4-astro-custom={isCustom?'true':undefined}
+    data-r4-custom-static={isCustom?'true':undefined}
+    data-r4-astro-inquiry={isInquiry?'true':undefined}
+    data-r4-inquiry-static={isInquiry?'true':undefined}
+    data-r4-astro-contact={isContact?'true':undefined}
+    data-r4-contact-static={isContact?'true':undefined}
+    data-r4-astro-review={isReview?'true':undefined}
+    data-r4-review-static={isReview?'true':undefined}
+    data-r4-astro-success={isSuccess?'true':undefined}
+    data-r4-success-static={isSuccess?'true':undefined}
+    data-product-id={isProduct?productId:undefined}
+    data-dreamland-page={page}
+  >
+    <slot />
+  </body>
+</html>

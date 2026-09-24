@@ -1,0 +1,1164 @@
+.inquiry-main {
+  min-height:100vh;
+  background:var(--home-canvas);
+}
+
+.inquiry-eyebrow {
+  margin:0;
+  color:var(--home-muted);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.inquiry-hero {
+  border-bottom:1px solid var(--home-line);
+  background:
+    radial-gradient(
+      circle at 82% 16%,
+      rgba(210,186,151,.22),
+      transparent 30%
+    ),
+    var(--home-canvas);
+}
+
+.inquiry-hero__inner {
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(320px,.55fr);
+  gap:clamp(42px,8vw,132px);
+  align-items:end;
+  padding-top:clamp(88px,10vw,154px);
+  padding-bottom:clamp(70px,8vw,118px);
+}
+
+.inquiry-hero h1 {
+  max-width:900px;
+  margin:18px 0 0;
+  font-family:var(--home-serif);
+  font-size:clamp(48px,7vw,96px);
+  font-weight:400;
+  line-height:.94;
+  letter-spacing:-.045em;
+}
+
+.inquiry-hero__body {
+  margin:0 0 6px;
+  color:var(--home-muted);
+  font-size:15px;
+  line-height:1.75;
+}
+
+.inquiry-progress {
+  padding-top:24px;
+  padding-bottom:24px;
+  border-bottom:1px solid var(--home-line);
+}
+
+.inquiry-progress ol {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+.inquiry-progress li {
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:10px;
+  align-items:center;
+  min-height:44px;
+  padding:0 12px;
+  border-left:1px solid var(--home-line);
+  color:var(--home-soft);
+}
+
+.inquiry-progress li.is-active {
+  color:var(--home-ink);
+  border-color:var(--home-ink);
+}
+
+.inquiry-progress strong {
+  font-size:10px;
+}
+
+.inquiry-progress span {
+  font-size:12px;
+  font-weight:700;
+}
+
+.inquiry-workspace {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(340px,420px);
+  gap:clamp(44px,6vw,92px);
+  align-items:start;
+  padding-top:clamp(58px,7vw,98px);
+  padding-bottom:clamp(96px,10vw,156px);
+}
+
+.inquiry-selection {
+  display:grid;
+  gap:28px;
+}
+
+.inquiry-section__header {
+  display:flex;
+  gap:20px;
+  align-items:end;
+  justify-content:space-between;
+}
+
+.inquiry-section__header h2 {
+  margin:12px 0 0;
+  font-family:var(--home-serif);
+  font-size:clamp(34px,4vw,58px);
+  font-weight:400;
+  line-height:1;
+  letter-spacing:-.03em;
+}
+
+.inquiry-clear {
+  flex:none;
+  min-height:38px;
+  padding:0 15px;
+  border:1px solid var(--home-line);
+  border-radius:999px;
+  background:transparent;
+  color:var(--home-muted);
+  font-size:10px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.inquiry-empty {
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:24px 28px;
+  align-items:start;
+  min-height:280px;
+  padding:clamp(28px,4vw,54px);
+  border:1px solid var(--home-line);
+  background:var(--home-surface);
+}
+
+.inquiry-empty__mark {
+  display:flex;
+  width:52px;
+  height:52px;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--home-line);
+  border-radius:50%;
+  color:var(--home-muted);
+  font-family:var(--home-serif);
+  font-size:20px;
+}
+
+.inquiry-empty h3 {
+  margin:0;
+  font-family:var(--home-serif);
+  font-size:clamp(28px,3vw,42px);
+  font-weight:400;
+  letter-spacing:-.025em;
+}
+
+.inquiry-empty p {
+  max-width:620px;
+  margin:14px 0 0;
+  color:var(--home-muted);
+  font-size:14px;
+  line-height:1.7;
+}
+
+.inquiry-empty__actions {
+  grid-column:2;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:6px;
+}
+
+.inquiry-action {
+  display:inline-flex;
+  min-height:44px;
+  align-items:center;
+  justify-content:center;
+  padding:0 18px;
+  border:1px solid var(--home-line);
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+}
+
+.inquiry-action--primary {
+  border-color:var(--home-ink);
+  background:var(--home-ink);
+  color:var(--home-surface);
+}
+
+.inquiry-items {
+  display:grid;
+  gap:12px;
+}
+
+.inquiry-item {
+  display:grid;
+  grid-template-columns:104px minmax(0,1fr) auto;
+  gap:20px;
+  align-items:start;
+  padding:18px;
+  border:1px solid var(--home-line);
+  background:var(--home-surface);
+}
+
+.inquiry-item--custom {
+  grid-template-columns:104px minmax(0,1fr) auto;
+}
+
+.inquiry-item__media {
+  display:flex;
+  width:104px;
+  aspect-ratio:1;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:var(--home-sand);
+}
+
+.inquiry-item__media img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.inquiry-item__custom-mark {
+  font-family:var(--home-serif);
+  font-size:28px;
+}
+
+.inquiry-item__body {
+  min-width:0;
+}
+
+.inquiry-item__kicker {
+  margin:0 0 7px;
+  color:var(--home-muted);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.inquiry-item__title {
+  margin:0;
+  font-family:var(--home-serif);
+  font-size:24px;
+  font-weight:400;
+  line-height:1.05;
+}
+
+.inquiry-item__meta {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:12px;
+}
+
+.inquiry-item__chip {
+  display:inline-flex;
+  min-height:27px;
+  align-items:center;
+  padding:0 9px;
+  border:1px solid var(--home-line);
+  border-radius:999px;
+  color:var(--home-muted);
+  font-size:9px;
+}
+
+.inquiry-item__pricing {
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px;
+  margin-top:15px;
+  color:var(--home-muted);
+  font-size:10px;
+}
+
+.inquiry-item__pricing strong {
+  color:var(--home-ink);
+}
+
+.inquiry-item__qty {
+  display:grid;
+  grid-template-columns:34px 72px 34px;
+  gap:4px;
+  margin-top:16px;
+}
+
+.inquiry-item__qty button,
+.inquiry-item__qty input {
+  height:34px;
+  border:1px solid var(--home-line);
+  background:transparent;
+  text-align:center;
+}
+
+.inquiry-item__qty button {
+  cursor:pointer;
+}
+
+.inquiry-item__qty input {
+  width:72px;
+}
+
+.inquiry-item__remove {
+  min-width:36px;
+  min-height:36px;
+  padding:0 10px;
+  border:1px solid var(--home-line);
+  border-radius:999px;
+  background:transparent;
+  color:var(--home-muted);
+  font-size:9px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.inquiry-summary {
+  position:sticky;
+  top:28px;
+  display:grid;
+  gap:22px;
+  padding:26px;
+  border:1px solid var(--home-line);
+  background:var(--home-surface);
+}
+
+.inquiry-summary h2 {
+  margin:-10px 0 0;
+  font-family:var(--home-serif);
+  font-size:36px;
+  font-weight:400;
+  letter-spacing:-.025em;
+}
+
+.inquiry-summary__rows {
+  display:grid;
+}
+
+.inquiry-summary__rows > div {
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:18px;
+  padding:13px 0;
+  border-bottom:1px solid var(--home-line);
+}
+
+.inquiry-summary__rows span {
+  color:var(--home-muted);
+  font-size:10px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.inquiry-summary__rows strong {
+  font-size:12px;
+}
+
+.inquiry-summary__note {
+  margin:0;
+  padding:18px;
+  background:var(--home-sand);
+  color:var(--home-muted);
+  font-size:10px;
+  line-height:1.65;
+}
+
+.inquiry-validation {
+  margin:0;
+  padding:12px 14px;
+  border:1px solid rgba(127,72,42,.22);
+  background:rgba(197,143,104,.11);
+  color:#714a35;
+  font-size:10px;
+  line-height:1.55;
+}
+
+.inquiry-continue {
+  min-height:50px;
+  border:0;
+  border-radius:999px;
+  background:var(--home-ink);
+  color:var(--home-surface);
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.inquiry-continue:disabled {
+  opacity:.42;
+  cursor:not-allowed;
+}
+
+.inquiry-summary__explore {
+  display:flex;
+  min-height:42px;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--home-line);
+  border-radius:999px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.inquiry-runtime-status {
+  min-height:1em;
+  margin:0;
+  color:var(--home-muted);
+  font-size:9px;
+  text-align:center;
+}
+
+[hidden] {
+  display:none!important;
+}
+
+@media (max-width:1080px) {
+  .inquiry-workspace {
+    grid-template-columns:1fr;
+  }
+
+  .inquiry-summary {
+    position:static;
+  }
+}
+
+@media (max-width:760px) {
+  /*
+   * R4.11B4.1E-C3-FIX2C — iOS Safari focus stability.
+   * 16px prevents native focus zoom without disabling user zoom.
+   */
+  .inquiry-item__qty input {
+    font-size:16px;
+  }
+
+  .inquiry-hero__inner {
+    grid-template-columns:1fr;
+  }
+
+  .inquiry-progress ol {
+    grid-template-columns:1fr;
+  }
+
+  .inquiry-section__header {
+    align-items:start;
+  }
+
+  .inquiry-empty {
+    grid-template-columns:1fr;
+  }
+
+  .inquiry-empty__actions {
+    grid-column:1;
+  }
+
+  .inquiry-item,
+  .inquiry-item--custom {
+    grid-template-columns:78px minmax(0,1fr);
+  }
+
+  .inquiry-item__media {
+    width:78px;
+  }
+
+  .inquiry-item__remove {
+    grid-column:2;
+    justify-self:start;
+  }
+}
+
+
+/* ============================================================
+ * R4.11B4.1E-C3 — Inquiry Commercial Projection
+ * Aggregated tier context stays compact and secondary to conversion.
+ * ========================================================== */
+
+.inquiry-item__commercial {
+  display:grid;
+  gap:6px;
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px solid var(--home-line);
+}
+
+.inquiry-item__commercial > span,
+.inquiry-commercial-group__line {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:16px;
+  align-items:baseline;
+  color:var(--home-muted);
+  font-size:9px;
+  line-height:1.5;
+}
+
+.inquiry-item__commercial em,
+.inquiry-commercial-group__line em {
+  font-style:normal;
+}
+
+.inquiry-item__commercial strong,
+.inquiry-commercial-group__line strong {
+  color:var(--home-ink);
+  font-size:10px;
+  text-align:right;
+}
+
+.inquiry-item__commercial-terminal,
+.inquiry-commercial-group__terminal {
+  margin:0;
+  color:var(--home-muted);
+  font-size:9px;
+  line-height:1.55;
+}
+
+.inquiry-commercial-summary {
+  display:grid;
+  gap:12px;
+  padding:16px 0;
+  border-top:1px solid var(--home-line);
+  border-bottom:1px solid var(--home-line);
+}
+
+.inquiry-commercial-summary__header {
+  display:grid;
+  gap:4px;
+}
+
+.inquiry-commercial-summary__header > span {
+  color:var(--home-ink);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.inquiry-commercial-summary__header small {
+  color:var(--home-soft);
+  font-size:9px;
+  line-height:1.5;
+}
+
+.inquiry-commercial-groups {
+  display:grid;
+  gap:8px;
+}
+
+.inquiry-commercial-group {
+  display:grid;
+  gap:7px;
+  padding:11px 12px;
+  background:var(--home-sand);
+}
+
+.inquiry-commercial-group__heading {
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.inquiry-commercial-group__heading strong {
+  font-size:10px;
+}
+
+.inquiry-commercial-group__heading span {
+  color:var(--home-muted);
+  font-size:9px;
+}
+
+@media (max-width:760px) {
+  .inquiry-item__commercial > span,
+  .inquiry-commercial-group__line {
+    grid-template-columns:1fr;
+    gap:2px;
+  }
+
+  .inquiry-item__commercial strong,
+  .inquiry-commercial-group__line strong {
+    text-align:left;
+  }
+}
+
+
+/* ============================================================
+ * F3-A2 — Inquiry Conversion Composition
+ * Presentation-only B2B decision hierarchy.
+ * ========================================================== */
+
+.inquiry-hero__inner {
+  gap:clamp(32px,5vw,76px);
+  padding-top:clamp(56px,6vw,88px);
+  padding-bottom:clamp(44px,5vw,72px);
+}
+.inquiry-hero h1 {
+  font-size:clamp(44px,5vw,72px);
+  line-height:.96;
+}
+.inquiry-hero__body {
+  max-width:46ch;
+  font-size:14px;
+  line-height:1.65;
+}
+.inquiry-progress {
+  padding-top:16px;
+  padding-bottom:16px;
+}
+.inquiry-workspace {
+  gap:clamp(38px,5vw,72px);
+  padding-top:clamp(44px,5vw,72px);
+  padding-bottom:clamp(82px,9vw,132px);
+}
+.inquiry-selection {
+  gap:20px;
+  min-width:0;
+}
+.inquiry-section__header {
+  align-items:center;
+}
+.inquiry-section__header h2 {
+  margin:0;
+  font-size:clamp(32px,3.4vw,50px);
+}
+.inquiry-items {
+  gap:10px;
+}
+.inquiry-item,
+.inquiry-item--custom {
+  grid-template-columns:96px minmax(0,1fr) auto;
+  gap:18px;
+  padding:16px 18px;
+}
+.inquiry-item__media {
+  width:96px;
+}
+.inquiry-item__title {
+  font-size:22px;
+}
+.inquiry-item__meta {
+  margin-top:10px;
+}
+.inquiry-item__pricing {
+  display:grid;
+  grid-template-columns:minmax(0,.7fr) minmax(0,1fr) minmax(0,1.15fr);
+  gap:10px 16px;
+  align-items:end;
+  margin-top:14px;
+}
+.inquiry-item__pricing > span {
+  display:grid;
+  gap:4px;
+  min-width:0;
+  line-height:1.4;
+}
+.inquiry-item__pricing > span:nth-child(3) {
+  padding-left:14px;
+  border-left:1px solid var(--home-line);
+}
+.inquiry-item__pricing > span:nth-child(3) strong {
+  font-size:14px;
+}
+.inquiry-item__qty {
+  margin-top:14px;
+}
+.inquiry-item__commercial {
+  margin-top:12px;
+  padding-top:10px;
+}
+.inquiry-summary {
+  gap:18px;
+  padding:24px;
+}
+.inquiry-summary h2 {
+  font-size:32px;
+}
+.inquiry-summary__rows > div {
+  padding:11px 0;
+}
+.inquiry-commercial-summary {
+  gap:11px;
+  padding:15px 0;
+}
+.inquiry-commercial-group {
+  gap:6px;
+  padding:10px 0;
+  border-top:1px solid var(--home-line);
+  background:transparent;
+}
+.inquiry-commercial-group:first-child {
+  border-top:0;
+}
+.inquiry-summary__amount {
+  display:grid;
+  gap:8px;
+  padding:19px 0 20px;
+  border-top:1px solid var(--home-line);
+  border-bottom:1px solid var(--home-line);
+}
+.inquiry-summary__amount > span {
+  color:var(--home-muted);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.inquiry-summary__amount > strong {
+  font-family:var(--home-serif);
+  font-size:clamp(30px,2.8vw,40px);
+  font-weight:400;
+  line-height:1;
+  letter-spacing:-.03em;
+}
+.inquiry-summary__note {
+  padding:15px 16px;
+}
+.inquiry-continue {
+  min-height:52px;
+}
+
+@media (max-width:760px) {
+  .inquiry-hero__inner {
+    gap:12px;
+    padding-top:38px;
+    padding-bottom:32px;
+  }
+  .inquiry-hero h1 {
+    margin-top:10px;
+    font-size:38px;
+    letter-spacing:-.035em;
+  }
+  .inquiry-hero__body {
+    margin:0;
+    font-size:13px;
+    line-height:1.55;
+  }
+  .inquiry-progress {
+    padding-top:10px;
+    padding-bottom:10px;
+    overflow:hidden;
+  }
+  .inquiry-progress ol {
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:0;
+  }
+  .inquiry-progress li {
+    display:flex;
+    min-width:0;
+    min-height:36px;
+    gap:6px;
+    padding:0 8px;
+  }
+  .inquiry-progress strong,
+  .inquiry-progress span {
+    font-size:9px;
+  }
+  .inquiry-progress span {
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .inquiry-workspace {
+    gap:34px;
+    padding-top:30px;
+    padding-bottom:72px;
+  }
+  .inquiry-selection {
+    gap:16px;
+  }
+  .inquiry-section__header h2 {
+    font-size:30px;
+  }
+  .inquiry-clear {
+    min-height:34px;
+    padding:0 12px;
+  }
+  .inquiry-items {
+    gap:0;
+    border-bottom:1px solid var(--home-line);
+  }
+  .inquiry-item,
+  .inquiry-item--custom {
+    grid-template-columns:82px minmax(0,1fr);
+    gap:14px;
+    padding:18px 0;
+    border:0;
+    border-top:1px solid var(--home-line);
+    background:transparent;
+  }
+  .inquiry-item__media {
+    width:82px;
+    aspect-ratio:4/5;
+  }
+  .inquiry-item__title {
+    font-size:21px;
+    line-height:1.08;
+  }
+  .inquiry-item__meta {
+    gap:6px 12px;
+    margin-top:10px;
+  }
+  .inquiry-item__chip {
+    min-height:0;
+    padding:0;
+    border:0;
+    border-radius:0;
+    font-size:9px;
+    line-height:1.45;
+  }
+  .inquiry-item__pricing {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px 14px;
+    margin-top:14px;
+  }
+  .inquiry-item__pricing > span:nth-child(3) {
+    grid-column:1/-1;
+    grid-row:1;
+    padding:0 0 10px;
+    border-left:0;
+    border-bottom:1px solid var(--home-line);
+  }
+  .inquiry-item__pricing > span:nth-child(3) strong {
+    font-size:16px;
+  }
+  .inquiry-item__qty {
+    grid-template-columns:36px 64px 36px;
+    width:136px;
+    gap:0;
+  }
+  .inquiry-item__qty button,
+  .inquiry-item__qty input {
+    height:38px;
+    border-radius:0;
+  }
+  .inquiry-item__qty input {
+    width:64px;
+    border-right:0;
+    border-left:0;
+    font-size:16px;
+  }
+  .inquiry-item__remove {
+    grid-column:2;
+    justify-self:start;
+    min-height:32px;
+    padding:0;
+    border:0;
+    border-radius:0;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .inquiry-item__commercial > span,
+  .inquiry-commercial-group__line {
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:8px;
+  }
+  .inquiry-item__commercial strong,
+  .inquiry-commercial-group__line strong {
+    text-align:right;
+  }
+  .inquiry-summary {
+    gap:18px;
+    padding:24px 0 0;
+    border:0;
+    border-top:1px solid var(--home-line);
+    background:transparent;
+  }
+  .inquiry-summary h2 {
+    margin:-8px 0 0;
+    font-size:30px;
+  }
+  .inquiry-summary__rows {
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    border-top:1px solid var(--home-line);
+    border-bottom:1px solid var(--home-line);
+  }
+  .inquiry-summary__rows > div {
+    grid-template-columns:1fr;
+    gap:5px;
+    min-width:0;
+    padding:12px 10px;
+    border-right:1px solid var(--home-line);
+    border-bottom:0;
+  }
+  .inquiry-summary__rows > div:first-child {
+    padding-left:0;
+  }
+  .inquiry-summary__rows > div:last-child {
+    padding-right:0;
+    border-right:0;
+  }
+  .inquiry-summary__rows span {
+    font-size:8px;
+    line-height:1.3;
+  }
+  .inquiry-summary__rows strong {
+    font-size:13px;
+  }
+  .inquiry-commercial-summary {
+    padding:17px 0;
+  }
+  .inquiry-commercial-group {
+    padding:11px 0;
+  }
+  .inquiry-summary__amount {
+    gap:7px;
+    padding:20px 0;
+  }
+  .inquiry-summary__amount > strong {
+    font-size:36px;
+  }
+  .inquiry-summary__note {
+    padding:14px;
+  }
+  .inquiry-continue {
+    min-height:54px;
+    border-radius:0;
+  }
+  .inquiry-summary__explore {
+    min-height:36px;
+    border:0;
+    border-radius:0;
+    text-decoration:underline;
+    text-underline-offset:4px;
+  }
+}
+
+
+/* ============================================================
+ * F3-B2 — Quantity & MOQ Interaction Efficiency
+ * Procurement-condition feedback stays visible without turning the
+ * Inquiry into an error-heavy form.
+ * ========================================================== */
+
+.inquiry-item__qty button:disabled {
+  opacity:.32;
+  cursor:not-allowed;
+}
+
+.inquiry-item[data-inquiry-moq-state="unmet"] .inquiry-item__qty {
+  position:relative;
+}
+
+.inquiry-validation {
+  display:grid;
+  gap:10px;
+}
+
+.inquiry-validation__title {
+  font-size:10px;
+  line-height:1.5;
+}
+
+.inquiry-validation__groups {
+  display:grid;
+  gap:8px;
+}
+
+.inquiry-validation__row {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:3px 14px;
+  align-items:baseline;
+  padding-top:8px;
+  border-top:1px solid rgba(127,72,42,.18);
+}
+
+.inquiry-validation__row > span {
+  min-width:0;
+  font-size:9px;
+  font-weight:700;
+}
+
+.inquiry-validation__row > strong {
+  font-size:10px;
+}
+
+.inquiry-validation__row > small {
+  grid-column:1/-1;
+  color:#8a634d;
+  font-size:9px;
+  line-height:1.45;
+}
+
+@media (max-width:760px) {
+  .inquiry-validation__row {
+    gap:3px 10px;
+  }
+}
+
+
+/* ============================================================
+ * F3-B3 — Product Configuration Edit Flow
+ * Edit remains a quiet utility action; Quantity and conversion stay primary.
+ * ========================================================== */
+
+.inquiry-item__edit {
+  display:inline-flex;
+  width:max-content;
+  margin-top:10px;
+  color:var(--home-muted);
+  font-size:9px;
+  font-weight:800;
+  line-height:1.4;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+.inquiry-item__edit:hover {
+  color:var(--home-ink);
+}
+
+@media (max-width:760px) {
+  .inquiry-item__edit {
+    min-height:28px;
+    align-items:center;
+    margin-top:7px;
+  }
+}
+
+
+/* ============================================================
+ * F3-B5-FIX2R1 — Unified Grouping Visibility
+ * One visible group = one canonical Commercial Quantity Group.
+ * ========================================================== */
+
+.inquiry-quantity-group {
+  display:grid;
+  gap:10px;
+  padding-top:18px;
+  border-top:1px solid var(--home-ink);
+}
+
+.inquiry-quantity-group:first-child {
+  padding-top:0;
+  border-top:0;
+}
+
+.inquiry-quantity-group__header {
+  display:flex;
+  gap:20px;
+  align-items:end;
+  justify-content:space-between;
+  padding:0 2px;
+}
+
+.inquiry-quantity-group__heading {
+  display:grid;
+  gap:4px;
+}
+
+.inquiry-quantity-group__heading > span {
+  color:var(--home-muted);
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.inquiry-quantity-group__heading > strong {
+  font-family:var(--home-serif);
+  font-size:22px;
+  font-weight:400;
+  line-height:1.05;
+}
+
+.inquiry-quantity-group__meta {
+  color:var(--home-muted);
+  font-size:9px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.inquiry-quantity-group__rule {
+  max-width:62ch;
+  margin:-2px 2px 2px;
+  color:var(--home-soft);
+  font-size:9px;
+  line-height:1.5;
+}
+
+.inquiry-quantity-group__body {
+  display:grid;
+  gap:10px;
+}
+
+/* ============================================================
+ * F3-B5-FIX2R2 — Group Status De-duplication
+ * One procurement status line per canonical Quantity Group.
+ * ========================================================== */
+
+.inquiry-quantity-group__status {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 12px;
+  align-items:baseline;
+  margin:2px 2px 4px;
+  padding:8px 10px;
+  border:1px solid var(--home-line);
+  color:var(--home-muted);
+  font-size:9px;
+  line-height:1.45;
+}
+
+.inquiry-quantity-group__status span {
+  font-weight:800;
+}
+
+.inquiry-quantity-group__status strong {
+  color:var(--home-ink);
+  font-size:9px;
+}
+
+.inquiry-quantity-group__status[data-inquiry-group-state="unmet"] {
+  border-color:rgba(127,72,42,.22);
+  background:rgba(197,143,104,.11);
+  color:#714a35;
+}
+
+@media (max-width:760px) {
+  .inquiry-quantity-group {
+    gap:8px;
+    padding-top:22px;
+  }
+
+  .inquiry-quantity-group__header {
+    align-items:start;
+  }
+
+  .inquiry-quantity-group__heading > strong {
+    font-size:20px;
+  }
+
+  .inquiry-quantity-group__meta {
+    padding-top:13px;
+    font-size:8px;
+  }
+
+  .inquiry-quantity-group__rule {
+    margin:0 2px 2px;
+  }
+
+  .inquiry-quantity-group__body {
+    gap:8px;
+  }
+
+  .inquiry-quantity-group__status {
+    display:grid;
+    gap:2px;
+    margin-right:0;
+    margin-left:0;
+  }
+}

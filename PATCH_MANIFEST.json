@@ -1,0 +1,20 @@
+{
+  "stage": "B7-00B.4A",
+  "revision": "R1",
+  "baseHead": "ef32575f48e81378d8907636119a937bc99b7c73",
+  "clientRelease": "b7-00b4a-r1-v99",
+  "pwaCache": "dreamland-pwa-v99",
+  "payload": [
+    "src/ui/desktop/styles/tokens.css",
+    "src/ui/desktop/styles/primitives.css",
+    "scripts/validate-b7-desktop-visual-foundation.mjs"
+  ],
+  "patchedByApplyScript": [
+    "index.html",
+    "sw.js",
+    "src/services/pwa/runtime-pwa.js",
+    "src/ui/desktop/styles/shell.css",
+    "package.json",
+    "scripts/validate-b7-desktop-*.mjs"
+  ]
+}

@@ -1,0 +1,200 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+import SiteHeader from '../../../components/site/SiteHeader.astro';
+import SiteFooter from '../../../components/site/SiteFooter.astro';
+import ReviewPage from '../../../components/review/ReviewPage.astro';
+
+import {
+  buildReviewStaticView,
+  buildReviewRuntimeState
+} from '../../../lib/review-view-model.mjs';
+
+import {
+  mapInquiryScents
+} from '../../../lib/inquiry-view-model.mjs';
+
+import '../../../styles/home.css';
+import '../../../styles/review.css';
+
+import siteContent from '../../../../../data/site-content.json';
+import i18n from '../../../../../data/i18n.json';
+import productsDocument from '../../../../../data/products.json';
+import seriesDocument from '../../../../../data/series.json';
+import appConfig from '../../../../../data/app-config.json';
+import routes from '../../../../../data/page-routes.json';
+
+import '../../../../data/product-data-contract.js';
+import '../../../../domain/localization/runtime-localization-policy.js';
+import '../../../../features/inquiry/runtime-inquiry.js';
+import '../../../../features/contact/runtime-contact.js';
+import '../../../../site/runtime/runtime-page-guards.js';
+
+if(
+  routes.routes
+    ?.inquiry
+    ?.path!==
+  '/inquiry/'||
+  routes.routes
+    ?.contact
+    ?.path!==
+  '/inquiry/contact/'||
+  routes.routes
+    ?.review
+    ?.path!==
+  '/inquiry/review/'||
+  routes.routes
+    ?.review
+    ?.public!==
+  false||
+  routes.routes
+    ?.review
+    ?.guard!==
+  'hasValidContact'||
+  routes.routes
+    ?.success
+    ?.path!==
+  '/inquiry/success/'
+){
+  throw new Error(
+    'R4.9B expected canonical Inquiry → Contact → Review → Success route contract.'
+  );
+}
+
+const productDataContract=
+  globalThis
+    .DreamlandProductDataContract;
+
+const localizationPolicy=
+  globalThis
+    .DreamlandLocalizationPolicy;
+
+const inquiryFeature=
+  globalThis
+    .DreamlandInquiry;
+
+const contactFeature=
+  globalThis
+    .DreamlandContact;
+
+const pageGuards=
+  globalThis
+    .DreamlandPageGuards;
+
+if(
+  !productDataContract||
+  !localizationPolicy||
+  !inquiryFeature||
+  !contactFeature||
+  !pageGuards
+){
+  throw new Error(
+    'R4.9B Review requires Product Data, Localization, Inquiry, Contact and PageGuards canonical owners.'
+  );
+}
+
+const scentRows=
+  productDataContract
+    .parseCsv(
+      fs.readFileSync(
+        path.resolve(
+          process.cwd(),
+          'data/scents.csv'
+        ),
+        'utf8'
+      )
+    );
+
+const scents=
+  mapInquiryScents(
+    scentRows
+  );
+
+const language='en';
+
+const supportedLanguages=[
+  'en',
+  'zh',
+  'ko'
+];
+
+const view=
+  buildReviewStaticView({
+    language,
+    siteContent,
+    localizationPolicy,
+    inquiryFeature,
+    contactFeature,
+    pageGuards
+  });
+
+const runtimeState=
+  buildReviewRuntimeState({
+    languages:
+      supportedLanguages,
+    defaultLanguage:
+      language,
+    siteContent,
+    i18n,
+    productsDocument,
+    seriesDocument,
+    scents,
+    appConfig,
+    localizationPolicy
+  });
+
+const runtimeStateJson=
+  JSON.stringify(
+    runtimeState
+  )
+    .replace(
+      /</g,
+      '\\u003c'
+    );
+
+const languageOptions=
+  supportedLanguages.map(
+    value=>({
+      value,
+      label:
+        i18n.currencyMap
+          ?.[value]
+          ?.label||
+        value.toUpperCase()
+    })
+  );
+---
+<SiteLayout
+  title="Review Inquiry — DREAMLAND"
+  description={view.copy.reviewBody||'Review the inquiry before submission.'}
+  page="review"
+  lang={language}
+  robots="noindex,nofollow"
+  canonical="https://dreamland-catalog.pages.dev/inquiry/review/"
+  ogImage="https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg"
+>
+  <SiteHeader
+    content={view.content}
+    languageOptions={languageOptions}
+    initialLanguage={language}
+    languageEnabled={true}
+  />
+
+  <ReviewPage view={view} />
+
+  <SiteFooter content={view.content} />
+
+  <script
+    is:inline
+    id="reviewRuntimeState"
+    type="application/json"
+    set:html={runtimeStateJson}
+  ></script>
+  <script
+    is:inline
+    type="module"
+    src="/r4-review-runtime.js"
+  ></script>
+</SiteLayout>

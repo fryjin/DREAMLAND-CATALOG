@@ -3,24 +3,27 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<title>DREAMLAND 产品电子手册</title>
-<meta name="description" content="DREAMLAND 手工雕刻香薰蜡烛产品电子手册与询盘工具"/>
+<base href="/">
+<title>DREAMLAND 手工雕刻蜡烛｜批发与定制</title>
+<meta name="description" content="浏览 DREAMLAND 手工雕刻蜡烛系列，了解工艺、产品与定制能力，完成产品配置并提交批发或定制项目询价。"/>
+<meta name="robots" content="index,follow"/>
+<link rel="canonical" href="https://dreamland-catalog.pages.dev/"/>
  <!-- DREAMLAND share metadata: add after the existing description meta -->
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="DREAMLAND"/>
-<meta property="og:title" content="DREAMLAND 雕刻蜡烛产品手册"/>
-<meta property="og:description" content="浏览雕刻蜡烛产品、配置需求并提交询价。支持中文、English、한국어。"/>
+<meta property="og:title" content="DREAMLAND 手工雕刻蜡烛｜批发与定制"/>
+<meta property="og:description" content="浏览 DREAMLAND 手工雕刻蜡烛系列、工艺与定制能力，提交批发或定制项目询价。支持中文、English、한국어。"/>
 <meta property="og:url" content="https://dreamland-catalog.pages.dev/"/>
 <meta property="og:image" content="https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg"/>
 <meta property="og:image:secure_url" content="https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg"/>
 <meta property="og:image:type" content="image/jpeg"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="1200"/>
-<meta property="og:image:alt" content="DREAMLAND 雕刻蜡烛产品手册封面"/>
+<meta property="og:image:alt" content="DREAMLAND 手工雕刻蜡烛品牌与产品系列"/>
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="DREAMLAND 雕刻蜡烛产品手册"/>
-<meta name="twitter:description" content="浏览雕刻蜡烛产品、配置需求并提交询价。"/>
+<meta name="twitter:title" content="DREAMLAND 手工雕刻蜡烛｜批发与定制"/>
+<meta name="twitter:description" content="浏览手工雕刻蜡烛产品、工艺与定制能力，并提交批发或定制项目询价。"/>
 <meta name="twitter:image" content="https://dreamland-catalog.pages.dev/images/shared/share/SHARE001/cover-social.jpg"/> 
 <meta name="theme-color" content="#f3f4f8"/>
 <meta name="color-scheme" content="light"/>
@@ -28,6 +31,139 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="DREAMLAND"/>
+<script src="/src/site/runtime/runtime-device-profile.js?release=b7-00b4j-r3-v129"></script>
+<!-- DREAMLAND B7-00B.4J R2 release bootstrap -->
+<script>
+window.DREAMLAND_RELEASE='b7-00b4j-r3-v129';
+window.DREAMLAND_MPA_ACTIVE=false;
+window.DREAMLAND_PUBLIC_ROUTE_ENTRY=Object.freeze({page:'home',productId:'',pathname:'/'});
+
+if(window.DreamlandDeviceProfile){
+  const profile=
+    window.DreamlandDeviceProfile
+      .configure();
+
+  window.DREAMLAND_PRESENTATION_BOOT=
+    profile.presentation;
+}
+
+(function(){
+  const desktop=
+    window.DREAMLAND_MPA_ACTIVE===true
+      ? window.DREAMLAND_PRESENTATION_BOOT==='desktop'
+      : window.matchMedia?.(
+          '(min-width: 1024px)'
+        )?.matches===true;
+
+  if(!desktop){
+    return;
+  }
+
+  document.documentElement
+    .classList
+    .add(
+      'dreamland-desktop-boot'
+    );
+
+  /*
+   * R6: Desktop never falls back to the Mobile application because a boot
+   * timer elapsed. DreamlandDesktopExperience owns the only successful reveal.
+   */
+})();
+</script>
+<style id="dreamlandReleaseBootStyle">
+@media (min-width:1024px){
+  html.dreamland-desktop-boot,
+  html.dreamland-desktop-boot body{
+    min-height:100%;
+    background:#fbf8f3!important;
+  }
+
+  html.dreamland-desktop-boot body{
+    display:block!important;
+    padding:0!important;
+  }
+
+  html.dreamland-desktop-boot body > #app{
+    display:none!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+
+  html.dreamland-desktop-boot body > #desktopExperience{
+    visibility:hidden!important;
+  }
+
+  html.dreamland-desktop-boot body::after{
+    content:"DREAMLAND";
+    position:fixed;
+    left:50%;
+    top:50%;
+    z-index:2147482000;
+    transform:translate(-50%,-50%);
+    color:#181512;
+    font-family:
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
+    font-size:14px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:.13em;
+    opacity:0;
+    pointer-events:none;
+    animation:
+      dreamlandDesktopBootWordmark
+      .18s ease
+      .8s forwards;
+  }
+}
+
+@keyframes dreamlandDesktopBootWordmark{
+  to{
+    opacity:.72;
+  }
+}
+</style>
+<!-- DREAMLAND v63 startup loader — Mobile only -->
+<script>
+(function(){
+  const desktop=
+    window.DREAMLAND_MPA_ACTIVE===true
+      ? window.DREAMLAND_PRESENTATION_BOOT==='desktop'
+      : window.matchMedia?.(
+          '(min-width: 1024px)'
+        )?.matches===true;
+
+  if(desktop){
+    return;
+  }
+
+  document.documentElement
+    .classList
+    .add(
+      'dreamland-booting'
+    );
+
+  window.setTimeout(
+    function(){
+      document.documentElement
+        .classList
+        .remove(
+          'dreamland-booting'
+        );
+    },
+    9000
+  );
+})();
+</script>
+<link
+  rel="stylesheet"
+  href="./startup-loader.css?release=b7-00b4j-r3-v129"
+  media="(max-width: 1023.98px)"
+/>
+<script src="./startup-loader.js?release=b7-00b4j-r3-v129"></script> 
 <link rel="manifest" href="./manifest.webmanifest"/>
 <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png"/>
@@ -37,6 +173,15 @@
   href="./images/shared/home/HOME001/cover.webp"
   type="image/webp"
   fetchpriority="high"
+  media="(max-width: 1023.98px)"
+>
+<link
+  rel="preload"
+  as="image"
+  href="./images/desktop/home/hero/hero-main.webp?release=b7-00b4j-r3-v129"
+  type="image/webp"
+  fetchpriority="high"
+  media="(min-width: 1024px)"
 >
   <script>
 window.imgMiss=function(img){
@@ -1101,8 +1246,20 @@ body[data-lang="ko"] .option-grid-scroll .option{
   overflow:visible;
 }
 </style>
+<link rel="stylesheet" href="./src/ui/desktop/styles/tokens.css?release=b7-00b4j-r3-v129"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/primitives.css?release=b7-00b4j-r3-v129"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/shell.css?release=b7-00b4j-r3-v129"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/home.css?release=b7-00b4j-r3-v129"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/catalog.css?release=b7-00b4j-r3-v129"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/detail.css?release=b7-00b4j-r3-v129"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/custom.css?release=b7-00b4j-r3-v129"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/inquiry.css?release=b7-00b4j-r3-v129"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/contact.css?release=b7-00b4j-r3-v129"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/review.css?release=b7-00b4j-r3-v129"/>
+<link rel="stylesheet" href="./src/ui/desktop/styles/success.css?release=b7-00b4j-r3-v129"/>
 </head>
-<body>
+<body data-dreamland-page="home" data-product-id="">
+<div id="desktopExperience" class="desktop-experience" aria-hidden="true"></div>
 <main class="phone" id="app">
 <section class="screen active" data-screen="home"><div class="hero"><div class="hero-product media-frame">
   <span class="media-skeleton" aria-hidden="true"></span>
@@ -1128,8 +1285,8 @@ body[data-lang="ko"] .option-grid-scroll .option{
   <span>WHOLESALE</span>
   <span>CATALOG</span>
 </div><div class="hero-copy">
-  <h1>从作梦开始，让好礼发生。</h1><p>浏览商品，加入意向单，先做金额预估，再由顾问确认报价与定制细节。</p></div><div class="hero-cta"><div class="unlock-slider" id="unlockSlider"><div class="unlock-fill" id="unlockFill"></div><button class="unlock-thumb" id="unlockThumb" type="button"><span class="thumb-label">开始入梦</span></button><div class="unlock-hint">右滑进入产品手册</div><div class="unlock-dock"><span class="arrow"></span><span class="arrow"></span><span class="arrow"></span></div></div></div></div></section>
-<section class="screen" data-screen="catalog"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1v-8.5Z"/></svg></button><div><div class="page-title">商品手册</div><div class="page-sub">先选款，再确认报价</div></div><div class="lang-wrap" id="langWrap"><button class="lang-toggle" id="langToggle" onclick="toggleLangMenu(event)"><span class="globe">🌐</span><span class="lang-current">中文</span><span class="caret">▾</span></button><div class="lang-menu" id="langMenu"></div></div></div><div class="tabs" id="seriesTabs"></div><div class="series-count" id="seriesCount"></div></div><div class="content"><div class="catalog-columns" id="productGrid"></div></div></section>
+  <h1>从作梦开始，让好礼发生。</h1><p>浏览商品，加入意向单，先做金额预估，再由顾问确认报价与定制细节。</p></div><div class="hero-cta"><div class="unlock-slider" id="unlockSlider"><div class="unlock-fill" id="unlockFill"></div><button class="unlock-thumb" id="unlockThumb" type="button"><span class="thumb-label">浏览产品</span></button><div class="unlock-hint">右滑浏览产品系列</div><div class="unlock-dock"><span class="arrow"></span><span class="arrow"></span><span class="arrow"></span></div></div></div></div></section>
+<section class="screen" data-screen="catalog"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1v-8.5Z"/></svg></button><div><div class="page-title">产品系列</div><div class="page-sub">先选款，再确认报价</div></div><div class="lang-wrap" id="langWrap"><button class="lang-toggle" id="langToggle" onclick="toggleLangMenu(event)"><span class="globe">🌐</span><span class="lang-current">中文</span><span class="caret">▾</span></button><div class="lang-menu" id="langMenu"></div></div></div><div class="tabs" id="seriesTabs"></div><div class="series-count" id="seriesCount"></div></div><div class="content"><div class="catalog-columns" id="productGrid"></div></div></section>
 <section class="screen" data-screen="detail"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="detailBack()"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">商品配置</div><div class="page-sub">选择尺寸、香型、花样与包装</div></div></div></div><div class="content no-nav with-cta"><div class="detail-media" id="detailMedia"></div><div class="config-card" id="configCard"></div></div><div class="sticky-action"><button class="btn btn-primary full" onclick="addConfiguredProduct()">加入意向单</button></div></section>
 <section class="screen" data-screen="inquiry"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('catalog')"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">意向单</div><div class="page-sub">预算预估，最终由顾问确认</div></div><button class="icon-btn" onclick="confirmClearAll()"><span style="font-size:11px;font-weight:950">清空</span></button></div></div><div class="content with-cta"><div id="inquiryList" class="inquiry-ui"></div><div id="summaryBox"></div></div><div class="sticky-action"><button class="btn btn-primary full" onclick="goContact()">提交意向单</button></div></section>
 <section class="screen" data-screen="custom"><div class="fixed-top"><div class="header"><button class="icon-btn" onclick="go('catalog')"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div><div class="page-title">定制信息</div><div class="page-sub">用于判断定制方案、数量、预算与交付需求</div></div></div></div><div class="content with-cta"><div class="form-card" id="customForm"><div class="field"><label class="label">定制用途 *</label><select class="select" id="customUse"><option value="">请选择定制用途</option><option>节日礼品</option><option>品牌活动</option><option>婚礼 / 派对</option><option>门店陈列</option><option>企业礼赠</option><option>其他用途</option></select><div class="error">请选择定制用途。</div></div><div class="field"><label class="label">预计数量 *</label><input class="input" id="customQty" type="number" min="1" placeholder="例如：500"><div class="error">请填写预计数量。</div></div><div class="field"><label class="label">预算范围</label><select class="select" id="customBudget"><option>待确认</option><option>USD 1,000 以下</option><option>USD 1,000 - 3,000</option><option>USD 3,000 - 10,000</option><option>USD 10,000 以上</option></select></div><div class="field"><label class="label">目标交付时间</label><input class="input" id="customDate" placeholder="例如：30 个工作日内 / 具体日期"></div><div class="field"><label class="label">尺寸偏好</label><select class="select" id="customSize"><option>待推荐</option><option>S / 10*13cm</option><option>M / 11*17cm</option><option>L / 14*21cm</option><option>XL / 14*26cm</option><option>多尺寸组合</option></select></div><div class="field"><label class="label">香型需求</label><select class="select" id="customScent"><option>待推荐</option><option>无香</option><option>花香调</option><option>木质调</option><option>水生调</option><option>节日甜香</option><option>指定香精品牌</option></select></div><div class="field"><label class="label">色系需求</label><input class="input" id="customColor" placeholder="例如：粉色系 / 绿色系 / 品牌 VI 色"></div><div class="field"><label class="label">包装需求</label><select class="select" id="customPack"><option>待推荐</option>
@@ -1149,33 +1306,179 @@ body[data-lang="ko"] .option-grid-scroll .option{
 
 <div class="pwa-network-banner" id="pwaNetworkBanner" role="status" aria-live="polite" hidden>
   <span id="pwaNetworkText"></span>
-  <button type="button" aria-label="关闭" onclick="hideNetworkBanner()">×</button>
+  <button type="button" aria-label="关闭" onclick="DreamlandPwa.hideNetworkBanner()">×</button>
 </div>
 <div class="pwa-action-banner" id="pwaActionBanner" role="status" aria-live="polite" hidden>
   <div class="pwa-action-copy"><strong id="pwaActionTitle"></strong><span id="pwaActionCopy"></span></div>
-  <button class="pwa-action-primary" id="pwaActionPrimary" type="button" onclick="handlePwaPrimaryAction()"></button>
-  <button class="pwa-action-close" type="button" aria-label="稍后" onclick="dismissPwaAction()">×</button>
+  <button class="pwa-action-primary" id="pwaActionPrimary" type="button" onclick="DreamlandPwa.handlePrimaryAction()"></button>
+  <button class="pwa-action-close" type="button" aria-label="稍后" onclick="DreamlandPwa.dismissAction()">×</button>
 </div>
-<div class="pwa-guide-layer" id="pwaGuideLayer" role="dialog" aria-modal="true" aria-labelledby="pwaGuideTitle" hidden onclick="if(event.target===this)closePwaGuide()">
+<div class="pwa-guide-layer" id="pwaGuideLayer" role="dialog" aria-modal="true" aria-labelledby="pwaGuideTitle" hidden onclick="if(event.target===this)DreamlandPwa.closeGuide()">
   <div class="pwa-guide-card">
     <div class="pwa-guide-head">
       <div><h3 id="pwaGuideTitle"></h3><p id="pwaGuideCopy"></p></div>
-      <button class="pwa-guide-close" type="button" aria-label="关闭" onclick="closePwaGuide()">×</button>
+      <button class="pwa-guide-close" type="button" aria-label="关闭" onclick="DreamlandPwa.closeGuide()">×</button>
     </div>
     <div class="pwa-guide-steps" id="pwaGuideSteps"></div>
     <div class="pwa-guide-actions">
-      <button class="copy" type="button" id="pwaCopyLinkBtn" onclick="copyPwaLink()"></button>
-      <button class="done" type="button" id="pwaGuideDoneBtn" onclick="closePwaGuide()"></button>
+      <button class="copy" type="button" id="pwaCopyLinkBtn" onclick="DreamlandPwa.copyLink()"></button>
+      <button class="done" type="button" id="pwaGuideDoneBtn" onclick="DreamlandPwa.closeGuide()"></button>
     </div>
   </div>
 </div>
 </main>
-<script src="./catalog-data.js"></script>
+<script src="/src/site/runtime/runtime-route.js?release=b7-00b4j-r3-v129"></script>
+<script src="/src/site/runtime/runtime-page-context.js?release=b7-00b4j-r3-v129"></script>
+<script src="/src/site/runtime/runtime-navigation-context.js?release=b7-00b4j-r3-v129"></script>
+<script src="/src/site/runtime/runtime-site-bootstrap.js?release=b7-00b4j-r3-v129"></script>
+<script src="/src/site/runtime/runtime-public-navigation.js?release=b7-00b4j-r3-v129"></script>
+<script src="/src/site/runtime/runtime-catalog-url-state.js?release=b7-00b4j-r3-v129"></script>
+<script src="/src/site/runtime/runtime-page-guards.js?release=b7-00b4j-r3-v129"></script>
+<script src="./src/data/product-data-contract.js"></script>
+<script src="./src/domain/pricing/runtime-pricing-policy.js"></script>
+<script src="./src/domain/submission/runtime-submission-payload.js"></script>
+<script src="./src/domain/localization/runtime-localization-policy.js"></script>
+<script src="./catalog-data.js?release=b7-00b4j-r3-v129"></script>
+<script src="./src/services/storage/runtime-storage.js"></script>
+<script src="./src/services/pwa/runtime-pwa.js?release=b7-00b4j-r3-v129"></script>
+<script src="./src/services/submission/runtime-submission.js?patch=b7-00b4j-r3-web3forms-direct"></script>
+<script src="./src/services/risk/runtime-risk.js"></script>
+<script src="./src/features/catalog/runtime-catalog.js"></script>
+<script src="./src/features/detail/runtime-detail.js"></script>
+<script src="./src/features/inquiry/runtime-inquiry.js"></script>
+<script src="./src/features/custom/runtime-custom.js"></script>
+<script src="./src/features/contact/runtime-contact.js"></script>
+<script src="./src/ui/catalog/runtime-catalog-renderer.js"></script>
+<script src="./src/ui/detail/runtime-detail-renderer.js"></script>
+<script src="./src/ui/inquiry/runtime-inquiry-renderer.js"></script>
+<script src="./src/ui/desktop/shell/runtime-desktop-shell.js?release=b7-00b4j-r3-v129"></script>
+<script src="./src/ui/desktop/home/runtime-desktop-home.js?release=b7-00b4j-r3-v129"></script>
+<script src="./src/features/catalog/runtime-desktop-catalog-view.js?release=b7-00b4j-r3-v129"></script>
+<script src="./src/ui/desktop/catalog/runtime-desktop-catalog.js?release=b7-00b4j-r3-v129"></script>
+<script src="./src/ui/desktop/detail/runtime-desktop-detail.js?release=b7-00b4j-r3-v129"></script>
+<script src="./src/ui/desktop/custom/runtime-desktop-custom.js?release=b7-00b4j-r3-v129"></script>
+<script src="./src/ui/desktop/inquiry/runtime-desktop-inquiry.js?release=b7-00b4j-r3-v129"></script>
+<script src="./src/ui/desktop/contact/runtime-desktop-contact.js?release=b7-00b4j-r3-v129"></script>
+<script src="./src/ui/desktop/review/runtime-desktop-review.js?release=b7-00b4j-r3-v129"></script>
+<script src="./src/ui/desktop/success/runtime-desktop-success.js?release=b7-00b4j-r3-v129"></script>
+<script src="./src/ui/desktop/runtime-desktop-experience.js?release=b7-00b4j-r3-v129"></script>
+<script src="./src/app/runtime-inquiry-submission-flow.js"></script>
+<script src="./custom-scent-multi.js"></script>
 <script>
+const appStorage=window.DreamlandStorage;
+const pwaService=window.DreamlandPwa;
+const submissionService=window.DreamlandSubmission;
+const riskService=window.DreamlandRisk;
+const catalogFeature=window.DreamlandCatalog;
+const inquiryFeature=window.DreamlandInquiry;
+const customFeature=window.DreamlandCustom;
+const contactFeature=window.DreamlandContact;
+const catalogRenderer=window.DreamlandCatalogRenderer;
+const inquiryRenderer=window.DreamlandInquiryRenderer;
+const detailRenderer=window.DreamlandDetailRenderer;
+const customScentUi=window.DreamlandCustomScent;
+const submissionFlow=window.DreamlandInquirySubmissionFlow;
+const pageGuards=window.DreamlandPageGuards;
+const detailFeature=window.DreamlandDetail;
+const pricingPolicy=window.DreamlandPricingPolicy;
+const submissionPayloadPolicy=window.DreamlandSubmissionPayload;
+const localizationPolicy=window.DreamlandLocalizationPolicy;
+const desktopExperience=window.DreamlandDesktopExperience;
+
+if(!pricingPolicy){
+  throw new Error(
+    'DreamlandPricingPolicy must load before pricing policy initialization.'
+  );
+}
+
+if(!submissionPayloadPolicy){
+  throw new Error(
+    'DreamlandSubmissionPayload must load before submission payload initialization.'
+  );
+}
+
+if(!localizationPolicy){
+  throw new Error(
+    'DreamlandLocalizationPolicy must load before localization policy initialization.'
+  );
+}
+
+if(!desktopExperience){
+  throw new Error(
+    'DreamlandDesktopExperience must load before Desktop presentation initialization.'
+  );
+}
+
+if(!inquiryFeature){
+  throw new Error(
+    'DreamlandInquiry must load before Inquiry state initialization.'
+  );
+}
+
+if(!customFeature||!customScentUi){
+  throw new Error(
+    'DreamlandCustom and DreamlandCustomScent must load before Custom initialization.'
+  );
+}
+
+if(!inquiryRenderer){
+  throw new Error(
+    'DreamlandInquiryRenderer must load before Inquiry UI initialization.'
+  );
+}
+
+if(!contactFeature){
+  throw new Error(
+    'DreamlandContact must load before Contact initialization.'
+  );
+}
+
+if(!submissionFlow){
+  throw new Error(
+    'DreamlandInquirySubmissionFlow must load before Submission flow initialization.'
+  );
+}
+
+if(!appStorage){
+  throw new Error(
+    'DreamlandStorage must load before app state initialization.'
+  );
+}
+
+if(!pwaService){
+  throw new Error(
+    'DreamlandPwa must load before app initialization.'
+  );
+}
+
+if(!catalogFeature){
+  throw new Error(
+    'DreamlandCatalog must load before Catalog state initialization.'
+  );
+}
+
+if(!catalogRenderer){
+  throw new Error(
+    'DreamlandCatalogRenderer must load before Catalog UI initialization.'
+  );
+}
+
+if(!detailFeature){
+  throw new Error(
+    'DreamlandDetail must load before Detail state initialization.'
+  );
+}
+
+if(!detailRenderer){
+  throw new Error(
+    'DreamlandDetailRenderer must load before Detail UI initialization.'
+  );
+}
+
 const STORAGE_KEY='productManualV2State';
 const LANG_KEY='productManualLang';
 const langOrder=['zh','en','ko'];
-let currentLang=localStorage.getItem(LANG_KEY)||'zh';
+let currentLang=appStorage.local.getItem(LANG_KEY)||'zh';
 let currencyMap={};
 let seriesMeta={};
 let seriesTabLabels={};
@@ -1191,6 +1494,7 @@ let uiDict={};
 let choiceMaps={};
 let languageNames={};
 let appConfig={};
+let siteContent={};
 let defaultSeries='advanced';
 const SUBMISSION_ARCHIVE_KEY='dreamlandInquiryArchiveV1';
 const LAST_SUBMISSION_KEY='dreamlandLastSubmissionV1';
@@ -1209,15 +1513,25 @@ const CONTACT_FIELD_IDS=[
   'message'
 ];
 
-let contactDraftTimer=null;
-let pendingInquiryId=localStorage.getItem(PENDING_INQUIRY_KEY)||'';
-let hcaptchaWidgetId=null;
-let hcaptchaRenderToken=0;
-let hcaptchaResponseToken='';
-let hcaptchaExecutionPromise=null;
-let submittingInquiry=false;
-let lastSubmitAttemptAt=0;
+let pendingInquiryId=
+  appStorage.local.getItem(
+    PENDING_INQUIRY_KEY
+  )||
+  '';
 
+contactFeature.configure({
+  storage:
+    appStorage.local,
+
+  storageKey:
+    CONTACT_DRAFT_KEY,
+
+  ttlMs:
+    CONTACT_DRAFT_TTL_MS,
+
+  fieldIds:
+    CONTACT_FIELD_IDS
+});
 
 const DETAIL_IMAGE_FIELDS = [
   'angle_image',
@@ -1334,11 +1648,39 @@ function sharedAssetCandidates(
       size
     );
 
-  return uniqueImages([
-    record?.imagePath,
-    record?.fallbackPath,
-    fallback
-  ]);
+  const candidates=
+    uniqueImages([
+      record?.imagePath,
+      record?.fallbackPath,
+      fallback
+    ]);
+
+  const transform=
+    window.DreamlandRuntimeHooks
+      ?.get(
+        'sharedAssets.transformCandidates'
+      );
+
+  if(!transform){
+    return candidates;
+  }
+
+  const transformed=
+    transform({
+      category,
+      lookupKey,
+      size,
+      fallback,
+      candidates
+    });
+
+  return Array.isArray(
+    transformed
+  )
+    ? uniqueImages(
+        transformed
+      )
+    : candidates;
 }
 
 function htmlAttr(value){
@@ -1543,14 +1885,23 @@ const [
   configResponse,
   loadedProducts,
   loadedSharedAssets,
-  loadedScents
+  loadedScents,
+  loadedSiteContent
 ]=await Promise.all([
   fetch('./data/series.json',{cache:'no-cache'}),
   fetch('./data/i18n.json',{cache:'no-cache'}),
   fetch('./data/app-config.json',{cache:'no-cache'}),
   DreamlandCatalogData.loadProductsWithFallback(),
   DreamlandCatalogData.loadSharedAssetsFromCsv(),
-  DreamlandCatalogData.loadScentsFromCsv()
+  DreamlandCatalogData.loadScentsFromCsv(),
+  fetch('./data/site-content.json',{cache:'no-cache'})
+    .then(
+      response=>
+        response.ok
+          ? response.json()
+          : {}
+    )
+    .catch(()=>({}))
 ]);
   
   const responses=[
@@ -1603,6 +1954,105 @@ indexScents(scents);
   choiceMaps=i18nData.choices||{};
   languageNames=i18nData.languageNames||{};
   appConfig=configData||{};
+  siteContent=loadedSiteContent||{};
+
+  submissionService.configure({
+    submitUrl:
+      appConfig.inquiryEndpoint||
+      '/api/inquiry',
+    accessKeyEndpoint:
+      appConfig
+        .inquiryClientConfigEndpoint||
+      '',
+    transport:
+      appConfig.submissionTransport||
+      'gateway'
+  });
+
+riskService.configure({
+  endpoint:
+    appConfig.riskEndpoint||
+    appConfig.submissionEndpoint||
+    '/api/risk',
+  storage:
+    appStorage.local,
+  storageKey:
+    'dreamlandRiskAttempts',
+  repeatWindowMs:
+    Math.max(
+      60000,
+      Number(
+        appConfig.riskControl
+          ?.repeatWindowMs||
+        600000
+      )
+    ),
+  hcaptcha:{
+    enabled:
+      appConfig.hcaptcha
+        ?.enabled!==false,
+    loadTimeoutMs:
+      Math.max(
+        5000,
+        Number(
+          appConfig.hcaptcha
+            ?.loadTimeoutMs||
+          12000
+        )
+      )
+  }
+});
+
+submissionFlow.configure({
+  submission:
+    submissionService,
+
+  risk:
+    riskService,
+
+  pwa:
+    pwaService,
+
+  inquiry:
+    inquiryFeature,
+
+  contact:
+    contactFeature,
+
+  storage:
+    appStorage.local,
+
+  archiveKey:
+    SUBMISSION_ARCHIVE_KEY,
+
+  lastSubmissionKey:
+    LAST_SUBMISSION_KEY,
+
+  pendingInquiryKey:
+    PENDING_INQUIRY_KEY,
+
+  archiveLimit:
+    Math.max(
+      1,
+      Number(
+        appConfig.archiveLimit
+      )||
+      20
+    ),
+
+  cooldownMs:
+    Math.max(
+      0,
+      Number(
+        appConfig.submitCooldownMs
+      )||
+      10000
+    )
+});
+
+riskService.bindInteractionTracking(
+  document
+);
 
   seriesMeta={};
   seriesTabLabels={zh:{},en:{},ko:{}};
@@ -1652,226 +2102,661 @@ indexScents(scents);
 }
 
 function seriesTabLabel(key){
-  return seriesTabLabels[currentLang]?.[key]||seriesTabLabels.zh?.[key]||seriesMeta[key]?.name||key;
+  return localizationPolicy.seriesLabel(currentLang,key,seriesTabLabels,seriesMeta);
 }
+
 function riskAssessmentEndpoint(){
   return appConfig.submissionEndpoint||'./api/submit'
 }
 
-function web3formsSubmitUrl(){
-  return appConfig.web3formsSubmitUrl||
-    'https://api.web3forms.com/submit'
-}
 
-function web3formsAccessKey(){
-  return String(
-    appConfig.web3formsAccessKey||''
-  ).trim()
-}
-
-function web3formsReady(){
-  return Boolean(web3formsAccessKey())
-}
-['catalogInquiry','productManualState','manualInquiry'].forEach(k=>localStorage.removeItem(k));
-const CATALOG_BATCH_SIZE=5;
+['catalogInquiry','productManualState','manualInquiry'].forEach(k=>appStorage.local.removeItem(k));
 const QTY_STEP=1;
 const QTY_MIN=1;
-let activeScreen='home',activeSeries='advanced',activeProduct=null,config={},detailSlideIndex=0,detailTimer=null,catalogRenderToken=0,catalogBatchTimer=null,catalogList=[],catalogCursor=0,catalogLoading=false,editingItemId='';let state=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{"version":2,"items":[],"contact":{}}');if(state.version!==2)state={version:2,items:[],contact:{}};
+const inquiryListElement=
+  document.getElementById(
+    'inquiryList'
+  );
 
-  if(!state.items.length&&pendingInquiryId){
+const inquirySummaryElement=
+  document.getElementById(
+    'summaryBox'
+  );
+
+catalogRenderer.configure({
+  tabs:
+    document.getElementById(
+      'seriesTabs'
+    ),
+
+  seriesCount:
+    document.getElementById(
+      'seriesCount'
+    ),
+
+  grid:
+    document.getElementById(
+      'productGrid'
+    ),
+
+  content:
+    document.querySelector(
+      '.screen[data-screen="catalog"] .content'
+    ),
+
+  batchSize:5,
+
+  text:
+    ui,
+
+  language:
+    ()=>currentLang,
+
+  seriesLabel:
+    seriesLabel,
+
+  seriesTabLabel:
+    seriesTabLabel,
+
+  productDisplayName:
+    productDisplayName,
+
+  productCover:
+    productCover,
+
+  fromPrice:
+    fromPrice,
+
+  catalogUnit:
+    catalogUnit,
+
+  htmlAttr:
+    htmlAttr,
+
+  afterAppendBatch:
+    payload=>{
+      window.DreamlandRuntimeHooks
+        ?.emit(
+          'catalog.afterAppendBatch',
+          payload
+        );
+    },
+
+  actions:{
+    selectSeries:
+      series=>{
+        catalogFeature
+          .setActiveSeries(
+            series
+          );
+
+        renderTabs();
+        renderProducts();
+
+        window.DreamlandCatalogUrlState
+          ?.syncMobileSeries?.(
+            series
+          );
+      },
+
+    openDetail:
+      openDetail,
+
+    quickAdd:
+      quickAdd
+  }
+});
+
+detailRenderer.configure({
+  configCard,
+
+  text:
+    ui,
+
+  language:
+    ()=>currentLang,
+
+  choiceLabel,
+
+  seriesLabel,
+
+  scentDisplayText,
+
+  sizeDimensions:
+    size=>
+      sizeDims[size]||
+      '',
+
+  previewData,
+
+  currentPackNotice,
+
+  money,
+
+  qtyUnit,
+
+  htmlAttr,
+
+  afterRender:
+    payload=>{
+      mountSharedAssetImages(
+        payload.root
+      );
+    },
+
+  actions:{
+    selectOption:
+      (
+        key,
+        value,
+        scrollState
+      )=>{
+        applyDetailOption(
+          key,
+          value,
+          scrollState
+        );
+      },
+
+    selectScent:
+      (
+        scentId,
+        scrollState
+      )=>{
+        applyDetailScent(
+          scentId,
+          scrollState
+        );
+      },
+
+    setQuantity:
+      (
+        value,
+        scrollState
+      )=>{
+        applyDetailQuantity(
+          value,
+          scrollState
+        );
+      },
+
+    adjustQuantity:
+      (
+        delta,
+        scrollState
+      )=>{
+        applyDetailQuantityDelta(
+          delta,
+          scrollState
+        );
+      },
+
+    openTier:
+      openTierSheet,
+
+    openScentNotes:
+      openScentNotes,
+
+    openPreview:
+      button=>
+        openSharedPreviewFromButton(
+          button
+        )
+  }
+});
+
+inquiryRenderer.configure({
+  list:
+    inquiryListElement,
+
+  summary:
+    inquirySummaryElement,
+
+  text:
+    ui,
+
+  seriesLabel:
+    seriesLabel,
+
+  choiceLabel:
+    choiceLabel,
+
+  qtyUnit:
+    qtyUnit,
+
+  htmlAttr:
+    htmlAttr,
+
+  money:
+    money,
+
+  currencyUnit:
+    currencyUnit,
+
+  itemScentLabel:
+    itemScentLabel,
+
+  productDisplayName:
+    productDisplayName,
+
+  maximumQuantity:
+    maximumQuantity,
+
+  quantityMin:
+    QTY_MIN,
+
+  quantityStep:
+    QTY_STEP,
+
+  actions:{
+    go:
+      go,
+
+    removeItem:
+      del,
+
+    adjustQuantity:
+      qty,
+
+    setQuantity:
+      setItemQty,
+
+    editItem:
+      openEditProductItem,
+
+    openTier:
+      openItemTierSheet
+  }
+});
+
+/*
+ * B6-06 direct-owner access only.
+ * Detail and Inquiry runtime state are read directly from their Features.
+ * No App-level Detail/Inquiry compatibility snapshots are retained.
+ */
+let activeScreen='home',detailSlideIndex=0,detailTimer=null,editingItemId='';
+
+async function applyPublicRouteEntry(){
+  if(
+    window.DREAMLAND_MPA_ACTIVE!==true
+  ){
+    return true;
+  }
+
+  const entry=
+    window.DREAMLAND_PUBLIC_ROUTE_ENTRY||
+    {
+      page:'home',
+      productId:'',
+      pathname:'/'
+    };
+
+  window.__DREAMLAND_ROUTE_INITIALIZING=true;
+
+  try{
+    if(entry.page==='product'){
+      const requested=
+        String(
+          entry.productId||
+          ''
+        )
+          .trim()
+          .toUpperCase();
+
+      const exact=
+        products.find(product=>{
+          const status=
+            String(
+              product?.status||
+              ''
+            )
+              .trim()
+              .toLowerCase();
+
+          const active=
+            !status||
+            status==='active';
+
+          const id=
+            String(
+              product?.productId||
+              product?.id||
+              ''
+            )
+              .trim()
+              .toUpperCase();
+
+          return (
+            active&&
+            id===requested
+          );
+        })||
+        null;
+
+      if(!exact){
+        window.location.replace(
+          '/404/'
+        );
+
+        return false;
+      }
+
+      const context=
+        window.DreamlandNavigationContext
+          ?.read?.()||
+        null;
+
+      const editItem=
+        context?.mode==='edit-inquiry-item'&&
+        String(context.productId||'')
+          .trim()
+          .toUpperCase()===requested
+          ? inquiryFeature
+              .items()
+              .find(
+                item=>
+                  item.id===
+                    context.itemId&&
+                  String(
+                    item.productId||
+                    item.id||
+                    ''
+                  )
+                    .trim()
+                    .toUpperCase()===
+                    requested
+              )||
+            null
+          : null;
+
+      if(editItem){
+        const opened=
+          detailFeature
+            .openItem(
+              editItem
+            );
+
+        if(opened){
+          editingItemId=
+            editItem.id;
+
+          window.DreamlandNavigationContext
+            ?.consume?.(
+              'edit-inquiry-item'
+            );
+        }else{
+          editingItemId='';
+          detailFeature
+            .openProduct(
+              exact.id
+            );
+        }
+      }else{
+        editingItemId='';
+
+        detailFeature
+          .openProduct(
+            exact.id
+          );
+      }
+
+      detailSlideIndex=0;
+      renderDetail();
+      go('detail');
+      resetDetailScroll();
+
+      return true;
+    }
+
+    if(
+      entry.page==='review'
+    ){
+      const restoredContact=
+        contactFeature
+          .loadDraft();
+
+      const restoredValidation=
+        contactFeature
+          .validate(
+            restoredContact,
+            {
+              emailValid:
+                submissionEmailValid(
+                  restoredContact?.email
+                )
+            }
+          );
+
+      if(
+        !restoredValidation.valid
+      ){
+        window.location.replace(
+          '/inquiry/contact/'
+        );
+
+        return false;
+      }
+    }
+
+    const routeGate=
+      pageGuards
+        ?.evaluate?.(
+          entry.page,
+          {
+            inquiry:
+              inquiryFeature,
+            contact:
+              contactFeature,
+            lastSubmission:
+              desktopLastSubmission,
+            route:
+              window.DreamlandRoute
+          }
+        );
+
+    if(
+      routeGate&&
+      routeGate.allowed===false
+    ){
+      window.location.replace(
+        routeGate.target||
+        '/inquiry/'
+      );
+
+      return false;
+    }
+
+    const screen=
+      entry.page==='review'
+        ? 'preview'
+        : entry.page;
+
+    if(
+      [
+        'home',
+        'catalog',
+        'custom',
+        'inquiry',
+        'contact',
+        'preview',
+        'success'
+      ].includes(screen)
+    ){
+      go(screen);
+      return true;
+    }
+
+    window.location.replace(
+      '/404/'
+    );
+
+    return false;
+  }finally{
+    window.__DREAMLAND_ROUTE_INITIALIZING=false;
+  }
+}
+
+
+function detailProduct(){
+  return detailFeature.product();
+}
+
+function detailConfig(){
+  return detailFeature.getConfig();
+}
+
+inquiryFeature.configure({
+    storage:
+      appStorage.local,
+    storageKey:
+      STORAGE_KEY,
+    version:2,
+    identityKey:
+      productIdentityKey,
+    normalizeQuantity:
+      normalizeQty,
+    pricingSeriesFor:
+      pricingSeriesFor,
+    tierUnitCny:
+      tierUnitCny,
+    packSurchargeCny:
+      packSurchargeCny,
+    convertCnyToBase:
+      cnyToBase,
+
+    projectionText:
+      ui,
+
+    projectionProductDisplayName:
+      productDisplayName,
+
+    projectionSeriesLabel:
+      seriesLabel,
+
+    projectionChoiceLabel:
+      choiceLabel,
+
+    projectionQtyUnit:
+      qtyUnit,
+
+    projectionItemMoq:
+      itemMoq,
+
+    projectionItemScentLabel:
+      itemScentLabel,
+
+    projectionDefaultPack:
+      defaultPack,
+
+    projectionMoney:
+      money
+  });
+  if(!inquiryFeature.items().length&&pendingInquiryId){
 pendingInquiryId='';
-localStorage.removeItem(PENDING_INQUIRY_KEY)
+appStorage.local.removeItem(PENDING_INQUIRY_KEY)
 }
   
 function save(){
-  state.version=2;
-
-  const persistedState={
-    ...state,
-    contact:{}
-  };
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(persistedState)
-  );
-
+  inquiryFeature.persist();
   badge();
-}function uid(){
+}
+function uid(){
   return 'I'+
     Date.now().toString(36)+
     Math.random().toString(36).slice(2,6);
 }
 
 function money(value){
-  const currency=
-    currencyMap[currentLang]||
-    currencyMap.zh;
-
-  const amount=
-    Number(value||0)*
-    currency.rate;
-
-  return currency.prefix+
-    amount.toLocaleString(
-      currency.locale,
-      {
-        minimumFractionDigits:currency.digits,
-        maximumFractionDigits:currency.digits
-      }
-    );
+  return pricingPolicy.money(
+    value,
+    currentLang,
+    currencyMap
+  );
 }
 
 function fromPrice(value){
-  const amount=money(value);
+  return localizationPolicy.fromPrice(currentLang,ui('priceFrom'),money(value));
+}
 
-  return currentLang==='en'
-    ? `${ui('priceFrom')} ${amount}`
-    : `${amount} ${ui('priceFrom')}`;
-} 
-  
 function currencyUnit(){
-  return (
-    currencyMap[currentLang]||
-    currencyMap.zh
-  ).unit;
+  return pricingPolicy
+    .currencyUnit(
+      currentLang,
+      currencyMap
+    );
 }
 
 function cnyToBase(cny){
-  const cnyRate=
-    Number(currencyMap.zh?.rate)||
-    7.2;
-
-  return Number(cny||0)/cnyRate;
+  return pricingPolicy
+    .cnyToBase(
+      cny,
+      currencyMap
+    );
 }
 
 function seriesQty(series){
-  return state.items
-    .filter(
-      item=>
-        item.type==='product'&&
-        item.series===series
-    )
-    .reduce(
-      (total,item)=>
-        total+(Number(item.qty)||0),
-      0
+  return inquiryFeature
+    .seriesQuantity(
+      series
     );
 }
 
 function pricingSeriesFor(item){
-  if(item?.series==='holiday'){
-    return (
-      item.scentSeries||
-      seriesMeta.holiday
-        ?.scentSeriesOptions?.[0]||
-      'classic'
+  return pricingPolicy
+    .pricingSeriesFor(
+      item,
+      seriesMeta
     );
-  }
-
-  return item?.series||'';
-}
-
-function pricingGroupKey(item){
-  if(item?.series==='holiday'){
-    return `holiday:${pricingSeriesFor(item)}`;
-  }
-
-  return item?.series||'';
 }
 
 function pricingGroupQty(item){
-  const key=pricingGroupKey(item);
-
-  return state.items
-    .filter(
-      row=>
-        row.type==='product'&&
-        pricingGroupKey(row)===key
-    )
-    .reduce(
-      (total,row)=>
-        total+(Number(row.qty)||0),
-      0
+  return inquiryFeature
+    .pricingGroupQuantity(
+      item
     );
 }
 
-function tierFor(seriesKey,quantity){
-  const tiers=
-    seriesMeta[seriesKey]?.priceTiers||
-    [];
-
-  return (
-    tiers.find(tier=>{
-      const min=
-        Number(tier.minQty)||0;
-
-      const max=
-        tier.maxQty==null
-          ? Infinity
-          : Number(tier.maxQty);
-
-      return (
-        quantity>=min&&
-        quantity<=max
-      );
-    })||
-    tiers[tiers.length-1]||
-    null
-  );
+function tierFor(
+  seriesKey,
+  quantity
+){
+  return pricingPolicy
+    .tierFor(
+      seriesKey,
+      quantity,
+      seriesMeta
+    );
 }
+
 function tierRangeLabel(tier){
-  const min=Number(tier?.minQty)||1;
-  const max=tier?.maxQty;
-
-  if(max==null){
-    return `${min}+`;
-  }
-
-  return `${min}-${max}`;
+  return pricingPolicy
+    .tierRangeLabel(
+      tier
+    );
 }
 
 function currentTierIndex(
   seriesKey,
   quantity
 ){
-  const tiers=
-    seriesMeta[seriesKey]
-      ?.priceTiers||
-    [];
-
-  return Math.max(
-    0,
-    tiers.findIndex(tier=>{
-      const min=
-        Number(tier.minQty)||0;
-
-      const max=
-        tier.maxQty==null
-          ? Infinity
-          : Number(tier.maxQty);
-
-      return (
-        quantity>=min&&
-        quantity<=max
-      );
-    })
-  );
+  return pricingPolicy
+    .currentTierIndex(
+      seriesKey,
+      quantity,
+      seriesMeta
+    );
 }
 
 function nextTierFor(
   seriesKey,
   quantity
 ){
-  const tiers=
-    seriesMeta[seriesKey]
-      ?.priceTiers||
-    [];
-
-  return tiers.find(
-    tier=>
-      Number(tier.minQty)>quantity
-  )||null;
+  return pricingPolicy
+    .nextTierFor(
+      seriesKey,
+      quantity,
+      seriesMeta
+    );
 }
 
 function configPricingSeries(){
@@ -1882,7 +2767,7 @@ function configPricingSeries(){
 
 function tierMarketingText(
   seriesKey=configPricingSeries(),
-  size=config.size,
+  size=detailConfig().size,
   quantity=configPricingQty()
 ){
   if(!seriesKey){
@@ -1919,13 +2804,13 @@ function tierMarketingText(
 
 function tierSheetTitle(){
   if(
-    activeProduct?.series==='holiday'
+    detailProduct()?.series==='holiday'
   ){
-    return `${seriesLabel(activeProduct.series)} · ${seriesLabel(config.scentSeries)}`;
+    return `${seriesLabel(detailProduct().series)} · ${seriesLabel(detailConfig().scentSeries)}`;
   }
 
   return seriesLabel(
-    activeProduct?.series
+    detailProduct()?.series
   );
 }
 
@@ -2031,7 +2916,7 @@ function itemTierSheetTitle(item){
 
 function openItemTierSheet(id){
   const item=
-    state.items.find(
+    inquiryFeature.items().find(
       row=>
         row.id===id&&
         row.type==='product'
@@ -2103,43 +2988,41 @@ function tierUnitCny(
   size,
   quantity
 ){
-  const tier=
-    tierFor(seriesKey,quantity);
-
-  return Number(
-    tier?.pricesCny?.[size]||0
-  );
+  return pricingPolicy
+    .tierUnitCny(
+      seriesKey,
+      size,
+      quantity,
+      seriesMeta
+    );
 }
 
 function packOptions(series){
-  return (
-    seriesMeta[series]
-      ?.packaging
-      ?.options||
-    ['批发包装']
-  );
+  return pricingPolicy
+    .packOptions(
+      series,
+      seriesMeta
+    );
 }
 
 function defaultPack(series){
-  return (
-    seriesMeta[series]
-      ?.packaging
-      ?.default||
-    packOptions(series)[0]||
-    '批发包装'
-  );
+  return pricingPolicy
+    .defaultPack(
+      series,
+      seriesMeta
+    );
 }
 
 function packSurchargeCny(
   series,
   pack
 ){
-  return Number(
-    seriesMeta[series]
-      ?.packaging
-      ?.surchargesCny?.[pack]||
-    0
-  );
+  return pricingPolicy
+    .packSurchargeCny(
+      series,
+      pack,
+      seriesMeta
+    );
 }
 
 function packSurchargeBase(
@@ -2173,12 +3056,14 @@ function packHint(series){
     })
     .join(' · ');
 }
-function currentPackDeltaCny(){
-  if(!activeProduct)return 0;
 
-  return packSurchargeCny(
-    activeProduct.series,
-    config.pack
+function currentPackDeltaCny(){
+  return (
+    detailFeature
+      .buildViewModel()
+      .pricing
+      .packSurchargeCny||
+    0
   );
 }
 
@@ -2186,205 +3071,189 @@ function currentPackNotice(){
   const delta=currentPackDeltaCny();
 
   if(delta>0){
-    return `已含${choiceLabel(config.pack)} + ${money(cnyToBase(delta))}/${qtyUnit()}`;
+    return `已含${choiceLabel(detailConfig().pack)} + ${money(cnyToBase(delta))}/${qtyUnit()}`;
   }
 
-  return `已含${choiceLabel(config.pack)}`;
+  return `已含${choiceLabel(detailConfig().pack)}`;
 }
+
 function configPricingItem(){
+  const view=
+    detailFeature
+      .buildViewModel();
+
   return {
-    series:activeProduct?.series||'',
-    scentSeries:config.scentSeries||''
+    series:
+      view.product?.series||
+      '',
+    scentSeries:
+      view.config
+        .scentSeries||
+      ''
   };
 }
 
 function configPricingQty(){
-  return normalizeQty(
-    Number(config.qty)||QTY_MIN,
-    QTY_MIN
+  return (
+    detailFeature
+      .buildViewModel()
+      .pricing
+      .quantity
   );
 }
 
 function configUnit(){
-  if(!activeProduct)return 0;
-
-  const pricingSeries=
-    pricingSeriesFor(
-      configPricingItem()
-    );
-
-  const quantity=
-    configPricingQty();
-
-  const basePriceCny=
-    tierUnitCny(
-      pricingSeries,
-      config.size,
-      quantity
-    );
-
-  const packageCny=
-    packSurchargeCny(
-      activeProduct.series,
-      config.pack
-    );
-
-  return cnyToBase(
-    basePriceCny+
-    packageCny
+  return (
+    detailFeature
+      .buildViewModel()
+      .pricing
+      .unitPrice
   );
 }
 
 function itemUnit(item){
-  if(item?.type!=='product'){
-    return 0;
-  }
-
-  const pricingSeries=
-    pricingSeriesFor(item);
-
-  const quantity=
-    pricingGroupQty(item);
-
-  const basePriceCny=
-    tierUnitCny(
-      pricingSeries,
-      item.size,
-      quantity
+  return inquiryFeature
+    .itemUnit(
+      item
     );
-
-  const packageCny=
-    packSurchargeCny(
-      item.series,
-      item.pack
-    );
-
-  return cnyToBase(
-    basePriceCny+
-    packageCny
-  );
 }
 
 function itemSubtotal(item){
-  return item?.type==='product'
-    ? (Number(item.qty)||0)*
-      itemUnit(item)
-    : 0;
+  return inquiryFeature
+    .itemSubtotal(
+      item
+    );
 }
 
 function total(){
-  return state.items.reduce(
-    (sum,item)=>
-      sum+itemSubtotal(item),
-    0
-  );
+  return inquiryFeature
+    .total();
 }
 
 function catalogUnit(product){
-  if(!product)return 0;
-
-  const pricingSeries=
-    product.series==='holiday'
-      ? (
-          seriesMeta.holiday
-            ?.scentSeriesOptions?.[0]||
-          'classic'
-        )
-      : product.series;
-
- const size=
-    defaultProductSize(product);
-
-  const quantity=
-    moqForSeriesSize(
-      product.series,
-      size
+  return pricingPolicy
+    .catalogUnit(
+      product,
+      seriesMeta,
+      currencyMap
     );
-
-  const priceCny=
-    tierUnitCny(
-      pricingSeries,
-      size,
-      quantity
-    );
-
-  const packageCny=
-    packSurchargeCny(
-      product.series,
-      defaultPack(product.series)
-    );
-
-  return cnyToBase(
-    priceCny+
-    packageCny
-  );
 }
+
 function refreshBudgetOptions(){let el=document.getElementById('customBudget');if(!el)return;let previous=el.selectedIndex<0?0:el.selectedIndex;el.innerHTML=currencyMap[currentLang].budget.map(x=>`<option>${x}</option>`).join('');el.selectedIndex=Math.min(previous,el.options.length-1)}
+function desktopCustomBudgetOptions(){
+  const currency=
+    currencyMap[currentLang]||
+    currencyMap.en||
+    currencyMap.zh||
+    {};
+
+  const labels=
+    Array.isArray(currency.budget)
+      ? currency.budget
+      : [];
+
+  /*
+   * Keep the original Custom budget values as stable canonical payload values.
+   * Only the customer-facing label follows currentLang / currencyMap FX.
+   */
+  const canonical=
+    siteContent
+      ?.languages
+      ?.en
+      ?.customProject
+      ?.budgets||
+    [];
+
+  return canonical.map((row,index)=>({
+    value:String(row?.value??''),
+    label:String(
+      labels[index]||
+      row?.label||
+      row?.value||
+      ''
+    )
+  }));
+}
 function updateLangButton(){let btn=document.getElementById('langToggle');if(!btn)return;let label=currencyMap[currentLang].label;let cur=btn.querySelector('.lang-current');if(cur)cur.textContent=label}
 function renderLangOptions(){let box=document.getElementById('langMenu');if(!box)return;box.innerHTML=langOrder.map(k=>{let item=languageNames[k]||{label:k,short:k.toUpperCase()};return`<button class="lang-option ${k===currentLang?'active':''}" onclick="chooseLang('${k}')"><span>${item.label}</span><small>${item.short}</small></button>`}).join('')}
 function openLangSheet(){renderLangOptions();document.getElementById('langMenu')?.classList.add('show')}
 function closeLangSheet(){document.getElementById('langMenu')?.classList.remove('show')}
 function toggleLangMenu(e){e?.stopPropagation?.();let m=document.getElementById('langMenu');if(!m)return;renderLangOptions();m.classList.toggle('show')}
-function rerenderCurrent(){refreshBudgetOptions();updateLangButton();renderLangOptions();renderTabs();if(activeScreen==='catalog')renderProducts();if(activeScreen==='detail')renderDetail();if(activeScreen==='inquiry')renderInquiry();if(activeScreen==='preview')renderPreview();if(activeScreen==='success')renderSuccess();applyI18n()}
+function rerenderCurrent(){
+  refreshBudgetOptions();
+  updateLangButton();
+  renderLangOptions();
+  renderTabs();
+
+  if(activeScreen==='catalog'){
+    renderProducts();
+  }
+
+  if(activeScreen==='detail'){
+    renderDetail();
+  }
+
+  if(activeScreen==='inquiry'){
+    renderInquiry();
+  }
+
+  if(activeScreen==='preview'){
+    renderPreview();
+  }
+
+  if(activeScreen==='success'){
+    renderSuccess();
+  }
+
+  applyI18n();
+
+  if(activeScreen==='custom'){
+    ensureCustomRequestRuntime();
+    customScentUi.render();
+  }
+}
 function ui(key){
-  return uiDict[currentLang]?.[key]||uiDict.zh?.[key]||key;
+  return localizationPolicy.uiText(currentLang,key,uiDict);
 }
+
 function choiceLabel(value){
-  return choiceMaps[currentLang]?.[value]||value;
+  return localizationPolicy.choiceLabel(currentLang,value,choiceMaps);
 }
+
 function seriesLabel(key){return seriesTabLabel(key)}
 function productDisplayName(product){
-  if(!product)return '';
-  return product.names?.[currentLang]||product.names?.zh||product.name||product.id||'';
+  return localizationPolicy.productName(currentLang,product);
 }
+
 function productDesc(product){
-  if(!product)return '';
-  return product.descriptions?.[currentLang]||product.descriptions?.zh||product.desc||'';
+  return localizationPolicy.productDescription(currentLang,product);
 }
+
 function moqForSeriesSize(
   series,
   size
 ){
-  const value=
-    Number(
-      seriesMeta[series]
-        ?.moqBySize?.[size]
+  return pricingPolicy
+    .moqForSeriesSize(
+      series,
+      size,
+      seriesMeta
     );
-
-  return (
-    Number.isInteger(value)&&
-    value>0
-  )
-    ? value
-    : 1;
 }
 
 function defaultProductSize(product){
-  return product?.defaultSize||'S';
-}
-  
-function productMoq(product){
-  if(!product)return 1;
-
-  const configured=
-    moqForSeriesSize(
-      product.series,
-      product.size
+  return pricingPolicy
+    .defaultProductSize(
+      product
     );
+}
 
-  if(configured>1){
-    return configured;
-  }
-
-  const own=
-    Number(product.moq);
-
-  return (
-    Number.isInteger(own)&&
-    own>0
-  )
-    ? own
-    : 1;
+function productMoq(product){
+  return pricingPolicy
+    .productMoq(
+      product,
+      seriesMeta
+    );
 }
 
 function itemMoq(item){
@@ -2417,20 +3286,28 @@ function itemMoq(item){
 }
 
 function configMoq(){
-  return moqForSeriesSize(
-    activeProduct?.series,
-    config.size||
-    activeProduct?.size
+  return (
+    detailFeature
+      .buildViewModel()
+      .pricing
+      .moq
   );
 }
+
 function maximumQuantity(){return Math.max(1,Number(appConfig.maxQuantity)||1000000)}
 function customMoq(){return Math.max(1,Number(appConfig.customMoq)||50)}
-function normalizeQty(value,min=1){
-  let quantity=Number(value);
-  if(!Number.isFinite(quantity))quantity=min;
-  quantity=Math.trunc(quantity);
-  return Math.min(maximumQuantity(),Math.max(min,quantity));
+function normalizeQty(
+  value,
+  min=1
+){
+  return pricingPolicy
+    .normalizeQuantity(
+      value,
+      min,
+      maximumQuantity()
+    );
 }
+
 function generateInquiryId(){
   const now=new Date();
   const date=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('');
@@ -2442,7 +3319,7 @@ function generateInquiryId(){
 function ensureInquiryId(){
   if(!pendingInquiryId){
     pendingInquiryId=generateInquiryId();
-    localStorage.setItem(PENDING_INQUIRY_KEY,pendingInquiryId)
+    appStorage.local.setItem(PENDING_INQUIRY_KEY,pendingInquiryId)
   }
   return pendingInquiryId
 }
@@ -2492,32 +3369,159 @@ function applyI18n(){
   setSelectOptions('buyerType',[['待确认'],['批发商 / 经销商'],['品牌方'],['礼品公司'],['活动 / 婚礼策划'],['零售门店'],['个人客户'],['其他']]);
   let dc=document.querySelectorAll('.detail-label');['intentId','submitDate','currentStatus','estimatedAmount'].forEach((k,i)=>{if(dc[i])dc[i].textContent=ui(k)});let status=document.querySelector('.detail-row:nth-child(3) .detail-value');if(status)status.textContent=ui('statusPending');
   let cc=document.querySelector('.confirm-card');if(cc){let h=cc.querySelector('h3'),p=cc.querySelector('p'),bs=cc.querySelectorAll('button');if(h)h.textContent=ui('clearConfirmTitle');if(p)p.textContent=ui('clearConfirmText');if(bs[0])bs[0].textContent=ui('cancel');if(bs[1])bs[1].textContent=ui('clear')}
-  let toastEl=document.getElementById('toast');if(toastEl&&!toastEl.classList.contains('show'))toastEl.textContent=ui('addedInquiry')
+  let toastEl=document.getElementById('toast');if(toastEl&&!toastEl.classList.contains('show'))toastEl.textContent=ui('addedInquiry');
+
+  desktopExperience.refresh();
 }
 function setLang(lang){
   currentLang=lang;
-  localStorage.setItem(LANG_KEY,lang);
+  appStorage.local.setItem(LANG_KEY,lang);
   rerenderCurrent();
-  refreshPwaUi();
+  window.DreamlandCopyPolish?.updateMeta?.();
+  pwaService.refreshUi();
   toast(ui('switched'))
 }
 function toastText(key){return ui(key)}
 
 function chooseLang(lang){closeLangSheet();if(lang!==currentLang)setLang(lang)}
 function toggleLang(){openLangSheet()}
-function go(n){closePreviewImage();if(n!=='catalog')cancelCatalogRender();if(n!=='detail'&&detailTimer){clearInterval(detailTimer);detailTimer=null}activeScreen=n;document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.dataset.screen===n));document.querySelectorAll('.screen').forEach(s=>s.classList.remove('cta-revealed'));document.getElementById('bottomNav').classList.toggle('is-visible',['catalog','inquiry','custom'].includes(n));updateLangButton();document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.nav===n||(n==='detail'&&x.dataset.nav==='catalog')));if(n==='catalog')renderProducts();if(n==='inquiry')renderInquiry();if(n==='contact'){
-  restoreContactDraft();
-  markRiskFormStart();
-  preloadHCaptchaScript();
-}if(n==='preview')renderPreview();if(n==='success')renderSuccess();applyI18n();requestAnimationFrame(()=>updateCtaReveal(n))}
+function go(n){
+  if(
+    window.DREAMLAND_MPA_ACTIVE===true&&
+    window.__DREAMLAND_ROUTE_INITIALIZING!==true&&
+    window.DreamlandPublicNavigation
+      ?.navigateScreen?.(
+        n
+      )
+  ){
+    return;
+  }
+
+  closePreviewImage();
+
+  if(n!=='catalog'){
+    cancelCatalogRender();
+  }
+
+  if(
+    n!=='detail'&&
+    detailTimer
+  ){
+    clearInterval(
+      detailTimer
+    );
+    detailTimer=null;
+  }
+
+  activeScreen=n;
+
+  desktopExperience.syncScreen(
+    n
+  );
+
+  document
+    .querySelectorAll(
+      '.screen'
+    )
+    .forEach(
+      screen=>
+        screen.classList.toggle(
+          'active',
+          screen.dataset.screen===n
+        )
+    );
+
+  document
+    .querySelectorAll(
+      '.screen'
+    )
+    .forEach(
+      screen=>
+        screen.classList.remove(
+          'cta-revealed'
+        )
+    );
+
+  document
+    .getElementById(
+      'bottomNav'
+    )
+    .classList.toggle(
+      'is-visible',
+      [
+        'catalog',
+        'inquiry',
+        'custom'
+      ].includes(n)
+    );
+
+  updateLangButton();
+
+  document
+    .querySelectorAll(
+      '.nav-item'
+    )
+    .forEach(
+      item=>
+        item.classList.toggle(
+          'active',
+          item.dataset.nav===n||
+          (
+            n==='detail'&&
+            item.dataset.nav===
+              'catalog'
+          )
+        )
+    );
+
+  if(n==='catalog'){
+    renderProducts();
+  }
+
+  if(n==='inquiry'){
+    renderInquiry();
+  }
+
+  if(n==='contact'){
+    restoreContactDraft();
+    markRiskFormStart();
+    preloadHCaptchaScript();
+  }
+
+  if(n==='preview'){
+    renderPreview();
+  }
+
+  if(n==='success'){
+    renderSuccess();
+  }
+
+  applyI18n();
+
+  if(n==='custom'){
+    ensureCustomRequestRuntime();
+    customScentUi.render();
+  }
+
+  requestAnimationFrame(
+    ()=>updateCtaReveal(n)
+  );
+}
+
 function updateCtaReveal(n){if(!['detail','contact','preview','inquiry','custom'].includes(n))return;let screen=document.querySelector(`.screen[data-screen="${n}"]`),c=screen?.querySelector('.content.with-cta');if(!screen||!c)return;let nearBottom=c.scrollHeight-c.scrollTop-c.clientHeight<28;screen.classList.toggle('cta-revealed',nearBottom)}
 function bindCtaReveal(){['detail','contact','preview','inquiry','custom'].forEach(n=>{let s=document.querySelector(`.screen[data-screen="${n}"]`),c=s?.querySelector('.content.with-cta');if(!c)return;c.addEventListener('scroll',()=>updateCtaReveal(n),{passive:true})})}
-function renderTabs(){seriesTabs.className=`tabs lang-${currentLang}`;seriesTabs.innerHTML=Object.keys(seriesMeta).map(k=>`<button class="tab ${k===activeSeries?'active':''}" data-s="${k}">${seriesTabLabel(k)}</button>`).join('');seriesTabs.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{activeSeries=t.dataset.s;renderTabs();renderProducts()})}
+function renderTabs(){
+  catalogRenderer
+    .renderTabs(
+      catalogFeature
+        .buildViewModel()
+    );
+}
 function imgMiss(el){el.classList.add('is-missing')}
 function legacyPatternThumb(value){
   const list=
     patternsBySize[
-      config.size
+      detailConfig().size
     ]||[];
 
   const index=
@@ -2528,7 +3532,7 @@ function legacyPatternThumb(value){
 
   return (
     `./images/patterns/${
-      config.size
+      detailConfig().size
     }/pattern-${
       index
     }.jpg`
@@ -2555,7 +3559,7 @@ function patternThumb(value){
     sharedAssetCandidates(
       'pattern',
       value,
-      config.size,
+      detailConfig().size,
       legacyPatternThumb(value)
     )[0]||
     legacyPatternThumb(value)
@@ -2578,15 +3582,15 @@ function previewData(key){
   if(key==='pattern'){
     return {
       category:'pattern',
-      lookupKey:config.pattern,
-      size:config.size,
+      lookupKey:detailConfig().pattern,
+      size:detailConfig().size,
       fallback:
         legacyPatternThumb(
-          config.pattern
+          detailConfig().pattern
         ),
       label:
         choiceLabel(
-          config.pattern
+          detailConfig().pattern
         )
     };
   }
@@ -2594,15 +3598,15 @@ function previewData(key){
   if(key==='pack'){
     return {
       category:'package',
-      lookupKey:config.pack,
+      lookupKey:detailConfig().pack,
       size:'',
       fallback:
         legacyPackThumb(
-          config.pack
+          detailConfig().pack
         ),
       label:
         choiceLabel(
-          config.pack
+          detailConfig().pack
         )
     };
   }
@@ -2610,11 +3614,11 @@ function previewData(key){
   return null;
 }
 
-function scentTipText(isScroll,h){return isScroll?ui('swipeScent'):h}
-function scentInfo(k){return k==='scent'?`<div class="scent-link-row"><button type="button" onclick="event.stopPropagation();openScentNotes()">${ui('scentNotes')}</button></div>`:''}
+
 function openScentNotes(){
+  window.PatternPreviewSwipe?.deactivate?.();
   const scent=
-    scentMap.get(config.scentId);
+    scentMap.get(detailConfig().scentId);
 
   if(!scent){
     toast(
@@ -2769,48 +3773,43 @@ content.scrollTop=0;
     'show'
   );
 }
-function optionPreview(key){
-  const preview=
-    previewData(key);
 
-  if(!preview){
-    return '';
-  }
-
-  return `
-    <button
-      class="option-thumb media-frame"
-      type="button"
-      data-shared-category="${htmlAttr(preview.category)}"
-      data-shared-key="${htmlAttr(preview.lookupKey)}"
-      data-shared-size="${htmlAttr(preview.size)}"
-      data-fallback-src="${htmlAttr(preview.fallback)}"
-      data-preview-label="${htmlAttr(preview.label)}"
-      onclick="event.stopPropagation();openSharedPreviewFromButton(this)"
-    >
-      <span
-        class="media-skeleton"
-        aria-hidden="true"
-      ></span>
-
-      <img
-        data-shared-category="${htmlAttr(preview.category)}"
-        data-shared-key="${htmlAttr(preview.lookupKey)}"
-        data-shared-size="${htmlAttr(preview.size)}"
-        data-fallback-src="${htmlAttr(preview.fallback)}"
-        alt="${htmlAttr(preview.label)}"
-        loading="lazy"
-        decoding="async"
-      >
-
-      <span>${ui('view')}</span>
-    </button>
-  `;
-}
 
 async function openSharedPreviewFromButton(
   button
 ){
+  const patternPreview=
+    window.PatternPreviewSwipe;
+
+  const category=
+    String(
+      button?.dataset
+        ?.sharedCategory||
+      ''
+    ).toLowerCase();
+
+  if(
+    patternPreview&&
+    (
+      category==='pattern'||
+      category==='package'
+    )
+  ){
+    const opened=
+      await patternPreview
+        .openSharedOptionPreview(
+          button,
+          category
+        );
+
+    if(opened){
+      return;
+    }
+  }
+
+  patternPreview
+    ?.deactivate?.();
+
   const layer=
     document.getElementById(
       'previewLayer'
@@ -2879,8 +3878,9 @@ async function openSharedPreviewFromButton(
 
   imgMiss(img);
 }
-  
+
 function openPreviewImage(src,label){
+  window.PatternPreviewSwipe?.deactivate?.();
   const layer=
     document.getElementById(
       'previewLayer'
@@ -2928,6 +3928,7 @@ function openPreviewImage(src,label){
 
   layer.classList.add('show');
 }function closePreviewImage(){
+  window.PatternPreviewSwipe?.beforeClose?.();
   const layer=
     document.getElementById(
       'previewLayer'
@@ -2966,142 +3967,20 @@ function openPreviewImage(src,label){
     content.innerHTML='';
   }
 }
-function renderProductCard(
-  product,
-  index,
-  tall=false
-){
-  return `
-    <article
-      class="product-card ${tall?'tall':''}"
-      style="animation-delay:${Math.min(index%CATALOG_BATCH_SIZE,4)*42}ms"
-      onclick="openDetail('${product.id}')"
-    >
-      <div class="product-visual">
-        <div class="product-img ${product.color}"></div>
 
-        <img
-          class="product-cover"
-          src="${productCover(product)}"
-          alt="${productDisplayName(product)}"
-          loading="lazy"
-          decoding="async"
-          onerror="imgMiss(this)"
-        >
-      </div>
-
-      <button
-        class="add-mini"
-        onclick="event.stopPropagation();quickAdd('${product.id}')"
-      >
-        +
-      </button>
-
-      <div class="product-name">
-        ${productDisplayName(product)}
-      </div>
-
-      <div class="price-row">
-<span class="price">
-  ${fromPrice(catalogUnit(product))}
-</span>
-
-      </div>
-    </article>
-  `;
-}
 function cancelCatalogRender(){
-  catalogRenderToken++;
-  catalogList=[];
-  catalogCursor=0;
-  catalogLoading=false;
-  if(catalogBatchTimer){
-    if('cancelIdleCallback' in window)cancelIdleCallback(catalogBatchTimer);
-    clearTimeout(catalogBatchTimer);
-    catalogBatchTimer=null;
-  }
+  catalogRenderer
+    .cancel();
 }
-function catalogContentEl(){return document.querySelector('.screen[data-screen="catalog"] .content')}
-function renderProducts(){
-  cancelCatalogRender();
-let token=catalogRenderToken,
-    list=products
-      .filter(product=>product.series===activeSeries)
-      .sort((a,b)=>{
-        const sortDiff=
-          (Number(b.listSort)||Number(b.sortOrder)||0)-
-          (Number(a.listSort)||Number(a.sortOrder)||0);
 
-        return sortDiff||
-          String(a.id).localeCompare(String(b.id));
-      }),
-    displayCount=list.length,
-    content=catalogContentEl();
-  catalogList=list;
-  catalogCursor=0;
-  seriesCount.innerHTML=`<span>${seriesLabel(activeSeries)}</span><span>${ui('total')} ${displayCount} ${ui('models')}</span>`;
-  productGrid.innerHTML=`<div class="catalog-col left" data-catalog-col="left"><div class="series-count-card"><div class="series-kicker">${ui('discover')}</div><div class="series-highlight"><span class="series-number">${displayCount}</span><span class="series-word">${ui('dreams')}</span></div></div></div><div class="catalog-col right" data-catalog-col="right"></div>`;
-  if(content)content.scrollTop=0;
-  appendCatalogBatch(token);
-  requestAnimationFrame(()=>ensureCatalogHasScroll(token));
+function renderProducts(){
+  catalogRenderer
+    .render(
+      catalogFeature
+        .buildViewModel()
+    );
 }
-function appendCatalogBatch(token){
-  if(token!==catalogRenderToken||activeScreen!=='catalog'||catalogCursor>=catalogList.length)return;
-  let left=productGrid.querySelector('[data-catalog-col="left"]'),
-      right=productGrid.querySelector('[data-catalog-col="right"]');
-  if(!left||!right)return;
-  let start=catalogCursor,
-      end=Math.min(start+CATALOG_BATCH_SIZE,catalogList.length),
-      leftHtml='',rightHtml='';
-  for(let i=start;i<end;i++){
-    let p=catalogList[i],cardHtml=renderProductCard(p,i,i===0);
-    if(i===0)rightHtml+=cardHtml;
-    else if((i-1)%2===0)leftHtml+=cardHtml;
-    else rightHtml+=cardHtml;
-  }
-  if(leftHtml)left.insertAdjacentHTML('beforeend',leftHtml);
-  if(rightHtml)right.insertAdjacentHTML('beforeend',rightHtml);
-  catalogCursor=end;
-}
-function ensureCatalogHasScroll(token){
-  if(token!==catalogRenderToken||activeScreen!=='catalog')return;
-  let c=catalogContentEl();
-  if(!c)return;
-  if(catalogCursor<catalogList.length&&c.scrollHeight<=c.clientHeight+80){
-    scheduleCatalogBatch();
-  }
-}
-function scheduleCatalogBatch(){
-  if(catalogLoading||activeScreen!=='catalog'||catalogCursor>=catalogList.length)return;
-  catalogLoading=true;
-  let token=catalogRenderToken,
-      run=()=>{
-        catalogBatchTimer=null;
-        if(token===catalogRenderToken&&activeScreen==='catalog')appendCatalogBatch(token);
-        catalogLoading=false;
-        let c=catalogContentEl();
-        if(c&&catalogCursor<catalogList.length&&c.scrollHeight-c.scrollTop-c.clientHeight<280){
-          catalogBatchTimer=setTimeout(scheduleCatalogBatch,80);
-        }
-      };
-  if('requestIdleCallback' in window){
-    catalogBatchTimer=requestIdleCallback(run,{timeout:180});
-  }else{
-    catalogBatchTimer=setTimeout(run,40);
-  }
-}
-function maybeLoadMoreCatalog(){
-  if(activeScreen!=='catalog'||catalogCursor>=catalogList.length)return;
-  let c=catalogContentEl();
-  if(!c)return;
-  if(c.scrollHeight-c.scrollTop-c.clientHeight<520)scheduleCatalogBatch();
-}
-function bindCatalogLazyLoad(){
-  let c=catalogContentEl();
-  if(!c||c.dataset.lazyBound==='1')return;
-  c.dataset.lazyBound='1';
-  c.addEventListener('scroll',maybeLoadMoreCatalog,{passive:true});
-}
+
 function initialScentSeries(product){
   if(product?.series!=='holiday'){
     return '';
@@ -3116,6 +3995,21 @@ function initialScentSeries(product){
 
 
 function itemScentLabel(item){
+  if(
+    item?.type===
+      'custom'
+  ){
+    return (
+      customScentUi
+        .customScentLabel(
+          item
+        )||
+      ui(
+        'scentRecommend'
+      )
+    );
+  }
+
   const scent=
     itemScentText(item)||
     ui('scentRecommend');
@@ -3157,49 +4051,65 @@ function resetDetailScroll(){
 }
   
 function openDetail(id){
+  if(
+    window.DREAMLAND_MPA_ACTIVE===true&&
+    window.__DREAMLAND_ROUTE_INITIALIZING!==true&&
+    window.DreamlandPublicNavigation
+      ?.openProduct?.(
+        id,
+        {
+          returnTo:
+            window.location.pathname+
+            window.location.search
+        }
+      )
+  ){
+    return;
+  }
+
   editingItemId='';
   cancelCatalogRender();
 
-  activeProduct=
-    products.find(
-      product=>product.id===id
-    )||
-    products[0];
+  const view=
+    detailFeature
+      .openProduct(
+        id
+      );
 
-  if(!activeProduct)return;
+  if(view.empty){
+    return;
+  }
 
-  const size=
-    defaultProductSize(activeProduct);
 
-  const scentSeries=
-    initialScentSeries(
-      activeProduct
-    );
+  detailSlideIndex=0;
 
-  config={
-  size,
-  scentSeries,
-  scentId:'',
-  scent:'',
-  pattern:
-    patternsBySize[size]?.[0]||
-    '',
-  pack:
-    defaultPack(
-      activeProduct.series
-    ),
-  qty:QTY_MIN
-};
-
-detailSlideIndex=0;
-
-renderDetail();
-go('detail');
-resetDetailScroll();
+  renderDetail();
+  go('detail');
+  resetDetailScroll();
 }
 
 function renderDetailMedia(){
-  const imgs=productCarouselImages(activeProduct);
+  const mediaRenderer=
+    window.DreamlandRuntimeHooks
+      ?.get(
+        'detail.renderMedia'
+      );
+
+  if(mediaRenderer){
+    return mediaRenderer();
+  }
+
+  const product=
+    detailProduct();
+
+  if(!product){
+    return;
+  }
+
+  const imgs=
+    productCarouselImages(
+      product
+    );
 
   if(detailSlideIndex>=imgs.length){
     detailSlideIndex=0;
@@ -3212,7 +4122,7 @@ function renderDetailMedia(){
           <div class="detail-slide ${i===detailSlideIndex?'active':''}">
             <img
               src="${src}"
-              alt="${productDisplayName(activeProduct)} ${i+1}"
+              alt="${productDisplayName(product)} ${i+1}"
               onerror="imgMiss(this)"
             >
           </div>
@@ -3242,18 +4152,20 @@ function renderDetailMedia(){
     `
     : '';
 
-  detailMedia.className='detail-media '+activeProduct.color;
+  detailMedia.className=
+    'detail-media '+
+    product.color;
 
   detailMedia.innerHTML=`
-    <div class="product-img ${activeProduct.color}"></div>
+    <div class="product-img ${product.color}"></div>
 
     ${slidesHtml}
 
     ${controlsHtml}
 
     <div class="detail-titlebox">
-      <h2>${productDisplayName(activeProduct)}</h2>
-      <p>${productDesc(activeProduct)}</p>
+      <h2>${productDisplayName(product)}</h2>
+      <p>${productDesc(product)}</p>
     </div>
   `;
 
@@ -3271,10 +4183,19 @@ function updateDetailSlide(){
   dots.forEach((dot,i)=>{
     dot.classList.toggle('active',i===detailSlideIndex);
   });
+
+  window.DreamlandRuntimeHooks
+    ?.emit(
+      'detail.afterSlideUpdate',
+      {
+        container:detailMedia,
+        index:detailSlideIndex
+      }
+    );
 }
 
 function setDetailSlide(i){
-  let imgs=productCarouselImages(activeProduct);
+  let imgs=productCarouselImages(detailProduct());
 
   if(!imgs.length){
     detailSlideIndex=0;
@@ -3293,11 +4214,21 @@ function changeDetailSlide(delta,auto=false){
 }
 
 function startDetailCarousel(){
+  const carouselStarter=
+    window.DreamlandRuntimeHooks
+      ?.get(
+        'detail.startCarousel'
+      );
+
+  if(carouselStarter){
+    return carouselStarter();
+  }
+
   if(detailTimer){
     clearInterval(detailTimer);
   }
 
-  const imgs=productCarouselImages(activeProduct);
+  const imgs=productCarouselImages(detailProduct());
 
   if(imgs.length<=1){
     detailTimer=null;
@@ -3305,7 +4236,7 @@ function startDetailCarousel(){
   }
 
   detailTimer=setInterval(()=>{
-    const currentImgs=productCarouselImages(activeProduct);
+    const currentImgs=productCarouselImages(detailProduct());
 
     if(currentImgs.length<=1){
       return;
@@ -3325,7 +4256,7 @@ const DETAIL_SWIPE_MIN_X=42;
 const DETAIL_SWIPE_DIRECTION_RATIO=1.25;
 
 function detailImageCount(){
-  return productCarouselImages(activeProduct).length;
+  return productCarouselImages(detailProduct()).length;
 }
 
 function bindDetailSwipe(){
@@ -3425,178 +4356,14 @@ function resetDetailSwipe(){
   detailSwipeStartY=0;
 }
 
-function bindHorizontalOptions() {
-  document.querySelectorAll('.option-grid-scroll').forEach((el) => {
-    if (el.dataset.bound === '1') return;
-
-    el.dataset.bound = '1';
-
-    // 移动端由浏览器原生处理横向滑动。
-    // 桌面端将鼠标滚轮转换为横向滚动。
-    el.addEventListener(
-      'wheel',
-      (event) => {
-        if (el.scrollWidth <= el.clientWidth) return;
-
-        const horizontalMovement =
-          Math.abs(event.deltaX) >= Math.abs(event.deltaY)
-            ? event.deltaX
-            : event.deltaY;
-
-        if (!horizontalMovement) return;
-
-        el.scrollLeft += horizontalMovement;
-        event.preventDefault();
-      },
-      { passive: false }
-    );
-  });
-}
 
 function captureDetailOptionScrollState(){
-  if(!configCard){
-    return [];
-  }
-
-  return [...configCard.querySelectorAll('[data-config-key] .option-grid-scroll')]
-    .map(scroller=>{
-      const block=scroller.closest('[data-config-key]');
-
-      if(!block){
-        return null;
-      }
-
-      return {
-        key:block.dataset.configKey,
-        left:scroller.scrollLeft
-      };
-    })
-    .filter(Boolean);
-}
-
-function restoreDetailOptionScrollState(
-  scrollState
-){
-  const states=
-    Array.isArray(scrollState)
-      ? scrollState
-      : scrollState
-        ? [scrollState]
-        : [];
-
-  states.forEach(state=>{
-    if(
-      !state||
-      !state.key||
-      !Number.isFinite(state.left)
-    ){
-      return;
-    }
-
-    const scroller=
-      configCard.querySelector(
-        `[data-config-key="${state.key}"] .option-grid-scroll`
-      );
-
-    if(!scroller){
-      return;
-    }
-
-    /*
-     * DOM 重新生成后，先无动画恢复到用户操作前的位置。
-     */
-    scroller.scrollTo({
-      left:state.left,
-      behavior:'auto'
-    });
-  });
-}
-
-function scrollActiveOptionsIntoView(){
-  if(!configCard){
-    return;
-  }
-
-  configCard
-    .querySelectorAll('[data-config-key] .option-grid-scroll')
-    .forEach(scroller=>{
-      const active=scroller.querySelector('.option.active');
-
-      if(!active){
-        return;
-      }
-
-      const scrollerLeft=scroller.scrollLeft;
-      const scrollerRight=scrollerLeft+scroller.clientWidth;
-      const optionLeft=active.offsetLeft;
-      const optionRight=optionLeft+active.offsetWidth;
-
-      if(optionLeft<scrollerLeft||optionRight>scrollerRight){
-        scroller.scrollLeft=Math.max(0,optionLeft-12);
-      }
-    });
-}
-
-function centerSelectedOption(
-  key,
-  behavior='smooth'
-){
-  if(!configCard||!key){
-    return;
-  }
-
-  const scroller=
-    configCard.querySelector(
-      `[data-config-key="${key}"] .option-grid-scroll`
-    );
-
-  const active=
-    scroller?.querySelector(
-      '.option.active'
-    );
-
-  if(!scroller||!active){
-    return;
-  }
-
-  const targetLeft=
-    active.offsetLeft-
-    (
-      scroller.clientWidth-
-      active.offsetWidth
-    )/2;
-
-  const maxLeft=
-    Math.max(
-      0,
-      scroller.scrollWidth-
-      scroller.clientWidth
-    );
-
-  const nextLeft=
-    Math.max(
-      0,
-      Math.min(
-        maxLeft,
-        targetLeft
-      )
-    );
-
-  scroller.scrollTo({
-    left:nextLeft,
-    behavior
-  });
+  return detailRenderer
+    .captureScrollState();
 }
   
 function scentDisplayText(value){
-  if(!value)return '';
-
-  return (
-    value[currentLang]||
-    value.en||
-    value.zh||
-    ''
-  );
+  return localizationPolicy.scentText(currentLang,value);
 }
 
 function scentSafeText(value){
@@ -3614,13 +4381,11 @@ function productScentSeries(product){
     product?.series||
     '';
 
-  if(Array.isArray(value)){
-    return value.filter(Boolean);
-  }
-
   return String(value)
     .split(',')
-    .map(item=>item.trim())
+    .map(
+      item=>item.trim()
+    )
     .filter(Boolean);
 }
 
@@ -3636,465 +4401,204 @@ function availableScentsForProduct(
   const result=[];
   const used=new Set();
 
-  allowedSeries.forEach(series=>{
-    const seriesScents=
-      scentsBySeries.get(series)||
-      [];
+  allowedSeries.forEach(
+    series=>{
+      const seriesScents=
+        scentsBySeries.get(series)||
+        [];
 
-    seriesScents.forEach(scent=>{
-      if(used.has(scent.id)){
-        return;
-      }
+      seriesScents.forEach(
+        scent=>{
+          if(
+            used.has(
+              scent.id
+            )
+          ){
+            return;
+          }
 
-      used.add(scent.id);
-      result.push(scent);
-    });
-  });
+          used.add(
+            scent.id
+          );
+
+          result.push(
+            scent
+          );
+        }
+      );
+    }
+  );
 
   return result;
 }
 
 function ensureCurrentScent(options){
-  let selected=
+  const current=
+    detailConfig();
+
+  return (
     options.find(
-      scent=>scent.id===config.scentId
-    );
-
-  /*
-   * 兼容原来 config.scent 保存中文名称的旧数据。
-   */
-  if(!selected&&config.scent){
-    selected=options.find(scent=>
-      Object.values(scent.name||{})
-        .includes(config.scent)
-    );
-  }
-
-  if(!selected){
-    selected=options[0]||null;
-  }
-
-  config.scentId=
-    selected?.id||
-    '';
-
-  /*
-   * config.scent 暂时继续保存显示名称，
-   * 避免意向单等旧代码立即失效。
-   */
-  config.scent=
-    selected
-      ? scentDisplayText(selected.name)
-      : '';
-
-  return selected;
+      scent=>
+        scent.id===
+        current.scentId
+    )||
+    options[0]||
+    null
+  );
 }
 
-function setScent(scentId){
-  const optionScrollState=
-    captureDetailOptionScrollState();
-
-  const scent=
-    scentMap.get(scentId);
-
-  if(!scent)return;
-
-  config.scentId=
-    scent.id;
-
-  config.scent=
-    scentDisplayText(
-      scent.name
-    );
-
-  if(
-    activeProduct?.series==='holiday'
-  ){
-    config.scentSeries=
-      scent.series;
-  }
-
-renderDetail(
-  optionScrollState,
-  'scent'
-);
-}
-
-function scentBlock(){
-  const options=
-    availableScentsForProduct(
-      activeProduct,
-      activeProduct?.series==='holiday'
-        ? config.scentSeries
-        : ''
-    );
-
-  ensureCurrentScent(options);
-
-  const gridClass=
-    'option-grid option-grid-scroll';
-
-  const buttons=
-    options.map(scent=>{
-      const active=
-        config.scentId===scent.id;
-
-      const name=
-        scentDisplayText(
-          scent.name
-        );
-
-      return `
-        <button
-          class="option ${active?'active':''}"
-          type="button"
-          onclick="setScent('${scent.id}')"
-        >
-          ${scentSafeText(name)}
-        </button>
-      `;
-    }).join('');
-
-  return `
-    <div
-      class="config-block"
-      data-config-key="scent"
-    >
-      <div class="config-title">
-        <h3>${ui('scent')}</h3>
-
-        <div class="title-side">
-          <div class="tip-tools">
-            <span>
-              ${options.length}
-              ${ui('scentHint')}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="config-choice-row">
-        <div class="${gridClass}">
-          ${buttons}
-        </div>
-      </div>
-
-      ${scentInfo('scent')}
-    </div>
-  `;
-}
-  
-  function renderDetail(
-  scrollState=null,
-  focusKey=''
+function setScent(
+  scentId
 ){
-  renderDetailMedia();
-
-  const meta=
-    seriesMeta[
-      activeProduct.series
-    ];
-
-  const seriesMoq=
-    configMoq();
-
-  const inputMin=
-    QTY_MIN;
-
-
-  config.qty=
-    normalizeQty(
-      config.qty,
-      inputMin
-    );
-
-  const scentSeriesBlock=
-    activeProduct.series==='holiday'
-      ? block(
-          ui('scentSeries'),
-          'scentSeries',
-          meta.scentSeriesOptions,
-          ui('scentSeriesHint')
-        )
-      : '';
-
-  configCard.innerHTML=
-    block(
-      ui('size'),
-      'size',
-      ['S','M','L','XL'],
-      `${ui('currentSizeMoq')} ${seriesMoq}`
-    )+
-    scentSeriesBlock+scentBlock()+
-    block(
-      ui('pattern'),
-      'pattern',
-      patternsBySize[config.size]||[],
-      ui('patternHint')
-    )+
-    block(
-  ui('pack'),
-  'pack',
-  packOptions(activeProduct.series),
-  ''
-)+
-    `
-      <div class="config-block">
-        <div class="config-title">
-  <h3>${ui('quantity')}</h3>
-
-  <button
-    class="tier-title-link"
-    type="button"
-    onclick="openTierSheet()"
-  >
-    ${ui('viewTierPrice')}
-  </button>
-</div>
-
-        <div class="qty-bar">
-          <div>
-           <div class="summary-label">
-  ${ui('currentUnitPrice')}
-</div>
-
-<div class="amount">
-  ${money(configUnit())}
-</div>
-
-<div class="pack-note">
-  ${currentPackNotice()}
-</div>
-          </div>
-
-          <div class="qty-stepper">
-            <button
-              class="step"
-              onclick="changeDetailQty(-QTY_STEP)"
-            >
-              −
-            </button>
-
-            <input
-              class="qty qty-input"
-              id="detailQty"
-              type="number"
-              min="${inputMin}"
-              max="${maximumQuantity()}"
-              step="${QTY_STEP}"
-              value="${config.qty}"
-              inputmode="numeric"
-              onchange="setDetailQty(this.value)"
-            >
-
-            <button
-              class="step"
-              onclick="changeDetailQty(QTY_STEP)"
-            >
-              +
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-
-requestAnimationFrame(()=>{
-  mountSharedAssetImages(
-    configCard
+  return applyDetailScent(
+    scentId,
+    detailRenderer
+      .captureScrollState()
   );
+}
 
-  bindHorizontalOptions();
-
-  const hasScrollState=
-    Array.isArray(scrollState)
-      ? scrollState.length>0
-      : Boolean(scrollState);
-
-  /*
- * 第一阶段：所有横向列表先恢复到重绘前的位置。
- * 该操作发生在浏览器绘制前，不应被用户看到。
- */
-restoreDetailOptionScrollState(
+function applyDetailQuantity(
+  value,
   scrollState
-);
-
-if(focusKey){
-  /*
-   * 第二阶段：下一帧只让当前选中的列表轻微居中。
-   * 此时动画从用户原来的滚动位置开始，
-   * 而不是从最左侧开始。
-   */
-  requestAnimationFrame(()=>{
-    centerSelectedOption(
-      focusKey,
-      'smooth'
-    );
-  });
-}else if(!hasScrollState){
-  scrollActiveOptionsIntoView();
-}
-});
-}
-    
-function block(t, k, opts, h) {
- const optionLabel=(value)=>
-  k==='scentSeries'
-    ? seriesLabel(value)
-    : choiceLabel(value);
-
-const shouldScroll=
-  k!=='size'&&
-  (
-    opts.length>3||
-    currentLang!=='zh'||
-    opts.some(
-      value=>
-        String(optionLabel(value)).length>=7
-    )
-  );
-
-  const tip =
-  k === 'size'
-    ? sizeDims[config.size]
-    : k === 'scent'
-      ? scentTipText(shouldScroll, h)
-      : h;
-
-  const gridClass = shouldScroll
-  ? 'option-grid option-grid-scroll'
-  : 'option-grid';
-
-  const preview = optionPreview(k);
-  const scentRow = scentInfo(k);
-
-  return `
-   <div class="config-block" data-config-key="${k}">
-      <div class="config-title">
-        <h3>${t}</h3>
-        <div class="title-side">
-          <div class="tip-tools">
-            <span>${tip}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="config-choice-row">
-        <div class="${gridClass}">
-          ${opts
-            .map(
-              (o) => `
-                <button
-                  type="button"
-                  class="option ${config[k] === o ? 'active' : ''}"
-                  onclick="setCfg('${k}', '${o}')"
-                >
-                  ${
-  k==='scentSeries'
-    ? seriesLabel(o)
-    : choiceLabel(o)
-}
-                </button>
-              `
-            )
-            .join('')}
-        </div>
-
-        ${preview}
-      </div>
-
-      ${scentRow}
-    </div>
-  `;
-}
-function setCfg(key,value){
-const optionScrollState=captureDetailOptionScrollState();
-
-  config[key]=value;
-
-  if(key==='scentSeries'){
-  config.scentId='';
-  config.scent='';
-}
-
- if(key==='size'){
-  config.pattern=
-    patternsBySize[value]?.[0]||
-    '';
-
-  config.qty=
-    normalizeQty(
-      config.qty,
-      QTY_MIN
-    );
-}
-
-  if(
-    key==='pack'&&
-    !packOptions(
-      activeProduct.series
-    ).includes(config.pack)
-  ){
-    config.pack=
-      defaultPack(
-        activeProduct.series
+){
+  const result=
+    detailFeature
+      .setQuantity(
+        value
       );
-  }
-
-renderDetail(
-  optionScrollState,
-  key
-);
-}
-function setDetailQty(value){
-  const optionScrollState=captureDetailOptionScrollState();
-  const min=QTY_MIN;
-  const raw=Number(value);
 
   if(
-    !Number.isFinite(raw)||
-    raw<min
+    result.invalid||
+    result.belowMin
   ){
     toast(
       ui('minQtyError')
     );
   }
 
-  if(raw>maximumQuantity()){
+  if(result.aboveMax){
     toast(
       ui('quantityTooLarge')
     );
   }
 
-  config.qty=
-    normalizeQty(
-      value,
-      min
-    );
 
-  const input=
-    document.getElementById(
-      'detailQty'
-    );
+  renderDetail(
+    scrollState
+  );
+}
+  
+  function renderDetail(
+  scrollState=null,
+  focusKey=''
+){
+  const detailView=
+    detailFeature
+      .buildViewModel();
 
-  if(input){
-    input.value=config.qty;
+  if(detailView.empty){
+    return;
+  }
+
+  renderDetailMedia();
+
+  return detailRenderer
+    .render(
+      detailView,
+      {
+        scrollState,
+        focusKey
+      }
+    );
+}
+
+function applyDetailOption(
+  key,
+  value,
+  scrollState
+){
+  const view=
+    detailFeature
+      .setOption(
+        key,
+        value
+      );
+
+  if(!view){
+    return;
   }
 
   renderDetail(
-  optionScrollState
-);
+    scrollState,
+    key
+  );
 }
 
-function changeDetailQty(delta){
-  const optionScrollState=captureDetailOptionScrollState();
+function applyDetailScent(
+  scentId,
+  scrollState
+){
+  const view=
+    detailFeature
+      .setScent(
+        scentId
+      );
 
-  config.qty=
-    normalizeQty(
-      Number(config.qty)+delta,
-      QTY_MIN
+  if(!view){
+    return;
+  }
+
+  renderDetail(
+    scrollState,
+    'scent'
+  );
+}
+
+function setCfg(
+  key,
+  value
+){
+  return applyDetailOption(
+    key,
+    value,
+    detailRenderer
+      .captureScrollState()
+  );
+}
+
+function setDetailQty(
+  value
+){
+  return applyDetailQuantity(
+    value,
+    detailRenderer
+      .captureScrollState()
+  );
+}
+
+function applyDetailQuantityDelta(
+  delta,
+  scrollState
+){
+  detailFeature
+    .adjustQuantity(
+      delta
     );
 
-  renderDetail(optionScrollState);
+
+  renderDetail(
+    scrollState
+  );
+}
+
+function changeDetailQty(
+  delta
+){
+  return applyDetailQuantityDelta(
+    delta,
+    detailRenderer
+      .captureScrollState()
+  );
 }
 
 function productIdentityKey(item){
@@ -4127,60 +4631,15 @@ function productIdentityKey(item){
 }
 
 function addOrMergeProductItem(item){
-  const key=
-    productIdentityKey(item);
-
-  const existing=
-    state.items.find(row=>
-      row.type==='product'&&
-      productIdentityKey(row)===key
+  return inquiryFeature
+    .addOrMergeProduct(
+      item
     );
-
-  if(existing){
-    existing.qty=
-      normalizeQty(
-        (Number(existing.qty)||0)+
-        (Number(item.qty)||0),
-        QTY_MIN
-      );
-
-    return existing;
-  }
-
-  state.items.push(item);
-
-  return item;
 }
 
 function mergeDuplicateProductItems(){
-  const map={};
-  const merged=[];
-
-  state.items.forEach(item=>{
-    if(item.type!=='product'){
-      merged.push(item);
-      return;
-    }
-
-    const key=
-      productIdentityKey(item);
-
-    if(map[key]){
-      map[key].qty=
-        normalizeQty(
-          (Number(map[key].qty)||0)+
-          (Number(item.qty)||0),
-          QTY_MIN
-        );
-
-      return;
-    }
-
-    map[key]=item;
-    merged.push(item);
-  });
-
-  state.items=merged;
+  inquiryFeature
+    .mergeDuplicateProducts();
 }
 
 function itemConfigData(item){
@@ -4343,16 +4802,28 @@ function quickAdd(id){
 }
   
 function addConfiguredProduct(){
-  if(!activeProduct)return;
+  const detailView=
+    detailFeature
+      .buildViewModel();
+
+  if(detailView.empty){
+    return;
+  }
+
+  const product=
+    detailView.product;
+
+  const detailConfig=
+    detailView.config;
 
   const wasEditing=
     Boolean(editingItemId);
 
   const scentData=
     scentSnapshot(
-      config.scentId,
-      activeProduct.series,
-      config.scent
+      detailConfig.scentId,
+      product.series,
+      detailConfig.scent
     );
 
   const item={
@@ -4363,28 +4834,28 @@ function addConfiguredProduct(){
     type:'product',
 
     productId:
-      activeProduct.id,
+      product.id,
 
     name:
-      activeProduct.name,
+      product.name,
 
     names:
-      activeProduct.names,
+      product.names,
 
     series:
-      activeProduct.series,
+      product.series,
 
     color:
-      activeProduct.color,
+      product.color,
 
     cover:
-      productCover(activeProduct),
+      productCover(product),
 
     moq:
-      productMoq(activeProduct),
+      productMoq(product),
 
     size:
-      config.size,
+      detailConfig.size,
 
     scentId:
       scentData.scentId,
@@ -4396,53 +4867,52 @@ function addConfiguredProduct(){
       scentData.scentSeries,
 
     pattern:
-      config.pattern,
+      detailConfig.pattern,
 
     pack:
-      config.pack,
+      detailConfig.pack,
 
     qty:
       normalizeQty(
-        config.qty,
+        detailConfig.qty,
         QTY_MIN
       )
   };
 
   if(wasEditing){
-    const index=
-      state.items.findIndex(
-        row=>row.id===editingItemId
+    inquiryFeature
+      .replaceItem(
+        editingItemId,
+        item
       );
-
-    if(index>=0){
-      state.items[index]=item;
-    }
 
     editingItemId='';
 
     mergeDuplicateProductItems();
   }else{
-    addOrMergeProductItem(item);
+    addOrMergeProductItem(
+      item
+    );
   }
 
   save();
 
-toast(
-  toastText(
-    wasEditing
-      ? 'updatedInquiry'
-      : 'addedInquiry'
-  )
-);
+  toast(
+    toastText(
+      wasEditing
+        ? 'updatedInquiry'
+        : 'addedInquiry'
+    )
+  );
 
-if(wasEditing){
-  go('inquiry');
-}
+  if(wasEditing){
+    go('inquiry');
+  }
 }
 
 function openEditProductItem(id){
   const item=
-    state.items.find(
+    inquiryFeature.items().find(
       row=>
         row.id===id&&
         row.type==='product'
@@ -4450,51 +4920,32 @@ function openEditProductItem(id){
 
   if(!item)return;
 
-  const product=
-    products.find(
-      row=>row.id===item.productId
+  if(
+    window.DREAMLAND_MPA_ACTIVE===true&&
+    window.__DREAMLAND_ROUTE_INITIALIZING!==true&&
+    window.DreamlandPublicNavigation
+      ?.editInquiryItem?.(
+        id,
+        item.productId||
+        item.id,
+        '/inquiry/'
+      )
+  ){
+    return;
+  }
+
+  const view=
+  detailFeature
+    .openItem(
+      item
     );
 
-  if(!product)return;
+  if(!view){
+  return;
+  }
 
-  activeProduct=product;
-  editingItemId=id;
+editingItemId=id;
 
-config={
-  size:
-    item.size||
-    defaultProductSize(product),
-
-  scentId:
-    item.scentId||
-    '',
-
-  scentSeries:
-    item.scentSeries||
-    initialScentSeries(product),
-
-  scent:
-    item.scent||
-    '',
-
-  pattern:
-    item.pattern||
-    patternsBySize[
-      item.size||
-      defaultProductSize(product)
-    ]?.[0]||
-    '',
-
-  pack:
-    item.pack||
-    defaultPack(product.series),
-
-  qty:
-    normalizeQty(
-      item.qty,
-      QTY_MIN
-    )
-};
 
 detailSlideIndex=0;
 
@@ -4504,6 +4955,16 @@ resetDetailScroll();
 }
 
 function detailBack(){
+  if(
+    !editingItemId&&
+    window.DREAMLAND_MPA_ACTIVE===true&&
+    window.__DREAMLAND_ROUTE_INITIALIZING!==true&&
+    window.DreamlandPublicNavigation
+      ?.productBack?.()
+  ){
+    return;
+  }
+
   if(editingItemId){
     editingItemId='';
     return go('inquiry');
@@ -4513,352 +4974,69 @@ function detailBack(){
 }
   
 function renderInquiry(){
+  window.DreamlandRuntimeHooks
+    ?.emit(
+      'inquiry.beforeRender',
+      {
+        list:
+          inquiryListElement
+      }
+    );
+
+  queueMicrotask(
+    ()=>{
+      window.DreamlandRuntimeHooks
+        ?.emit(
+          'inquiry.afterRender',
+          {
+            list:
+              inquiryListElement
+          }
+        );
+    }
+  );
+
   mergeDuplicateProductItems();
   save();
 
-  if(!state.items.length){
-    inquiryList.innerHTML=`
-      <div class="empty">
-        <div class="empty-icon">◒</div>
+  const viewModel=
+    inquiryFeature
+      .buildViewModel();
 
-        <h3>${ui('emptyTitle')}</h3>
+  const renderResult=
+    inquiryRenderer
+      .render(
+        viewModel
+      );
 
-        <p style="margin-top:8px;font-size:12px;line-height:1.5">
-          ${ui('emptyText')}
-        </p>
-
-        <div
-          class="btn-row"
-          style="margin-top:20px;width:100%"
-        >
-          <button
-            class="btn btn-primary full"
-            onclick="go('catalog')"
-          >
-            ${ui('goProducts')}
-          </button>
-
-          <button
-            class="btn btn-secondary full"
-            onclick="go('custom')"
-          >
-            ${ui('makeCustom')}
-          </button>
-        </div>
-      </div>
-    `;
-
-    summaryBox.innerHTML='';
+  if(renderResult.empty){
     return;
   }
-
-  const groups={};
-
-  state.items.forEach(item=>{
-    const key=
-      item.type==='custom'
-        ? 'custom'
-        : item.series;
-
-    if(!groups[key]){
-      groups[key]=[];
-    }
-
-    groups[key].push(item);
-  });
-
-  inquiryList.innerHTML=
-    Object.entries(groups)
-      .map(([key,items])=>{
-        const title=
-          key==='custom'
-            ? ui('customInquiry')
-            : seriesLabel(key);
-
-        const countText=
-          key==='custom'
-            ? `${items.length} ${ui('records')}`
-            : `${seriesQty(key)} ${qtyUnit()}`;
-
-        return `
-          <div
-            class="group-title"
-            data-group-key="${htmlAttr(key)}"
-          >
-            <span>${title}</span>
-
-            <span data-group-total>
-              ${countText}
-            </span>
-          </div>
-
-          ${items.map(renderItem).join('')}
-        `;
-      })
-      .join('');
-
-  summaryBox.innerHTML=`
-    <div class="summary">
-      <div class="summary-row">
-        <span class="summary-label">
-          ${ui('inquiryContent')}
-        </span>
-
-        <span
-          class="summary-value"
-          id="inquiryItemCount"
-        >
-          ${state.items.length} ${ui('items')}
-        </span>
-      </div>
-
-      <div class="summary-row">
-        <span class="summary-label">
-          ${ui('tierPrice')}
-        </span>
-
-        <span class="summary-value">
-          ${ui('tierRule')}
-        </span>
-      </div>
-
-      <div class="summary-row">
-        <span class="summary-label">
-          ${ui('productEstimate')}
-        </span>
-
-        <span
-          class="amount"
-          id="inquiryEstimateTotal"
-        >
-          ${money(total())}
-        </span>
-      </div>
-
-      <p class="note">
-        ${ui('summaryNote')}
-      </p>
-    </div>
-  `;
 
   swipes();
   badge();
 }
   
 function updateInquiryDynamicUi(){
-  /*
-   * 一个商品数量改变后，可能触发同价格组的阶梯价变化，
-   * 因此需要更新所有商品的单价和小计，
-   * 但不重新创建商品卡片和缩略图。
-   */
-  state.items.forEach(item=>{
-    if(item.type!=='product'){
-      return;
-    }
+  const viewModel=
+    inquiryFeature
+      .buildViewModel();
 
-    const shell=
-      inquiryList.querySelector(
-        `.swipe-shell[data-id="${item.id}"]`
-      );
-
-    if(!shell){
-      return;
-    }
-
-    const qtyInput=
-      shell.querySelector(
-        '.qty-edit'
-      );
-
-    const unitPrice=
-      shell.querySelector(
-        '.price-unit'
-      );
-
-    const subtotal=
-      shell.querySelector(
-        '.price-total'
-      );
-
-    if(qtyInput){
-      qtyInput.value=
-        normalizeQty(
-          item.qty,
-          QTY_MIN
-        );
-    }
-
-    if(unitPrice){
-      unitPrice.textContent=
-        `${money(itemUnit(item))}${currencyUnit()}`;
-    }
-
-    if(subtotal){
-      subtotal.textContent=
-        money(
-          itemSubtotal(item)
-        );
-    }
-  });
-
-  /*
-   * 更新各系列的数量。
-   */
-  inquiryList
-    .querySelectorAll(
-      '.group-title[data-group-key]'
-    )
-    .forEach(group=>{
-      const key=
-        group.dataset.groupKey;
-
-      const totalElement=
-        group.querySelector(
-          '[data-group-total]'
-        );
-
-      if(!totalElement){
-        return;
-      }
-
-      if(key==='custom'){
-        const customCount=
-          state.items.filter(
-            item=>item.type==='custom'
-          ).length;
-
-        totalElement.textContent=
-          `${customCount} ${ui('records')}`;
-
-        return;
-      }
-
-      totalElement.textContent=
-        `${seriesQty(key)} ${qtyUnit()}`;
-    });
-
-  const itemCount=
-    document.getElementById(
-      'inquiryItemCount'
+  inquiryRenderer
+    .update(
+      viewModel
     );
-
-  if(itemCount){
-    itemCount.textContent=
-      `${state.items.length} ${ui('items')}`;
-  }
-
-  const estimateTotal=
-    document.getElementById(
-      'inquiryEstimateTotal'
-    );
-
-  if(estimateTotal){
-    estimateTotal.textContent=
-      money(total());
-  }
 
   badge();
 }
   
-  function renderItem(i){
-  const trashSvg = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M5 7h14"/><path d="M8 7l1 12h6l1-12"/><path d="M10 11v5"/><path d="M14 11v5"/></svg>`;
-  const delBtn = `<button class="delete-action" type="button" aria-label="删除" onclick="del('${i.id}')">${trashSvg}</button>`;
-  if(i.type==='custom'){
-    const title = `${ui('customInquiry')} · ${choiceLabel(i.use) || ui('notFilled')}`;
-    const line1 = `${i.qty || ui('qtyPending')}${qtyUnit()} · ${choiceLabel(i.sizePref)||ui('sizeRecommend')} · ${choiceLabel(i.scent)||ui('scentRecommend')}`;
-    const line2 = `${i.color || ui('colorPending')} · ${choiceLabel(i.pack)||ui('packRecommend')}`;
-    return `<div class="swipe-shell" data-id="${i.id}">
-      <div class="swipe-card">
-        <div class="inquiry-row">
-          <div class="inquiry-media"><span class="custom-icon">✦</span></div>
-          <div class="inquiry-main">
-            <div class="inquiry-title">${title}</div>
-            <div class="inquiry-attr">${line1}</div>
-            <div class="inquiry-attr">${line2}</div>
 
-
-
-<div class="qty-line"><div class="inquiry-attr">${ui('quantity')}：${i.qty || ui('toConfirm')} ${qtyUnit()}</div></div>
-          </div>
-          <div class="inquiry-side">
-            ${delBtn}
-           <div class="price-stack">
-  <div class="price-unit">${i.budget || ui('budgetPending')}</div>
-  <div class="price-total">${ui('quotePending')}</div>
-</div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-  }
-  let u = itemUnit(i);
-  const media = i.cover ? `<img src="${i.cover}" alt="${i.name || ''}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="product-img ${i.color||'color-1'}" style="display:none"></div>` : `<div class="product-img ${i.color||'color-1'}"></div>`;
-  const line1=
-  `${
-    seriesLabel(i.series)||
-    i.series||
-    ui('toConfirm')
-  } · ${
-    i.size||
-    i.sizeCode||
-    ui('toConfirm')
-  } · ${
-    itemScentLabel(i)
-  }`;
-  const line2 = `${choiceLabel(i.pattern)||ui('toConfirm')} · ${choiceLabel(i.pack)||ui('toConfirm')}`;
-  return `<div class="swipe-shell" data-id="${i.id}">
-    <div class="swipe-card">
-      <div class="inquiry-row">
-        <div class="inquiry-media">${media}</div>
-        <div class="inquiry-main">
-          <div class="inquiry-title">${productDisplayName(i)||ui('notFilled')}</div>
-          <div class="inquiry-attr">${line1}</div>
-         <div class="inquiry-attr">${line2}</div>
-
-
-<div class="qty-line">
-            <div class="mini-stepper">
-              <button class="step" onclick="qty('${i.id}',-QTY_STEP)">−</button>
-              <input class="qty-edit" type="number" min="${QTY_MIN}" max="${maximumQuantity()}" step="${QTY_STEP}" value="${i.qty}" inputmode="numeric" onchange="setItemQty('${i.id}',this.value)" onkeydown="if(event.key==='Enter')this.blur()">
-              <button class="step" onclick="qty('${i.id}',QTY_STEP)">+</button>
-            </div>
-          </div>
-        </div>
-        <div class="inquiry-side">
-          ${delBtn}
-         <div class="price-stack">
-  <div class="price-unit">${money(u)}${currencyUnit()}</div>
-  <div class="price-total">${money(itemSubtotal(i))}</div>
-
-  <div class="item-actions item-actions-side">
-    <button
-      class="item-action"
-      type="button"
-      onclick="openEditProductItem('${i.id}')"
-    >
-      ${ui('editConfig')}
-    </button>
-
-    <button
-      class="item-action"
-      type="button"
-      onclick="openItemTierSheet('${i.id}')"
-    >
-      ${ui('tierShort')}
-    </button>
-  </div>
-</div>
-        </div>
-      </div>
-    </div>
-  </div>`;
-}
 function swipes(){}
 function qty(id,delta){
   const item=
-    state.items.find(
-      row=>row.id===id
-    );
+  inquiryFeature.findItem(
+    id
+  );
 
   if(
     !item||
@@ -4867,20 +5045,22 @@ function qty(id,delta){
     return;
   }
 
-  item.qty=
-    normalizeQty(
-      Number(item.qty)+delta,
-      QTY_MIN
-    );
+  inquiryFeature
+  .setProductQuantity(
+    id,
+    Number(item.qty)+delta,
+    QTY_MIN
+  );
 
   save();
 updateInquiryDynamicUi();
 }
+
 function setItemQty(id,value){
   const item=
-    state.items.find(
-      row=>row.id===id
-    );
+  inquiryFeature.findItem(
+    id
+  );
 
   if(
     !item||
@@ -4906,45 +5086,267 @@ function setItemQty(id,value){
     );
   }
 
-  item.qty=
-    normalizeQty(
-      value,
-      QTY_MIN
-    );
-
+ inquiryFeature
+  .setProductQuantity(
+    id,
+    value,
+    QTY_MIN
+  );
   save();
 updateInquiryDynamicUi();
 }
-function del(id){state.items=state.items.filter(i=>i.id!==id);save();renderInquiry();toast(toastText('removedInquiry'))}
-function confirmClearAll(){if(!state.items.length)return toast(toastText('emptyInquiry'));confirmLayer.classList.add('show')}
+function del(id){
+  inquiryFeature.removeItem(id);
+  save();
+  renderInquiry();
+  toast(
+    toastText(
+      'removedInquiry'
+    )
+  )
+}
+function confirmClearAll(){if(!inquiryFeature.items().length)return toast(toastText('emptyInquiry'));confirmLayer.classList.add('show')}
 function hideConfirm(){confirmLayer.classList.remove('show')}
 function clearInquiry(){
-  state.items=[];
+  inquiryFeature.clearItems();
   pendingInquiryId='';
-  localStorage.removeItem(PENDING_INQUIRY_KEY);
+  appStorage.local.removeItem(PENDING_INQUIRY_KEY);
   save();
   hideConfirm();
   renderInquiry();
   toast(toastText('clearedInquiry'))
 }
-function addCustomIntent(){
-  document.querySelectorAll('[data-screen="custom"] .field').forEach(f=>f.classList.remove('invalid'));
-  let use=fieldValue('customUse'),rawQty=Number(fieldValue('customQty')),min=customMoq(),ok=true;
-  if(!use){document.getElementById('customUse').closest('.field').classList.add('invalid');ok=false}
-  if(!Number.isInteger(rawQty)||rawQty<min||rawQty>maximumQuantity()){
-    document.getElementById('customQty').closest('.field').classList.add('invalid');
-    toast(rawQty>maximumQuantity()?ui('quantityTooLarge'):ui('customMinQtyError'));
-    ok=false
-  }
-  if(!ok)return;
-  state.items.push({
-    id:uid(),type:'custom',use,qty:rawQty,moq:min,
-    budget:fieldValue('customBudget'),date:fieldValue('customDate'),sizePref:fieldValue('customSize'),
-    scent:fieldValue('customScent'),color:fieldValue('customColor'),pack:fieldValue('customPack'),
-    branding:fieldValue('customBranding'),note:fieldValue('customNote')
+
+function ensureCustomFeatureRuntime(){
+  customFeature.configure({
+    scentsBySeries,
+    seriesOrder:[
+      'classic',
+      'advanced',
+      'masterpiece'
+    ],
+    defaultSeries:'classic',
+    customMoq,
+    maximumQuantity
   });
-  save();toast(toastText('addedCustom'));go('inquiry')
+
+  return customFeature.ready();
 }
+
+function ensureCustomRequestRuntime(){
+  ensureCustomFeatureRuntime();
+
+  customScentUi.configure({
+    feature:customFeature,
+    language:()=>currentLang,
+    seriesLabel,
+    scentDisplayText,
+    scentById:
+      id=>
+        scentMap.get(id)||
+        null
+  });
+
+  return (
+    customFeature.ready()&&
+    customScentUi.ready()
+  );
+}
+
+function customDraftFromFields(){
+  return {
+    use:
+      fieldValue(
+        'customUse'
+      ),
+    qty:
+      fieldValue(
+        'customQty'
+      ),
+    budget:
+      fieldValue(
+        'customBudget'
+      ),
+    date:
+      fieldValue(
+        'customDate'
+      ),
+    sizePref:
+      fieldValue(
+        'customSize'
+      ),
+    color:
+      fieldValue(
+        'customColor'
+      ),
+    pack:
+      fieldValue(
+        'customPack'
+      ),
+    branding:
+      fieldValue(
+        'customBranding'
+      ),
+    note:
+      fieldValue(
+        'customNote'
+      )
+  };
+}
+
+function addCustomIntent(){
+  document
+    .querySelectorAll(
+      '[data-screen="custom"] .field'
+    )
+    .forEach(
+      field=>
+        field.classList.remove(
+          'invalid'
+        )
+    );
+
+  ensureCustomRequestRuntime();
+  customScentUi.clearInvalid();
+
+  const draft=
+    customDraftFromFields();
+
+  const validation=
+    customFeature.validateDraft(
+      draft
+    );
+
+  if(
+    validation.errors.includes(
+      'use'
+    )
+  ){
+    document
+      .getElementById(
+        'customUse'
+      )
+      ?.closest(
+        '.field'
+      )
+      ?.classList
+      ?.add(
+        'invalid'
+      );
+  }
+
+  if(
+    validation.errors.some(
+      error=>
+        error==='quantity'||
+        error==='quantity-min'||
+        error==='quantity-max'
+    )
+  ){
+    document
+      .getElementById(
+        'customQty'
+      )
+      ?.closest(
+        '.field'
+      )
+      ?.classList
+      ?.add(
+        'invalid'
+      );
+
+    toast(
+      validation.errors.includes(
+        'quantity-max'
+      )
+        ? ui(
+            'quantityTooLarge'
+          )
+        : ui(
+            'customMinQtyError'
+          )
+    );
+  }
+
+  if(
+    validation.errors.includes(
+      'scents'
+    )
+  ){
+    customScentUi.markInvalid();
+    toast(
+      customScentUi.requiredMessage()
+    );
+  }
+
+  if(
+    !validation.valid
+  ){
+    return;
+  }
+
+  const intent=
+    customFeature.buildIntent(
+      draft,
+      {
+        id:uid()
+      }
+    );
+
+  if(!intent){
+    return;
+  }
+
+  inquiryFeature.addCustom(
+    intent
+  );
+
+  save();
+  toast(
+    toastText(
+      'addedCustom'
+    )
+  );
+  go(
+    'inquiry'
+  );
+}
+
+function addCustomIntentDesktop(
+  draft
+){
+  ensureCustomFeatureRuntime();
+
+  const validation=
+    customFeature.validateDraft(
+      draft
+    );
+
+  if(!validation.valid){
+    return null;
+  }
+
+  const intent=
+    customFeature.buildIntent(
+      draft,
+      {
+        id:uid()
+      }
+    );
+
+  if(!intent){
+    return null;
+  }
+
+  inquiryFeature.addCustom(
+    intent
+  );
+
+  save();
+
+  return intent;
+}
+
 function fieldValue(id){let el=document.getElementById(id);return el?el.value.trim():''}
 function collect(){return{
   name:fieldValue('name'),
@@ -4956,120 +5358,139 @@ function collect(){return{
   buyerType:fieldValue('buyerType'),
   message:fieldValue('message')
 }}
-function readContactDraft(){
-  try{
-    const draft=JSON.parse(
-      localStorage.getItem(CONTACT_DRAFT_KEY)||'null'
-    );
 
-    const savedAt=Number(draft?.savedAt)||0;
-
-    if(
-      !draft?.contact||
-      !savedAt||
-      Date.now()-savedAt>CONTACT_DRAFT_TTL_MS
-    ){
-      localStorage.removeItem(CONTACT_DRAFT_KEY);
-      return {};
-    }
-
-    return draft.contact;
-  }catch(_){
-    localStorage.removeItem(CONTACT_DRAFT_KEY);
-    return {};
-  }
-}
-
-function saveContactDraftNow(){
-  const contact=collect();
-
-  state.contact=contact;
-
-  localStorage.setItem(
-    CONTACT_DRAFT_KEY,
-    JSON.stringify({
-      savedAt:Date.now(),
-      contact
-    })
+function desktopPresentationOwnsContactDraft(){
+  return (
+    window.DREAMLAND_PRESENTATION_BOOT===
+      'desktop'
   );
 }
 
-function scheduleContactDraftSave(){
-  if(contactDraftTimer){
-    clearTimeout(contactDraftTimer);
+function saveContactDraftNow(){
+  /*
+   * B7-00B.4J R3.5
+   *
+   * Desktop Contact owns canonical state through DreamlandContact and
+   * DreamlandDesktopContact. The hidden Legacy Mobile fields (#name,
+   * #email, #phone...) must never overwrite that state during pagehide.
+   */
+  if(
+    desktopPresentationOwnsContactDraft()
+  ){
+    contactFeature
+      .flushDraft(
+        contactFeature
+          .snapshot()
+      );
+
+    return;
   }
 
-  contactDraftTimer=setTimeout(()=>{
-    contactDraftTimer=null;
-    saveContactDraftNow();
-  },250);
+  contactFeature
+    .replace(
+      collect()
+    );
+
+  contactFeature
+    .flushDraft();
+}
+
+function scheduleContactDraftSave(){
+  contactFeature
+    .scheduleDraft(
+      collect(),
+      250
+    );
 }
 
 function restoreContactDraft(){
-  const contact=readContactDraft();
+  const contact=
+    contactFeature
+      .loadDraft();
 
-  state.contact=contact;
+  CONTACT_FIELD_IDS
+    .forEach(id=>{
+      const element=
+        document.getElementById(
+          id
+        );
 
-  CONTACT_FIELD_IDS.forEach(id=>{
-    const element=document.getElementById(id);
+      if(!element){
+        return;
+      }
 
-    if(!element)return;
+      const value=
+        contact[id];
 
-    const value=contact[id];
-
-    element.value=value==null
-      ? ''
-      : String(value);
-  });
+      element.value=
+        value==null
+          ? ''
+          : String(value);
+    });
 }
 
 function bindContactDraft(){
-  CONTACT_FIELD_IDS.forEach(id=>{
-    const element=document.getElementById(id);
+  CONTACT_FIELD_IDS
+    .forEach(id=>{
+      const element=
+        document.getElementById(
+          id
+        );
 
-    if(
-      !element||
-      element.dataset.contactDraftBound==='1'
-    ){
-      return;
+      if(
+        !element||
+        element.dataset
+          .contactDraftBound===
+          '1'
+      ){
+        return;
+      }
+
+      element.dataset
+        .contactDraftBound=
+        '1';
+
+      element.addEventListener(
+        'input',
+        scheduleContactDraftSave
+      );
+
+      element.addEventListener(
+        'change',
+        scheduleContactDraftSave
+      );
+    });
+
+  window.addEventListener(
+    'pagehide',
+    ()=>{
+      if(
+        activeScreen===
+        'contact'
+      ){
+        saveContactDraftNow();
+      }
     }
+  );
 
-    element.dataset.contactDraftBound='1';
-
-    element.addEventListener(
-      'input',
-      scheduleContactDraftSave
-    );
-
-    element.addEventListener(
-      'change',
-      scheduleContactDraftSave
-    );
-  });
-
-  window.addEventListener('pagehide',()=>{
-    if(activeScreen==='contact'){
-      saveContactDraftNow();
+  document.addEventListener(
+    'visibilitychange',
+    ()=>{
+      if(
+        document.visibilityState===
+          'hidden'&&
+        activeScreen===
+          'contact'
+      ){
+        saveContactDraftNow();
+      }
     }
-  });
-
-  document.addEventListener('visibilitychange',()=>{
-    if(
-      document.visibilityState==='hidden'&&
-      activeScreen==='contact'
-    ){
-      saveContactDraftNow();
-    }
-  });
+  );
 }
 
 function clearContactDraft(){
-  if(contactDraftTimer){
-    clearTimeout(contactDraftTimer);
-    contactDraftTimer=null;
-  }
-
-  localStorage.removeItem(CONTACT_DRAFT_KEY);
+  contactFeature
+    .clearDraft();
 }
 
 function moqGroupKey(item){
@@ -5097,7 +5518,7 @@ function moqGroupLabel(group){
 function productMoqGroups(){
   const groups={};
 
-  state.items.forEach(item=>{
+  inquiryFeature.items().forEach(item=>{
     if(item.type!=='product'){
       return;
     }
@@ -5152,7 +5573,7 @@ function validateProductMoqGroups(){
 }
   
 function goContact(){
-  if(!state.items.length){
+  if(!inquiryFeature.items().length){
     toast(
       ui('needInquiryFirst')
     );
@@ -5168,66 +5589,710 @@ function goContact(){
 
   go('contact');
 }
-function goPreview(){
-  document.querySelectorAll('[data-screen="contact"] .field').forEach(f=>f.classList.remove('invalid'));
-  let c=collect(),ok=true,emailEl=document.getElementById('email');
-  if(c.name.length<2){document.getElementById('name').closest('.field').classList.add('invalid');toast(ui('invalidName'));ok=false}
-  if(!c.country){document.getElementById('country').closest('.field').classList.add('invalid');ok=false}
-  if(!emailEl||!c.email||!emailEl.checkValidity()){emailEl?.closest('.field')?.classList.add('invalid');toast(ui('invalidEmail'));ok=false}
-  if(c.phone.length<5){document.getElementById('phone').closest('.field').classList.add('invalid');toast(ui('invalidPhone'));ok=false}
-if(
-  !validateProductMoqGroups()
+
+function desktopPersistInquiry(){
+  inquiryFeature.persist();
+  badge();
+  desktopExperience.syncInquiry();
+}
+
+function desktopAdjustInquiryQuantity(
+  id,
+  delta
 ){
-  ok=false;
-}
-
-for(const item of state.items){
-  if(
-    item.type==='product'&&
-    Number(item.qty)>maximumQuantity()
-  ){
-    toast(
-      ui('quantityTooLarge')
+  const item=
+    inquiryFeature.findItem(
+      id
     );
 
-    ok=false;
-    break;
+  if(
+    !item||
+    item.type!=='product'
+  ){
+    return null;
   }
 
-  if(
-    item.type==='custom'&&
-    (
-      Number(item.qty)<customMoq()||
-      Number(item.qty)>maximumQuantity()
-    )
-  ){
-    toast(
-      ui('customMinQtyError')
+  const next=
+    inquiryFeature.setProductQuantity(
+      id,
+      Number(item.qty||0)+Number(delta||0),
+      QTY_MIN
     );
 
-    ok=false;
-    break;
-  }
+  desktopPersistInquiry();
+
+  return next;
 }
-  if(!ok)return;
+
+function desktopSetInquiryQuantity(
+  id,
+  value
+){
+  const next=
+    inquiryFeature.setProductQuantity(
+      id,
+      value,
+      QTY_MIN
+    );
+
+  desktopPersistInquiry();
+
+  return next;
+}
+
+function desktopRemoveInquiryItem(
+  id
+){
+  const removed=
+    inquiryFeature.removeItem(
+      id
+    );
+
+  if(
+    removed&&
+    !inquiryFeature.items().length
+  ){
+    pendingInquiryId='';
+    appStorage.local.removeItem(
+      PENDING_INQUIRY_KEY
+    );
+  }
+
+  desktopPersistInquiry();
+
+  return removed;
+}
+
+function desktopClearInquiry(){
+  inquiryFeature.clearItems();
+  pendingInquiryId='';
+  appStorage.local.removeItem(
+    PENDING_INQUIRY_KEY
+  );
+  desktopPersistInquiry();
+
+  return true;
+}
+
+function desktopInquiryGate(){
+  if(!inquiryFeature.items().length){
+    return {
+      ok:false,
+      code:'EMPTY',
+      message:ui('needInquiryFirst')
+    };
+  }
+
+  const group=
+    firstUnmetProductMoqGroup();
+
+  if(group){
+    return {
+      ok:false,
+      code:'MOQ',
+      group,
+      message:
+        moqGroupLabel(group)+' '+
+        ui('moqNotMet')+'：'+
+        group.qty+'/'+
+        group.moq
+    };
+  }
+
+  for(const item of inquiryFeature.items()){
+    if(
+      item.type==='product'&&
+      Number(item.qty)>
+        maximumQuantity()
+    ){
+      return {
+        ok:false,
+        code:'QUANTITY_MAX',
+        message:ui('quantityTooLarge')
+      };
+    }
+
+    if(
+      item.type==='custom'&&
+      (
+        Number(item.qty)<
+          customMoq()||
+        Number(item.qty)>
+          maximumQuantity()
+      )
+    ){
+      return {
+        ok:false,
+        code:'CUSTOM_QUANTITY',
+        message:ui('customMinQtyError')
+      };
+    }
+  }
+
+  return {
+    ok:true
+  };
+}
+
+function desktopContinueInquiry(){
+  const gate=
+    desktopInquiryGate();
+
+  if(!gate.ok){
+    return gate;
+  }
+
+  go('contact');
+
+  return {
+    ok:true
+  };
+}
+
+function desktopContinueContact(
+  contact
+){
+  contactFeature.replace(
+    contact
+  );
+
+  const validation=
+    contactFeature.validate(
+      contact,
+      {
+        emailValid:
+          submissionEmailValid(
+            contact?.email
+          )
+      }
+    );
+
+  if(!validation.valid){
+    return validation;
+  }
+
+  const gate=
+    desktopInquiryGate();
+
+  if(!gate.ok){
+    return {
+      valid:false,
+      errors:[],
+      global:gate.message
+    };
+  }
+
   ensureInquiryId();
-state.contact=c;
-saveContactDraftNow();
-go('preview');
+  contactFeature.flushDraft();
+  go('preview');
+
+  return {
+    valid:true,
+    errors:[]
+  };
 }
+
+function desktopReviewProjection(){
+  return inquiryFeature
+    .buildProjection({
+      contact:
+        contactFeature.snapshot(),
+      inquiryId:
+        ensureInquiryId(),
+      language:
+        currentLang,
+      privacyVersion:
+        appConfig.privacyVersion||
+        ''
+    });
+}
+
+function desktopRiskState(){
+  return {
+    state:
+      riskAssessmentState,
+    pending:
+      riskAssessmentPending,
+    requiresCaptcha:
+      submissionRiskRequiresCaptcha,
+    verified:
+      !submissionRiskRequiresCaptcha||
+      Boolean(
+        hcaptchaToken()
+      ),
+    score:
+      submissionRiskScore
+  };
+}
+
+/*
+ * B7-00B.4J R3.3
+ *
+ * Desktop Review owns its native submission bridge.
+ *
+ * Do not route Desktop submission back through submitInquiry(), because that
+ * legacy UI wrapper depends on #submitBtn / #privacyConsent in the hidden
+ * Legacy Preview DOM. Desktop Review has its own button and consent state.
+ */
+async function ensureDesktopRiskAssessment(){
+  if(
+    (
+      riskAssessmentState==='idle'||
+      riskAssessmentState==='failed'
+    )&&
+    !riskAssessmentPending
+  ){
+    await assessSubmissionRisk();
+  }
+
+  if(riskAssessmentPending){
+    const deadline=
+      Date.now()+15000;
+
+    while(
+      riskAssessmentPending&&
+      Date.now()<deadline
+    ){
+      await new Promise(
+        resolve=>
+          setTimeout(
+            resolve,
+            50
+          )
+      );
+    }
+  }
+
+  return (
+    !riskAssessmentPending&&
+    (
+      riskAssessmentState==='passed'||
+      riskAssessmentState==='captcha-required'
+    )
+  );
+}
+
+function desktopSubmissionMessage(
+  error
+){
+  if(
+    error?.code==='OFFLINE'||
+    error?.reachable===false
+  ){
+    return pwaService.text(
+      'offlineSubmit'
+    );
+  }
+
+  if(error?.code==='COOLDOWN'){
+    return ui(
+      'submissionCooldown'
+    );
+  }
+
+  if(error?.code==='DUPLICATE'){
+    return ui(
+      'submissionDuplicate'
+    );
+  }
+
+  if(error?.code==='NOT_CONFIGURED'){
+    return ui(
+      'formNotConfigured'
+    );
+  }
+
+  if(
+    error?.code==='CAPTCHA_FAILED'||
+    error?.code==='CAPTCHA_NOT_READY'||
+    error?.code==='CAPTCHA_NO_RESPONSE'
+  ){
+    return riskText(
+      'captchaRetry'
+    );
+  }
+
+  return (
+    error?.message||
+    ui('submitFailed')
+  );
+}
+
+async function desktopPrivacyChanged(
+  accepted
+){
+  if(!accepted){
+    return true;
+  }
+
+  const riskReady=
+    await ensureDesktopRiskAssessment();
+
+  if(!riskReady){
+    return false;
+  }
+
+  if(
+    submissionRiskRequiresCaptcha&&
+    !hcaptchaToken()
+  ){
+    await ensureHCaptchaVerification();
+  }
+
+  return true;
+}
+
+async function desktopSubmitInquiry(
+  accepted
+){
+  if(!accepted){
+    return {
+      ok:false,
+      code:'PRIVACY',
+      message:ui('privacyRequired')
+    };
+  }
+
+  const inquiryGate=
+    desktopInquiryGate();
+
+  if(!inquiryGate.ok){
+    return {
+      ok:false,
+      code:
+        inquiryGate.code||
+        'INQUIRY_INVALID',
+      message:
+        inquiryGate.message||
+        ui('submitFailed')
+    };
+  }
+
+  const contactSnapshot=
+    contactFeature.snapshot();
+
+  const contactValidation=
+    contactFeature.validate(
+      contactSnapshot,
+      {
+        emailValid:
+          submissionEmailValid(
+            contactSnapshot?.email
+          )
+      }
+    );
+
+  if(!contactValidation.valid){
+    return {
+      ok:false,
+      code:'CONTACT_INVALID',
+      message:
+        contactValidation.global||
+        ui('submitFailed')
+    };
+  }
+
+  const payloadPreview=
+    buildWeb3FormsPayload(
+      ensureInquiryId()
+    );
+
+  const payloadGate=
+    validateSubmissionPayload(
+      payloadPreview
+    );
+
+  if(!payloadGate.ok){
+    return {
+      ok:false,
+      code:
+        payloadGate.code,
+      message:
+        ui('requiredFieldsInvalid')||
+        ui('submitFailed')
+    };
+  }
+
+  const submissionGate=
+    submissionFlow.preflight();
+
+  if(!submissionGate.ok){
+    return {
+      ok:false,
+      code:
+        submissionGate.code||
+        'SUBMISSION_BLOCKED',
+      message:
+        desktopSubmissionMessage(
+          submissionGate
+        )
+    };
+  }
+
+  try{
+    const riskReady=
+      await ensureDesktopRiskAssessment();
+
+    if(!riskReady){
+      return {
+        ok:false,
+        code:'RISK_PENDING',
+        message:
+          riskText(
+            'unavailable'
+          )
+      };
+    }
+
+    let captchaToken='';
+
+    if(submissionRiskRequiresCaptcha){
+      captchaToken=
+        await ensureHCaptchaVerification();
+    }
+
+    const inquiryId=
+      ensureInquiryId();
+
+    const snapshot=
+      submissionSnapshot(
+        inquiryId
+      );
+
+    const payload=
+      buildWeb3FormsPayload(
+        inquiryId
+      );
+
+    await submissionFlow
+      .submit({
+        inquiryId,
+        payload,
+        submissionSnapshot:
+          snapshot,
+        captchaToken
+      });
+
+    /*
+     * Canonical Submission Flow has already archived lastSubmission and
+     * cleared Inquiry / Contact only after the Gateway confirmed success.
+     */
+    pendingInquiryId='';
+
+    riskService
+      .resetCaptcha();
+
+    go(
+      'success'
+    );
+
+    return {
+      ok:true,
+      code:'OK',
+      message:''
+    };
+  }catch(error){
+    console.error(
+      'Desktop inquiry submission failed:',
+      error
+    );
+
+    riskService
+      .resetCaptcha();
+
+    return {
+      ok:false,
+      code:
+        error?.code||
+        'SUBMISSION_FAILED',
+      message:
+        desktopSubmissionMessage(
+          error
+        )
+    };
+  }
+}
+
+function desktopLastSubmission(){
+  try{
+    return JSON.parse(
+      appStorage.local.getItem(
+        LAST_SUBMISSION_KEY
+      )||
+      '{}'
+    );
+  }catch(_){
+    return {};
+  }
+}
+
+function applyContactValidation(
+  validation
+){
+  validation.errors
+    .forEach(error=>{
+      const element=
+        document.getElementById(
+          error.field
+        );
+
+      element
+        ?.closest(
+          '.field'
+        )
+        ?.classList
+        .add(
+          'invalid'
+        );
+
+      if(
+        error.code===
+        'invalidName'
+      ){
+        toast(
+          ui(
+            'invalidName'
+          )
+        );
+      }
+
+      if(
+        error.code===
+        'invalidEmail'
+      ){
+        toast(
+          ui(
+            'invalidEmail'
+          )
+        );
+      }
+
+      if(
+        error.code===
+        'invalidPhone'
+      ){
+        toast(
+          ui(
+            'invalidPhone'
+          )
+        );
+      }
+    });
+
+  return validation.valid;
+}
+
+function goPreview(){
+  document
+    .querySelectorAll(
+      '[data-screen="contact"] .field'
+    )
+    .forEach(
+      field=>
+        field.classList
+          .remove(
+            'invalid'
+          )
+    );
+
+  const contact=
+    collect();
+
+  const emailElement=
+    document.getElementById(
+      'email'
+    );
+
+  contactFeature
+    .replace(
+      contact
+    );
+
+  let ok=
+    applyContactValidation(
+      contactFeature
+        .validate(
+          contact,
+          {
+            emailValid:
+              Boolean(
+                emailElement&&
+                contact.email&&
+                emailElement
+                  .checkValidity()
+              )
+          }
+        )
+    );
+
+  if(
+    !validateProductMoqGroups()
+  ){
+    ok=false;
+  }
+
+  for(
+    const item of inquiryFeature.items()
+  ){
+    if(
+      item.type==='product'&&
+      Number(item.qty)>
+        maximumQuantity()
+    ){
+      toast(
+        ui(
+          'quantityTooLarge'
+        )
+      );
+
+      ok=false;
+      break;
+    }
+
+    if(
+      item.type==='custom'&&
+      (
+        Number(item.qty)<
+          customMoq()||
+        Number(item.qty)>
+          maximumQuantity()
+      )
+    ){
+      toast(
+        ui(
+          'customMinQtyError'
+        )
+      );
+
+      ok=false;
+      break;
+    }
+  }
+
+  if(!ok){
+    return;
+  }
+
+  ensureInquiryId();
+
+  contactFeature
+    .flushDraft();
+
+  go(
+    'preview'
+  );
+}
+
 function kv(a,b){return`<div class="kv"><span>${a}</span><span>${b}</span></div>`}
 
-const RISK_ATTEMPT_KEY='dreamlandRiskAttempts';
-const riskSessionStartedAt=Date.now();
-let riskFormStartedAt=0;
-let riskInteractionCount=0;
 let riskAssessmentPending=false;
+let riskAssessmentCompleted=false;
+let riskAssessmentState='idle';
 let submissionRiskRequiresCaptcha=false;
 let submissionRiskScore=0;
 let submissionRiskReasons=[];
 let submissionRiskSiteKey='';
-let hcaptchaScriptPromise=null;
-let hcaptchaScriptTimer=null;
+let hcaptchaUiRenderToken=0;
 
 const RISK_COPY={
   zh:{
@@ -5276,220 +6341,247 @@ const RISK_COPY={
     configError:'CAPTCHA 설정이 완료되지 않았습니다. 관리자에게 문의해 주세요.'
   }
 };
-function riskText(key){return RISK_COPY[currentLang]?.[key]||RISK_COPY.zh[key]||key}
-function riskThreshold(){return Math.max(1,Number(appConfig.riskControl?.threshold||3))}
-function markRiskFormStart(){if(!riskFormStartedAt)riskFormStartedAt=Date.now();ensureRiskHoneypot()}
-function ensureRiskHoneypot(){
-  let input=document.getElementById('riskWebsite');
-  if(input)return input;
-  const card=document.querySelector('[data-screen="contact"] .form-card');
-  if(!card)return null;
-  const wrap=document.createElement('div');
-  wrap.className='risk-honeypot';
-  wrap.setAttribute('aria-hidden','true');
-  wrap.innerHTML='<label>Website<input id="riskWebsite" name="website" type="text" tabindex="-1" autocomplete="off"></label>';
-  card.appendChild(wrap);
-  return document.getElementById('riskWebsite')
+function riskText(key){
+  return RISK_COPY[currentLang]?.[key]||
+    RISK_COPY.zh[key]||
+    key
 }
-function riskHoneypotValue(){return document.getElementById('riskWebsite')?.value||''}
-function recentRiskAttempts(){
-  const windowMs=Math.max(60000,Number(appConfig.riskControl?.repeatWindowMs||600000));
-  let values=[];try{values=JSON.parse(localStorage.getItem(RISK_ATTEMPT_KEY)||'[]')}catch(_){}
-  values=values.filter(value=>Number(value)>Date.now()-windowMs);
-  localStorage.setItem(RISK_ATTEMPT_KEY,JSON.stringify(values));
-  return values
-}
-function recordRiskAttempt(){
-  const values=recentRiskAttempts();
-  values.push(Date.now());
-  localStorage.setItem(RISK_ATTEMPT_KEY,JSON.stringify(values.slice(-10)))
-}
-function buildRiskContext(){
-  return{
-    session_elapsed_ms:Math.max(0,Date.now()-riskSessionStartedAt),
-    form_elapsed_ms:riskFormStartedAt?Math.max(0,Date.now()-riskFormStartedAt):0,
-    interaction_count:riskInteractionCount,
-    local_attempt_count:recentRiskAttempts().length,
-    timezone_offset:new Date().getTimezoneOffset(),
-    language:currentLang,
-    viewport:[window.innerWidth||0,window.innerHeight||0].join('x')
-  }
-}
-function trackRiskInteraction(event){
-  if(!event?.isTrusted)return;
-  riskInteractionCount=Math.min(1000,riskInteractionCount+1)
-}
-['pointerdown','keydown','input','change'].forEach(type=>document.addEventListener(type,trackRiskInteraction,{passive:true,capture:true}));
 
-function setRiskStatus(type,text){
-  const el=document.getElementById('riskStatus');
-  if(!el)return;
-  el.className='risk-status'+(type?' is-'+type:'');
-  el.textContent=text
+function riskThreshold(){
+  return Math.max(
+    1,
+    Number(
+      appConfig.riskControl
+        ?.threshold||
+      3
+    )
+  )
 }
-function captchaSection(show){
-  const section=document.getElementById('captchaSection');
-  if(!section)return;
-  if(show)section.removeAttribute('hidden');else section.setAttribute('hidden','')
+
+function markRiskFormStart(){
+  riskService.markFormStart();
+  ensureRiskHoneypot()
 }
-function hcaptchaLoadTimeoutMs(){return Math.max(5000,Number(appConfig.hcaptcha?.loadTimeoutMs||12000))}
-function ensureHCaptchaConnectionHints(){
-  [['dns-prefetch','https://js.hcaptcha.com'],['preconnect','https://js.hcaptcha.com'],['preconnect','https://newassets.hcaptcha.com']].forEach(([rel,href])=>{
-    if(document.head.querySelector(`link[rel="${rel}"][href="${href}"]`))return;
-    const link=document.createElement('link');link.rel=rel;link.href=href;
-    if(rel==='preconnect')link.crossOrigin='anonymous';
-    document.head.appendChild(link)
-  })
-}
-function resetHCaptchaScriptLoader(){
-  if(hcaptchaScriptTimer){clearTimeout(hcaptchaScriptTimer);hcaptchaScriptTimer=null}
-  hcaptchaScriptPromise=null;
-  const script=document.getElementById('dreamlandHcaptchaSdk');
-  if(script&&!window.hcaptcha)script.remove()
-}
-function loadHCaptchaScript(){
-  if(appConfig.hcaptcha?.enabled===false)return Promise.resolve(null);
-  if(window.hcaptcha)return Promise.resolve(window.hcaptcha);
-  if(hcaptchaScriptPromise)return hcaptchaScriptPromise;
-  ensureHCaptchaConnectionHints();
-  hcaptchaScriptPromise=new Promise((resolve,reject)=>{
-    const callbackName='onDreamlandHCaptchaReady';
-    let settled=false;
-    const finish=error=>{
-      if(settled)return;settled=true;
-      if(hcaptchaScriptTimer){clearTimeout(hcaptchaScriptTimer);hcaptchaScriptTimer=null}
-      error?reject(error):resolve(window.hcaptcha)
-    };
-    window[callbackName]=()=>finish(window.hcaptcha?null:new Error('hCaptcha SDK unavailable'));
-    let script=document.getElementById('dreamlandHcaptchaSdk');
-    if(!script){
-      script=document.createElement('script');
-      script.id='dreamlandHcaptchaSdk';
-      script.async=true;script.defer=true;
-      script.src='https://js.hcaptcha.com/1/api.js?onload='+callbackName+'&render=explicit&recaptchacompat=off';
-      script.onerror=()=>finish(new Error('hCaptcha script failed to load'));
-      document.head.appendChild(script)
-    }
-    hcaptchaScriptTimer=setTimeout(()=>finish(new Error('hCaptcha load timeout')),hcaptchaLoadTimeoutMs())
-  }).catch(error=>{resetHCaptchaScriptLoader();throw error});
-  return hcaptchaScriptPromise
-}
-function preloadHCaptchaScript(){
-  if(appConfig.hcaptcha?.enabled===false||navigator.onLine===false)return Promise.resolve(null);
-  return loadHCaptchaScript().catch(error=>{console.warn('hCaptcha preload failed:',error);return null})
-}
-function retryHCaptcha(){
-  resetHCaptchaScriptLoader();
-  renderHCaptcha(submissionRiskSiteKey);
-}
-function preferredHCaptchaSize(container){
-  const availableWidth=
-    Math.floor(
-      container?.getBoundingClientRect?.().width||0
+
+function ensureRiskHoneypot(){
+  let input=
+    document.getElementById(
+      'riskWebsite'
     );
 
-  return availableWidth>=303
-    ? 'normal'
-    : 'compact';
+  if(input){
+    return input;
+  }
+
+  const card=
+    document.querySelector(
+      '[data-screen="contact"] .form-card'
+    );
+
+  if(!card){
+    return null;
+  }
+
+  const wrap=
+    document.createElement(
+      'div'
+    );
+
+  wrap.className=
+    'risk-honeypot';
+
+  wrap.setAttribute(
+    'aria-hidden',
+    'true'
+  );
+
+  wrap.innerHTML=
+    '<label>Website<input id="riskWebsite" name="website" type="text" tabindex="-1" autocomplete="off"></label>';
+
+  card.appendChild(
+    wrap
+  );
+
+  return document.getElementById(
+    'riskWebsite'
+  )
 }
 
-async function renderHCaptcha(siteKey=submissionRiskSiteKey){
-  const container=document.getElementById('hcaptchaContainer');
+function riskHoneypotValue(){
+  return document
+    .getElementById(
+      'riskWebsite'
+    )
+    ?.value||
+    ''
+}
 
-  if(!container||!submissionRiskRequiresCaptcha)return;
+function setRiskStatus(
+  type,
+  text
+){
+  const el=
+    document.querySelector(
+      '[data-desktop-review-risk-status]'
+    )||
+    document.getElementById(
+      'riskStatus'
+    );
 
-  const renderToken=++hcaptchaRenderToken;
-  const widgetSize=preferredHCaptchaSize(container);
+  if(!el){
+    return;
+  }
 
-  if(!siteKey||siteKey.includes('REPLACE_WITH_')){
+  el.className=
+    'risk-status'+
+    (
+      type
+        ? ' is-'+type
+        : ''
+    );
+
+  el.textContent=
+    text;
+
+  const desktopLabel=
+    document.querySelector(
+      '[data-desktop-review-security-label]'
+    );
+
+  if(
+    desktopLabel&&
+    (
+      type==='risk'||
+      type==='safe'||
+      type==='error'
+    )
+  ){
+    desktopLabel.textContent=
+      text;
+  }
+}
+
+function captchaSection(show){
+  const section=
+    document.querySelector(
+      '[data-desktop-review-captcha-section]'
+    )||
+    document.getElementById(
+      'captchaSection'
+    );
+
+  if(!section){
+    return;
+  }
+
+  section.hidden=
+    !Boolean(show);
+}
+
+function preloadHCaptchaScript(){
+  return riskService
+    .preloadCaptcha()
+}
+
+function retryHCaptcha(){
+  renderHCaptcha(
+    submissionRiskSiteKey
+  )
+}
+
+async function renderHCaptcha(
+  siteKey=submissionRiskSiteKey
+){
+  const container=
+    document.querySelector(
+      '[data-desktop-review-captcha]'
+    )||
+    document.getElementById(
+      'hcaptchaContainer'
+    );
+
+  if(
+    !container||
+    !submissionRiskRequiresCaptcha
+  ){
+    return;
+  }
+
+  const renderToken=
+    ++hcaptchaUiRenderToken;
+
+  if(
+    !siteKey||
+    siteKey.includes(
+      'REPLACE_WITH_'
+    )
+  ){
     container.innerHTML=
       `<div class="captcha-help">${riskText('configError')}</div>`;
+
     return;
   }
 
   container.innerHTML=
     `<span class="captcha-status">${riskText('captchaLoading')}</span>`;
 
-  const slowTimer=setTimeout(()=>{
-    if(
-      renderToken===hcaptchaRenderToken&&
-      document.getElementById('hcaptchaContainer')===container&&
-      !window.hcaptcha
-    ){
-      container.innerHTML=`
-        <div>
-          <div class="captcha-help">
-            ${riskText('captchaSlow')}
-          </div>
-          <button
-            class="captcha-retry"
-            type="button"
-            onclick="retryHCaptcha()"
-          >
-            ${riskText('retry')}
-          </button>
-        </div>
-      `;
-    }
-  },4000);
+  const slowTimer=
+    setTimeout(
+      ()=>{
+        if(
+          renderToken===
+            hcaptchaUiRenderToken&&
+          document.body.contains(
+            container
+          )
+        ){
+          container.innerHTML=`
+            <div>
+              <div class="captcha-help">
+                ${riskText('captchaSlow')}
+              </div>
+              <button
+                class="captcha-retry"
+                type="button"
+                onclick="retryHCaptcha()"
+              >
+                ${riskText('retry')}
+              </button>
+            </div>
+          `;
+        }
+      },
+      4000
+    );
 
   try{
-    await loadHCaptchaScript();
-    clearTimeout(slowTimer);
-
-    if(
-      renderToken!==hcaptchaRenderToken||
-      !document.body.contains(container)
-    ){
-      return;
-    }
-
-    if(hcaptchaWidgetId!==null){
-      try{
-        window.hcaptcha.remove(hcaptchaWidgetId);
-      }catch(_){}
-
-      hcaptchaWidgetId=null;
-    }
-
-    container.innerHTML='';
-
-hcaptchaResponseToken='';
-
-hcaptchaWidgetId=window.hcaptcha.render(
-  container,
-  {
-    sitekey:siteKey,
-    theme:'light',
-    size:'invisible',
-    'recaptchacompat':'off',
-
-    callback(token){
-      hcaptchaResponseToken=
-        String(token||'');
-    },
-
-    'expired-callback'(){
-      hcaptchaResponseToken='';
-    },
-
-    'error-callback'(error){
-      hcaptchaResponseToken='';
-
-      console.error(
-        'hCaptcha error:',
-        error
+    await riskService
+      .renderCaptcha(
+        container,
+        {
+          siteKey
+        }
       );
-    }
-  }
-);
+
+    clearTimeout(
+      slowTimer
+    );
   }catch(error){
-    clearTimeout(slowTimer);
-    console.error('hCaptcha load failed:',error);
+    clearTimeout(
+      slowTimer
+    );
+
+    console.error(
+      'hCaptcha load failed:',
+      error
+    );
 
     if(
-      renderToken===hcaptchaRenderToken&&
-      document.body.contains(container)
+      renderToken===
+        hcaptchaUiRenderToken&&
+      document.body.contains(
+        container
+      )
     ){
       container.innerHTML=`
         <div>
@@ -5508,76 +6600,22 @@ hcaptchaWidgetId=window.hcaptcha.render(
     }
   }
 }
+
 function hcaptchaToken(){
-  if(!submissionRiskRequiresCaptcha){
-    return '';
-  }
-
-  if(hcaptchaResponseToken){
-    return hcaptchaResponseToken;
-  }
-
-  try{
-    return hcaptchaWidgetId===null
-      ? ''
-      : window.hcaptcha
-          ?.getResponse(
-            hcaptchaWidgetId
-          )||'';
-  }catch(_){
-    return '';
-  }
-}
-
-async function executeHCaptchaChallenge(){
-  if(!submissionRiskRequiresCaptcha){
-    return '';
-  }
-
-  const existingToken=
-    hcaptchaToken();
-
-  if(existingToken){
-    return existingToken;
-  }
-
   if(
-    hcaptchaWidgetId===null||
-    !window.hcaptcha
+    !submissionRiskRequiresCaptcha
   ){
-    throw new Error(
-      'hCaptcha is not ready'
-    );
+    return '';
   }
 
-  const result=
-    await window.hcaptcha.execute(
-      hcaptchaWidgetId,
-      {
-        async:true
-      }
-    );
-
-  hcaptchaResponseToken=
-    String(
-      result?.response||
-      window.hcaptcha.getResponse(
-        hcaptchaWidgetId
-      )||
-      ''
-    );
-
-  if(!hcaptchaResponseToken){
-    throw new Error(
-      'No hCaptcha response'
-    );
-  }
-
-  return hcaptchaResponseToken;
+  return riskService
+    .captchaToken()
 }
 
 async function ensureHCaptchaVerification(){
-  if(!submissionRiskRequiresCaptcha){
+  if(
+    !submissionRiskRequiresCaptcha
+  ){
     return '';
   }
 
@@ -5586,40 +6624,40 @@ async function ensureHCaptchaVerification(){
 
   if(existingToken){
     return existingToken;
-  }
-
-  if(hcaptchaExecutionPromise){
-    return hcaptchaExecutionPromise;
   }
 
   setRiskStatus(
     'risk',
-    riskText('captchaVerifying')
+    riskText(
+      'captchaVerifying'
+    )
   );
 
-  hcaptchaExecutionPromise=
-    executeHCaptchaChallenge()
-      .then(token=>{
-        setRiskStatus(
-          'safe',
-          riskText('captchaVerified')
-        );
+  try{
+    const token=
+      await riskService
+        .ensureCaptcha({
+          required:true
+        });
 
-        return token;
-      })
-      .catch(error=>{
-        setRiskStatus(
-          'error',
-          riskText('captchaRetry')
-        );
+    setRiskStatus(
+      'safe',
+      riskText(
+        'captchaVerified'
+      )
+    );
 
-        throw error;
-      })
-      .finally(()=>{
-        hcaptchaExecutionPromise=null;
-      });
+    return token;
+  }catch(error){
+    setRiskStatus(
+      'error',
+      riskText(
+        'captchaRetry'
+      )
+    );
 
-  return hcaptchaExecutionPromise;
+    throw error;
+  }
 }
 
 async function handlePrivacyConsentChange(
@@ -5663,256 +6701,723 @@ async function handlePrivacyConsentChange(
 }
   
 async function assessSubmissionRisk(){
-  if(riskAssessmentPending)return;
-  const status=document.getElementById('riskStatus');
-  if(!status)return;
+  if(riskAssessmentPending){
+    return false;
+  }
+
+  const status=
+    document.querySelector(
+      '[data-desktop-review-risk-status]'
+    )||
+    document.getElementById(
+      'riskStatus'
+    );
+
+  if(!status){
+    riskAssessmentState='failed';
+    riskAssessmentCompleted=false;
+    return false;
+  }
+
   riskAssessmentPending=true;
-  setRiskStatus('',riskText('checking'));
+  riskAssessmentCompleted=false;
+  riskAssessmentState='checking';
+
+  setRiskStatus(
+    '',
+    riskText('checking')
+  );
+
   captchaSection(false);
+
   submissionRiskRequiresCaptcha=false;
   submissionRiskScore=0;
   submissionRiskReasons=[];
+
   try{
-    const inquiryId=ensureInquiryId();
-    const response=await fetch(riskAssessmentEndpoint(),{
-      method:'POST',
-      headers:{Accept:'application/json','Content-Type':'application/json'},
-      body:JSON.stringify({
-        action:'assess',
-        payload:buildWeb3FormsPayload(inquiryId),
-        risk:buildRiskContext(),
-        website:riskHoneypotValue()
-      })
-    });
-    const data=await response.json();
-if(!response.ok)throw new Error(data.message||'Risk assessment failed');
-submissionRiskRequiresCaptcha=data.captcha_required===true;
-    submissionRiskScore=Number(data.risk_score)||0;
-    submissionRiskReasons=Array.isArray(data.reasons)?data.reasons:[];
-    submissionRiskSiteKey=String(data.site_key||'');
-    if(submissionRiskRequiresCaptcha){
-  setRiskStatus(
-    'risk',
-    riskText('captcha')
-  );
+    const inquiryId=
+      ensureInquiryId();
 
-  captchaSection(true);
+    const payload=
+      buildWeb3FormsPayload(
+        inquiryId
+      );
 
-  await renderHCaptcha(
-    submissionRiskSiteKey
+    const payloadGate=
+      validateSubmissionPayload(
+        payload
+      );
+
+    if(!payloadGate.ok){
+      const error=
+        new Error(
+          'Submission payload is incomplete.'
+        );
+
+      error.code=
+        payloadGate.code;
+
+      throw error;
+    }
+
+    const assessment=
+      await riskService
+        .assess(
+          payload,
+          {
+            website:
+              riskHoneypotValue(),
+            language:
+              currentLang
+          }
+        );
+
+    submissionRiskRequiresCaptcha=
+      assessment.captchaRequired;
+
+    submissionRiskScore=
+      assessment.riskScore;
+
+    submissionRiskReasons=[
+      ...assessment.reasons
+    ];
+
+    submissionRiskSiteKey=
+      assessment.siteKey;
+
+    if(
+      submissionRiskRequiresCaptcha
+    ){
+      riskAssessmentState=
+        'captcha-required';
+
+      setRiskStatus(
+        'risk',
+        riskText('captcha')
+      );
+
+      captchaSection(true);
+
+      await renderHCaptcha(
+        submissionRiskSiteKey
+      );
+
+      const consent=
+        document.querySelector(
+          '[data-desktop-review-privacy]'
+        )||
+        document.getElementById(
+          'privacyConsent'
+        );
+
+      if(consent?.checked){
+        try{
+          await ensureHCaptchaVerification();
+        }catch(errorObject){
+          console.error(
+            'Automatic hCaptcha failed:',
+            errorObject
+          );
+        }
+      }
+    }else{
+      riskAssessmentState=
+        'passed';
+
+      setRiskStatus(
+        'safe',
+        riskText('safe')
+      );
+
+      captchaSection(false);
+    }
+
+    riskAssessmentCompleted=true;
+
+    return true;
+  }catch(error){
+    console.error(
+      'Risk assessment failed:',
+      error
+    );
+
+    riskAssessmentState=
+      'failed';
+
+    riskAssessmentCompleted=false;
+
+    setRiskStatus(
+      'error',
+      riskText('unavailable')
+    );
+
+    return false;
+  }finally{
+    riskAssessmentPending=false;
+  }
+}
+
+function renderPreview(){
+  const inquiryId=
+    ensureInquiryId();
+
+  const projection=
+    inquiryFeature
+      .buildProjection({
+        contact:
+        contactFeature
+        .snapshot(),
+        inquiryId,
+        language:
+          currentLang,
+        privacyVersion:
+          appConfig
+            .privacyVersion||
+          ''
+      });
+
+  const c=
+    projection.contact;
+
+  previewContent.innerHTML=`
+    <div class="preview-card">
+      <h3>${ui('inquiryNumber')}</h3>
+      ${kv(
+        ui('inquiryNumber'),
+        projection.inquiryId
+      )}
+    </div>
+
+    <div class="preview-card">
+      <h3>${ui('personalInfo')}</h3>
+      ${kv(ui('nameLabel').replace(' *',''),c.name)}
+      ${kv(ui('companyBrand'),c.company||ui('notProvided'))}
+      ${kv(ui('countryRegion'),c.country)}
+      ${kv(ui('cityLabel'),c.city||ui('notProvided'))}
+      ${kv(ui('emailLabel').replace(' *',''),c.email)}
+      ${kv(ui('contactMethod'),c.phone)}
+      ${kv(ui('buyerType'),choiceLabel(c.buyerType)||ui('toConfirm'))}
+      ${kv(ui('note'),c.message||ui('notProvided'))}
+    </div>
+
+    <div class="preview-card">
+      <h3>${ui('productInquiry')}</h3>
+      ${
+        projection.products.length
+          ? projection.products
+              .map(
+                item=>
+                  kv(
+                    item.previewKey,
+                    item.previewValue
+                  )
+              )
+              .join('')
+          : kv(
+              ui('products'),
+              ui('none')
+            )
+      }
+    </div>
+
+    <div class="preview-card">
+      <h3>${ui('customInquiry')}</h3>
+      ${
+        projection.customs.length
+          ? projection.customs
+              .map(
+                item=>
+                  kv(
+                    item.previewKey,
+                    item.previewValue
+                  )
+              )
+              .join('')
+          : kv(
+              ui('custom'),
+              ui('none')
+            )
+      }
+    </div>
+
+    <div class="preview-card">
+      <h3>${ui('amountEstimate')}</h3>
+      ${kv(
+        ui('productEstimate'),
+        projection
+          .estimatedTotalDisplay
+      )}
+      ${kv(
+        ui('customPart'),
+        ui('consultantConfirm')
+      )}
+      ${kv(
+        ui('syncStatus'),
+        submissionService.ready()
+          ? ui('syncReady')
+          : ui('syncPending')
+      )}
+    </div>
+
+    <div class="preview-card verification-card">
+      <label class="consent-check">
+        <input
+          id="privacyConsent"
+          type="checkbox"
+          onchange="handlePrivacyConsentChange(this)"
+        >
+        <span>
+          ${ui('privacyAgreePrefix')}
+          <a
+            href="${privacyUrl()}"
+            target="_blank"
+            rel="noopener"
+          >
+            ${ui('privacyLink')}
+          </a>
+        </span>
+      </label>
+
+      <div class="risk-status" id="riskStatus">
+        ${riskText('checking')}
+      </div>
+
+      <div class="captcha-section" id="captchaSection" hidden>
+        <div class="captcha-wrap" id="hcaptchaContainer"></div>
+      </div>
+
+      <div class="verification-error" id="verificationError"></div>
+    </div>
+  `;
+
+  window.DreamlandCopyPolish
+    ?.decoratePreview?.();
+
+  requestAnimationFrame(
+    assessSubmissionRisk
   );
+}
+
+function submissionEmailValid(
+  value
+){
+  return submissionPayloadPolicy
+    .emailValid(
+      value
+    );
+}
+
+function validateSubmissionPayload(
+  payload
+){
+  return submissionPayloadPolicy
+    .validate(
+      payload
+    );
+}
+
+function buildWeb3FormsPayload(
+  inquiryId
+){
+  const submittedAt=
+    new Date()
+      .toISOString();
+
+  const projection=
+    inquiryFeature
+      .buildProjection({
+        contact:
+          contactFeature
+            .snapshot(),
+        inquiryId,
+        submittedAt,
+        language:
+          currentLang,
+        privacyVersion:
+          appConfig
+            .privacyVersion||
+          ''
+      });
+
+  return submissionPayloadPolicy
+    .build(
+      projection
+    );
+}
+
+function submissionSnapshot(
+  inquiryId
+){
+  const projection=
+    inquiryFeature
+      .buildProjection({
+        contact:
+          contactFeature
+            .snapshot(),
+        inquiryId,
+        submittedAt:
+          new Date()
+            .toISOString(),
+        language:
+          currentLang,
+        privacyVersion:
+          appConfig
+            .privacyVersion||
+          ''
+      });
+
+  return {
+    inquiryId:
+      projection.inquiryId,
+
+    submittedAt:
+      projection.submittedAt,
+
+    language:
+      projection.language,
+
+    amountBaseUsd:
+      projection.estimatedTotal,
+
+    amountDisplay:
+      projection.estimatedTotalDisplay,
+
+    itemCount:
+      projection.itemCount,
+
+    items:
+      projection.snapshotItems
+        .map(
+          item=>({
+            ...item
+          })
+        )
+  };
+}
+
+function resetSubmittedFormUi(){
+  pendingInquiryId='';
+
+  [
+    'name',
+    'company',
+    'country',
+    'city',
+    'email',
+    'phone',
+    'message',
+    'customQty',
+    'customDate',
+    'customColor',
+    'customNote'
+  ].forEach(id=>{
+    const element=
+      document.getElementById(
+        id
+      );
+
+    if(element){
+      element.value='';
+    }
+  });
+
+  [
+    'buyerType',
+    'customUse',
+    'customBudget',
+    'customSize',
+    'customScent',
+    'customPack',
+    'customBranding'
+  ].forEach(id=>{
+    const element=
+      document.getElementById(
+        id
+      );
+
+    if(element){
+      element.selectedIndex=0;
+    }
+  });
+
+  customScentUi.reset();
+}
+
+function handleSubmissionGate(
+  gate
+){
+  if(gate.ok){
+    return true;
+  }
+
+  if(
+    gate.code===
+    'DUPLICATE'
+  ){
+    toast(
+      ui(
+        'submissionDuplicate'
+      )
+    );
+
+    return false;
+  }
+
+  if(
+    gate.code===
+    'COOLDOWN'
+  ){
+    toast(
+      ui(
+        'submissionCooldown'
+      )
+    );
+
+    return false;
+  }
+
+  if(
+    gate.code===
+    'NOT_CONFIGURED'
+  ){
+    toast(
+      ui(
+        'formNotConfigured'
+      )
+    );
+
+    return false;
+  }
+
+  return false;
+}
+
+async function submitInquiry(){
+  const btn=
+    document.getElementById(
+      'submitBtn'
+    );
+
+  const error=
+    document.getElementById(
+      'verificationError'
+    );
+
+  if(!btn){
+    return;
+  }
+
+  if(
+    !handleSubmissionGate(
+      submissionFlow
+        .preflight()
+    )
+  ){
+    return;
+  }
 
   const consent=
     document.getElementById(
       'privacyConsent'
     );
 
-  if(consent?.checked){
-    try{
-      await ensureHCaptchaVerification();
-    }catch(errorObject){
-      console.error(
-        'Automatic hCaptcha failed:',
-        errorObject
-      );
-    }
-  }
-}else{
-      setRiskStatus('safe',riskText('safe'));
-      captchaSection(false)
-    }
-  }catch(error){
-    console.error(error);
-    setRiskStatus('error',riskText('unavailable'))
-  }finally{
-    riskAssessmentPending=false
-  }
-}
-function renderPreview(){
-  let c=state.contact||{},ps=state.items.filter(i=>i.type==='product'),cs=state.items.filter(i=>i.type==='custom'),inquiryId=ensureInquiryId();
-  previewContent.innerHTML=`<div class="preview-card"><h3>${ui('inquiryNumber')}</h3>${kv(ui('inquiryNumber'),inquiryId)}</div><div class="preview-card"><h3>${ui('personalInfo')}</h3>${kv(ui('nameLabel').replace(' *',''),c.name)}${kv(ui('companyBrand'),c.company||ui('notProvided'))}${kv(ui('countryRegion'),c.country)}${kv(ui('cityLabel'),c.city||ui('notProvided'))}${kv(ui('emailLabel').replace(' *',''),c.email)}${kv(ui('contactMethod'),c.phone)}${kv(ui('buyerType'),choiceLabel(c.buyerType)||ui('toConfirm'))}${kv(ui('note'),c.message||ui('notProvided'))}</div><div class="preview-card"><h3>${ui('productInquiry')}</h3>${ps.length?ps.map(i=>kv(productDisplayName(i),`${i.qty} ${qtyUnit()} · MOQ ${itemMoq(i)} · ${i.size} · ${itemScentLabel(i)} · ${choiceLabel(i.pack||defaultPack(i.series))} · ${money(itemSubtotal(i))}`)).join(''):kv(ui('products'),ui('none'))}</div><div class="preview-card"><h3>${ui('customInquiry')}</h3>${cs.length?cs.map(i=>kv(choiceLabel(i.use)||ui('customNeed'),`${i.qty||ui('qtyPending')} ${qtyUnit()} · ${i.budget||ui('budgetPending')} · ${choiceLabel(i.sizePref)||ui('sizeRecommend')} · ${itemScentLabel(i)}||ui('scentRecommend')} · ${i.color||ui('colorPending')} · ${choiceLabel(i.pack)||ui('packRecommend')} · ${choiceLabel(i.branding)||ui('brandingPending')} · ${i.date||ui('datePending')}`)).join(''):kv(ui('custom'),ui('none'))}</div><div class="preview-card"><h3>${ui('amountEstimate')}</h3>${kv(ui('productEstimate'),money(total()))}${kv(ui('customPart'),ui('consultantConfirm'))}${kv(ui('syncStatus'),web3formsReady()?ui('syncReady'):ui('syncPending'))}</div><div class="preview-card verification-card"><label class="consent-check"><input
-  id="privacyConsent"
-  type="checkbox"
-  onchange="handlePrivacyConsentChange(this)"
-><span>${ui('privacyAgreePrefix')} <a href="${privacyUrl()}" target="_blank" rel="noopener">${ui('privacyLink')}</a></span></label><div class="risk-status" id="riskStatus">${riskText('checking')}</div><div class="captcha-section" id="captchaSection" hidden><div class="captcha-wrap" id="hcaptchaContainer"></div></div><div class="verification-error" id="verificationError"></div></div>`;
-  requestAnimationFrame(assessSubmissionRisk)
-}
-function itemText(i){
-  if(i.type==='product')return`${productDisplayName(i)}（${seriesLabel(i.series)||i.series} / ${i.productId||''}） - ${i.qty} ${qtyUnit()}，${i.size}，${itemScentLabel(i)}，${choiceLabel(i.pattern)}，${choiceLabel(i.pack||defaultPack(i.series))}，${ui('productEstimate')} ${money(itemSubtotal(i))}`;
-  return`${ui('customInquiry')} - ${choiceLabel(i.use)||ui('notFilled')}，${i.qty||ui('qtyPending')} ${qtyUnit()}，${i.budget||ui('budgetPending')}，${choiceLabel(i.sizePref)||ui('sizeRecommend')}，${itemScentLabel(i)}||ui('scentRecommend')}，${i.color||ui('colorPending')}，${choiceLabel(i.pack)||ui('packRecommend')}，${choiceLabel(i.branding)||ui('brandingPending')}，${i.date||ui('datePending')}，${ui('note')}：${i.note||ui('none')}`
-}
-function buildWeb3FormsPayload(inquiryId){
-  let c=state.contact||{},ps=state.items.filter(i=>i.type==='product'),cs=state.items.filter(i=>i.type==='custom'),submittedAt=new Date().toISOString(),subject=`[${inquiryId}] DREAMLAND 产品电子手册意向单 - ${c.name||'未填写联系人'}`;
-  return{
-    subject,from_name:c.name||'DREAMLAND 产品手册访客',email:c.email||'',
-    inquiry_id:inquiryId,submitted_at:submittedAt,privacy_version:appConfig.privacyVersion||'',privacy_accepted:'yes',
-    contact_name:c.name||'',company:c.company||'',country_or_region:c.country||'',city:c.city||'',email_address:c.email||'',phone_or_wechat:c.phone||'',buyer_type:c.buyerType||'',message:c.message||'',
-    personal_info:JSON.stringify(c,null,2),language:currentLang,estimated_amount:money(total()),estimated_amount_base_usd:total().toFixed(2),product_count:ps.length,custom_count:cs.length,
-    items_summary:state.items.map(itemText).join('\n'),product_items:JSON.stringify(ps,null,2),custom_items:JSON.stringify(cs,null,2)
-  }
-}
-function buildWeb3FormsFormData(inquiryId){
-  let payload=buildWeb3FormsPayload(inquiryId),formData=new FormData();
-  Object.entries(payload).forEach(([key,value])=>formData.append(key,value==null?'':String(value)));
-  const captcha=hcaptchaToken();if(captcha)formData.append('h-captcha-response',captcha);
-  return formData
-}
-function submissionSnapshot(inquiryId){
-  return{inquiryId,submittedAt:new Date().toISOString(),language:currentLang,amountBaseUsd:total(),amountDisplay:money(total()),itemCount:state.items.length,items:state.items.map(item=>({type:item.type,productId:item.productId||'',name:productDisplayName(item),qty:Number(item.qty)||0,size:item.size||item.sizePref||'',cover:item.cover||''}))}
-}
-function archiveSubmission(snapshot){
-  let archive=[];try{archive=JSON.parse(localStorage.getItem(SUBMISSION_ARCHIVE_KEY)||'[]')}catch(_){}
-  archive.unshift(snapshot);archive=archive.slice(0,Math.max(1,Number(appConfig.archiveLimit)||20));
-  localStorage.setItem(SUBMISSION_ARCHIVE_KEY,JSON.stringify(archive));localStorage.setItem(LAST_SUBMISSION_KEY,JSON.stringify(snapshot))
-}
-function clearSubmittedInquiry(){
-  state={version:2,items:[],contact:{}};save();
-  clearContactDraft();
-  pendingInquiryId='';
-  localStorage.removeItem(PENDING_INQUIRY_KEY);
-  ['name','company','country','city','email','phone','message','customQty','customDate','customColor','customNote'].forEach(id=>{let el=document.getElementById(id);if(el)el.value='' });
-  ['buyerType','customUse','customBudget','customSize','customScent','customPack','customBranding'].forEach(id=>{let el=document.getElementById(id);if(el)el.selectedIndex=0})
-}
-async function submitInquiry(){
-  let btn=document.getElementById('submitBtn'),error=document.getElementById('verificationError');
-  if(!btn)return;
-  if(submittingInquiry){toast(ui('submissionDuplicate'));return}
-  const now=Date.now(),cooldown=Math.max(0,Number(appConfig.submitCooldownMs)||10000);
-  if(now-lastSubmitAttemptAt<cooldown){toast(ui('submissionCooldown'));return}
-  if(!web3formsReady()){toast(ui('formNotConfigured'));return}
- 
-  const consent=document.getElementById('privacyConsent');
-  if(!consent?.checked){if(error){error.textContent=ui('privacyRequired');error.classList.add('show')}toast(ui('privacyRequired'));return}
   if(
-  submissionRiskRequiresCaptcha&&
-  !hcaptchaToken()
-){
-  try{
-    btn.disabled=true;
-
-    btn.innerHTML=
-      '<span class="loader"></span>';
-
-    await ensureHCaptchaVerification();
-
-    btn.disabled=false;
-
-    btn.textContent=
-      ui('confirmSubmit');
-  }catch(captchaError){
-    console.error(
-      'hCaptcha challenge failed:',
-      captchaError
-    );
-
+    !consent?.checked
+  ){
     if(error){
       error.textContent=
-        riskText('captchaRetry');
+        ui(
+          'privacyRequired'
+        );
 
-      error.classList.add('show');
+      error.classList
+        .add(
+          'show'
+        );
     }
 
     toast(
-      riskText('captchaRetry')
+      ui(
+        'privacyRequired'
+      )
     );
-
-    btn.disabled=false;
-
-    btn.textContent=
-      ui('confirmSubmit');
 
     return;
   }
-}
-  if(error)error.classList.remove('show');
 
-  submittingInquiry=true;
+  if(
+    submissionRiskRequiresCaptcha&&
+    !hcaptchaToken()
+  ){
+    try{
+      btn.disabled=true;
+
+      btn.innerHTML=
+        '<span class="loader"></span>';
+
+      await ensureHCaptchaVerification();
+
+      btn.disabled=false;
+
+      btn.textContent=
+        ui(
+          'confirmSubmit'
+        );
+    }catch(captchaError){
+      console.error(
+        'hCaptcha challenge failed:',
+        captchaError
+      );
+
+      if(error){
+        error.textContent=
+          riskText(
+            'captchaRetry'
+          );
+
+        error.classList
+          .add(
+            'show'
+          );
+      }
+
+      toast(
+        riskText(
+          'captchaRetry'
+        )
+      );
+
+      btn.disabled=false;
+
+      btn.textContent=
+        ui(
+          'confirmSubmit'
+        );
+
+      return;
+    }
+  }
+
+  error
+    ?.classList
+    .remove(
+      'show'
+    );
+
   btn.disabled=true;
-  btn.innerHTML='<span class="loader"></span>';
+
+  btn.innerHTML=
+    '<span class="loader"></span>';
 
   try{
-    const reachable=await probeWeb3FormsReachability(true);
-    if(!reachable){const offlineError=new Error('Submission service is unreachable');offlineError.code='OFFLINE';throw offlineError}
-    applyPwaReachability(true,false);
-    lastSubmitAttemptAt=Date.now();
-    recordRiskAttempt();
+    const inquiryId=
+      ensureInquiryId();
 
-    const inquiryId=ensureInquiryId();
-const snapshot=submissionSnapshot(inquiryId);
+    const snapshot=
+      submissionSnapshot(
+        inquiryId
+      );
 
-const formData=buildWeb3FormsFormData(inquiryId);
-formData.append(
-  'access_key',
-  web3formsAccessKey()
-);
+    const payload=
+      buildWeb3FormsPayload(
+        inquiryId
+      );
 
-const response=await fetch(
-  web3formsSubmitUrl(),
-  {
-    method:'POST',
-    headers:{
-      Accept:'application/json'
-    },
-    body:formData
-  }
-);
+    await submissionFlow
+      .submit({
+        inquiryId,
+        payload,
+        submissionSnapshot:
+          snapshot,
+        captchaToken:
+          hcaptchaToken()
+      });
 
-let data={};
-try{
-  data=await response.json()
-}catch(_){}
+    resetSubmittedFormUi();
 
-if(
-  !response.ok||
-  data.success!==true
-){
-  throw new Error(
-    data.message||
-    'Submission failed'
-  )
-}
+    btn.textContent=
+      ui(
+        'confirmSubmit'
+      );
 
-const finalInquiryReference=inquiryId;
-
-snapshot.clientInquiryId=inquiryId;
-snapshot.inquiryId=finalInquiryReference;
-snapshot.duplicate=false;
-snapshot.submissionResponseType='web3forms-direct';
-
-archiveSubmission(snapshot);
-clearSubmittedInquiry();
-
-    btn.textContent=ui('confirmSubmit');
-    go('success')
-  }catch(errorObject){
-    console.error(errorObject);
-    const reachable=errorObject?.code==='OFFLINE'?false:await probeWeb3FormsReachability(true);
-    if(!reachable){applyPwaReachability(false,false);toast(pwaText('offlineSubmit'))}
-    else{toast(ui('submitFailed'))}
-    btn.textContent=ui('confirmSubmit');
-    hcaptchaResponseToken='';
-
-try{
-  if(hcaptchaWidgetId!==null){
-    window.hcaptcha?.reset(
-      hcaptchaWidgetId
+    go(
+      'success'
     );
-  }
-}catch(_){}
+  }catch(errorObject){
+    console.error(
+      errorObject
+    );
+
+    if(
+      errorObject?.code===
+      'DUPLICATE'
+    ){
+      toast(
+        ui(
+          'submissionDuplicate'
+        )
+      );
+    }else if(
+      errorObject?.code===
+      'COOLDOWN'
+    ){
+      toast(
+        ui(
+          'submissionCooldown'
+        )
+      );
+    }else if(
+      errorObject?.code===
+      'NOT_CONFIGURED'
+    ){
+      toast(
+        ui(
+          'formNotConfigured'
+        )
+      );
+    }else if(
+      errorObject?.code===
+        'OFFLINE'||
+      errorObject?.reachable===
+        false
+    ){
+      toast(
+        pwaService.text(
+          'offlineSubmit'
+        )
+      );
+    }else{
+      toast(
+        ui(
+          'submitFailed'
+        )
+      );
+    }
+
+    btn.textContent=
+      ui(
+        'confirmSubmit'
+      );
+
+    riskService
+      .resetCaptcha();
   }finally{
-    submittingInquiry=false;
-    btn.disabled=false
+    btn.disabled=false;
   }
 }
+
 function renderSuccess(){
-  let snapshot={};try{snapshot=JSON.parse(localStorage.getItem(LAST_SUBMISSION_KEY)||'{}')}catch(_){}
+  let snapshot={};try{snapshot=JSON.parse(appStorage.local.getItem(LAST_SUBMISSION_KEY)||'{}')}catch(_){}
   let d=snapshot.submittedAt?new Date(snapshot.submittedAt):new Date();
-  successId.textContent=snapshot.inquiryId||'—';successDate.textContent=d.toLocaleDateString(currencyMap[currentLang]?.locale||'zh-CN');successAmount.textContent=snapshot.amountDisplay||money(0);
+  successId.textContent=snapshot.inquiryId||'—';
+  successDate.textContent=localizationPolicy.formatDate(d,currentLang,currencyMap);
+  successAmount.textContent=snapshot.amountDisplay||money(0);
   let sub=document.querySelector('.success-sub');if(sub)sub.innerHTML=`${ui('successSub1')}<br>${ui('successSub2')}`;
   let actions=document.querySelector('.success-actions');if(actions&&!actions.querySelector('.archive-note'))actions.insertAdjacentHTML('afterbegin',`<p class="archive-note">${ui('submissionArchived')}</p>`)
 }
+
 function inquiryBadgeCount(){
-  return state.items.reduce((sum,item)=>{
+  return inquiryFeature.items().reduce((sum,item)=>{
     if(item.type==='product')return sum+(Number(item.qty)||0);
     return sum+1;
   },0)
@@ -5920,8 +7425,16 @@ function inquiryBadgeCount(){
 function badge(){
   badgeEl=document.getElementById('badge');
   let count=inquiryBadgeCount();
-  badgeEl.textContent=count;
-  badgeEl.classList.toggle('show',count>0)
+
+  if(badgeEl){
+    badgeEl.textContent=count;
+    badgeEl.classList.toggle(
+      'show',
+      count>0
+    );
+  }
+
+  desktopExperience.syncInquiry();
 }
 function toast(t){
   let el=document.getElementById('toast');
@@ -6080,386 +7593,474 @@ function initUnlock(){
   reset();
 }
 
-const PWA_INSTALL_DISMISSED_KEY='dreamlandPwaInstallDismissedAt';
-const PWA_UPDATE_SESSION_KEY='dreamlandPwaUpdateDeferred';
-let deferredInstallPrompt=null;
-let pwaRegistration=null;
-let pwaActionType='';
-let pwaInitialized=false;
-let pwaReloading=false;
-let pwaNetworkWasOffline=false;
-let pwaUpdateCheckAt=0;
-let pwaInstallFallbackTimer=null;
-
-const PWA_COPY={
-  zh:{
-    offline:'当前处于离线模式。已浏览内容可继续使用，联网后可提交意向。',
-    online:'网络已恢复。',
-    offlineSubmit:'当前离线，意向资料已保存在本机，请联网后再提交。',
-    updateTitle:'发现新版本',
-    updateCopy:'更新后可获得最新页面、数据和图片缓存策略。',
-    updateNow:'立即更新',
-    updating:'正在更新',
-    installTitle:'安装 DREAMLAND',
-    installCopy:'添加到桌面，下次可更快打开产品手册。',
-    installNow:'安装',
-    installGuide:'查看步骤',
-    installed:'已安装',
-    later:'稍后',
-    iosTitle:'添加到主屏幕',
-    iosCopy:'iPhone和iPad需要通过浏览器分享菜单安装。',
-    iosSteps:['点击浏览器底部或顶部的“分享”按钮。','选择“添加到主屏幕”。','确认名称后点击“添加”。'],
-    wechatTitle:'请在系统浏览器中安装',
-    wechatCopy:'微信内置浏览器不能直接安装PWA，请先在Safari或Chrome中打开。',
-    wechatIosSteps:['点击微信右上角“…”菜单。','选择“在Safari中打开”；如无该选项，可复制链接后粘贴到Safari。','在Safari中点击“分享”→“添加到主屏幕”。'],
-    wechatAndroidSteps:['点击微信右上角“…”菜单。','选择“在浏览器打开”；如无该选项，可复制链接后粘贴到Chrome。','在Chrome菜单中选择“安装应用”或“添加到主屏幕”。'],
-    genericSteps:['打开浏览器菜单。','选择“安装应用”或“添加到主屏幕”。','按照浏览器提示完成安装。'],
-    copyLink:'复制链接',
-    copied:'已复制',
-    manualInstallTitle:'浏览器菜单安装',
-    manualInstallCopy:'浏览器暂未提供快捷安装按钮，可从浏览器菜单安装到桌面。',
-    manualInstallAction:'查看安装方法',
-    done:'知道了'
-  },
-  en:{
-    offline:'You are offline. Previously viewed content remains available; submit after reconnecting.',
-    online:'Connection restored.',
-    offlineSubmit:'You are offline. Your inquiry is saved on this device; submit after reconnecting.',
-    updateTitle:'A new version is available',
-    updateCopy:'Update for the latest pages, data, and image-cache behavior.',
-    updateNow:'Update now',
-    updating:'Updating',
-    installTitle:'Install DREAMLAND',
-    installCopy:'Add it to your home screen for faster access.',
-    installNow:'Install',
-    installGuide:'View steps',
-    installed:'Installed',
-    later:'Later',
-    iosTitle:'Add to Home Screen',
-    iosCopy:'On iPhone and iPad, install through the browser Share menu.',
-    iosSteps:['Tap the Share button in the browser.','Choose “Add to Home Screen”.','Confirm the name and tap “Add”.'],
-    wechatTitle:'Open in your system browser',
-    wechatCopy:'The WeChat browser cannot install the PWA directly. Open it in Safari or Chrome first.',
-    wechatIosSteps:['Tap the “…” menu in WeChat.','Choose “Open in Safari”, or copy the link into Safari.','In Safari, tap Share → Add to Home Screen.'],
-    wechatAndroidSteps:['Tap the “…” menu in WeChat.','Choose “Open in browser”, or copy the link into Chrome.','In Chrome, choose Install app or Add to Home screen.'],
-    genericSteps:['Open the browser menu.','Choose Install app or Add to Home screen.','Follow the browser instructions.'],
-    copyLink:'Copy link',
-    copied:'Copied',
-    manualInstallTitle:'Install from the browser menu',
-    manualInstallCopy:'A quick install button is not available yet. Install from the browser menu instead.',
-    manualInstallAction:'View install steps',
-    done:'Done'
-  },
-  ko:{
-    offline:'현재 오프라인 상태입니다. 이전에 본 내용은 계속 이용할 수 있으며, 연결 후 문의를 제출할 수 있습니다.',
-    online:'네트워크가 복구되었습니다.',
-    offlineSubmit:'현재 오프라인입니다. 문의 내용은 기기에 저장되어 있으니 연결 후 제출해 주세요.',
-    updateTitle:'새 버전이 있습니다',
-    updateCopy:'최신 페이지, 데이터, 이미지 캐시 방식으로 업데이트합니다.',
-    updateNow:'지금 업데이트',
-    updating:'업데이트 중',
-    installTitle:'DREAMLAND 설치',
-    installCopy:'홈 화면에 추가하면 제품 카탈로그를 더 빠르게 열 수 있습니다.',
-    installNow:'설치',
-    installGuide:'설치 방법',
-    installed:'설치됨',
-    later:'나중에',
-    iosTitle:'홈 화면에 추가',
-    iosCopy:'iPhone과 iPad에서는 브라우저 공유 메뉴를 통해 설치합니다.',
-    iosSteps:['브라우저의 공유 버튼을 누릅니다.','“홈 화면에 추가”를 선택합니다.','이름을 확인한 뒤 “추가”를 누릅니다.'],
-    wechatTitle:'기본 브라우저에서 열어 주세요',
-    wechatCopy:'WeChat 내장 브라우저에서는 바로 설치할 수 없습니다. Safari 또는 Chrome에서 열어 주세요.',
-    wechatIosSteps:['WeChat 오른쪽 위 “…” 메뉴를 누릅니다.','“Safari에서 열기”를 선택하거나 링크를 복사해 Safari에 붙여 넣습니다.','Safari에서 공유 → 홈 화면에 추가를 선택합니다.'],
-    wechatAndroidSteps:['WeChat 오른쪽 위 “…” 메뉴를 누릅니다.','“브라우저에서 열기”를 선택하거나 링크를 복사해 Chrome에 붙여 넣습니다.','Chrome 메뉴에서 앱 설치 또는 홈 화면에 추가를 선택합니다.'],
-    genericSteps:['브라우저 메뉴를 엽니다.','앱 설치 또는 홈 화면에 추가를 선택합니다.','브라우저 안내에 따라 설치합니다.'],
-    copyLink:'링크 복사',
-    copied:'복사됨',
-    manualInstallTitle:'브라우저 메뉴에서 설치',
-    manualInstallCopy:'빠른 설치 버튼을 사용할 수 없습니다. 브라우저 메뉴에서 홈 화면에 설치해 주세요.',
-    manualInstallAction:'설치 방법 보기',
-    done:'확인'
-  }
-};
-
-function pwaText(key){
-  const lang=(typeof currentLang!=='undefined'&&currentLang)||localStorage.getItem('productManualLang')||'zh';
-  return PWA_COPY[lang]?.[key]??PWA_COPY.zh[key]??key;
-}
-
-let pwaConnectivityProbePromise=null;
-let pwaConnectivityCheckedAt=0;
-let pwaConnectivityLastResult=null;
-
-function connectivityProbeTimeoutMs(){
-return Math.max(
-1500,
-Number(
-pwaConfig().connectivityProbeTimeoutMs || 4500
-)
-)
-}
-
-function connectivityProbeCacheMs(){
-return Math.max(
-0,
-Number(
-pwaConfig().connectivityProbeCacheMs || 12000
-)
-)
-}
-
-function connectivityProbeUrl(){
-const endpoint =
-typeof riskAssessmentEndpoint === 'function'
-? riskAssessmentEndpoint()
-: './api/submit';
-
-return endpoint +
-(endpoint.includes('?') ? '&' : '?') +
-'connectivity_check=' +
-Date.now()
-}
-
-async function probeWeb3FormsReachability(force=false){
-  if(navigator.onLine===false){
-    pwaConnectivityLastResult=false;
-    pwaConnectivityCheckedAt=Date.now();
-    return false
-  }
-  const now=Date.now();
-  if(!force&&pwaConnectivityLastResult!==null&&now-pwaConnectivityCheckedAt<connectivityProbeCacheMs()){
-    return pwaConnectivityLastResult
-  }
-  if(pwaConnectivityProbePromise)return pwaConnectivityProbePromise;
-  const controller=new AbortController();
-  const timeout=setTimeout(()=>controller.abort(),connectivityProbeTimeoutMs());
-  pwaConnectivityProbePromise=fetch(connectivityProbeUrl(),{
-    method:'GET',
-    mode:'no-cors',
-    cache:'no-store',
-    credentials:'omit',
-    redirect:'follow',
-    signal:controller.signal
-  }).then(()=>true).catch(()=>false).then(result=>{
-    pwaConnectivityLastResult=result;
-    pwaConnectivityCheckedAt=Date.now();
-    return result
-  }).finally(()=>{
-    clearTimeout(timeout);
-    pwaConnectivityProbePromise=null
-  });
-  return pwaConnectivityProbePromise
-}
-function applyPwaReachability(online,announceRecovery=true){
-  if(!online){
-    pwaNetworkWasOffline=true;
-    setNetworkBanner(pwaText('offline'),true);
-    return
-  }
-  const wasOffline=pwaNetworkWasOffline;
-  pwaNetworkWasOffline=false;
-  if(wasOffline&&announceRecovery){
-    setNetworkBanner(pwaText('online'),false);
-    pwaRegistration?.update?.().catch(()=>{})
-  }else{
-    hideNetworkBanner()
-  }
-}
-function isPwaStandalone(){return window.matchMedia?.('(display-mode: standalone)').matches||window.navigator.standalone===true}
-function isIosDevice(){return /iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)}
-function isWechatBrowser(){return /MicroMessenger/i.test(navigator.userAgent)}
-function pwaConfig(){return appConfig?.pwa||{}}
-function installDismissMs(){return Number(pwaConfig().installDismissDays||7)*86400000}
-function installWasDismissed(){const value=Number(localStorage.getItem(PWA_INSTALL_DISMISSED_KEY)||0);return value>0&&Date.now()-value<installDismissMs()}
-function hideNetworkBanner(){document.getElementById('pwaNetworkBanner')?.setAttribute('hidden','')}
-function setNetworkBanner(text,persistent=false){
-  const banner=document.getElementById('pwaNetworkBanner'),copy=document.getElementById('pwaNetworkText');
-  if(!banner||!copy)return;
-  copy.textContent=text;banner.removeAttribute('hidden');
-  if(!persistent)setTimeout(()=>{if(navigator.onLine!==false)hideNetworkBanner()},2200)
-}
-async function updateNetworkState(){
-  if(navigator.onLine===false){
-    applyPwaReachability(false,false);
-    return false
-  }
-  const reachable=await probeWeb3FormsReachability(true);
-  applyPwaReachability(reachable,true);
-  return reachable
-}
-function showPwaAction(type){
-  if(isPwaStandalone()&&(type==='install'||type==='manual'))return;
-  if(pwaActionType==='update'&&type!=='update')return;
-  pwaActionType=type;
-  const banner=document.getElementById('pwaActionBanner'),title=document.getElementById('pwaActionTitle'),copy=document.getElementById('pwaActionCopy'),primary=document.getElementById('pwaActionPrimary');
-  if(!banner||!title||!copy||!primary)return;
-  if(type==='update'){title.textContent=pwaText('updateTitle');copy.textContent=pwaText('updateCopy');primary.textContent=pwaText('updateNow')}
-  else if(type==='wechat'){title.textContent=pwaText('wechatTitle');copy.textContent=pwaText('wechatCopy');primary.textContent=pwaText('installGuide')}
-  else if(type==='ios'){title.textContent=pwaText('iosTitle');copy.textContent=pwaText('iosCopy');primary.textContent=pwaText('installGuide')}
-  else if(type==='manual'){title.textContent=pwaText('manualInstallTitle');copy.textContent=pwaText('manualInstallCopy');primary.textContent=pwaText('manualInstallAction')}
-  else{title.textContent=pwaText('installTitle');copy.textContent=pwaText('installCopy');primary.textContent=pwaText('installNow')}
-  banner.removeAttribute('hidden')
-}
-function hidePwaAction(){document.getElementById('pwaActionBanner')?.setAttribute('hidden','');pwaActionType=''}
-function dismissPwaAction(){
-  if(pwaActionType==='install'||pwaActionType==='manual'||pwaActionType==='ios'||pwaActionType==='wechat')localStorage.setItem(PWA_INSTALL_DISMISSED_KEY,String(Date.now()));
-  if(pwaActionType==='update')sessionStorage.setItem(PWA_UPDATE_SESSION_KEY,'1');
-  hidePwaAction()
-}
-function clearPwaInstallFallback(){
-  if(pwaInstallFallbackTimer){
-    clearTimeout(pwaInstallFallbackTimer);
-    pwaInstallFallbackTimer=null
-  }
-}
-function installFallbackDelayMs(){return Math.max(3000,Number(pwaConfig().installFallbackDelayMs||15000))}
-function schedulePwaInstallFallback(){
-  if(pwaInstallFallbackTimer||isPwaStandalone()||installWasDismissed()||deferredInstallPrompt||isIosDevice()||isWechatBrowser()||pwaActionType==='update')return;
-  pwaInstallFallbackTimer=setTimeout(()=>{
-    pwaInstallFallbackTimer=null;
-    if(isPwaStandalone()||installWasDismissed()||deferredInstallPrompt||isIosDevice()||isWechatBrowser()||pwaActionType==='update')return;
-    if(typeof activeScreen!=='undefined'&&activeScreen==='home'){
-      setTimeout(maybeOfferPwaInstall,3000);
-      return
-    }
-    showPwaAction('manual')
-  },installFallbackDelayMs())
-}
-function maybeOfferPwaInstall(){
-  if(isPwaStandalone()||installWasDismissed()||pwaActionType==='update')return;
-  if(typeof activeScreen!=='undefined'&&activeScreen==='home'){setTimeout(maybeOfferPwaInstall,3000);return}
-  if(isWechatBrowser()){clearPwaInstallFallback();return showPwaAction('wechat')}
-  if(deferredInstallPrompt){clearPwaInstallFallback();return showPwaAction('install')}
-  if(isIosDevice()){clearPwaInstallFallback();return showPwaAction('ios')}
-  schedulePwaInstallFallback()
-}
-async function triggerNativeInstall(){
-  if(!deferredInstallPrompt)return openPwaGuide();
-  const prompt=deferredInstallPrompt;deferredInstallPrompt=null;
-  try{
-    await prompt.prompt();
-    const choice=await prompt.userChoice;
-    if(choice?.outcome==='accepted'){localStorage.removeItem(PWA_INSTALL_DISMISSED_KEY);hidePwaAction()}
-    else{localStorage.setItem(PWA_INSTALL_DISMISSED_KEY,String(Date.now()));hidePwaAction()}
-  }catch(error){console.error('PWA install prompt failed:',error);openPwaGuide()}
-}
-function guideSteps(){
-  if(isWechatBrowser())return isIosDevice()?pwaText('wechatIosSteps'):pwaText('wechatAndroidSteps');
-  if(isIosDevice())return pwaText('iosSteps');
-  return pwaText('genericSteps')
-}
-function openPwaGuide(){
-  const layer=document.getElementById('pwaGuideLayer'),title=document.getElementById('pwaGuideTitle'),copy=document.getElementById('pwaGuideCopy'),steps=document.getElementById('pwaGuideSteps');
-  if(!layer||!title||!copy||!steps)return;
-  const wechat=isWechatBrowser();
-  title.textContent=wechat?pwaText('wechatTitle'):(isIosDevice()?pwaText('iosTitle'):pwaText('installTitle'));
-  copy.textContent=wechat?pwaText('wechatCopy'):(isIosDevice()?pwaText('iosCopy'):pwaText('installCopy'));
-  steps.innerHTML=guideSteps().map(step=>`<div class="pwa-guide-step">${step}</div>`).join('');
-  document.getElementById('pwaCopyLinkBtn').textContent=pwaText('copyLink');
-  document.getElementById('pwaGuideDoneBtn').textContent=pwaText('done');
-  layer.removeAttribute('hidden')
-}
-function closePwaGuide(){document.getElementById('pwaGuideLayer')?.setAttribute('hidden','')}
-async function copyPwaLink(){
-  const button=document.getElementById('pwaCopyLinkBtn');
-  try{
-    if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(location.href);
-    else{
-      const area=document.createElement('textarea');area.value=location.href;area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();document.execCommand('copy');area.remove()
-    }
-    if(button){button.textContent=pwaText('copied');setTimeout(()=>button.textContent=pwaText('copyLink'),1600)}
-  }catch(error){console.error('Copy link failed:',error)}
-}
-async function applyPwaUpdate(){
-  const primary=document.getElementById('pwaActionPrimary');
-  if(primary){primary.disabled=true;primary.textContent=pwaText('updating')}
-  try{
-    if(!pwaRegistration?.waiting)await pwaRegistration?.update?.();
-    if(pwaRegistration?.waiting)pwaRegistration.waiting.postMessage({type:'SKIP_WAITING'})
-    else location.reload()
-  }catch(error){console.error('PWA update failed:',error);if(primary){primary.disabled=false;primary.textContent=pwaText('updateNow')}}
-}
-function handlePwaPrimaryAction(){
-  if(pwaActionType==='update')return applyPwaUpdate();
-  if(pwaActionType==='install')return triggerNativeInstall();
-  openPwaGuide()
-}
-function refreshPwaUi(){
-  updateNetworkState();
-  if(pwaActionType)showPwaAction(pwaActionType);
-  if(!document.getElementById('pwaGuideLayer')?.hasAttribute('hidden'))openPwaGuide()
-}
-function notifyPwaUpdate(registration){
-  pwaRegistration=registration;
-  if(sessionStorage.getItem(PWA_UPDATE_SESSION_KEY)!=='1')showPwaAction('update')
-}
-async function registerPwaServiceWorker(){
-  if(!('serviceWorker' in navigator))return;
-  try{
-    const registration=await navigator.serviceWorker.register('./sw.js',{scope:'./',updateViaCache:'none'});
-    pwaRegistration=registration;
-    if(registration.waiting&&navigator.serviceWorker.controller)notifyPwaUpdate(registration);
-    registration.addEventListener('updatefound',()=>{
-      const worker=registration.installing;
-      if(!worker)return;
-      worker.addEventListener('statechange',()=>{
-        if(worker.state==='installed'&&navigator.serviceWorker.controller)notifyPwaUpdate(registration)
-      })
-    });
-    navigator.serviceWorker.addEventListener('controllerchange',()=>{
-      if(pwaReloading)return;pwaReloading=true;location.reload()
-    });
-    const interval=Number(pwaConfig().updateCheckIntervalMs||3600000);
-    const check=()=>{const now=Date.now();if(now-pwaUpdateCheckAt<60000)return;pwaUpdateCheckAt=now;registration.update().catch(()=>{})};
-    window.addEventListener('focus',check);
-    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')check()});
-    setInterval(check,Math.max(interval,300000));
-    check()
-  }catch(error){console.error('Service worker registration failed:',error)}
-}
-function initPwaExperience(){
-  if(pwaInitialized)return;pwaInitialized=true;
-  updateNetworkState();
-  window.addEventListener('online',updateNetworkState);
-  window.addEventListener('offline',updateNetworkState);
-  const delay=Number(pwaConfig().installPromptDelayMs||10000);
-  setTimeout(maybeOfferPwaInstall,Math.max(delay,2000))
-}
-window.addEventListener('beforeinstallprompt',event=>{
-  event.preventDefault();
-  deferredInstallPrompt=event;
-  clearPwaInstallFallback();
-  if(pwaInitialized){
-    if(pwaActionType==='manual')showPwaAction('install');
-    else setTimeout(maybeOfferPwaInstall,800)
-  }
+pwaService.configure({
+  storage:appStorage,
+  getLanguage:()=>currentLang,
+  getConfig:()=>appConfig?.pwa||{},
+  getActiveScreen:()=>activeScreen,
+  getConnectivityEndpoint:()=>(
+    typeof riskAssessmentEndpoint==='function'
+      ? riskAssessmentEndpoint()
+      : './api/submit'
+  )
 });
-window.addEventListener('appinstalled',()=>{
-  deferredInstallPrompt=null;
-  clearPwaInstallFallback();
-  localStorage.removeItem(PWA_INSTALL_DISMISSED_KEY);
-  hidePwaAction()
-});
+
 document.addEventListener('click',e=>{let w=document.getElementById('langWrap');if(w&&!w.contains(e.target))closeLangSheet()});
 async function bootstrap(){
+  if(
+    window.DREAMLAND_MPA_ACTIVE===true
+  ){
+    await window.DreamlandSiteBootstrap
+      .mount();
+
+    window.DreamlandPublicNavigation
+      .configure({
+        route:
+          window.DreamlandRoute,
+        navigationContext:
+          window.DreamlandNavigationContext,
+        locationRef:
+          window.location
+      });
+  }
+
   initHeroImage();
   initUnlock();
 
   await loadCatalogData();
 
-  activeSeries=seriesMeta[defaultSeries]
-    ? defaultSeries
-    : (
-        Object.keys(seriesMeta)[0]||
-        'advanced'
-      );
+  catalogFeature.configure({
+  products,
+  seriesMeta,
+  defaultSeries
+  });
 
-  activeProduct=products[0]||null;
+  detailFeature.configure({
+  products,
+
+  sizes:[
+    'S',
+    'M',
+    'L',
+    'XL'
+  ],
+
+  qtyMin:
+    QTY_MIN,
+
+  qtyStep:
+    QTY_STEP,
+
+  defaultProductSize,
+
+  initialScentSeries,
+
+  patternsForSize:
+    size=>
+      patternsBySize[size]||
+      [],
+
+  scentSeriesOptions:
+    product=>
+      product?.series==='holiday'
+        ? (
+            seriesMeta.holiday
+              ?.scentSeriesOptions||
+            []
+          )
+        : [],
+
+  availableScents:
+    availableScentsForProduct,
+
+  scentById:
+    id=>
+      scentMap.get(id)||
+      null,
+
+  scentDisplayText,
+
+  defaultPack,
+
+  packOptions,
+
+  normalizeQuantity:
+    normalizeQty,
+
+  maximumQuantity,
+
+  moqForSeriesSize,
+
+  pricingSeriesFor,
+
+  tierUnitCny,
+
+  packSurchargeCny,
+
+  convertCnyToBase:
+    cnyToBase
+});
+
+
+  ensureCustomFeatureRuntime();
+
+  desktopExperience.configure({
+    root:
+      document.getElementById(
+        'desktopExperience'
+      ),
+
+    siteContent,
+    products,
+    seriesMeta,
+
+    language:
+      ()=>currentLang,
+
+    languageNames:
+      ()=>languageNames,
+
+    seriesLabel,
+
+    productName:
+      productDisplayName,
+
+    productCover,
+
+    productAngle:
+      product=>
+        cleanImagePath(
+          product?.angle_image
+        ),
+
+    productDetail:
+      product=>
+        cleanImagePath(
+          product?.detail_image
+        ),
+
+    productDescription:
+      product=>
+        productDesc(product),
+
+    productImages:
+      product=>
+        productCarouselImages(
+          product
+        ),
+
+    detailState:
+      detailFeature,
+
+    customState:
+      customFeature,
+
+    inquiryState:
+      inquiryFeature,
+
+    contactState:
+      contactFeature,
+
+    itemScentLabel:
+      item=>
+        itemScentLabel(
+          item
+        ),
+
+    itemMoq:
+      item=>
+        itemMoq(
+          item
+        ),
+
+    choiceLabel,
+
+    scentDisplayText,
+
+    sizeDimensions:
+      size=>
+        sizeDims[size]||
+        '',
+
+    optionPreview:
+      (
+        key,
+        value
+      )=>{
+        if(key==='pattern'){
+          return patternThumb(value);
+        }
+
+        if(key==='pack'){
+          return packThumb(value);
+        }
+
+        return '';
+      },
+
+    packSurcharge:
+      (
+        series,
+        pack
+      )=>
+        packSurchargeBase(
+          series,
+          pack
+        ),
+
+    money,
+
+    budgetOptions:
+      desktopCustomBudgetOptions,
+
+    qtyUnit,
+
+    productPrice:
+      product=>
+        fromPrice(
+          catalogUnit(product)
+        ),
+
+    productPriceValue:
+      product=>
+        catalogUnit(product),
+
+    productMoq:
+      product=>
+        moqForSeriesSize(
+          product?.series,
+          defaultProductSize(product)
+        ),
+
+    inquiryCount:
+      ()=>inquiryFeature
+        .items()
+        .length,
+
+    media:
+      ()=>window.DreamlandMedia,
+
+    catalogAfterRender:
+      payload=>{
+        window.DreamlandRuntimeHooks
+          ?.emit(
+            'catalog.afterAppendBatch',
+            {
+              grid:
+                payload?.grid||
+                payload?.root,
+              start:0,
+              end:
+                payload?.renderedCount||
+                0
+            }
+          );
+      },
+
+    actions:{
+      navigate:
+        screen=>
+          go(screen),
+
+      chooseLanguage:
+        lang=>
+          chooseLang(lang),
+
+      selectCatalogSeries:
+        series=>{
+          if(
+            series&&
+            series!=='all'
+          ){
+            catalogFeature
+              .setActiveSeries(
+                series
+              );
+          }
+        },
+
+      openSeries:
+        series=>{
+          if(
+            series&&
+            series!=='all'
+          ){
+            catalogFeature
+              .setActiveSeries(
+                series
+              );
+          }
+
+          go('catalog');
+        },
+
+      openProduct:
+        id=>
+          openDetail(id),
+
+      detailBack:
+        ()=>
+          detailBack(),
+
+      addConfiguredProduct:
+        ()=>
+          addConfiguredProduct(),
+
+      detailQuantityFeedback:
+        result=>{
+          if(
+            result?.invalid||
+            result?.belowMin
+          ){
+            toast(
+              ui(
+                'minQtyError'
+              )
+            );
+          }
+
+          if(
+            result?.aboveMax
+          ){
+            toast(
+              ui(
+                'quantityTooLarge'
+              )
+            );
+          }
+        },
+
+      addCustomIntent:
+        draft=>
+          addCustomIntentDesktop(
+            draft
+          ),
+
+      adjustInquiryQuantity:
+        (
+          id,
+          delta
+        )=>
+          desktopAdjustInquiryQuantity(
+            id,
+            delta
+          ),
+
+      setInquiryQuantity:
+        (
+          id,
+          value
+        )=>
+          desktopSetInquiryQuantity(
+            id,
+            value
+          ),
+
+      removeInquiryItem:
+        id=>
+          desktopRemoveInquiryItem(
+            id
+          ),
+
+      editInquiryItem:
+        id=>
+          openEditProductItem(
+            id
+          ),
+
+      clearInquiryDesktop:
+        ()=>
+          desktopClearInquiry(),
+
+      continueInquiry:
+        ()=>
+          desktopContinueInquiry(),
+
+      continueContact:
+        contact=>
+          desktopContinueContact(
+            contact
+          ),
+
+      reviewProjection:
+        ()=>
+          desktopReviewProjection(),
+
+      riskState:
+        ()=>
+          desktopRiskState(),
+
+      privacyChanged:
+        accepted=>
+          desktopPrivacyChanged(
+            accepted
+          ),
+
+      submitInquiryDesktop:
+        accepted=>
+          desktopSubmitInquiry(
+            accepted
+          ),
+
+      lastSubmission:
+        ()=>
+          desktopLastSubmission(),
+
+      locale:
+        ()=>localizationPolicy.localeFor(
+          currentLang,
+          currencyMap
+        ),
+
+      feedback:
+        message=>
+          toast(
+            message
+          ),
+
+      privacy:
+        ()=>{
+          window.location.href=
+            privacyUrl();
+        }
+    }
+  });
+
+  desktopExperience.mount();
+
+  if(
+    window.DREAMLAND_MPA_ACTIVE===true
+  ){
+    window.DreamlandCatalogUrlState
+      .mount({
+        route:
+          window.DreamlandRoute,
+
+        setMobileSeries:
+          series=>{
+            if(
+              !series||
+              series==='all'
+            ){
+              return;
+            }
+
+            catalogFeature
+              .setActiveSeries(
+                series
+              );
+
+            renderTabs();
+            renderProducts();
+          }
+      });
+
+    await applyPublicRouteEntry();
+  }
 
   applyRuntimeLimits();
   bindCtaReveal();
   bindContactDraft();
-  bindCatalogLazyLoad();
   refreshBudgetOptions();
   updateLangButton();
   renderLangOptions();
@@ -6467,7 +8068,7 @@ async function bootstrap(){
   renderProducts();
   applyI18n();
   badge();
-  initPwaExperience();
+  pwaService.initExperience();
 }
 bootstrap().catch(error=>{
   console.error('Catalog data initialization failed:',error);
@@ -6476,9 +8077,6 @@ bootstrap().catch(error=>{
   if(title)title.textContent='产品数据加载失败';
   if(copy)copy.textContent='请检查网络后刷新页面。';
 });
-</script>
-<script>
-window.addEventListener('load',registerPwaServiceWorker);
 </script>
 <div class="tier-layer" id="tierLayer" onclick="if(event.target===this)closeTierSheet()">
   <div class="tier-sheet" id="tierSheet"></div>

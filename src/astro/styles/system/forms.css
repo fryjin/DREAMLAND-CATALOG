@@ -1,0 +1,31 @@
+/* DREAMLAND R4.11B2 — shared form language. */
+.dl-field{display:grid;gap:9px;min-width:0;}
+.dl-field__label{color:var(--dl-color-ink-muted);font-size:var(--dl-type-label);font-weight:750;}
+.dl-field__meta{color:var(--dl-color-ink-soft);font-size:var(--dl-type-caption);line-height:1.5;}
+.dl-input,.dl-select,.dl-textarea{
+  width:100%;
+  border:1px solid var(--dl-color-border-strong);
+  border-radius:var(--dl-radius-md);
+  outline:0;
+  background:var(--dl-color-surface);
+  color:var(--dl-color-ink);
+  font:inherit;
+  font-size:13px;
+  transition:border-color var(--dl-motion-fast),box-shadow var(--dl-motion-fast),background var(--dl-motion-fast);
+}
+.dl-input,.dl-select{min-height:var(--dl-control-xl);padding:0 14px;}
+.dl-textarea{min-height:160px;padding:14px;resize:vertical;line-height:1.55;}
+.dl-input::placeholder,.dl-textarea::placeholder{color:var(--dl-color-ink-soft);}
+.dl-input:focus,.dl-select:focus,.dl-textarea:focus{border-color:var(--dl-color-ink);box-shadow:0 0 0 3px var(--dl-color-focus);}
+.dl-input:disabled,.dl-select:disabled,.dl-textarea:disabled{
+  cursor:not-allowed;
+  opacity:1;
+  color:var(--dl-color-ink-muted);
+  background:color-mix(in srgb,var(--dl-color-canvas) 56%,var(--dl-color-surface));
+}
+@media (max-width:720px){
+  .dl-field{gap:10px;}
+  .dl-field__label{font-size:13px;}
+  .dl-input,.dl-select{min-height:56px;padding-inline:16px;border-radius:18px;font-size:15px;}
+  .dl-textarea{min-height:148px;padding:16px;border-radius:20px;font-size:15px;}
+}
