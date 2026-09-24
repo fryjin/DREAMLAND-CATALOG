@@ -115,7 +115,7 @@ try{
       'src="/r4-contact-runtime.js"',
       'data-site-language-enabled="true"',
       'name="robots" content="noindex,nofollow"',
-      'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/contact/"'
+      'rel="canonical" href="https://dreamlandart.net/inquiry/contact/"'
     ]){
       if(
         !html.includes(

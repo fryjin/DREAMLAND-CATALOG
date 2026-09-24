@@ -121,7 +121,7 @@ try{
       'href="/products/"',
       'href="/custom/"',
       'name="robots" content="noindex,nofollow"',
-      'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/"',
+      'rel="canonical" href="https://dreamlandart.net/inquiry/"',
       'data-site-language-enabled="true"'
     ]){
       if(

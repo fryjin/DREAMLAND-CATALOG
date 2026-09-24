@@ -34,7 +34,7 @@ try{
       'data-custom-section="basics"','data-custom-section="product"','data-custom-section="packaging"','data-custom-runtime-brief','data-custom-add-inquiry',
       'data-custom-quantity','data-custom-budget','data-custom-delivery','data-custom-color','data-custom-notes','data-custom-error="use"','data-custom-error="qty"','data-custom-error="scents"',
       'id="customRuntimeState"','src="/r4-custom-runtime.js"','href="/products/"','href="/inquiry/"','name="robots" content="index,follow"',
-      'rel="canonical" href="https://dreamland-catalog.pages.dev/custom/"','data-site-language-enabled="true"'
+      'rel="canonical" href="https://dreamlandart.net/custom/"','data-site-language-enabled="true"'
     ]) if(!html.includes(marker)) fail('R4.6B Custom output is missing: '+marker);
 
     for(const forbidden of [

@@ -203,7 +203,7 @@ for(const marker of [
   'data-contact-section="required"',
   'data-contact-section="optional"',
   'name="robots" content="noindex,nofollow"',
-  'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/contact/"',
+  'rel="canonical" href="https://dreamlandart.net/inquiry/contact/"',
   'id="contactRuntimeState"',
   'src="/r4-contact-runtime.js"',
   'data-site-language-enabled="true"',

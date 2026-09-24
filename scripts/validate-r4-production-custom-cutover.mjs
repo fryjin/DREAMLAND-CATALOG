@@ -50,7 +50,7 @@ function expectFile(root,relative){const file=path.join(root,relative);if(!fs.ex
 function stateText(html){const match=html.match(/<script[^>]*id="customRuntimeState"[^>]*type="application\/json"[^>]*>([\s\S]*?)<\/script>/i)||html.match(/<script[^>]*type="application\/json"[^>]*id="customRuntimeState"[^>]*>([\s\S]*?)<\/script>/i);return match?match[1]:'';}
 function validateCustomDocument(root,label){
   const html=expectFile(root,'custom/index.html');if(!html)return;
-  for(const marker of ['data-r4-astro-foundation="true"','data-r4-astro-custom="true"','data-r4-custom-static="true"','data-custom-runtime-presentation','name="robots" content="index,follow"','rel="canonical" href="https://dreamland-catalog.pages.dev/custom/"','id="customRuntimeState"','src="/r4-custom-runtime.js"','data-site-language-enabled="true"']) if(!html.includes(marker))fail(label+' is missing: '+marker);
+  for(const marker of ['data-r4-astro-foundation="true"','data-r4-astro-custom="true"','data-r4-custom-static="true"','data-custom-runtime-presentation','name="robots" content="index,follow"','rel="canonical" href="https://dreamlandart.net/custom/"','id="customRuntimeState"','src="/r4-custom-runtime.js"','data-site-language-enabled="true"']) if(!html.includes(marker))fail(label+' is missing: '+marker);
   for(const legacy of ['DREAMLAND_MPA_ACTIVE','runtime-desktop-experience.js','runtime-desktop-custom.js','runtime-risk.js','runtime-submission.js','runtime-pwa.js','custom-scent-multi.js','startup-loader.js']) if(html.includes(legacy))fail(label+' still contains Legacy runtime marker: '+legacy);
   const executable=[...html.matchAll(/<script\b(?![^>]*type="application\/json")[^>]*>/gi)];if(executable.length!==1)fail(label+' must contain exactly one executable route runtime; found '+executable.length+'.');
   const scriptSources=[...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*>/gi)].map(match=>match[1]);if(scriptSources.length!==1||scriptSources[0]!=='/r4-custom-runtime.js')fail(label+' executable graph must contain only /r4-custom-runtime.js.');
@@ -81,7 +81,7 @@ try{
 }catch(error){fail('R4.6C promotion source inspection failed: '+error.message);}
 try{
   const page=read('src/astro/pages/custom/index.astro');
-  for(const marker of ['robots="index,follow"','canonical="https://dreamland-catalog.pages.dev/custom/"','id="customRuntimeState"','src="/r4-custom-runtime.js"']) if(!page.includes(marker))fail('Astro Custom Production source is missing: '+marker);
+  for(const marker of ['robots="index,follow"','canonical="https://dreamlandart.net/custom/"','id="customRuntimeState"','src="/r4-custom-runtime.js"']) if(!page.includes(marker))fail('Astro Custom Production source is missing: '+marker);
   if(page.includes('robots="noindex,nofollow"'))fail('Astro Custom source must no longer be noindex after Production cutover.');
 }catch(error){fail('R4.6C Astro Custom source inspection failed: '+error.message);}
 if(SOURCE_MODE)validateCustomDocument(path.join(ROOT,'.r4-astro-dist'),'Isolated Custom');

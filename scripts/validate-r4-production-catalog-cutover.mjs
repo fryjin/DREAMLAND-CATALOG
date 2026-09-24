@@ -275,7 +275,7 @@ try{
 
   for(const marker of [
     'robots="index,follow"',
-    'canonical="https://dreamland-catalog.pages.dev/products/"',
+    'canonical="https://dreamlandart.net/products/"',
     'id="catalogRuntimeState"',
     'src="/r4-catalog-runtime.js"'
   ]){
@@ -326,7 +326,7 @@ if(SOURCE_MODE){
         'data-r4-astro-catalog="true"',
         'data-catalog-runtime-presentation',
         'name="robots" content="index,follow"',
-        'rel="canonical" href="https://dreamland-catalog.pages.dev/products/"',
+        'rel="canonical" href="https://dreamlandart.net/products/"',
         'id="catalogRuntimeState"',
         'src="/r4-catalog-runtime.js"'
       ]){
@@ -391,7 +391,7 @@ if(DIST_MODE){
         'data-r4-astro-catalog="true"',
         'data-catalog-runtime-presentation',
         'name="robots" content="index,follow"',
-        'rel="canonical" href="https://dreamland-catalog.pages.dev/products/"',
+        'rel="canonical" href="https://dreamlandart.net/products/"',
         'id="catalogRuntimeState"',
         'src="/r4-catalog-runtime.js"'
       ]){

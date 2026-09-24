@@ -127,7 +127,7 @@ try{
       'data-success-guard-code="SUBMISSION_REQUIRED"',
       'data-success-guard-target="/inquiry/"',
       'name="robots" content="noindex,nofollow"',
-      'rel="canonical" href="https://dreamland-catalog.pages.dev/inquiry/success/"',
+      'rel="canonical" href="https://dreamlandart.net/inquiry/success/"',
       'href="/products/"',
       'href="/custom/"'
     ]){
@@ -558,7 +558,7 @@ try{
 
   for(const marker of [
     'robots="noindex,nofollow"',
-    'canonical="https://dreamland-catalog.pages.dev/inquiry/success/"',
+    'canonical="https://dreamlandart.net/inquiry/success/"',
     'page="success"',
     '<SuccessPage view={view} />'
   ]){
