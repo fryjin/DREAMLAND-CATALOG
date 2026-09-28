@@ -49,13 +49,25 @@
         'dreamlandLastSubmissionV1'||
       parsed.routes
         ?.inquiry!==
-        '/inquiry/'||
+        (
+          parsed.localeRoutes
+            ?.inquiry||
+          '/inquiry/'
+        )||
       parsed.routes
         ?.catalog!==
-        '/products/'||
+        (
+          parsed.localeRoutes
+            ?.catalog||
+          '/products/'
+        )||
       parsed.routes
         ?.custom!==
-        '/custom/'||
+        (
+          parsed.localeRoutes
+            ?.custom||
+          '/custom/'
+        )||
       parsed.guard!==
         'hasLastSubmission'||
       !Array.isArray(
@@ -111,6 +123,9 @@
     }
 
     const candidate=
+      text(
+        runtimeState.routeLocale
+      )||
       text(
         stored
       )||
@@ -483,7 +498,8 @@
   function applyLanguage(documentRef,runtimeState,storage,record,nextLanguage){
     language=
       supportedLanguage(
-        nextLanguage,
+        runtimeState.routeLocale||
+          nextLanguage,
         runtimeState
       );
 
@@ -596,7 +612,15 @@
       pageGuards.evaluate(
         'success',
         {
-          lastSubmission
+          lastSubmission,
+          route:{
+            inquiry:()=>
+              state.localeRoutes
+                ?.inquiry||
+              state.routes
+                ?.inquiry||
+              '/inquiry/'
+          }
         }
       );
 

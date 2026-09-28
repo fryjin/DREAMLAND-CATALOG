@@ -1,38 +1,58 @@
 ---
+import {
+  scopedPublicPath,
+  withLocale
+} from '../../lib/locale-routing.mjs';
+
 interface Props {
   content:Record<string,any>;
   languageOptions:Array<{value:string;label:string;}>;
   initialLanguage:string;
   languageEnabled?:boolean;
   coverLanguageMenu?:boolean;
+  routeLocale?:string;
+  currentPath?:string;
 }
 const {
   content,
   languageOptions,
   initialLanguage,
   languageEnabled=true,
-  coverLanguageMenu=false
+  coverLanguageMenu=false,
+  routeLocale='',
+  currentPath=''
 }=Astro.props;
 const nav=content?.navigation||{};
+const routeHref=value=>
+  scopedPublicPath(
+    value,
+    routeLocale
+  );
 ---
 <header class="dl-site-header home-header" data-dl-site-header data-home-header>
   <div class="dl-site-header__inner home-header__inner dl-container home-container">
-    <a class="dl-wordmark home-wordmark" href="/" aria-label="DREAMLAND home">DREAMLAND</a>
+    <a class="dl-wordmark home-wordmark" href={routeHref('/')} aria-label="DREAMLAND home">DREAMLAND</a>
     <nav class="dl-site-nav home-nav" aria-label="Primary navigation">
-      <a href="/products/"><span data-home-bind="navigation.collection">{nav.collection||'Collection'}</span></a>
-      <a href="/custom/"><span data-home-bind="navigation.custom">{nav.custom||'Custom'}</span></a>
+      <a href={routeHref('/products/')}><span data-home-bind="navigation.collection">{nav.collection||'Collection'}</span></a>
+      <a href={routeHref('/custom/')}><span data-home-bind="navigation.custom">{nav.custom||'Custom'}</span></a>
     </nav>
     <div class="dl-site-actions">
       <label class="dl-language-control home-language-control">
         <span class="dl-sr-only home-sr-only" data-home-bind="navigation.language">{nav.language||'Language'}</span>
         <select
           data-home-language-select
+          data-locale-routing="true"
+          onchange="const option=this.options[this.selectedIndex];const href=option&&option.dataset.localeHref;if(href){try{localStorage.setItem('productManualLang',this.value)}catch(_){}const url=new URL(href,location.origin);url.search=location.search;url.hash=location.hash;event.stopImmediatePropagation();location.assign(url.pathname+url.search+url.hash);}"
           data-site-language-enabled={languageEnabled?'true':'false'}
           aria-label={nav.language||'Language'}
           disabled={!languageEnabled}
         >
           {languageOptions.map(option=>(
-            <option value={option.value} selected={option.value===initialLanguage}>{option.label}</option>
+            <option
+              value={option.value}
+              data-locale-href={withLocale(currentPath,option.value)}
+              selected={option.value===initialLanguage}
+            >{option.label}</option>
           ))}
         </select>
       </label>
@@ -55,6 +75,8 @@ const nav=content?.navigation||{};
               <button
                 type="button"
                 data-home-language-option={option.value}
+                data-locale-href={withLocale(currentPath,option.value)}
+                onclick="const href=this.dataset.localeHref;if(href){try{localStorage.setItem('productManualLang',this.dataset.homeLanguageOption||'')}catch(_){}const url=new URL(href,location.origin);url.search=location.search;url.hash=location.hash;event.stopImmediatePropagation();location.assign(url.pathname+url.search+url.hash);}"
               >
                 {option.label}
               </button>
@@ -63,7 +85,7 @@ const nav=content?.navigation||{};
         </details>
       )}
 
-      <a class="dl-inquiry-action home-nav__inquiry" href="/inquiry/">
+      <a class="dl-inquiry-action home-nav__inquiry" href={routeHref('/inquiry/')}>
         <span data-home-bind="navigation.inquiry">{nav.inquiry||'Inquiry'}</span>
         <span class="dl-inquiry-count home-nav__count" data-home-inquiry-count aria-label="0 inquiry items">0</span>
       </a>

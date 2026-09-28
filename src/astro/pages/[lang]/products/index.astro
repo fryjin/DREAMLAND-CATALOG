@@ -1,0 +1,14 @@
+---
+import CanonicalPage from '../../products/index.astro';
+import {SUPPORTED_LOCALES} from '../../../lib/locale-routing.mjs';
+
+export function getStaticPaths(){
+  return SUPPORTED_LOCALES.map(language=>({
+    params:{lang:language},
+    props:{language}
+  }));
+}
+
+const {language}=Astro.props;
+---
+<CanonicalPage language={language} routeLocale={language} />

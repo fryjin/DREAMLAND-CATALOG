@@ -436,7 +436,8 @@
 
     const next=
       normalizeLanguage(
-        language,
+        state.routeLocale||
+          language,
         state.defaultLanguage||
           'en',
         supported
@@ -764,6 +765,7 @@
       );
 
     const stored=
+      state.routeLocale||
       readStorage(
         state.storage
           .languageKey
@@ -803,7 +805,8 @@
             .languageKey
         ){
           applyLanguage(
-            event.newValue,
+            state.routeLocale||
+              event.newValue,
             {
               persist:false
             }

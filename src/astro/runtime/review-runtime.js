@@ -118,7 +118,8 @@
     }
 
     return supportedLanguage(
-      value,
+      state.routeLocale||
+        value,
       state
     );
   }
@@ -489,12 +490,26 @@
     });
   }
 
-  function guardResult(pageGuards,inquiry,contact){
+  function guardResult(pageGuards,inquiry,contact,state){
     return pageGuards.evaluate(
       'review',
       {
         inquiry,
-        contact
+        contact,
+        route:{
+          inquiry:()=>
+            state.localeRoutes
+              ?.inquiry||
+            state.routes
+              ?.inquiry||
+            '/inquiry/',
+          contact:()=>
+            state.localeRoutes
+              ?.contact||
+            state.routes
+              ?.contact||
+            '/inquiry/contact/'
+        }
       }
     );
   }
@@ -1669,6 +1684,8 @@
         }
 
         root.location?.assign?.(
+          state.localeRoutes
+            ?.success||
           '/inquiry/success/'
         );
 
@@ -1747,7 +1764,8 @@
         guardResult(
           pageGuards,
           inquiry,
-          contact
+          contact,
+          state
         );
 
       if(!guard.allowed){
@@ -1820,7 +1838,8 @@
     function setLanguage(value){
       language=
         supportedLanguage(
-          value,
+          state.routeLocale||
+            value,
           state
         );
 

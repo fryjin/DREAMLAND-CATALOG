@@ -241,7 +241,7 @@ try{
     "from '../lib/home-view-model.mjs';",
     "import '../../domain/pricing/runtime-pricing-policy.js';",
     "import '../../domain/localization/runtime-localization-policy.js';",
-    "const language='en';",
+    "const language=normalizeLocale(",
     "buildHomeRuntimeState",
     "homeRuntimeState",
     "r4-home-runtime.js"

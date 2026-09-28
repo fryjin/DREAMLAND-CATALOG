@@ -85,7 +85,8 @@
     }
 
     return supportedLanguage(
-      stored,
+      state.routeLocale||
+        stored,
       state
     );
   }
@@ -1079,7 +1080,8 @@
     ){
       language=
         supportedLanguage(
-          value,
+          state.routeLocale||
+            value,
           state
         );
 

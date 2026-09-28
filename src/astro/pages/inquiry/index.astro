@@ -5,6 +5,13 @@ import path from 'node:path';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import SiteHeader from '../../components/site/SiteHeader.astro';
 import SiteFooter from '../../components/site/SiteFooter.astro';
+import {
+  normalizeLocale,
+  supportedLocale,
+  htmlLangForLocale,
+  localizePresentationRoutes,
+  decorateLocaleRuntimeState
+} from '../../lib/locale-routing.mjs';
 import InquiryPage from '../../components/inquiry/InquiryPage.astro';
 
 import {
@@ -85,14 +92,16 @@ const scents=
     scentRows
   );
 
-const language='en';
+const routeLocale=supportedLocale(Astro.props.routeLocale)||'';
+const language=normalizeLocale(Astro.props.language||routeLocale||'en');
+const currentPath='/inquiry/';
 const supportedLanguages=[
   'en',
   'zh',
   'ko'
 ];
 
-const view=
+let view=
   buildInquiryStaticView({
     language,
     siteContent,
@@ -100,7 +109,13 @@ const view=
     inquiryFeature
   });
 
-const runtimeState=
+view=
+  localizePresentationRoutes(
+    view,
+    routeLocale
+  );
+
+let runtimeState=
   buildInquiryRuntimeState({
     languages:
       supportedLanguages,
@@ -114,6 +129,12 @@ const runtimeState=
     appConfig,
     localizationPolicy
   });
+
+runtimeState=
+  decorateLocaleRuntimeState(
+    runtimeState,
+    routeLocale
+  );
 
 const runtimeStateJson=
   JSON.stringify(
@@ -140,7 +161,8 @@ const languageOptions=
   title="Inquiry — DREAMLAND"
   description={view.copy.body}
   page="inquiry"
-  lang={language}
+  lang={htmlLangForLocale(language)}
+  routeLocale={routeLocale}
   robots="noindex,nofollow"
   canonical="https://dreamlandart.net/inquiry/"
   ogImage="https://dreamlandart.net/images/shared/share/SHARE001/cover-social.jpg"
@@ -149,12 +171,15 @@ const languageOptions=
     content={view.content}
     languageOptions={languageOptions}
     initialLanguage={language}
+    routeLocale={routeLocale}
+    currentPath={currentPath}
     languageEnabled={true}
   />
 
   <InquiryPage view={view} />
 
-  <SiteFooter content={view.content} />
+  <SiteFooter
+    routeLocale={routeLocale} content={view.content} />
 
   <script
     is:inline

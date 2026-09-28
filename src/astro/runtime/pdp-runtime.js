@@ -1361,7 +1361,8 @@
 
     currentLanguage=
       normalizeLanguage(
-        language,
+        state.routeLocale||
+          language,
         state.defaultLanguage||
           'en',
         supported
@@ -1786,7 +1787,8 @@
             .languageKey
         ){
           applyLanguage(
-            event.newValue,
+            state.routeLocale||
+              event.newValue,
             {
               persist:false
             }
@@ -1870,6 +1872,7 @@
 
     currentLanguage=
       normalizeLanguage(
+        state.routeLocale||
         readStorage(
           state.storage
             .languageKey

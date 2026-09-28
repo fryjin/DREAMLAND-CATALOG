@@ -248,6 +248,152 @@ function resolveLocale({
   });
 }
 
+function scopedPublicPath(
+  value,
+  locale=''
+){
+  const scoped=
+    supportedLocale(
+      locale
+    );
+
+  return scoped
+    ? localizedPublicPath(
+        value,
+        scoped
+      )
+    : text(value);
+}
+
+const PUBLIC_ROUTE_PATHS=
+  Object.freeze({
+    home:'/',
+    catalog:'/products/',
+    custom:'/custom/',
+    inquiry:'/inquiry/',
+    contact:'/inquiry/contact/',
+    review:'/inquiry/review/',
+    success:'/inquiry/success/'
+  });
+
+function localeRouteMap(locale=''){
+  return Object.freeze(
+    Object.fromEntries(
+      Object.entries(
+        PUBLIC_ROUTE_PATHS
+      ).map(
+        ([key,value])=>[
+          key,
+          scopedPublicPath(
+            value,
+            locale
+          )
+        ]
+      )
+    )
+  );
+}
+
+function localizePresentationRoutes(
+  value,
+  locale=''
+){
+  const scoped=
+    supportedLocale(
+      locale
+    );
+
+  if(!scoped){
+    return value;
+  }
+
+  function visit(
+    item,
+    key='',
+    parentKey=''
+  ){
+    if(typeof item==='string'){
+      if(
+        key==='href'||
+        key==='target'||
+        parentKey==='routes'
+      ){
+        return scopedPublicPath(
+          item,
+          scoped
+        );
+      }
+
+      return item;
+    }
+
+    if(Array.isArray(item)){
+      return Object.freeze(
+        item.map(
+          child=>
+            visit(
+              child,
+              '',
+              key
+            )
+        )
+      );
+    }
+
+    if(
+      item&&
+      typeof item==='object'
+    ){
+      return Object.freeze(
+        Object.fromEntries(
+          Object.entries(item)
+            .map(
+              ([childKey,child])=>[
+                childKey,
+                visit(
+                  child,
+                  childKey,
+                  key
+                )
+              ]
+            )
+        )
+      );
+    }
+
+    return item;
+  }
+
+  return visit(value);
+}
+
+function decorateLocaleRuntimeState(
+  state,
+  routeLocale=''
+){
+  const scoped=
+    supportedLocale(
+      routeLocale
+    )||
+    '';
+
+  const localized=
+    localizePresentationRoutes(
+      state,
+      scoped
+    );
+
+  return Object.freeze({
+    ...localized,
+    routeLocale:
+      scoped,
+    localeRoutes:
+      localeRouteMap(
+        scoped
+      )
+  });
+}
+
 export const SUPPORTED_LOCALES=SUPPORTED;
 export const HTML_LANG_BY_LOCALE=HTML_LANG;
 export const PUBLIC_DEFAULT_LOCALE=PUBLIC_DEFAULT;
@@ -262,5 +408,9 @@ export {
   withLocale,
   isLocaleEligiblePath,
   localizedPublicPath,
+  scopedPublicPath,
+  localeRouteMap,
+  localizePresentationRoutes,
+  decorateLocaleRuntimeState,
   resolveLocale
 };

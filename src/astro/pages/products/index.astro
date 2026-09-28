@@ -2,6 +2,13 @@
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import SiteHeader from '../../components/site/SiteHeader.astro';
 import SiteFooter from '../../components/site/SiteFooter.astro';
+import {
+  normalizeLocale,
+  supportedLocale,
+  htmlLangForLocale,
+  localizePresentationRoutes,
+  decorateLocaleRuntimeState
+} from '../../lib/locale-routing.mjs';
 import CatalogPage from '../../components/catalog/CatalogPage.astro';
 import {
   buildCatalogViewModel,
@@ -54,7 +61,9 @@ if(
   );
 }
 
-const language='en';
+const routeLocale=supportedLocale(Astro.props.routeLocale)||'';
+const language=normalizeLocale(Astro.props.language||routeLocale||'en');
+const currentPath='/products/';
 
 const supportedLanguages=[
   'en',
@@ -81,13 +90,19 @@ const sharedInput={
   batchSize:24
 };
 
-const view=
+let view=
   buildCatalogViewModel({
     language,
     ...sharedInput
   });
 
-const runtimeState=
+view=
+  localizePresentationRoutes(
+    view,
+    routeLocale
+  );
+
+let runtimeState=
   buildCatalogRuntimeState({
     languages:
       supportedLanguages,
@@ -95,6 +110,12 @@ const runtimeState=
       language,
     ...sharedInput
   });
+
+runtimeState=
+  decorateLocaleRuntimeState(
+    runtimeState,
+    routeLocale
+  );
 
 const runtimeStateJson=
   JSON.stringify(
@@ -121,7 +142,8 @@ const languageOptions=
   title="DREAMLAND Collection — Hand-carved candles"
   description="Browse the DREAMLAND collection of hand-carved candles for wholesale, gifting, retail and custom projects."
   page="catalog"
-  lang={language}
+  lang={htmlLangForLocale(language)}
+  routeLocale={routeLocale}
   robots="index,follow"
   canonical="https://dreamlandart.net/products/"
   ogImage="https://dreamlandart.net/images/shared/share/SHARE001/cover-social.jpg"
@@ -130,15 +152,19 @@ const languageOptions=
     content={view.content}
     languageOptions={languageOptions}
     initialLanguage={language}
+    routeLocale={routeLocale}
+    currentPath={currentPath}
     languageEnabled={true}
   />
 
   <CatalogPage
     view={view}
     sizeOptions={runtimeState.sizeOptions}
+    routeLocale={routeLocale}
   />
 
   <SiteFooter
+    routeLocale={routeLocale}
     content={view.content}
   />
 

@@ -339,7 +339,7 @@
   }
   function render(){ applyLanguageBindings();renderButtons();renderFragrance();renderInputs();renderSummary();updateInquiryBadge();return {draft:{...draft},selection:selection()}; }
   function applyLanguage(language,{persist=true}={}){
-    currentLanguage=normalizeLanguage(language,state.defaultLanguage||'en',Object.keys(state.languages||{}));
+    currentLanguage=normalizeLanguage(state.routeLocale||language,state.defaultLanguage||'en',Object.keys(state.languages||{}));
     if(persist)writeStorage(state.storage.languageKey,currentLanguage);render();return currentLanguage;
   }
   function addToInquiry(){
@@ -415,7 +415,7 @@
       document.querySelectorAll('[data-custom-flow-step]').forEach(step=>step.classList.toggle('is-active',step.dataset.customFlowStep===section.dataset.customSection));
     });
     root.addEventListener('storage',event=>{
-      if(event.key===state.storage.languageKey){applyLanguage(event.newValue,{persist:false});return;}
+      if(event.key===state.storage.languageKey){applyLanguage(state.routeLocale||event.newValue,{persist:false});return;}
       if(event.key===state.storage.inquiryKey){configureInquiry();updateInquiryBadge();}
     });
     root.addEventListener('pageshow',()=>{configureInquiry();updateInquiryBadge();});
@@ -458,7 +458,7 @@
       draft=freshDraft();
     }
 
-    currentLanguage=normalizeLanguage(readStorage(state.storage.languageKey),state.defaultLanguage||'en',Object.keys(state.languages));
+    currentLanguage=normalizeLanguage(state.routeLocale||readStorage(state.storage.languageKey),state.defaultLanguage||'en',Object.keys(state.languages));
     bindEvents();applyLanguage(currentLanguage,{persist:true});mounted=true;return true;
   }
 

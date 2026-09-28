@@ -1423,6 +1423,7 @@
 
     let language=
       supportedLanguage(
+        state.routeLocale||
         storage.getItem(
           state.storage
             .languageKey
@@ -2218,6 +2219,7 @@ function renderItems(
         ()=>{
           language=
             supportedLanguage(
+              state.routeLocale||
               languageSelect.value,
               state
             );
@@ -2254,6 +2256,7 @@ function renderItems(
         ){
           language=
             supportedLanguage(
+              state.routeLocale||
               storage.getItem(
                 state.storage
                   .languageKey

@@ -1,7 +1,20 @@
 ---
-interface Props {content:Record<string,any>;}
-const {content}=Astro.props;
+import {scopedPublicPath} from '../../lib/locale-routing.mjs';
+
+interface Props {
+  content:Record<string,any>;
+  routeLocale?:string;
+}
+const {
+  content,
+  routeLocale=''
+}=Astro.props;
 const footer=content?.footer||{};
+const routeHref=value=>
+  scopedPublicPath(
+    value,
+    routeLocale
+  );
 ---
 <footer class="dl-site-footer home-footer" data-dl-site-footer data-home-footer>
   <div class="dl-container home-container dl-site-footer__grid home-footer__grid">
@@ -12,14 +25,14 @@ const footer=content?.footer||{};
     <div class="dl-site-footer__links home-footer__links">
       <div>
         <strong data-home-bind="footer.explore">{footer.explore||'Explore'}</strong>
-        <a href="/products/"><span data-home-bind="footer.collection">{footer.collection||'Collection'}</span></a>
-        <a href="/products/?series=masterpiece"><span data-home-bind="footer.masterpiece">{footer.masterpiece||'Masterpiece'}</span></a>
-        <a href="/products/?series=advanced"><span data-home-bind="footer.advanced">{footer.advanced||'Advanced'}</span></a>
+        <a href={routeHref('/products/')}><span data-home-bind="footer.collection">{footer.collection||'Collection'}</span></a>
+        <a href={routeHref('/products/?series=masterpiece')}><span data-home-bind="footer.masterpiece">{footer.masterpiece||'Masterpiece'}</span></a>
+        <a href={routeHref('/products/?series=advanced')}><span data-home-bind="footer.advanced">{footer.advanced||'Advanced'}</span></a>
       </div>
       <div>
         <strong data-home-bind="footer.projects">{footer.projects||'Projects'}</strong>
-        <a href="/custom/"><span data-home-bind="footer.custom">{footer.custom||'Custom'}</span></a>
-        <a href="/inquiry/"><span data-home-bind="footer.inquiry">{footer.inquiry||'Inquiry'}</span></a>
+        <a href={routeHref('/custom/')}><span data-home-bind="footer.custom">{footer.custom||'Custom'}</span></a>
+        <a href={routeHref('/inquiry/')}><span data-home-bind="footer.inquiry">{footer.inquiry||'Inquiry'}</span></a>
       </div>
       <div>
         <strong data-home-bind="footer.legal">{footer.legal||'Legal'}</strong>

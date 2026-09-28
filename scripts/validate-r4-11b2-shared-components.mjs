@@ -19,7 +19,7 @@ const tokens=read('src/astro/styles/system/tokens.css');
 const pkg=read('package.json');
 
 for(const m of ["import '../styles/system/surface.css';","import '../styles/system/controls.css';","import '../styles/system/forms.css';","import '../styles/system/site.css';"])has(layout,m,'SiteLayout shared imports incomplete.');
-for(const m of ['data-dl-site-header','data-home-header','dl-site-nav home-nav','dl-site-actions','data-home-language-select','data-home-inquiry-count','href="/products/"','href="/custom/"','href="/inquiry/"'])has(header,m,'SiteHeader contract changed.');
+for(const m of ['data-dl-site-header','data-home-header','dl-site-nav home-nav','dl-site-actions','data-home-language-select','data-home-inquiry-count','href={routeHref(\'/products/\')}','href={routeHref(\'/custom/\')}','href={routeHref(\'/inquiry/\')}'])has(header,m,'SiteHeader contract changed.');
 for(const m of ['data-dl-site-footer','data-home-footer','dl-site-footer__grid home-footer__grid','dl-site-footer__links home-footer__links','href="/privacy/"'])has(footer,m,'SiteFooter contract changed.');
 for(const m of ['.dl-site-header.home-header','.dl-site-actions','.dl-inquiry-action.home-nav__inquiry','.dl-site-footer.home-footer','@media (max-width:900px)','@media (max-width:560px)'])has(site,m,'Site visual contract incomplete.');
 for(const m of ['.dl-button{','.dl-button--primary','.dl-button--secondary','.dl-button--text','.dl-icon-button','.dl-pill,.dl-chip'])has(controls,m,'Control primitive missing.');
