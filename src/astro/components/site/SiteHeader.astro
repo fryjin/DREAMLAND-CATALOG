@@ -42,7 +42,6 @@ const routeHref=value=>
         <select
           data-home-language-select
           data-locale-routing="true"
-          onchange="const option=this.options[this.selectedIndex];const href=option&&option.dataset.localeHref;if(href){try{localStorage.setItem('productManualLang',this.value)}catch(_){}const url=new URL(href,location.origin);url.search=location.search;url.hash=location.hash;event.stopImmediatePropagation();location.assign(url.pathname+url.search+url.hash);}"
           data-site-language-enabled={languageEnabled?'true':'false'}
           aria-label={nav.language||'Language'}
           disabled={!languageEnabled}
@@ -76,7 +75,6 @@ const routeHref=value=>
                 type="button"
                 data-home-language-option={option.value}
                 data-locale-href={withLocale(currentPath,option.value)}
-                onclick="const href=this.dataset.localeHref;if(href){try{localStorage.setItem('productManualLang',this.dataset.homeLanguageOption||'')}catch(_){}const url=new URL(href,location.origin);url.search=location.search;url.hash=location.hash;event.stopImmediatePropagation();location.assign(url.pathname+url.search+url.hash);}"
               >
                 {option.label}
               </button>

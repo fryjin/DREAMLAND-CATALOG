@@ -1860,8 +1860,50 @@
           );
 
       if(select){
+        const option=
+          select.options
+            ?.[select.selectedIndex];
+        const requested=
+          select.value;
+        const href=
+          option?.dataset
+            ?.localeHref||
+          '';
+
+        if(href){
+          writeLanguage(
+            requested,
+            state,
+            storage
+          );
+
+          const url=
+            new URL(
+              href,
+              root.location?.origin||
+                'https://dreamlandart.net'
+            );
+
+          url.search=
+            root.location?.search||
+            '';
+
+          url.hash=
+            root.location?.hash||
+            '';
+
+          root.location
+            ?.assign?.(
+              url.pathname+
+              url.search+
+              url.hash
+            );
+
+          return;
+        }
+
         setLanguage(
-          select.value
+          requested
         );
         return;
       }

@@ -279,12 +279,20 @@ try{
 
   for(const marker of [
     'data-locale-routing="true"',
-    'data-locale-href={withLocale(currentPath,option.value)}',
-    "localStorage.setItem('productManualLang'"
+    'data-locale-href={withLocale(currentPath,option.value)}'
   ]){
     if(!header.includes(marker)){
       fail('SiteHeader locale navigation contract is missing: '+marker);
     }
+  }
+
+  if(
+    header.includes('onchange=')||
+    header.includes('onclick=')
+  ){
+    fail(
+      'SiteHeader must remain declarative; locale navigation execution belongs to the existing page runtime.'
+    );
   }
 
   for(const runtime of [
@@ -297,8 +305,18 @@ try{
     'src/astro/runtime/review-runtime.js',
     'src/astro/runtime/success-runtime.js'
   ]){
-    if(!read(runtime).includes('routeLocale')){
+    const runtimeSource=
+      read(runtime);
+
+    if(!runtimeSource.includes('routeLocale')){
       fail('Route locale does not participate in runtime language precedence: '+runtime);
+    }
+
+    if(
+      !runtimeSource.includes('localeHref')||
+      !runtimeSource.includes('location')
+    ){
+      fail('Runtime-owned locale navigation contract is missing: '+runtime);
     }
   }
 

@@ -1757,10 +1757,10 @@
       ?.addEventListener(
         'change',
         event=>{
-          applyLanguage(
-            event.currentTarget
-              ?.value
-          );
+          const s=event.currentTarget,h=s.options[s.selectedIndex]?.dataset?.localeHref;
+          if(!h)return;
+          writeStorage(state.storage.languageKey,s.value);
+          root.location.assign(h+root.location.search+root.location.hash);
         }
       );
 

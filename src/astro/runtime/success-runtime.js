@@ -674,13 +674,57 @@
       ?.addEventListener(
         'change',
         event=>{
+          const control=
+            event.currentTarget;
+          const option=
+            control?.options
+              ?.[control.selectedIndex];
+          const requested=
+            control?.value||
+            '';
+          const href=
+            option?.dataset
+              ?.localeHref||
+            '';
+
+          if(href){
+            writeLanguage(
+              requested,
+              state,
+              storage
+            );
+
+            const url=
+              new URL(
+                href,
+                root.location?.origin||
+                  'https://dreamlandart.net'
+              );
+
+            url.search=
+              root.location?.search||
+              '';
+
+            url.hash=
+              root.location?.hash||
+              '';
+
+            root.location
+              ?.assign?.(
+                url.pathname+
+                url.search+
+                url.hash
+              );
+
+            return;
+          }
+
           applyLanguage(
             documentRef,
             state,
             storage,
             lastSubmission,
-            event.target
-              ?.value
+            requested
           );
         }
       );

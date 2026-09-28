@@ -409,7 +409,23 @@
     document.querySelector('[data-custom-color]')?.addEventListener('input',event=>scalar('color',event.currentTarget?.value||''));
     document.querySelector('[data-custom-notes]')?.addEventListener('input',event=>scalar('note',event.currentTarget?.value||''));
     document.querySelector('[data-custom-add-inquiry]')?.addEventListener('click',addToInquiry);
-    document.querySelector('[data-home-language-select]')?.addEventListener('change',event=>applyLanguage(event.currentTarget?.value));
+    document.querySelector('[data-home-language-select]')?.addEventListener('change',event=>{
+      const control=event.currentTarget;
+      const option=control?.options?.[control.selectedIndex];
+      const next=control?.value||'';
+      const href=option?.dataset?.localeHref||'';
+
+      if(href){
+        writeStorage(state.storage.languageKey,next);
+        const url=new URL(href,root.location?.origin||'https://dreamlandart.net');
+        url.search=root.location?.search||'';
+        url.hash=root.location?.hash||'';
+        root.location?.assign?.(url.pathname+url.search+url.hash);
+        return;
+      }
+
+      applyLanguage(next);
+    });
     document.querySelector('[data-custom-editor]')?.addEventListener('focusin',event=>{
       const section=event.target?.closest?event.target.closest('[data-custom-section]'):null;if(!section)return;
       document.querySelectorAll('[data-custom-flow-step]').forEach(step=>step.classList.toggle('is-active',step.dataset.customFlowStep===section.dataset.customSection));
