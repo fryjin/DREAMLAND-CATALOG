@@ -32,49 +32,9 @@
     }
   }
 
-  function storage(){
-    try{
-      return root.localStorage||null;
-    }catch(_){
-      return null;
-    }
-  }
-
-  function readStorage(key){
-    const target=storage();
-
-    if(!target){
-      return '';
-    }
-
-    try{
-      return target.getItem(key)||'';
-    }catch(_){
-      return '';
-    }
-  }
-
-  function writeStorage(
-    key,
-    value
-  ){
-    const target=storage();
-
-    if(!target){
-      return false;
-    }
-
-    try{
-      target.setItem(
-        key,
-        String(value)
-      );
-
-      return true;
-    }catch(_){
-      return false;
-    }
-  }
+  function storage(){try{return root.localStorage||null;}catch(_){return null;}}
+  function readStorage(key){const s=storage();if(!s)return '';try{return s.getItem(key)||'';}catch(_){return '';}}
+  function writeStorage(key,value){const s=storage();if(!s)return false;try{s.setItem(key,String(value));return true;}catch(_){return false;}}
 
   function normalizeLanguage(
     value,
@@ -436,7 +396,8 @@
 
     const next=
       normalizeLanguage(
-        language,
+        state.routeLocale||
+          language,
         state.defaultLanguage||
           'en',
         supported
@@ -764,6 +725,7 @@
       );
 
     const stored=
+      state.routeLocale||
       readStorage(
         state.storage
           .languageKey
@@ -777,22 +739,10 @@
         supported
       );
 
-    const select=
-      document.querySelector(
-        '[data-home-language-select]'
-      );
-
-    select?.addEventListener(
-      'change',
-      event=>{
-        applyLanguage(
-          event.currentTarget
-            ?.value
-        );
-      }
-    );
-
-    document.addEventListener('click',e=>{let b=e.target.closest?.('[data-home-language-option]');if(b){applyLanguage(b.dataset.homeLanguageOption);b.closest('details').open=false;}});
+    const select=document.querySelector('[data-home-language-select]');
+    function go(c,l){let o=c?.options?.[c.selectedIndex],h=o?.dataset?.localeHref||c?.dataset?.localeHref;if(!h)return false;writeStorage(state.storage.languageKey,l);root.location.assign(h+root.location.search+root.location.hash);return true}
+    select?.addEventListener('change',e=>{let s=e.currentTarget,l=s?.value;if(!go(s,l))applyLanguage(l)});
+    document.addEventListener('click',e=>{let b=e.target.closest?.('[data-home-language-option]');if(b){let d=b.closest?.('details');if(d)d.open=false;let l=b.dataset.homeLanguageOption;if(!go(b,l))applyLanguage(l)}});
 
     root.addEventListener(
       'storage',
@@ -803,7 +753,8 @@
             .languageKey
         ){
           applyLanguage(
-            event.newValue,
+            state.routeLocale||
+              event.newValue,
             {
               persist:false
             }

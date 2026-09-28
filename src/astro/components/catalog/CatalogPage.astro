@@ -1,13 +1,23 @@
 ---
+import {scopedPublicPath} from '../../lib/locale-routing.mjs';
+
 interface Props {
   view:Record<string,any>;
   sizeOptions:string[];
+  routeLocale?:string;
 }
 
 const {
   view,
-  sizeOptions
+  sizeOptions,
+  routeLocale=''
 }=Astro.props;
+
+const routeHref=value=>
+  scopedPublicPath(
+    value,
+    routeLocale
+  );
 
 const copy=view.catalog||{};
 const navigation=view.content?.navigation||{};
@@ -554,7 +564,7 @@ const editorialGroups=
         </p>
       </div>
 
-      <a href="/inquiry/">
+      <a href={routeHref('/inquiry/')}>
         <span data-catalog-bind="catalog.reviewInquiry">
           {copy.reviewInquiry||navigation.inquiry||'Review inquiry'}
         </span>

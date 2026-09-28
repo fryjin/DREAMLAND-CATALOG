@@ -85,7 +85,8 @@
     }
 
     return supportedLanguage(
-      stored,
+      state.routeLocale||
+        stored,
       state
     );
   }
@@ -1079,7 +1080,8 @@
     ){
       language=
         supportedLanguage(
-          value,
+          state.routeLocale||
+            value,
           state
         );
 
@@ -1237,8 +1239,50 @@
           );
 
       if(languageSelect){
+        const option=
+          languageSelect.options
+            ?.[languageSelect.selectedIndex];
+        const requested=
+          languageSelect.value;
+        const href=
+          option?.dataset
+            ?.localeHref||
+          '';
+
+        if(href){
+          writeLanguage(
+            requested,
+            state,
+            storage
+          );
+
+          const url=
+            new URL(
+              href,
+              root.location?.origin||
+                'https://dreamlandart.net'
+            );
+
+          url.search=
+            root.location?.search||
+            '';
+
+          url.hash=
+            root.location?.hash||
+            '';
+
+          root.location
+            ?.assign?.(
+              url.pathname+
+              url.search+
+              url.hash
+            );
+
+          return;
+        }
+
         setLanguage(
-          languageSelect.value
+          requested
         );
         return;
       }

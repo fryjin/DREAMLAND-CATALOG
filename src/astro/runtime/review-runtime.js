@@ -118,7 +118,8 @@
     }
 
     return supportedLanguage(
-      value,
+      state.routeLocale||
+        value,
       state
     );
   }
@@ -489,12 +490,26 @@
     });
   }
 
-  function guardResult(pageGuards,inquiry,contact){
+  function guardResult(pageGuards,inquiry,contact,state){
     return pageGuards.evaluate(
       'review',
       {
         inquiry,
-        contact
+        contact,
+        route:{
+          inquiry:()=>
+            state.localeRoutes
+              ?.inquiry||
+            state.routes
+              ?.inquiry||
+            '/inquiry/',
+          contact:()=>
+            state.localeRoutes
+              ?.contact||
+            state.routes
+              ?.contact||
+            '/inquiry/contact/'
+        }
       }
     );
   }
@@ -1669,6 +1684,8 @@
         }
 
         root.location?.assign?.(
+          state.localeRoutes
+            ?.success||
           '/inquiry/success/'
         );
 
@@ -1747,7 +1764,8 @@
         guardResult(
           pageGuards,
           inquiry,
-          contact
+          contact,
+          state
         );
 
       if(!guard.allowed){
@@ -1820,7 +1838,8 @@
     function setLanguage(value){
       language=
         supportedLanguage(
-          value,
+          state.routeLocale||
+            value,
           state
         );
 
@@ -1841,8 +1860,50 @@
           );
 
       if(select){
+        const option=
+          select.options
+            ?.[select.selectedIndex];
+        const requested=
+          select.value;
+        const href=
+          option?.dataset
+            ?.localeHref||
+          '';
+
+        if(href){
+          writeLanguage(
+            requested,
+            state,
+            storage
+          );
+
+          const url=
+            new URL(
+              href,
+              root.location?.origin||
+                'https://dreamlandart.net'
+            );
+
+          url.search=
+            root.location?.search||
+            '';
+
+          url.hash=
+            root.location?.hash||
+            '';
+
+          root.location
+            ?.assign?.(
+              url.pathname+
+              url.search+
+              url.hash
+            );
+
+          return;
+        }
+
         setLanguage(
-          select.value
+          requested
         );
         return;
       }

@@ -48,7 +48,7 @@ for(const marker of [
   'data-home-bind="hero.kicker"',
   'data-home-bind="hero.title"',
   'data-home-bind="hero.body"',
-  'href="/products/"',
+  "href={routeHref('/products/')}",
   'data-mobile-cover-gate',
   'data-mobile-cover-track',
   'data-mobile-cover-thumb',

@@ -1101,7 +1101,8 @@
 
     currentLanguage=
       normalizeLanguage(
-        language,
+        state.routeLocale||
+          language,
         state.defaultLanguage||
           'en',
         supported
@@ -1479,6 +1480,52 @@
       ?.addEventListener(
         'change',
         event=>{
+          const control=event.currentTarget;
+          const option=
+            control?.options
+              ?.[control.selectedIndex];
+          const next=control?.value||'';
+          const href=
+            option?.dataset
+              ?.localeHref||
+            control?.dataset
+              ?.localeHref||
+            '';
+
+          if(href){
+            writeStorage(
+    state.storage
+      .languageKey,
+    next
+  );
+
+            const url=
+              new URL(
+                href,
+                root.location?.origin||
+                  'https://dreamlandart.net'
+              );
+
+            url.search=
+              root.location?.search||
+              '';
+
+            url.hash=
+              root.location?.hash||
+              '';
+
+            root.location
+              ?.assign?.(
+                url.pathname+
+                url.search+
+                url.hash
+              );
+
+            return true;
+          }
+
+          return false;
+
           applyLanguage(
             event.currentTarget
               ?.value
@@ -1502,7 +1549,8 @@
             .languageKey
         ){
           applyLanguage(
-            event.newValue,
+            state.routeLocale||
+              event.newValue,
             {
               persist:false
             }
@@ -1562,6 +1610,7 @@
 
     currentLanguage=
       normalizeLanguage(
+        state.routeLocale||
         readStorage(
           state.storage
             .languageKey

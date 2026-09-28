@@ -5,6 +5,13 @@ import path from 'node:path';
 import SiteLayout from '../../../layouts/SiteLayout.astro';
 import SiteHeader from '../../../components/site/SiteHeader.astro';
 import SiteFooter from '../../../components/site/SiteFooter.astro';
+import {
+  normalizeLocale,
+  supportedLocale,
+  htmlLangForLocale,
+  localizePresentationRoutes,
+  decorateLocaleRuntimeState
+} from '../../../lib/locale-routing.mjs';
 import ReviewPage from '../../../components/review/ReviewPage.astro';
 
 import {
@@ -112,7 +119,9 @@ const scents=
     scentRows
   );
 
-const language='en';
+const routeLocale=supportedLocale(Astro.props.routeLocale)||'';
+const language=normalizeLocale(Astro.props.language||routeLocale||'en');
+const currentPath='/inquiry/review/';
 
 const supportedLanguages=[
   'en',
@@ -120,7 +129,7 @@ const supportedLanguages=[
   'ko'
 ];
 
-const view=
+let view=
   buildReviewStaticView({
     language,
     siteContent,
@@ -130,7 +139,13 @@ const view=
     pageGuards
   });
 
-const runtimeState=
+view=
+  localizePresentationRoutes(
+    view,
+    routeLocale
+  );
+
+let runtimeState=
   buildReviewRuntimeState({
     languages:
       supportedLanguages,
@@ -144,6 +159,12 @@ const runtimeState=
     appConfig,
     localizationPolicy
   });
+
+runtimeState=
+  decorateLocaleRuntimeState(
+    runtimeState,
+    routeLocale
+  );
 
 const runtimeStateJson=
   JSON.stringify(
@@ -170,7 +191,8 @@ const languageOptions=
   title="Review Inquiry — DREAMLAND"
   description={view.copy.reviewBody||'Review the inquiry before submission.'}
   page="review"
-  lang={language}
+  lang={htmlLangForLocale(language)}
+  routeLocale={routeLocale}
   robots="noindex,nofollow"
   canonical="https://dreamlandart.net/inquiry/review/"
   ogImage="https://dreamlandart.net/images/shared/share/SHARE001/cover-social.jpg"
@@ -179,12 +201,15 @@ const languageOptions=
     content={view.content}
     languageOptions={languageOptions}
     initialLanguage={language}
+    routeLocale={routeLocale}
+    currentPath={currentPath}
     languageEnabled={true}
   />
 
   <ReviewPage view={view} />
 
-  <SiteFooter content={view.content} />
+  <SiteFooter
+    routeLocale={routeLocale} content={view.content} />
 
   <script
     is:inline
