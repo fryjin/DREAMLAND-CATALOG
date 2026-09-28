@@ -1361,7 +1361,8 @@
 
     currentLanguage=
       normalizeLanguage(
-        language,
+        state.routeLocale||
+          language,
         state.defaultLanguage||
           'en',
         supported
@@ -1756,10 +1757,10 @@
       ?.addEventListener(
         'change',
         event=>{
-          applyLanguage(
-            event.currentTarget
-              ?.value
-          );
+          const s=event.currentTarget,h=s.options[s.selectedIndex]?.dataset?.localeHref;
+          if(!h)return;
+          writeStorage(state.storage.languageKey,s.value);
+          root.location.assign(h+root.location.search+root.location.hash);
         }
       );
 
@@ -1786,7 +1787,8 @@
             .languageKey
         ){
           applyLanguage(
-            event.newValue,
+            state.routeLocale||
+              event.newValue,
             {
               persist:false
             }
@@ -1870,6 +1872,7 @@
 
     currentLanguage=
       normalizeLanguage(
+        state.routeLocale||
         readStorage(
           state.storage
             .languageKey

@@ -163,8 +163,8 @@ if(
 
 for(const marker of [
   "document.addEventListener('click',e=>{let b=e.target.closest?.('[data-home-language-option]');",
-  'applyLanguage(b.dataset.homeLanguageOption);',
-  "b.closest('details').open=false;",
+  'if(!go(b,l))applyLanguage(l)',
+  'if(d)d.open=false;',
   "const MOBILE_STARTUP_VERSION='R4.11B4.1C-A';",
   'target:24',
   'minimum:preferFull?24:16',

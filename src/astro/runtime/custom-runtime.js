@@ -339,7 +339,7 @@
   }
   function render(){ applyLanguageBindings();renderButtons();renderFragrance();renderInputs();renderSummary();updateInquiryBadge();return {draft:{...draft},selection:selection()}; }
   function applyLanguage(language,{persist=true}={}){
-    currentLanguage=normalizeLanguage(language,state.defaultLanguage||'en',Object.keys(state.languages||{}));
+    currentLanguage=normalizeLanguage(state.routeLocale||language,state.defaultLanguage||'en',Object.keys(state.languages||{}));
     if(persist)writeStorage(state.storage.languageKey,currentLanguage);render();return currentLanguage;
   }
   function addToInquiry(){
@@ -409,13 +409,29 @@
     document.querySelector('[data-custom-color]')?.addEventListener('input',event=>scalar('color',event.currentTarget?.value||''));
     document.querySelector('[data-custom-notes]')?.addEventListener('input',event=>scalar('note',event.currentTarget?.value||''));
     document.querySelector('[data-custom-add-inquiry]')?.addEventListener('click',addToInquiry);
-    document.querySelector('[data-home-language-select]')?.addEventListener('change',event=>applyLanguage(event.currentTarget?.value));
+    document.querySelector('[data-home-language-select]')?.addEventListener('change',event=>{
+      const control=event.currentTarget;
+      const option=control?.options?.[control.selectedIndex];
+      const next=control?.value||'';
+      const href=option?.dataset?.localeHref||'';
+
+      if(href){
+        writeStorage(state.storage.languageKey,next);
+        const url=new URL(href,root.location?.origin||'https://dreamlandart.net');
+        url.search=root.location?.search||'';
+        url.hash=root.location?.hash||'';
+        root.location?.assign?.(url.pathname+url.search+url.hash);
+        return;
+      }
+
+      applyLanguage(next);
+    });
     document.querySelector('[data-custom-editor]')?.addEventListener('focusin',event=>{
       const section=event.target?.closest?event.target.closest('[data-custom-section]'):null;if(!section)return;
       document.querySelectorAll('[data-custom-flow-step]').forEach(step=>step.classList.toggle('is-active',step.dataset.customFlowStep===section.dataset.customSection));
     });
     root.addEventListener('storage',event=>{
-      if(event.key===state.storage.languageKey){applyLanguage(event.newValue,{persist:false});return;}
+      if(event.key===state.storage.languageKey){applyLanguage(state.routeLocale||event.newValue,{persist:false});return;}
       if(event.key===state.storage.inquiryKey){configureInquiry();updateInquiryBadge();}
     });
     root.addEventListener('pageshow',()=>{configureInquiry();updateInquiryBadge();});
@@ -458,7 +474,7 @@
       draft=freshDraft();
     }
 
-    currentLanguage=normalizeLanguage(readStorage(state.storage.languageKey),state.defaultLanguage||'en',Object.keys(state.languages));
+    currentLanguage=normalizeLanguage(state.routeLocale||readStorage(state.storage.languageKey),state.defaultLanguage||'en',Object.keys(state.languages));
     bindEvents();applyLanguage(currentLanguage,{persist:true});mounted=true;return true;
   }
 

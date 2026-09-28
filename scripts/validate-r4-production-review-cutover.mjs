@@ -137,7 +137,7 @@ function validateReviewRuntime(source,label){
     'risk.renderCaptcha(',
     'risk.ensureCaptcha(',
     'submissionFlow.submit({',
-    "root.location?.assign?.(\n          '/inquiry/success/'"
+    "root.location?.assign?.(\n          state.localeRoutes\n            ?.success||\n          '/inquiry/success/'"
   ]) if(!source.includes(marker)) fail(label+' canonical submission boundary is missing: '+marker);
 }
 

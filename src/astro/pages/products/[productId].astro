@@ -5,6 +5,13 @@ import path from 'node:path';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import SiteHeader from '../../components/site/SiteHeader.astro';
 import SiteFooter from '../../components/site/SiteFooter.astro';
+import {
+  normalizeLocale,
+  supportedLocale,
+  htmlLangForLocale,
+  localizePresentationRoutes,
+  decorateLocaleRuntimeState
+} from '../../lib/locale-routing.mjs';
 import PdpPage from '../../components/product/PdpPage.astro';
 import {
   buildPdpViewModel,
@@ -106,7 +113,9 @@ if(
   );
 }
 
-const language='en';
+const routeLocale=supportedLocale(Astro.props.routeLocale)||'';
+const language=normalizeLocale(Astro.props.language||routeLocale||'en');
+const currentPath='/products/'+encodeURIComponent(productId)+'/';
 
 const supportedLanguages=[
   'en',
@@ -114,7 +123,7 @@ const supportedLanguages=[
   'ko'
 ];
 
-const view=
+let view=
   buildPdpViewModel({
     language,
     product,
@@ -167,7 +176,13 @@ const visualOptions=
     seriesDocument
   });
 
-const runtimeState=
+view=
+  localizePresentationRoutes(
+    view,
+    routeLocale
+  );
+
+let runtimeState=
   buildPdpRuntimeState({
     product,
     pdpContentDocument,
@@ -188,6 +203,12 @@ const runtimeState=
     pricingPolicy,
     localizationPolicy
   });
+
+runtimeState=
+  decorateLocaleRuntimeState(
+    runtimeState,
+    routeLocale
+  );
 
 const runtimeStateJson=
   JSON.stringify(
@@ -226,7 +247,8 @@ const ogImage=
   description={view.description}
   page="product"
   productId={productId}
-  lang={language}
+  lang={htmlLangForLocale(language)}
+  routeLocale={routeLocale}
   robots="index,follow"
   canonical={canonical}
   ogImage={ogImage}
@@ -235,6 +257,8 @@ const ogImage=
     content={view.content}
     languageOptions={languageOptions}
     initialLanguage={language}
+    routeLocale={routeLocale}
+    currentPath={currentPath}
     languageEnabled={true}
   />
 
@@ -244,6 +268,7 @@ const ogImage=
   />
 
   <SiteFooter
+    routeLocale={routeLocale}
     content={view.content}
   />
 

@@ -65,7 +65,7 @@ try{
     for(const marker of [
       'submissionPayload.build(','submissionPayload.validate(','risk.assess(',
       'risk.renderCaptcha(','risk.ensureCaptcha(','submissionFlow.submit({',
-      "root.location?.assign?.(\n          '/inquiry/success/'"
+      "root.location?.assign?.(\n          state.localeRoutes\n            ?.success||\n          '/inquiry/success/'"
     ]){
       if(!adapter.includes(marker)) fail('R4.9C Review adapter is missing: '+marker);
     }

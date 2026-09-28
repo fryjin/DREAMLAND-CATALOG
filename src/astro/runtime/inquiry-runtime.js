@@ -1423,6 +1423,7 @@
 
     let language=
       supportedLanguage(
+        state.routeLocale||
         storage.getItem(
           state.storage
             .languageKey
@@ -2216,9 +2217,52 @@ function renderItems(
       ?.addEventListener(
         'change',
         ()=>{
+          const option=
+            languageSelect.options
+              ?.[languageSelect.selectedIndex];
+          const requested=
+            languageSelect.value;
+          const href=
+            option?.dataset
+              ?.localeHref||
+            '';
+
+          if(href){
+            storage.setItem(
+              state.storage
+                .languageKey,
+              requested
+            );
+
+            const url=
+              new URL(
+                href,
+                root.location?.origin||
+                  'https://dreamlandart.net'
+              );
+
+            url.search=
+              root.location?.search||
+              '';
+
+            url.hash=
+              root.location?.hash||
+              '';
+
+            root.location
+              ?.assign?.(
+                url.pathname+
+                url.search+
+                url.hash
+              );
+
+            return;
+          }
+
           language=
             supportedLanguage(
-              languageSelect.value,
+              state.routeLocale||
+              requested,
               state
             );
 
@@ -2254,6 +2298,7 @@ function renderItems(
         ){
           language=
             supportedLanguage(
+              state.routeLocale||
               storage.getItem(
                 state.storage
                   .languageKey

@@ -1,10 +1,22 @@
 ---
+import {scopedPublicPath} from '../../lib/locale-routing.mjs';
+
 interface Props {
   view:Record<string,any>;
   mobileCover?:string;
+  routeLocale?:string;
 }
 
-const {view,mobileCover=''}=Astro.props;
+const {
+  view,
+  mobileCover='',
+  routeLocale=''
+}=Astro.props;
+const routeHref=value=>
+  scopedPublicPath(
+    value,
+    routeLocale
+  );
 const content=view.content||{};
 const hero=content.hero||{};
 const story=content.story||{};
@@ -114,7 +126,7 @@ const cta=content.cta||{};
 
       <a
         class="home-mobile-gate"
-        href="/products/"
+        href={routeHref('/products/')}
         data-mobile-cover-gate
         aria-label={hero.primary||'Explore collection'}
       >
@@ -309,7 +321,7 @@ const cta=content.cta||{};
           {featured.body}
         </p>
       </div>
-      <a href="/products/" class="home-text-link">
+      <a href={routeHref('/products/')} class="home-text-link">
         <span
           data-home-bind="featured.viewAll"
           data-home-suffix=" →"
@@ -430,7 +442,7 @@ const cta=content.cta||{};
           ))}
         </ul>
 
-        <a href="/custom/" class="home-text-link">
+        <a href={routeHref('/custom/')} class="home-text-link">
           <span
             data-home-bind="custom.action"
             data-home-suffix=" →"
@@ -529,12 +541,12 @@ const cta=content.cta||{};
       </div>
 
       <div class="home-cta__actions">
-        <a href="/products/">
+        <a href={routeHref('/products/')}>
           <span data-home-bind="cta.explore">
             {cta.explore}
           </span>
         </a>
-        <a href="/custom/">
+        <a href={routeHref('/custom/')}>
           <span data-home-bind="cta.custom">
             {cta.custom}
           </span>

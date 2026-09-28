@@ -19,6 +19,7 @@ interface Props {
   canonical?:string;
   ogImage?:string;
   productId?:string;
+  routeLocale?:string;
 }
 
 const {
@@ -29,7 +30,8 @@ const {
   robots='noindex,nofollow',
   canonical='https://dreamlandart.net/',
   ogImage='https://dreamlandart.net/images/shared/share/SHARE001/cover-social.jpg',
-  productId=''
+  productId='',
+  routeLocale=''
 }=Astro.props;
 
 const isHome=
@@ -124,6 +126,7 @@ const presentation=
     data-r4-astro-success={isSuccess?'true':undefined}
     data-r4-success-static={isSuccess?'true':undefined}
     data-product-id={isProduct?productId:undefined}
+    data-route-locale={routeLocale||undefined}
     data-dreamland-page={page}
   >
     <slot />

@@ -1,0 +1,41 @@
+---
+import CanonicalPage from '../../products/[productId].astro';
+import {SUPPORTED_LOCALES} from '../../../lib/locale-routing.mjs';
+import productsDocument from '../../../../../data/products.json';
+
+export function getStaticPaths(){
+  const products=
+    (productsDocument.products||[])
+      .filter(product=>product?.status==='active');
+
+  return SUPPORTED_LOCALES.flatMap(language=>
+    products.map(product=>{
+      const productId=
+        String(
+          product?.productId||
+          product?.id||
+          ''
+        )
+          .trim()
+          .toUpperCase();
+
+      return {
+        params:{
+          lang:language,
+          productId
+        },
+        props:{
+          language,
+          product
+        }
+      };
+    })
+  );
+}
+
+const {
+  language,
+  product
+}=Astro.props;
+---
+<CanonicalPage product={product} language={language} routeLocale={language} />
