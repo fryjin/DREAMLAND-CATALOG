@@ -446,7 +446,7 @@ if(SOURCE_MODE){
 
     const phoneCopy={
       en:
-        'Phone, WhatsApp number or WeChat ID',
+        'Phone number, WhatsApp or WeChat ID',
       zh:
         '手机号、WhatsApp 或微信号',
       ko:
