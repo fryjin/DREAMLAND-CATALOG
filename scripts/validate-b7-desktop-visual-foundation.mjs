@@ -254,9 +254,9 @@ try{
   // SITE-COPY-1B — canonical customer-copy validator baseline.
   const publicCopy={
     en:{
-      customTitle:'Bring the brief. We’ll shape the candle.',
-      reviewTitle:'One last look.',
-      successTitle:'Got it. We’ll take it from here.'
+      customTitle:'Have an idea? Let’s turn it into a candle.',
+      reviewTitle:'Final Quote Request Review',
+      successTitle:'Your quote request has been submitted successfully.'
     },
     zh:{
       customTitle:'有个想法？把它做成蜡烛。',
@@ -264,9 +264,9 @@ try{
       successTitle:'询价申请已成功提交'
     },
     ko:{
-      customTitle:'아이디어를 들려주세요. 캔들로 함께 완성하겠습니다.',
-      reviewTitle:'마지막으로 한 번 확인해 주세요.',
-      successTitle:'잘 받았습니다. 이제 저희가 이어서 준비하겠습니다.'
+      customTitle:'아이디어가 있다면, 캔들로 완성해 보세요.',
+      reviewTitle:'견적 요청 최종 확인',
+      successTitle:'견적 요청이 정상적으로 접수되었습니다.'
     }
   };
 
@@ -529,9 +529,9 @@ try{
   // SITE-COPY-1B — Home public-copy contract follows canonical customer copy.
 
   for(const [lang,title] of [
-    ['en','Candles, carved to be seen.'],
+    ['en','DREAMLAND'],
     ['zh','DREAMLAND'],
-    ['ko','바라보는 즐거움까지 담은 캔들.']
+    ['ko','DREAMLAND']
   ]){
     if(site.languages?.[lang]?.hero?.title!==title){
       fail(`4B Home public copy regression: ${lang}.hero.title`);

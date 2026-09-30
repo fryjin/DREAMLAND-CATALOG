@@ -590,11 +590,11 @@ try{
     fail('SITE-COPY-ZH1 Chinese Catalog CTA copy regressed.');
   }
 
-  if(site?.languages?.en?.catalog?.ctaReadyTitle!=='You’ve started a selection.'){
+  if(site?.languages?.en?.catalog?.ctaReadyTitle!=='Quote Request Started'){
     fail('SITE-COPY-1B English Catalog CTA copy regressed.');
   }
 
-  if(site?.languages?.ko?.catalog?.ctaReadyTitle!=='제품을 고르기 시작했어요.'){
+  if(site?.languages?.ko?.catalog?.ctaReadyTitle!=='견적 요청을 시작했습니다.'){
     fail('SITE-COPY-1B Korean Catalog CTA copy regressed.');
   }
 }catch(error){

@@ -435,9 +435,9 @@ if(DIST_MODE){
         );
 
       for(const value of [
-        'Quantity groups',
+        'Combined Pricing Groups',
         '合并计数组',
-        '수량 합산 그룹'
+        '합산 계산 그룹'
       ]){
         if(!html.includes(value)){
           fail(

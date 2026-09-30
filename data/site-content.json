@@ -19,103 +19,103 @@
   "languages": {
     "en": {
       "navigation": {
-        "collection": "Collection",
+        "collection": "Collections",
         "custom": "Custom",
-        "inquiry": "Inquiry",
+        "inquiry": "Quote Request",
         "language": "Language"
       },
       "hero": {
         "kicker": "HAND-CARVED CANDLES",
-        "title": "Candles, carved to be seen.",
-        "body": "Made for retail, gifting, brand collaborations and special occasions. Start with a design you love, then make the color, scent and packaging your own.",
-        "primary": "Explore the collection",
-        "secondary": "Start a custom project"
+        "title": "DREAMLAND",
+        "body": "Designed for premium retail and bespoke gifting. Carefully selected materials, made by hand, and customized to bring a distinctive presence to your space.",
+        "primary": "Explore Products",
+        "secondary": "Start a Custom Project"
       },
       "collections": {
-        "kicker": "THE COLLECTION",
-        "title": "Find the one that catches your eye.",
-        "body": "Four collections, from quieter color stories to pieces made to stand out.",
+        "kicker": "COLLECTIONS",
+        "title": "Find the form that belongs in your space.",
+        "body": "Refined color and sculptural carving, created for elevated retail displays, interiors and bespoke brand gifting.",
         "designSingular": "design",
         "designPlural": "designs",
-        "explore": "Explore"
+        "explore": "View Collection"
       },
       "featured": {
-        "kicker": "CURRENT FAVORITES",
-        "title": "Five we keep coming back to.",
-        "body": "A small edit from the Masterpiece and Advanced collections.",
+        "kicker": "FEATURED",
+        "title": "Selected Highlights",
+        "body": "Five signature designs from the Masterpiece and Advanced collections.",
         "viewAll": "View all",
         "viewDetails": "View details",
         "moq": "MOQ"
       },
       "craft": {
         "kicker": "THE CRAFT",
-        "title": "Rainbow color and flowers, carved into light — every cut carries the warmth of the hand behind it.",
-        "body": "A hand-carved candle comes together through a quiet agreement between color, time and craft.\n\nIn a world built for speed, we choose to slow down. Each piece is made one at a time, not copied off a line, but shaped through color, timing and precise knife work.\n\nThirty to fifty rounds of dipping build carefully chosen colors into fine, rainbow-like layers.\n\nWhile the wax is still warm and pliable, the carving begins. Cut, fold, twist: at exactly the right moment, hidden bands of color open into petals and sculptural textures.\n\nSeveral rounds of finishing settle every line, curve and layer into place.\n\nColor gives it emotion. Carving gives it form."
+        "title": "Light, shaped by hand.",
+        "body": "Built on food-grade paraffin and natural white beeswax, each candle combines traditional multi-layer dipping with precise hand carving. Color is built into the wax layer by layer, then carved into a sculptural form with warmth, depth and character."
       },
       "custom": {
         "kicker": "CUSTOM",
-        "title": "Made around your idea.",
-        "body": "Color, scent, packaging and branded details can all be shaped around the brief.",
+        "title": "From idea to production.",
+        "body": "From color and fragrance to packaging and branded materials, we turn your brief into a production-ready solution built for delivery.",
         "features": [
           "Color",
-          "Scent",
+          "Fragrance",
           "Packaging",
-          "Brand details"
+          "Branded Materials"
         ],
-        "action": "Start a custom project"
+        "action": "Start a Custom Project"
       },
       "wholesale": {
-        "kicker": "WHOLESALE / PROJECT SUPPORT",
-        "title": "From selection to delivery, we’ll work through the details with you.",
+        "kicker": "PROCESS",
+        "title": "A clear process, from selection to delivery.",
         "facts": [
           {
-            "title": "MOQ",
-            "body": "MOQ varies by collection and size; same-series, same-size quantities can be combined."
+            "title": "01 Select the Design",
+            "body": "Confirm the design, quantity, use case and required delivery date."
           },
           {
-            "title": "Customization",
-            "body": "Color, scent, packaging and branded details can all be developed further."
+            "title": "02 Refine the Details",
+            "body": "Confirm color, fragrance, packaging and branded materials."
           },
           {
-            "title": "Global delivery",
-            "body": "We’ll confirm the most suitable shipping option based on quantity, destination and timing."
+            "title": "03 Approve the Sample",
+            "body": "When needed, we arrange samples or detail approval before production."
           },
           {
-            "title": "Pricing & timing",
-            "body": "Once the selection is clear, we’ll confirm pricing, production timing and delivery."
+            "title": "04 Production & Delivery",
+            "body": "Once pricing and lead time are approved, production begins and shipping is arranged for the destination."
           }
         ]
       },
       "cta": {
         "kicker": "WHAT’S NEXT",
-        "title": "Have something in mind?",
-        "body": "Start with the collection, or tell us what you want to make.",
-        "explore": "Explore the collection",
-        "custom": "Start a custom project",
-        "review": "Review inquiry"
+        "title": "Have something in mind? Start here.",
+        "body": "Explore our existing designs, or tell us what you’d like to create.",
+        "explore": "Explore Products",
+        "custom": "Start a Custom Project",
+        "review": "Review Quote Request"
       },
       "footer": {
-        "description": "Hand-carved candles for retail, gifting and custom projects.",
+        "description": "Hand-carved candles for premium retail, gifting and custom projects.",
         "explore": "Explore",
         "projects": "Projects",
         "language": "Language",
         "legal": "Legal",
-        "collection": "Collection",
+        "collection": "Collections",
         "masterpiece": "Masterpiece",
         "advanced": "Advanced",
         "custom": "Custom",
-        "inquiry": "Inquiry",
-        "privacy": "Privacy",
+        "inquiry": "Quote Request",
+        "privacy": "Privacy Policy",
         "copyright": "© DREAMLAND"
       },
       "catalog": {
-        "kicker": "COLLECTION",
-        "title": "Find the one that catches your eye.",
-        "body": "Four collections, from quieter color stories to pieces made to stand out.",
+        "kicker": "COLLECTIONS",
+        "title": "Find the form that belongs in your space.",
+        "body": "Refined color and sculptural carving, created for elevated retail displays, interiors and bespoke brand gifting.",
         "all": "All",
         "activeDesigns": "products",
         "designs": "products",
-        "seriesNavigation": "Collection index",
+        "seriesNavigation": "Collections",
         "searchPlaceholder": "Search by name or product ID",
         "searchShort": "Search",
         "filters": "Filter",
@@ -125,51 +125,51 @@
         "sort": "Sort",
         "sortFeatured": "Featured",
         "sortName": "Name A–Z",
-        "sortPriceLow": "Price low to high",
-        "sortPriceHigh": "Price high to low",
-        "sortMoq": "MOQ low to high",
+        "sortPriceLow": "Price: Low to High",
+        "sortPriceHigh": "Price: High to Low",
+        "sortMoq": "MOQ: Low to High",
         "viewDetails": "View details",
         "moq": "MOQ",
         "showing": "Showing",
         "of": "of",
         "loadMore": "Load more",
         "emptyKicker": "TRY ANOTHER VIEW",
-        "emptyTitle": "Nothing matches those filters yet.",
+        "emptyTitle": "No products match these filters yet.",
         "searchEmptyTitle": "No results for “{query}”",
         "emptyBody": "Try another size or clear the filters to keep browsing.",
         "clearFilters": "Clear filters",
-        "ctaKicker": "INQUIRY",
-        "ctaEmptyTitle": "See something you like? Add it to your inquiry.",
-        "ctaEmptyBody": "You can adjust quantities and options later. We’ll confirm pricing once your selection is ready.",
-        "ctaReadyTitle": "You’ve started a selection.",
-        "ctaReadyBody": "{count} products are in your inquiry.",
-        "reviewInquiry": "Review inquiry",
+        "ctaKicker": "QUOTE REQUEST",
+        "ctaEmptyTitle": "Found something you like? Add it to your quote request.",
+        "ctaEmptyBody": "You can adjust quantities and options later. We’ll confirm final pricing once your selection is ready.",
+        "ctaReadyTitle": "Quote Request Started",
+        "ctaReadyBody": "{count} products are in your quote request.",
+        "reviewInquiry": "Review Quote Request",
         "backToTop": "Back to top"
       },
       "detail": {
-        "back": "Back to collection",
+        "back": "Back to Collections",
         "productId": "Product ID",
         "moq": "MOQ",
-        "moqNote": "Same-series, same-size quantities can be combined toward the MOQ.",
+        "moqNote": "💡 Designs in the same collection and size can be combined toward MOQ and volume pricing.",
         "size": "Size",
-        "scentCollection": "Fragrance collection",
-        "scent": "Scent",
+        "scentCollection": "Fragrance Collection",
+        "scent": "Fragrance",
         "pattern": "Pattern",
         "packaging": "Packaging",
         "quantity": "Quantity",
         "included": "Included",
-        "unitPrice": "Reference price",
+        "unitPrice": "Reference Unit Price",
         "estimatedTotal": "Product amount",
-        "pricingNote": "Unit pricing changes with quantity and options. Final pricing is confirmed in the quote.",
-        "addInquiry": "Add to inquiry",
-        "added": "Added to inquiry",
-        "customProject": "Start a custom project",
-        "scentNotes": "Scent notes",
-        "topNotes": "Top",
-        "heartNotes": "Heart",
-        "baseNotes": "Base",
+        "pricingNote": "Final unit pricing will be confirmed in the formal quotation based on total order quantity and selected customization.",
+        "addInquiry": "Add to Quote Request",
+        "added": "Added to Quote Request",
+        "customProject": "Discuss a Custom Project",
+        "scentNotes": "Fragrance Notes",
+        "topNotes": "Top Notes",
+        "heartNotes": "Heart Notes",
+        "baseNotes": "Base Notes",
         "productDetails": "Product details",
-        "series": "Series",
+        "series": "Collection",
         "availableSizes": "Available sizes",
         "configuredOptions": "Selected options",
         "wholesale": "Volume orders",
@@ -177,60 +177,60 @@
       },
       "customProject": {
         "kicker": "CUSTOM PROJECT",
-        "title": "Bring the brief. We’ll shape the candle.",
-        "body": "You don’t need every detail figured out. Tell us what it’s for and roughly how many you need — we’ll work through size, color, scent and packaging with you.",
+        "title": "Have an idea? Let’s turn it into a candle.",
+        "body": "You don’t need every detail figured out from the start. Tell us what it’s for and roughly how many you need, and we’ll work through size, color, fragrance and packaging with you.",
         "sectionBasicsKicker": "THE PROJECT",
         "sectionBasicsTitle": "Tell us about the project.",
-        "sectionBasicsBody": "What it’s for, roughly how many you need, your budget and timing are enough to get us started.",
+        "sectionBasicsBody": "Your use case, approximate quantity, budget and required timing are enough to get us started.",
         "sectionProductKicker": "THE PRODUCT",
-        "sectionProductTitle": "What should it feel like?",
-        "sectionProductBody": "Start with size and scent, then add any color, visual or product direction you already have in mind.",
+        "sectionProductTitle": "What should it look and feel like?",
+        "sectionProductBody": "Start with size and fragrance, then share any color, visual or product direction you already have in mind.",
         "sectionPackagingKicker": "PACKAGING & BRAND",
         "sectionPackagingTitle": "Make it yours.",
-        "sectionPackagingBody": "Choose the packaging and tell us whether you need a logo, card, stickers or a complete gift-box direction.",
+        "sectionPackagingBody": "Choose the packaging, then tell us whether you need a logo, card, stickers or a complete gift-box solution.",
         "useCase": "What is it for? *",
-        "quantity": "Rough quantity *",
+        "quantity": "Approximate Quantity *",
         "minimumQuantity": "Custom MOQ",
         "quantityPlaceholder": "e.g. 500",
         "pieces": "pcs",
         "budget": "Budget",
         "delivery": "When do you need it?",
-        "deliveryHint": "A date or general timeframe is fine",
+        "deliveryHint": "A specific date or general timeframe is fine.",
         "deliveryPlaceholder": "e.g. within 30 business days or before 15 Dec 2026",
         "size": "Size",
-        "fragranceCollection": "Scent collection",
-        "scents": "Scent *",
-        "scentsHint": "{count} selected · multiple scents may be selected within one collection",
+        "fragranceCollection": "Fragrance Collection",
+        "scents": "Fragrance *",
+        "scentsHint": "{count} selected · multiple fragrances can be selected within one collection",
         "color": "Color direction",
         "colorPlaceholder": "e.g. blush pink, sage green, or your brand color references",
         "packaging": "Packaging",
-        "branding": "Brand details",
+        "branding": "Branding",
         "notes": "Anything else we should know?",
         "notesPlaceholder": "Add any size, color, packaging, event or brand details that would help us understand the project.",
         "optional": "Optional",
         "summaryKicker": "YOUR IDEA",
-        "summaryTitle": "What you’re making",
+        "summaryTitle": "What You’re Creating",
         "notSelected": "Not selected",
-        "scentCount": "{count} scents selected",
-        "customization": "CUSTOMIZATION",
-        "quotedAfterReview": "Quoted separately after review",
-        "summaryNote": "We’ll prepare pricing around the final product, quantity, packaging and brand requirements, and confirm production timing and delivery at the same time.",
-        "addInquiry": "Add to inquiry",
-        "addedButton": "Added to inquiry",
-        "addedTitle": "It’s in your inquiry.",
-        "addedBody": "Keep exploring, or review your inquiry when you’re ready.",
+        "scentCount": "{count} Fragrances Selected",
+        "customization": "CUSTOM QUOTATION",
+        "quotedAfterReview": "Quoted After Review",
+        "summaryNote": "We’ll prepare pricing based on the final product, quantity, packaging and branding requirements, and confirm production lead time and delivery at the same time.",
+        "addInquiry": "Add to Quote Request",
+        "addedButton": "Added to Quote Request",
+        "addedTitle": "Added to your quote request.",
+        "addedBody": "Keep exploring, or review your quote request when you’re ready.",
         "exploreCollection": "Keep exploring",
-        "reviewInquiry": "Review inquiry",
+        "reviewInquiry": "Review Quote Request",
         "errorUse": "Choose what the project is for.",
         "errorQuantity": "Enter a whole-number quantity.",
         "errorQuantityMin": "Custom MOQ is {min} pcs.",
-        "errorQuantityMax": "This quantity needs a separate check. Please contact us.",
+        "errorQuantityMax": "This quantity needs a separate review. Please contact us.",
         "errorScents": "Choose at least one scent.",
         "useCases": [
           {
             "value": "品牌活动",
-            "label": "Brand / Campaign",
-            "body": "Launches, collaborations and brand activations"
+            "label": "Brand Campaign",
+            "body": "Product launches, collaborations and brand activations"
           },
           {
             "value": "企业礼赠",
@@ -239,29 +239,29 @@
           },
           {
             "value": "婚礼 / 派对",
-            "label": "Wedding / Event",
-            "body": "Celebrations, parties and event projects"
+            "label": "Weddings & Events",
+            "body": "Weddings, parties and in-person events"
           },
           {
             "value": "门店陈列",
-            "label": "Retail / Display",
-            "body": "Retail presentation and store display"
+            "label": "Retail & Display",
+            "body": "Retail presentation and store displays"
           },
           {
             "value": "节日礼品",
-            "label": "Holiday Gifting",
-            "body": "Seasonal and holiday projects"
+            "label": "Seasonal Gifting",
+            "body": "Holiday, festive and seasonal projects"
           },
           {
             "value": "其他用途",
             "label": "Other",
-            "body": "Tell us the project context in the notes"
+            "body": "Tell us more about the project in the notes."
           }
         ],
         "budgets": [
           {
             "value": "待确认",
-            "label": "To be confirmed"
+            "label": "To Be Confirmed"
           },
           {
             "value": "USD 1,000 以下",
@@ -283,7 +283,7 @@
         "sizes": [
           {
             "value": "待推荐",
-            "label": "Recommend"
+            "label": "Please Recommend"
           },
           {
             "value": "S / 10*13cm",
@@ -310,28 +310,28 @@
           {
             "value": "待推荐",
             "label": "Please recommend",
-            "body": "Let us suggest an appropriate direction"
+            "body": "Let us recommend an appropriate direction for the project."
           },
           {
             "value": "批发包装",
             "label": "Wholesale Packaging",
-            "body": "Practical presentation for volume projects"
+            "body": "Practical packaging for volume orders."
           },
           {
             "value": "精品包装",
             "label": "Gift Packaging",
-            "body": "Presentation-oriented gift packaging"
+            "body": "Presentation-focused packaging for gifting and display."
           },
           {
             "value": "品牌包装",
             "label": "Branded Packaging",
-            "body": "Packaging developed around your brand"
+            "body": "Packaging developed around your brand identity."
           }
         ],
         "brandingOptions": [
           {
             "value": "暂不需要",
-            "label": "No branding"
+            "label": "No Branding"
           },
           {
             "value": "需要 Logo",
@@ -343,7 +343,7 @@
           },
           {
             "value": "需要贴纸",
-            "label": "Sticker"
+            "label": "Stickers"
           },
           {
             "value": "需要完整礼盒方案",
@@ -351,39 +351,39 @@
           },
           {
             "value": "待沟通确认",
-            "label": "Discuss With Us"
+            "label": "Discuss with Us"
           }
         ],
-        "collectionResetHint": "You can choose multiple scents within one collection. Changing collections resets the scent selection.",
+        "collectionResetHint": "You can select multiple fragrances within one collection. Changing collections resets your fragrance selection.",
         "flowTitle": "Project progress",
         "requiredProgress": "{done} of {total} complete",
         "continueToNext": "Continue"
       },
       "inquiryFlow": {
-        "progressLabel": "Inquiry progress",
-        "stepSelection": "Selection",
-        "stepContact": "Contact",
-        "stepReview": "Review",
-        "kicker": "INQUIRY",
-        "title": "Your selection, all in one place.",
-        "body": "Check quantities and options, make any last changes, then tell us how to reach you.",
-        "selectedProducts": "Selected items",
-        "selectedItems": "Designs selected",
-        "totalQuantity": "Product quantity",
-        "summaryKicker": "INQUIRY",
-        "summaryTitle": "Your inquiry",
-        "productEstimate": "Product amount",
+        "progressLabel": "Quote Request Progress",
+        "stepSelection": "Review Selection",
+        "stepContact": "Contact Details",
+        "stepReview": "Final Review",
+        "kicker": "QUOTE REQUEST",
+        "title": "Review Your Quote Request",
+        "body": "Review your selected designs and estimated quantities. Once everything looks right, add your contact details to receive a formal quotation.",
+        "selectedProducts": "Selected Designs",
+        "selectedItems": "Designs Selected",
+        "totalQuantity": "Total Quantity",
+        "summaryKicker": "QUOTE REQUEST",
+        "summaryTitle": "Quote Request",
+        "productEstimate": "Estimated Product Amount",
         "customProject": "Custom project",
-        "customQuotedSeparately": "Quoted after review",
-        "finalPricingNote": "Final pricing, production timing and delivery are confirmed in the formal quote.",
-        "continueContact": "Add contact details",
-        "continueExploring": "Keep exploring",
-        "exploreCollection": "Explore the collection",
+        "customQuotedSeparately": "Quoted After Review",
+        "finalPricingNote": "Final pricing, production lead time and delivery options will be confirmed in the formal quotation.",
+        "continueContact": "Add Contact Details",
+        "continueExploring": "Explore More Products",
+        "exploreCollection": "Explore Products",
         "startCustom": "Start a custom project",
-        "emptyTitle": "Your inquiry is still empty.",
-        "emptyBody": "Start with a product you like, or tell us what you want to make.",
+        "emptyTitle": "Your quote request is still empty.",
+        "emptyBody": "Start with a product you like, or tell us what you’d like to create.",
         "size": "Size",
-        "scent": "Scent",
+        "scent": "Fragrance",
         "pattern": "Pattern",
         "packaging": "Packaging",
         "quantity": "Quantity",
@@ -391,28 +391,28 @@
         "pricing": "Pricing",
         "useCase": "Use Case",
         "fragranceCollection": "Fragrance Collection",
-        "scents": "Selected Scents",
+        "scents": "Selected Fragrances",
         "branding": "Branding",
         "remove": "Remove",
         "removeTitle": "Remove this item?",
-        "removeBody": "It will be removed from your inquiry.",
+        "removeBody": "This item will be removed from your quote request.",
         "cancel": "Cancel",
-        "clearAll": "Clear inquiry",
-        "clearTitle": "Clear the inquiry?",
+        "clearAll": "Clear Quote Request",
+        "clearTitle": "Clear the quote request?",
         "clearBody": "All selected products and custom items will be removed.",
-        "clearConfirm": "Clear everything from this inquiry?",
+        "clearConfirm": "Clear everything from this quote request?",
         "editConfiguration": "Edit options",
-        "cannotContinue": "Some products are still below MOQ. Adjust the quantities to continue.",
+        "cannotContinue": "⚠️ One or more selection groups are below the minimum order quantity. Adjust the quantities to continue.",
         "contactKicker": "CONTACT",
-        "contactTitle": "How should we reach you?",
-        "contactBody": "Leave your preferred contact details and we’ll follow up with pricing and anything we still need to confirm.",
+        "contactTitle": "Contact & Project Details",
+        "contactBody": "Leave your preferred contact details. A project consultant will follow up within 24 hours to discuss pricing and project details.",
         "contactDetailsKicker": "CONTACT",
-        "contactDetailsTitle": "Your contact details",
-        "contactDetailsBody": "We’ll only use these details to reply to this inquiry and continue the project conversation.",
-        "contactRequiredTitle": "Contact details",
-        "contactRequiredBody": "Name, region, email and one contact method are enough to continue.",
-        "contactOptionalTitle": "A little more context",
-        "contactOptionalBody": "Company, buyer type and city are optional, but they help us understand the project faster.",
+        "contactDetailsTitle": "Contact Details",
+        "contactDetailsBody": "Please provide a valid contact method so we can send your formal quotation accurately.",
+        "contactRequiredTitle": "Contact Details",
+        "contactRequiredBody": "Please provide a valid contact method so we can send your formal quotation accurately.",
+        "contactOptionalTitle": "Additional Details",
+        "contactOptionalBody": "Company and purchasing context help us apply the most relevant pricing tier.",
         "name": "Contact Name",
         "company": "Company / Brand",
         "country": "Country / Region",
@@ -426,14 +426,14 @@
         "countryPlaceholder": "Select country / region",
         "cityPlaceholder": "City",
         "emailPlaceholder": "name@example.com",
-        "phonePlaceholder": "Phone, WhatsApp number or WeChat ID",
-        "messagePlaceholder": "Add any purchase timing, delivery needs or project context you’d like us to know.",
-        "backInquiry": "Back to inquiry",
-        "reviewInquiry": "Continue to review",
+        "phonePlaceholder": "Phone number, WhatsApp or WeChat ID",
+        "messagePlaceholder": "Add any purchasing timeline, delivery requirements or project context you’d like us to know.",
+        "backInquiry": "Back to Quote Request",
+        "reviewInquiry": "Continue to Final Review",
         "buyerTypes": [
           {
             "value": "待确认",
-            "label": "Not sure yet"
+            "label": "Not Sure Yet"
           },
           {
             "value": "批发商 / 经销商",
@@ -449,7 +449,7 @@
           },
           {
             "value": "活动 / 婚礼策划",
-            "label": "Event / Wedding"
+            "label": "Event / Wedding Planner"
           },
           {
             "value": "零售门店",
@@ -457,7 +457,7 @@
           },
           {
             "value": "个人客户",
-            "label": "Individual"
+            "label": "Individual Buyer"
           },
           {
             "value": "其他",
@@ -471,24 +471,24 @@
           "invalidPhone": "Add one contact method we can reach you on.",
           "generic": "Check the highlighted information."
         },
-        "whatNextKicker": "NEXT",
-        "whatNextTitle": "What happens next",
+        "whatNextKicker": "PROCESS",
+        "whatNextTitle": "What Happens Next",
         "whatNextSteps": [
-          "We’ll review the products, quantities and custom requirements.",
-          "If anything is missing, we’ll confirm it with you.",
-          "Then we’ll send pricing, production timing and delivery details."
+          "Initial Review",
+          "Detail Confirmation",
+          "Formal Quotation"
         ],
-        "reviewKicker": "FINAL CHECK",
-        "reviewTitle": "One last look.",
-        "reviewBody": "Check the details below, then send it our way.",
+        "reviewKicker": "FINAL REVIEW",
+        "reviewTitle": "Final Quote Request Review",
+        "reviewBody": "Review your contact details and selected items. Once everything is correct, submit your quote request.",
         "edit": "Edit",
         "notProvided": "Not provided",
         "none": "None",
-        "reviewSummaryTitle": "Your inquiry",
-        "inquiryNumber": "Inquiry ID",
-        "beforeSubmitKicker": "BEFORE SENDING",
-        "beforeSubmitTitle": "Once it’s sent, we’ll take it from there.",
-        "beforeSubmitBody": "We’ll review your final selection, quantity and custom requirements, then confirm pricing, production timing and delivery with you.",
+        "reviewSummaryTitle": "Quote Request",
+        "inquiryNumber": "Quote Request ID",
+        "beforeSubmitKicker": "BEFORE YOU SUBMIT",
+        "beforeSubmitTitle": "After you submit, we’ll prepare the final quotation and delivery plan.",
+        "beforeSubmitBody": "Final pricing will be calculated based on order quantity and customization, together with production lead time and delivery options.",
         "privacyPrefix": "I have read and agree to the",
         "privacyLink": "Privacy Notice",
         "privacyRequired": "Please agree to the Privacy Notice before sending.",
@@ -497,16 +497,16 @@
         "securityReady": "Ready.",
         "securityAdditional": "One more verification step is needed before sending.",
         "securityVerified": "Verified.",
-        "submitInquiry": "Send inquiry",
-        "submitting": "Sending…",
-        "submitFailed": "We can’t send your inquiry right now. Your selection is still saved — please try again shortly.",
-        "successKicker": "RECEIVED",
-        "successTitle": "Got it. We’ll take it from here.",
-        "successBody": "We’ll review your selection and project notes, then come back with pricing and anything we still need to confirm.",
-        "submitted": "Submitted",
-        "status": "Progress",
-        "awaitingReview": "In review",
-        "startAnotherProject": "Start another inquiry",
+        "submitInquiry": "Submit Quote Request",
+        "submitting": "Submitting Quote Request…",
+        "submitFailed": "We can’t submit your quote request right now. Your selections have been saved, so please try again shortly.",
+        "successKicker": "REQUEST SUBMITTED",
+        "successTitle": "Your quote request has been submitted successfully.",
+        "successBody": "Thank you for your inquiry. We’ve received your request and are reviewing the project requirements. Your project consultant will be in touch shortly.",
+        "submitted": "Submission Time",
+        "status": "Status",
+        "awaitingReview": "Requirements Under Review",
+        "startAnotherProject": "Submit Another Quote Request",
         "workspaceKicker": "INQUIRY",
         "workspaceTitle": "Your selection, all in one place.",
         "workspaceBody": "Check quantities and options, make any last changes, then tell us how to reach you.",
@@ -515,12 +515,12 @@
         "inquiryOverview": "Your inquiry",
         "productConfigurations": "Selected options",
         "currentItemQuantity": "Quantity",
-        "moqGroup": "Combined MOQ",
+        "moqGroup": "Combined Pricing Group",
         "moqReview": "MOQ",
-        "moqRule": "Same-series, same-size quantities can be combined toward the MOQ.",
-        "moqReady": "MOQ reached",
-        "moqRemaining": "{count} pcs to go",
-        "moqGroupsReady": "{count} groups reached MOQ",
+        "moqRule": "Quantities within this group are combined toward MOQ and the next volume pricing tier.",
+        "moqReady": "MOQ Met",
+        "moqRemaining": "{count} more to reach MOQ",
+        "moqGroupsReady": "{count} groups meet MOQ",
         "moqGroupsPending": "{count} groups are still below MOQ",
         "clearInquiry": "Clear inquiry",
         "selectAll": "Select all",
@@ -3089,106 +3089,106 @@
       "navigation": {
         "collection": "컬렉션",
         "custom": "커스텀",
-        "inquiry": "문의",
+        "inquiry": "견적 요청",
         "language": "언어"
       },
       "hero": {
         "kicker": "핸드 카빙 캔들",
-        "title": "바라보는 즐거움까지 담은 캔들.",
-        "body": "리테일, 기프트, 브랜드 협업과 특별한 행사를 위해 만듭니다. 마음에 드는 디자인에서 시작해 컬러, 향과 패키지를 원하는 방향으로 완성해 보세요.",
-        "primary": "컬렉션 보기",
-        "secondary": "커스텀 프로젝트 시작"
+        "title": "DREAMLAND",
+        "body": "프리미엄 리테일과 맞춤형 기프트를 위해 만듭니다. 엄선한 소재와 정교한 수작업, 맞춤 제작으로 공간에 고유한 빛과 분위기를 더합니다.",
+        "primary": "제품 보기",
+        "secondary": "커스텀 시작하기"
       },
       "collections": {
-        "kicker": "THE COLLECTION",
-        "title": "마음이 가는 캔들을 찾아보세요.",
-        "body": "차분한 컬러부터 시선을 끄는 디자인까지, 네 가지 시리즈를 천천히 둘러보세요.",
+        "kicker": "컬렉션",
+        "title": "공간에 어울리는 빛의 형태를 찾아보세요.",
+        "body": "정제된 컬러와 섬세한 조형미로 공간 연출부터 브랜드 맞춤형 기프트까지 폭넓게 활용할 수 있습니다.",
         "designSingular": "디자인",
         "designPlural": "디자인",
-        "explore": "시리즈 보기"
+        "explore": "컬렉션 보기"
       },
       "featured": {
-        "kicker": "지금의 셀렉션",
-        "title": "요즘 자주 눈이 가는 다섯 가지.",
-        "body": "마스터피스와 어드밴스드 시리즈에서 고른 다섯 가지입니다.",
+        "kicker": "추천",
+        "title": "엄선한 디자인",
+        "body": "마스터피스와 어드밴스드 컬렉션에서 고른 다섯 가지 대표 디자인입니다.",
         "viewAll": "전체 보기",
         "viewDetails": "상세 보기",
         "moq": "MOQ"
       },
       "craft": {
-        "kicker": "HANDCRAFT",
-        "title": "무지개와 꽃의 색을 빛 속에 담아, 한 번의 칼끝에도 만드는 이의 온기를 남깁니다.",
-        "body": "핸드 카빙 캔들 하나는 컬러와 시간, 손기술이 맞아떨어질 때 비로소 완성됩니다.\n\n속도를 앞세우는 시대지만, 우리는 천천히 만드는 쪽을 선택합니다. 각 캔들은 생산 라인에서 복제되는 제품이 아니라 컬러 감각, 왁스의 온도와 정확한 칼끝이 함께 만드는 하나의 작업입니다.\n\n30~50번의 반복 침지를 통해 고른 컬러를 한 겹씩 쌓아 올리고, 무지개 나이테처럼 섬세한 층을 만듭니다.\n\n왁스가 아직 따뜻하고 유연할 때 빠르게 칼을 넣습니다. 자르고, 접고, 비틀며 가장 알맞은 순간에 안쪽의 색을 한 겹씩 열어 평면의 왁스를 입체적인 꽃잎과 질감으로 펼쳐냅니다.\n\n여러 번의 마무리 손질을 거쳐 선과 곡선, 층이 제자리를 찾습니다.\n\n컬러는 감정을 더하고, 조각은 형태를 만듭니다."
+        "kicker": "수작업 공예",
+        "title": "빛을 겹치고, 손으로 형태를 다듬습니다.",
+        "body": "식품 등급 파라핀과 천연 화이트 비즈왁스를 바탕으로 전통적인 다층 디핑 공정과 정교한 핸드 카빙을 결합합니다. 여러 겹으로 쌓인 컬러를 손으로 깎고 다듬어, 따뜻한 깊이와 존재감이 느껴지는 입체적인 형태로 완성합니다."
       },
       "custom": {
-        "kicker": "CUSTOM",
-        "title": "아이디어에 맞춰 함께 만듭니다.",
-        "body": "컬러와 향부터 패키지, 브랜드 요소까지 원하는 방향에 맞춰 조정할 수 있습니다.",
+        "kicker": "커스텀",
+        "title": "아이디어를 실제 제품으로 완성합니다.",
+        "body": "컬러와 향부터 패키지, 브랜딩 요소까지 아이디어를 실제 생산과 납품이 가능한 사양으로 구체화합니다.",
         "features": [
           "컬러",
           "향",
           "패키지",
-          "브랜드 요소"
+          "브랜딩 요소"
         ],
-        "action": "커스텀 프로젝트 시작"
+        "action": "커스텀 시작하기"
       },
       "wholesale": {
-        "kicker": "도매 / 프로젝트 지원",
-        "title": "제품 선택부터 배송까지, 필요한 내용을 함께 맞춰갑니다.",
+        "kicker": "진행 절차",
+        "title": "선택부터 납품까지, 명확한 절차로 진행합니다.",
         "facts": [
           {
-            "title": "MOQ",
-            "body": "시리즈와 사이즈에 따라 MOQ가 다르며, 같은 시리즈·같은 사이즈 수량은 합산할 수 있습니다."
+            "title": "01 디자인 선택",
+            "body": "디자인, 수량, 용도와 필요한 납기 일정을 확인합니다."
           },
           {
-            "title": "커스텀",
-            "body": "컬러, 향, 패키지와 브랜드 요소를 프로젝트에 맞춰 더 발전시킬 수 있습니다."
+            "title": "02 세부 사양 조율",
+            "body": "컬러, 향, 패키지와 브랜딩 요소를 하나씩 확인합니다."
           },
           {
-            "title": "글로벌 배송",
-            "body": "수량, 목적지와 일정에 맞춰 적절한 배송 방법을 확인해 드립니다."
+            "title": "03 샘플 확인",
+            "body": "프로젝트에 따라 샘플 또는 세부 사양을 확인한 뒤 본생산에 들어갑니다."
           },
           {
-            "title": "견적과 일정",
-            "body": "제품과 요청 사항이 정리되면 가격, 제작 일정과 배송 내용을 안내드립니다."
+            "title": "04 생산 및 납품",
+            "body": "견적과 제작 기간이 확정되면 생산을 시작하고 목적지에 맞춰 배송을 준비합니다."
           }
         ]
       },
       "cta": {
-        "kicker": "NEXT",
-        "title": "만들고 싶은 게 있나요?",
-        "body": "컬렉션부터 둘러보거나, 만들고 싶은 내용을 바로 알려주세요.",
-        "explore": "컬렉션 보기",
-        "custom": "커스텀 프로젝트 시작",
-        "review": "문의 보기"
+        "kicker": "다음 단계",
+        "title": "만들고 싶은 게 있다면, 여기서 시작해 보세요.",
+        "body": "기존 디자인을 둘러보거나 만들고 싶은 내용을 바로 알려주세요.",
+        "explore": "제품 보기",
+        "custom": "커스텀 시작하기",
+        "review": "견적 요청 보기"
       },
       "footer": {
-        "description": "리테일, 기프트와 커스텀 프로젝트를 위한 핸드 카빙 캔들.",
+        "description": "프리미엄 리테일, 기프트 및 커스텀 프로젝트를 위한 핸드 카빙 캔들.",
         "explore": "둘러보기",
         "projects": "프로젝트",
         "language": "언어",
-        "legal": "안내",
+        "legal": "법적 고지",
         "collection": "컬렉션",
         "masterpiece": "마스터피스",
-        "advanced": "어드밴스",
+        "advanced": "어드밴스드",
         "custom": "커스텀",
-        "inquiry": "문의",
-        "privacy": "개인정보 안내",
+        "inquiry": "견적 요청",
+        "privacy": "개인정보 처리방침",
         "copyright": "© DREAMLAND"
       },
       "catalog": {
         "kicker": "컬렉션",
-        "title": "마음이 가는 캔들을 찾아보세요.",
-        "body": "차분한 컬러부터 시선을 끄는 디자인까지, 네 가지 시리즈를 천천히 둘러보세요.",
+        "title": "공간에 어울리는 빛의 형태를 찾아보세요.",
+        "body": "정제된 컬러와 섬세한 조형미로 공간 연출부터 브랜드 맞춤형 기프트까지 폭넓게 활용할 수 있습니다.",
         "all": "전체",
         "activeDesigns": "개 제품",
         "designs": "개 제품",
-        "seriesNavigation": "컬렉션 시리즈",
+        "seriesNavigation": "컬렉션",
         "searchPlaceholder": "이름 또는 제품 ID 검색",
         "searchShort": "검색",
         "filters": "필터",
         "size": "사이즈",
-        "clear": "지우기",
+        "clear": "초기화",
         "apply": "적용",
         "sort": "정렬",
         "sortFeatured": "추천순",
@@ -3201,43 +3201,43 @@
         "showing": "표시",
         "of": "전체",
         "loadMore": "더 보기",
-        "emptyKicker": "다르게 둘러보기",
+        "emptyKicker": "다른 조건으로 찾아보세요",
         "emptyTitle": "현재 조건에 맞는 제품이 없습니다.",
         "searchEmptyTitle": "“{query}” 검색 결과가 없습니다",
-        "emptyBody": "다른 사이즈를 선택하거나 필터를 지우고 다시 둘러보세요.",
-        "clearFilters": "필터 지우기",
-        "ctaKicker": "문의",
-        "ctaEmptyTitle": "마음에 드는 제품은 문의 목록에 담아두세요.",
+        "emptyBody": "다른 사이즈를 선택하거나 필터를 초기화해 다시 둘러보세요.",
+        "clearFilters": "필터 초기화",
+        "ctaKicker": "견적 요청",
+        "ctaEmptyTitle": "마음에 드는 제품은 견적 요청에 추가해 두세요.",
         "ctaEmptyBody": "수량과 옵션은 나중에 조정할 수 있습니다. 최종 선택을 바탕으로 견적을 안내드립니다.",
-        "ctaReadyTitle": "제품을 고르기 시작했어요.",
-        "ctaReadyBody": "문의 목록에 {count}개 제품이 있습니다.",
-        "reviewInquiry": "문의 보기",
+        "ctaReadyTitle": "견적 요청을 시작했습니다.",
+        "ctaReadyBody": "견적 요청에 {count}개 제품이 담겨 있습니다.",
+        "reviewInquiry": "견적 요청 보기",
         "backToTop": "맨 위로"
       },
       "detail": {
         "back": "컬렉션으로 돌아가기",
         "productId": "제품 번호",
         "moq": "MOQ",
-        "moqNote": "같은 시리즈와 같은 사이즈는 수량을 합산해 MOQ를 계산할 수 있습니다.",
+        "moqNote": "💡 같은 컬렉션·같은 사이즈의 제품은 수량을 합산해 MOQ와 수량별 단가 구간을 적용할 수 있습니다.",
         "size": "사이즈",
         "scentCollection": "향 컬렉션",
         "scent": "향",
         "pattern": "패턴",
-        "packaging": "패키징",
+        "packaging": "패키지",
         "quantity": "수량",
         "included": "포함",
         "unitPrice": "참고 단가",
         "estimatedTotal": "제품 금액",
-        "pricingNote": "수량과 옵션에 따라 단가가 달라지며, 최종 가격은 정식 견적에서 안내드립니다.",
-        "addInquiry": "문의 목록에 추가",
-        "added": "문의 목록에 추가됨",
-        "customProject": "커스텀 프로젝트 시작",
+        "pricingNote": "최종 단가는 전체 주문 수량과 선택한 커스텀 사양을 기준으로 정식 견적서에서 확정됩니다.",
+        "addInquiry": "견적 요청에 추가",
+        "added": "견적 요청에 추가됨",
+        "customProject": "맞춤 제작 상담 요청",
         "scentNotes": "향 노트",
         "topNotes": "탑 노트",
         "heartNotes": "미들 노트",
         "baseNotes": "베이스 노트",
         "productDetails": "제품 정보",
-        "series": "시리즈",
+        "series": "컬렉션",
         "availableSizes": "선택 가능한 사이즈",
         "configuredOptions": "선택한 옵션",
         "wholesale": "대량 주문",
@@ -3245,50 +3245,50 @@
       },
       "customProject": {
         "kicker": "커스텀 프로젝트",
-        "title": "아이디어를 들려주세요. 캔들로 함께 완성하겠습니다.",
-        "body": "처음부터 모든 것을 정할 필요는 없습니다. 어디에 사용할지, 어느 정도 수량이 필요한지 알려주시면 사이즈, 컬러, 향과 패키지를 함께 맞춰갑니다.",
-        "sectionBasicsKicker": "프로젝트",
+        "title": "아이디어가 있다면, 캔들로 완성해 보세요.",
+        "body": "처음부터 모든 세부 사항을 정할 필요는 없습니다. 용도와 예상 수량을 알려주시면 사이즈, 컬러, 향과 패키지를 함께 구체화합니다.",
+        "sectionBasicsKicker": "프로젝트 정보",
         "sectionBasicsTitle": "어떤 프로젝트인지 알려주세요.",
         "sectionBasicsBody": "용도, 예상 수량, 예산과 필요한 시기만 알려주셔도 충분히 시작할 수 있습니다.",
         "sectionProductKicker": "제품 방향",
-        "sectionProductTitle": "어떤 느낌을 원하시나요?",
-        "sectionProductBody": "사이즈와 향부터 고르고, 생각해 둔 컬러나 비주얼 방향이 있다면 함께 알려주세요.",
+        "sectionProductTitle": "어떤 모습과 분위기를 원하시나요?",
+        "sectionProductBody": "사이즈와 향부터 선택하고, 생각해 둔 컬러나 비주얼 방향이 있다면 함께 알려주세요.",
         "sectionPackagingKicker": "패키지 & 브랜드",
-        "sectionPackagingTitle": "프로젝트만의 모습으로 완성해 보세요.",
-        "sectionPackagingBody": "패키지를 고르고 로고, 카드, 스티커나 기프트 박스가 필요한지도 알려주세요.",
-        "useCase": "어디에 사용할까요? *",
+        "sectionPackagingTitle": "이제 브랜드의 모습으로 완성해 보세요.",
+        "sectionPackagingBody": "패키지를 선택한 뒤 로고, 카드, 스티커 또는 기프트 박스 구성이 필요한지 알려주세요.",
+        "useCase": "어디에 사용할 예정인가요? *",
         "quantity": "예상 수량 *",
         "minimumQuantity": "커스텀 MOQ",
         "quantityPlaceholder": "예: 500",
         "pieces": "개",
         "budget": "예산",
         "delivery": "언제 필요하신가요?",
-        "deliveryHint": "날짜 또는 대략적인 기간 모두 괜찮습니다",
+        "deliveryHint": "구체적인 날짜나 대략적인 기간 모두 괜찮습니다.",
         "deliveryPlaceholder": "예: 영업일 30일 이내 또는 2026년 12월 15일 이전",
         "size": "사이즈",
         "fragranceCollection": "향 컬렉션",
         "scents": "향 *",
-        "scentsHint": "{count}개 선택 · 같은 컬렉션에서 여러 향을 선택할 수 있습니다",
+        "scentsHint": "{count}개 선택 · 같은 컬렉션에서 여러 향을 선택할 수 있습니다.",
         "color": "컬러 방향",
         "colorPlaceholder": "예: 블러시 핑크, 세이지 그린 또는 브랜드 컬러 레퍼런스",
         "packaging": "패키지",
-        "branding": "브랜드 요소",
-        "notes": "추가로 알려주실 내용",
+        "branding": "브랜딩 요소",
+        "notes": "추가로 알려주실 내용이 있나요?",
         "notesPlaceholder": "사이즈, 컬러, 패키지, 행사, 브랜드 가이드 등 프로젝트를 이해하는 데 도움이 될 내용을 적어주세요.",
         "optional": "선택",
-        "summaryKicker": "YOUR IDEA",
-        "summaryTitle": "만들고 싶은 것",
+        "summaryKicker": "프로젝트 아이디어",
+        "summaryTitle": "이번에 만들 제품",
         "notSelected": "미선택",
         "scentCount": "향 {count}개 선택",
-        "customization": "CUSTOMIZATION",
-        "quotedAfterReview": "요청 사항 확인 후 별도 견적",
-        "summaryNote": "최종 제품, 수량, 패키지와 브랜드 요청을 바탕으로 견적을 준비하고 제작 일정과 배송도 함께 안내드립니다.",
-        "addInquiry": "문의 목록에 추가",
-        "addedButton": "문의 목록에 추가됨",
-        "addedTitle": "문의 목록에 담았습니다.",
-        "addedBody": "제품을 더 둘러보거나 준비가 되면 문의 내용을 확인하세요.",
+        "customization": "맞춤 견적",
+        "quotedAfterReview": "요청 확인 후 견적",
+        "summaryNote": "최종 제품, 수량, 패키지와 브랜딩 요구사항을 기준으로 견적을 준비하고 제작 기간과 배송 일정도 함께 안내드립니다.",
+        "addInquiry": "견적 요청에 추가",
+        "addedButton": "견적 요청에 추가됨",
+        "addedTitle": "견적 요청에 추가했습니다.",
+        "addedBody": "제품을 더 둘러보거나 준비가 되면 견적 요청 내용을 확인하세요.",
         "exploreCollection": "더 둘러보기",
-        "reviewInquiry": "문의 보기",
+        "reviewInquiry": "견적 요청 보기",
         "errorUse": "사용 목적을 선택해 주세요.",
         "errorQuantity": "정수 수량을 입력해 주세요.",
         "errorQuantityMin": "커스텀 MOQ는 {min}개입니다.",
@@ -3297,13 +3297,13 @@
         "useCases": [
           {
             "value": "品牌活动",
-            "label": "브랜드 / 캠페인",
-            "body": "신제품 출시, 협업 및 브랜드 이벤트"
+            "label": "브랜드 캠페인",
+            "body": "신제품 출시, 협업 및 브랜드 프로모션"
           },
           {
             "value": "企业礼赠",
             "label": "기업 기프트",
-            "body": "고객, 임직원 및 파트너 기프트"
+            "body": "고객, 임직원 및 파트너를 위한 기프트"
           },
           {
             "value": "婚礼 / 派对",
@@ -3312,18 +3312,18 @@
           },
           {
             "value": "门店陈列",
-            "label": "리테일 / 디스플레이",
+            "label": "리테일 / 진열",
             "body": "매장 연출 및 리테일 프로젝트"
           },
           {
             "value": "节日礼品",
             "label": "시즌 기프트",
-            "body": "시즌 및 홀리데이 프로젝트"
+            "body": "시즌, 홀리데이 및 기념일 프로젝트"
           },
           {
             "value": "其他用途",
             "label": "기타",
-            "body": "메모에 프로젝트 상황을 알려주세요"
+            "body": "프로젝트 설명에 구체적인 용도를 적어주세요."
           }
         ],
         "budgets": [
@@ -3337,11 +3337,11 @@
           },
           {
             "value": "USD 1,000 - 3,000",
-            "label": "USD 1,000 – 3,000"
+            "label": "USD 1,000–3,000"
           },
           {
             "value": "USD 3,000 - 10,000",
-            "label": "USD 3,000 – 10,000"
+            "label": "USD 3,000–10,000"
           },
           {
             "value": "USD 10,000 以上",
@@ -3378,22 +3378,22 @@
           {
             "value": "待推荐",
             "label": "추천 요청",
-            "body": "프로젝트에 맞는 방향을 제안합니다"
+            "body": "프로젝트에 맞는 패키지 방향을 제안해 드립니다."
           },
           {
             "value": "批发包装",
-            "label": "도매 패키징",
-            "body": "수량 프로젝트에 적합한 기본 패키징"
+            "label": "도매 포장",
+            "body": "대량 주문에 적합한 기본 포장입니다."
           },
           {
             "value": "精品包装",
-            "label": "기프트 패키징",
-            "body": "기프트와 프레젠테이션에 적합한 방향"
+            "label": "기프트 포장",
+            "body": "선물과 디스플레이에 적합한 포장입니다."
           },
           {
             "value": "品牌包装",
-            "label": "브랜드 패키징",
-            "body": "브랜드 비주얼을 반영한 패키징"
+            "label": "브랜드 포장",
+            "body": "브랜드 아이덴티티를 반영해 제작합니다."
           }
         ],
         "brandingOptions": [
@@ -3415,7 +3415,7 @@
           },
           {
             "value": "需要完整礼盒方案",
-            "label": "전체 기프트 박스"
+            "label": "기프트 박스 전체 구성"
           },
           {
             "value": "待沟通确认",
@@ -3428,59 +3428,59 @@
         "continueToNext": "계속"
       },
       "inquiryFlow": {
-        "progressLabel": "문의 진행",
-        "stepSelection": "선택",
-        "stepContact": "연락처",
-        "stepReview": "확인",
-        "kicker": "문의",
-        "title": "고른 제품을 한 번에 확인하세요.",
-        "body": "수량과 옵션을 확인하고 필요한 부분을 수정한 뒤 연락처를 남겨주세요.",
-        "selectedProducts": "선택한 내용",
+        "progressLabel": "견적 요청 진행",
+        "stepSelection": "선택 내용 확인",
+        "stepContact": "연락처 입력",
+        "stepReview": "최종 확인",
+        "kicker": "견적 요청",
+        "title": "견적 요청 내용을 확인해 주세요.",
+        "body": "선택한 제품과 예상 수량을 확인한 뒤 연락처를 입력하면 정식 견적서를 받아보실 수 있습니다.",
+        "selectedProducts": "선택한 제품",
         "selectedItems": "선택한 디자인",
-        "totalQuantity": "제품 수량",
-        "summaryKicker": "문의",
-        "summaryTitle": "이번 문의",
-        "productEstimate": "제품 금액",
+        "totalQuantity": "총 수량",
+        "summaryKicker": "견적 요청",
+        "summaryTitle": "견적 요청",
+        "productEstimate": "예상 제품 금액",
         "customProject": "커스텀 프로젝트",
         "customQuotedSeparately": "요청 확인 후 견적",
-        "finalPricingNote": "최종 가격, 제작 일정과 배송 방식은 정식 견적에서 안내드립니다.",
-        "continueContact": "연락처 남기기",
-        "continueExploring": "더 둘러보기",
-        "exploreCollection": "컬렉션 보기",
-        "startCustom": "커스텀 프로젝트 시작",
-        "emptyTitle": "아직 문의 목록이 비어 있습니다.",
-        "emptyBody": "마음에 드는 제품부터 담거나 만들고 싶은 내용을 바로 알려주세요.",
+        "finalPricingNote": "최종 가격, 제작 기간과 배송 방법은 정식 견적서에서 확정됩니다.",
+        "continueContact": "연락처 입력",
+        "continueExploring": "제품 더 보기",
+        "exploreCollection": "제품 보기",
+        "startCustom": "커스텀 시작하기",
+        "emptyTitle": "아직 견적 요청에 담긴 항목이 없습니다.",
+        "emptyBody": "마음에 드는 제품부터 추가하거나 만들고 싶은 내용을 바로 알려주세요.",
         "size": "사이즈",
         "scent": "향",
         "pattern": "패턴",
-        "packaging": "패키징",
+        "packaging": "패키지",
         "quantity": "수량",
         "moq": "MOQ",
         "pricing": "가격",
         "useCase": "사용 목적",
         "fragranceCollection": "향 컬렉션",
         "scents": "선택한 향",
-        "branding": "브랜딩",
+        "branding": "브랜딩 요소",
         "remove": "삭제",
-        "removeTitle": "문의 목록에서 뺄까요?",
-        "removeBody": "이 항목이 문의 목록에서 삭제됩니다.",
+        "removeTitle": "견적 요청에서 삭제할까요?",
+        "removeBody": "이 항목이 견적 요청에서 삭제됩니다.",
         "cancel": "취소",
-        "clearAll": "문의 비우기",
-        "clearTitle": "문의 목록을 비울까요?",
+        "clearAll": "견적 요청 비우기",
+        "clearTitle": "견적 요청을 비울까요?",
         "clearBody": "선택한 제품과 커스텀 항목이 모두 삭제됩니다.",
-        "clearConfirm": "현재 문의 목록을 모두 비울까요?",
+        "clearConfirm": "현재 견적 요청을 모두 비울까요?",
         "editConfiguration": "옵션 수정",
-        "cannotContinue": "MOQ에 아직 못 미친 제품이 있습니다. 수량을 조정해 주세요.",
+        "cannotContinue": "⚠️ 일부 선택 그룹이 최소 주문 수량에 도달하지 않았습니다. 수량을 조정해 주세요.",
         "contactKicker": "연락처",
-        "contactTitle": "어떻게 연락드리면 될까요?",
-        "contactBody": "편한 연락처를 남겨주시면 견적과 추가로 확인할 내용을 정리해 안내드리겠습니다.",
+        "contactTitle": "연락처 및 프로젝트 정보",
+        "contactBody": "자주 사용하는 연락처를 남겨주세요. 프로젝트 담당자가 24시간 이내에 연락드려 상세 견적과 진행 내용을 안내드립니다.",
         "contactDetailsKicker": "연락처",
-        "contactDetailsTitle": "연락처",
-        "contactDetailsBody": "이 정보는 이번 문의에 답변하고 프로젝트 내용을 이어서 확인하는 데만 사용합니다.",
-        "contactRequiredTitle": "연락처",
-        "contactRequiredBody": "이름, 지역, 이메일과 연락 가능한 방법 하나만 남겨주시면 됩니다.",
-        "contactOptionalTitle": "프로젝트를 조금 더 알려주세요",
-        "contactOptionalBody": "회사, 구매 유형과 도시는 선택 사항이지만 프로젝트를 이해하는 데 도움이 됩니다.",
+        "contactDetailsTitle": "연락처 정보",
+        "contactDetailsBody": "정식 견적서를 정확히 받아보실 수 있도록 유효한 연락처를 입력해 주세요.",
+        "contactRequiredTitle": "연락처 정보",
+        "contactRequiredBody": "정식 견적서를 정확히 받아보실 수 있도록 유효한 연락처를 입력해 주세요.",
+        "contactOptionalTitle": "추가 정보",
+        "contactOptionalBody": "회사 정보와 구매 배경을 알려주시면 프로젝트에 맞는 가격 조건을 안내하는 데 도움이 됩니다.",
         "name": "담당자 이름",
         "company": "회사 / 브랜드",
         "country": "국가 / 지역",
@@ -3488,16 +3488,16 @@
         "email": "이메일",
         "phone": "WhatsApp / 전화 / WeChat",
         "buyerType": "구매자 유형",
-        "message": "추가로 알려주실 내용",
-        "namePlaceholder": "이름",
-        "companyPlaceholder": "회사 또는 브랜드",
+        "message": "추가 메모",
+        "namePlaceholder": "담당자 이름",
+        "companyPlaceholder": "회사 또는 브랜드명",
         "countryPlaceholder": "국가 / 지역을 선택하세요",
         "cityPlaceholder": "도시",
         "emailPlaceholder": "name@example.com",
         "phonePlaceholder": "전화번호, WhatsApp 또는 WeChat ID",
-        "messagePlaceholder": "구매 일정, 배송 요청이나 프로젝트 배경이 있다면 적어주세요.",
-        "backInquiry": "문의로 돌아가기",
-        "reviewInquiry": "확인으로 이동",
+        "messagePlaceholder": "구매 일정, 배송 요청 또는 프로젝트 배경이 있다면 적어주세요.",
+        "backInquiry": "견적 요청으로 돌아가기",
+        "reviewInquiry": "최종 확인으로 이동",
         "buyerTypes": [
           {
             "value": "待确认",
@@ -3517,7 +3517,7 @@
           },
           {
             "value": "活动 / 婚礼策划",
-            "label": "이벤트 / 웨딩"
+            "label": "이벤트 / 웨딩 기획"
           },
           {
             "value": "零售门店",
@@ -3525,7 +3525,7 @@
           },
           {
             "value": "个人客户",
-            "label": "개인"
+            "label": "개인 구매자"
           },
           {
             "value": "其他",
@@ -3533,61 +3533,61 @@
           }
         ],
         "validation": {
-          "invalidName": "이름을 입력해 주세요.",
+          "invalidName": "담당자 이름을 입력해 주세요.",
           "countryRequired": "국가 또는 지역을 선택해 주세요.",
           "invalidEmail": "이메일 주소를 확인해 주세요.",
-          "invalidPhone": "연락 가능한 방법 하나를 입력해 주세요.",
+          "invalidPhone": "연락 가능한 방법을 하나 이상 입력해 주세요.",
           "generic": "표시된 정보를 확인해 주세요."
         },
-        "whatNextKicker": "다음",
-        "whatNextTitle": "다음 단계",
+        "whatNextKicker": "진행 절차",
+        "whatNextTitle": "이후 이렇게 진행됩니다",
         "whatNextSteps": [
-          "선택한 제품, 수량과 커스텀 요청을 먼저 확인합니다.",
-          "추가로 필요한 내용이 있으면 함께 확인합니다.",
-          "이후 견적, 제작 일정과 배송 내용을 안내드립니다."
+          "요청 검토",
+          "세부 사항 확인",
+          "정식 견적"
         ],
-        "reviewKicker": "마지막 확인",
-        "reviewTitle": "마지막으로 한 번 확인해 주세요.",
-        "reviewBody": "아래 내용을 확인한 뒤 문의를 보내주세요.",
+        "reviewKicker": "최종 확인",
+        "reviewTitle": "견적 요청 최종 확인",
+        "reviewBody": "연락처와 선택한 제품을 다시 확인한 뒤 견적 요청을 제출해 주세요.",
         "edit": "수정",
         "notProvided": "미입력",
         "none": "없음",
-        "reviewSummaryTitle": "이번 문의",
-        "inquiryNumber": "문의 번호",
-        "beforeSubmitKicker": "보내기 전",
-        "beforeSubmitTitle": "문의가 접수되면 필요한 내용을 이어서 확인합니다.",
-        "beforeSubmitBody": "선택한 제품과 수량, 커스텀 요청을 검토한 뒤 가격, 제작 일정과 배송 방법을 함께 확인해 드립니다.",
+        "reviewSummaryTitle": "견적 요청",
+        "inquiryNumber": "견적 요청 번호",
+        "beforeSubmitKicker": "제출 전",
+        "beforeSubmitTitle": "제출 후 최종 견적과 납품 방안을 준비합니다.",
+        "beforeSubmitBody": "주문 수량과 커스텀 사양을 기준으로 최종 가격을 산정하고 제작 기간과 배송 방법을 함께 안내드립니다.",
         "privacyPrefix": "다음을 읽고 동의합니다:",
         "privacyLink": "개인정보 안내",
         "privacyRequired": "문의 전 개인정보 안내에 동의해 주세요.",
-        "security": "확인",
-        "securityChecking": "확인 중…",
-        "securityReady": "확인 완료.",
-        "securityAdditional": "문의 전 한 번 더 확인이 필요합니다.",
-        "securityVerified": "확인 완료.",
-        "submitInquiry": "문의 보내기",
-        "submitting": "보내는 중…",
-        "submitFailed": "지금은 문의를 보낼 수 없습니다. 선택 내용은 저장되어 있으니 잠시 후 다시 시도해 주세요.",
+        "security": "인증",
+        "securityChecking": "인증 중…",
+        "securityReady": "인증 완료",
+        "securityAdditional": "제출 전에 인증을 완료해 주세요.",
+        "securityVerified": "인증 완료",
+        "submitInquiry": "견적 요청 제출",
+        "submitting": "견적 요청 제출 중…",
+        "submitFailed": "지금은 견적 요청을 제출할 수 없습니다. 선택한 내용은 저장되어 있으니 잠시 후 다시 시도해 주세요.",
         "successKicker": "접수 완료",
-        "successTitle": "잘 받았습니다. 이제 저희가 이어서 준비하겠습니다.",
-        "successBody": "선택한 제품과 요청 내용을 정리한 뒤 견적과 추가로 확인할 사항을 안내드리겠습니다.",
-        "submitted": "제출일",
-        "status": "진행 상태",
-        "awaitingReview": "확인 중",
-        "startAnotherProject": "새 문의 시작",
-        "workspaceKicker": "문의",
-        "workspaceTitle": "고른 제품을 한 번에 확인하세요.",
-        "workspaceBody": "수량과 옵션을 확인하고 필요한 부분을 수정한 뒤 연락처를 남겨주세요.",
-        "productSelection": "제품",
+        "successTitle": "견적 요청이 정상적으로 접수되었습니다.",
+        "successBody": "문의해 주셔서 감사합니다. 요청 내용을 확인하고 프로젝트 요구사항을 정리한 뒤 담당자가 곧 연락드리겠습니다.",
+        "submitted": "제출 시간",
+        "status": "상태",
+        "awaitingReview": "요청 내용 확인 중",
+        "startAnotherProject": "새 견적 요청 보내기",
+        "workspaceKicker": "견적 요청",
+        "workspaceTitle": "견적 요청 내용을 확인해 주세요.",
+        "workspaceBody": "선택한 제품과 예상 수량을 확인한 뒤 연락처를 입력하면 정식 견적서를 받아보실 수 있습니다.",
+        "productSelection": "선택한 제품",
         "customProjects": "커스텀",
-        "inquiryOverview": "이번 문의",
+        "inquiryOverview": "견적 요청",
         "productConfigurations": "선택한 옵션",
         "currentItemQuantity": "수량",
-        "moqGroup": "합산 MOQ",
+        "moqGroup": "합산 계산 그룹",
         "moqReview": "MOQ",
-        "moqRule": "같은 시리즈와 같은 사이즈는 수량을 합산해 MOQ를 계산할 수 있습니다.",
+        "moqRule": "이 그룹의 제품 수량을 합산해 MOQ와 다음 수량별 단가 구간을 적용합니다.",
         "moqReady": "MOQ 충족",
-        "moqRemaining": "{count}개 더 필요",
+        "moqRemaining": "MOQ까지 {count}개 남음",
         "moqGroupsReady": "{count}개 그룹 MOQ 충족",
         "moqGroupsPending": "{count}개 그룹이 아직 MOQ 미달",
         "clearInquiry": "문의 비우기",
@@ -3598,9 +3598,9 @@
         "removeSelected": "선택 항목 삭제",
         "removeGroup": "그룹 삭제",
         "removeSelectedTitle": "선택한 항목을 삭제할까요?",
-        "removeSelectedBody": "선택한 {count}개 항목이 문의 목록에서 삭제됩니다.",
+        "removeSelectedBody": "선택한 {count}개 항목이 견적 요청에서 삭제됩니다.",
         "removeGroupTitle": "이 그룹을 삭제할까요?",
-        "removeGroupBody": "현재 시리즈와 사이즈 그룹의 {count}개 항목이 삭제됩니다.",
+        "removeGroupBody": "현재 컬렉션과 사이즈 그룹의 {count}개 항목이 삭제됩니다.",
         "countryRegions": [
           {
             "code": "AD",
