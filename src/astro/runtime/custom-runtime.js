@@ -149,17 +149,17 @@
   function statusText(key,details={}){
     const c=copy();
     const source={
-      use:c.validationUse||c.useRequired,
-      quantity:c.validationQuantity||c.quantityRequired,
-      'quantity-min':c.validationQuantityMin||c.minimumQuantityError,
-      'quantity-max':c.validationQuantityMax||c.maximumQuantityError,
-      scents:c.validationScents||c.scentsRequired,
-      added:c.addedInquiry||c.addedToInquiry
+      use:c.errorUse,
+      quantity:c.errorQuantity,
+      'quantity-min':c.errorQuantityMin,
+      'quantity-max':c.errorQuantityMax,
+      scents:c.errorScents,
+      added:c.addedTitle
     }[key];
     const fallback={
-      en:{use:'Choose what the project is for.',quantity:'Enter a whole-number quantity.','quantity-min':'Custom MOQ is {min} pcs.','quantity-max':'This quantity needs a separate check. Please contact us.',scents:'Choose at least one scent.',added:'Custom project added to inquiry.'},
-      zh:{use:'请选择使用场景。',quantity:'请输入完整数量。','quantity-min':'定制起订量为 {min} 件。','quantity-max':'这个数量需要单独确认，请联系我们。',scents:'请至少选择一种香气。',added:'定制项目已加入询价单。'},
-      ko:{use:'사용 목적을 선택하세요.',quantity:'정수 수량을 입력하세요.','quantity-min':'수량은 최소 주문 수량 {min}개 이상이어야 합니다.','quantity-max':'수량은 최대 {max}개를 초과할 수 없습니다.',scents:'향을 하나 이상 선택하세요.',added:'커스텀 프로젝트를 문의 목록에 추가했습니다.'}
+      en:{use:'Choose what the project is for.',quantity:'Enter a whole-number quantity.','quantity-min':'Custom MOQ is {min} pcs.','quantity-max':'This quantity needs a separate review. Please contact us.',scents:'Choose at least one fragrance.',added:'Added to your quote request.'},
+      zh:{use:'请选择使用场景。',quantity:'请输入完整数量。','quantity-min':'定制起订量为 {min} 件。','quantity-max':'这个数量需要单独确认，请联系我们。',scents:'请至少选择一种香气。',added:'已经放进询价清单了。'},
+      ko:{use:'사용 목적을 선택해 주세요.',quantity:'정수 수량을 입력해 주세요.','quantity-min':'커스텀 MOQ는 {min}개입니다.','quantity-max':'이 수량은 별도 확인이 필요합니다. 문의해 주세요.',scents:'향을 하나 이상 선택해 주세요.',added:'견적 요청에 추가했습니다.'}
     };
     return text(source||fallback[currentLanguage]?.[key]||fallback.en[key]||'')
       .replace('{min}',String(details.min??state.limits.customMoq))

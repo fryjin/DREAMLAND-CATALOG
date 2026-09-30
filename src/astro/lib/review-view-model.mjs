@@ -47,7 +47,11 @@ const REVIEW_COPY_KEYS=Object.freeze([
   'beforeSubmitBody',
   'privacyPrefix',
   'privacyLink',
-  'submitInquiry'
+  'privacyRequired',
+  'securityAdditional',
+  'submitInquiry',
+  'submitting',
+  'submitFailed'
 ]);
 
 function text(value){

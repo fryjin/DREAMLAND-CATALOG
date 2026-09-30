@@ -225,7 +225,7 @@
         "errorQuantity": "Enter a whole-number quantity.",
         "errorQuantityMin": "Custom MOQ is {min} pcs.",
         "errorQuantityMax": "This quantity needs a separate review. Please contact us.",
-        "errorScents": "Choose at least one scent.",
+        "errorScents": "Choose at least one fragrance.",
         "useCases": [
           {
             "value": "品牌活动",

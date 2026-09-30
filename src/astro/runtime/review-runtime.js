@@ -1305,18 +1305,18 @@
     const statusCopy=Object.freeze({
       en:Object.freeze({
         privacy:'Please agree to the Privacy Notice before sending.',
-        submitting:'Sending your inquiry…',
+        submitting:'Submitting Quote Request…',
         captcha:'Please complete the verification to continue.',
-        filtered:'We couldn’t send this inquiry yet. Please check the details and try again.',
-        failed:'We couldn’t send your inquiry. Please try again shortly.',
-        offline:'You’re offline. Your inquiry is still saved on this device.',
-        timeout:'This is taking longer than expected. Your inquiry is still saved — please try again.',
+        filtered:'We couldn’t submit this quote request yet. Please check the details and try again.',
+        failed:'We can’t submit your quote request right now. Please try again shortly.',
+        offline:'You’re offline. Your quote request is still saved on this device.',
+        timeout:'This is taking longer than expected. Your quote request is still saved — please try again.',
         security:'We couldn’t complete the verification. Please try again.',
-        provider:'We can’t send your inquiry right now. Your selection is still saved — please try again.',
-        config:'We can’t send your inquiry right now. Your selection is still saved.',
+        provider:'We can’t submit your quote request right now. Your selections are still saved — please try again.',
+        config:'We can’t submit your quote request right now. Your selections are still saved.',
         cooldown:'Please wait {seconds}s, then try again.',
-        duplicate:'This inquiry is already being sent in another tab.',
-        unknown:'We couldn’t confirm whether it was sent. Please wait {seconds}s before trying again.'
+        duplicate:'This quote request is already being submitted in another tab.',
+        unknown:'We couldn’t confirm whether your quote request was submitted. Please wait {seconds}s before trying again.'
       }),
       zh:Object.freeze({
         privacy:'发送前请先同意隐私说明。',
@@ -1335,18 +1335,18 @@
       }),
       ko:Object.freeze({
         privacy:'문의 전 개인정보 안내에 동의해 주세요.',
-        submitting:'문의를 보내는 중입니다…',
+        submitting:'견적 요청 제출 중…',
         captcha:'계속하려면 확인을 완료해 주세요.',
-        filtered:'지금은 이 문의를 보낼 수 없습니다. 내용을 확인한 뒤 다시 시도해 주세요.',
-        failed:'지금은 문의를 보낼 수 없습니다. 잠시 후 다시 시도해 주세요.',
-        offline:'현재 네트워크에 연결할 수 없습니다. 문의 내용은 이 기기에 저장되어 있습니다.',
-        timeout:'전송에 예상보다 시간이 걸리고 있습니다. 문의 내용은 저장되어 있으니 잠시 후 다시 시도해 주세요.',
+        filtered:'지금은 이 견적 요청을 제출할 수 없습니다. 내용을 확인한 뒤 다시 시도해 주세요.',
+        failed:'지금은 견적 요청을 제출할 수 없습니다. 잠시 후 다시 시도해 주세요.',
+        offline:'현재 네트워크에 연결할 수 없습니다. 견적 요청 내용은 이 기기에 저장되어 있습니다.',
+        timeout:'전송에 예상보다 시간이 걸리고 있습니다. 견적 요청 내용은 저장되어 있으니 잠시 후 다시 시도해 주세요.',
         security:'확인을 완료하지 못했습니다. 다시 시도해 주세요.',
-        provider:'지금은 문의를 보낼 수 없습니다. 선택 내용은 저장되어 있으니 다시 시도해 주세요.',
-        config:'지금은 문의를 보낼 수 없습니다. 선택 내용은 저장되어 있습니다.',
+        provider:'지금은 견적 요청을 제출할 수 없습니다. 선택한 내용은 저장되어 있으니 다시 시도해 주세요.',
+        config:'지금은 견적 요청을 제출할 수 없습니다. 선택한 내용은 저장되어 있습니다.',
         cooldown:'{seconds}초 후에 다시 시도해 주세요.',
-        duplicate:'이 문의는 다른 탭에서 이미 전송 중입니다.',
-        unknown:'전송 여부를 확인하지 못했습니다. {seconds}초 후에 다시 시도해 주세요.'
+        duplicate:'이 견적 요청은 다른 탭에서 이미 제출 중입니다.',
+        unknown:'견적 요청의 전송 여부를 확인하지 못했습니다. {seconds}초 후에 다시 시도해 주세요.'
       })
     });
 
@@ -1358,7 +1358,44 @@
     }
 
     function statusText(key){
+      const current=
+        locale();
+
+      const copy=
+        current.copy||
+        {};
+
+      const ui=
+        current.ui||
+        {};
+
+      const canonical={
+        privacy:
+          copy.privacyRequired||
+          ui.privacyRequired,
+        submitting:
+          copy.submitting,
+        captcha:
+          ui.captchaRequired||
+          copy.securityAdditional,
+        failed:
+          copy.submitFailed||
+          ui.submitFailed,
+        provider:
+          copy.submitFailed||
+          ui.submitFailed,
+        config:
+          ui.formNotConfigured||
+          copy.submitFailed||
+          ui.submitFailed,
+        duplicate:
+          ui.submissionDuplicate
+      }[key];
+
       return (
+        text(
+          canonical
+        )||
         statusCopy[language]?.[key]||
         statusCopy.en[key]||
         key
