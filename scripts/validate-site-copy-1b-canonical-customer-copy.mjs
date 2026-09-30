@@ -40,20 +40,20 @@ for(const lang of ['zh','en','ko']){
 expect(site.languages?.zh?.craft?.title,'揉光进影，手作修刃','ZH Craft title');
 expect(site.languages?.zh?.craft?.body,'以食品级石蜡和天然白蜂蜡为基底，我们将传统多层提浸工艺与几何雕琢融为一体。每一支蜡烛，都在静止的蜡质中凝固流动的感官色彩，为空间注入独立而温润的气场。','ZH Craft body');
 expect(site.languages?.zh?.catalog?.title,'搜寻属于你的光影廓形','ZH Catalog title');
-expect(site.languages?.en?.catalog?.title,'Find the one that catches your eye.','EN Catalog title');
-expect(site.languages?.ko?.catalog?.title,'마음이 가는 캔들을 찾아보세요.','KO Catalog title');
+expect(site.languages?.en?.catalog?.title,'Find the form that belongs in your space.','EN Catalog title');
+expect(site.languages?.ko?.catalog?.title,'공간에 어울리는 빛의 형태를 찾아보세요.','KO Catalog title');
 
 expect(site.languages?.zh?.inquiryFlow?.reviewTitle,'询价信息最终确认','ZH Review title');
-expect(site.languages?.en?.inquiryFlow?.reviewTitle,'One last look.','EN Review title');
-expect(site.languages?.ko?.inquiryFlow?.reviewTitle,'마지막으로 한 번 확인해 주세요.','KO Review title');
+expect(site.languages?.en?.inquiryFlow?.reviewTitle,'Final Quote Request Review','EN Review title');
+expect(site.languages?.ko?.inquiryFlow?.reviewTitle,'견적 요청 최종 확인','KO Review title');
 
 expect(site.languages?.zh?.inquiryFlow?.beforeSubmitTitle,'提交后，我们将根据您的梯次数量与个性化要求，计算最终优惠总价、生产工期与交付方案。','ZH before-submit title');
-expect(site.languages?.en?.inquiryFlow?.beforeSubmitTitle,'Once it’s sent, we’ll take it from there.','EN before-submit title');
-expect(site.languages?.ko?.inquiryFlow?.beforeSubmitTitle,'문의가 접수되면 필요한 내용을 이어서 확인합니다.','KO before-submit title');
+expect(site.languages?.en?.inquiryFlow?.beforeSubmitTitle,'After you submit, we’ll prepare the final quotation and delivery plan.','EN before-submit title');
+expect(site.languages?.ko?.inquiryFlow?.beforeSubmitTitle,'제출 후 최종 견적과 납품 방안을 준비합니다.','KO before-submit title');
 
 expect(site.languages?.zh?.inquiryFlow?.successTitle,'询价申请已成功提交','ZH success title');
-expect(site.languages?.en?.inquiryFlow?.successTitle,'Got it. We’ll take it from here.','EN success title');
-expect(site.languages?.ko?.inquiryFlow?.successTitle,'잘 받았습니다. 이제 저희가 이어서 준비하겠습니다.','KO success title');
+expect(site.languages?.en?.inquiryFlow?.successTitle,'Your quote request has been submitted successfully.','EN success title');
+expect(site.languages?.ko?.inquiryFlow?.successTitle,'견적 요청이 정상적으로 접수되었습니다.','KO success title');
 
 if(!css.includes('SITE-COPY-1B — Craft Longform Copy')){
   fail('Craft longform CSS stage is missing.');

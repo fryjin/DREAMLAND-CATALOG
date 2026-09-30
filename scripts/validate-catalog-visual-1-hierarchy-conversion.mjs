@@ -61,12 +61,12 @@ const pkg=
  */
 const expected={
   en:{
-    title:'Find the one that catches your eye.',
-    body:'Four collections, from quieter color stories to pieces made to stand out.',
-    ctaKicker:'INQUIRY',
-    ctaEmptyTitle:'See something you like? Add it to your inquiry.',
-    ctaEmptyBody:'You can adjust quantities and options later. We’ll confirm pricing once your selection is ready.',
-    reviewInquiry:'Review inquiry'
+    title:'Find the form that belongs in your space.',
+    body:'Refined color and sculptural carving, created for elevated retail displays, interiors and bespoke brand gifting.',
+    ctaKicker:'QUOTE REQUEST',
+    ctaEmptyTitle:'Found something you like? Add it to your quote request.',
+    ctaEmptyBody:'You can adjust quantities and options later. We’ll confirm final pricing once your selection is ready.',
+    reviewInquiry:'Review Quote Request'
   },
   zh:{
     title:'搜寻属于你的光影廓形',
@@ -77,12 +77,12 @@ const expected={
     reviewInquiry:'查看询价清单'
   },
   ko:{
-    title:'마음이 가는 캔들을 찾아보세요.',
-    body:'차분한 컬러부터 시선을 끄는 디자인까지, 네 가지 시리즈를 천천히 둘러보세요.',
-    ctaKicker:'문의',
-    ctaEmptyTitle:'마음에 드는 제품은 문의 목록에 담아두세요.',
+    title:'공간에 어울리는 빛의 형태를 찾아보세요.',
+    body:'정제된 컬러와 섬세한 조형미로 공간 연출부터 브랜드 맞춤형 기프트까지 폭넓게 활용할 수 있습니다.',
+    ctaKicker:'견적 요청',
+    ctaEmptyTitle:'마음에 드는 제품은 견적 요청에 추가해 두세요.',
     ctaEmptyBody:'수량과 옵션은 나중에 조정할 수 있습니다. 최종 선택을 바탕으로 견적을 안내드립니다.',
-    reviewInquiry:'문의 보기'
+    reviewInquiry:'견적 요청 보기'
   }
 };
 
@@ -100,20 +100,25 @@ for(const language of ['en','zh','ko']){
   }
 }
 
+/*
+ * F2-D — Customer copy is canonical in data/site-content.json.
+ * The ViewModel must retain fallback ownership, but visual validation must
+ * not freeze pre-F2 literal fallback wording.
+ */
 for(const marker of [
-  "title:\n      catalog.title||\n      'Find the one that catches your eye.'",
-  "body:\n      catalog.body||\n      'Four collections, from quieter color stories to pieces made to stand out.'",
-  "ctaKicker:\n      catalog.ctaKicker||\n      'INQUIRY'",
-  "ctaEmptyTitle:\n      catalog.ctaEmptyTitle||\n      'See something you like? Add it to your inquiry.'",
-  "ctaEmptyBody:\n      catalog.ctaEmptyBody||\n      'You can adjust quantities and options later. We’ll confirm pricing once your selection is ready.'",
-  "ctaReadyTitle:\n      catalog.ctaReadyTitle||\n      'You’ve started a selection.'",
-  "ctaReadyBody:\n      catalog.ctaReadyBody||\n      '{count} products are in your inquiry.'",
-  "reviewInquiry:\n      catalog.reviewInquiry||\n      'Review inquiry'"
+  'title:\n      catalog.title||',
+  'body:\n      catalog.body||',
+  'ctaKicker:\n      catalog.ctaKicker||',
+  'ctaEmptyTitle:\n      catalog.ctaEmptyTitle||',
+  'ctaEmptyBody:\n      catalog.ctaEmptyBody||',
+  'ctaReadyTitle:\n      catalog.ctaReadyTitle||',
+  'ctaReadyBody:\n      catalog.ctaReadyBody||',
+  'reviewInquiry:\n      catalog.reviewInquiry||'
 ]){
   expect(
     viewModel,
     marker,
-    'CATALOG-VISUAL-1 / SITE-COPY-1B fallback copy changed.'
+    'CATALOG-VISUAL-1 fallback field ownership changed.'
   );
 }
 

@@ -622,9 +622,9 @@ if(SOURCE_MODE){
       zh:
         '本组内款式享起订量合并累加，快速解锁下一阶梯批发优惠。',
       en:
-        'Combined by the same series and size; Holiday is separated by scent pricing series',
+        'Quantities within this group are combined toward MOQ and the next volume pricing tier.',
       ko:
-        '같은 시리즈·같은 사이즈 상품 수량을 합산하며, 시즌 시리즈는 향 가격 시리즈별로 구분합니다'
+        '이 그룹의 제품 수량을 합산해 MOQ와 다음 수량별 단가 구간을 적용합니다.'
     };
 
     for(const [
@@ -843,8 +843,8 @@ if(DIST_MODE){
 
       for(const value of [
         '本组内款式享起订量合并累加，快速解锁下一阶梯批发优惠。',
-        'Combined by the same series and size',
-        '같은 시리즈·같은 사이즈'
+        'Quantities within this group are combined toward MOQ',
+        '이 그룹의 제품 수량을 합산해 MOQ'
       ]){
         if(!html.includes(value)){
           fail(
