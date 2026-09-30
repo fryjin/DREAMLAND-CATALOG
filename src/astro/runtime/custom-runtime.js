@@ -33,6 +33,7 @@
     return parsed&&parsed.version===VERSION&&parsed.storage&&parsed.limits&&parsed.series&&parsed.languages?parsed:null;
   }
   function currentView(){ return state?.languages?.[currentLanguage]||state?.languages?.[state?.defaultLanguage]||state?.languages?.en||{}; }
+  function inquiryHref(){ return text(state?.localeRoutes?.inquiry||state?.routes?.inquiry)||'/inquiry/'; }
   function copy(){ return currentView().copy||{}; }
   function setText(node,value){ if(node) node.textContent=text(value); }
   function pathValue(source,path){ return text(path).split('.').filter(Boolean).reduce((value,key)=>value==null?undefined:value[key],source); }
@@ -370,7 +371,7 @@
           'custom'
       ){
         root.location.assign(
-          '/inquiry/'
+          inquiryHref()
         );
         return null;
       }
@@ -384,7 +385,7 @@
       updateInquiryBadge();
 
       root.location.assign(
-        '/inquiry/'
+        inquiryHref()
       );
 
       return intent;
