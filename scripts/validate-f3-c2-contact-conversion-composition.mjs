@@ -30,9 +30,9 @@ if(SOURCE){
       'data-contact-conversion-composition="true"',
       'const sections=[',
       "key:'required'",
-      "fields:['name','country','email','phone']",
+      "fields:['name','country','email']",
       "key:'optional'",
-      "fields:['company','buyerType','city','message']",
+      "fields:['phone','company','buyerType','city','message']",
       'data-contact-section={section.key}',
       'contact-section__header',
       'contact-section__fields',
@@ -80,7 +80,7 @@ if(SOURCE){
     contact.configure({storage:null,fieldIds:['name','company','country','city','email','phone','buyerType','message']});
     const base={name:'Buyer Name',company:'',country:'SG',city:'',email:'buyer@example.com',phone:'+65 12345678',buyerType:'',message:''};
     if(!contact.validate(base).valid)fail('Optional project-context fields became required.');
-    const expected={name:'invalidName',country:'countryRequired',email:'invalidEmail',phone:'invalidPhone'};
+    const expected={name:'invalidName',country:'countryRequired',email:'invalidEmail'};
     for(const [field,code] of Object.entries(expected)){
       const result=contact.validate({...base,[field]:''});
       if(result.valid||!result.errors?.some(row=>row.field===field&&row.code===code))fail('Locked required Contact contract changed for '+field+'.');
@@ -139,6 +139,6 @@ if(errors.length){
 }
 console.log('\nDREAMLAND F3-C2 CONTACT CONVERSION COMPOSITION: PASS');
 console.log(SOURCE
-  ? 'Compact task-first Hero / required-first 4-field block / secondary optional project context / horizontal mobile progress / locked Contact schema verified.'
+  ? 'Compact task-first Hero / required-first 3-field block / optional contact + project context / horizontal mobile progress / locked 8-field Contact schema verified.'
   : 'Isolated Astro + Production Contact preserve the F3-C2 conversion composition.');
 console.log('');

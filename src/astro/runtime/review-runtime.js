@@ -784,7 +784,7 @@
       projection.contact||
       {};
 
-    const optionalContactKeys=new Set(['company','buyerType','city','message']);
+    const optionalContactKeys=new Set(['phone','company','buyerType','city','message']);
 
     const labels={
       name:

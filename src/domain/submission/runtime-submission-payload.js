@@ -90,6 +90,9 @@
     if(
       text(
         value.phone_or_wechat
+      )&&
+      text(
+        value.phone_or_wechat
       ).length<5
     ){
       return {

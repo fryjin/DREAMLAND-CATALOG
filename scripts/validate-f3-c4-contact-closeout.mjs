@@ -185,8 +185,8 @@ if(SOURCE_MODE){
       [
         'data-contact-conversion-composition="true"',
         'data-contact-input-efficiency="true"',
-        "fields:['name','country','email','phone']",
-        "fields:['company','buyerType','city','message']",
+        "fields:['name','country','email']",
+        "fields:['phone','company','buyerType','city','message']",
         'data-contact-section={section.key}',
         "type:'text'",
         "autocomplete:'tel'",
@@ -554,8 +554,7 @@ if(SOURCE_MODE){
     const required={
       name:'invalidName',
       country:'countryRequired',
-      email:'invalidEmail',
-      phone:'invalidPhone'
+      email:'invalidEmail'
     };
 
     for(const [
