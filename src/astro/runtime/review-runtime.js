@@ -92,6 +92,30 @@
       : state.defaultLanguage;
   }
 
+  function privacyHref(state,language){
+    const raw=
+      text(
+        state.routes
+          ?.privacy
+      )||
+      '/privacy/';
+
+    const base=
+      raw.replace(
+        /#.*$/,
+        ''
+      );
+
+    return (
+      base+
+      '#'+
+      supportedLanguage(
+        language,
+        state
+      )
+    );
+  }
+
   function localeFor(language,state){
     return (
       state.locales
@@ -1220,7 +1244,8 @@
   function setLanguagePresentation(
     documentRef,
     language,
-    locale
+    locale,
+    state
   ){
     documentRef
       .documentElement
@@ -1254,6 +1279,21 @@
       documentRef,
       locale
     );
+
+    const privacyLink=
+      documentRef.querySelector(
+        '[data-review-privacy-link]'
+      );
+
+    if(privacyLink){
+      privacyLink.setAttribute(
+        'href',
+        privacyHref(
+          state,
+          language
+        )
+      );
+    }
 
     documentRef.title=
       (
@@ -1469,8 +1509,7 @@
       if(submitButton){
         submitButton.disabled=
           submitting||
-          attemptGate.active||
-          !privacyAccepted;
+          attemptGate.active;
         submitButton.setAttribute(
           'aria-busy',
           submitting
@@ -1657,6 +1696,13 @@
           statusText('privacy'),
           'error'
         );
+
+        const privacy=
+          documentRef.querySelector(
+            '[data-review-privacy]'
+          );
+
+        privacy?.focus?.();
         syncSubmitUi();
         return false;
       }
@@ -1847,7 +1893,8 @@
       setLanguagePresentation(
         documentRef,
         language,
-        currentLocale
+        currentLocale,
+        state
       );
 
       const result=

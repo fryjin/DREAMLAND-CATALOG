@@ -247,6 +247,8 @@ export function buildReviewStaticView({
         '/inquiry/',
       contact:
         '/inquiry/contact/',
+      privacy:
+        '/privacy/',
       success:
         '/inquiry/success/'
     })
@@ -382,7 +384,9 @@ export function buildReviewRuntimeState({
       inquiry:
         '/inquiry/',
       contact:
-        '/inquiry/contact/'
+        '/inquiry/contact/',
+      privacy:
+        '/privacy/'
     }),
     guard:
       'hasValidContact',
