@@ -31,7 +31,10 @@
           ? contact.snapshot()
           : {};
 
-      return contact.validate(current)?.valid===true;
+      const result =
+        contact.validate(current);
+
+      return result?.valid===true;
     }catch(_){
       return false;
     }
