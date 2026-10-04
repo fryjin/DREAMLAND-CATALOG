@@ -515,18 +515,11 @@
   }
 
   function guardResult(pageGuards,inquiry,contact,state){
-    const normalizedContact =
-      contact &&
-      typeof contact.snapshot === 'function' &&
-      typeof contact.validate === 'function'
-        ? contact
-        : contact;
-
     return pageGuards.evaluate(
       'review',
       {
         inquiry,
-        contact:normalizedContact,
+        contact,
         route:{
           inquiry:()=>
             state.localeRoutes

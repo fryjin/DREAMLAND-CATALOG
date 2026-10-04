@@ -43,7 +43,12 @@ if(SOURCE){
   }catch(e){fail('Submission payload: '+e.message);}
 
   try{
-    req(read('src/astro/runtime/review-runtime.js'),"const optionalContactKeys=new Set(['phone','company','buyerType','city','message']);",'Review optional phone');
+    req(read('src/astro/components/review/ReviewPage.astro'),"const optionalContactKeys=new Set(['phone','company','buyerType','city','message']);",'Review static optional phone');
+    req(read('src/astro/runtime/review-runtime.js'),"const optionalContactKeys=new Set(['phone','company','buyerType','city','message']);",'Review runtime optional phone');
+    const sw=read('sw.js');
+    const fresh=sw.indexOf("url.pathname===\n      '/r4-review-runtime.js'");
+    const generic=sw.indexOf("url.searchParams.get(\n      'release'");
+    if(fresh<0||generic<0||fresh>=generic)fail('Review runtime is not protected from stale Service Worker delivery');
     const content=json('data/site-content.json'),ui=json('data/i18n.json').ui;
     const labels={en:'WhatsApp / Phone / WeChat',zh:'WhatsApp / 手机 / 微信',ko:'WhatsApp / 휴대폰 / WeChat'};
     for(const l of ['en','zh','ko']){
@@ -72,6 +77,11 @@ if(DIST){
       for(const f of ['phone','company','buyerType','city','message'])if(!optBlock.includes('data-contact-static-field="'+f+'"'))fail(r+' optional missing '+f);
     }
     for(const r of ['.r4-astro-dist/r4-contact-runtime.js','dist/r4-contact-runtime.js'])req(read(r),'normalized.phone&&',r+' optional contact validation');
+    for(const r of ['.r4-astro-dist/inquiry/review/index.html','dist/inquiry/review/index.html']){
+      const h=read(r);
+      const tag=(h.match(/<div[^>]*data-review-static-contact-field="phone"[^>]*>/i)||[])[0]||'';
+      if(!tag||!/\shidden(?:\s|>|=)/i.test(tag))fail(r+' blank optional phone row is not statically hidden');
+    }
     for(const r of ['.r4-astro-dist/r4-review-runtime.js','dist/r4-review-runtime.js']){
       const x=read(r);
       req(x,"const optionalContactKeys=new Set(['phone','company','buyerType','city','message']);",r+' optional review phone');

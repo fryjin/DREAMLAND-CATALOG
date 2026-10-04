@@ -683,6 +683,62 @@ try{
     name:'Ada Buyer',
     country:'SG',
     email:'buyer@example.com',
+    phone:''
+  });
+
+  result=
+    guards.evaluate(
+      'review',
+      {
+        inquiry,
+        contact
+      }
+    );
+
+  if(
+    result.allowed!==
+      true||
+    result.code!==
+      ''
+  ){
+    fail(
+      'R4.9B canonical Review guard rejected Name + Country + Email when optional phone is blank.'
+    );
+  }
+
+  contact.replace({
+    name:'Ada Buyer',
+    country:'SG',
+    email:'buyer@example.com',
+    phone:'123'
+  });
+
+  result=
+    guards.evaluate(
+      'review',
+      {
+        inquiry,
+        contact
+      }
+    );
+
+  if(
+    result.allowed!==
+      false||
+    result.code!==
+      'CONTACT_REQUIRED'||
+    result.target!==
+      '/inquiry/contact/'
+  ){
+    fail(
+      'R4.9B canonical Review guard accepted a non-empty invalid optional phone.'
+    );
+  }
+
+  contact.replace({
+    name:'Ada Buyer',
+    country:'SG',
+    email:'buyer@example.com',
     phone:'+65 12345678'
   });
 
@@ -702,12 +758,63 @@ try{
       ''
   ){
     fail(
-      'R4.9B canonical Review guard rejected a valid Inquiry + Contact state.'
+      'R4.9B canonical Review guard rejected a valid non-empty optional phone.'
     );
   }
 }catch(error){
   fail(
     'R4.9B canonical Review guard execution test crashed: '+
+    error.message
+  );
+}
+
+try{
+  const sw=
+    read(
+      'sw.js'
+    );
+
+  const reviewRuntimeFresh=
+    sw.indexOf(
+      "url.pathname===\n      '/r4-review-runtime.js'"
+    );
+
+  const genericReleaseCache=
+    sw.indexOf(
+      "url.searchParams.get(\n      'release'"
+    );
+
+  if(
+    reviewRuntimeFresh<0||
+    genericReleaseCache<0||
+    reviewRuntimeFresh>=genericReleaseCache
+  ){
+    fail(
+      'R4.9B Review runtime can still fall through to a stale Service Worker cache before its freshness boundary.'
+    );
+  }
+
+  const reviewRuntimeBlock=
+    sw.slice(
+      reviewRuntimeFresh,
+      genericReleaseCache
+    );
+
+  if(
+    !reviewRuntimeBlock.includes(
+      'networkFirst('
+    )||
+    !reviewRuntimeBlock.includes(
+      'true'
+    )
+  ){
+    fail(
+      'R4.9B Review runtime freshness boundary must use fresh network-first delivery.'
+    );
+  }
+}catch(error){
+  fail(
+    'R4.9B Review runtime Service Worker freshness validation crashed: '+
     error.message
   );
 }
