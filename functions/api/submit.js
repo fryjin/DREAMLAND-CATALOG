@@ -54,7 +54,18 @@ function validatePayload(payload) {
   if (asText(payload.contact_name, 160).length < 2) return 'Invalid contact name';
   if (!asText(payload.country_or_region, 160)) return 'Missing country or region';
   if (!isEmail(payload.email_address)) return 'Invalid email address';
-  if (asText(payload.phone_or_wechat, 200).length < 5) return 'Invalid contact method';
+  const contactMethod=
+    asText(
+      payload.phone_or_wechat,
+      200
+    );
+
+  if(
+    contactMethod&&
+    contactMethod.length<5
+  ){
+    return 'Invalid contact method';
+  }
 
   const inquiryCount =
     asNumber(payload.product_count) +

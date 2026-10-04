@@ -21,8 +21,8 @@ const sections=[
     titleKey:'contactRequiredTitle',
     title:c.contactRequiredTitle||'Required contact details',
     bodyKey:'contactRequiredBody',
-    body:c.contactRequiredBody||'Complete these four fields to continue to review.',
-    fields:['name','country','email','phone']
+    body:c.contactRequiredBody||'Complete these three fields to continue to review.',
+    fields:['name','country','email']
   },
   {
     key:'optional',
@@ -31,8 +31,8 @@ const sections=[
     titleKey:'contactOptionalTitle',
     title:c.contactOptionalTitle||'Optional project context',
     bodyKey:'contactOptionalBody',
-    body:c.contactOptionalBody||'Add company, buyer and location context if it helps us prepare the quotation.',
-    fields:['company','buyerType','city','message']
+    body:c.contactOptionalBody||'Add another contact method or any company and purchasing context that may help us prepare the quotation.',
+    fields:['phone','company','buyerType','city','message']
   }
 ];
 
@@ -100,11 +100,11 @@ const fieldConfig:Record<string,any>={
     label:c.phone||'WhatsApp / Phone / WeChat',
     placeholderKey:'phonePlaceholder',
     placeholder:c.phonePlaceholder||'Phone, WhatsApp number or WeChat ID',
-    required:true,
+    required:false,
     type:'text',
     autocomplete:'tel',
     inputMode:'text',
-    enterKeyHint:'done',
+    enterKeyHint:'next',
     autoCapitalize:'none',
     spellcheck:false
   },

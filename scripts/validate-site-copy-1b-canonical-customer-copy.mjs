@@ -72,11 +72,11 @@ for(const lang of ['zh','en','ko']){
 }
 
 for(const marker of [
-  "submitting:'Sending your inquiry…'",
-  "failed:'We couldn’t send your inquiry. Please try again shortly.'",
-  "config:'We can’t send your inquiry right now. Your selection is still saved.'",
+  "submitting:'Submitting Quote Request…'",
+  "failed:'We can’t submit your quote request right now. Please try again shortly.'",
+  "config:'We can’t submit your quote request right now. Your selections are still saved.'",
   "submitting:'正在发送询价…'",
-  "submitting:'문의를 보내는 중입니다…'"
+  "submitting:'견적 요청 제출 중…'"
 ]){
   if(!reviewRuntime.includes(marker)){
     fail('Review customer-facing runtime copy changed. Missing: '+marker);

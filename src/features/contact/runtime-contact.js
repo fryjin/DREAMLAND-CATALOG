@@ -469,6 +469,7 @@
     }
 
     if(
+      normalized.phone&&
       normalized.phone.length<5
     ){
       errors.push(

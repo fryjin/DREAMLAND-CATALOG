@@ -51,7 +51,7 @@ const contactRows=[
 ];
 
 const notProvided=c.notProvided||'Not provided';
-const optionalContactKeys=new Set(['company','buyerType','city','message']);
+const optionalContactKeys=new Set(['phone','company','buyerType','city','message']);
 ---
 <main
   class="review-main"
@@ -292,26 +292,36 @@ const optionalContactKeys=new Set(['company','buyerType','city','message']);
         <span data-review-bind="beforeSubmitBody">{c.beforeSubmitBody||'We’ll review your final selection, quantity and custom requirements, then confirm pricing, production timing and delivery with you.'}</span>
       </div>
 
-      <label
+      <div
         class="review-consent"
         data-review-static-consent
       >
         <input
+          id="reviewPrivacyConsent"
           type="checkbox"
           data-review-privacy
+          aria-describedby="reviewSubmitStatus"
         />
         <span>
-          <span data-review-bind="privacyPrefix">
+          <label
+            for="reviewPrivacyConsent"
+            data-review-bind="privacyPrefix"
+          >
             {c.privacyPrefix||'I have read and agree to the'}
-          </span>
-          <span
+          </label>
+          {' '}
+          <a
             class="review-consent__link"
+            href={(view.routes.privacy||'/privacy/')+'#'+(view.language||'en')}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-review-privacy-link
             data-review-bind="privacyLink"
           >
             {c.privacyLink||'Privacy Notice'}
-          </span>
+          </a>
         </span>
-      </label>
+      </div>
 
       <section
         class="review-security"
@@ -326,7 +336,7 @@ const optionalContactKeys=new Set(['company','buyerType','city','message']);
       <button
         class="review-submit"
         type="button"
-        disabled
+        aria-describedby="reviewSubmitStatus"
         data-review-static-submit
         data-review-submit
       >
@@ -337,6 +347,7 @@ const optionalContactKeys=new Set(['company','buyerType','city','message']);
       </button>
 
       <p
+        id="reviewSubmitStatus"
         class="review-static-status"
         data-review-static-status
         data-review-runtime-status
