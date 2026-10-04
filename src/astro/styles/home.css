@@ -167,11 +167,25 @@
 
   body[data-dreamland-page="home"]
   .home-header__inner {
-    width:100%;
-    max-width:none;
-    min-height:82px;
-    margin:0;
-    padding-inline:clamp(30px,4.6vw,88px);
+    min-height:68px;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-wordmark {
+    width:clamp(116px,7.4vw,136px);
+    height:44px;
+    display:block;
+    overflow:hidden;
+    font-size:0;
+    line-height:0;
+    letter-spacing:0;
+    color:transparent;
+    background-image:
+      url("/images/desktop/home/r4-1/hero-word-dream.png"),
+      url("/images/desktop/home/r4-1/hero-word-land.png");
+    background-repeat:no-repeat,no-repeat;
+    background-position:left center,right center;
+    background-size:58% auto,43% auto;
   }
 
   body[data-dreamland-page="home"]
