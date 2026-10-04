@@ -49,6 +49,12 @@ const viewModel=read(
 const page=read(
   'src/astro/components/home/HomePage.astro'
 );
+const siteHeader=read(
+  'src/astro/components/site/SiteHeader.astro'
+);
+const siteCss=read(
+  'src/astro/styles/system/site.css'
+);
 const css=read(
   'src/astro/styles/home.css'
 );
@@ -178,6 +184,28 @@ for(const marker of [
 }
 
 for(const marker of [
+  'home-wordmark__text',
+  'home-wordmark__graffiti',
+  'home-wordmark__graffiti-dream',
+  'home-wordmark__graffiti-land',
+  '/images/desktop/home/r4-1/hero-word-dream.png',
+  '/images/desktop/home/r4-1/hero-word-land.png',
+  'loading="lazy"'
+]){
+  expect(
+    siteHeader,
+    marker,
+    'B4.1B Home graffiti SiteHeader projection changed.'
+  );
+}
+
+expect(
+  siteCss,
+  '.home-wordmark__graffiti{',
+  'B4.1B shared wordmark fallback must hide the Home-only graffiti layer.'
+);
+
+for(const marker of [
   '.dl-cover-stage',
   '.dl-collection-shelf',
   '.dl-featured-3plus2',
@@ -214,8 +242,11 @@ for(const marker of [
   '.home-header__inner {',
   'min-height:68px;',
   '.home-wordmark {',
-  'hero-word-dream.png',
-  'hero-word-land.png',
+  '.home-wordmark__text {',
+  '.home-wordmark__graffiti {',
+  '.home-wordmark__graffiti img {',
+  '.home-wordmark__graffiti-dream {',
+  '.home-wordmark__graffiti-land {',
   '.home-hero {',
   'width:100vw;',
   'height:100svh;',

@@ -172,20 +172,49 @@
 
   body[data-dreamland-page="home"]
   .home-wordmark {
-    width:clamp(116px,7.4vw,136px);
-    height:44px;
+    display:inline-flex;
+    align-items:center;
+    width:auto;
+    height:auto;
+    overflow:visible;
+    color:inherit;
+    background:none;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-wordmark__text {
+    display:none;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-wordmark__graffiti {
+    width:clamp(118px,7.6vw,140px);
+    height:42px;
+    display:flex;
+    align-items:center;
+    gap:0;
+    overflow:visible;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-wordmark__graffiti img {
     display:block;
-    overflow:hidden;
-    font-size:0;
-    line-height:0;
-    letter-spacing:0;
-    color:transparent;
-    background-image:
-      url("/images/desktop/home/r4-1/hero-word-dream.png"),
-      url("/images/desktop/home/r4-1/hero-word-land.png");
-    background-repeat:no-repeat,no-repeat;
-    background-position:left center,right center;
-    background-size:58% auto,43% auto;
+    width:auto;
+    max-width:none;
+    height:100%;
+    object-fit:contain;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-wordmark__graffiti-dream {
+    flex:0 0 58%;
+    width:58%!important;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-wordmark__graffiti-land {
+    flex:0 0 42%;
+    width:42%!important;
   }
 
   body[data-dreamland-page="home"]
