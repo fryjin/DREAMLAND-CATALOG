@@ -64,7 +64,16 @@ function validatePayload(payload){
     return 'Invalid email address';
   }
 
-  if(asText(payload.phone_or_wechat,200).length<5){
+  const contactMethod=
+    asText(
+      payload.phone_or_wechat,
+      200
+    );
+
+  if(
+    contactMethod&&
+    contactMethod.length<5
+  ){
     return 'Invalid contact method';
   }
 

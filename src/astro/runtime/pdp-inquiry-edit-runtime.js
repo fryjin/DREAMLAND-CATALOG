@@ -101,6 +101,9 @@
     try{
       return (
         text(
+          state?.routeLocale
+        )||
+        text(
           root.localStorage
             ?.getItem(
               state?.storage
@@ -112,10 +115,27 @@
       );
     }catch(_){
       return (
+        text(
+          state?.routeLocale
+        )||
         state?.defaultLanguage||
         'en'
       );
     }
+  }
+
+  function inquiryHref(state){
+    return (
+      text(
+        state?.localeRoutes
+          ?.inquiry
+      )||
+      text(
+        state?.routes
+          ?.inquiry
+      )||
+      '/inquiry/'
+    );
   }
 
   function syncBack(
@@ -258,7 +278,9 @@
 
     if(back){
       back.href=
-        '/inquiry/';
+        inquiryHref(
+          state
+        );
     }
 
     if(backLabel){
@@ -309,7 +331,9 @@
             'product'
         ){
           root.location.assign(
-            '/inquiry/'
+            inquiryHref(
+              state
+            )
           );
           return;
         }
@@ -332,7 +356,9 @@
         inquiry.persist();
 
         root.location.assign(
-          '/inquiry/'
+          inquiryHref(
+            state
+          )
         );
       }
     );

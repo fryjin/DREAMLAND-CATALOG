@@ -47,7 +47,11 @@ const REVIEW_COPY_KEYS=Object.freeze([
   'beforeSubmitBody',
   'privacyPrefix',
   'privacyLink',
-  'submitInquiry'
+  'privacyRequired',
+  'securityAdditional',
+  'submitInquiry',
+  'submitting',
+  'submitFailed'
 ]);
 
 function text(value){
@@ -243,6 +247,8 @@ export function buildReviewStaticView({
         '/inquiry/',
       contact:
         '/inquiry/contact/',
+      privacy:
+        '/privacy/',
       success:
         '/inquiry/success/'
     })
@@ -378,7 +384,9 @@ export function buildReviewRuntimeState({
       inquiry:
         '/inquiry/',
       contact:
-        '/inquiry/contact/'
+        '/inquiry/contact/',
+      privacy:
+        '/privacy/'
     }),
     guard:
       'hasValidContact',

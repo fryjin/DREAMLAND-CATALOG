@@ -1197,6 +1197,29 @@ self.addEventListener('fetch', event => {
   }
 
 
+  /*
+   * F3 Review contact contract:
+   * r4-review-runtime.js bundles the canonical Contact owner. Serving an old
+   * cached bundle can revive the previous required-phone rule after Contact
+   * itself has already moved to optional phone / WhatsApp / WeChat.
+   *
+   * Keep this one conversion runtime network-fresh while retaining the
+   * existing runtime cache as an offline fallback through networkFirst().
+   */
+  if(
+    url.pathname===
+      '/r4-review-runtime.js'
+  ){
+    event.respondWith(
+      networkFirst(
+        request,
+        [],
+        true
+      )
+    );
+    return;
+  }
+
   if(
     url.searchParams.get(
       'release'

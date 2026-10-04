@@ -159,7 +159,7 @@ if(SOURCE_MODE){
         "type:'text'",
         "autocomplete:'tel'",
         "inputMode:'text'",
-        "enterKeyHint:'done'",
+        "enterKeyHint:'next'",
         "autoCapitalize:'none'",
         'spellcheck:false'
       ]

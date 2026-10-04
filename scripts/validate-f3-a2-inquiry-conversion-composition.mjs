@@ -53,6 +53,38 @@ if(source){
       'aspect-ratio:4/5;',
       'font-size:16px;'
     ]) if(!css.includes(marker)) fail('Inquiry composition CSS is missing: '+marker);
+
+    const amountBlocks=[
+      ...css.matchAll(
+        /\.inquiry-summary__amount > strong\s*\{([^}]*)\}/g
+      )
+    ].map(match=>match[1]);
+
+    if(
+      !amountBlocks.some(
+        block=>
+          block.includes(
+            'font-family:var(--home-sans);'
+          )
+      )
+    ){
+      fail(
+        'Inquiry estimated product amount is not using the canonical sans UI family.'
+      );
+    }
+
+    if(
+      amountBlocks.some(
+        block=>
+          block.includes(
+            'font-family:var(--home-serif);'
+          )
+      )
+    ){
+      fail(
+        'Inquiry estimated product amount still contains the legacy serif family.'
+      );
+    }
   }catch(error){fail('Inquiry CSS validation failed: '+error.message);}
 
   try{

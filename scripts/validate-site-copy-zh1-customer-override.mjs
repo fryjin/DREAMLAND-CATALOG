@@ -68,9 +68,9 @@ expect(zh.inquiryFlow?.contactTitle,'联系方式与项目信息','ZH Contact ti
 expect(zh.inquiryFlow?.contactBody,'请留下您的常用联系方式，我们的定制顾问将在 24 小时内与您对接详细报价与落地细节。','ZH Contact body');
 expect(zh.inquiryFlow?.contactDetailsTitle,'联系信息','ZH Review contact title');
 expect(zh.inquiryFlow?.contactRequiredTitle,'联系信息','ZH Contact required title');
-expect(zh.inquiryFlow?.contactRequiredBody,'为确保准确收到正式报价单，请填写有效联络方式','ZH Contact required body');
+expect(zh.inquiryFlow?.contactRequiredBody,'请填写联系人、国家 / 地区和邮箱，以便我们准确发送正式报价单。','ZH Contact required body');
 expect(zh.inquiryFlow?.contactOptionalTitle,'其他补充','ZH Contact optional title');
-expect(zh.inquiryFlow?.contactOptionalBody,'提供公司名称与采购背景，有助于为您提供精准折扣','ZH Contact optional body');
+expect(zh.inquiryFlow?.contactOptionalBody,'可补充其他联系方式、公司信息与采购背景，帮助我们更准确地准备报价。','ZH Contact optional body');
 expect(JSON.stringify(zh.inquiryFlow?.whatNextSteps),JSON.stringify(['需求初审','细节沟通','正式报价']),'ZH Contact/Success steps');
 
 expect(zh.inquiryFlow?.reviewTitle,'询价信息最终确认','ZH Review title');

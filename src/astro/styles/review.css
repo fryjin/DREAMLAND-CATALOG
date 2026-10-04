@@ -275,6 +275,10 @@
   margin:2px 0 0;
 }
 
+.review-consent label {
+  cursor:pointer;
+}
+
 .review-consent__link {
   color:var(--home-ink);
   text-decoration:underline;
