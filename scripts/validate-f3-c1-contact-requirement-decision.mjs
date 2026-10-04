@@ -43,6 +43,40 @@ if(SOURCE){
   }catch(e){fail('Submission payload: '+e.message);}
 
   try{
+    for(const file of [
+      'functions/api/inquiry.js',
+      'functions/api/risk.js',
+      'functions/api/submit.js'
+    ]){
+      const source=read(file);
+      req(
+        source,
+        'const contactMethod=',
+        file+' optional contact-method normalization'
+      );
+      req(
+        source,
+        'contactMethod&&\n    contactMethod.length<5',
+        file+' optional contact-method validation'
+      );
+
+      if(
+        source.includes(
+          'asText(payload.phone_or_wechat,200).length<5'
+        )||
+        source.includes(
+          'asText(payload.phone_or_wechat, 200).length < 5'
+        )
+      ){
+        fail(
+          file+
+          ' still requires a non-empty phone / WhatsApp / WeChat value.'
+        );
+      }
+    }
+  }catch(e){fail('server contact contract: '+e.message);}
+
+  try{
     req(read('src/astro/components/review/ReviewPage.astro'),"const optionalContactKeys=new Set(['phone','company','buyerType','city','message']);",'Review static optional phone');
     req(read('src/astro/runtime/review-runtime.js'),"const optionalContactKeys=new Set(['phone','company','buyerType','city','message']);",'Review runtime optional phone');
     const sw=read('sw.js');
