@@ -63,24 +63,27 @@ const composition=read(
 );
 const pkg=read('package.json');
 
-const heroStart=
-  assets?.hero?.visualLeft;
-const heroEnd=
-  assets?.hero?.visualRight;
+const localizedHero=
+  assets?.hero?.localizedDesktop||
+  {};
 
-for(const [label,value] of [
-  ['visualLeft',heroStart],
-  ['visualRight',heroEnd]
+for(const language of [
+  'en',
+  'zh',
+  'ko'
 ]){
+  const value=
+    localizedHero?.[language];
+
   if(
     typeof value!=='string'||
     !value.startsWith(
-      './images/desktop/home/'
+      './images/desktop/home/hero/'
     )
   ){
     fail(
-      'B4.1B Hero '+label+
-      ' must be an explicit Desktop Home marketing asset.'
+      'B4.1B localized Desktop Hero is missing for: '+
+      language
     );
     continue;
   }
@@ -94,7 +97,7 @@ for(const [label,value] of [
     )
   ){
     fail(
-      'B4.1B Hero asset is missing: '+
+      'B4.1B localized Desktop Hero asset is missing: '+
       relative
     );
   }
@@ -130,10 +133,10 @@ if(featured.length!==5){
 }
 
 for(const marker of [
-  'visualLeft:',
-  'visualRight:',
-  'homeAssets?.hero?.visualLeft',
-  'homeAssets?.hero?.visualRight',
+  'desktopImage:',
+  '?.localizedDesktop',
+  '?.[language]||',
+  'homeAssets?.hero?.image',
   "const featuredPlan=[",
   "['masterpiece',3]",
   "['advanced',2]"
@@ -147,14 +150,11 @@ for(const marker of [
 
 for(const marker of [
   'home-hero home-container dl-cover-stage',
-  'home-hero__visual--start',
-  'dl-cover-stage__visual--start',
-  'data-home-hero-role="visual-start"',
   'home-hero__media dl-cover-stage__media',
   'data-home-hero-role="main-media"',
-  'home-hero__visual--end',
-  'dl-cover-stage__visual--end',
-  'data-home-hero-role="visual-end"',
+  'media="(min-width:901px)"',
+  'srcset={view.hero.desktopImage}',
+  'home-hero__semantic home-sr-only',
   'home-collection-shelf dl-collection-shelf',
   'home-collections__type dl-collection-shelf__type',
   'home-collections__rail',
@@ -208,8 +208,15 @@ const desktopCss=
     : css;
 
 for(const marker of [
-  '.home-hero__visual',
+  'body[data-dreamland-page="home"]',
+  '.home-header {',
+  'position:absolute;',
+  '.home-hero {',
+  'width:100vw;',
+  'height:100svh;',
   '.home-hero__media',
+  'border-radius:0;',
+  'object-fit:cover;',
   '.home-collection-shelf',
   '.home-collections__type',
   '.home-collections__rail',
