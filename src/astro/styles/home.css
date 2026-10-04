@@ -218,6 +218,31 @@
   }
 
   body[data-dreamland-page="home"]
+  .dl-site-actions {
+    display:grid;
+    grid-template-columns:64px 136px;
+    column-gap:10px;
+    align-items:center;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-language-control {
+    width:64px;
+    justify-self:stretch;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-language-control select {
+    width:100%;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-nav__inquiry {
+    width:136px;
+    box-sizing:border-box;
+  }
+
+  body[data-dreamland-page="home"]
   .home-language-control::after {
     color:rgba(24,21,18,.56);
   }
