@@ -715,7 +715,7 @@
   text-transform:uppercase;
 }
 .inquiry-summary__amount > strong {
-  font-family:var(--home-serif);
+  font-family:var(--home-sans);
   font-size:clamp(30px,2.8vw,40px);
   font-weight:400;
   line-height:1;
