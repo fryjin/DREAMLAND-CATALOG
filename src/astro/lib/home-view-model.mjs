@@ -593,6 +593,13 @@ export function buildHomeViewModel({
     language,
     content,
     hero:Object.freeze({
+      desktopImage:
+        webPath(
+          homeAssets?.hero
+            ?.localizedDesktop
+            ?.[language]||
+          homeAssets?.hero?.image
+        ),
       image:
         webPath(
           homeAssets?.hero?.image

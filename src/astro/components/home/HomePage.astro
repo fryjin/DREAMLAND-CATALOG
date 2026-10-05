@@ -41,26 +41,18 @@ const cta=content.cta||{};
     </h1>
 
     <div
-      class="home-hero__visual home-hero__visual--start dl-cover-stage__visual--start"
-      data-home-hero-role="visual-start"
-      aria-hidden="true"
-    >
-      <img
-        src={view.hero.visualLeft}
-        alt=""
-        width="760"
-        height="340"
-        loading="lazy"
-      />
-    </div>
-
-    <div
       class="home-hero__media dl-cover-stage__media"
       data-home-hero-role="main-media"
     >
       <picture>
         {mobileCover&&(
           <source media="(max-width:720px)" srcset={mobileCover} />
+        )}
+        {view.hero.desktopImage&&(
+          <source
+            media="(min-width:901px)"
+            srcset={view.hero.desktopImage}
+          />
         )}
         <img
           src={view.hero.image}
@@ -73,22 +65,8 @@ const cta=content.cta||{};
       </picture>
     </div>
 
-    <div
-      class="home-hero__visual home-hero__visual--end dl-cover-stage__visual--end"
-      data-home-hero-role="visual-end"
-      aria-hidden="true"
-    >
-      <img
-        src={view.hero.visualRight}
-        alt=""
-        width="620"
-        height="340"
-        loading="lazy"
-      />
-    </div>
-
     <p
-      class="home-hero__slogan"
+      class="home-hero__semantic home-sr-only"
       data-home-bind="story.note"
     >
       {story.note}
