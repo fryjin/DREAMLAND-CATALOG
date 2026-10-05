@@ -210,7 +210,20 @@ if(pkg.scripts?.['f4:production-content']!=='node scripts/validate-f4-b1-product
   fail('package.json is missing f4:production-content.');
 }
 const chain=String(pkg.scripts?.validate||'');
-if(!chain.includes('npm run r4:pdp:copy-approved-content && npm run f4:production-content && npm run r4:pdp:copy-ui-wiring')){
+const approvedStep='npm run r4:pdp:copy-approved-content';
+const f4Step='npm run f4:production-content';
+const uiStep='npm run r4:pdp:copy-ui-wiring';
+
+const approvedIndex=chain.indexOf(approvedStep);
+const f4Index=chain.indexOf(f4Step);
+const uiIndex=chain.indexOf(uiStep);
+
+if(
+  approvedIndex<0||
+  f4Index<0||
+  uiIndex<0||
+  !(approvedIndex<f4Index&&f4Index<uiIndex)
+){
   fail('Main validation chain must run F4-B1 after approved PDP content and before PDP copy UI wiring.');
 }
 
