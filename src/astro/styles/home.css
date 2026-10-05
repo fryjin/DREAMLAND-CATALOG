@@ -154,37 +154,154 @@
 }
 
 @media (min-width:901px) {
-  .home-hero {
-    min-height:clamp(680px,58vw,860px);
-    max-height:none;
-    aspect-ratio:auto;
+  body[data-dreamland-page="home"]
+  .home-header {
+    position:absolute;
+    inset:0 0 auto;
+    z-index:60;
+    border:0;
+    background:transparent;
+    color:var(--home-ink);
+    backdrop-filter:none;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-header__inner {
+    min-height:68px;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-wordmark {
+    display:inline-flex;
+    align-items:center;
+    width:auto;
+    height:auto;
+    overflow:visible;
+    color:inherit;
+    background:none;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-wordmark__text {
+    display:none;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-wordmark__graffiti {
+    width:clamp(118px,7.6vw,140px);
+    height:42px;
+    display:flex;
+    align-items:center;
+    gap:0;
+    overflow:visible;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-wordmark__graffiti img {
+    display:block;
+    width:auto;
+    max-width:none;
+    height:100%;
+    object-fit:contain;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-wordmark__graffiti-dream {
+    flex:0 0 58%;
+    width:58%!important;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-wordmark__graffiti-land {
+    flex:0 0 42%;
+    width:42%!important;
+  }
+
+  body[data-dreamland-page="home"]
+  .dl-site-actions {
+    display:grid;
+    grid-template-columns:64px 136px;
+    column-gap:10px;
     align-items:center;
   }
 
-  .home-hero__visual {
+  body[data-dreamland-page="home"]
+  .home-language-control {
+    width:64px;
+    justify-self:stretch;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-language-control select {
+    width:100%;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-nav__inquiry {
+    width:136px;
+    box-sizing:border-box;
+    gap:8px;
+    padding-inline:12px;
+    white-space:nowrap;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-language-control::after {
+    color:rgba(24,21,18,.56);
+  }
+
+  body[data-dreamland-page="home"]
+  .home-language-control select {
+    color:rgba(24,21,18,.68);
+  }
+
+  body[data-dreamland-page="home"]
+  .home-hero {
+    width:100vw;
+    max-width:none;
+    height:100svh;
+    min-height:680px;
+    max-height:none;
+    margin:0 calc(50% - 50vw);
     display:block;
-    position:relative;
-    z-index:2;
-    width:min(25vw,420px);
-    pointer-events:none;
+    overflow:hidden;
+    aspect-ratio:auto;
+    background:#eee7de;
   }
 
-  .home-hero__visual--start {
-    justify-self:start;
-    transform:rotate(-1.6deg);
+  body[data-dreamland-page="home"]
+  .home-hero__visual,
+  body[data-dreamland-page="home"]
+  .home-hero__slogan {
+    display:none;
   }
 
-  .home-hero__visual--end {
-    justify-self:end;
-    transform:rotate(1.1deg);
-  }
-
+  body[data-dreamland-page="home"]
   .home-hero__media {
-    height:clamp(470px,37vw,610px);
-    align-self:center;
-    position:relative;
+    position:absolute;
+    inset:0;
     z-index:1;
-    border-radius:var(--dl-radius-lg);
+    width:100%;
+    height:100%;
+    min-width:0;
+    overflow:hidden;
+    border-radius:0;
+    background:#eee7de;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-hero__media picture,
+  body[data-dreamland-page="home"]
+  .home-hero__media img {
+    width:100%;
+    height:100%;
+    display:block;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-hero__media img {
+    object-fit:cover;
+    object-position:center center;
   }
 }
 
@@ -1171,36 +1288,6 @@
 }
 
 @media (min-width:901px) {
-  html:lang(zh) .home-hero {
-    min-height:clamp(640px,44vw,720px);
-    grid-template-rows:auto auto;
-    row-gap:clamp(22px,1.8vw,30px);
-    align-content:center;
-    align-items:center;
-  }
-
-  html:lang(zh) .home-hero__visual,
-  html:lang(zh) .home-hero__media {
-    grid-row:1;
-  }
-
-  html:lang(zh) .home-hero__slogan {
-    grid-column:1 / -1;
-    grid-row:2;
-    position:static;
-    z-index:3;
-    display:block;
-    margin:0;
-    color:var(--home-ink);
-    font-family:var(--home-serif);
-    font-size:clamp(20px,1.7vw,24px);
-    line-height:1.4;
-    font-weight:400;
-    letter-spacing:.1em;
-    text-align:center;
-    text-wrap:balance;
-  }
-
   html:lang(zh) .home-story__note {
     display:none;
   }

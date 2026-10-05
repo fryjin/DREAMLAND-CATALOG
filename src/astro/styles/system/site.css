@@ -24,6 +24,9 @@
   font-weight:900;
   letter-spacing:.14em;
 }
+.home-wordmark__graffiti{
+  display:none;
+}
 .dl-site-nav.home-nav{
   display:flex;
   align-items:center;

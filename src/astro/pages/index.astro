@@ -156,6 +156,14 @@ const languageOptions=
     <link
       rel="preload"
       as="image"
+      href={view.hero.desktopImage}
+      media="(min-width:901px)"
+      fetchpriority="high"
+    />
+
+    <link
+      rel="preload"
+      as="image"
       href={view.wholesale.image}
       media="(min-width:901px)"
       fetchpriority="low"

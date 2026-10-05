@@ -31,7 +31,34 @@ const routeHref=value=>
 ---
 <header class="dl-site-header home-header" data-dl-site-header data-home-header>
   <div class="dl-site-header__inner home-header__inner dl-container home-container">
-    <a class="dl-wordmark home-wordmark" href={routeHref('/')} aria-label="DREAMLAND home">DREAMLAND</a>
+    <a
+      class="dl-wordmark home-wordmark"
+      href={routeHref('/')}
+      aria-label="DREAMLAND home"
+    >
+      <span class="home-wordmark__text">DREAMLAND</span>
+      <span
+        class="home-wordmark__graffiti"
+        aria-hidden="true"
+      >
+        <img
+          class="home-wordmark__graffiti-dream"
+          src="/images/desktop/home/r4-1/hero-word-dream.png"
+          alt=""
+          width="760"
+          height="340"
+          loading="lazy"
+        />
+        <img
+          class="home-wordmark__graffiti-land"
+          src="/images/desktop/home/r4-1/hero-word-land.png"
+          alt=""
+          width="620"
+          height="340"
+          loading="lazy"
+        />
+      </span>
+    </a>
     <nav class="dl-site-nav home-nav" aria-label="Primary navigation">
       <a href={routeHref('/products/')}><span data-home-bind="navigation.collection">{nav.collection||'Collection'}</span></a>
       <a href={routeHref('/custom/')}><span data-home-bind="navigation.custom">{nav.custom||'Custom'}</span></a>
