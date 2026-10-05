@@ -53,16 +53,11 @@
   ]);
 
   /*
-   * Kept here as part of the shared contract so browser/runtime and
-   * generated fallback can never drift.
-   *
-   * The current CSV already contains C01/C02, so these are effectively
-   * compatibility guards for older cached fallback data.
+   * Product display names are canonical in data/products.csv.
+   * Keep the shared override hook for compatibility, but do not
+   * override current localized product names at runtime.
    */
-  const PRODUCT_NAME_OVERRIDES=Object.freeze({
-    HOL001:'C01',
-    HOL002:'C02'
-  });
+  const PRODUCT_NAME_OVERRIDES=Object.freeze({});
 
   function text(value){
     return String(value??'').trim();

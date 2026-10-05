@@ -4948,11 +4948,11 @@
       "status": "active",
       "sortOrder": 10,
       "listSort": 160,
-      "name": "C01",
+      "name": "冬莓初雪",
       "names": {
-        "zh": "C01",
-        "en": "C01",
-        "ko": "C01"
+        "zh": "冬莓初雪",
+        "en": "Winterberry First Snow",
+        "ko": "윈터베리의 첫눈"
       },
       "desc": "节日系列 C01，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -5025,11 +5025,11 @@
       "status": "active",
       "sortOrder": 20,
       "listSort": 150,
-      "name": "C02",
+      "name": "绯雪序曲",
       "names": {
-        "zh": "C02",
-        "en": "C02",
-        "ko": "C02"
+        "zh": "绯雪序曲",
+        "en": "Crimson Snow Prelude",
+        "ko": "진홍빛 눈의 서곡"
       },
       "desc": "节日系列 C02，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -5102,11 +5102,11 @@
       "status": "active",
       "sortOrder": 30,
       "listSort": 140,
-      "name": "C03",
+      "name": "十二月来信",
       "names": {
-        "zh": "C03",
-        "en": "Christmas Carved Candle C03",
-        "ko": "크리스마스 조각 캔들 C03"
+        "zh": "十二月来信",
+        "en": "A Letter from December",
+        "ko": "12월에서 온 편지"
       },
       "desc": "节日系列 C03，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -5179,11 +5179,11 @@
       "status": "active",
       "sortOrder": 40,
       "listSort": 130,
-      "name": "C04",
+      "name": "雪落平安镇",
       "names": {
-        "zh": "C04",
-        "en": "Christmas Carved Candle C04",
-        "ko": "크리스마스 조각 캔들 C04"
+        "zh": "雪落平安镇",
+        "en": "Snowfall over Noel Town",
+        "ko": "노엘 마을에 내리는 눈"
       },
       "desc": "节日系列 C04，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -5256,11 +5256,11 @@
       "status": "active",
       "sortOrder": 50,
       "listSort": 120,
-      "name": "C05",
+      "name": "糖霜落雪",
       "names": {
-        "zh": "C05",
-        "en": "Christmas Carved Candle C05",
-        "ko": "크리스마스 조각 캔들 C05"
+        "zh": "糖霜落雪",
+        "en": "Sugared Snowfall",
+        "ko": "설탕눈이 내리던 날"
       },
       "desc": "节日系列 C05，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -5333,11 +5333,11 @@
       "status": "active",
       "sortOrder": 60,
       "listSort": 110,
-      "name": "C06",
+      "name": "姜饼暖梦",
       "names": {
-        "zh": "C06",
-        "en": "Christmas Carved Candle C06",
-        "ko": "크리스마스 조각 캔들 C06"
+        "zh": "姜饼暖梦",
+        "en": "Gingerbread Reverie",
+        "ko": "진저브레드의 포근한 꿈"
       },
       "desc": "节日系列 C06，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -5410,11 +5410,11 @@
       "status": "active",
       "sortOrder": 70,
       "listSort": 100,
-      "name": "C07",
+      "name": "白雪颂歌",
       "names": {
-        "zh": "C07",
-        "en": "Christmas Carved Candle C07",
-        "ko": "크리스마스 조각 캔들 C07"
+        "zh": "白雪颂歌",
+        "en": "A Carol in White",
+        "ko": "하얀 눈의 캐럴"
       },
       "desc": "节日系列 C07，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -5487,11 +5487,11 @@
       "status": "active",
       "sortOrder": 80,
       "listSort": 90,
-      "name": "C08",
+      "name": "白夜花冠",
       "names": {
-        "zh": "C08",
-        "en": "Christmas Carved Candle C08",
-        "ko": "크리스마스 조각 캔들 C08"
+        "zh": "白夜花冠",
+        "en": "White Night Garland",
+        "ko": "하얀 밤의 화관"
       },
       "desc": "节日系列 C08，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -5564,11 +5564,11 @@
       "status": "active",
       "sortOrder": 90,
       "listSort": 80,
-      "name": "无白色雪花淋面圣诞",
+      "name": "雪落松林",
       "names": {
-        "zh": "无白色雪花淋面圣诞",
-        "en": "Christmas Carved Candle - No White Snowflake Drizzle",
-        "ko": "화이트 눈꽃 드리즐 없는 크리스마스"
+        "zh": "雪落松林",
+        "en": "Snowfall in the Pines",
+        "ko": "소나무 숲에 내리는 눈"
       },
       "desc": "节日系列 C09，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -5641,11 +5641,11 @@
       "status": "active",
       "sortOrder": 100,
       "listSort": 70,
-      "name": "C10",
+      "name": "铃声穿过冬青",
       "names": {
-        "zh": "C10",
-        "en": "Christmas Carved Candle C10",
-        "ko": "크리스마스 조각 캔들 C10"
+        "zh": "铃声穿过冬青",
+        "en": "Bells Through the Holly",
+        "ko": "호랑가시나무 사이로 울리는 종소리"
       },
       "desc": "节日系列 C10，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -5718,11 +5718,11 @@
       "status": "active",
       "sortOrder": 110,
       "listSort": 60,
-      "name": "C11",
+      "name": "鹿鸣暖冬",
       "names": {
-        "zh": "C11",
-        "en": "Christmas Carved Candle C11",
-        "ko": "크리스마스 조각 캔들 C11"
+        "zh": "鹿鸣暖冬",
+        "en": "Reindeer Lullaby",
+        "ko": "순록의 겨울 자장가"
       },
       "desc": "节日系列 C11，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -5795,11 +5795,11 @@
       "status": "active",
       "sortOrder": 120,
       "listSort": 50,
-      "name": "C12",
+      "name": "红鼻星愿",
       "names": {
-        "zh": "C12",
-        "en": "Christmas Carved Candle C12",
-        "ko": "크리스마스 조각 캔들 C12"
+        "zh": "红鼻星愿",
+        "en": "Red-Nosed Starwish",
+        "ko": "빨간 코의 별빛 소원"
       },
       "desc": "节日系列 C12，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -5872,11 +5872,11 @@
       "status": "active",
       "sortOrder": 130,
       "listSort": 40,
-      "name": "C13",
+      "name": "冬青圆舞曲",
       "names": {
-        "zh": "C13",
-        "en": "Christmas Carved Candle C13",
-        "ko": "크리스마스 조각 캔들 C13"
+        "zh": "冬青圆舞曲",
+        "en": "Holly Waltz",
+        "ko": "홀리 왈츠"
       },
       "desc": "节日系列 C13，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -5949,11 +5949,11 @@
       "status": "active",
       "sortOrder": 140,
       "listSort": 30,
-      "name": "C14",
+      "name": "绯红礼赞",
       "names": {
-        "zh": "C14",
-        "en": "Christmas Carved Candle C14",
-        "ko": "크리스마스 조각 캔들 C14"
+        "zh": "绯红礼赞",
+        "en": "Ode to Crimson",
+        "ko": "진홍빛 찬가"
       },
       "desc": "节日系列 C14，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -6026,11 +6026,11 @@
       "status": "active",
       "sortOrder": 150,
       "listSort": 20,
-      "name": "C15",
+      "name": "松树下的灯火",
       "names": {
-        "zh": "C15",
-        "en": "Christmas Carved Candle C15",
-        "ko": "크리스마스 조각 캔들 C15"
+        "zh": "松树下的灯火",
+        "en": "Lights Beneath the Fir",
+        "ko": "전나무 아래의 불빛"
       },
       "desc": "节日系列 C15，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
@@ -6103,11 +6103,11 @@
       "status": "active",
       "sortOrder": 160,
       "listSort": 10,
-      "name": "C16",
+      "name": "雪夜红宝石",
       "names": {
-        "zh": "C16",
-        "en": "Christmas Carved Candle C16",
-        "ko": "크리스마스 조각 캔들 C16"
+        "zh": "雪夜红宝石",
+        "en": "Ruby on a Snowy Night",
+        "ko": "눈 내리는 밤의 루비"
       },
       "desc": "节日系列 C16，适用 S/M/L/XL，可混批；可选系列内所有香型，批发价格按所选系列香型定价，底模香薰比例按所选系列。",
       "descriptions": {
