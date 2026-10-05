@@ -253,8 +253,8 @@ expect(
 
 expect(
   pkg,
-  'npm run r4:visual:home-composition && npm run r4:visual:home-narrative',
-  'Main validation chain must run B4.1B-FIX2 after B4.1B.'
+  'npm run r4:visual:home-composition && npm run f4:polish:home-navigation && npm run r4:visual:home-narrative',
+  'Main validation chain must run F4-POLISH-1 after B4.1B and B4.1B-FIX2 after F4-POLISH-1.'
 );
 
 if(errors.length){
