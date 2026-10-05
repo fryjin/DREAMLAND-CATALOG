@@ -154,15 +154,23 @@
 }
 
 @media (min-width:901px) {
+  /* F4-POLISH-1 — Persistent Home Navigation */
   body[data-dreamland-page="home"]
   .home-header {
-    position:absolute;
+    position:fixed;
     inset:0 0 auto;
     z-index:60;
     border:0;
     background:transparent;
     color:var(--home-ink);
     backdrop-filter:none;
+  }
+
+  body[data-dreamland-page="home"]
+  .home-header.is-scrolled {
+    border-bottom:1px solid rgba(24,21,18,.08);
+    background:color-mix(in srgb,var(--home-canvas) 94%,transparent);
+    backdrop-filter:blur(18px);
   }
 
   body[data-dreamland-page="home"]

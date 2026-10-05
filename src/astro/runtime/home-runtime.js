@@ -12,25 +12,9 @@
   let currentLanguage='en';
   let mounted=false;
 
-  function text(value){
-    return String(
-      value??
-      ''
-    );
-  }
+  function text(value){return String(value??'');}
 
-  function safeJson(value){
-    try{
-      return JSON.parse(
-        String(
-          value||
-          ''
-        )
-      );
-    }catch(_){
-      return null;
-    }
-  }
+  function safeJson(value){try{return JSON.parse(String(value||''));}catch(_){return null;}}
 
   function storage(){try{return root.localStorage||null;}catch(_){return null;}}
   function readStorage(key){const s=storage();if(!s)return '';try{return s.getItem(key)||'';}catch(_){return '';}}
@@ -82,16 +66,12 @@
     );
   }
 
-  function pathValue(source,path){
-    return String(path||'').split('.').filter(Boolean).reduce(
-      (value,key)=>value==null?undefined:value[key],
-      source
-    );
-  }
+  function pathValue(source,path){return String(path||'').split('.').filter(Boolean).reduce((value,key)=>value==null?undefined:value[key],source);}
 
   function setNodeText(node,value){
     if(node)node.textContent=text(value);
   }
+  function syncHeader(){document.querySelector('[data-home-header]')?.classList.toggle('is-scrolled',root.scrollY>24);}
 
   function contentFor(
     language
@@ -705,6 +685,7 @@
     function go(c,l){let o=c?.options?.[c.selectedIndex],h=o?.dataset?.localeHref||c?.dataset?.localeHref;if(!h)return false;writeStorage(state.storage.languageKey,l);root.location.assign(h+root.location.search+root.location.hash);return true}
     select?.addEventListener('change',e=>{let s=e.currentTarget,l=s?.value;if(!go(s,l))applyLanguage(l)});
     document.addEventListener('click',e=>{let b=e.target.closest?.('[data-home-language-option]');if(b){let d=b.closest?.('details');if(d)d.open=false;let l=b.dataset.homeLanguageOption;if(!go(b,l))applyLanguage(l)}});
+    root.addEventListener('scroll',syncHeader,{passive:true});
 
     root.addEventListener(
       'storage',
@@ -739,6 +720,7 @@
       'pageshow',
       ()=>{
         updateInquiryBadge();
+        syncHeader();
       }
     );
 
@@ -754,6 +736,7 @@
       }
     );
 
+    syncHeader();
     mounted=true;
 
     applyLanguage(

@@ -240,7 +240,7 @@ const desktopCss=
 for(const marker of [
   'body[data-dreamland-page="home"]',
   '.home-header {',
-  'position:absolute;',
+  'position:fixed;',
   '.home-header__inner {',
   'min-height:68px;',
   '.home-wordmark {',
