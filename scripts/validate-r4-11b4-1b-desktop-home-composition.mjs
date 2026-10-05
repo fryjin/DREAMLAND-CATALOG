@@ -85,7 +85,8 @@ for(const language of [
     typeof value!=='string'||
     !value.startsWith(
       './images/desktop/home/hero/'
-    )
+    )||
+    !value.endsWith('.webp')
   ){
     fail(
       'B4.1B localized Desktop Hero is missing for: '+
@@ -160,6 +161,7 @@ for(const marker of [
   'data-home-hero-role="main-media"',
   'media="(min-width:901px)"',
   'srcset={view.hero.desktopImage}',
+  'data-home-hero-desktop-source',
   'home-hero__semantic home-sr-only',
   'home-collection-shelf dl-collection-shelf',
   'home-collections__type dl-collection-shelf__type',
