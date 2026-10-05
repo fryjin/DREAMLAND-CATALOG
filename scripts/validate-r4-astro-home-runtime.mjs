@@ -186,7 +186,12 @@ try{
     "const RUNTIME_ID='DREAMLAND_R4_HOME_RUNTIME_R4_3B';",
     "root.addEventListener(",
     "'pageshow'",
-    "'storage'"
+    "'storage'",
+    "'[data-home-hero-desktop-source]'",
+    "'/images/desktop/home/hero/hero-main-'",
+    "'.webp'",
+    "hero.setAttribute(",
+    "'srcset'"
   ]){
     if(
       !source.includes(
@@ -364,6 +369,7 @@ try{
     for(const marker of [
       'data-home-language-select',
       'data-home-inquiry-count',
+      'data-home-hero-desktop-source',
       'data-home-bind=',
       'data-home-collection-label',
       'data-home-product-name'

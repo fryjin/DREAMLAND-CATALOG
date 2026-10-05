@@ -6,9 +6,9 @@
     "image": "./images/desktop/home/hero/hero-main.webp",
     "recommendedSize": "1920x1080",
     "localizedDesktop": {
-      "en": "./images/desktop/home/hero/hero-main-en.png",
-      "zh": "./images/desktop/home/hero/hero-main-zh.png",
-      "ko": "./images/desktop/home/hero/hero-main-ko.png"
+      "en": "./images/desktop/home/hero/hero-main-en.webp",
+      "zh": "./images/desktop/home/hero/hero-main-zh.webp",
+      "ko": "./images/desktop/home/hero/hero-main-ko.webp"
     },
     "visualLeft": "./images/desktop/home/r4-1/hero-word-dream.png",
     "visualRight": "./images/desktop/home/r4-1/hero-word-land.png"

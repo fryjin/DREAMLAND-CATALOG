@@ -36,26 +36,9 @@
   function readStorage(key){const s=storage();if(!s)return '';try{return s.getItem(key)||'';}catch(_){return '';}}
   function writeStorage(key,value){const s=storage();if(!s)return false;try{s.setItem(key,String(value));return true;}catch(_){return false;}}
 
-  function normalizeLanguage(
-    value,
-    fallback='en',
-    supported=[
-      'en',
-      'zh',
-      'ko'
-    ]
-  ){
-    const next=
-      String(
-        value||
-        ''
-      )
-        .trim()
-        .toLowerCase();
-
-    return supported.includes(next)
-      ? next
-      : fallback;
+  function normalizeLanguage(value,fallback='en',supported=['en','zh','ko']){
+    const next=String(value||'').trim().toLowerCase();
+    return supported.includes(next)?next:fallback;
   }
 
   function inquiryCount(value){
@@ -99,39 +82,15 @@
     );
   }
 
-  function pathValue(
-    source,
-    path
-  ){
-    return String(
-      path||
-      ''
-    )
-      .split('.')
-      .filter(Boolean)
-      .reduce(
-        (
-          value,
-          key
-        )=>
-          value==
-          null
-            ? undefined
-            : value[key],
-        source
-      );
+  function pathValue(source,path){
+    return String(path||'').split('.').filter(Boolean).reduce(
+      (value,key)=>value==null?undefined:value[key],
+      source
+    );
   }
 
-  function setNodeText(
-    node,
-    value
-  ){
-    if(!node){
-      return;
-    }
-
-    node.textContent=
-      text(value);
+  function setNodeText(node,value){
+    if(node)node.textContent=text(value);
   }
 
   function contentFor(
@@ -446,6 +405,9 @@
         )
       );
     }
+
+    const hero=document.querySelector('[data-home-hero-desktop-source]');
+    if(hero)hero.setAttribute('srcset','/images/desktop/home/hero/hero-main-'+next+'.webp');
 
     applyGenericBindings(view);
     applyCollections(view);
