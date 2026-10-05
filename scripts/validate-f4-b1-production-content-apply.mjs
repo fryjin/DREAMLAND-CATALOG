@@ -153,6 +153,20 @@ for(const [id,expected] of Object.entries(holidayNames)){
   }
 }
 
+const fallback=JSON.parse(read('data/products.json'));
+for(const [id,expected] of Object.entries(holidayNames)){
+  const product=(fallback.products||[]).find(item=>item.id===id);
+  if(!product){
+    fail(id+' generated fallback product missing.');
+    continue;
+  }
+  for(const locale of ['zh','en','ko']){
+    if(product.names?.[locale]!==expected['name_'+locale]){
+      fail(id+'.products.json names.'+locale+' does not match approved F4-B1 name.');
+    }
+  }
+}
+
 const content=JSON.parse(read('data/pdp-content.json'));
 if(
   content.revision!=='PDP-COPY-1A.4'||
