@@ -71,7 +71,7 @@ for(const marker of [
   'function syncHeader()',
   "'[data-home-header]'",
   "'is-scrolled'",
-  'root.scrollY>root.innerHeight-68',
+  'root.scrollY>24',
   "root.addEventListener('scroll',syncHeader,{passive:true});",
   'syncHeader();'
 ]){
@@ -130,5 +130,5 @@ if(errors.length){
 
 console.log('');
 console.log('F4-POLISH-1 PERSISTENT HOME NAVIGATION: PASS');
-console.log('PC Hero overlay remains transparent; post-Hero navigation stays fixed with a restrained translucent surface; Mobile sticky behavior remains outside this Desktop override.');
+console.log('PC Hero overlay is transparent only at the page top; after the first 24px of scroll the fixed navigation uses a restrained translucent surface through the rest of Hero and the page; Mobile sticky behavior remains outside this Desktop override.');
 console.log('');

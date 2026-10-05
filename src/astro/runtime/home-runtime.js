@@ -71,7 +71,7 @@
   function setNodeText(node,value){
     if(node)node.textContent=text(value);
   }
-  function syncHeader(){document.querySelector('[data-home-header]')?.classList.toggle('is-scrolled',root.scrollY>root.innerHeight-68);}
+  function syncHeader(){document.querySelector('[data-home-header]')?.classList.toggle('is-scrolled',root.scrollY>24);}
 
   function contentFor(
     language
