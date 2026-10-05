@@ -11,7 +11,7 @@ const ROOT=path.resolve(
   '..'
 );
 
-const EXPECTED_DIGEST='a71e3b4d8ecda866cd913d3028ccbc2382d627fa4eee64dd593d885ba8bd0aa9';
+const EXPECTED_DIGEST='d293a871c2b0757b0305c60c9080eb26dfbfd37dd807969b63646dca73947d14';
 
 const errors=[];
 
@@ -86,25 +86,25 @@ const content=
 
 if(
   content.revision!==
-    'PDP-COPY-1A.3'
+    'PDP-COPY-1A.4'
 ){
   fail(
-    'Approved content revision must be PDP-COPY-1A.3.'
+    'Approved content revision must be PDP-COPY-1A.4.'
   );
 }
 
 if(
   content.approval?.state!==
-    'approved-with-holiday-placeholders'||
+    'approved'||
   Number(
     content.approval?.storyCount
-  )!==73||
+  )!==89||
   Number(
     content.approval?.placeholderCount
-  )!==16
+  )!==0
 ){
   fail(
-    'Approved content summary must remain 73 stories + 16 Holiday placeholders.'
+    'Approved content summary must remain 89 finalized stories + 0 placeholders.'
   );
 }
 
@@ -130,8 +130,8 @@ const placeholders=
 
 if(
   storyEntries.length!==89||
-  approvedStories.length!==73||
-  placeholders.length!==16
+  approvedStories.length!==89||
+  placeholders.length!==0
 ){
   fail(
     'Approved Color Story status/kind counts changed.'
@@ -141,47 +141,28 @@ if(
 const holidayIds=
   ["HOL001", "HOL002", "HOL003", "HOL004", "HOL005", "HOL006", "HOL007", "HOL008", "HOL009", "HOL010", "HOL011", "HOL012", "HOL013", "HOL014", "HOL015", "HOL016"];
 
-const actualPlaceholderIds=
-  placeholders
-    .map(
-      ([id])=>id
-    )
-    .sort();
-
-if(
-  JSON.stringify(
-    actualPlaceholderIds
-  )!==
-  JSON.stringify(
-    [...holidayIds].sort()
-  )
-){
-  fail(
-    'Only Holiday products may use placeholder Color Story copy.'
-  );
-}
-
-const holidayCopy={
-  zh:'色彩故事整理中。',
-  en:'Color story coming soon.',
-  ko:'컬러 스토리를 준비 중입니다.'
-};
-
 for(const id of holidayIds){
   const entry=
     content.colorStories?.[id];
 
   if(
-    JSON.stringify(
-      entry?.copy
-    )!==
-    JSON.stringify(
-      holidayCopy
+    entry?.kind!=='story'||
+    entry?.status!=='approved'||
+    [
+      'zh',
+      'en',
+      'ko'
+    ].some(
+      locale=>
+        !String(
+          entry?.copy?.[locale]||
+          ''
+        ).trim()
     )
   ){
     fail(
       id+
-      ' Holiday placeholder copy changed.'
+      ' must remain a finalized approved Holiday Color Story.'
     );
   }
 }
@@ -391,7 +372,7 @@ try{
   }
 }catch(error){
   fail(
-    'PDP-COPY-1A.3 package inspection failed: '+
+    'PDP-COPY-1A.4 package inspection failed: '+
     error.message
   );
 }
@@ -399,7 +380,7 @@ try{
 if(errors.length){
   console.error('');
   console.error(
-    'DREAMLAND PDP-COPY-1A.3 APPROVED CONTENT UPDATE: FAIL'
+    'DREAMLAND PDP-COPY-1A.4 APPROVED CONTENT UPDATE: FAIL'
   );
 
   for(const error of errors){
@@ -415,9 +396,9 @@ if(errors.length){
 
 console.log('');
 console.log(
-  'DREAMLAND PDP-COPY-1A.3 APPROVED CONTENT UPDATE: PASS'
+  'DREAMLAND PDP-COPY-1A.4 APPROVED CONTENT UPDATE: PASS'
 );
 console.log(
-  '73 finalized Color Stories + 16 Holiday placeholders + 3 Scent helpers + Quantity helper are approved and digest-locked; UI wiring is validated separately by PDP-COPY-1B.'
+  '89 finalized Color Stories + 0 placeholders + 3 Scent helpers + Quantity helper are approved and digest-locked; UI wiring is validated separately by PDP-COPY-1B.'
 );
 console.log('');

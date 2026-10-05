@@ -227,7 +227,7 @@ if(
     ){
       fail(
         productId+
-        ' Color Story must be approved after PDP-COPY-1A.3.'
+        ' Color Story must be approved after PDP-COPY-1A.4.'
       );
     }
 
@@ -275,11 +275,11 @@ if(
   }
 
   if(
-    storyCount!==73||
-    placeholderCount!==16
+    storyCount!==89||
+    placeholderCount!==0
   ){
     fail(
-      'Expected 73 approved stories + 16 approved placeholders; found '+
+      'Expected 89 approved stories + 0 approved placeholders; found '+
       storyCount+
       ' + '+
       placeholderCount+

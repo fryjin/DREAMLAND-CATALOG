@@ -5,7 +5,7 @@
     "en",
     "ko"
   ],
-  "revision": "PDP-COPY-1A.3",
+  "revision": "PDP-COPY-1A.4",
   "workflow": {
     "draftStatus": "pending-review",
     "publishStatus": "approved",
@@ -18,10 +18,10 @@
     "holidayPlaceholderKind": "placeholder"
   },
   "approval": {
-    "state": "approved-with-holiday-placeholders",
-    "storyCount": 73,
-    "placeholderCount": 16,
-    "copyDigest": "a71e3b4d8ecda866cd913d3028ccbc2382d627fa4eee64dd593d885ba8bd0aa9"
+    "state": "approved",
+    "storyCount": 89,
+    "placeholderCount": 0,
+    "copyDigest": "d293a871c2b0757b0305c60c9080eb26dfbfd37dd807969b63646dca73947d14"
   },
   "colorStoryPolicy": {
     "purpose": "editorial-color-story",
@@ -704,147 +704,147 @@
       "sourceProductId": "ADV014"
     },
     "HOL001": {
-      "kind": "placeholder",
+      "kind": "story",
       "status": "approved",
       "copy": {
-        "zh": "色彩故事整理中。",
-        "en": "Color story coming soon.",
-        "ko": "컬러 스토리를 준비 중입니다."
+        "zh": "雪刚落下来，红色反而显得更亮。深绿藏在下面，像冬天还没完全收走的颜色。",
+        "en": "The first snow has only just fallen, yet the red seems brighter for it. Deep green stays underneath, like a little color winter has not taken away.",
+        "ko": "첫눈이 막 내려앉았는데도 붉은빛은 오히려 더 선명해집니다. 짙은 초록은 그 아래 남아, 겨울이 아직 다 거두지 못한 색처럼 보입니다."
       }
     },
     "HOL002": {
-      "kind": "placeholder",
+      "kind": "story",
       "status": "approved",
       "copy": {
-        "zh": "色彩故事整理中。",
-        "en": "Color story coming soon.",
-        "ko": "컬러 스토리를 준비 중입니다."
+        "zh": "绯红铺得很满，白色从上面慢慢落下来。像节日刚开始，第一场雪也刚好赶到。",
+        "en": "Crimson fills the scene while white settles slowly from above. It feels like the season has just begun, with the first snow arriving at exactly the right moment.",
+        "ko": "진홍빛이 가득 번지고 그 위로 흰빛이 천천히 내려앉습니다. 계절이 막 시작되고 첫눈도 때맞춰 찾아온 듯합니다."
       }
     },
     "HOL003": {
-      "kind": "placeholder",
+      "kind": "story",
       "status": "approved",
       "copy": {
-        "zh": "色彩故事整理中。",
-        "en": "Color story coming soon.",
-        "ko": "컬러 스토리를 준비 중입니다."
+        "zh": "暖色里藏着一点孩子气，像十二月寄来的一封短信。没有说很多，只留下一点让人记得的温度。",
+        "en": "There is something quietly playful inside the warm colors, like a short letter sent by December. It says very little, but leaves behind a warmth you remember.",
+        "ko": "따뜻한 색 속에 살짝 장난스러운 기운이 숨어 있습니다. 12월이 보내온 짧은 편지처럼 많은 말을 하지 않아도 작은 온기가 오래 남습니다."
       }
     },
     "HOL004": {
-      "kind": "placeholder",
+      "kind": "story",
       "status": "approved",
       "copy": {
-        "zh": "色彩故事整理中。",
-        "en": "Color story coming soon.",
-        "ko": "컬러 스토리를 준비 중입니다."
+        "zh": "雪把颜色压得很轻，屋里的灯却还亮着。远远看过去，整个夜晚都安静了一点。",
+        "en": "Snow softens every color while the lights indoors stay on. From a distance, the whole night seems to grow a little quieter.",
+        "ko": "눈이 색을 한층 부드럽게 눌러도 집 안의 불빛은 그대로 남아 있습니다. 멀리서 바라보면 밤 전체가 조금 더 고요해진 듯합니다."
       }
     },
     "HOL005": {
-      "kind": "placeholder",
+      "kind": "story",
       "status": "approved",
       "copy": {
-        "zh": "色彩故事整理中。",
-        "en": "Color story coming soon.",
-        "ko": "컬러 스토리를 준비 중입니다."
+        "zh": "白色顺着红色慢慢往下落，像糖霜刚刚凝住。甜意没有很浓，却让冬天显得柔软了一点。",
+        "en": "White slips slowly down over the red, like frosting just beginning to set. The sweetness is subtle, but it makes winter feel a little softer.",
+        "ko": "흰빛이 붉은색 위로 천천히 흘러내려 막 굳기 시작한 아이싱을 닮았습니다. 달콤함은 은은하지만 겨울은 조금 더 부드러워집니다."
       }
     },
     "HOL006": {
-      "kind": "placeholder",
+      "kind": "story",
       "status": "approved",
       "copy": {
-        "zh": "色彩故事整理中。",
-        "en": "Color story coming soon.",
-        "ko": "컬러 스토리를 준비 중입니다."
+        "zh": "红色和奶白挤在一起，空气里好像也多了一点甜。像刚烤好的姜饼，还留着一点余温。",
+        "en": "Red and cream gather close together, leaving a trace of sweetness in the air. Like gingerbread fresh from the oven, there is still a little warmth left.",
+        "ko": "붉은빛과 크림색이 가까이 포개지며 공기에도 은근한 달콤함을 남깁니다. 갓 구운 진저브레드처럼 아직 작은 온기가 남아 있습니다."
       }
     },
     "HOL007": {
-      "kind": "placeholder",
+      "kind": "story",
       "status": "approved",
       "copy": {
-        "zh": "色彩故事整理中。",
-        "en": "Color story coming soon.",
-        "ko": "컬러 스토리를 준비 중입니다."
+        "zh": "白色几乎把其他颜色都盖住了，红与绿只从缝隙里露出来。安静得像雪地里很远的一段歌。",
+        "en": "White nearly covers every other color, with red and green appearing only through the folds. It feels as quiet as a song heard far across the snow.",
+        "ko": "흰빛이 다른 색을 거의 모두 덮고, 붉은색과 초록만 틈 사이로 모습을 드러냅니다. 눈밭 저편에서 희미하게 들려오는 노래처럼 고요합니다."
       }
     },
     "HOL008": {
-      "kind": "placeholder",
+      "kind": "story",
       "status": "approved",
       "copy": {
-        "zh": "色彩故事整理中。",
-        "en": "Color story coming soon.",
-        "ko": "컬러 스토리를 준비 중입니다."
+        "zh": "花瓣从白色里一层层展开，边缘藏着一点红与绿。像冬夜里开了一朵不属于这个季节的花。",
+        "en": "Petals open layer by layer from the white, with a little red and green hidden along the edges. Like a flower blooming in a season where it should not exist.",
+        "ko": "하얀빛 속에서 꽃잎이 한 겹씩 펼쳐지고 가장자리에는 붉은색과 초록이 살짝 숨어 있습니다. 겨울에는 피지 않을 꽃이 밤중에 피어난 듯합니다."
       }
     },
     "HOL009": {
-      "kind": "placeholder",
+      "kind": "story",
       "status": "approved",
       "copy": {
-        "zh": "色彩故事整理中。",
-        "en": "Color story coming soon.",
-        "ko": "컬러 스토리를 준비 중입니다."
+        "zh": "深绿被雪压得更沉，红色从下面透出来。像松林深处还留着一点没有熄掉的暖光。",
+        "en": "Snow makes the deep green feel heavier, while red glows quietly from beneath. Like a small light still burning somewhere deep in the pines.",
+        "ko": "눈이 내려앉자 짙은 초록은 더 깊어지고 그 아래로 붉은빛이 조용히 비칩니다. 소나무 숲 깊은 곳에 아직 꺼지지 않은 불빛 하나가 남은 듯합니다."
       }
     },
     "HOL010": {
-      "kind": "placeholder",
+      "kind": "story",
       "status": "approved",
       "copy": {
-        "zh": "色彩故事整理中。",
-        "en": "Color story coming soon.",
-        "ko": "컬러 스토리를 준비 중입니다."
+        "zh": "绿色很深，红果和金色落在中间。像风穿过冬青时，顺手碰响了一枚小铃。",
+        "en": "The green runs deep, with red berries and a touch of gold resting at the center. Like the wind slipping through holly leaves and brushing against a tiny bell.",
+        "ko": "짙은 초록 사이에 붉은 열매와 금빛이 자리합니다. 바람이 호랑가시나무 잎을 지나며 작은 종 하나를 스치고 간 듯합니다."
       }
     },
     "HOL011": {
-      "kind": "placeholder",
+      "kind": "story",
       "status": "approved",
       "copy": {
-        "zh": "色彩故事整理中。",
-        "en": "Color story coming soon.",
-        "ko": "컬러 스토리를 준비 중입니다."
+        "zh": "暖棕和红色把冬天拉近了一点。像林子深处传来一声鹿鸣，风也跟着慢了下来。",
+        "en": "Warm brown and red bring winter a little closer. Like a soft call from deep in the woods, slowing even the wind for a moment.",
+        "ko": "따뜻한 갈색과 붉은빛이 겨울을 조금 더 가까이 끌어옵니다. 숲 깊은 곳에서 들려오는 작은 사슴 울음처럼 바람도 잠시 느려집니다."
       }
     },
     "HOL012": {
-      "kind": "placeholder",
+      "kind": "story",
       "status": "approved",
       "copy": {
-        "zh": "色彩故事整理中。",
-        "en": "Color story coming soon.",
-        "ko": "컬러 스토리를 준비 중입니다."
+        "zh": "红色很亮，像雪地里突然出现的一点火光。驯鹿从里面探出来，像正赶着去很远的地方。",
+        "en": "The red shines brightly, like a small flame suddenly appearing on the snow. A reindeer peeks through, as if already on its way somewhere far away.",
+        "ko": "붉은빛이 눈밭 위에 갑자기 나타난 작은 불꽃처럼 선명합니다. 그 사이로 순록이 얼굴을 내밀며 먼 곳으로 길을 나선 듯합니다."
       }
     },
     "HOL013": {
-      "kind": "placeholder",
+      "kind": "story",
       "status": "approved",
       "copy": {
-        "zh": "色彩故事整理中。",
-        "en": "Color story coming soon.",
-        "ko": "컬러 스토리를 준비 중입니다."
+        "zh": "红果和绿叶围成一圈，颜色顺着花纹慢慢转开。像一支没有很快结束的冬日舞曲。",
+        "en": "Red berries and green leaves gather into a circle, while the colors turn gently with the carved lines. Like a winter waltz in no hurry to end.",
+        "ko": "붉은 열매와 초록 잎이 둥글게 모이고 색은 조각의 결을 따라 천천히 돌아갑니다. 쉽게 끝나지 않는 겨울의 왈츠 같습니다."
       }
     },
     "HOL014": {
-      "kind": "placeholder",
+      "kind": "story",
       "status": "approved",
       "copy": {
-        "zh": "色彩故事整理中。",
-        "en": "Color story coming soon.",
-        "ko": "컬러 스토리를 준비 중입니다."
+        "zh": "红色一层压着一层，没有留下多少空隙。浓得像冬夜里的灯火，越靠近越亮。",
+        "en": "Red folds over red until almost no space is left between. Rich as light in a winter night, it seems brighter the closer you come.",
+        "ko": "붉은빛이 겹겹이 포개져 빈틈을 거의 남기지 않습니다. 겨울밤의 불빛처럼 짙고, 가까이 볼수록 더 밝게 느껴집니다."
       }
     },
     "HOL015": {
-      "kind": "placeholder",
+      "kind": "story",
       "status": "approved",
       "copy": {
-        "zh": "色彩故事整理中。",
-        "en": "Color story coming soon.",
-        "ko": "컬러 스토리를 준비 중입니다."
+        "zh": "绿色和红色从树下散开，像灯一盏盏亮起来。礼物还没有拆，夜晚也还没有结束。",
+        "en": "Green and red spread out beneath the tree, like lights coming on one by one. The gifts are still unopened, and the night is far from over.",
+        "ko": "나무 아래로 초록과 붉은빛이 퍼지며 불이 하나씩 켜지는 듯합니다. 선물은 아직 열지 않았고 밤도 아직 한참 남아 있습니다."
       }
     },
     "HOL016": {
-      "kind": "placeholder",
+      "kind": "story",
       "status": "approved",
       "copy": {
-        "zh": "色彩故事整理中。",
-        "en": "Color story coming soon.",
-        "ko": "컬러 스토리를 준비 중입니다."
+        "zh": "白与深绿都很安静，中间那一点红反而特别清楚。像雪夜里藏着一颗没有被盖住的宝石。",
+        "en": "White and deep green stay almost still, making the small touch of red impossible to miss. Like a ruby hidden in the snow, untouched by the night.",
+        "ko": "흰빛과 짙은 초록이 고요하게 머물러 가운데의 작은 붉은색이 더욱 또렷해집니다. 눈 속에 가려지지 않은 루비 한 알 같습니다."
       }
     }
   },
@@ -854,7 +854,7 @@
       "supplier": {
         "zh": "上海依克塞汀香薰香精",
         "en": "Shanghai Excitin Fragrance",
-        "ko": ""
+        "ko": "상하이 Excitin 향료"
       },
       "fragranceRatio": "5%",
       "helperCopy": {
@@ -871,7 +871,7 @@
       "supplier": {
         "zh": "法国 Robertet Group 进口香薰香精",
         "en": "Robertet Group Imported Fragrance",
-        "ko": ""
+        "ko": "프랑스 Robertet Group 수입 향료"
       },
       "fragranceRatio": "8%",
       "helperCopy": {
@@ -888,7 +888,7 @@
       "supplier": {
         "zh": "美国 CandleScience 进口香薰精油",
         "en": "CandleScience Imported Fragrance Oil",
-        "ko": ""
+        "ko": "미국 CandleScience 수입 프래그런스 오일"
       },
       "fragranceRatio": "10%",
       "helperCopy": {
