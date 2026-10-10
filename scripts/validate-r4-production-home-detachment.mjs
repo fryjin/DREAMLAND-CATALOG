@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import {fileURLToPath} from 'node:url';
+import {validateHomeScriptBoundary} from './lib/f4-home-executable-script-contract.mjs';
 
 const ROOT=path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -413,21 +414,9 @@ if(DIST_MODE){
         }
       }
 
-      const executableScripts=[
-        ...home.matchAll(
-          /<script\b(?![^>]*type="application\/json")[^>]*>/gi
-        )
-      ];
-
-      if(
-        executableScripts.length!==
-        1
-      ){
-        fail(
-          'Production Home must keep exactly one executable script; found '+
-          executableScripts.length+
-          '.'
-        );
+      // Reuse the same strict root-vs-localized script contract as the Astro gates.
+      for(const issue of validateHomeScriptBoundary(home,root)){
+        fail("R4.3D: "+issue);
       }
 
       const scriptSources=[
