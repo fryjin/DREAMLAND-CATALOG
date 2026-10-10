@@ -145,6 +145,23 @@ const languageOptions=
   ogImage="https://dreamlandart.net/images/shared/share/SHARE001/cover-social.jpg"
 >
   <Fragment slot="head">
+    {!routeLocale&&(
+      <script is:inline data-f4-home-hero-locale-first-paint>
+        (function(){
+          if(window.location.pathname!=='/')return;
+          try{
+            var language=String(
+              window.localStorage.getItem('productManualLang')||''
+            ).trim().toLowerCase();
+            if(language==='zh'||language==='ko'){
+              window.location.replace(
+                '/'+language+'/'+window.location.search+window.location.hash
+              );
+            }
+          }catch(_){}
+        })();
+      </script>
+    )}
     <link
       rel="preload"
       as="image"
