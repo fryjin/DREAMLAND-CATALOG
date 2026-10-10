@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
+import {validateHomeScriptBoundary} from './lib/f4-home-executable-script-contract.mjs';
 import {
   logicalTextBytes,
   readLogicalText
@@ -350,20 +351,8 @@ try{
       );
     }
 
-    const executableScripts=[
-      ...html.matchAll(
-        /<script\b(?![^>]*type="application\/json")[^>]*>/gi
-      )
-    ];
-
-    if(
-      executableScripts.length!==1
-    ){
-      fail(
-        'Astro Home must contain exactly one executable client script; found '+
-        executableScripts.length+
-        '.'
-      );
+    for(const issue of validateHomeScriptBoundary(html,OUT)){
+      fail(issue);
     }
 
     for(const marker of [
